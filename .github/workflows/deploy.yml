@@ -1,0 +1,112 @@
+name: Build & Deploy to GoDaddy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build static export
+        working-directory: frontend
+        run: npm run build
+
+      - name: Generate db_connect.php from secrets
+        run: |
+          cat > api/db_connect.php << 'PHPEOF'
+          <?php
+          date_default_timezone_set('America/Los_Angeles');
+          define('DB_HOST', 'localhost');
+          define('DB_NAME', '${{ secrets.DB_NAME }}');
+          define('DB_USER', '${{ secrets.DB_USER }}');
+          define('DB_PASS', '${{ secrets.DB_PASS }}');
+
+          $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+          if ($conn->connect_error) {
+              error_log("RunPayway DB connection failed: " . $conn->connect_error);
+              http_response_code(500);
+              echo json_encode(['success' => false, 'error' => 'Database unavailable']);
+              exit;
+          }
+          $conn->set_charset('utf8mb4');
+
+          function dbQuery($conn, string $sql, array $params = []): mysqli_result|false {
+              $stmt = $conn->prepare($sql);
+              if ($params) {
+                  $types = str_repeat('s', count($params));
+                  $stmt->bind_param($types, ...$params);
+              }
+              $stmt->execute();
+              return $stmt->get_result();
+          }
+
+          function dbGetRow($conn, string $sql, array $params = []): ?array {
+              $result = dbQuery($conn, $sql, $params);
+              return $result ? $result->fetch_assoc() : null;
+          }
+
+          function dbGetAll($conn, string $sql, array $params = []): array {
+              $result = dbQuery($conn, $sql, $params);
+              return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+          }
+
+          function dbInsert($conn, string $sql, array $params = []): int {
+              $stmt = $conn->prepare($sql);
+              if ($params) {
+                  $types = str_repeat('s', count($params));
+                  $stmt->bind_param($types, ...$params);
+              }
+              $stmt->execute();
+              return $conn->insert_id;
+          }
+          PHPEOF
+
+      - name: Generate stripe_config.php from secrets
+        run: |
+          cat > api/stripe_config.php << 'PHPEOF'
+          <?php
+          define('STRIPE_SECRET_KEY', '${{ secrets.STRIPE_SECRET_KEY }}');
+          define('STRIPE_PUBLISHABLE_KEY', '${{ secrets.STRIPE_PUBLISHABLE_KEY }}');
+          define('STRIPE_WEBHOOK_SECRET', '${{ secrets.STRIPE_WEBHOOK_SECRET }}');
+          define('STRIPE_PRICE_ID', '${{ secrets.STRIPE_PRICE_ID }}');
+          define('FRONTEND_URL', 'https://peoplestar.com/RunPayway');
+          PHPEOF
+
+      - name: Deploy API to GoDaddy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./api/
+          server-dir: /public_html/RunPayway/api/
+          dangerous-clean-slate: false
+
+      - name: Deploy frontend to GoDaddy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./frontend/out/
+          server-dir: /public_html/RunPayway/
+          dangerous-clean-slate: false
+          exclude: |
+            **/api/**

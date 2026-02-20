@@ -1,0 +1,24 @@
+# Dependencies
+frontend/node_modules/
+api/vendor/
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+
+# Generated deployer
+deploy_package.php
+
+# Environment / secrets (generated from GitHub secrets during deploy)
+api/stripe_config.php
+api/db_connect.php
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

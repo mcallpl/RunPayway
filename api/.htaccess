@@ -1,0 +1,22 @@
+# RunPayway API - Apache Configuration
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Allow direct access to PHP files
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(.*)$ $1 [L]
+
+    # Deny access to sensitive directories
+    RewriteRule ^reports/ - [F,L]
+    RewriteRule ^lib/ - [F,L]
+    RewriteRule ^engine/ - [F,L]
+    RewriteRule ^pdf/ - [F,L]
+    RewriteRule ^vendor/ - [F,L]
+</IfModule>
+
+# Allow CORS for frontend
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type"
+</IfModule>

@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* ── RunPayway Institutional Design System Tokens ── */
+
+@theme {
+  --color-navy-900: #0A1628;
+  --color-navy-800: #111D35;
+  --color-navy-700: #1A2A4A;
+  --color-navy-600: #243B65;
+  --color-accent: #1E40AF;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* ── Base Styles ── */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #111827; /* gray-900 */
+  background-color: #ffffff;
+}
