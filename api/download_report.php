@@ -1,9 +1,11 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+require_once __DIR__ . '/lib/security.php';
+setSecurityHeaders();
+setCorsHeaders('GET');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
+
+enforceRateLimit('download_report', 20, 60);
 
 require_once __DIR__ . '/db_connect.php';
 require_once __DIR__ . '/lib/token_utils.php';
@@ -157,31 +159,39 @@ try {
         'download_count' => ($grant['download_count'] ?? 0) + 1,
     ]);
 
-    // ── 4. Return report data ─────────────────────────────────────────────────
-    // TODO: Once PDF generator is implemented, serve actual PDF file here.
-    // For now, return JSON with the report data and a note about PDF.
-    //
-    // When PDF is ready, replace with:
-    //   header('Content-Type: application/pdf');
-    //   header('Content-Disposition: attachment; filename="RunPayway-Report-' . $assessment_id . '.pdf"');
-    //   header('Cache-Control: no-store');
-    //   readfile($pdf_path);
+    // ── 4. Serve PDF report ────────────────────────────────────────────────────
+    require_once __DIR__ . '/pdf/ReportGenerator.php';
 
-    header('Content-Type: application/json');
+    $generator = new ReportGenerator();
+    $pdf_path = $generator->getReportPath($assessment_id);
+
+    // If PDF doesn't exist yet (older assessments or failed generation), regenerate
+    if (!file_exists($pdf_path)) {
+        $output_payload = json_decode($assessment['output_payload'], true);
+        if ($output_payload) {
+            try {
+                $pdf_path = $generator->generate($output_payload, $assessment['model_version'] ?? 'RP-1.0');
+            } catch (Exception $pdfErr) {
+                error_log('PDF regeneration failed: ' . $pdfErr->getMessage());
+                header('Content-Type: application/json');
+                http_response_code(500);
+                echo json_encode(['status' => 'error', 'message' => 'PDF generation failed']);
+                exit;
+            }
+        } else {
+            header('Content-Type: application/json');
+            http_response_code(500);
+            echo json_encode(['status' => 'error', 'message' => 'Report data is corrupted']);
+            exit;
+        }
+    }
+
+    // Serve the PDF
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="RunPayway-Report-' . $assessment_id . '.pdf"');
+    header('Content-Length: ' . filesize($pdf_path));
     header('Cache-Control: no-store');
-
-    $output_payload = json_decode($assessment['output_payload'], true);
-
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Report data retrieved. PDF download coming soon.',
-        'assessment_id' => $assessment['assessment_id'],
-        'assessment_date' => $assessment['assessment_date'],
-        'model_version' => $assessment['model_version'],
-        'prepared_for_name' => $assessment['prepared_for_name'],
-        'output' => $output_payload,
-        '_pdf_note' => 'PDF generator not yet implemented. This endpoint will serve a PDF file when ready.',
-    ]);
+    readfile($pdf_path);
 
 } catch (Exception $e) {
     error_log('download_report error: ' . $e->getMessage());

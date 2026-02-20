@@ -1,10 +1,12 @@
 <?php
+require_once __DIR__ . '/lib/security.php';
+setSecurityHeaders();
+setCorsHeaders('GET');
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
+
+enforceRateLimit('get_report', 30, 60);
 
 require_once __DIR__ . '/db_connect.php';
 require_once __DIR__ . '/lib/token_utils.php';
