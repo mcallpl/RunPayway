@@ -182,6 +182,9 @@ try {
             'checkout_url' => FRONTEND_URL . '/assess/?token=' . $token,
             'session_id' => $mock_session_id,
             '_dev_note' => 'Mock response — install stripe/stripe-php for production',
+            '_db_tables' => $conn->error ?: 'tables_ok',
+            '_assessment_id' => $assessment_id,
+            '_version' => 'v3-bootstrap',
         ]);
     }
 
