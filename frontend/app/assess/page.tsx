@@ -44,19 +44,35 @@ function AssessContent() {
         [questionId]: letter,
       }));
 
+      // Auto-advance to next question after a short delay (only if not on last question)
       setTimeout(() => {
         if (currentQuestion < QUESTIONS.length - 1) {
           setCurrentQuestion((prev) => prev + 1);
-        } else {
-          handleSubmit({
-            ...responses,
-            [questionId]: letter,
-          });
         }
       }, 400);
     },
-    [currentQuestion, responses],
+    [currentQuestion],
   );
+
+  const handleBack = useCallback(() => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion((prev) => prev - 1);
+    } else {
+      // Go back to calibration from first question
+      setPhase("calibration");
+    }
+  }, [currentQuestion]);
+
+  const handleNext = useCallback(() => {
+    const questionId = `q${QUESTIONS[currentQuestion].id}`;
+    if (!responses[questionId]) return; // Must answer first
+
+    if (currentQuestion < QUESTIONS.length - 1) {
+      setCurrentQuestion((prev) => prev + 1);
+    } else {
+      handleSubmit(responses);
+    }
+  }, [currentQuestion, responses]);
 
   const handleSubmit = async (finalResponses: DiagnosticResponses) => {
     setPhase("submitting");
@@ -124,7 +140,27 @@ function AssessContent() {
                 }
                 onAnswer={handleAnswer}
               />
-              <div className="border-t border-gray-100 pt-6 mt-12">
+              <div className="flex items-center justify-between pt-6 mt-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="text-sm text-gray-500 hover:text-navy-900 transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-navy-900 focus:ring-offset-2 px-3 py-2 rounded-none"
+                >
+                  <span aria-hidden="true">&larr;</span>
+                  {currentQuestion === 0 ? "Back to Calibration" : "Previous Question"}
+                </button>
+                {currentQuestion === QUESTIONS.length - 1 &&
+                  responses[`q${QUESTIONS[currentQuestion].id}`] && (
+                    <button
+                      type="button"
+                      onClick={() => handleSubmit(responses)}
+                      className="bg-navy-900 text-white px-6 py-2.5 text-sm font-medium hover:bg-navy-800 transition-colors focus:outline-none focus:ring-2 focus:ring-navy-900 focus:ring-offset-2 rounded-none"
+                    >
+                      Submit &amp; Generate Report
+                    </button>
+                  )}
+              </div>
+              <div className="pt-2">
                 <p className="text-xs text-gray-400">
                   Calibration: {calibration.industry.replace(/_/g, " ")} &middot;{" "}
                   {calibration.revenue_model.replace(/_/g, " ")} &middot;{" "}
