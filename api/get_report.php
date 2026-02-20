@@ -90,6 +90,7 @@ try {
     $output_payload = json_decode($assessment['output_payload'], true);
 
     echo json_encode([
+        'success' => true,
         'status' => 'success',
         'message' => 'Report retrieved',
         'assessment_id' => $assessment['assessment_id'],
@@ -97,6 +98,12 @@ try {
         'model_version' => $assessment['model_version'],
         'prepared_for_name' => $assessment['prepared_for_name'],
         'output' => $output_payload,
+        'data' => [
+            'assessment_id' => $assessment['assessment_id'],
+            'assessment_date' => $assessment['assessment_date'],
+            'model_version' => $assessment['model_version'],
+            'output_payload' => $output_payload,
+        ],
     ]);
 
 } catch (Exception $e) {
