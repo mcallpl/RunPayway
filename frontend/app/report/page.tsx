@@ -37,15 +37,13 @@ interface OutputPayload {
 }
 
 interface ReportAPIResponse {
-  success: boolean;
-  data?: {
-    assessment_id: string;
-    assessment_date: string;
-    model_version: string;
-    display_score: number;
-    band: string;
-    output_payload: OutputPayload;
-  };
+  status: string;
+  message?: string;
+  assessment_id?: string;
+  assessment_date?: string;
+  model_version?: string;
+  prepared_for_name?: string;
+  output?: OutputPayload;
   error?: string;
 }
 
@@ -77,19 +75,19 @@ function ReportContent() {
         );
         const data: ReportAPIResponse = await response.json();
 
-        if (data.success && data.data) {
-          setReport(data.data.output_payload);
+        if (data.status === "success" && data.output) {
+          setReport(data.output);
           setMeta({
-            assessment_id: data.data.assessment_id,
-            assessment_date: data.data.assessment_date,
-            model_version: data.data.model_version,
+            assessment_id: data.assessment_id || data.output.assessment_id,
+            assessment_date: data.assessment_date || data.output.assessment_date,
+            model_version: data.model_version || "RP-1.0",
           });
           setStatus("ready");
-        } else if (data.error?.includes("expired")) {
+        } else if (data.message?.includes("expired")) {
           setStatus("expired");
         } else {
           setStatus("error");
-          setErrorMessage(data.error || "Unable to load report.");
+          setErrorMessage(data.message || data.error || "Unable to load report.");
         }
       } catch {
         setStatus("error");
