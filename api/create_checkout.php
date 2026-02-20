@@ -81,12 +81,44 @@ try {
         ]);
     } else {
         // ── Development: Mock Stripe response ───────────────────────────────
-        // Install Stripe SDK: composer require stripe/stripe-php
+        // Simulates a completed payment by creating DB records directly.
+        // Install Stripe SDK (composer require stripe/stripe-php) for production.
+        require_once __DIR__ . '/lib/token_utils.php';
+        require_once __DIR__ . '/lib/audit_logger.php';
+
         $mock_session_id = 'cs_test_' . bin2hex(random_bytes(16));
+
+        // Use the mock session ID as the access token
+        $token = $mock_session_id;
+        $token_hash = hashToken($token);
+        $assessment_id = generateAssessmentId();
+        $final_expires_at = date('Y-m-d H:i:s', strtotime('+' . FINAL_EXPIRY_DAYS . ' days'));
+
+        // Create assessment record
+        $stmt = $conn->prepare(
+            "INSERT INTO assessments (assessment_id, payment_session_id, prepared_for_name, delivery_email, status)
+             VALUES (?, ?, ?, ?, 'created')"
+        );
+        $stmt->bind_param("ssss", $assessment_id, $mock_session_id, $prepared_for_name, $delivery_email);
+        $stmt->execute();
+        $stmt->close();
+
+        // Create access_grant record
+        $stmt = $conn->prepare(
+            "INSERT INTO access_grants (assessment_id, token_hash, final_expires_at, status)
+             VALUES (?, ?, ?, 'active')"
+        );
+        $stmt->bind_param("sss", $assessment_id, $token_hash, $final_expires_at);
+        $stmt->execute();
+        $stmt->close();
+
+        logEvent($assessment_id, 'mock_purchase', [
+            'payment_session_id' => $mock_session_id,
+        ]);
 
         echo json_encode([
             'success' => true,
-            'checkout_url' => FRONTEND_URL . '/assess/?token=' . $mock_session_id,
+            'checkout_url' => FRONTEND_URL . '/assess/?token=' . $token,
             'session_id' => $mock_session_id,
             '_dev_note' => 'Mock response — install stripe/stripe-php for production',
         ]);
