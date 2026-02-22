@@ -54,7 +54,7 @@ export default function ReportPreview() {
   const { count, ref } = useCountUp(58);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="bg-white" style={{ paddingTop: "80px", paddingBottom: "96px" }}>
       <div className="max-w-lg mx-auto px-6">
         <ScrollReveal>
           {/* 3D iPad Device Frame */}
@@ -124,6 +124,12 @@ export default function ReportPreview() {
             {/* Shadow beneath device */}
             <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-4 bg-black/10 blur-xl rounded-full" />
           </div>
+        </ScrollReveal>
+
+        <ScrollReveal delay={200}>
+          <p className="mt-4 text-sm text-gray-500 text-center leading-[1.6]">
+            This is the exact report you receive. No upsells. No locked features.
+          </p>
         </ScrollReveal>
       </div>
     </section>

@@ -69,9 +69,9 @@ export const QUESTIONS: DiagnosticQuestion[] = [
     text: "How does your primary income arrive?",
     options: [
       { letter: "A", text: "Entirely from direct, per-transaction effort (each dollar requires a specific action)" },
-      { letter: "B", text: "Mostly from direct effort, but some revenue is somewhat routine" },
+      { letter: "B", text: "Mostly from direct effort, with some portion arriving on a routine basis" },
       { letter: "C", text: "A significant share comes through contracts or recurring arrangements" },
-      { letter: "D", text: "Most income arrives through structured, recurring, or passive mechanisms" },
+      { letter: "D", text: "Most income arrives through structured, recurring, or systematized mechanisms" },
     ],
   },
   {
@@ -121,7 +121,7 @@ export const QUESTIONS: DiagnosticQuestion[] = [
       { letter: "A", text: "One client or account represents the majority of revenue" },
       { letter: "B", text: "Two to three clients represent most of the revenue" },
       { letter: "C", text: "Revenue is spread across several clients, but some concentration exists" },
-      { letter: "D", text: "Revenue is broadly diversified across many clients, products, or channels" },
+      { letter: "D", text: "Revenue is distributed across many clients, products, or channels" },
     ],
   },
   {
@@ -142,10 +142,10 @@ export const QUESTIONS: DiagnosticQuestion[] = [
     groupLabel: "Modifiers",
     text: "How would you describe the contractual structure of your revenue?",
     options: [
-      { letter: "A", text: "No formal contracts; revenue is based on informal agreements or ad hoc transactions" },
+      { letter: "A", text: "Revenue operates without formal contracts, on a per-transaction or per-engagement basis" },
       { letter: "B", text: "Some contracts exist, but most are short-term or easily terminated" },
       { letter: "C", text: "A mix of short- and medium-term contracts with some structural protection" },
-      { letter: "D", text: "Primarily long-term contracts, subscriptions, or legally structured recurring revenue" },
+      { letter: "D", text: "Primarily long-term contracts, subscriptions, or recurring revenue with defined terms" },
     ],
   },
   {
@@ -171,7 +171,7 @@ export const QUESTIONS: DiagnosticQuestion[] = [
       { letter: "A", text: "Highly unpredictable — income varies significantly each month" },
       { letter: "B", text: "Somewhat unpredictable — there is a rough baseline but notable fluctuation" },
       { letter: "C", text: "Moderately predictable — most income is stable with some variability" },
-      { letter: "D", text: "Highly predictable — income is consistent and structurally stable" },
+      { letter: "D", text: "Highly predictable — income is consistent month to month" },
     ],
   },
   {
@@ -192,8 +192,8 @@ export const QUESTIONS: DiagnosticQuestion[] = [
     groupLabel: "Stability Indicators",
     text: "If you lost your single largest client or income source tomorrow, how would your total revenue be affected?",
     options: [
-      { letter: "A", text: "It would be devastating — that source represents the majority of my income" },
-      { letter: "B", text: "It would be a serious blow, but some income would continue" },
+      { letter: "A", text: "It would cause a substantial decline — that source represents the majority of income" },
+      { letter: "B", text: "It would result in a significant reduction, but some income would continue" },
       { letter: "C", text: "It would be noticeable, but the majority of income would be unaffected" },
       { letter: "D", text: "It would have minimal impact — no single source dominates" },
     ],
@@ -204,10 +204,10 @@ export const QUESTIONS: DiagnosticQuestion[] = [
     groupLabel: "Stability Indicators",
     text: "How would you describe the long-term trajectory of your revenue structure?",
     options: [
-      { letter: "A", text: "Revenue has become more fragmented and harder to sustain without constant effort" },
+      { letter: "A", text: "Revenue increasingly requires direct effort to maintain current levels" },
       { letter: "B", text: "Revenue structure has remained largely unchanged" },
       { letter: "C", text: "Revenue is gradually shifting toward more structured or recurring patterns" },
-      { letter: "D", text: "Revenue is firmly moving toward structural independence and recurring models" },
+      { letter: "D", text: "Revenue has increasingly shifted toward recurring or systematized patterns" },
     ],
   },
 ];

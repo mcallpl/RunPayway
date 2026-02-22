@@ -2,34 +2,101 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-navy-900 text-white">
-      <div className="max-w-[1200px] mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-          <div className="text-sm text-gray-400">
-            <p>&copy; 2026 RunPayway&#8482;</p>
-            <p className="mt-1">Operated by PeopleStar Enterprises, Inc.</p>
+    <footer>
+      {/* Top divider */}
+      <div className="border-t border-gray-300" />
+
+      <div className="bg-navy-900" style={{ paddingTop: "96px", paddingBottom: "72px" }}>
+        <div className="max-w-[1200px] mx-auto px-6">
+          {/* Desktop: two columns / Mobile: stacked */}
+          <div className="flex flex-col md:flex-row md:justify-between gap-12">
+
+            {/* LEFT COLUMN — Identity */}
+            <div className="space-y-3 text-sm leading-[1.6]">
+              <p className="text-white font-semibold">RunPayway&#8482;</p>
+              <p className="text-gray-400">The Standard for Revenue Exposure.</p>
+              <p className="text-gray-400">
+                Structural measurement for income continuity.
+              </p>
+              <div className="pt-4 space-y-1 text-gray-500 text-xs">
+                <p>&copy; 2026 RunPayway&#8482;</p>
+                <p>A product of PeopleStar Enterprises, Inc.</p>
+                <p>All rights reserved.</p>
+              </div>
+              <p className="text-gray-500 text-xs pt-2">
+                Structural standards remain version-controlled and documented.
+              </p>
+            </div>
+
+            {/* RIGHT COLUMN — Governance & Access */}
+            <div className="flex flex-col sm:flex-row gap-10 md:gap-16">
+
+              {/* Framework */}
+              <div className="space-y-2.5">
+                <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">
+                  Framework
+                </p>
+                <p className="text-gray-400 text-sm">Model Version: RP-1.0</p>
+                <Link
+                  href="/standard"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  Standards Documentation
+                </Link>
+                <Link
+                  href="/standard"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  RunPayway&#8482; Structural Standard
+                </Link>
+              </div>
+
+              {/* Legal */}
+              <div className="space-y-2.5">
+                <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">
+                  Legal
+                </p>
+                <Link
+                  href="/terms"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  Terms of Use
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms#disclosure"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  Important Disclosure
+                </Link>
+              </div>
+
+              {/* Company */}
+              <div className="space-y-2.5">
+                <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">
+                  Company
+                </p>
+                <Link
+                  href="/contact"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  Contact
+                </Link>
+                <Link
+                  href="/contact"
+                  className="block text-gray-400 text-sm hover:underline"
+                >
+                  About RunPayway&#8482;
+                </Link>
+              </div>
+
+            </div>
           </div>
-          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400">
-            <Link href="/contact" className="hover:text-white transition-colors">
-              Contact
-            </Link>
-            <span className="text-gray-600" aria-hidden="true">&middot;</span>
-            <Link href="/terms" className="hover:text-white transition-colors">
-              Terms
-            </Link>
-            <span className="text-gray-600" aria-hidden="true">&middot;</span>
-            <Link href="/privacy" className="hover:text-white transition-colors">
-              Privacy Policy
-            </Link>
-            <span className="text-gray-600" aria-hidden="true">&middot;</span>
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <span className="text-gray-600" aria-hidden="true">&middot;</span>
-            <Link href="/reference-guide" className="hover:text-white transition-colors">
-              Reference Guide
-            </Link>
-          </nav>
         </div>
       </div>
     </footer>

@@ -9,7 +9,7 @@ export default function RatingBands() {
     },
     {
       range: "60\u201379",
-      label: "Mixed Structural Support",
+      label: "Mixed Support",
       border: "border-l-sky-700",
     },
     {
@@ -25,8 +25,8 @@ export default function RatingBands() {
   ];
 
   return (
-    <section className="py-16 bg-white">
-      <div className="max-w-[1200px] mx-auto px-6">
+    <section className="pt-16 pb-18 bg-white">
+      <div className="max-w-[680px] mx-auto px-6">
         <ScrollReveal>
           <h2 className="text-2xl font-semibold text-navy-900">Rating Bands</h2>
         </ScrollReveal>
@@ -44,6 +44,11 @@ export default function RatingBands() {
             </ScrollReveal>
           ))}
         </div>
+        <ScrollReveal delay={500}>
+          <p className="mt-6 text-sm text-gray-500">
+            Band thresholds are fixed and consistent.
+          </p>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -14,10 +14,10 @@ export default function Header() {
           />
         </Link>
         <Link
-          href="/reference-guide"
+          href="/standard"
           className="text-sm text-gray-600 hover:text-navy-900 transition-colors"
         >
-          Reference Guide
+          RunPayway&#8482; Structural Standard
         </Link>
       </div>
     </header>

@@ -1,25 +1,61 @@
+"use client";
+
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function AuthorityClose() {
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch(
+        "https://peoplestar.com/RunPayway/api/create_checkout.php",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }
+      );
+      const data = await response.json();
+
+      if (data.success && data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert("Unable to start checkout. Please try again.");
+      }
+    } catch {
+      alert("Unable to connect. Please try again.");
+    }
+  };
+
   return (
-    <section className="py-24 md:py-32 bg-navy-900 overflow-hidden">
+    <section style={{ paddingTop: "120px", paddingBottom: "48px" }}>
       <div className="max-w-[1200px] mx-auto px-6 text-center">
         <ScrollReveal>
-          <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-            The Standard for Revenue Exposure
-          </h2>
-        </ScrollReveal>
-        <ScrollReveal delay={150}>
-          <div className="mt-10 space-y-4 text-gray-300 text-lg max-w-2xl mx-auto">
-            <p>Revenue performance is measured constantly.</p>
-            <p>Revenue exposure rarely is.</p>
+          <div className="space-y-6 text-gray-700 text-lg max-w-2xl mx-auto">
+            <p>Revenue performance is tracked constantly.</p>
+            <p>Revenue dependency rarely is.</p>
+            <p>
+              The Payway Rating&#8482; gives you a defined reference point.
+            </p>
           </div>
         </ScrollReveal>
-        <ScrollReveal delay={300}>
-          <p className="mt-8 text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            The Payway Rating establishes a defined structural reference point for
-            revenue exposure.
-          </p>
+
+        <ScrollReveal delay={200}>
+          <div className="mt-10">
+            <button
+              type="button"
+              onClick={handleCheckout}
+              className="bg-navy-900 text-white px-8 py-4 text-lg font-medium rounded hover:bg-navy-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-navy-900 focus:ring-offset-2"
+            >
+              See Your Payway Rating&#8482;
+            </button>
+
+            <p className="mt-2 text-sm text-gray-500">
+              $79 &middot; One-time structural diagnostic
+            </p>
+
+            <p className="mt-2 text-xs text-gray-400">
+              Immediate downloadable report. No subscription. No recurring charges.
+            </p>
+          </div>
         </ScrollReveal>
       </div>
     </section>

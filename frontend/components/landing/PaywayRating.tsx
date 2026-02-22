@@ -1,28 +1,31 @@
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default function PaywayRating() {
-  const points = [
-    "The Payway Rating is a 0\u2013100 structural evaluation.",
-    "Higher ratings indicate revenue sustained primarily through structure.",
-    "Lower ratings indicate revenue sustained primarily through direct involvement.",
-    "Structure determines how revenue behaves under pressure, absence, and disruption.",
-  ];
-
   return (
     <section className="py-16 bg-white">
-      <div className="max-w-[1200px] mx-auto px-6">
+      <div className="max-w-[680px] mx-auto px-6">
         <ScrollReveal>
           <h2 className="text-2xl font-semibold text-navy-900">
-            The Payway Rating
+            The Payway Rating&#8482;
           </h2>
         </ScrollReveal>
-        <div className="mt-8 space-y-4">
-          {points.map((point, i) => (
-            <ScrollReveal key={point} delay={i * 100}>
-              <p className="text-gray-700 leading-relaxed">{point}</p>
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal delay={100}>
+          <div className="mt-8 space-y-4 text-gray-700 leading-[1.6]">
+            <p>The Payway Rating&#8482; ranges from 0 to 100.</p>
+            <p>
+              Higher ratings mean income runs primarily on systems.
+            </p>
+            <p>
+              Lower ratings mean income runs primarily on your time and
+              involvement.
+            </p>
+            <p>
+              Identical inputs under the same model version produce identical
+              results.
+            </p>
+            <p>The model is stable. Your answers determine the outcome.</p>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
