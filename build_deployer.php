@@ -152,7 +152,7 @@ s("Document root: $doc_root","info");
 s("PHP: ".PHP_VERSION,"info");
 
 $base_dir=\'\';
-$roots=[$doc_root,\'/home/mcallpl/public_html\',dirname(__FILE__)];
+$roots=[$doc_root,\'/home/x2v8n84ca09w/public_html\',dirname(__FILE__)];
 foreach($roots as $r){
     if(!empty($r)&&is_dir($r)&&is_writable($r)){$base_dir=rtrim($r,\'/\').\'/RunPayway\';s("Root: $r","ok");break;}
 }
