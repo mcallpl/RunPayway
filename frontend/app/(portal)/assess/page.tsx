@@ -24,14 +24,34 @@ function AssessContent() {
     industry: "",
     revenue_model: "",
     role: "",
+    report_title: "",
   });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState<DiagnosticResponses>({});
+  const [shuffleSeed, setShuffleSeed] = useState("");
   const [errorMessage, setErrorMessage] = useState(
     token ? "" : "No access token provided. Please use the link from your purchase confirmation."
   );
 
+  // Restore shuffle seed from sessionStorage on mount (preserves order on refresh)
+  useEffect(() => {
+    const stored = sessionStorage.getItem("rp_shuffle_seed");
+    if (stored) setShuffleSeed(stored);
+  }, []);
+
+  // Track diagnostic progress and token in sessionStorage for Return Guard
+  useEffect(() => {
+    if (token) {
+      sessionStorage.setItem("rp_diagnostic_paid", "true");
+      sessionStorage.setItem("rp_diagnostic_token", token);
+    }
+  }, [token]);
+
   const handleCalibrationSubmit = useCallback(() => {
+    const seed = Date.now().toString(36) + Math.random().toString(36).slice(2);
+    setShuffleSeed(seed);
+    sessionStorage.setItem("rp_shuffle_seed", seed);
+    sessionStorage.setItem("rp_diagnostic_progress", "0");
     setPhase("diagnostic");
   }, []);
 
@@ -43,6 +63,10 @@ function AssessContent() {
         ...prev,
         [questionId]: letter,
       }));
+
+      // Update diagnostic progress in sessionStorage for Return Guard
+      const progress = Math.round(((currentQuestion + 1) / QUESTIONS.length) * 100);
+      sessionStorage.setItem("rp_diagnostic_progress", String(progress));
 
       // Auto-advance to next question after a short delay (only if not on last question)
       setTimeout(() => {
@@ -93,6 +117,8 @@ function AssessContent() {
       const data = await response.json();
 
       if (data.success) {
+        sessionStorage.setItem("rp_diagnostic_progress", "100");
+        sessionStorage.removeItem("rp_shuffle_seed");
         router.push(`/report/?token=${encodeURIComponent(token)}`);
       } else {
         setPhase("error");
@@ -139,6 +165,7 @@ function AssessContent() {
                   responses[`q${QUESTIONS[currentQuestion].id}`] || null
                 }
                 onAnswer={handleAnswer}
+                shuffleSeed={shuffleSeed}
               />
               <div className="flex items-center justify-between pt-6 mt-4 border-t border-gray-100">
                 <button
@@ -195,7 +222,10 @@ function AssessContent() {
                     setPhase("calibration");
                     setCurrentQuestion(0);
                     setResponses({});
+                    setShuffleSeed("");
                     setErrorMessage("");
+                    sessionStorage.removeItem("rp_shuffle_seed");
+                    sessionStorage.setItem("rp_diagnostic_progress", "0");
                   }}
                   className="bg-navy-900 text-white px-8 py-3 font-medium hover:bg-navy-800 transition-colors focus:outline-none focus:ring-2 focus:ring-navy-900 focus:ring-offset-2 rounded-none"
                 >

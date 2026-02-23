@@ -68,12 +68,6 @@ export default function Footer() {
                 >
                   Privacy Policy
                 </Link>
-                <Link
-                  href="/terms#disclosure"
-                  className="block text-gray-400 text-sm hover:underline"
-                >
-                  Important Disclosure
-                </Link>
               </div>
 
               {/* Company */}
@@ -86,12 +80,6 @@ export default function Footer() {
                   className="block text-gray-400 text-sm hover:underline"
                 >
                   Contact
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block text-gray-400 text-sm hover:underline"
-                >
-                  About RunPayway&#8482;
                 </Link>
               </div>
 

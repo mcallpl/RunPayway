@@ -31,6 +31,7 @@ $apiFiles = [
     'engine/ScoringEngineV1.php',
     'engine/CalibrationEngineV1.php',
     'engine/OutputLogicV1.php',
+    'engine/PositionSummary.php',
     'pdf/ReportGenerator.php',
 ];
 

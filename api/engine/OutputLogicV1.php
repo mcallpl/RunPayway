@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/PositionSummary.php';
+
 /**
  * RunPayway Phase 6 Output Logic v1.0
  *
@@ -115,8 +117,8 @@ final class RunPaywayOutputV1
         // ── 8. Structural Direction Indicator ─────────────────────────────
         $structuralDirection = self::getStructuralDirection($corePct, $modifiersPct, $stabilityPct);
 
-        // ── assemble LOCKED 19-field return ───────────────────────────────
-        return [
+        // ── assemble output payload ──────────────────────────────────────
+        $payload = [
             'payway_rating'                      => $paywayRating,
             'dependency_classification'          => $dependencyClassification,
             'structure_supported_composition_pct' => $structureSupported,
@@ -137,6 +139,11 @@ final class RunPaywayOutputV1
             'assessment_id'                      => $assessmentId,
             'assessment_date'                    => $assessmentDate,
         ];
+
+        // ── field #20: server-generated structural position text ─────────
+        $payload['structural_position_text'] = PositionSummary::generate($payload);
+
+        return $payload;
     }
 
     // ── helper: dependency classification ──────────────────────────────────

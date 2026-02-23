@@ -1,30 +1,11 @@
-import Link from "next/link";
-
-interface ReportFooterProps {
-  modelVersion: string;
-  engineVersion: string;
-  calibrationVersion: string;
-}
-
-export default function ReportFooter({
-  modelVersion,
-  engineVersion,
-  calibrationVersion,
-}: ReportFooterProps) {
+export default function ReportFooter() {
   return (
-    <div className="border-t border-gray-200 pt-10 mt-16">
-      {/* Reproducibility Guarantee */}
-      <div className="mb-8 border border-gray-100 bg-slate-50 px-5 py-4">
-        <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
-          Deterministic Guarantee
-        </p>
-        <p className="text-sm text-gray-600 leading-relaxed">
-          Identical inputs under the same model version ({modelVersion}) will
-          always produce identical Payway Ratings. This report reflects a fixed,
-          criteria-based structural evaluation. No adaptive scoring, AI
-          variability, or peer benchmarking is applied.
-        </p>
-      </div>
+    <div className="py-14 md:py-[72px] border-t border-gray-100">
+      {/* Deterministic Statement */}
+      <p className="text-sm text-gray-600 leading-relaxed mb-8">
+        Results reflect deterministic scoring based solely on submitted
+        structural inputs.
+      </p>
 
       {/* Disclaimer */}
       <div className="mb-8">
@@ -36,26 +17,18 @@ export default function ReportFooter({
           investment advice. Results are not personalized, AI-generated, or
           manually reviewed. The accuracy of results depends on the accuracy of
           inputs provided. RunPayway does not predict, forecast, or guarantee
-          any financial outcome. For full terms, visit{" "}
-          <Link
-            href="/terms"
-            className="underline underline-offset-2 hover:text-gray-600"
-          >
-            Terms &amp; Conditions
-          </Link>
-          .
+          any financial outcome.
         </p>
       </div>
 
-      {/* Version Stamps */}
-      <div className="flex flex-wrap gap-x-8 gap-y-1 text-[11px] text-gray-400 font-mono mb-6">
-        <span>Model: {modelVersion}</span>
-        <span>Engine: E-{engineVersion}</span>
-        <span>Calibration: C-{calibrationVersion}</span>
-        <span>Output: O-1.0</span>
+      {/* Stacked Version Stamps */}
+      <div className="space-y-0.5 text-[11px] text-gray-400 font-mono mb-6">
+        <p>RunPayway&#8482; Structural Model RP-1.0</p>
+        <p>Calibration Engine v1.0</p>
+        <p>Output Logic v1.0</p>
       </div>
 
-      {/* Operator */}
+      {/* Operated-by */}
       <p className="text-[11px] text-gray-400">
         &copy; 2026 RunPayway&#8482; &mdash; Operated by PeopleStar
         Enterprises, Inc.

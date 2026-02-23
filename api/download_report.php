@@ -159,6 +159,12 @@ try {
         'download_count' => ($grant['download_count'] ?? 0) + 1,
     ]);
 
+    // Update assessment status to report_downloaded (idempotent)
+    $stmt = $conn->prepare("UPDATE assessments SET status = 'report_downloaded' WHERE assessment_id = ? AND status = 'report_generated'");
+    $stmt->bind_param("s", $assessment_id);
+    $stmt->execute();
+    $stmt->close();
+
     // ── 4. Serve PDF report ────────────────────────────────────────────────────
     require_once __DIR__ . '/pdf/ReportGenerator.php';
 
@@ -170,7 +176,11 @@ try {
         $output_payload = json_decode($assessment['output_payload'], true);
         if ($output_payload) {
             try {
-                $pdf_path = $generator->generate($output_payload, $assessment['model_version'] ?? 'RP-1.0');
+                $pdf_path = $generator->generate(
+                    $output_payload,
+                    $assessment['model_version'] ?? 'RP-1.0',
+                    $assessment['prepared_for_name'] ?? ''
+                );
             } catch (Exception $pdfErr) {
                 error_log('PDF regeneration failed: ' . $pdfErr->getMessage());
                 header('Content-Type: application/json');

@@ -45,6 +45,11 @@ export const ROLES = [
   { value: "PASSIVE_OWNER", label: "Passive Owner / Investor" },
 ] as const;
 
+// ── Diagnostic Instruction ─────────────────────────────────────────────────
+
+export const DIAGNOSTIC_INSTRUCTION =
+  "This diagnostic contains 12 structural factors. Each factor evaluates one dimension of your income structure. Answer based on how your income actually works today — not how you want it to work. There are no right or wrong answers. Accuracy depends on honest, present-state responses.";
+
 // ── Diagnostic Questions (Phase 3 — LOCKED) ────────────────────────────────
 
 export interface QuestionOption {

@@ -38,39 +38,48 @@ function setCorsHeaders(string $allowedMethod = 'POST'): void {
 
 // ── Rate Limiting (file-based, suitable for shared hosting) ──────────────────
 function checkRateLimit(string $endpoint, int $maxRequests = 30, int $windowSeconds = 60): bool {
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    $key = md5($ip . ':' . $endpoint);
+    try {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $key = md5($ip . ':' . $endpoint);
 
-    $rateLimitDir = sys_get_temp_dir() . '/runpayway_ratelimit';
-    if (!is_dir($rateLimitDir)) {
-        @mkdir($rateLimitDir, 0755, true);
-    }
-
-    $file = $rateLimitDir . '/' . $key;
-    $now = time();
-
-    // Read existing timestamps
-    $timestamps = [];
-    if (file_exists($file)) {
-        $data = @file_get_contents($file);
-        if ($data !== false) {
-            $timestamps = array_filter(
-                explode("\n", trim($data)),
-                fn($ts) => $ts !== '' && (int)$ts > ($now - $windowSeconds)
-            );
+        $rateLimitDir = sys_get_temp_dir() . '/runpayway_ratelimit';
+        if (!is_dir($rateLimitDir)) {
+            if (!@mkdir($rateLimitDir, 0755, true)) {
+                return true; // Can't create dir — allow request
+            }
         }
+
+        $file = $rateLimitDir . '/' . $key;
+        $now = time();
+        $cutoff = $now - $windowSeconds;
+
+        // Read existing timestamps
+        $timestamps = [];
+        if (file_exists($file)) {
+            $data = @file_get_contents($file);
+            if ($data !== false) {
+                foreach (explode("\n", trim($data)) as $ts) {
+                    if ($ts !== '' && (int)$ts > $cutoff) {
+                        $timestamps[] = $ts;
+                    }
+                }
+            }
+        }
+
+        // Check limit
+        if (count($timestamps) >= $maxRequests) {
+            return false; // Rate limited
+        }
+
+        // Record this request
+        $timestamps[] = (string)$now;
+        @file_put_contents($file, implode("\n", $timestamps));
+
+        return true; // Allowed
+    } catch (\Throwable $e) {
+        // Rate limiting failure should never block requests
+        return true;
     }
-
-    // Check limit
-    if (count($timestamps) >= $maxRequests) {
-        return false; // Rate limited
-    }
-
-    // Record this request
-    $timestamps[] = (string)$now;
-    @file_put_contents($file, implode("\n", $timestamps));
-
-    return true; // Allowed
 }
 
 function enforceRateLimit(string $endpoint, int $maxRequests = 30, int $windowSeconds = 60): void {
@@ -81,6 +90,48 @@ function enforceRateLimit(string $endpoint, int $maxRequests = 30, int $windowSe
         echo json_encode([
             'status' => 'error',
             'message' => 'Too many requests. Please try again later.',
+        ]);
+        exit;
+    }
+}
+
+// ── CSRF: Origin/Referer Validation for POST requests ───────────────────────
+function enforceOriginCheck(): void {
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        return; // Preflight — skip
+    }
+
+    $allowedHosts = [
+        'peoplestar.com',
+        'www.peoplestar.com',
+        'localhost',
+    ];
+
+    // Check Origin header first, then Referer
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+    $sourceHost = '';
+    if ($origin !== '') {
+        $parsed = parse_url($origin);
+        $sourceHost = $parsed['host'] ?? '';
+    } elseif ($referer !== '') {
+        $parsed = parse_url($referer);
+        $sourceHost = $parsed['host'] ?? '';
+    }
+
+    // If no origin info at all (e.g., server-to-server, curl) — allow
+    // This preserves dev/testing compatibility
+    if ($sourceHost === '') {
+        return;
+    }
+
+    if (!in_array($sourceHost, $allowedHosts, true)) {
+        http_response_code(403);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Forbidden: origin not allowed.',
         ]);
         exit;
     }

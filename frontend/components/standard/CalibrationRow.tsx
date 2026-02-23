@@ -11,20 +11,7 @@ export default function CalibrationRow() {
 
   return (
     <div className="border-b border-gray-100 bg-white">
-      <div className="max-w-[1200px] mx-auto px-6 py-2.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
-        {/* Left: calibration status */}
-        <p className="text-sm text-gray-400 shrink-0">
-          {isComplete ? (
-            <>
-              Calibrated to: {labels.industry} &middot;{" "}
-              {labels.revenueModel} &middot; {labels.role}
-            </>
-          ) : (
-            "Calibration not set"
-          )}
-        </p>
-
-        {/* Right: dropdowns + reset */}
+      <div className="max-w-[1200px] mx-auto px-6 py-2.5 flex items-center justify-end gap-2">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <select
             value={calibration.industry}

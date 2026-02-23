@@ -1,4 +1,5 @@
 import Header from "@/components/layout/Header";
+import BlueBar from "@/components/layout/BlueBar";
 import Footer from "@/components/layout/Footer";
 
 export default function MainLayout({
@@ -9,7 +10,8 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <div className="pt-16 flex-1">{children}</div>
+      <BlueBar />
+      <div className="flex-1">{children}</div>
       <Footer />
     </>
   );

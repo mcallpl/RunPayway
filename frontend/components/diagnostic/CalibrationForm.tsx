@@ -1,4 +1,4 @@
-import { INDUSTRIES, REVENUE_MODELS, ROLES } from "@/lib/constants";
+import { INDUSTRIES, REVENUE_MODELS, ROLES, DIAGNOSTIC_INSTRUCTION } from "@/lib/constants";
 import type { CalibrationData } from "@/lib/types";
 
 interface CalibrationFormProps {
@@ -60,21 +60,62 @@ export default function CalibrationForm({
     calibration.revenue_model !== "" &&
     calibration.role !== "";
 
+  const reportTitleLength = (calibration.report_title || "").length;
+
   return (
     <div className="space-y-10">
-      {/* Header */}
+      {/* ── Before You Begin ─────────────────────────────── */}
+      <div className="border border-gray-200 bg-slate-50 p-6">
+        <h3 className="text-sm font-semibold text-navy-900 uppercase tracking-wider mb-3">
+          Before You Begin
+        </h3>
+        <p className="text-sm text-gray-700 leading-relaxed">
+          {DIAGNOSTIC_INSTRUCTION}
+        </p>
+      </div>
+
+      {/* ── Report Title (Optional) ──────────────────────── */}
+      <div>
+        <label
+          htmlFor="report-title"
+          className="block text-sm font-semibold text-navy-900 mb-1"
+        >
+          Report Title{" "}
+          <span className="font-normal text-gray-400">(Optional)</span>
+        </label>
+        <p className="text-sm text-gray-500 mb-2">
+          A label for this report — e.g., your company name, division, or project.
+        </p>
+        <div className="relative">
+          <input
+            id="report-title"
+            type="text"
+            maxLength={50}
+            value={calibration.report_title || ""}
+            onChange={(e) =>
+              onChange({ ...calibration, report_title: e.target.value })
+            }
+            placeholder="e.g., Acme Corp Q1 Review"
+            className="w-full border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-navy-900 focus:border-navy-900 rounded-none"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 pointer-events-none">
+            {reportTitleLength}/50
+          </span>
+        </div>
+      </div>
+
+      {/* ── Calibration Header ───────────────────────────── */}
       <div>
         <h2 className="text-2xl font-bold text-navy-900 mb-2">
           Calibration
         </h2>
         <p className="text-gray-600 leading-relaxed">
-          Before beginning the diagnostic, select the three inputs below. These
-          calibrate the assessment to reflect the structural reality of your
-          income environment.
+          Select the three inputs below. These calibrate the assessment to
+          reflect the structural reality of your income environment.
         </p>
       </div>
 
-      {/* Fields */}
+      {/* ── Calibration Fields ───────────────────────────── */}
       <div className="space-y-8">
         <SelectField
           id="industry"
@@ -104,7 +145,7 @@ export default function CalibrationForm({
         />
       </div>
 
-      {/* Info */}
+      {/* ── Calibration Info ─────────────────────────────── */}
       <div className="border border-gray-200 p-5 bg-slate-50">
         <p className="text-sm text-gray-600 leading-relaxed">
           Calibration adjusts the relative weight of each question group. It
@@ -114,7 +155,7 @@ export default function CalibrationForm({
         </p>
       </div>
 
-      {/* Submit */}
+      {/* ── Submit ───────────────────────────────────────── */}
       <button
         type="button"
         onClick={onSubmit}

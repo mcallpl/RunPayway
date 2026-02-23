@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
 
+enforceOriginCheck();
 enforceRateLimit('submit_diagnostic', 10, 60);
 
 require_once __DIR__ . '/db_connect.php';
@@ -96,7 +97,7 @@ try {
             $dev_assessment_id = generateAssessmentId();
             $dev_expires = date('Y-m-d H:i:s', strtotime('+30 days'));
 
-            $stmt = $conn->prepare("INSERT INTO assessments (assessment_id, payment_session_id, status) VALUES (?, ?, 'created')");
+            $stmt = $conn->prepare("INSERT INTO assessments (assessment_id, payment_session_id, status) VALUES (?, ?, 'paid_not_started')");
             $stmt->bind_param("ss", $dev_assessment_id, $token);
             $stmt->execute();
             $stmt->close();
@@ -169,8 +170,11 @@ try {
         $responses[$key] = $value;
     }
 
-    // Optional: prepared_for_name
-    $prepared_for_name = trim($input['prepared_for_name'] ?? '');
+    // Optional: report_title / prepared_for_name (frontend sends report_title)
+    $prepared_for_name = trim($input['report_title'] ?? $input['prepared_for_name'] ?? '');
+    if (strlen($prepared_for_name) > 50) {
+        $prepared_for_name = substr($prepared_for_name, 0, 50);
+    }
 
     // ── 4. Run calibration engine ─────────────────────────────────────────────
     $calibration = RunPaywayCalibrationV1::calibrate($revenue_model, $role, $industry);
@@ -293,7 +297,7 @@ try {
     // ── 8. Generate PDF report ──────────────────────────────────────────────────
     try {
         $pdfGenerator = new ReportGenerator();
-        $pdfPath = $pdfGenerator->generate($output, 'RP-1.0');
+        $pdfPath = $pdfGenerator->generate($output, 'RP-1.0', $prepared_for_name);
     } catch (Exception $pdfError) {
         // PDF generation failure is non-fatal — log but continue
         error_log('submit_diagnostic: PDF generation failed: ' . $pdfError->getMessage());
@@ -321,7 +325,48 @@ try {
         'pdf_generated' => $pdfPath !== null,
     ]);
 
-    // ── 10. Return full output payload ──────────────────────────────────────────
+    // ── 10. Send delivery email (if delivery_email is on file) ──────────────────
+    try {
+        $emailStmt = $conn->prepare("SELECT delivery_email, prepared_for_name FROM assessments WHERE assessment_id = ?");
+        $emailStmt->bind_param("s", $assessment_id);
+        $emailStmt->execute();
+        $emailRow = $emailStmt->get_result()->fetch_assoc();
+        $emailStmt->close();
+
+        $delivery_email_addr = trim($emailRow['delivery_email'] ?? '');
+        if ($delivery_email_addr !== '' && filter_var($delivery_email_addr, FILTER_VALIDATE_EMAIL)) {
+            $report_title_display = trim($emailRow['prepared_for_name'] ?? '');
+            $report_url = 'https://peoplestar.com/RunPayway/report/?token=' . urlencode($token);
+            $download_url = 'https://peoplestar.com/RunPayway/api/download_report.php?token=' . urlencode($token);
+
+            $subject = 'Your RunPayway™ Report Is Ready';
+            $body  = "Your RunPayway™ Income Structure Diagnostic report has been generated.\n\n";
+            if ($report_title_display !== '') {
+                $body .= "Report: " . $report_title_display . "\n";
+            }
+            $body .= "Rating: " . $output['payway_rating'] . "/100 — " . $output['dependency_classification'] . "\n\n";
+            $body .= "View your full report:\n" . $report_url . "\n\n";
+            $body .= "Download PDF:\n" . $download_url . "\n\n";
+            $body .= "This link expires in 30 days.\n\n";
+            $body .= "—\nRunPayway™ | peoplestar.com/RunPayway\n";
+
+            $headers  = "From: RunPayway <noreply@peoplestar.com>\r\n";
+            $headers .= "Reply-To: noreply@peoplestar.com\r\n";
+            $headers .= "X-Mailer: RunPayway/1.0\r\n";
+
+            $emailSent = @mail($delivery_email_addr, $subject, $body, $headers);
+
+            logEvent($assessment_id, 'delivery_email_sent', [
+                'email' => $delivery_email_addr,
+                'success' => $emailSent,
+            ]);
+        }
+    } catch (Exception $emailErr) {
+        // Email failure is non-fatal
+        error_log('submit_diagnostic: Email delivery failed: ' . $emailErr->getMessage());
+    }
+
+    // ── 11. Return full output payload ──────────────────────────────────────────
     echo json_encode([
         'success' => true,
         'message' => 'Diagnostic completed and report generated',

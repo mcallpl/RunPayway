@@ -2,10 +2,7 @@ export default function DisclosureSection() {
   return (
     <section className="py-12 bg-white">
       <div className="max-w-[680px] mx-auto px-6">
-        <div className="space-y-4 text-gray-500 text-xs leading-[1.7]">
-          <p className="font-semibold text-gray-600 text-sm uppercase tracking-wide">
-            Important Disclosure
-          </p>
+        <div className="space-y-4 text-gray-400 text-[13px] leading-[1.55]">
           <p>
             RunPayway&#8482; provides a structural diagnostic based solely on
             the information submitted at the time of assessment.

@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit(0); }
 
+enforceOriginCheck();
 enforceRateLimit('create_checkout', 10, 60);
 
 require_once __DIR__ . '/db_connect.php';
@@ -43,7 +44,13 @@ try {
         exit;
     }
 
-    if ($stripeAvailable) {
+    // Only use Stripe if SDK is loaded AND keys are real (not placeholders)
+    $stripeConfigured = $stripeAvailable
+        && defined('STRIPE_SECRET_KEY')
+        && strpos(STRIPE_SECRET_KEY, 'REPLACE') === false
+        && strlen(STRIPE_SECRET_KEY) > 20;
+
+    if ($stripeConfigured) {
         // ── Production: Use Stripe PHP SDK ──────────────────────────────────
         \Stripe\Stripe::setApiKey(STRIPE_SECRET_KEY);
 
@@ -160,7 +167,7 @@ try {
         // Create assessment record
         $stmt = $conn->prepare(
             "INSERT INTO assessments (assessment_id, payment_session_id, prepared_for_name, delivery_email, status)
-             VALUES (?, ?, ?, ?, 'created')"
+             VALUES (?, ?, ?, ?, 'paid_not_started')"
         );
         $stmt->bind_param("ssss", $assessment_id, $mock_session_id, $prepared_for_name, $delivery_email);
         $stmt->execute();

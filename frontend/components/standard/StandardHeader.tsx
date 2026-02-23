@@ -42,10 +42,10 @@ export default function StandardHeader({
           </button>
 
           <Link
-            href="/standard"
-            className="text-navy-900 font-semibold text-sm tracking-tight"
+            href="/"
+            className="text-[14px] font-medium text-[#0B1F2E] hover:underline"
           >
-            RunPayway&#8482; Structural Standard
+            &larr; Back to RunPayway&#8482;
           </Link>
         </div>
 

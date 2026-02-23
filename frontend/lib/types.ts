@@ -6,6 +6,7 @@ export interface CalibrationData {
   industry: string;
   revenue_model: string;
   role: string;
+  report_title: string;
 }
 
 export interface DiagnosticResponses {
@@ -17,6 +18,7 @@ export interface DiagnosticSubmission {
   industry: string;
   revenue_model: string;
   role: string;
+  report_title: string;
   responses: Record<string, AnswerLetter>;
 }
 
