@@ -1,0 +1,95 @@
+import type { Question } from "./types";
+
+export const QUESTIONS: Question[] = [
+  {
+    id: 1,
+    key: "Q1",
+    pillar: "Stability Base",
+    text: "What percentage of total income is contractually or structurally recurring?",
+    options: [
+      "0–10%",
+      "11–25%",
+      "26–50%",
+      "51–75%",
+      "76%+",
+    ],
+  },
+  {
+    id: 2,
+    key: "Q2",
+    pillar: "Revenue Diversity",
+    text: "What percentage of total income is attributable to the single largest client or source?",
+    options: [
+      "75%+",
+      "50–74%",
+      "30–49%",
+      "15–29%",
+      "Under 15%",
+    ],
+  },
+  {
+    id: 3,
+    key: "Q3",
+    pillar: "Revenue Diversity",
+    text: "How many distinct income sources materially contribute to total revenue?",
+    options: [
+      "1",
+      "2",
+      "3",
+      "4–5",
+      "6+",
+    ],
+  },
+  {
+    id: 4,
+    key: "Q4",
+    pillar: "Stability Base",
+    text: "How many months of revenue are contractually committed or highly probable?",
+    options: [
+      "< 1 month",
+      "1–2 months",
+      "3 months",
+      "4–6 months",
+      "6+ months",
+    ],
+  },
+  {
+    id: 5,
+    key: "Q5",
+    pillar: "Stability Base",
+    text: "Over the past six months, what was the level of monthly earnings variability?",
+    options: [
+      "Severe variability",
+      "Elevated variability",
+      "Moderate variability",
+      "Low variability",
+      "Minimal variability",
+    ],
+  },
+  {
+    id: 6,
+    key: "Q6",
+    pillar: "System Independence",
+    text: "If active labor ceased for 60 days, what portion of income would continue?",
+    options: [
+      "0%",
+      "1–25%",
+      "26–49%",
+      "50–74%",
+      "75%+",
+    ],
+  },
+  {
+    id: 7,
+    key: "Q7",
+    pillar: "System Independence",
+    text: "What proportion of revenue originates from returning clients without direct acquisition effort?",
+    options: [
+      "0–10%",
+      "11–25%",
+      "26–50%",
+      "51–75%",
+      "76%+",
+    ],
+  },
+];

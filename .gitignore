@@ -1,17 +1,15 @@
 # Dependencies
-frontend/node_modules/
-api/vendor/
+node_modules/
 
 # Next.js build output
-frontend/.next/
-frontend/out/
+.next/
+out/
 
-# Generated deployer
-deploy_package.php
+# Data storage (immutable records)
+data/
 
-# Environment / secrets (generated from GitHub secrets during deploy)
-api/stripe_config.php
-api/db_connect.php
+# Package lock (regenerated on install)
+package-lock.json
 
 # OS files
 .DS_Store

@@ -1,2 +1,0 @@
-# Deny direct access to PDF reports - serve only through download_report.php
-Deny from all
