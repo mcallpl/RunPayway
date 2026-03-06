@@ -1,9 +1,40 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0E1A2B;
+  --color-secondary: #4B5563;
+  --color-divider: #E5E7EB;
+  --color-warm-sand: #F4F1EA;
+  --color-purple: #4B3FAE;
+  --color-teal: #1F6D7A;
+
+  --font-sans: "Inter", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-navy);
+  background: #FFFFFF;
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
 
 body {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.6;
 }

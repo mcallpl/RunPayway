@@ -1,9 +1,0 @@
-import { NextResponse } from "next/server";
-
-export async function POST() {
-  return NextResponse.json({
-    status: "success",
-    message: "Payment stub. No processor integrated.",
-    planFlag: true,
-  });
-}

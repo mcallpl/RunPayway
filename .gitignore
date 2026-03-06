@@ -7,9 +7,16 @@ out/
 
 # Data storage (immutable records)
 data/
+.data/
 
 # Package lock (regenerated on install)
 package-lock.json
+
+# Environment and credentials
+.env
+.env.*
+.env.local
+.ftpconfig
 
 # OS files
 .DS_Store
