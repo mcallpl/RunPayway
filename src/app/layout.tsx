@@ -52,18 +52,16 @@ function Footer() {
           <div>
             <p className="font-semibold text-navy mb-4">Legal</p>
             <div className="flex flex-col gap-2 text-secondary">
-              <Link href="/" className="hover:opacity-70">Terms</Link>
-              <Link href="/" className="hover:opacity-70">Privacy</Link>
-              <Link href="/" className="hover:opacity-70">Disclaimer</Link>
-              <Link href="/" className="hover:opacity-70">Acceptable Use</Link>
+              <Link href="/terms" className="hover:opacity-70">Terms</Link>
+              <Link href="/privacy" className="hover:opacity-70">Privacy</Link>
+              <Link href="/refunds" className="hover:opacity-70">Refund / Cancellation</Link>
             </div>
           </div>
           <div>
             <p className="font-semibold text-navy mb-4">Institutional</p>
             <div className="flex flex-col gap-2 text-secondary">
               <Link href="/verify" className="hover:opacity-70">Registry</Link>
-              <Link href="/" className="hover:opacity-70">Accessibility</Link>
-              <Link href="/" className="hover:opacity-70">Contact</Link>
+              <Link href="/contact" className="hover:opacity-70">Contact / Support</Link>
             </div>
           </div>
         </div>
