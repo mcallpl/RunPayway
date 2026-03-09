@@ -1,0 +1,4 @@
+data/
+tests/
+*.test.ts
+.DS_Store
