@@ -67,7 +67,6 @@ export default function MarketingLayout({
                 {[
                   ["/pricing", "Get Score"],
                   ["/pricing", "Pricing"],
-                  ["/methodology", "Methodology"],
                 ].map(([href, label]) => (
                   <Link key={label} href={href} className="block text-[13px] hover:opacity-70 transition-opacity" style={{ color: "#6B7280" }}>
                     {label}
@@ -82,7 +81,28 @@ export default function MarketingLayout({
                 Methodology
               </div>
               <div className="space-y-2.5">
-                {["Governance", "Version Control", "Data Retention", "Security Practices"].map((label) => (
+                {["Governance", "Version Control", "Security Practices"].map((label) => (
+                  <span key={label} className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Institutional */}
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ color: "#0E1A2B" }}>
+                Institutional
+              </div>
+              <div className="space-y-2.5">
+                {[
+                  ["/verify", "Registry"],
+                ].map(([href, label]) => (
+                  <Link key={label} href={href} className="block text-[13px] hover:opacity-70 transition-opacity" style={{ color: "#6B7280" }}>
+                    {label}
+                  </Link>
+                ))}
+                {["Accessibility", "Contact"].map((label) => (
                   <span key={label} className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
                     {label}
                   </span>
@@ -104,30 +124,8 @@ export default function MarketingLayout({
                     {label}
                   </Link>
                 ))}
-                {["Disclaimer", "Acceptable Use"].map((label) => (
-                  <span key={label} className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Institutional */}
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-4" style={{ color: "#0E1A2B" }}>
-                Institutional
-              </div>
-              <div className="space-y-2.5">
-                {[
-                  ["/verify", "Registry"],
-                  ["/contact", "Contact"],
-                ].map(([href, label]) => (
-                  <Link key={label} href={href} className="block text-[13px] hover:opacity-70 transition-opacity" style={{ color: "#6B7280" }}>
-                    {label}
-                  </Link>
-                ))}
                 <span className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
-                  Accessibility
+                  Disclaimer
                 </span>
               </div>
             </div>
