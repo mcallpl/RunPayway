@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { executeClientEngine } from "@/lib/client-engine";
 
 const ANSWER_MAP: Record<string, number> = {
   A: 0,
@@ -209,26 +210,7 @@ export default function DiagnosticPage() {
     setError(null);
 
     try {
-      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-      const res = await fetch(`${basePath}/api/v1/score`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ profile, inputs }),
-      });
-
-      if (!res.ok) {
-        let message = "Submission failed";
-        try {
-          const err = await res.json();
-          message = err.error || message;
-        } catch {
-          // Response wasn't JSON (e.g. HTML 404 on static export)
-          message = `Server error (${res.status})`;
-        }
-        throw new Error(message);
-      }
-
-      const record = await res.json();
+      const record = await executeClientEngine({ profile, inputs });
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.removeItem(STORAGE_KEY);
 
