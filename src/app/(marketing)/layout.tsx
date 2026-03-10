@@ -16,9 +16,9 @@ export default function MarketingLayout({
             <Image
               src={logo}
               alt="RunPayway™"
-              height={28}
+              height={24}
               unoptimized
-              style={{ height: 28, width: "auto" }}
+              style={{ height: 24, width: "auto" }}
               priority
             />
           </Link>
