@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AppLayout({
   children,
 }: {
@@ -8,9 +10,9 @@ export default function AppLayout({
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
-            <a href="/" className="text-sm font-semibold tracking-wide text-neutral-900 hover:opacity-70 transition-opacity cursor-pointer">
+            <Link href="/" className="text-sm font-semibold tracking-wide text-neutral-900 hover:opacity-70 transition-opacity cursor-pointer">
               RUNPAYWAY™
-            </a>
+            </Link>
           </div>
           <div className="text-xs text-neutral-400">
             RP-1.0 | Version 1.0

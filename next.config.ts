@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+
 const nextConfig: NextConfig = {
-  ...(process.env.STATIC_EXPORT === "true" ? { output: "export" as const } : {}),
+  ...(isStaticExport ? { output: "export" as const, basePath: "/RunPayway" } : {}),
   trailingSlash: true,
 };
 
