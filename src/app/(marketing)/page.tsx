@@ -60,125 +60,6 @@ const INDUSTRY_EXAMPLES = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* STATIC REPORT PREVIEW — Page 1 with gradient header + score panel    */
-/* ------------------------------------------------------------------ */
-function HeroReportPreview() {
-  return (
-    <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        backgroundColor: "#ffffff",
-        border: `1px solid ${B.sandDk}`,
-        boxShadow: "0 8px 32px rgba(14, 26, 43, 0.08), 0 2px 8px rgba(14, 26, 43, 0.04)",
-      }}
-    >
-      {/* Gradient strip */}
-      <div style={{ height: 5, background: B.gradient }} />
-
-      {/* Page header */}
-      <div className="px-5 py-3 border-b flex items-center justify-between" style={{ borderColor: B.sandDk }}>
-        <div className="flex items-center gap-2">
-          <span className="text-[8px] font-bold tracking-[0.08em]" style={{ color: B.navy }}>RUNPAYWAY™</span>
-          <span className="text-[7px]" style={{ color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
-        </div>
-        <span className="text-[7px]" style={{ color: B.light }}>c754ee23… · 2026-03-10</span>
-      </div>
-
-      {/* Insight bar */}
-      <div className="mx-5 mt-3 rounded" style={{ backgroundColor: B.sand }}>
-        <div className="flex items-stretch">
-          <div className="w-[3px] rounded-l shrink-0" style={{ backgroundColor: B.teal }} />
-          <p className="text-[7px] italic leading-relaxed px-3 py-2" style={{ color: B.muted }}>
-            This income system scores 58 under Model RP-1.0, placing it in the Developing Stability classification band.
-          </p>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="px-5 pt-3 pb-5">
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <p className="text-[7px] mb-2" style={{ color: B.muted }}>This report shows how reliable an income system is over time.</p>
-
-            {/* Gradient score panel */}
-            <div className="rounded-lg p-3.5 mb-3" style={{ background: B.gradient }}>
-              <div className="text-[6.5px] uppercase tracking-wider mb-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
-                RunPayway Stability Score™
-              </div>
-              <div className="text-[32px] font-bold leading-none" style={{ color: "#ffffff" }}>58</div>
-              <div className="text-[9px] font-semibold mt-0.5" style={{ color: "#ffffff" }}>Developing Stability</div>
-              <div className="text-[6px] mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>Score Range: 0–100 · Higher = more reliable income over time</div>
-            </div>
-
-            {/* Percentile */}
-            <p className="text-[7px] mb-2.5" style={{ color: B.muted }}>
-              <strong style={{ color: B.navy }}>56th percentile</strong> within Consulting / Professional Services
-            </p>
-
-            {/* Band pills */}
-            <div className="flex gap-1 mb-3">
-              {[
-                { label: "High", range: "80–100", active: false },
-                { label: "Estab.", range: "60–79", active: false },
-                { label: "Devel.", range: "40–59", active: true },
-                { label: "Limited", range: "0–39", active: false },
-              ].map((b) => (
-                <div
-                  key={b.label}
-                  className="flex-1 rounded text-center py-1.5"
-                  style={{
-                    backgroundColor: b.active ? B.purple : B.sand,
-                    color: b.active ? "#fff" : B.light,
-                  }}
-                >
-                  <div className="text-[7px] font-semibold">{b.label}</div>
-                  <div className="text-[6px]">{b.range}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Profile */}
-            <div className="pt-2.5 border-t" style={{ borderColor: B.sandDk }}>
-              <div className="text-[7px] font-bold uppercase tracking-wider mb-1.5" style={{ color: B.muted }}>Profile</div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[6.5px]" style={{ color: B.muted }}>
-                <span>Assessment Title: <strong style={{ color: B.navy }}>Morris Consulting Q3</strong></span>
-                <span>Structure: <strong style={{ color: B.navy }}>Business Owner / Firm</strong></span>
-                <span>Classification: <strong style={{ color: B.navy }}>Business Entity</strong></span>
-                <span>Revenue: <strong style={{ color: B.navy }}>Mixed Revenue Structure</strong></span>
-              </div>
-            </div>
-          </div>
-
-          {/* Indicators sidebar */}
-          <div className="w-[80px] shrink-0 rounded-lg p-2.5" style={{ backgroundColor: B.sand }}>
-            <div className="text-[7px] font-bold uppercase tracking-wider mb-2" style={{ color: B.muted }}>Indicators</div>
-            <div className="text-[6px] mb-0.5" style={{ color: B.light }}>Band</div>
-            <div className="text-[8px] font-bold mb-1.5" style={{ color: B.navy }}>Developing Stability</div>
-            <div className="text-[6px] mb-0.5" style={{ color: B.light }}>Score</div>
-            <div className="text-[11px] font-bold mb-2" style={{ color: B.navy }}>58</div>
-            <div className="border-t pt-1.5" style={{ borderColor: B.sandDk }}>
-              {[
-                ["Continues", "Moderate"],
-                ["Sources", "Moderate"],
-                ["Scheduled", "High"],
-                ["Stability", "Moderate"],
-                ["Work Dep.", "Moderate"],
-                ["Concentration", "Low"],
-              ].map(([k, v]) => (
-                <div key={k} className="mb-1">
-                  <div className="text-[5.5px]" style={{ color: B.light }}>{k}</div>
-                  <div className="text-[7px] font-semibold" style={{ color: B.navy }}>{v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* STRUCTURAL STABILITY MODEL — pipeline diagram                        */
 /* ------------------------------------------------------------------ */
 function StabilityModelDiagram() {
@@ -294,49 +175,54 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
 
       {/* ============ 1. HERO — Curiosity ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 48, paddingBottom: 72 }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div>
-            <h1 className="text-[32px] sm:text-[44px] md:text-[56px] font-semibold leading-[1.08]" style={{ color: B.navy, marginBottom: 24 }}>
-              The Standard for Measuring Income Stability
-            </h1>
-            <p className="text-base leading-relaxed" style={{ color: B.muted, marginBottom: 8 }}>
-              The <strong style={{ color: B.navy }}>Income Stability Score™</strong> determines the structural stability of income under Model RP-1.0.
-            </p>
-            <p className="text-base leading-relaxed" style={{ color: B.muted, marginBottom: 48 }}>
-              See how stable your income structure is today.
-            </p>
-            <div className="flex flex-col sm:flex-row items-start gap-5">
-              <Link
-                href="/pricing"
-                className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
-                style={{ backgroundColor: B.navy, color: "#ffffff" }}
-              >
-                Get Score
-              </Link>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <p className="text-[13px]" style={{ color: B.muted }}>
-                  Assessment time: <strong style={{ color: B.navy }}>Under two minutes</strong>
-                </p>
-                <p className="text-[13px]" style={{ color: B.muted }}>
-                  Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
-                </p>
-              </div>
+      <section
+        className="text-center"
+        style={{
+          backgroundColor: "#ffffff",
+          paddingTop: 48,
+          paddingBottom: 72,
+        }}
+      >
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
+          <h1 className="text-[32px] sm:text-[44px] md:text-[56px] font-semibold leading-[1.08] mx-auto" style={{ color: B.navy, marginBottom: 24, maxWidth: 720 }}>
+            The Standard for Measuring Income Stability
+          </h1>
+          <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 8, maxWidth: 560 }}>
+            The <strong style={{ color: B.navy }}>Income Stability Score™</strong> determines the structural stability of income under Model RP-1.0.
+          </p>
+          <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 560 }}>
+            See how stable your income structure is today.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
+              style={{ backgroundColor: B.navy, color: "#ffffff" }}
+            >
+              Get Score
+            </Link>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, textAlign: "left" }}>
+              <p className="text-[13px]" style={{ color: B.muted }}>
+                Assessment time: <strong style={{ color: B.navy }}>Under two minutes</strong>
+              </p>
+              <p className="text-[13px]" style={{ color: B.muted }}>
+                Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
+              </p>
             </div>
-          </div>
-          <div className="hidden lg:block">
-            <HeroReportPreview />
           </div>
         </div>
       </section>
 
+      {/* Subtle blend from white hero into page background */}
+      <div style={{ height: 96, background: "linear-gradient(to bottom, #ffffff, #FAFAFA)" }} />
+
       {/* ============ 2. SCORE CURIOSITY — Orientation ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 0, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
           Where Would Your Income Stability Likely Fall?
         </h2>
         {/* Stability spectrum — visually dominant */}
-        <div style={{ maxWidth: 640 }}>
+        <div className="mx-auto" style={{ maxWidth: 640 }}>
           <div
             className="rounded-full"
             style={{ height: 16, background: B.gradient, marginBottom: 24 }}
@@ -353,42 +239,6 @@ export default function LandingPage() {
                 <div className="text-[10px] sm:text-[12px]" style={{ color: B.light }}>{band.range}</div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 3. EXAMPLE DIAGNOSTIC OUTPUT — Product Preview ============ */}
-      <section
-        style={{
-          background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 50%, ${B.navy} 100%)`,
-          paddingTop: 72,
-          paddingBottom: 72,
-        }}
-      >
-        <div className="max-w-[680px] mx-auto px-5 sm:px-6">
-          <div className="text-center" style={{ marginBottom: 48 }}>
-            <h2 className="text-[24px] sm:text-[30px] font-semibold" style={{ color: "#ffffff", marginBottom: 12 }}>
-              Your Complete Assessment Report
-            </h2>
-            <p className="text-[14px]" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Six pages of structural income analysis, delivered instantly as a PDF.
-            </p>
-          </div>
-
-          <HeroReportPreview />
-
-          {/* Supporting text + CTA */}
-          <p className="text-[13px] text-center" style={{ color: "rgba(255,255,255,0.55)", marginTop: 48 }}>
-            Each diagnostic generates an official PDF assessment record.
-          </p>
-          <div className="text-center" style={{ marginTop: 24 }}>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#ffffff", color: B.navy }}
-            >
-              Get Your Score
-            </Link>
           </div>
         </div>
       </section>
