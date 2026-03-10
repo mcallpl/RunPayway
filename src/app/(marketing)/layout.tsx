@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import logo from "../../../public/runpayway-logo.png";
 
 export default function MarketingLayout({
@@ -12,11 +13,13 @@ export default function MarketingLayout({
       <header className="border-b" style={{ borderColor: "#E5E7EB", backgroundColor: "#ffffff" }}>
         <div className="max-w-[1100px] mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={logo.src}
+            <Image
+              src={logo}
               alt="RunPayway™"
+              height={28}
+              unoptimized
               style={{ height: 28, width: "auto" }}
+              priority
             />
           </Link>
           <nav className="hidden md:flex items-center gap-8">
