@@ -160,16 +160,7 @@ function StabilityModelDiagram() {
 /* MAIN LANDING PAGE                                                    */
 /* ------------------------------------------------------------------ */
 export default function LandingPage() {
-  const [activeIndustry, setActiveIndustry] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndustry((prev) => (prev + 1) % INDUSTRY_EXAMPLES.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const example = INDUSTRY_EXAMPLES[activeIndustry];
+  const [openIndustry, setOpenIndustry] = useState<number | null>(null);
 
   return (
     <div className="overflow-x-hidden">
@@ -298,60 +289,71 @@ export default function LandingPage() {
           What High-Stability Income Systems Do Differently
         </h2>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-2" style={{ marginBottom: 24 }}>
-          {INDUSTRY_EXAMPLES.map((ex, i) => (
-            <button
-              key={ex.industry}
-              onClick={() => setActiveIndustry(i)}
-              className="text-[11px] sm:text-[12px] font-medium px-3 sm:px-4 py-2 rounded transition-all"
-              style={{
-                backgroundColor: i === activeIndustry ? B.navy : B.sand,
-                color: i === activeIndustry ? "#ffffff" : B.muted,
-              }}
-            >
-              {ex.industry.split(" / ")[0].split(" (")[0]}
-            </button>
-          ))}
-        </div>
-
-        <div className="rounded-lg border" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
-          {/* Panel header */}
-          <div className="px-5 sm:px-8 py-4 border-b" style={{ borderColor: B.sandDk }}>
-            <div className="text-[14px] sm:text-[15px] font-semibold" style={{ color: B.navy }}>
-              {example.industry}
-            </div>
-          </div>
-          <div className="px-5 sm:px-8 py-6 sm:py-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.teal, marginBottom: 16 }}>
-                  More Stable Income Systems Often Include
+        <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
+          {INDUSTRY_EXAMPLES.map((ex, i) => {
+            const isOpen = openIndustry === i;
+            const colors = [B.navy, B.purple, B.teal];
+            const cardColor = colors[i];
+            return (
+              <div
+                key={ex.industry}
+                className="rounded-lg border overflow-hidden transition-all"
+                style={{ borderColor: isOpen ? cardColor : B.sandDk, backgroundColor: "#ffffff" }}
+              >
+                <button
+                  onClick={() => setOpenIndustry(isOpen ? null : i)}
+                  className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 transition-colors"
+                  style={{ backgroundColor: isOpen ? cardColor : "#ffffff" }}
+                >
+                  <span className="text-[14px] sm:text-[15px] font-semibold" style={{ color: isOpen ? "#ffffff" : B.navy }}>
+                    {ex.industry}
+                  </span>
+                  <svg
+                    width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    className="shrink-0 transition-transform duration-300"
+                    style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                  >
+                    <path d="M5 8l5 5 5-5" stroke={isOpen ? "#ffffff" : B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <div
+                  className="transition-all duration-300 ease-in-out overflow-hidden"
+                  style={{ maxHeight: isOpen ? 400 : 0, opacity: isOpen ? 1 : 0 }}
+                >
+                  <div className="px-5 sm:px-6 py-5 sm:py-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                      <div>
+                        <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.teal, marginBottom: 12 }}>
+                          More Stable Income Systems Often Include
+                        </div>
+                        <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                          {ex.stable.map((item) => (
+                            <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
+                              <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light, marginBottom: 12 }}>
+                          Common Sources of Instability
+                        </div>
+                        <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                          {ex.unstable.map((item) => (
+                            <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
+                              <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.light }} />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {example.stable.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
-                      <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
               </div>
-              <div>
-                <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light, marginBottom: 16 }}>
-                  Common Sources of Instability
-                </div>
-                <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {example.unstable.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
-                      <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.light }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 
