@@ -9,8 +9,7 @@ out/
 data/
 .data/
 
-# Package lock (regenerated on install)
-package-lock.json
+# Package lock — tracked for CI reproducibility
 
 # Environment and credentials
 .env
