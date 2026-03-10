@@ -244,7 +244,7 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 4. SIX FACTORS — Model Understanding ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
           Six Structural Assessment Factors
         </h2>
@@ -293,13 +293,13 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 6. INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
           What High-Stability Income Systems Do Differently
         </h2>
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2" style={{ marginBottom: 24 }}>
+        <div className="flex flex-wrap justify-center gap-2" style={{ marginBottom: 24 }}>
           {INDUSTRY_EXAMPLES.map((ex, i) => (
             <button
               key={ex.industry}
@@ -356,7 +356,7 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 7. INCOME STRUCTURE MAP ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
           Income Structure Map
         </h2>
@@ -382,24 +382,24 @@ export default function LandingPage() {
           ))}
         </div>
         {/* Stability arrow */}
-        <div className="flex items-center gap-3" style={{ maxWidth: 480, marginBottom: 24 }}>
+        <div className="flex items-center gap-3 mx-auto" style={{ maxWidth: 480, marginBottom: 24 }}>
           <div className="flex-1 h-2 rounded-full" style={{ background: B.gradient }} />
           <div className="text-[11px] font-semibold uppercase tracking-wider shrink-0" style={{ color: B.teal }}>
             More Stable
           </div>
         </div>
-        <p className="text-[14px] leading-relaxed" style={{ color: B.muted, maxWidth: 640 }}>
+        <p className="text-[14px] leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 640 }}>
           Income systems become more stable as income moves from active sources toward persistent sources.
         </p>
       </section>
 
       {/* ============ 8. CLASSIFICATION SCALE — Score Classification ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
           Income Stability Classification Scale
         </h2>
         {/* Spectrum bar — visually dominant */}
-        <div className="rounded-full" style={{ height: 12, background: B.gradient, maxWidth: 640, marginBottom: 24 }} />
+        <div className="rounded-full mx-auto" style={{ height: 12, background: B.gradient, maxWidth: 640, marginBottom: 24 }} />
         <div className="rounded-lg overflow-hidden" style={{ backgroundColor: B.sand }}>
           <div className="grid grid-cols-2 text-[10px] font-semibold uppercase tracking-wider px-5 sm:px-6 py-4" style={{ color: B.muted }}>
             <span>Score Range</span>
@@ -421,13 +421,13 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-        <p className="text-[13px]" style={{ color: B.light, marginTop: 24 }}>
+        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 24, maxWidth: 640 }}>
           The classification reflects income structure at the time the assessment is completed under Model RP-1.0.
         </p>
       </section>
 
       {/* ============ 9. FINAL CTA — Action ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
           Measure your Income Stability Score™
         </h2>
@@ -437,7 +437,7 @@ export default function LandingPage() {
         <p className="text-base" style={{ color: B.muted, marginBottom: 48 }}>
           Assessment time: <strong style={{ color: B.navy }}>under two minutes</strong>
         </p>
-        <div className="flex flex-col sm:flex-row items-start gap-5">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
           <Link
             href="/pricing"
             className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
@@ -452,11 +452,11 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 10. MODEL GOVERNANCE ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 48 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 48 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 24 }}>
           Model Governance
         </h2>
-        <div className="text-base leading-relaxed" style={{ color: B.muted, maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
+        <div className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
           <p>The <strong style={{ color: B.navy }}>Income Stability Score™</strong> is generated under <strong style={{ color: B.navy }}>Model RP-1.0</strong> using fixed scoring criteria.</p>
           <p>If the methodology changes, a <strong style={{ color: B.navy }}>new model version</strong> is issued.</p>
           <p>Previously generated assessments remain tied to the model version used when they were created.</p>
@@ -464,8 +464,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ DISCLAIMER ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 24, paddingBottom: 48 }}>
-        <p className="text-[13px] leading-relaxed" style={{ color: B.light }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 24, paddingBottom: 48 }}>
+        <p className="text-[13px] leading-relaxed mx-auto" style={{ color: B.light, maxWidth: 680 }}>
           The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
       </section>
