@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MarketingLayout({
   children,
@@ -10,8 +11,15 @@ export default function MarketingLayout({
       {/* Header */}
       <header className="border-b" style={{ borderColor: "#E5E7EB", backgroundColor: "#ffffff" }}>
         <div className="max-w-[1100px] mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-sm font-semibold tracking-[0.08em]" style={{ color: "#0E1A2B" }}>
-            RUNPAYWAY™
+          <Link href="/">
+            <Image
+              src="/runpayway-logo.png"
+              alt="RunPayway™"
+              width={140}
+              height={140}
+              style={{ height: 32, width: "auto" }}
+              priority
+            />
           </Link>
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/pricing" className="text-[13px] font-medium hover:opacity-70 transition-opacity" style={{ color: "#6B7280" }}>
