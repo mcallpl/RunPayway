@@ -16,7 +16,7 @@ export default function PricingPage() {
       {/* Page Header */}
       <div className="pt-16 pb-12 text-center">
         <h1 className="text-[32px] md:text-[48px] font-semibold leading-tight mb-3" style={{ color: B.navy }}>
-          Pricing — RunPayway™
+          Measure Your Income Stability
         </h1>
         <p className="text-base" style={{ color: B.muted }}>Income Stability Assessment</p>
         <p className="text-[13px] font-medium mt-2" style={{ color: B.navy }}>
