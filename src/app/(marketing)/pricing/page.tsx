@@ -12,9 +12,9 @@ const B = {
 
 export default function PricingPage() {
   return (
-    <div className="max-w-[1100px] mx-auto px-6">
+    <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
       {/* Page Header */}
-      <div className="pt-16 pb-12">
+      <div className="pt-16 pb-12 text-center">
         <h1 className="text-[32px] md:text-[48px] font-semibold leading-tight mb-3" style={{ color: B.navy }}>
           Pricing — RunPayway™
         </h1>
@@ -27,15 +27,15 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Choose */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl md:text-[32px] font-semibold leading-tight mb-4" style={{ color: B.navy }}>
           Choose How You Want to Measure Income Stability
         </h2>
-        <p className="text-[15px] leading-relaxed mb-3" style={{ color: B.muted }}>
+        <p className="text-[15px] leading-relaxed mb-3 max-w-2xl mx-auto" style={{ color: B.muted }}>
           RunPayway provides structured income stability diagnostics using the{" "}
           <strong style={{ color: B.navy }}>Income Stability Score™</strong>.
         </p>
-        <p className="text-[15px] leading-relaxed" style={{ color: B.muted }}>
+        <p className="text-[15px] leading-relaxed max-w-2xl mx-auto" style={{ color: B.muted }}>
           You may obtain a <strong style={{ color: B.navy }}>single structural measurement</strong>,
           or monitor how your income stability changes across time.
         </p>
@@ -44,14 +44,14 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Measurement and Monitoring */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-6" style={{ color: B.navy }}>
           Measurement and Monitoring
         </h2>
         <p className="text-[15px] mb-8" style={{ color: B.muted }}>
           Income stability can be evaluated in two ways.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
           <div>
             <div className="text-[13px] font-semibold mb-2" style={{ color: B.navy }}>Measurement</div>
             <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>
@@ -70,14 +70,14 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Assessment Options */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-8" style={{ color: B.navy }}>
           Assessment Options
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start max-w-2xl mx-auto">
           {/* Single Assessment */}
-          <div className="rounded-lg border p-6" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
+          <div className="rounded-lg border p-6 text-center" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
             <div className="text-base font-semibold mb-1" style={{ color: B.navy }}>Single Assessment</div>
             <div className="text-[36px] font-semibold leading-none mt-3 mb-4" style={{ color: B.navy }}>$59</div>
             <div className="space-y-2 mb-6">
@@ -93,9 +93,9 @@ export default function PricingPage() {
             </Link>
           </div>
 
-          {/* Annual Monitoring — slightly more prominent */}
+          {/* Annual Monitoring */}
           <div
-            className="rounded-lg border-2 p-7"
+            className="rounded-lg border-2 p-7 text-center"
             style={{ borderColor: B.purple, backgroundColor: `${B.sand}40` }}
           >
             <div className="text-base font-semibold mb-1" style={{ color: B.navy }}>Annual Monitoring</div>
@@ -118,19 +118,19 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Income Stability Monitoring */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: B.navy }}>
           Income Stability Monitoring
         </h2>
         <p className="text-[15px] mb-8" style={{ color: B.muted }}>
           Annual monitoring measures how your income structure evolves across time.
         </p>
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center justify-center gap-4 mb-6">
           <div className="text-[13px] font-semibold" style={{ color: B.navy }}>Baseline Score</div>
           <span style={{ color: B.light }}>&rarr;</span>
           <div className="text-[13px] font-semibold" style={{ color: B.navy }}>Stability Trend</div>
         </div>
-        <div className="rounded-lg border p-5" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
+        <div className="rounded-lg border p-5 max-w-xl mx-auto" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
           <div className="flex items-center justify-between flex-wrap gap-4">
             {[
               ["Assessment 1", "Month 0"],
@@ -155,14 +155,14 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Assessment Record Structure */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: B.navy }}>
           Assessment Record Structure
         </h2>
         <p className="text-[15px] mb-6" style={{ color: B.muted }}>
           The Income Stability Assessment produces a structured report containing:
         </p>
-        <ul className="space-y-2.5 mb-6">
+        <ul className="space-y-2.5 mb-6 inline-block text-left">
           {[
             "Income Stability Score™",
             "Stability Classification",
@@ -185,14 +185,14 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* What Every Assessment Includes */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: B.navy }}>
           What Every Assessment Includes
         </h2>
         <p className="text-[15px] mb-6" style={{ color: B.muted }}>
           Each Income Stability Assessment includes:
         </p>
-        <ul className="space-y-2.5 mb-6">
+        <ul className="space-y-2.5 mb-6 inline-block text-left">
           {[
             ["Income Stability Score™ (0\u2013100)", true],
             ["stability classification", false],
@@ -216,11 +216,11 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Assessment Options Explained */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-8" style={{ color: B.navy }}>
           Assessment Options Explained
         </h2>
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-2xl mx-auto">
           <div>
             <div className="text-base font-semibold mb-3" style={{ color: B.navy }}>Single Assessment</div>
             <div className="space-y-3 text-[15px] leading-relaxed" style={{ color: B.muted }}>
@@ -252,11 +252,11 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* How the Process Works */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-8" style={{ color: B.navy }}>
           How the Process Works
         </h2>
-        <ol className="space-y-4">
+        <ol className="space-y-4 inline-block text-left">
           {[
             "Select your assessment option.",
             ["You will be redirected to ", "Stripe Secure Checkout", "."],
@@ -290,14 +290,14 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Final Selection */}
-      <section className="py-16">
+      <section className="py-16 text-center">
         <h2 className="text-2xl font-semibold mb-4" style={{ color: B.navy }}>
           Final Selection
         </h2>
         <p className="text-[15px] mb-8" style={{ color: B.muted }}>
           Choose how you would like to measure the structural stability of your income system.
         </p>
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-xl mx-auto">
           <Link
             href="/checkout-placeholder?plan=single"
             className="flex items-center justify-between rounded-lg border px-6 py-4 group hover:border-gray-400 transition-colors"
@@ -328,11 +328,11 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Methodology Statement */}
-      <section className="py-12">
+      <section className="py-12 text-center">
         <h2 className="text-lg font-semibold mb-3" style={{ color: B.navy }}>
           Methodology Statement
         </h2>
-        <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>
+        <p className="text-[13px] leading-relaxed max-w-2xl mx-auto" style={{ color: B.muted }}>
           Income Stability assessments are generated using fixed scoring criteria defined
           under <strong style={{ color: B.navy }}>Model RP-1.0</strong>.
         </p>
@@ -341,8 +341,8 @@ export default function PricingPage() {
       <div className="border-t" style={{ borderColor: B.sandDk }} />
 
       {/* Footer Note */}
-      <div className="py-12">
-        <p className="text-[13px] leading-relaxed" style={{ color: B.light }}>
+      <div className="py-12 text-center">
+        <p className="text-[13px] leading-relaxed max-w-2xl mx-auto" style={{ color: B.light }}>
           The <strong>Income Stability Score™</strong> is a structural income assessment based on
           information provided by the user. It does not provide financial advice and does not predict
           future financial outcomes. Assessments are issued under Model RP-1.0.
