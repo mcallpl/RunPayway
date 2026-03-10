@@ -21,9 +21,16 @@ body {
 
 /* Form elements */
 select, input[type="text"], input[type="email"] {
-  @apply w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white;
+  @apply w-full border border-gray-300 rounded px-3 py-2.5 sm:py-2 text-base sm:text-sm bg-white;
   @apply focus:outline-none focus:ring-1 focus:border-gray-400;
   --tw-ring-color: var(--rp-teal);
+  /* Prevent iOS zoom on focus */
+  font-size: 16px;
+}
+@media (min-width: 640px) {
+  select, input[type="text"], input[type="email"] {
+    font-size: 14px;
+  }
 }
 
 /* Radio option cards */

@@ -171,7 +171,7 @@ function PageHeader({ record }: { record: AssessmentRecord }) {
   return (
     <div className="mb-6">
       {/* Gradient strip */}
-      <div className="h-[5px] -mx-5 sm:-mx-6 md:-mx-8 -mt-5 sm:-mt-6 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
+      <div className="h-[5px] -mx-3 sm:-mx-5 md:-mx-8 -mt-3 sm:-mt-5 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
       <div className="pt-4 pb-3 border-b" style={{ borderColor: B.sandDk }}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <div className="flex items-center gap-2">
@@ -205,7 +205,7 @@ function Sidebar({ record }: { record: AssessmentRecord }) {
   return (
     <div className="mt-6 pt-5 border-t md:mt-0 md:pt-0 md:border-t-0 md:w-44 md:shrink-0 md:pl-6 md:border-l" style={{ borderColor: B.sandDk }}>
       <Label>Indicators</Label>
-      <div className="grid grid-cols-3 gap-2 mt-3 md:hidden">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3 md:hidden">
         <div className="col-span-3 flex gap-4">
           <div>
             <div className="text-[10px]" style={{ color: B.light }}>Band</div>
@@ -245,7 +245,7 @@ function Sidebar({ record }: { record: AssessmentRecord }) {
 
 function Page({ record, insight, children }: { record: AssessmentRecord; insight: string; children: React.ReactNode }) {
   return (
-    <div className="report-page bg-white border rounded-lg p-5 sm:p-6 md:p-8" style={{ borderColor: "#E5E7EB" }}>
+    <div className="report-page bg-white border rounded-lg p-3 sm:p-5 md:p-8" style={{ borderColor: "#E5E7EB" }}>
       <PageHeader record={record} />
       <div className="border-l-[3px] pl-3 sm:pl-4 py-2 mb-6" style={{ borderColor: B.teal, backgroundColor: B.sand }}>
         <p className="text-xs italic" style={{ color: B.muted }}>{insight}</p>

@@ -245,7 +245,7 @@ export default function DiagnosticPage() {
           <p className="text-sm" style={{ color: "#6B7280" }}>
             Evaluating structural income patterns using Model RP-1.0.
           </p>
-          <div className="w-64 h-1.5 rounded-full mx-auto overflow-hidden" style={{ backgroundColor: "#EDE9E0" }}>
+          <div className="w-full max-w-[256px] h-1.5 rounded-full mx-auto overflow-hidden" style={{ backgroundColor: "#EDE9E0" }}>
             <div
               className="h-full rounded-full"
               style={{
@@ -295,7 +295,7 @@ export default function DiagnosticPage() {
       </div>
 
       {/* Question */}
-      <div className="border border-gray-200 rounded-lg bg-white p-6 space-y-4">
+      <div className="border border-gray-200 rounded-lg bg-white p-4 sm:p-6 space-y-4">
         <div className="flex items-center justify-between">
           <span className="text-xs text-neutral-400 font-medium">
             Question {q.number} of 6

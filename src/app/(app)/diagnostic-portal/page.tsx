@@ -114,7 +114,7 @@ export default function InitializationPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       {/* Title */}
       <div>
         <h1 className="text-xl font-semibold text-neutral-900">
@@ -126,7 +126,7 @@ export default function InitializationPage() {
       </div>
 
       {/* Record Header */}
-      <div className="border border-gray-200 rounded-lg bg-white p-5 space-y-1">
+      <div className="border border-gray-200 rounded-lg bg-white p-4 sm:p-5 space-y-1">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-neutral-800">
             Assessment Record
@@ -139,7 +139,7 @@ export default function InitializationPage() {
       </div>
 
       {/* Assessment Profile */}
-      <section className="border border-gray-200 rounded-lg bg-white p-5 space-y-4">
+      <section className="border border-gray-200 rounded-lg bg-white p-4 sm:p-5 space-y-4">
         <div>
           <h2 className="text-sm font-semibold text-neutral-800">
             Assessment Profile
@@ -197,7 +197,7 @@ export default function InitializationPage() {
       </section>
 
       {/* Income Context */}
-      <section className="border border-gray-200 rounded-lg bg-white p-5 space-y-4">
+      <section className="border border-gray-200 rounded-lg bg-white p-4 sm:p-5 space-y-4">
         <div>
           <h2 className="text-sm font-semibold text-neutral-800">
             Income Context
@@ -268,7 +268,7 @@ export default function InitializationPage() {
       </section>
 
       {/* Recipient Email */}
-      <section className="border border-gray-200 rounded-lg bg-white p-5 space-y-4">
+      <section className="border border-gray-200 rounded-lg bg-white p-4 sm:p-5 space-y-4">
         <div>
           <label className="block text-xs font-medium text-neutral-600 mb-1">
             Recipient Email
