@@ -186,6 +186,7 @@ export default function DiagnosticPage() {
   const allAnswered = answers.every((a) => a !== null);
 
   const selectAnswer = useCallback((letter: string) => {
+    setError(null);
     setAnswers((prev) => {
       const next = [...prev];
       next[currentQuestion] = letter;
@@ -208,15 +209,23 @@ export default function DiagnosticPage() {
     setError(null);
 
     try {
-      const res = await fetch("/api/v1/score", {
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+      const res = await fetch(`${basePath}/api/v1/score`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ profile, inputs }),
       });
 
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Submission failed");
+        let message = "Submission failed";
+        try {
+          const err = await res.json();
+          message = err.error || message;
+        } catch {
+          // Response wasn't JSON (e.g. HTML 404 on static export)
+          message = `Server error (${res.status})`;
+        }
+        throw new Error(message);
       }
 
       const record = await res.json();
@@ -229,7 +238,8 @@ export default function DiagnosticPage() {
         router.push("/review");
       }, 3000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Submission failed");
+      const message = err instanceof Error ? err.message : "Submission failed";
+      setError(message);
       setSubmitting(false);
     }
   };
@@ -353,7 +363,7 @@ export default function DiagnosticPage() {
       {/* Navigation */}
       <div className="flex items-center justify-between">
         <button
-          onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+          onClick={() => { setError(null); setCurrentQuestion(Math.max(0, currentQuestion - 1)); }}
           disabled={currentQuestion === 0}
           className="text-sm text-neutral-500 hover:text-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed"
         >
@@ -363,9 +373,10 @@ export default function DiagnosticPage() {
         <div className="flex gap-3">
           {currentQuestion < 5 && (
             <button
-              onClick={() =>
-                setCurrentQuestion(Math.min(5, currentQuestion + 1))
-              }
+              onClick={() => {
+                setError(null);
+                setCurrentQuestion(Math.min(5, currentQuestion + 1));
+              }}
               disabled={selected === null}
               className="px-5 py-2 text-sm font-medium bg-neutral-900 text-white rounded disabled:opacity-40 disabled:cursor-not-allowed"
             >

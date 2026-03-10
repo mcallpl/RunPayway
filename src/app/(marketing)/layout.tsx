@@ -174,17 +174,11 @@ export default function MarketingLayout({
                 Legal
               </div>
               <div className="space-y-2.5">
-                {[
-                  ["/terms", "Terms"],
-                  ["/privacy", "Privacy"],
-                ].map(([href, label]) => (
-                  <Link key={label} href={href} className="block text-[13px] hover:opacity-70 transition-opacity" style={{ color: "#6B7280" }}>
+                {["Terms", "Privacy", "Disclaimer"].map((label) => (
+                  <span key={label} className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
                     {label}
-                  </Link>
+                  </span>
                 ))}
-                <span className="block text-[13px] cursor-default" style={{ color: "#9CA3AF" }}>
-                  Disclaimer
-                </span>
               </div>
             </div>
           </div>
