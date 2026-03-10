@@ -151,8 +151,7 @@ export default function InitializationPage() {
 
         <div>
           <label className="block text-xs font-medium text-neutral-600 mb-1">
-            Assessment Title (Name / Organization){" "}
-            <span className="text-neutral-400">(optional)</span>
+            Assessment Title (Name / Organization)
           </label>
           <input
             type="text"
