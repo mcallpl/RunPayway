@@ -75,6 +75,7 @@ const B = {
   sandDk: "#EDE9E0",
   muted: "#6B7280",
   light: "#9CA3AF",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
 };
 
 // ============================================================
@@ -168,14 +169,18 @@ const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
 
 function PageHeader({ record }: { record: AssessmentRecord }) {
   return (
-    <div className="mb-6 pb-3 border-b" style={{ borderColor: B.sandDk }}>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold tracking-wider" style={{ color: B.navy }}>RUNPAYWAY™</span>
-          <span className="text-[10px] hidden sm:inline" style={{ color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
-        </div>
-        <div className="text-[10px]" style={{ color: B.light }}>
-          {record.record_id.slice(0, 8)}… · {record.assessment_date_utc}
+    <div className="mb-6">
+      {/* Gradient strip */}
+      <div className="h-[5px] -mx-5 sm:-mx-6 md:-mx-8 -mt-5 sm:-mt-6 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
+      <div className="pt-4 pb-3 border-b" style={{ borderColor: B.sandDk }}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold tracking-wider" style={{ color: B.navy }}>RUNPAYWAY™</span>
+            <span className="text-[10px] hidden sm:inline" style={{ color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
+          </div>
+          <div className="text-[10px]" style={{ color: B.light }}>
+            {record.record_id.slice(0, 8)}… · {record.assessment_date_utc}
+          </div>
         </div>
       </div>
     </div>
@@ -515,11 +520,11 @@ export default function ReviewPage() {
           This report shows how reliable an income system is over time.
         </p>
 
-        <div className="mb-2">
-          <div className="text-[10px] uppercase tracking-wider mb-1" style={{ color: B.teal }}>RunPayway Stability Score™</div>
-          <div className="text-4xl sm:text-5xl font-bold" style={{ color: B.navy }}>{record.final_score}</div>
-          <div className="text-sm sm:text-base font-semibold mt-1" style={{ color: B.navy }}>{record.stability_band}</div>
-          <div className="text-[10px] mt-1" style={{ color: B.light }}>Score Range: 0–100 · Higher = more reliable income over time</div>
+        <div className="rounded-xl p-5 sm:p-6 mb-2" style={{ background: B.gradient }}>
+          <div className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>RunPayway Stability Score™</div>
+          <div className="text-4xl sm:text-5xl font-bold" style={{ color: "#ffffff" }}>{record.final_score}</div>
+          <div className="text-sm sm:text-base font-semibold mt-1" style={{ color: "#ffffff" }}>{record.stability_band}</div>
+          <div className="text-[10px] mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>Score Range: 0–100 · Higher = more reliable income over time</div>
         </div>
 
         <SectionGap />
