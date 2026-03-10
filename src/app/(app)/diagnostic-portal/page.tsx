@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const CLASSIFICATIONS = [
@@ -11,26 +11,53 @@ const CLASSIFICATIONS = [
 
 const OPERATING_STRUCTURES = [
   "Employee (W-2)",
-  "Independent Professional / Contractor",
+  "Independent Contractor",
   "Business Owner / Firm",
   "Partnership",
   "Nonprofit Organization",
 ];
 
 const PRIMARY_INCOME_MODELS = [
-  "Salary-Based",
+  "Employee Salary",
   "Commission-Based",
   "Contract-Based",
-  "Asset-Based",
-  "Mixed Income",
+  "Independent Contractor",
+  "Team / Partnership Income",
+  "Business Ownership",
+  "Professional Practice",
+  "Consulting / Client Services",
+  "Agency / Brokerage Income",
+  "Project-Based Work",
+  "Subscription / Retainer Services",
+  "Licensing / Royalty Income",
+  "Product Sales",
+  "Digital Product Sales",
+  "Creator / Media Income",
+  "Affiliate / Referral Income",
+  "Real Estate Rental Income",
+  "Real Estate Brokerage Income",
+  "Franchise Ownership",
+  "Investment / Dividend Income",
+  "Hybrid Multiple Income Sources",
 ];
 
 const REVENUE_STRUCTURES = [
-  "Primarily Active",
-  "Hybrid Active / Recurring",
-  "Recurring Revenue",
-  "Asset-Derived Revenue",
+  "Mostly One-Time Payments",
+  "Repeat Clients / Returning Customers",
+  "Monthly Recurring Payments",
+  "Contracted Multi-Month Revenue",
+  "Long-Term Recurring Income",
+  "Mixed Revenue Structure",
 ];
+
+const REVENUE_EXAMPLES: Record<string, string> = {
+  "Mostly One-Time Payments": "commissions, project fees, one-off sales",
+  "Repeat Clients / Returning Customers": "returning consulting clients",
+  "Monthly Recurring Payments": "retainers, memberships, subscriptions",
+  "Contracted Multi-Month Revenue": "signed engagements lasting several months",
+  "Long-Term Recurring Income": "recurring advisory services or licensing",
+  "Mixed Revenue Structure": "combination of one-time and recurring income",
+};
 
 const INDUSTRY_SECTORS = [
   "Real Estate",
@@ -65,6 +92,10 @@ export default function InitializationPage() {
     industry_sector: "",
     recipient_email: "",
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -120,14 +151,14 @@ export default function InitializationPage() {
 
         <div>
           <label className="block text-xs font-medium text-neutral-600 mb-1">
-            Assessment Title{" "}
+            Assessment Title (Name / Organization){" "}
             <span className="text-neutral-400">(optional)</span>
           </label>
           <input
             type="text"
             value={form.assessment_title}
             onChange={(e) => update("assessment_title", e.target.value)}
-            placeholder=""
+            placeholder="e.g. John Smith or Smith Consulting"
           />
         </div>
 
@@ -200,6 +231,7 @@ export default function InitializationPage() {
           <label className="block text-xs font-medium text-neutral-600 mb-1">
             Revenue Structure
           </label>
+          <p className="text-[11px] text-neutral-400 mb-1.5">How your income usually arrives.</p>
           <select
             value={form.revenue_structure}
             onChange={(e) => update("revenue_structure", e.target.value)}
@@ -211,6 +243,11 @@ export default function InitializationPage() {
               </option>
             ))}
           </select>
+          {form.revenue_structure && REVENUE_EXAMPLES[form.revenue_structure] && (
+            <p className="text-[10px] text-neutral-400 mt-1 italic">
+              Example: {REVENUE_EXAMPLES[form.revenue_structure]}
+            </p>
+          )}
         </div>
 
         <div>

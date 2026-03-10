@@ -6,7 +6,7 @@
   --rp-navy: #0E1A2B;
   --rp-purple: #4B3FAE;
   --rp-teal: #1F6D7A;
-  --rp-sand: #F7F6F3;
+  --rp-sand: #F4F1EA;
   --rp-sand-dark: #EDE9E0;
 }
 
@@ -16,6 +16,7 @@ body {
   background: #FAFAFA;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Form elements */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 const ANSWER_MAP: Record<string, number> = {
@@ -10,6 +10,9 @@ const ANSWER_MAP: Record<string, number> = {
   D: 75,
   E: 100,
 };
+
+const STORAGE_KEY = "runpayway_diagnostic_state";
+const STORAGE_EXPIRY_DAYS = 7;
 
 interface Question {
   number: number;
@@ -131,6 +134,27 @@ const FIELD_MAP = [
   "income_continuity_without_active_labor",
 ];
 
+function saveAnswersToStorage(answers: (string | null)[]) {
+  const data = { answers, timestamp: Date.now() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadAnswersFromStorage(): (string | null)[] | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    const age = Date.now() - data.timestamp;
+    if (age > STORAGE_EXPIRY_DAYS * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return data.answers;
+  } catch {
+    return null;
+  }
+}
+
 export default function DiagnosticPage() {
   const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -138,12 +162,22 @@ export default function DiagnosticPage() {
     Array(6).fill(null)
   );
   const [submitting, setSubmitting] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const profile = sessionStorage.getItem("rp_profile");
     if (!profile) {
-      router.push("/");
+      router.push("/diagnostic-portal");
+      return;
+    }
+    const saved = loadAnswersFromStorage();
+    if (saved && saved.length === 6) {
+      setAnswers(saved);
+      const firstUnanswered = saved.findIndex((a) => a === null);
+      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
+      else setCurrentQuestion(5);
     }
   }, [router]);
 
@@ -151,11 +185,14 @@ export default function DiagnosticPage() {
   const selected = answers[currentQuestion];
   const allAnswered = answers.every((a) => a !== null);
 
-  const selectAnswer = (letter: string) => {
-    const next = [...answers];
-    next[currentQuestion] = letter;
-    setAnswers(next);
-  };
+  const selectAnswer = useCallback((letter: string) => {
+    setAnswers((prev) => {
+      const next = [...prev];
+      next[currentQuestion] = letter;
+      saveAnswersToStorage(next);
+      return next;
+    });
+  }, [currentQuestion]);
 
   const handleSubmit = async () => {
     if (!allAnswered) return;
@@ -184,12 +221,50 @@ export default function DiagnosticPage() {
 
       const record = await res.json();
       sessionStorage.setItem("rp_record", JSON.stringify(record));
-      router.push("/review");
+      localStorage.removeItem(STORAGE_KEY);
+
+      // Show loading card for 3 seconds
+      setShowLoading(true);
+      setTimeout(() => {
+        router.push("/review");
+      }, 3000);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Submission failed");
       setSubmitting(false);
     }
   };
+
+  // Loading card
+  if (showLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-6">
+          <h2 className="text-lg font-semibold" style={{ color: "#0E1A2B" }}>
+            Analyzing Your Income Structure
+          </h2>
+          <p className="text-sm" style={{ color: "#6B7280" }}>
+            Evaluating structural income patterns using Model RP-1.0.
+          </p>
+          <div className="w-64 h-1.5 rounded-full mx-auto overflow-hidden" style={{ backgroundColor: "#EDE9E0" }}>
+            <div
+              className="h-full rounded-full"
+              style={{
+                backgroundColor: "#4B3FAE",
+                animation: "loadProgress 2.8s ease-in-out forwards",
+              }}
+            />
+          </div>
+          <style>{`
+            @keyframes loadProgress {
+              0% { width: 0%; }
+              60% { width: 70%; }
+              100% { width: 100%; }
+            }
+          `}</style>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

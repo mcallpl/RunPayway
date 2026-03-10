@@ -129,18 +129,24 @@ export function computeLaborAssetPosition(
 
   // Adjust based on income model and revenue structure
   let adjustment = 0;
+  const assetModels = ["Asset-Based", "Investment / Dividend Income", "Real Estate Rental Income", "Licensing / Royalty Income"];
+  const assetRevenues = ["Asset-Derived Revenue", "Long-Term Recurring Income"];
+  const recurringRevenues = ["Recurring Revenue", "Monthly Recurring Payments", "Contracted Multi-Month Revenue"];
+  const salaryModels = ["Salary-Based", "Employee Salary"];
+  const activeRevenues = ["Primarily Active", "Mostly One-Time Payments"];
+
   if (
-    profile.primary_income_model === "Asset-Based" ||
-    profile.revenue_structure === "Asset-Derived Revenue"
+    assetModels.includes(profile.primary_income_model) ||
+    assetRevenues.includes(profile.revenue_structure)
   ) {
     adjustment = 10;
   } else if (
-    profile.revenue_structure === "Recurring Revenue"
+    recurringRevenues.includes(profile.revenue_structure)
   ) {
     adjustment = 5;
   } else if (
-    profile.primary_income_model === "Salary-Based" &&
-    profile.revenue_structure === "Primarily Active"
+    salaryModels.includes(profile.primary_income_model) &&
+    activeRevenues.includes(profile.revenue_structure)
   ) {
     adjustment = -5;
   }
@@ -251,8 +257,8 @@ export function selectCurrentEvolutionStage(
   } else if (finalScore <= 79) {
     // Check if revenue structure suggests higher stage
     if (
-      profile.revenue_structure === "Recurring Revenue" ||
-      profile.revenue_structure === "Asset-Derived Revenue"
+      ["Recurring Revenue", "Monthly Recurring Payments", "Contracted Multi-Month Revenue", "Long-Term Recurring Income"].includes(profile.revenue_structure) ||
+      ["Asset-Derived Revenue"].includes(profile.revenue_structure)
     ) {
       stageIndex = 3;
     } else {

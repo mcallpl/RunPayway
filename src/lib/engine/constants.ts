@@ -104,25 +104,43 @@ export const CLASSIFICATIONS = [
 
 export const OPERATING_STRUCTURES = [
   "Employee (W-2)",
-  "Independent Professional / Contractor",
+  "Independent Contractor",
   "Business Owner / Firm",
   "Partnership",
   "Nonprofit Organization",
 ] as const;
 
 export const PRIMARY_INCOME_MODELS = [
-  "Salary-Based",
+  "Employee Salary",
   "Commission-Based",
   "Contract-Based",
-  "Asset-Based",
-  "Mixed Income",
+  "Independent Contractor",
+  "Team / Partnership Income",
+  "Business Ownership",
+  "Professional Practice",
+  "Consulting / Client Services",
+  "Agency / Brokerage Income",
+  "Project-Based Work",
+  "Subscription / Retainer Services",
+  "Licensing / Royalty Income",
+  "Product Sales",
+  "Digital Product Sales",
+  "Creator / Media Income",
+  "Affiliate / Referral Income",
+  "Real Estate Rental Income",
+  "Real Estate Brokerage Income",
+  "Franchise Ownership",
+  "Investment / Dividend Income",
+  "Hybrid Multiple Income Sources",
 ] as const;
 
 export const REVENUE_STRUCTURES = [
-  "Primarily Active",
-  "Hybrid Active / Recurring",
-  "Recurring Revenue",
-  "Asset-Derived Revenue",
+  "Mostly One-Time Payments",
+  "Repeat Clients / Returning Customers",
+  "Monthly Recurring Payments",
+  "Contracted Multi-Month Revenue",
+  "Long-Term Recurring Income",
+  "Mixed Revenue Structure",
 ] as const;
 
 export const INDUSTRY_SECTORS = [
