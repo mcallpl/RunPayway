@@ -56,20 +56,20 @@ const INDUSTRY_EXAMPLES = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* PREMIUM REPORT PREVIEW — full diagnostic board                      */
+/* EXAMPLE DIAGNOSTIC OUTPUT — floating diagnostic panel               */
 /* ------------------------------------------------------------------ */
-function PremiumReportPreview() {
+function ExampleDiagnosticOutput() {
   return (
     <div className="rounded-lg border overflow-hidden" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
       {/* Report header */}
-      <div className="px-6 sm:px-8 pt-6 sm:pt-8 pb-4 border-b" style={{ borderColor: B.sandDk }}>
+      <div className="px-5 sm:px-8 pt-5 sm:pt-8 pb-4 border-b" style={{ borderColor: B.sandDk }}>
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-semibold tracking-[0.1em]" style={{ color: B.navy }}>RUNPAYWAY™</span>
           <span className="text-[10px]" style={{ color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
         </div>
       </div>
 
-      <div className="px-6 sm:px-8 py-6 sm:py-8">
+      <div className="px-5 sm:px-8 py-5 sm:py-8">
         {/* Score + Classification row */}
         <div className="flex flex-col sm:flex-row sm:items-end gap-6 sm:gap-12 mb-8">
           <div>
@@ -88,14 +88,14 @@ function PremiumReportPreview() {
               ].map((band) => (
                 <div
                   key={band.label}
-                  className="text-center py-3 rounded-lg"
+                  className="text-center py-2 sm:py-3 rounded-lg"
                   style={{
                     backgroundColor: band.active ? B.purple : B.sand,
                     color: band.active ? "#ffffff" : B.light,
                   }}
                 >
-                  <div className="text-[11px] font-semibold">{band.label}</div>
-                  <div className="text-[9px] mt-0.5 opacity-80">{band.range}</div>
+                  <div className="text-[10px] sm:text-[11px] font-semibold">{band.label}</div>
+                  <div className="text-[8px] sm:text-[9px] mt-0.5 opacity-80">{band.range}</div>
                 </div>
               ))}
             </div>
@@ -136,7 +136,7 @@ function PremiumReportPreview() {
             <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: B.light }}>
               Industry Percentile
             </div>
-            <div className="text-[24px] font-semibold" style={{ color: B.navy }}>68th percentile</div>
+            <div className="text-[20px] sm:text-[24px] font-semibold" style={{ color: B.navy }}>68th percentile</div>
           </div>
           <div className="mt-4 sm:mt-0">
             <div className="flex items-center gap-2">
@@ -160,45 +160,55 @@ function PremiumReportPreview() {
 }
 
 /* ------------------------------------------------------------------ */
-/* BLOOMBERG RESEARCH CONTEXT STRIP                                     */
+/* MODEL FRAMEWORK AUTHORITY BAND                                       */
 /* ------------------------------------------------------------------ */
-function ResearchContextStrip() {
+function ModelFrameworkBand() {
   return (
     <section style={{ backgroundColor: B.navy }}>
-      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 flex items-center justify-center sm:justify-between" style={{ height: 68 }}>
-        {/* Left zone */}
-        <div className="hidden sm:block">
-          <div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.45)" }}>
-            Model Framework
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 py-5 sm:py-0 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 sm:gap-0" style={{ minHeight: 80 }}>
+        {/* Left zone — heading */}
+        <div className="text-center sm:text-left">
+          <div className="text-[9px] font-semibold uppercase tracking-[0.14em]" style={{ color: "rgba(255,255,255,0.40)" }}>
+            RUNPAYWAY™
           </div>
-          <div className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
-            Model RP-1.0
+          <div className="text-[13px] sm:text-[14px] font-semibold tracking-wide" style={{ color: "rgba(255,255,255,0.92)" }}>
+            Model Framework
           </div>
         </div>
 
         {/* Separator */}
-        <div className="hidden sm:block h-8" style={{ width: 1, backgroundColor: "rgba(255,255,255,0.12)" }} />
+        <div className="hidden sm:block h-10" style={{ width: 1, backgroundColor: "rgba(255,255,255,0.10)" }} />
 
         {/* Center zone */}
         <div className="text-center">
-          <div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+          <div className="text-[13px] sm:text-[14px] font-medium" style={{ color: "rgba(255,255,255,0.88)" }}>
             Income Stability Score™
           </div>
-          <div className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
+          <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.40)" }}>
             Structural Income Diagnostic
           </div>
         </div>
 
         {/* Separator */}
-        <div className="hidden sm:block h-8" style={{ width: 1, backgroundColor: "rgba(255,255,255,0.12)" }} />
+        <div className="hidden sm:block h-10" style={{ width: 1, backgroundColor: "rgba(255,255,255,0.10)" }} />
 
         {/* Right zone */}
-        <div className="hidden sm:block text-right">
-          <div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.45)" }}>
-            Registry Status
+        <div className="hidden sm:flex items-center gap-8">
+          <div className="text-right">
+            <div className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.88)" }}>
+              Model RP-1.0
+            </div>
+            <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.40)" }}>
+              Fixed Scoring Criteria
+            </div>
           </div>
-          <div className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
-            Active Model Version
+          <div className="text-right">
+            <div className="text-[11px]" style={{ color: "rgba(255,255,255,0.40)" }}>
+              Registry Status
+            </div>
+            <div className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.88)" }}>
+              Active Model Version
+            </div>
           </div>
         </div>
       </div>
@@ -261,30 +271,42 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ WHY INCOME STABILITY MATTERS ============ */}
+      {/* ============ SCORE CURIOSITY TRIGGER ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-8 sm:mb-10" style={{ color: B.navy }}>
-          Why Income Stability Matters
+          Where Would Your Income Stability Likely Fall?
         </h2>
-        <div className="space-y-5 text-base leading-relaxed" style={{ color: B.muted, maxWidth: 680 }}>
-          <p>Income stability is not determined only by how much someone earns.</p>
-          <p>It depends on <strong style={{ color: B.navy }}>how income is structured</strong>.</p>
-          <p>Two people can earn the same income but have very different levels of stability depending on:</p>
-          <ul className="space-y-3 pl-1">
-            {[
-              "how many income sources exist",
-              "whether revenue renews automatically",
-              "how concentrated income sources are",
-              "how reliably income continues over time",
-            ].map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span className="mt-2.5 w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p>RunPayway evaluates these structural characteristics to determine the <strong style={{ color: B.navy }}>Income Stability Score™</strong>.</p>
+        {/* Visual scale */}
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 mb-6" style={{ maxWidth: 600 }}>
+          {[
+            { label: "Limited", range: "0\u201339", color: B.light },
+            { label: "Developing", range: "40\u201359", color: B.muted },
+            { label: "Established", range: "60\u201379", color: B.teal },
+            { label: "High", range: "80\u2013100", color: B.purple },
+          ].map((band) => (
+            <div key={band.label} className="text-center">
+              <div
+                className="h-2.5 sm:h-3 rounded-full mb-2"
+                style={{ backgroundColor: band.color }}
+              />
+              <div className="text-[11px] sm:text-[13px] font-semibold" style={{ color: B.navy }}>{band.label}</div>
+              <div className="text-[10px] sm:text-[11px]" style={{ color: B.light }}>{band.range}</div>
+            </div>
+          ))}
         </div>
+        <div className="text-[11px] font-semibold uppercase tracking-wider mb-3" style={{ color: B.light }}>
+          Score Range: 0\u2013100
+        </div>
+        <p className="text-base leading-relaxed mb-8" style={{ color: B.muted }}>
+          Most people do not know their income stability until it is structurally measured.
+        </p>
+        <Link
+          href="/pricing"
+          className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
+          style={{ backgroundColor: B.navy, color: "#ffffff" }}
+        >
+          Measure Your Score
+        </Link>
       </section>
 
       {/* ============ STRUCTURAL ASSESSMENT OVERVIEW ============ */}
@@ -297,17 +319,17 @@ export default function LandingPage() {
             {
               label: "Assessment",
               title: "6 Structural Income Factors",
-              desc: "Measures how income behaves over time",
+              desc: "Measures how income behaves over time.",
             },
             {
               label: "Result",
               title: "Income Stability Score™ (0\u2013100)",
-              desc: "Stability classification",
+              desc: "Stability classification.",
             },
             {
               label: "Delivery",
               title: "Instant PDF Assessment Record",
-              desc: "Download + email copy",
+              desc: "Download + email copy.",
             },
           ].map((card) => (
             <div key={card.label} className="rounded-lg border p-6" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
@@ -321,10 +343,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ RESEARCH CONTEXT STRIP ============ */}
-      <ResearchContextStrip />
+      {/* ============ MODEL FRAMEWORK AUTHORITY BAND ============ */}
+      <ModelFrameworkBand />
 
-      {/* ============ PREMIUM REPORT PREVIEW — EDITORIAL STAGE ============ */}
+      {/* ============ EXAMPLE DIAGNOSTIC OUTPUT ============ */}
       <section
         className="py-14 sm:py-24"
         style={{
@@ -333,15 +355,14 @@ export default function LandingPage() {
       >
         <div className="max-w-[920px] mx-auto px-5 sm:px-6">
           <div
-            className="editorial-stage rounded-xl border overflow-hidden"
+            className="editorial-stage rounded-xl overflow-hidden"
             style={{
-              borderColor: B.sandDk,
               backgroundColor: "#FFFEFA",
-              boxShadow: "0 8px 40px rgba(14, 26, 43, 0.06), 0 2px 12px rgba(14, 26, 43, 0.03)",
+              boxShadow: "0 8px 40px rgba(14, 26, 43, 0.08), 0 2px 12px rgba(14, 26, 43, 0.04)",
               animation: "fadeInUp 0.8s ease-out both",
             }}
           >
-            <PremiumReportPreview />
+            <ExampleDiagnosticOutput />
           </div>
           {/* Grounding shadow */}
           <div
@@ -381,7 +402,7 @@ export default function LandingPage() {
         </p>
       </section>
 
-      {/* ============ INDUSTRY EXAMPLES ============ */}
+      {/* ============ INDUSTRY STRUCTURAL PATTERNS ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-4" style={{ color: B.navy }}>
           Common Characteristics of Higher Stability Income Systems
@@ -413,8 +434,8 @@ export default function LandingPage() {
           ))}
         </div>
 
-        <div className="rounded-lg border p-6 sm:p-8" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
-          <div className="text-lg font-semibold mb-8" style={{ color: B.navy }}>
+        <div className="rounded-lg border p-5 sm:p-8" style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}>
+          <div className="text-base sm:text-lg font-semibold mb-6 sm:mb-8" style={{ color: B.navy }}>
             {example.industry}
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -424,7 +445,7 @@ export default function LandingPage() {
               </div>
               <ul className="space-y-2.5">
                 {example.stable.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-[14px]" style={{ color: B.muted }}>
+                  <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
                     <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
                     {item}
                   </li>
@@ -437,7 +458,7 @@ export default function LandingPage() {
               </div>
               <ul className="space-y-2.5">
                 {example.unstable.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5 text-[14px]" style={{ color: B.muted }}>
+                  <li key={item} className="flex items-start gap-2.5 text-[13px] sm:text-[14px]" style={{ color: B.muted }}>
                     <span className="mt-2 w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: B.light }} />
                     {item}
                   </li>
@@ -454,7 +475,7 @@ export default function LandingPage() {
           Income Stability Classification Scale
         </h2>
         <div className="rounded-lg overflow-hidden" style={{ backgroundColor: B.sand }}>
-          <div className="grid grid-cols-2 text-[10px] font-semibold uppercase tracking-wider px-6 py-4" style={{ color: B.muted }}>
+          <div className="grid grid-cols-2 text-[10px] font-semibold uppercase tracking-wider px-5 sm:px-6 py-4" style={{ color: B.muted }}>
             <span>Score Range</span>
             <span>Classification</span>
           </div>
@@ -466,7 +487,7 @@ export default function LandingPage() {
           ].map(([range, label], i) => (
             <div
               key={range}
-              className="grid grid-cols-2 px-6 py-4 text-[15px]"
+              className="grid grid-cols-2 px-5 sm:px-6 py-4 text-[14px] sm:text-[15px]"
               style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : B.sand }}
             >
               <span className="font-semibold" style={{ color: B.navy }}>{range}</span>
