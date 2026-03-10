@@ -76,7 +76,7 @@ function PremiumReportPreview() {
             <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: B.teal }}>
               Income Stability Score™
             </div>
-            <div className="text-[60px] font-semibold leading-none" style={{ color: B.navy }}>72</div>
+            <div className="text-[42px] sm:text-[60px] font-semibold leading-none" style={{ color: B.navy }}>72</div>
           </div>
           <div className="flex-1">
             <div className="grid grid-cols-4 gap-1.5">
@@ -165,7 +165,7 @@ function PremiumReportPreview() {
 function ResearchContextStrip() {
   return (
     <section style={{ backgroundColor: B.navy }}>
-      <div className="max-w-[1100px] mx-auto px-6 flex items-center justify-between" style={{ height: 68 }}>
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 flex items-center justify-center sm:justify-between" style={{ height: 68 }}>
         {/* Left zone */}
         <div className="hidden sm:block">
           <div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.45)" }}>
@@ -180,7 +180,7 @@ function ResearchContextStrip() {
         <div className="hidden sm:block h-8" style={{ width: 1, backgroundColor: "rgba(255,255,255,0.12)" }} />
 
         {/* Center zone */}
-        <div className="text-center sm:text-center">
+        <div className="text-center">
           <div className="text-[9px] font-semibold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.45)" }}>
             Income Stability Score™
           </div>
@@ -224,9 +224,9 @@ export default function LandingPage() {
   return (
     <>
       {/* ============ HERO ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 72, paddingBottom: 96 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 pt-10 sm:pt-[72px] pb-14 sm:pb-24">
         <div style={{ maxWidth: 680 }}>
-          <h1 className="font-semibold leading-[1.08] mb-4" style={{ color: B.navy, fontSize: 56 }}>
+          <h1 className="text-[32px] sm:text-[44px] md:text-[56px] font-semibold leading-[1.08] mb-4" style={{ color: B.navy }}>
             The Standard for Measuring Income Stability
           </h1>
           {/* Institutional descriptor */}
@@ -262,8 +262,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-10" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-8 sm:mb-10" style={{ color: B.navy }}>
           Why Income Stability Matters
         </h2>
         <div className="space-y-5 text-base leading-relaxed" style={{ color: B.muted, maxWidth: 680 }}>
@@ -288,8 +288,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ STRUCTURAL ASSESSMENT OVERVIEW ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-10" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-8 sm:mb-10" style={{ color: B.navy }}>
           Structural Assessment Overview
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -326,13 +326,12 @@ export default function LandingPage() {
 
       {/* ============ PREMIUM REPORT PREVIEW — EDITORIAL STAGE ============ */}
       <section
+        className="py-14 sm:py-24"
         style={{
           background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAFA 100%)",
-          paddingTop: 96,
-          paddingBottom: 96,
         }}
       >
-        <div className="max-w-[920px] mx-auto px-6">
+        <div className="max-w-[920px] mx-auto px-5 sm:px-6">
           <div
             className="editorial-stage rounded-xl border overflow-hidden"
             style={{
@@ -357,8 +356,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ THREE DRIVERS ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-4" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-4" style={{ color: B.navy }}>
           The Three Drivers of Income Stability
         </h2>
         <p className="text-base leading-relaxed mb-10" style={{ color: B.muted }}>
@@ -383,8 +382,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ INDUSTRY EXAMPLES ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-4" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-4" style={{ color: B.navy }}>
           Common Characteristics of Higher Stability Income Systems
         </h2>
         <p className="text-base leading-relaxed mb-2" style={{ color: B.muted }}>
@@ -398,12 +397,12 @@ export default function LandingPage() {
         </p>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-8">
           {INDUSTRY_EXAMPLES.map((ex, i) => (
             <button
               key={ex.industry}
               onClick={() => setActiveIndustry(i)}
-              className="text-[12px] font-medium px-4 py-2 rounded transition-all"
+              className="text-[11px] sm:text-[12px] font-medium px-3 sm:px-4 py-2 rounded transition-all"
               style={{
                 backgroundColor: i === activeIndustry ? B.navy : B.sand,
                 color: i === activeIndustry ? "#ffffff" : B.muted,
@@ -450,8 +449,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ CLASSIFICATION SCALE ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-10" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-8 sm:mb-10" style={{ color: B.navy }}>
           Income Stability Classification Scale
         </h2>
         <div className="rounded-lg overflow-hidden" style={{ backgroundColor: B.sand }}>
@@ -481,8 +480,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ FINAL CTA ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 96 }}>
-        <h2 className="font-semibold leading-tight mb-4" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 py-14 sm:py-24">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-4" style={{ color: B.navy }}>
           Measure how stable your income structure is today.
         </h2>
         <p className="text-base mb-8" style={{ color: B.muted }}>
@@ -503,8 +502,8 @@ export default function LandingPage() {
       </section>
 
       {/* ============ MODEL GOVERNANCE ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 96, paddingBottom: 72 }}>
-        <h2 className="font-semibold leading-tight mb-6" style={{ color: B.navy, fontSize: 34 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 pt-14 sm:pt-24 pb-10 sm:pb-[72px]">
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight mb-6" style={{ color: B.navy }}>
           Model Governance
         </h2>
         <div className="space-y-4 text-base leading-relaxed" style={{ color: B.muted, maxWidth: 680 }}>
@@ -515,7 +514,7 @@ export default function LandingPage() {
       </section>
 
       {/* ============ DISCLAIMER ============ */}
-      <section className="max-w-[1100px] mx-auto px-6" style={{ paddingTop: 48, paddingBottom: 72 }}>
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-[72px]">
         <p className="text-[13px] leading-relaxed" style={{ color: B.light }}>
           The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>

@@ -11,7 +11,7 @@ export default function MarketingLayout({
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
       {/* Header */}
       <header className="border-b" style={{ borderColor: "#E5E7EB", backgroundColor: "#ffffff" }}>
-        <div className="max-w-[1100px] mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <Link href="/">
             <Image
               src={logo}
@@ -56,7 +56,7 @@ export default function MarketingLayout({
 
       {/* Footer */}
       <footer className="border-t" style={{ borderColor: "#E5E7EB", backgroundColor: "#ffffff" }}>
-        <div className="max-w-[1100px] mx-auto px-6 py-16">
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6 py-10 sm:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {/* Product */}
             <div>
