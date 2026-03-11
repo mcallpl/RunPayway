@@ -383,25 +383,66 @@ export default function LandingPage() {
 
       {/* ============ 2. SCORE CURIOSITY — Orientation ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 0, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
-          Where Would Your Income Stability Likely Fall?
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
+          Income Stability Exists on a Structural Spectrum
         </h2>
-        {/* Stability spectrum — visually dominant */}
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 600 }}>
+          The Income Stability Score™ places income structures on a standardized 0–100 stability scale.
+        </p>
+        {/* Stability spectrum — analytical scale */}
         <div className="mx-auto" style={{ maxWidth: 640 }}>
-          <div
-            className="rounded-full"
-            style={{ height: 16, background: B.gradient, marginBottom: 24 }}
-          />
-          <div className="grid grid-cols-4 gap-1">
+          {/* Spectrum bar with tick marks */}
+          <div style={{ position: "relative", marginBottom: 8 }}>
+            <div
+              className="rounded-full"
+              style={{ height: 14, background: B.gradient }}
+            />
+            {/* Tick marks at 0, 20, 40, 60, 80, 100 */}
+            {[0, 20, 40, 60, 80, 100].map((tick) => (
+              <div
+                key={tick}
+                style={{
+                  position: "absolute",
+                  left: `${tick}%`,
+                  top: -2,
+                  width: 1,
+                  height: 18,
+                  backgroundColor: "rgba(255,255,255,0.5)",
+                }}
+              />
+            ))}
+            {/* Vertical indicator marker */}
+            <div
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: -4,
+                width: 2,
+                height: 22,
+                backgroundColor: B.navy,
+                opacity: 0.25,
+                transform: "translateX(-50%)",
+              }}
+            />
+          </div>
+          {/* Tick labels */}
+          <div className="flex justify-between" style={{ marginBottom: 24 }}>
+            {[0, 20, 40, 60, 80, 100].map((tick) => (
+              <span key={tick} className="text-[9px]" style={{ color: B.light }}>{tick}</span>
+            ))}
+          </div>
+          {/* Band labels */}
+          <div className="grid grid-cols-4 gap-4">
             {[
-              { label: "Limited", range: "0\u201339" },
-              { label: "Developing", range: "40\u201359" },
-              { label: "Established", range: "60\u201379" },
-              { label: "High", range: "80\u2013100" },
+              { label: "Limited Stability", range: "0\u201339", desc: "fragile income structure" },
+              { label: "Developing Stability", range: "40\u201359", desc: "partial structural support" },
+              { label: "Established Stability", range: "60\u201379", desc: "resilient income structure" },
+              { label: "High Stability", range: "80\u2013100", desc: "structurally durable income" },
             ].map((band) => (
               <div key={band.label} className="text-center">
-                <div className="text-[12px] sm:text-[14px] font-semibold" style={{ color: B.navy }}>{band.label}</div>
-                <div className="text-[10px] sm:text-[12px]" style={{ color: B.light }}>{band.range}</div>
+                <div className="text-[12px] sm:text-[14px] font-bold" style={{ color: B.navy }}>{band.label}</div>
+                <div className="text-[10px] sm:text-[12px]" style={{ color: B.muted }}>{band.range}</div>
+                <div className="text-[10px] sm:text-[11px]" style={{ color: B.light, opacity: 0.7 }}>{band.desc}</div>
               </div>
             ))}
           </div>
@@ -410,12 +451,15 @@ export default function LandingPage() {
 
       {/* ============ 4. SIX FACTORS — Model Understanding ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
-          Six Structural Assessment Factors
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
+          Six Structural Factors Determine Income Stability
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 620 }}>
+          The Income Stability Score™ evaluates six structural dimensions of income to determine overall stability.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { key: "01", title: "Recurring Income Proportion", desc: "Proportion of income that renews without renegotiation." },
+            { key: "01", title: "Recurring Income Proportion", desc: "Income that renews without renegotiation." },
             { key: "02", title: "Income Concentration", desc: "Dependence on a small number of income sources." },
             { key: "03", title: "Number of Income Sources", desc: "Total active sources contributing to income." },
             { key: "04", title: "Forward Revenue Visibility", desc: "Committed or scheduled future income." },
@@ -424,24 +468,27 @@ export default function LandingPage() {
           ].map((factor) => (
             <div
               key={factor.key}
-              className="rounded-lg border"
+              className="rounded-lg border text-left"
               style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
             >
               {/* Data module header */}
               <div className="px-5 py-3 border-b" style={{ borderColor: B.sandDk }}>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-semibold" style={{ color: B.light }}>{factor.key}</span>
+                  <span className="text-[14px] font-bold" style={{ color: B.navy }}>{factor.key}</span>
                   <span style={{ height: 12, width: 1, backgroundColor: B.sandDk }} />
                   <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light }}>Factor</span>
                 </div>
               </div>
-              <div className="px-5 py-4">
-                <div className="text-[14px] font-semibold" style={{ color: B.navy, marginBottom: 8 }}>{factor.title}</div>
-                <div className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{factor.desc}</div>
+              <div className="px-5 py-5">
+                <div className="text-[14px] font-bold" style={{ color: B.navy, marginBottom: 8 }}>{factor.title}</div>
+                <div className="text-[13px] leading-relaxed" style={{ color: B.light }}>{factor.desc}</div>
               </div>
             </div>
           ))}
         </div>
+        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 32, maxWidth: 640 }}>
+          All six factors are evaluated within Model RP-1.0.
+        </p>
       </section>
 
       {/* ============ 5. STRUCTURAL STABILITY MODEL — Model Understanding (computation) ============ */}
