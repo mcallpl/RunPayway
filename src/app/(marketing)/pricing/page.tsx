@@ -115,7 +115,7 @@ export default function PricingPage() {
                 className="text-[40px] font-semibold leading-none"
                 style={{ color: B.navy, marginTop: 12, marginBottom: 16 }}
               >
-                $59
+                $39
               </div>
               <p className="text-[15px] leading-[1.7]" style={{ color: B.muted, marginBottom: 4 }}>
                 One structural measurement
@@ -157,13 +157,13 @@ export default function PricingPage() {
                 className="text-[40px] font-semibold leading-none"
                 style={{ color: B.navy, marginTop: 12, marginBottom: 16 }}
               >
-                $119
+                $99
               </div>
               <p className="text-[15px] leading-[1.7]" style={{ color: B.muted, marginBottom: 2 }}>
                 Three assessments across one year
               </p>
               <p className="text-[14px] font-medium" style={{ color: B.navy, marginBottom: 4 }}>
-                $39 per assessment
+                $33 per assessment
               </p>
               <p className="text-[13px]" style={{ color: B.light, marginBottom: 24 }}>
                 Secure checkout via Stripe
@@ -377,7 +377,7 @@ export default function PricingPage() {
               style={{ border: "1px solid #E5E7EB", backgroundColor: "#ffffff" }}
             >
               <span className="text-[16px] font-semibold" style={{ color: B.navy }}>
-                Single Assessment — $59
+                Single Assessment — $39
               </span>
               <span
                 className="text-[14px] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
@@ -392,7 +392,7 @@ export default function PricingPage() {
               style={{ border: `1px solid rgba(14, 26, 43, 0.4)`, backgroundColor: "#ffffff" }}
             >
               <span className="text-[16px] font-semibold" style={{ color: B.navy }}>
-                Annual Monitoring — $119
+                Annual Monitoring — $99
               </span>
               <span
                 className="text-[14px] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
