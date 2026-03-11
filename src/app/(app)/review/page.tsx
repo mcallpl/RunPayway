@@ -247,24 +247,56 @@ async function downloadPDF(recordId: string) {
   const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
   const pageWidth = 8.5;
   const pageHeight = 11;
-  const margin = 0.4;
+  const margin = 0.35;
   const contentWidth = pageWidth - margin * 2;
+  const contentHeight = pageHeight - margin * 2;
+
+  // Target aspect ratio for letter page content area
+  const targetRatio = contentHeight / contentWidth;
 
   for (let i = 0; i < pages.length; i++) {
     const el = pages[i] as HTMLElement;
+
+    // Force a fixed width for consistent capture (matching ~7.8in at 96dpi)
+    const captureWidth = 750;
+    const captureHeight = Math.round(captureWidth * targetRatio);
+
+    // Save original styles
+    const origWidth = el.style.width;
+    const origMinHeight = el.style.minHeight;
+    const origMaxWidth = el.style.maxWidth;
+    const origBoxSizing = el.style.boxSizing;
+
+    // Set fixed dimensions for capture
+    el.style.width = `${captureWidth}px`;
+    el.style.minHeight = `${captureHeight}px`;
+    el.style.maxWidth = `${captureWidth}px`;
+    el.style.boxSizing = "border-box";
+
     const canvas = await html2canvas(el, {
       scale: 2,
       useCORS: true,
       backgroundColor: "#ffffff",
       logging: false,
+      width: captureWidth,
+      height: captureHeight,
     });
 
-    const imgRatio = canvas.height / canvas.width;
-    const imgHeight = contentWidth * imgRatio;
-    const finalHeight = Math.min(imgHeight, pageHeight - margin * 2);
+    // Restore original styles
+    el.style.width = origWidth;
+    el.style.minHeight = origMinHeight;
+    el.style.maxWidth = origMaxWidth;
+    el.style.boxSizing = origBoxSizing;
 
     if (i > 0) pdf.addPage();
-    pdf.addImage(canvas.toDataURL("image/png"), "PNG", margin, margin, contentWidth, finalHeight);
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "PNG",
+      margin,
+      margin,
+      contentWidth,
+      contentHeight
+    );
   }
 
   const shortId = recordId.slice(0, 8);
