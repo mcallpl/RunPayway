@@ -315,29 +315,71 @@ function SampleReportPreview() {
   const pages = ["Executive Assessment", "Structural Analysis", "Improvement Path"];
 
   return (
-    <section style={{ paddingTop: 120, paddingBottom: 0 }}>
-      {/* Headline area — on white */}
-      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ marginBottom: 56 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-          What You Will Receive
-        </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 20, maxWidth: 620 }}>
-          Every assessment generates a structured PDF report containing your complete Income Stability analysis.
-        </p>
-        <p className="text-[13px] mx-auto" style={{ color: B.light, maxWidth: 620 }}>
-          Sample report based on a fictional income profile scored under Model RP-1.0.
-        </p>
-      </div>
-
-      {/* Teal background panel */}
+    <section style={{ paddingTop: 0, paddingBottom: 0 }}>
+      {/* Teal background panel with subtle geometric art */}
       <div
         style={{
           backgroundColor: B.teal,
-          paddingTop: 48,
+          paddingTop: 100,
           paddingBottom: 64,
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
+        {/* Subtle topographic / contour line art overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.06,
+            pointerEvents: "none",
+          }}
+        >
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <defs>
+              <pattern id="topo" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+                <circle cx="100" cy="100" r="20" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="40" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="60" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="100" cy="100" r="100" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="0" cy="0" r="30" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="0" cy="0" r="60" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="0" cy="0" r="90" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="200" cy="200" r="25" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="200" cy="200" r="55" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+                <circle cx="200" cy="200" r="85" fill="none" stroke="#ffffff" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#topo)" />
+          </svg>
+        </div>
+
+        {/* Subtle radial glow */}
+        <div
+          style={{
+            position: "absolute",
+            top: "20%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "80%",
+            height: "60%",
+            background: "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center relative" style={{ zIndex: 1 }}>
+          {/* Headline — inside teal */}
+          <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: "#ffffff", marginBottom: 16 }}>
+            What You Will Receive
+          </h2>
+          <p className="text-base leading-relaxed mx-auto" style={{ color: "rgba(255,255,255,0.8)", marginBottom: 20, maxWidth: 620 }}>
+            Every assessment generates a structured PDF report containing your complete Income Stability analysis.
+          </p>
+          <p className="text-[13px] mx-auto" style={{ color: "rgba(255,255,255,0.55)", marginBottom: 48, maxWidth: 620 }}>
+            Sample report based on a fictional income profile scored under Model RP-1.0.
+          </p>
           {/* Page tabs */}
           <div className="flex justify-center gap-2 mb-8">
             {pages.map((label, i) => (
