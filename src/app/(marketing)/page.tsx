@@ -319,7 +319,7 @@ function SampleReportPreview() {
       {/* Teal background panel with subtle geometric art */}
       <div
         style={{
-          backgroundColor: B.teal,
+          backgroundColor: B.navy,
           paddingTop: 100,
           paddingBottom: 64,
           position: "relative",
