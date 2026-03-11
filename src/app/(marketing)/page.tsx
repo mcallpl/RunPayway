@@ -886,52 +886,86 @@ export default function LandingPage() {
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           How It Works
         </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 56, maxWidth: 560 }}>
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 64, maxWidth: 560 }}>
           Three steps to your Income Stability Score™ report.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6" style={{ maxWidth: 800, margin: "0 auto" }}>
-          {[
-            {
-              step: "01",
-              title: "Select Your Plan",
-              desc: "Choose a single assessment or annual monitoring package.",
-              icon: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
-            },
-            {
-              step: "02",
-              title: "Complete Six Factors",
-              desc: "Answer six structured questions about your income system. Under two minutes.",
-              icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
-            },
-            {
-              step: "03",
-              title: "Receive Your Report",
-              desc: "Get your Income Stability Score™ and full PDF assessment record instantly.",
-              icon: "M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z",
-            },
-          ].map((item, i) => (
-            <div key={item.step} className="flex flex-col items-center text-center">
-              {/* Icon circle */}
-              <div
-                className="flex items-center justify-center rounded-full mb-5"
-                style={{
-                  width: 56,
-                  height: 56,
-                  backgroundColor: i === 2 ? B.navy : "#ffffff",
-                  border: i === 2 ? "none" : `1px solid ${B.sandDk}`,
-                }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={i === 2 ? "#ffffff" : B.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d={item.icon} />
-                </svg>
+
+        {/* Steps with connecting line */}
+        <div className="relative" style={{ maxWidth: 900, margin: "0 auto" }}>
+          {/* Horizontal connector line (desktop only) */}
+          <div
+            className="hidden md:block absolute"
+            style={{
+              top: 36,
+              left: "16.67%",
+              right: "16.67%",
+              height: 1,
+              backgroundColor: B.sandDk,
+            }}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+            {[
+              {
+                step: "01",
+                title: "Select Your Plan",
+                desc: "Choose a single assessment or annual monitoring package.",
+              },
+              {
+                step: "02",
+                title: "Complete Six Factors",
+                desc: "Answer six structured questions about your income system. Under two minutes.",
+              },
+              {
+                step: "03",
+                title: "Receive Your Report",
+                desc: "Get your Income Stability Score™ and full PDF assessment record instantly.",
+              },
+            ].map((item, i) => (
+              <div key={item.step} className="flex flex-col items-center text-center relative">
+                {/* Step number circle */}
+                <div
+                  className="flex items-center justify-center rounded-full relative z-10 mb-6"
+                  style={{
+                    width: 72,
+                    height: 72,
+                    backgroundColor: i === 2 ? B.navy : "#ffffff",
+                    border: i === 2 ? "none" : `1.5px solid ${B.sandDk}`,
+                    boxShadow: i === 2 ? "0 4px 20px rgba(14, 26, 43, 0.15)" : "0 2px 8px rgba(0,0,0,0.04)",
+                  }}
+                >
+                  <span
+                    className="text-[22px] font-semibold"
+                    style={{ color: i === 2 ? "#ffffff" : B.navy }}
+                  >
+                    {item.step}
+                  </span>
+                </div>
+
+                {/* Content card */}
+                <div
+                  className="rounded-lg w-full"
+                  style={{
+                    backgroundColor: i === 2 ? B.sand : "#ffffff",
+                    border: `1px solid ${B.sandDk}`,
+                    padding: "24px 20px",
+                  }}
+                >
+                  <div className="text-[15px] font-semibold mb-2" style={{ color: B.navy }}>{item.title}</div>
+                  <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{item.desc}</p>
+                </div>
+
+                {/* Mobile arrow between steps */}
+                {i < 2 && (
+                  <div className="md:hidden flex justify-center mt-4 -mb-4">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M8 3v10m0 0l-3-3m3 3l3-3" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
               </div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.15em] mb-2" style={{ color: B.light }}>
-                Step {item.step}
-              </div>
-              <div className="text-[16px] font-semibold mb-2" style={{ color: B.navy }}>{item.title}</div>
-              <p className="text-[13px] leading-relaxed" style={{ color: B.muted, maxWidth: 240 }}>{item.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
