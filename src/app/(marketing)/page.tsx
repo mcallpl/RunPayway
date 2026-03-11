@@ -167,7 +167,6 @@ export default function LandingPage() {
 
       {/* ============ 1. HERO — Curiosity ============ */}
       <section
-        className="text-center"
         style={{
           backgroundColor: "#ffffff",
           paddingTop: 48,
@@ -175,30 +174,205 @@ export default function LandingPage() {
         }}
       >
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
-          <h1 className="text-[32px] sm:text-[44px] md:text-[56px] font-semibold leading-[1.08] mx-auto" style={{ color: B.navy, marginBottom: 24, maxWidth: 720 }}>
-            The Standard for Measuring Income Stability
-          </h1>
-          <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 8, maxWidth: 560 }}>
-            The <strong style={{ color: B.navy }}>Income Stability Score™</strong> determines the structural stability of income under Model RP-1.0.
-          </p>
-          <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 560 }}>
-            See how stable your income structure is today.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-            <Link
-              href="/pricing"
-              className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
-              style={{ backgroundColor: B.navy, color: "#ffffff" }}
-            >
-              Get Score
-            </Link>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, textAlign: "left" }}>
-              <p className="text-[13px]" style={{ color: B.muted }}>
-                Assessment time: <strong style={{ color: B.navy }}>Under two minutes</strong>
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            {/* Left column — copy */}
+            <div className="flex-1 text-center lg:text-left">
+              <div
+                className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-5"
+                style={{ color: B.light }}
+              >
+                RUNPAYWAY™ | MODEL RP-1.0
+              </div>
+              <h1
+                className="text-[32px] sm:text-[44px] md:text-[52px] font-semibold leading-[1.08]"
+                style={{ color: B.navy, marginBottom: 16 }}
+              >
+                How Stable Is Your Income?
+              </h1>
+              <p
+                className="text-[17px] font-medium leading-snug"
+                style={{ color: B.navy, marginBottom: 16 }}
+              >
+                Measure the Structural Stability of Your Income
               </p>
-              <p className="text-[13px]" style={{ color: B.muted }}>
-                Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
+              <p
+                className="text-base leading-relaxed"
+                style={{ color: B.muted, marginBottom: 32, maxWidth: 480 }}
+              >
+                The Income Stability Score™ provides a structured assessment of income stability under Model RP-1.0. Complete the assessment in under two minutes and receive an instant PDF assessment record.
               </p>
+              <div className="flex flex-col sm:flex-row items-center lg:items-start gap-5">
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: B.navy, color: "#ffffff" }}
+                >
+                  Get Score
+                </Link>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, textAlign: "left" }}>
+                  <p className="text-[13px]" style={{ color: B.muted }}>
+                    Assessment time: <strong style={{ color: B.navy }}>Under two minutes</strong>
+                  </p>
+                  <p className="text-[13px]" style={{ color: B.muted }}>
+                    Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right column — report preview */}
+            <div className="flex-1 flex flex-col items-center lg:items-end w-full lg:w-auto">
+              {/* Label above card */}
+              <div
+                className="text-[11px] tracking-[0.08em] mb-3"
+                style={{ color: B.light }}
+              >
+                Sample Income Stability Score™ Report
+              </div>
+
+              {/* Outer report surface */}
+              <div
+                className="rounded-2xl w-full hero-report-surface"
+                style={{
+                  maxWidth: 380,
+                  backgroundColor: "#F9F9F8",
+                  border: "1px solid #EDECEA",
+                  padding: "24px 20px",
+                  boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                }}
+              >
+                {/* Inner report card */}
+                <div
+                  className="rounded-xl"
+                  style={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #EDECEA",
+                    padding: "24px 20px",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+                  }}
+                >
+                  {/* Card title */}
+                  <div
+                    className="text-[13px] font-semibold"
+                    style={{ color: B.navy, marginBottom: 6 }}
+                  >
+                    Income Stability Score™
+                  </div>
+
+                  {/* Verified Assessment Output label */}
+                  <div
+                    className="text-[9px] uppercase tracking-[0.15em]"
+                    style={{ color: B.light, marginBottom: 16 }}
+                  >
+                    Verified Assessment Output
+                  </div>
+
+                  {/* Large score */}
+                  <div
+                    className="text-[56px] font-semibold leading-none"
+                    style={{ color: B.navy, marginBottom: 4 }}
+                  >
+                    78
+                  </div>
+
+                  {/* Score band */}
+                  <div
+                    className="text-[13px] font-medium"
+                    style={{ color: B.teal, marginBottom: 20 }}
+                  >
+                    Established
+                  </div>
+
+                  {/* Spectrum bar */}
+                  <div
+                    className="rounded-full"
+                    style={{ height: 8, background: B.gradient, marginBottom: 8 }}
+                  />
+                  <div className="grid grid-cols-4 gap-0.5" style={{ marginBottom: 20 }}>
+                    {[
+                      { label: "Limited", range: "0\u201339" },
+                      { label: "Developing", range: "40\u201359" },
+                      { label: "Established", range: "60\u201379" },
+                      { label: "High", range: "80\u2013100" },
+                    ].map((band) => (
+                      <div key={band.label} className="text-center">
+                        <div className="text-[8px] font-semibold" style={{ color: B.navy }}>{band.label}</div>
+                        <div className="text-[7px]" style={{ color: B.light }}>{band.range}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Factor rows */}
+                  <div style={{ borderTop: `1px solid ${B.sandDk}`, paddingTop: 14 }}>
+                    {[
+                      "Recurring Income Proportion",
+                      "Income Concentration",
+                      "Forward Revenue Visibility",
+                      "Income Continuity Without Active Labor",
+                    ].map((factor, i) => (
+                      <div
+                        key={factor}
+                        className="flex items-center justify-between py-2"
+                        style={{
+                          borderBottom: i < 3 ? `1px solid ${B.sandDk}` : "none",
+                        }}
+                      >
+                        <span className="text-[11px]" style={{ color: B.muted }}>{factor}</span>
+                        <span
+                          className="w-8 h-1.5 rounded-full"
+                          style={{
+                            background: B.gradient,
+                            opacity: 0.5 + (i % 3) * 0.2,
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Metadata line */}
+                  <div
+                    className="text-[9px] mt-4 flex gap-4"
+                    style={{ color: B.light }}
+                  >
+                    <span>Assessment Date: Example</span>
+                    <span>Model Version: RP-1.0</span>
+                  </div>
+
+                  {/* Report footer */}
+                  <div
+                    className="text-[9px] mt-3 pt-3"
+                    style={{ color: B.light, borderTop: `1px solid ${B.sandDk}` }}
+                  >
+                    RunPayway™ Income Stability Assessment
+                  </div>
+                </div>
+
+                {/* Model Assessment Record footer inside outer surface */}
+                <div
+                  className="text-[9px] text-center mt-3"
+                  style={{ color: B.light }}
+                >
+                  Model RP-1.0 Assessment Record
+                </div>
+              </div>
+
+              {/* System credibility line */}
+              <div
+                className="text-[10px] mt-4 tracking-[0.04em]"
+                style={{ color: B.light }}
+              >
+                Registered Model RP-1.0 &mdash; System Active &mdash; Updated March 2026
+              </div>
+
+              {/* Model identifier */}
+              <div className="text-center mt-4" style={{ maxWidth: 380, width: "100%" }}>
+                <div className="text-[11px]" style={{ color: B.muted }}>
+                  RunPayway Structural Stability Model
+                </div>
+                <div className="text-[11px]" style={{ color: B.light }}>
+                  Version RP-1.0
+                </div>
+              </div>
             </div>
           </div>
         </div>

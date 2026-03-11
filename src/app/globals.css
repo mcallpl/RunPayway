@@ -52,6 +52,15 @@ select, input[type="text"], input[type="email"] {
   color: white;
 }
 
+/* Hero report surface — settle into place */
+@keyframes heroSettle {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-report-surface {
+  animation: heroSettle 0.7s ease-out both;
+}
+
 /* Editorial stage — report preview */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
