@@ -708,33 +708,57 @@ export default function LandingPage() {
 
       {/* ============ 8. CLASSIFICATION SCALE — Score Classification ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 24 }}>
           Income Stability Classification Scale
         </h2>
-        {/* Spectrum bar — visually dominant */}
-        <div className="rounded-full mx-auto" style={{ height: 12, background: B.gradient, maxWidth: 640, marginBottom: 24 }} />
-        <div className="rounded-lg overflow-hidden" style={{ backgroundColor: B.sand }}>
-          <div className="grid grid-cols-2 text-[10px] font-semibold uppercase tracking-wider px-5 sm:px-6 py-4" style={{ color: B.muted }}>
-            <span>Score Range</span>
-            <span>Classification</span>
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 40, maxWidth: 640 }}>
+          The Income Stability Score™ classifies income structures into four stability tiers based on the 0–100 stability scale.
+        </p>
+        {/* Spectrum bar with tier separators */}
+        <div className="mx-auto relative" style={{ maxWidth: 640, marginBottom: 28 }}>
+          <div
+            className="rounded-full"
+            style={{ height: 12, background: B.gradient }}
+          />
+          {/* Tier separators at 40%, 60%, 80% */}
+          {[40, 60, 80].map((pos) => (
+            <div
+              key={pos}
+              style={{
+                position: "absolute",
+                left: `${pos}%`,
+                top: 0,
+                width: 1,
+                height: 12,
+                backgroundColor: "rgba(255,255,255,0.4)",
+              }}
+            />
+          ))}
+        </div>
+        <div className="rounded-lg overflow-hidden mx-auto" style={{ backgroundColor: B.sand, maxWidth: 640 }}>
+          <div className="grid grid-cols-3 text-[10px] font-semibold uppercase tracking-wider px-5 sm:px-6 py-4" style={{ color: B.muted }}>
+            <span className="text-left">Income Stability Score Range</span>
+            <span className="text-left">Structural Classification</span>
+            <span className="text-left">Structural Description</span>
           </div>
           {[
-            ["0\u201339", "Limited Stability"],
-            ["40\u201359", "Developing Stability"],
-            ["60\u201379", "Established Stability"],
-            ["80\u2013100", "High Stability"],
-          ].map(([range, label], i) => (
+            { range: "0\u201339", label: "Limited Stability", desc: "income heavily dependent on active work" },
+            { range: "40\u201359", label: "Developing Stability", desc: "partial structural support" },
+            { range: "60\u201379", label: "Established Stability", desc: "resilient income structure" },
+            { range: "80\u2013100", label: "High Stability", desc: "structurally durable income" },
+          ].map((row, i) => (
             <div
-              key={range}
-              className="grid grid-cols-2 px-5 sm:px-6 py-4 text-[14px] sm:text-[15px]"
+              key={row.range}
+              className="grid grid-cols-3 px-5 sm:px-6 py-4 text-[14px] sm:text-[15px]"
               style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : B.sand }}
             >
-              <span className="font-semibold" style={{ color: B.navy }}>{range}</span>
-              <span style={{ color: B.muted }}>{label}</span>
+              <span className="font-semibold text-left" style={{ color: B.navy }}>{row.range}</span>
+              <span className="text-left" style={{ color: B.muted }}>{row.label}</span>
+              <span className="text-left text-[13px]" style={{ color: B.light }}>{row.desc}</span>
             </div>
           ))}
         </div>
-        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 24, maxWidth: 640 }}>
+        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 32, maxWidth: 640 }}>
           The classification reflects income structure at the time the assessment is completed under Model RP-1.0.
         </p>
       </section>
