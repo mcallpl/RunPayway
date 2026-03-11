@@ -1030,6 +1030,77 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ============ CLASSIFICATION SCALE — Official Scoring Framework ============ */}
+      <section style={{ backgroundColor: "#ffffff", paddingTop: 96, paddingBottom: 120 }}>
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
+          <div className="text-center" style={{ marginBottom: 56 }}>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
+              Official Scoring Framework
+            </div>
+            <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
+              Income Stability Classification Scale
+            </h2>
+            <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
+              The Income Stability Score™ classifies income structures into four tiers based on the standardized 0–100 stability scale under Model RP-1.0.
+            </p>
+          </div>
+
+          {/* Four tier cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 sm:gap-0" style={{ maxWidth: 880, margin: "0 auto" }}>
+            {[
+              { range: "0\u201339", label: "Limited", desc: "Fragile income structure heavily dependent on active work. Income stops when work stops.", color: "#DC2626" },
+              { range: "40\u201359", label: "Developing", desc: "Partial structural support. Some recurring elements exist but income still depends primarily on active effort.", color: "#F59E0B" },
+              { range: "60\u201379", label: "Established", desc: "Resilient income structure with diversified sources and meaningful forward visibility. Can absorb disruption.", color: B.teal },
+              { range: "80\u2013100", label: "High", desc: "Structurally durable income that continues with minimal active effort. Multiple persistent revenue sources.", color: B.navy },
+            ].map((tier, i) => (
+              <div
+                key={tier.label}
+                className="relative"
+                style={{
+                  backgroundColor: "#ffffff",
+                  borderTop: `3px solid ${tier.color}`,
+                  border: `1px solid ${B.sandDk}`,
+                  borderTopWidth: 3,
+                  borderTopColor: tier.color,
+                  marginLeft: i > 0 ? -1 : 0,
+                  padding: "28px 24px",
+                }}
+              >
+                {/* Score range — large */}
+                <div className="text-[28px] font-bold leading-none mb-2" style={{ color: B.navy }}>
+                  {tier.range}
+                </div>
+
+                {/* Tier label */}
+                <div className="text-[14px] font-semibold mb-3" style={{ color: tier.color }}>
+                  {tier.label} Stability
+                </div>
+
+                {/* Description */}
+                <p className="text-[12px] leading-relaxed" style={{ color: B.muted }}>
+                  {tier.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Spectrum bar below cards */}
+          <div className="mx-auto relative" style={{ maxWidth: 880, marginTop: 0 }}>
+            <div style={{ height: 6, background: B.gradient }} />
+          </div>
+
+          {/* Model reference */}
+          <div className="text-center" style={{ marginTop: 40 }}>
+            <p className="text-[12px] font-medium" style={{ color: B.muted }}>
+              Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time the assessment is completed.
+            </p>
+            <p className="text-[11px] mt-2" style={{ color: B.light }}>
+              Band thresholds are deterministic and do not change between assessments.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ============ SIX FACTORS — Model Understanding ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
@@ -1237,131 +1308,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ INCOME STRUCTURE MAP ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 20 }}>
-          Income Structure Stability Map (Conceptual Model)
-        </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 56, maxWidth: 640 }}>
-          The Income Structure Map visualizes how income systems vary based on stability and structural durability.
-        </p>
-
-        {/* Map with axes */}
-        <div className="mx-auto" style={{ maxWidth: 640, marginBottom: 48 }}>
-          <div className="flex">
-            <div className="flex flex-col items-center justify-between mr-3" style={{ minWidth: 20 }}>
-              <span className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: B.light, writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
-                Income Stability
-              </span>
-            </div>
-            <div className="flex-1">
-              <div className="text-[10px] font-medium mb-2 text-left" style={{ color: B.light }}>High Stability</div>
-              <div
-                className="rounded-lg relative"
-                style={{
-                  backgroundColor: B.sand,
-                  border: `1px solid ${B.sandDk}`,
-                  padding: 24,
-                }}
-              >
-                <div className="grid grid-cols-3 gap-4 sm:gap-5">
-                  {[
-                    { label: "Active Income", desc: "Requires direct personal effort to generate.", color: B.navy },
-                    { label: "Semi-Persistent Income", desc: "Continues for a period but requires periodic renewal.", color: B.purple },
-                    { label: "Persistent Income", desc: "Continues without active effort or renegotiation.", color: B.teal },
-                  ].map((tier) => (
-                    <div
-                      key={tier.label}
-                      className="rounded-lg border flex flex-col"
-                      style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
-                    >
-                      <div className="px-3 sm:px-4 py-2.5 border-b flex items-center gap-2.5" style={{ borderColor: B.sandDk }}>
-                        <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: tier.color }} />
-                        <div className="text-[12px] sm:text-[13px] font-semibold text-left" style={{ color: B.navy }}>{tier.label}</div>
-                      </div>
-                      <div className="px-3 sm:px-4 py-2.5 flex-1">
-                        <div className="text-[11px] sm:text-[12px] leading-relaxed text-left" style={{ color: B.muted }}>{tier.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex items-center justify-end gap-2 mt-4 pr-2">
-                  <div className="rounded-full" style={{ width: 6, height: 6, backgroundColor: B.purple, opacity: 0.5 }} />
-                  <span className="text-[9px] font-medium" style={{ color: B.light }}>Example Income System</span>
-                </div>
-              </div>
-              <div className="text-[10px] font-medium mt-2 text-left" style={{ color: B.light }}>Low Stability</div>
-              <div className="flex justify-between items-center mt-3">
-                <span className="text-[10px] font-medium" style={{ color: B.light }}>Labor Dependent</span>
-                <div className="flex-1 mx-3">
-                  <div className="flex-1 h-1.5 rounded-full" style={{ background: B.gradient }} />
-                </div>
-                <span className="text-[10px] font-medium" style={{ color: B.light }}>Structurally Supported</span>
-              </div>
-              <div className="text-[10px] font-semibold uppercase tracking-wider mt-2" style={{ color: B.muted }}>
-                Income Structure
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p className="text-[13px] leading-relaxed mx-auto" style={{ color: B.light, maxWidth: 640 }}>
-          Income systems move toward the upper-right quadrant as structural support and income continuity increase.
-        </p>
-      </section>
-
-      {/* ============ CLASSIFICATION SCALE ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 28 }}>
-          Income Stability Classification Scale
-        </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 640 }}>
-          The Income Stability Score™ classifies income structures into four stability tiers based on the 0–100 stability scale.
-        </p>
-        {/* Spectrum bar with tier separators */}
-        <div className="mx-auto relative" style={{ maxWidth: 640, marginBottom: 32 }}>
-          <div className="rounded-full" style={{ height: 12, background: B.gradient }} />
-          {[40, 60, 80].map((pos) => (
-            <div
-              key={pos}
-              style={{
-                position: "absolute",
-                left: `${pos}%`,
-                top: 0,
-                width: 1,
-                height: 12,
-                backgroundColor: "rgba(255,255,255,0.4)",
-              }}
-            />
-          ))}
-        </div>
-        <div className="rounded-lg overflow-hidden mx-auto" style={{ backgroundColor: B.sand, maxWidth: 640 }}>
-          <div className="grid grid-cols-3 text-[10px] font-semibold uppercase tracking-wider px-5 sm:px-6 py-4" style={{ color: B.muted }}>
-            <span className="text-left">Income Stability Score Range</span>
-            <span className="text-left">Structural Classification</span>
-            <span className="text-left">Structural Description</span>
-          </div>
-          {[
-            { range: "0\u201339", label: "Limited Stability", desc: "income heavily dependent on active work" },
-            { range: "40\u201359", label: "Developing Stability", desc: "partial structural support" },
-            { range: "60\u201379", label: "Established Stability", desc: "resilient income structure" },
-            { range: "80\u2013100", label: "High Stability", desc: "structurally durable income" },
-          ].map((row, i) => (
-            <div
-              key={row.range}
-              className="grid grid-cols-3 px-5 sm:px-6 py-4 text-[14px] sm:text-[15px]"
-              style={{ backgroundColor: i % 2 === 0 ? "#ffffff" : B.sand }}
-            >
-              <span className="font-semibold text-left" style={{ color: B.navy }}>{row.range}</span>
-              <span className="text-left" style={{ color: B.muted }}>{row.label}</span>
-              <span className="text-left text-[13px]" style={{ color: B.light }}>{row.desc}</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 40, maxWidth: 640 }}>
-          The classification reflects income structure at the time the assessment is completed under Model RP-1.0.
-        </p>
-      </section>
 
       {/* ============ FAQ ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>
