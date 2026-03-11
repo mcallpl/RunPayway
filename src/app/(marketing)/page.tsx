@@ -1035,39 +1035,106 @@ export default function LandingPage() {
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           Six Structural Factors Determine Income Stability
         </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 56, maxWidth: 620 }}>
-          The Income Stability Score™ evaluates six structural dimensions of income to determine overall stability.
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 24, maxWidth: 620 }}>
+          The Income Stability Score™ evaluates six structural dimensions across two pillars to determine overall stability.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[
-            { key: "01", title: "Recurring Income Proportion", desc: "Income that renews without renegotiation." },
-            { key: "02", title: "Income Concentration", desc: "Dependence on a small number of income sources." },
-            { key: "03", title: "Number of Income Sources", desc: "Total active sources contributing to income." },
-            { key: "04", title: "Forward Revenue Visibility", desc: "Committed or scheduled future income." },
-            { key: "05", title: "Earnings Variability", desc: "Month-to-month consistency of income." },
-            { key: "06", title: "Income Continuity Without Active Labor", desc: "Income that continues without direct personal effort." },
-          ].map((factor) => (
-            <div
-              key={factor.key}
-              className="rounded-lg border text-left"
-              style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
-            >
-              <div className="px-5 py-3 border-b" style={{ borderColor: B.sandDk }}>
-                <div className="flex items-center gap-3">
-                  <span className="text-[14px] font-bold" style={{ color: B.navy }}>{factor.key}</span>
-                  <span style={{ height: 12, width: 1, backgroundColor: B.sandDk }} />
-                  <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light }}>Factor</span>
-                </div>
-              </div>
-              <div className="px-5 py-5">
-                <div className="text-[14px] font-bold" style={{ color: B.navy, marginBottom: 8 }}>{factor.title}</div>
-                <div className="text-[13px] leading-relaxed" style={{ color: B.light }}>{factor.desc}</div>
+
+        {/* Pillar weight indicators */}
+        <div className="flex justify-center gap-8 mb-12">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: B.navy }} />
+            <span className="text-[12px] font-medium" style={{ color: B.muted }}>Structure Pillar — 60% weight</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: B.teal }} />
+            <span className="text-[12px] font-medium" style={{ color: B.muted }}>Stability Pillar — 40% weight</span>
+          </div>
+        </div>
+
+        {/* Two-pillar layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-left" style={{ maxWidth: 920, margin: "0 auto" }}>
+
+          {/* STRUCTURE PILLAR */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="rounded" style={{ width: 4, height: 20, backgroundColor: B.navy }} />
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.15em]" style={{ color: B.navy }}>Structure Pillar</div>
+                <div className="text-[10px]" style={{ color: B.light }}>How income is built and organized</div>
               </div>
             </div>
-          ))}
+            <div className="flex flex-col gap-4">
+              {[
+                { key: "01", title: "Recurring Income Proportion", desc: "The share of income that renews automatically — without renegotiation or finding new clients." },
+                { key: "03", title: "Number of Income Sources", desc: "Total active, independent sources contributing to income. More sources create structural redundancy." },
+                { key: "04", title: "Forward Revenue Visibility", desc: "How much future income is already committed, contracted, or scheduled. Reduces uncertainty." },
+              ].map((factor) => (
+                <div
+                  key={factor.key}
+                  className="rounded-lg overflow-hidden flex"
+                  style={{ backgroundColor: "#ffffff", border: `1px solid ${B.sandDk}` }}
+                >
+                  {/* Left accent */}
+                  <div style={{ width: 4, backgroundColor: B.navy, flexShrink: 0 }} />
+                  <div className="flex-1 p-5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span
+                        className="flex items-center justify-center text-[12px] font-bold rounded"
+                        style={{ width: 28, height: 28, backgroundColor: B.sand, color: B.navy }}
+                      >
+                        {factor.key}
+                      </span>
+                      <span className="text-[14px] font-semibold" style={{ color: B.navy }}>{factor.title}</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{factor.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* STABILITY PILLAR */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="rounded" style={{ width: 4, height: 20, backgroundColor: B.teal }} />
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.15em]" style={{ color: B.teal }}>Stability Pillar</div>
+                <div className="text-[10px]" style={{ color: B.light }}>How income holds up under pressure</div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              {[
+                { key: "02", title: "Income Concentration", desc: "How dependent income is on a small number of sources. High concentration increases exposure to disruption." },
+                { key: "05", title: "Earnings Variability", desc: "Month-to-month consistency of income. Lower variability means more predictable cash flow." },
+                { key: "06", title: "Income Continuity Without Active Labor", desc: "Whether income continues when you stop working. The key differentiator between fragile and durable income." },
+              ].map((factor) => (
+                <div
+                  key={factor.key}
+                  className="rounded-lg overflow-hidden flex"
+                  style={{ backgroundColor: "#ffffff", border: `1px solid ${B.sandDk}` }}
+                >
+                  {/* Left accent */}
+                  <div style={{ width: 4, backgroundColor: B.teal, flexShrink: 0 }} />
+                  <div className="flex-1 p-5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span
+                        className="flex items-center justify-center text-[12px] font-bold rounded"
+                        style={{ width: 28, height: 28, backgroundColor: B.sand, color: B.teal }}
+                      >
+                        {factor.key}
+                      </span>
+                      <span className="text-[14px] font-semibold" style={{ color: B.navy }}>{factor.title}</span>
+                    </div>
+                    <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{factor.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 40, maxWidth: 640 }}>
-          All six factors are evaluated within Model RP-1.0.
+
+        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 48, maxWidth: 640 }}>
+          All six factors are evaluated within Model RP-1.0. Pillar weights are fixed and deterministic.
         </p>
       </section>
 
