@@ -612,39 +612,106 @@ export default function LandingPage() {
 
       {/* ============ 7. INCOME STRUCTURE MAP ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
-          Income Structure Map
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
+          Income Structure Stability Map (Conceptual Model)
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ marginBottom: 24 }}>
-          {[
-            { label: "Active Income", desc: "Requires direct personal effort to generate.", color: B.navy },
-            { label: "Semi-Persistent Income", desc: "Continues for a period but requires periodic renewal.", color: B.purple },
-            { label: "Persistent Income", desc: "Continues without active effort or renegotiation.", color: B.teal },
-          ].map((tier) => (
-            <div
-              key={tier.label}
-              className="rounded-lg border"
-              style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
-            >
-              <div className="px-5 py-3 border-b flex items-center gap-3" style={{ borderColor: B.sandDk }}>
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: tier.color }} />
-                <div className="text-[14px] font-semibold" style={{ color: B.navy }}>{tier.label}</div>
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 48, maxWidth: 640 }}>
+          The Income Structure Map visualizes how income systems vary based on stability and structural durability.
+        </p>
+
+        {/* Map with axes */}
+        <div className="mx-auto" style={{ maxWidth: 640, marginBottom: 40 }}>
+          <div className="flex">
+            {/* Vertical axis label */}
+            <div className="flex flex-col items-center justify-between mr-3" style={{ minWidth: 20 }}>
+              <span className="text-[9px] font-semibold uppercase tracking-wider" style={{ color: B.light, writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
+                Income Stability
+              </span>
+            </div>
+            <div className="flex-1">
+              {/* Top axis label */}
+              <div className="text-[10px] font-medium mb-2 text-left" style={{ color: B.light }}>High Stability</div>
+
+              {/* Map grid area */}
+              <div
+                className="rounded-lg relative"
+                style={{
+                  backgroundColor: B.sand,
+                  border: `1px solid ${B.sandDk}`,
+                  aspectRatio: "16/10",
+                  padding: 24,
+                }}
+              >
+                {/* Three tier cards inside grid */}
+                <div className="grid grid-cols-3 gap-3 h-full">
+                  {[
+                    { label: "Active Income", desc: "Requires direct personal effort to generate.", color: B.navy },
+                    { label: "Semi-Persistent Income", desc: "Continues for a period but requires periodic renewal.", color: B.purple },
+                    { label: "Persistent Income", desc: "Continues without active effort or renegotiation.", color: B.teal },
+                  ].map((tier) => (
+                    <div
+                      key={tier.label}
+                      className="rounded-lg border flex flex-col"
+                      style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
+                    >
+                      <div className="px-3 sm:px-4 py-2 border-b flex items-center gap-2" style={{ borderColor: B.sandDk }}>
+                        <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: tier.color }} />
+                        <div className="text-[12px] sm:text-[13px] font-semibold text-left" style={{ color: B.navy }}>{tier.label}</div>
+                      </div>
+                      <div className="px-3 sm:px-4 py-2 flex-1">
+                        <div className="text-[11px] sm:text-[12px] leading-relaxed text-left" style={{ color: B.muted }}>{tier.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Example marker */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "35%",
+                    right: "22%",
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="rounded-full"
+                      style={{
+                        width: 8,
+                        height: 8,
+                        backgroundColor: B.purple,
+                        opacity: 0.6,
+                      }}
+                    />
+                    <span className="text-[9px] font-medium" style={{ color: B.muted }}>
+                      Example Income System
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="px-5 py-4">
-                <div className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{tier.desc}</div>
+
+              {/* Bottom axis label */}
+              <div className="text-[10px] font-medium mt-2 text-left" style={{ color: B.light }}>Low Stability</div>
+
+              {/* Horizontal axis */}
+              <div className="flex justify-between items-center mt-3">
+                <span className="text-[10px] font-medium" style={{ color: B.light }}>Labor Dependent</span>
+                <div className="flex-1 mx-3">
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1.5 rounded-full" style={{ background: B.gradient }} />
+                  </div>
+                </div>
+                <span className="text-[10px] font-medium" style={{ color: B.light }}>Structurally Supported</span>
+              </div>
+              <div className="text-[10px] font-semibold uppercase tracking-wider mt-2" style={{ color: B.muted }}>
+                Income Structure
               </div>
             </div>
-          ))}
-        </div>
-        {/* Stability arrow */}
-        <div className="flex items-center gap-3 mx-auto" style={{ maxWidth: 480, marginBottom: 24 }}>
-          <div className="flex-1 h-2 rounded-full" style={{ background: B.gradient }} />
-          <div className="text-[11px] font-semibold uppercase tracking-wider shrink-0" style={{ color: B.teal }}>
-            More Stable
           </div>
         </div>
-        <p className="text-[14px] leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 640 }}>
-          Income systems become more stable as income moves from active sources toward persistent sources.
+
+        <p className="text-[13px] leading-relaxed mx-auto" style={{ color: B.light, maxWidth: 640 }}>
+          Income systems move toward the upper-right quadrant as structural support and income continuity increase.
         </p>
       </section>
 
