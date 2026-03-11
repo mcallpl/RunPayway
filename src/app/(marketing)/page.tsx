@@ -329,7 +329,7 @@ export default function LandingPage() {
                 <Link
                   href="/pricing"
                   className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: B.navy, color: "#ffffff" }}
+                  style={{ backgroundColor: B.purple, color: "#ffffff" }}
                 >
                   Get Score
                 </Link>
@@ -878,7 +878,7 @@ export default function LandingPage() {
         <Link
           href="/pricing"
           className="inline-flex items-center px-8 py-4 text-[15px] font-medium rounded transition-opacity hover:opacity-90"
-          style={{ backgroundColor: B.navy, color: "#ffffff" }}
+          style={{ backgroundColor: B.purple, color: "#ffffff" }}
         >
           Get Score
         </Link>

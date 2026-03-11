@@ -126,7 +126,7 @@ export default function PricingPage() {
               <Link
                 href="/checkout-placeholder?plan=single"
                 className="inline-flex items-center px-6 py-3 text-[14px] font-medium rounded transition-opacity hover:opacity-90"
-                style={{ backgroundColor: B.navy, color: "#ffffff" }}
+                style={{ backgroundColor: B.purple, color: "#ffffff" }}
               >
                 Get Assessment
               </Link>
@@ -171,7 +171,7 @@ export default function PricingPage() {
               <Link
                 href="/checkout-placeholder?plan=monitoring"
                 className="inline-flex items-center px-6 py-3 text-[14px] font-medium rounded transition-opacity hover:opacity-90"
-                style={{ backgroundColor: B.navy, color: "#ffffff" }}
+                style={{ backgroundColor: B.purple, color: "#ffffff" }}
               >
                 Start Monitoring
               </Link>

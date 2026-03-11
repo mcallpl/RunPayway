@@ -48,7 +48,7 @@ export default function MarketingLayout({
             <Link
               href="/pricing"
               className="hidden sm:inline-flex text-[13px] font-medium px-4 py-2 rounded transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "#0E1A2B", color: "#ffffff" }}
+              style={{ backgroundColor: "#4B3FAE", color: "#ffffff" }}
             >
               Get Score
             </Link>
@@ -101,7 +101,7 @@ export default function MarketingLayout({
               href="/pricing"
               onClick={() => setMenuOpen(false)}
               className="block text-center text-[13px] font-medium px-4 py-2.5 rounded transition-opacity hover:opacity-90 mt-2"
-              style={{ backgroundColor: "#0E1A2B", color: "#ffffff" }}
+              style={{ backgroundColor: "#4B3FAE", color: "#ffffff" }}
             >
               Get Score
             </Link>
