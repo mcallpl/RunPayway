@@ -638,12 +638,11 @@ export default function LandingPage() {
                 style={{
                   backgroundColor: B.sand,
                   border: `1px solid ${B.sandDk}`,
-                  aspectRatio: "16/10",
                   padding: 24,
                 }}
               >
                 {/* Three tier cards inside grid */}
-                <div className="grid grid-cols-3 gap-3 h-full">
+                <div className="grid grid-cols-3 gap-4 sm:gap-5">
                   {[
                     { label: "Active Income", desc: "Requires direct personal effort to generate.", color: B.navy },
                     { label: "Semi-Persistent Income", desc: "Continues for a period but requires periodic renewal.", color: B.purple },
@@ -654,39 +653,31 @@ export default function LandingPage() {
                       className="rounded-lg border flex flex-col"
                       style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
                     >
-                      <div className="px-3 sm:px-4 py-2 border-b flex items-center gap-2" style={{ borderColor: B.sandDk }}>
-                        <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: tier.color }} />
+                      <div className="px-3 sm:px-4 py-2.5 border-b flex items-center gap-2.5" style={{ borderColor: B.sandDk }}>
+                        <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: tier.color }} />
                         <div className="text-[12px] sm:text-[13px] font-semibold text-left" style={{ color: B.navy }}>{tier.label}</div>
                       </div>
-                      <div className="px-3 sm:px-4 py-2 flex-1">
+                      <div className="px-3 sm:px-4 py-2.5 flex-1">
                         <div className="text-[11px] sm:text-[12px] leading-relaxed text-left" style={{ color: B.muted }}>{tier.desc}</div>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Example marker */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "35%",
-                    right: "22%",
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="rounded-full"
-                      style={{
-                        width: 8,
-                        height: 8,
-                        backgroundColor: B.purple,
-                        opacity: 0.6,
-                      }}
-                    />
-                    <span className="text-[9px] font-medium" style={{ color: B.muted }}>
-                      Example Income System
-                    </span>
-                  </div>
+                {/* Example marker — positioned below cards, toward upper-right of conceptual space */}
+                <div className="flex items-center justify-end gap-2 mt-4 pr-2">
+                  <div
+                    className="rounded-full"
+                    style={{
+                      width: 6,
+                      height: 6,
+                      backgroundColor: B.purple,
+                      opacity: 0.5,
+                    }}
+                  />
+                  <span className="text-[9px] font-medium" style={{ color: B.light }}>
+                    Example Income System
+                  </span>
                 </div>
               </div>
 
