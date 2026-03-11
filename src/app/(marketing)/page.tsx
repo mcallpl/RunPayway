@@ -77,6 +77,14 @@ function StabilityModelDiagram() {
 
   return (
     <div ref={ref} className="flex flex-col items-center">
+      {/* Input Layer label */}
+      <div
+        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500"
+        style={{ color: B.light, opacity: visible ? 1 : 0 }}
+      >
+        Input Layer
+      </div>
+
       {/* Stage 1: Six Factors */}
       <div
         className="rounded-lg border px-8 py-5 text-center transition-all duration-700 w-full"
@@ -85,10 +93,9 @@ function StabilityModelDiagram() {
           borderColor: B.sandDk,
           backgroundColor: "#ffffff",
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transform: visible ? "translateY(0)" : "translateY(12px)",
         }}
       >
-        <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: B.light }}>Input</div>
         <div className="text-[15px] font-semibold" style={{ color: B.navy }}>Six Structural Factors</div>
       </div>
 
@@ -98,25 +105,35 @@ function StabilityModelDiagram() {
         style={{
           width: 2,
           height: 48,
-          background: B.gradient,
-          opacity: visible ? 1 : 0,
+          backgroundColor: B.navy,
+          opacity: visible ? 0.2 : 0,
         }}
       />
 
+      {/* Driver Layer label */}
+      <div
+        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500 delay-400"
+        style={{ color: B.light, opacity: visible ? 1 : 0 }}
+      >
+        Driver Layer
+      </div>
+
       {/* Stage 2: Three Drivers */}
       <div
-        className="grid grid-cols-3 gap-3 sm:gap-4 transition-all duration-700 delay-500 w-full"
-        style={{
-          maxWidth: 540,
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(16px)",
-        }}
+        className="grid grid-cols-3 gap-3 sm:gap-4 w-full"
+        style={{ maxWidth: 540 }}
       >
-        {["Structure", "Concentration", "Continuity"].map((d) => (
+        {["Income Structure", "Income Concentration", "Income Continuity"].map((d, i) => (
           <div
             key={d}
-            className="rounded-lg border px-3 sm:px-4 py-4 text-center"
-            style={{ borderColor: B.sandDk, backgroundColor: "#ffffff" }}
+            className="rounded-lg border px-3 sm:px-4 py-4 text-center transition-all duration-600"
+            style={{
+              borderColor: B.sandDk,
+              backgroundColor: "#ffffff",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transitionDelay: `${500 + i * 120}ms`,
+            }}
           >
             <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: B.light }}>Driver</div>
             <div className="text-[13px] sm:text-[14px] font-semibold" style={{ color: B.navy }}>{d}</div>
@@ -130,25 +147,31 @@ function StabilityModelDiagram() {
         style={{
           width: 2,
           height: 48,
-          background: B.gradient,
-          opacity: visible ? 1 : 0,
+          backgroundColor: B.navy,
+          opacity: visible ? 0.2 : 0,
         }}
       />
 
+      {/* Output Layer label */}
+      <div
+        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500"
+        style={{ color: "rgba(255,255,255,0.5)", opacity: visible ? 1 : 0, transitionDelay: "900ms" }}
+      >
+        Output
+      </div>
+
       {/* Stage 3: Score Output */}
       <div
-        className="rounded-xl px-10 py-6 text-center transition-all duration-700 delay-1000"
+        className="rounded-2xl px-12 py-7 text-center transition-all duration-700"
         style={{
           background: B.gradient,
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0) scale(1)" : "translateY(16px) scale(0.95)",
-          boxShadow: visible ? "0 8px 32px rgba(75, 63, 174, 0.25)" : "none",
+          transform: visible ? "translateY(0)" : "translateY(12px)",
+          boxShadow: visible ? "0 10px 40px rgba(75, 63, 174, 0.28)" : "none",
+          transitionDelay: "1000ms",
         }}
       >
-        <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>
-          Output
-        </div>
-        <div className="text-[18px] sm:text-[20px] font-semibold" style={{ color: "#ffffff" }}>
+        <div className="text-[20px] sm:text-[22px] font-semibold" style={{ color: "#ffffff" }}>
           Income Stability Score™
         </div>
       </div>
@@ -493,15 +516,18 @@ export default function LandingPage() {
 
       {/* ============ 5. STRUCTURAL STABILITY MODEL — Model Understanding (computation) ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <div className="text-center" style={{ marginBottom: 48 }}>
-          <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
-            Structural Stability Model
+        <div className="text-center" style={{ marginBottom: 60 }}>
+          <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 24 }}>
+            Structural Stability Model (RP-1.0)
           </h2>
           <p className="text-base" style={{ color: B.muted }}>
-            How the <strong style={{ color: B.navy }}>Income Stability Score™</strong> is determined.
+            How the Income Stability Score™ is structurally determined.
           </p>
         </div>
         <StabilityModelDiagram />
+        <p className="text-[13px] text-center mx-auto" style={{ color: B.light, marginTop: 60, maxWidth: 640 }}>
+          The Structural Stability Model evaluates six income factors across three core drivers to produce the Income Stability Score™.
+        </p>
       </section>
 
       {/* ============ 6. INDUSTRY PATTERNS — Real-World Context ============ */}
