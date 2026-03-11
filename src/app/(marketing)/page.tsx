@@ -315,45 +315,56 @@ function SampleReportPreview() {
   const pages = ["Executive Assessment", "Structural Analysis", "Improvement Path"];
 
   return (
-    <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 120, paddingBottom: 120 }}>
-      <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-        What You Will Receive
-      </h2>
-      <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 20, maxWidth: 620 }}>
-        Every assessment generates a structured PDF report containing your complete Income Stability analysis.
-      </p>
-      <p className="text-[13px] mx-auto" style={{ color: B.light, marginBottom: 56, maxWidth: 620 }}>
-        Sample report based on a fictional income profile scored under Model RP-1.0.
-      </p>
-
-      {/* Page tabs */}
-      <div className="flex justify-center gap-2 mb-8">
-        {pages.map((label, i) => (
-          <button
-            key={label}
-            onClick={() => setActivePage(i)}
-            className="px-4 py-2 text-[12px] font-medium rounded-md transition-all"
-            style={{
-              backgroundColor: activePage === i ? B.navy : B.sand,
-              color: activePage === i ? "#ffffff" : B.muted,
-            }}
-          >
-            Page {i + 1}: {label}
-          </button>
-        ))}
+    <section style={{ paddingTop: 120, paddingBottom: 0 }}>
+      {/* Headline area — on white */}
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ marginBottom: 56 }}>
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
+          What You Will Receive
+        </h2>
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 20, maxWidth: 620 }}>
+          Every assessment generates a structured PDF report containing your complete Income Stability analysis.
+        </p>
+        <p className="text-[13px] mx-auto" style={{ color: B.light, maxWidth: 620 }}>
+          Sample report based on a fictional income profile scored under Model RP-1.0.
+        </p>
       </div>
 
-      {/* Report card container */}
+      {/* Teal background panel */}
       <div
-        className="mx-auto rounded-xl text-left"
         style={{
-          maxWidth: 680,
-          backgroundColor: "#ffffff",
-          border: `1px solid ${B.sandDk}`,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
-          overflow: "hidden",
+          backgroundColor: B.teal,
+          paddingTop: 48,
+          paddingBottom: 64,
         }}
       >
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
+          {/* Page tabs */}
+          <div className="flex justify-center gap-2 mb-8">
+            {pages.map((label, i) => (
+              <button
+                key={label}
+                onClick={() => setActivePage(i)}
+                className="px-4 py-2 text-[12px] font-medium rounded-md transition-all"
+                style={{
+                  backgroundColor: activePage === i ? "#ffffff" : "rgba(255,255,255,0.15)",
+                  color: activePage === i ? B.navy : "rgba(255,255,255,0.85)",
+                }}
+              >
+                Page {i + 1}: {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Report card container */}
+          <div
+            className="mx-auto rounded-xl text-left"
+            style={{
+              maxWidth: 680,
+              backgroundColor: "#ffffff",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.18)",
+              overflow: "hidden",
+            }}
+          >
         {/* Gradient top bar */}
         <div style={{ height: 3, background: B.gradient }} />
 
@@ -662,25 +673,27 @@ function SampleReportPreview() {
         </div>
       </div>
 
-      {/* Page indicator dots */}
-      <div className="flex justify-center gap-2 mt-6">
-        {[0, 1, 2].map((i) => (
-          <button
-            key={i}
-            onClick={() => setActivePage(i)}
-            className="rounded-full transition-all"
-            style={{
-              width: activePage === i ? 20 : 6,
-              height: 6,
-              backgroundColor: activePage === i ? B.navy : B.sandDk,
-            }}
-          />
-        ))}
-      </div>
+          {/* Page indicator dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {[0, 1, 2].map((i) => (
+              <button
+                key={i}
+                onClick={() => setActivePage(i)}
+                className="rounded-full transition-all"
+                style={{
+                  width: activePage === i ? 20 : 6,
+                  height: 6,
+                  backgroundColor: activePage === i ? "#ffffff" : "rgba(255,255,255,0.3)",
+                }}
+              />
+            ))}
+          </div>
 
-      <p className="text-[13px] mt-8" style={{ color: B.light }}>
-        3-page PDF report delivered instantly after assessment
-      </p>
+          <p className="text-[13px] mt-8" style={{ color: "rgba(255,255,255,0.7)" }}>
+            3-page PDF report delivered instantly after assessment
+          </p>
+        </div>
+      </div>
     </section>
   );
 }
