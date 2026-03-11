@@ -180,6 +180,107 @@ function StabilityModelDiagram() {
 }
 
 /* ------------------------------------------------------------------ */
+/* MODEL GOVERNANCE — scroll-reveal section                             */
+/* ------------------------------------------------------------------ */
+function ModelGovernance() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const blocks = [
+    {
+      title: "Scope of the Model",
+      lines: [
+        <>The Income Stability Score™ evaluates the structural stability of income at a specific point in time based on <strong style={{ color: B.navy }}>Model RP-1.0</strong>.</>,
+        "The model assesses structural characteristics of income systems and does not evaluate investment performance, creditworthiness, or future financial outcomes.",
+      ],
+    },
+    {
+      title: "Point-in-Time Assessment",
+      lines: [
+        "The Income Stability Score™ reflects income structure at the time the assessment is completed.",
+        "Changes to income sources, revenue continuity, or income concentration may affect the score over time.",
+      ],
+    },
+    {
+      title: "Analytical Use",
+      lines: [
+        "The Income Stability Score™ is designed as a structural analytical tool intended to help individuals better understand the stability characteristics of their income systems.",
+        "The score should not be interpreted as financial, tax, legal, or investment advice.",
+      ],
+    },
+  ];
+
+  return (
+    <section ref={ref} className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 72, paddingBottom: 48 }}>
+      {/* Divider line — draws left to right */}
+      <div className="mx-auto" style={{ maxWidth: 680, marginBottom: 32 }}>
+        <div
+          style={{
+            height: 1,
+            backgroundColor: B.sandDk,
+            transformOrigin: "left",
+            transform: visible ? "scaleX(1)" : "scaleX(0)",
+            transition: "transform 0.6s ease-out",
+          }}
+        />
+      </div>
+
+      {/* Title */}
+      <h2
+        className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight text-center"
+        style={{
+          color: B.navy,
+          marginBottom: 32,
+          opacity: visible ? 1 : 0,
+          transition: "opacity 0.4s ease",
+          transitionDelay: "100ms",
+        }}
+      >
+        Model Governance
+      </h2>
+
+      {/* Governance blocks */}
+      <div className="mx-auto text-left" style={{ maxWidth: 680 }}>
+        {blocks.map((block, i) => (
+          <div
+            key={block.title}
+            style={{
+              marginBottom: i < blocks.length - 1 ? 28 : 0,
+              opacity: visible ? 1 : 0,
+              transition: "opacity 0.4s ease",
+              transitionDelay: `${200 + i * 100}ms`,
+            }}
+          >
+            <h3
+              className="text-[16px] font-semibold"
+              style={{ color: B.navy, marginBottom: 10 }}
+            >
+              {block.title}
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {block.lines.map((line, j) => (
+                <p key={j} className="text-[15px] leading-relaxed" style={{ color: B.muted }}>
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* MAIN LANDING PAGE                                                    */
 /* ------------------------------------------------------------------ */
 export default function LandingPage() {
@@ -799,16 +900,7 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 10. MODEL GOVERNANCE ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 48 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 24 }}>
-          Model Governance
-        </h2>
-        <div className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
-          <p>The <strong style={{ color: B.navy }}>Income Stability Score™</strong> is generated under <strong style={{ color: B.navy }}>Model RP-1.0</strong> using fixed scoring criteria.</p>
-          <p>If the methodology changes, a <strong style={{ color: B.navy }}>new model version</strong> is issued.</p>
-          <p>Previously generated assessments remain tied to the model version used when they were created.</p>
-        </div>
-      </section>
+      <ModelGovernance />
 
       {/* ============ DISCLAIMER ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 24, paddingBottom: 48 }}>
