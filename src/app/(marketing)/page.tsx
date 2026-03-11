@@ -764,24 +764,34 @@ export default function LandingPage() {
       </section>
 
       {/* ============ 9. FINAL CTA — Action ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
-          Measure your Income Stability Score™
+      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 96 }}>
+        <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 24 }}>
+          See Where Your Income Structure Falls
         </h2>
-        <p className="text-base leading-relaxed" style={{ color: B.muted, marginBottom: 8 }}>
-          Complete the structural income assessment and receive your Income Stability Score™ report.
+        <p className="text-base leading-relaxed" style={{ color: B.muted, marginBottom: 16 }}>
+          Complete the structural assessment and receive your Income Stability Score™ report instantly.
         </p>
-        <p className="text-base" style={{ color: B.muted, marginBottom: 48 }}>
-          Assessment time: <strong style={{ color: B.navy }}>under two minutes</strong>
+        <p className="text-[13px]" style={{ color: B.light, marginBottom: 32 }}>
+          Assessment based on Model RP-1.0 structural scoring.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-          <Link
-            href="/pricing"
-            className="inline-flex items-center px-7 py-3.5 text-sm font-medium rounded transition-opacity hover:opacity-90"
-            style={{ backgroundColor: B.navy, color: "#ffffff" }}
-          >
-            Get Score
-          </Link>
+        <Link
+          href="/pricing"
+          className="inline-flex items-center px-8 py-4 text-[15px] font-medium rounded transition-opacity hover:opacity-90"
+          style={{ backgroundColor: B.navy, color: "#ffffff" }}
+        >
+          Get Score
+        </Link>
+        {/* Process indicator */}
+        <div className="flex flex-col items-center gap-2 mt-5" style={{ color: B.muted }}>
+          <span className="text-[13px]">1. Answer 6 structural questions</span>
+          <span className="text-[13px]">2. See your Income Stability Score™</span>
+          <span className="text-[13px]">3. Receive your PDF assessment report</span>
+        </div>
+        {/* Proof points */}
+        <div className="flex flex-col items-center gap-1 mt-5">
+          <p className="text-[13px]" style={{ color: B.muted }}>
+            Assessment time: <strong style={{ color: B.navy }}>under two minutes</strong>
+          </p>
           <p className="text-[13px]" style={{ color: B.muted }}>
             Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
           </p>
