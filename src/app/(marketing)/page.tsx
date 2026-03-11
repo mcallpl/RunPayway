@@ -783,7 +783,7 @@ export default function LandingPage() {
         </Link>
         {/* Process indicator */}
         <div className="flex flex-col items-center gap-2 mt-5" style={{ color: B.muted }}>
-          <span className="text-[13px]">1. Answer 6 structural questions</span>
+          <span className="text-[13px]">1. Assess Six Structural Factors</span>
           <span className="text-[13px]">2. See your Income Stability Score™</span>
           <span className="text-[13px]">3. Receive your PDF assessment report</span>
         </div>
