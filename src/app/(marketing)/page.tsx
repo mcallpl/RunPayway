@@ -16,7 +16,7 @@ const B = {
 
 const INDUSTRY_EXAMPLES = [
   {
-    industry: "Consulting / Professional Services",
+    industry: "Professional Services: Moving From Project Work to Recurring Revenue",
     stable: [
       "multiple income sources",
       "recurring revenue",
@@ -30,7 +30,7 @@ const INDUSTRY_EXAMPLES = [
     ],
   },
   {
-    industry: "Healthcare (Private Practice)",
+    industry: "Private Practice: Increasing Revenue Continuity",
     stable: [
       "multiple income sources",
       "recurring revenue",
@@ -44,7 +44,7 @@ const INDUSTRY_EXAMPLES = [
     ],
   },
   {
-    industry: "Small Business / Agency Owners",
+    industry: "Agency Owners: Reducing Client Concentration Risk",
     stable: [
       "multiple income sources",
       "recurring revenue",
@@ -532,9 +532,15 @@ export default function LandingPage() {
 
       {/* ============ 6. INDUSTRY PATTERNS — Real-World Context ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 72, paddingBottom: 72 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 48 }}>
-          What High-Stability Income Systems Do Differently
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 12 }}>
+          How Income Structures Become More Stable
         </h2>
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 32, maxWidth: 640 }}>
+          High-stability income systems tend to share common structural characteristics, regardless of profession.
+        </p>
+        <p className="text-[13px] mx-auto" style={{ color: B.light, marginBottom: 24, maxWidth: 640 }}>
+          Explore structural patterns that increase income stability.
+        </p>
 
         <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
           {INDUSTRY_EXAMPLES.map((ex, i) => {
