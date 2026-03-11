@@ -121,21 +121,16 @@ function percentileExplanation(r: AssessmentRecord): string {
   const name = subjectName(r);
   if (p >= 75) return `A score at the ${label} percentile means ${name} is more stable than most income systems in the ${r.industry_sector} sector.`;
   if (p >= 50) return `A score at the ${label} percentile means ${name} is about as stable as the average income system in the ${r.industry_sector} sector.`;
-  if (p >= 25) return `A score at the ${label} percentile means ${name} is less stable than most income systems in the ${r.industry_sector} sector.`;
   return `A score at the ${label} percentile means ${name} is less stable than most income systems in the ${r.industry_sector} sector.`;
 }
 
-// Industry stability benchmark data (deterministic from band distribution)
 function getIndustryBenchmark(finalScore: number) {
-  // Based on locked peer distribution: 12% High, 28% Established, 38% Developing, 22% Limited
-  // Weighted average ≈ (90*0.12 + 69.5*0.28 + 49.5*0.38 + 19.5*0.22) = 48.5 → 48
   const avgScore = 48;
   const top20Range = 65;
   const distance = Math.max(0, top20Range - finalScore);
   return { avgScore, top20Range, distance };
 }
 
-// Risk exposure templates
 const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
   "Income Continuity Without Active Labor": {
     mechanism: "Income depends on ongoing work. If work stops, income stops too.",
@@ -163,15 +158,47 @@ const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
   },
 };
 
+// Identify key positive/negative factors for Page 1
+function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string[] } {
+  const factors = [
+    { label: "Income Persistence", value: r.income_persistence_label },
+    { label: "Income Source Diversity", value: r.income_source_diversity_label },
+    { label: "Forward Revenue Visibility", value: r.forward_revenue_visibility_label },
+    { label: "Monthly Income Stability", value: r.income_variability_label },
+    { label: "Active Labor Independence", value: r.active_labor_dependence_label },
+    { label: "Source Concentration", value: r.exposure_concentration_label },
+  ];
+  const positive: string[] = [];
+  const risks: string[] = [];
+  for (const f of factors) {
+    if (/high|very high|strong/i.test(f.value)) {
+      positive.push(f.label);
+    } else if (/low|very low|limited|weak/i.test(f.value)) {
+      risks.push(f.label);
+    }
+  }
+  // If not enough, add moderate ones
+  if (positive.length < 2) {
+    for (const f of factors) {
+      if (/moderate/i.test(f.value) && positive.length < 2) positive.push(f.label);
+    }
+  }
+  if (risks.length < 2) {
+    for (const f of factors) {
+      if (/moderate/i.test(f.value) && !positive.includes(f.label) && risks.length < 2) risks.push(f.label);
+    }
+  }
+  return { positive: positive.slice(0, 3), risks: risks.slice(0, 3) };
+}
+
 // ============================================================
 // LAYOUT COMPONENTS
 // ============================================================
 
-function PageHeader({ record }: { record: AssessmentRecord }) {
+function ReportHeader({ record }: { record: AssessmentRecord }) {
   return (
     <div className="mb-6">
-      {/* Gradient strip */}
-      <div className="h-[5px] -mx-3 sm:-mx-5 md:-mx-8 -mt-3 sm:-mt-5 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
+      <div className="h-[3px] -mx-3 sm:-mx-5 md:-mx-8 -mt-3 sm:-mt-5 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
       <div className="pt-4 pb-3 border-b" style={{ borderColor: B.sandDk }}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <div className="flex items-center gap-2">
@@ -187,244 +214,21 @@ function PageHeader({ record }: { record: AssessmentRecord }) {
   );
 }
 
-function Label({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`text-[10px] font-semibold uppercase tracking-[0.12em] mb-3 ${className}`} style={{ color: B.muted }}>{children}</div>
+    <div className="text-[10px] font-semibold uppercase tracking-[0.12em] mb-2" style={{ color: B.muted }}>{children}</div>
   );
 }
 
-function Sidebar({ record }: { record: AssessmentRecord }) {
-  const items = [
-    ["Continues", record.income_persistence_label],
-    ["Sources", record.income_source_diversity_label],
-    ["Scheduled", record.forward_revenue_visibility_label],
-    ["Stability", record.income_variability_label],
-    ["Work Dep.", record.active_labor_dependence_label],
-    ["Concentration", record.exposure_concentration_label],
-  ];
-  return (
-    <div className="mt-6 pt-5 border-t md:mt-0 md:pt-0 md:border-t-0 md:w-44 md:shrink-0 md:pl-6 md:border-l" style={{ borderColor: B.sandDk }}>
-      <Label>Indicators</Label>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-3 md:hidden">
-        <div className="col-span-3 flex gap-4">
-          <div>
-            <div className="text-[10px]" style={{ color: B.light }}>Band</div>
-            <div className="text-sm font-semibold" style={{ color: B.navy }}>{record.stability_band}</div>
-          </div>
-          <div>
-            <div className="text-[10px]" style={{ color: B.light }}>Score</div>
-            <div className="text-sm font-semibold" style={{ color: B.navy }}>{record.final_score}</div>
-          </div>
-        </div>
-        {items.map(([label, value]) => (
-          <div key={label}>
-            <div className="text-[9px]" style={{ color: B.light }}>{label}</div>
-            <div className="text-[11px] font-medium" style={{ color: B.navy }}>{value}</div>
-          </div>
-        ))}
-      </div>
-      <div className="hidden md:block space-y-2.5 mt-3">
-        {[["Band", record.stability_band], ["Score", String(record.final_score)]].map(([l, v]) => (
-          <div key={l}>
-            <div className="text-[10px]" style={{ color: B.light }}>{l}</div>
-            <div className="text-sm font-semibold" style={{ color: B.navy }}>{v}</div>
-          </div>
-        ))}
-        <div className="border-t pt-2" style={{ borderColor: B.sand }}>
-          {items.map(([label, value]) => (
-            <div key={label} className="py-1">
-              <div className="text-[9px]" style={{ color: B.light }}>{label}</div>
-              <div className="text-[11px] font-medium" style={{ color: B.navy }}>{value}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+function SectionDivider() {
+  return <div className="my-5" style={{ height: 1, backgroundColor: B.navy, opacity: 0.08 }} />;
 }
 
-function Page({ record, insight, children }: { record: AssessmentRecord; insight: string; children: React.ReactNode }) {
+function ReportPage({ record, children }: { record: AssessmentRecord; children: React.ReactNode }) {
   return (
     <div className="report-page bg-white border rounded-lg p-3 sm:p-5 md:p-8" style={{ borderColor: "#E5E7EB" }}>
-      <PageHeader record={record} />
-      <div className="border-l-[3px] pl-3 sm:pl-4 py-2 mb-6" style={{ borderColor: B.teal, backgroundColor: B.sand }}>
-        <p className="text-xs italic" style={{ color: B.muted }}>{insight}</p>
-      </div>
-      <div className="md:flex">
-        <div className="flex-1 min-w-0 md:pr-6">{children}</div>
-        <Sidebar record={record} />
-      </div>
-    </div>
-  );
-}
-
-function SectionGap() {
-  return <div className="h-6 md:h-8" />;
-}
-
-// ============================================================
-// VISUALS
-// ============================================================
-
-const BANDS = [
-  { key: "High Stability", short: "High", range: "80–100" },
-  { key: "Established Stability", short: "Estab.", range: "60–79" },
-  { key: "Developing Stability", short: "Devel.", range: "40–59" },
-  { key: "Limited Stability", short: "Limited", range: "0–39" },
-];
-
-function StabilitySpectrum({ band }: { band: string }) {
-  return (
-    <div className="grid grid-cols-4 gap-1 sm:gap-1.5">
-      {BANDS.map((b) => {
-        const active = band === b.key;
-        return (
-          <div key={b.key} className="flex flex-col items-center justify-center py-3 sm:py-4 rounded-lg"
-            style={{ backgroundColor: active ? B.purple : B.sand, color: active ? "white" : B.light }}>
-            <span className="text-[10px] sm:text-xs font-semibold leading-tight text-center">{b.short}</span>
-            <span className="text-[9px] sm:text-[10px] mt-0.5 opacity-80">{b.range}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function LaborAssetBar({ label }: { label: string }) {
-  const segs = ["Work-Dependent", "Transitional", "Asset-Supported"];
-  const idx = label.toLowerCase().includes("labor") ? 0 : label.toLowerCase().includes("asset") ? 2 : 1;
-  return (
-    <div>
-      <div className="grid grid-cols-3 gap-1">
-        {segs.map((s, i) => (
-          <div key={s} className="flex items-center justify-center py-2.5 sm:py-3 rounded-lg text-[9px] sm:text-[11px] font-medium text-center px-1"
-            style={{ backgroundColor: i === idx ? B.teal : B.sand, color: i === idx ? "white" : B.light }}>
-            {s}
-          </div>
-        ))}
-      </div>
-      <div className="text-[11px] mt-2 text-center" style={{ color: B.muted }}>Position: {label}</div>
-    </div>
-  );
-}
-
-function IncomeMapBars({ active, semi, persistent }: { active: number; semi: number; persistent: number }) {
-  const bars = [
-    { label: "Active Income", desc: "Earned by doing work", value: active, color: B.muted },
-    { label: "Semi-Persistent", desc: "Repeats for a while, then stops", value: semi, color: B.teal },
-    { label: "Persistent", desc: "Continues with little work", value: persistent, color: B.navy },
-  ];
-  return (
-    <div className="space-y-3">
-      {bars.map((bar) => (
-        <div key={bar.label}>
-          <div className="flex justify-between text-[11px] mb-0.5">
-            <span style={{ color: B.muted }}>{bar.label}</span>
-            <span className="font-medium" style={{ color: B.navy }}>{bar.value}%</span>
-          </div>
-          <div className="text-[9px] mb-1" style={{ color: B.light }}>{bar.desc}</div>
-          <div className="h-3 rounded-full overflow-hidden" style={{ backgroundColor: B.sand }}>
-            <div className="h-full rounded-full" style={{ width: `${bar.value}%`, backgroundColor: bar.color }} />
-          </div>
-        </div>
-      ))}
-      <p className="text-[10px] italic mt-2" style={{ color: B.light }}>
-        Income that continues without new work usually improves stability.
-      </p>
-    </div>
-  );
-}
-
-function EvolutionPath({ steps, currentLabel, currentPosition }: { steps: string[]; currentLabel: string; currentPosition: number }) {
-  const idx = steps.length > 1 ? Math.round((currentPosition / 100) * (steps.length - 1)) : 0;
-  return (
-    <div>
-      <div className="sm:hidden space-y-2">
-        {steps.map((step, i) => {
-          const active = i === idx; const past = i < idx;
-          return (
-            <div key={i} className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-semibold shrink-0"
-                style={{ backgroundColor: active ? B.purple : past ? B.teal : B.sand, color: active || past ? "white" : B.light }}>{i + 1}</div>
-              <span className="text-xs" style={{ color: active ? B.navy : B.light, fontWeight: active ? 600 : 400 }}>{step}</span>
-            </div>
-          );
-        })}
-      </div>
-      <div className="hidden sm:flex items-start">
-        {steps.map((step, i) => {
-          const active = i === idx; const past = i < idx;
-          return (
-            <div key={i} className="flex-1 flex flex-col items-center relative">
-              {i > 0 && <div className="absolute top-3.5 right-1/2 w-full h-px -z-0" style={{ backgroundColor: past ? B.teal : B.sandDk }} />}
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold z-10"
-                style={{ backgroundColor: active ? B.purple : past ? B.teal : B.sand, color: active || past ? "white" : B.light }}>{i + 1}</div>
-              <div className="text-[9px] text-center mt-1.5 leading-tight max-w-[72px]" style={{ color: active ? B.navy : B.light, fontWeight: active ? 600 : 400 }}>{step}</div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="text-[11px] mt-3 text-center font-medium" style={{ color: B.navy }}>Current Stage: {currentLabel}</div>
-    </div>
-  );
-}
-
-function Trajectory({ currentScore, currentBand, projectedScore, projectedBand }: { currentScore: number; currentBand: string; projectedScore?: number; projectedBand?: string }) {
-  const hasProjection = projectedScore != null && projectedScore !== currentScore;
-  return (
-    <div>
-      <Label>Stability Trajectory</Label>
-      <div className="flex flex-col sm:flex-row items-stretch gap-0 rounded-lg overflow-hidden mt-4" style={{ backgroundColor: B.sand }}>
-        <div className="flex-1 text-center py-4 sm:py-5 px-4">
-          <div className="text-[10px]" style={{ color: B.light }}>Current Score</div>
-          <div className="text-2xl sm:text-3xl font-bold mt-1" style={{ color: B.navy }}>{currentScore}</div>
-          <div className="text-[11px] mt-1" style={{ color: B.muted }}>{currentBand}</div>
-        </div>
-        {hasProjection && (
-          <>
-            <div className="flex items-center justify-center py-1 sm:py-0 sm:px-2" style={{ color: B.light }}>
-              <svg className="rotate-90 sm:rotate-0" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-            </div>
-            <div className="flex-1 text-center py-4 sm:py-5 px-4">
-              <div className="text-[10px]" style={{ color: B.light }}>Potential Score</div>
-              <div className="text-2xl sm:text-3xl font-bold mt-1" style={{ color: B.teal }}>{projectedScore}</div>
-              <div className="text-[11px] mt-1" style={{ color: B.muted }}>{projectedBand}</div>
-            </div>
-          </>
-        )}
-        {!hasProjection && (
-          <div className="flex-1 flex items-center justify-center py-4 px-4">
-            <p className="text-xs text-center" style={{ color: B.muted }}>
-              {projectedScore != null ? "Already at highest level for this area." : "Available with updated assessment."}
-            </p>
-          </div>
-        )}
-      </div>
-      <p className="text-[10px] mt-2 italic" style={{ color: B.light }}>This is an illustration. It does not change the official score.</p>
-    </div>
-  );
-}
-
-function IndustryBenchmark({ record }: { record: AssessmentRecord }) {
-  const bench = getIndustryBenchmark(record.final_score);
-  const rows = [
-    [`Average ${record.industry_sector} Stability Score`, String(bench.avgScore)],
-    ["Top 20% Stability Range", `${bench.top20Range}+`],
-    ["Your Score", String(record.final_score)],
-    ["Distance From Top Stability Tier", `${bench.distance} points`],
-  ];
-  return (
-    <div>
-      <Label>Industry Stability Benchmark</Label>
-      <div className="rounded-lg overflow-hidden border" style={{ borderColor: B.sandDk }}>
-        {rows.map(([label, value], i) => (
-          <div key={label} className="flex justify-between items-center px-4 py-2.5 text-xs"
-            style={{ backgroundColor: i % 2 === 0 ? B.sand : "white" }}>
-            <span style={{ color: B.muted }}>{label}</span>
-            <span className="font-semibold" style={{ color: i === 2 ? B.purple : B.navy }}>{value}</span>
-          </div>
-        ))}
-      </div>
+      <ReportHeader record={record} />
+      {children}
     </div>
   );
 }
@@ -460,14 +264,7 @@ async function downloadPDF(recordId: string) {
     const finalHeight = Math.min(imgHeight, pageHeight - margin * 2);
 
     if (i > 0) pdf.addPage();
-    pdf.addImage(
-      canvas.toDataURL("image/png"),
-      "PNG",
-      margin,
-      margin,
-      contentWidth,
-      finalHeight
-    );
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", margin, margin, contentWidth, finalHeight);
   }
 
   const shortId = recordId.slice(0, 8);
@@ -497,14 +294,12 @@ export default function ReviewPage() {
   const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
   const subject = subjectName(record);
   const possessive = subjectPossessive(record);
+  const keyFactors = getKeyFactors(record);
+  const bench = getIndustryBenchmark(record.final_score);
 
   const handleDownload = async () => {
     setDownloading(true);
-    try {
-      await downloadPDF(record.record_id);
-    } finally {
-      setDownloading(false);
-    }
+    try { await downloadPDF(record.record_id); } finally { setDownloading(false); }
   };
 
   return (
@@ -514,40 +309,71 @@ export default function ReviewPage() {
         <p className="text-sm mt-1" style={{ color: B.muted }}>Model RP-1.0 | Version 1.0</p>
       </div>
 
-      {/* ==================== PAGE 1 — Score Result ==================== */}
-      <Page record={record} insight={record.page_1_key_insight_text}>
-        <p className="text-xs mb-4" style={{ color: B.muted }}>
-          This report shows how reliable an income system is over time.
+      {/* ==================== PAGE 1 — Executive Assessment ==================== */}
+      <ReportPage record={record}>
+        {/* Executive summary */}
+        <p className="text-xs leading-relaxed mb-5" style={{ color: B.muted }}>
+          {record.page_1_key_insight_text}
         </p>
 
-        <div className="rounded-xl p-5 sm:p-6 mb-2" style={{ background: B.gradient }}>
-          <div className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "rgba(255,255,255,0.55)" }}>RunPayway Stability Score™</div>
-          <div className="text-4xl sm:text-5xl font-bold" style={{ color: "#ffffff" }}>{record.final_score}</div>
-          <div className="text-sm sm:text-base font-semibold mt-1" style={{ color: "#ffffff" }}>{record.stability_band}</div>
-          <div className="text-[10px] mt-1" style={{ color: "rgba(255,255,255,0.45)" }}>Score Range: 0–100 · Higher = more reliable income over time</div>
+        {/* Score presentation — institutional, no gradient panel */}
+        <div className="mb-5">
+          <Label>Income Stability Score™</Label>
+          <div className="text-[56px] font-bold leading-none" style={{ color: B.navy }}>
+            {record.final_score}
+          </div>
+          <div className="text-[15px] font-semibold mt-1" style={{ color: B.teal }}>
+            {record.stability_band}
+          </div>
+
+          {/* Metadata */}
+          <div className="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-[10px]" style={{ color: B.light }}>
+            <span>Assessment ID: {record.record_id.slice(0, 8)}…</span>
+            <span>Generated: {record.assessment_date_utc}</span>
+            <span>Model: RP-1.0</span>
+          </div>
         </div>
 
-        <SectionGap />
+        {/* Spectrum bar */}
+        <div className="mb-5">
+          <div className="relative" style={{ marginBottom: 6 }}>
+            <div className="rounded-full" style={{ height: 8, background: B.gradient }} />
+            {[40, 60, 80].map((pos) => (
+              <div key={pos} style={{ position: "absolute", left: `${pos}%`, top: 0, width: 1, height: 8, backgroundColor: "rgba(255,255,255,0.4)" }} />
+            ))}
+          </div>
+          <div className="grid grid-cols-4 gap-0.5">
+            {[
+              { label: "Limited", range: "0\u201339" },
+              { label: "Developing", range: "40\u201359" },
+              { label: "Established", range: "60\u201379" },
+              { label: "High", range: "80\u2013100" },
+            ].map((b) => (
+              <div key={b.label} className="text-center">
+                <div className="text-[9px] font-semibold" style={{ color: b.label + " Stability" === record.stability_band ? B.navy : B.light }}>{b.label}</div>
+                <div className="text-[8px]" style={{ color: B.light }}>{b.range}</div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Percentile */}
         {record.peer_stability_percentile_label && (
-          <div className="mb-2">
+          <div className="mb-4">
             <p className="text-xs" style={{ color: B.muted }}>
               <span className="font-medium" style={{ color: B.navy }}>{record.peer_stability_percentile_label} percentile</span>{" "}within {record.industry_sector}
             </p>
-            <p className="text-[11px] mt-2 leading-relaxed" style={{ color: B.muted }}>
+            <p className="text-[11px] mt-1 leading-relaxed" style={{ color: B.muted }}>
               {percentileExplanation(record)}
             </p>
           </div>
         )}
 
-        <SectionGap />
-        <StabilitySpectrum band={record.stability_band} />
-        <SectionGap />
+        <SectionDivider />
 
         {/* Profile */}
         <Label>Profile</Label>
-        <dl className="space-y-1 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-1.5 sm:space-y-0 text-xs mt-3">
+        <dl className="space-y-1 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-1.5 sm:space-y-0 text-xs">
           {record.assessment_title && (
             <div className="sm:col-span-2">
               <dt className="inline" style={{ color: B.light }}>Assessment Title: </dt>
@@ -567,30 +393,91 @@ export default function ReviewPage() {
             </div>
           ))}
         </dl>
-      </Page>
 
-      {/* ==================== PAGE 2 — Income Structure ==================== */}
-      <Page record={record} insight={record.page_2_key_insight_text}>
+        <SectionDivider />
+
+        {/* Key Structural Factors */}
+        <Label>Key Structural Factors Affecting Your Score</Label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+          <div>
+            <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.teal }}>
+              Positive Factors
+            </div>
+            <ul style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              {keyFactors.positive.map((f) => (
+                <li key={f} className="flex items-center gap-2 text-[11px]" style={{ color: B.navy }}>
+                  <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
+                  {f}
+                </li>
+              ))}
+              {keyFactors.positive.length === 0 && (
+                <li className="text-[11px]" style={{ color: B.light }}>No strong positive factors identified</li>
+              )}
+            </ul>
+          </div>
+          <div>
+            <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.muted }}>
+              Structural Risks
+            </div>
+            <ul style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              {keyFactors.risks.map((f) => (
+                <li key={f} className="flex items-center gap-2 text-[11px]" style={{ color: B.navy }}>
+                  <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: B.light }} />
+                  {f}
+                </li>
+              ))}
+              {keyFactors.risks.length === 0 && (
+                <li className="text-[11px]" style={{ color: B.light }}>No significant structural risks identified</li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </ReportPage>
+
+      {/* ==================== PAGE 2 — Structural Analysis ==================== */}
+      <ReportPage record={record}>
+        <h2 className="text-sm font-semibold uppercase tracking-[0.1em] mb-1" style={{ color: B.navy }}>
+          Structural Analysis
+        </h2>
+        <p className="text-xs leading-relaxed mb-4" style={{ color: B.muted }}>
+          {record.page_2_key_insight_text}
+        </p>
+
+        {/* Income Structure Map */}
         <Label>Income Structure Map</Label>
-        <p className="text-xs mb-1" style={{ color: B.muted }}>
+        <p className="text-[11px] mb-2" style={{ color: B.muted }}>
           {possessive} income comes from three types of sources.
         </p>
-        <IncomeMapBars active={record.active_income_level} semi={record.semi_persistent_income_level} persistent={record.persistent_income_level} />
+        <div className="space-y-2.5 mb-1">
+          {[
+            { label: "Active Income", desc: "Earned by doing work", value: record.active_income_level, color: B.muted },
+            { label: "Semi-Persistent", desc: "Repeats for a while, then stops", value: record.semi_persistent_income_level, color: B.teal },
+            { label: "Persistent", desc: "Continues with little work", value: record.persistent_income_level, color: B.navy },
+          ].map((bar) => (
+            <div key={bar.label}>
+              <div className="flex justify-between text-[11px] mb-0.5">
+                <span style={{ color: B.muted }}>{bar.label}</span>
+                <span className="font-medium" style={{ color: B.navy }}>{bar.value}%</span>
+              </div>
+              <div className="h-2.5 rounded-full overflow-hidden" style={{ backgroundColor: B.sand }}>
+                <div className="h-full rounded-full" style={{ width: `${bar.value}%`, backgroundColor: bar.color }} />
+              </div>
+            </div>
+          ))}
+        </div>
 
-        <SectionGap />
+        <SectionDivider />
 
+        {/* Structural Indicators */}
         <Label>Structural Indicators</Label>
-        <p className="text-[10px] mb-2 italic" style={{ color: B.light }}>
-          These indicators show how income is structured, not how much money is earned.
-        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {[
             ["Income That Continues", record.income_persistence_label],
             ["Number of Income Sources", record.income_source_diversity_label],
             ["Income Already Scheduled", record.forward_revenue_visibility_label],
             ["Monthly Income Stability", record.income_variability_label],
-            ["Dependence on Your Personal Work", record.active_labor_dependence_label],
-            ["Dependence on One Client or Source", record.exposure_concentration_label],
+            ["Dependence on Personal Work", record.active_labor_dependence_label],
+            ["Dependence on One Source", record.exposure_concentration_label],
           ].map(([l, v]) => (
             <div key={l} className="flex justify-between rounded-md px-3 py-2" style={{ backgroundColor: B.sand }}>
               <span className="text-[10px]" style={{ color: B.muted }}>{l}</span>
@@ -599,28 +486,11 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        <SectionGap />
+        <SectionDivider />
 
-        <Label>Work–Asset Spectrum</Label>
-        <p className="text-xs mb-4" style={{ color: B.muted }}>
-          Shows whether income depends mostly on active work or on assets and recurring structures.
-        </p>
-        <LaborAssetBar label={record.labor_asset_position_label} />
-      </Page>
-
-      {/* ==================== PAGE 3 — System Diagnosis ==================== */}
-      <Page record={record} insight={record.page_3_key_insight_text}>
-        <h2 className="text-sm font-semibold uppercase tracking-[0.1em]" style={{ color: B.navy }}>
-          System Diagnosis
-        </h2>
-        <p className="text-xs mt-1 mb-2" style={{ color: B.muted }}>
-          This section explains how the structure of {possessive} income affects stability.
-        </p>
-
-        <SectionGap />
-
-        <Label>Overview</Label>
-        <div className="text-xs leading-relaxed space-y-3" style={{ color: B.muted }}>
+        {/* System Diagnosis */}
+        <Label>System Diagnosis</Label>
+        <div className="text-xs leading-relaxed space-y-2" style={{ color: B.muted }}>
           <p>
             {subject} operates mainly as a <strong style={{ color: B.navy }}>{record.labor_asset_position_label}</strong> income
             system in the <strong style={{ color: B.navy }}>{record.industry_sector}</strong> sector.
@@ -635,104 +505,114 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <SectionGap />
+        <SectionDivider />
 
-        <Label>What This Means</Label>
-        <p className="text-xs leading-relaxed" style={{ color: B.muted }}>
-          Income systems with similar structures usually fall in
-          the <strong style={{ color: B.navy }}>{record.stability_band}</strong> band.
-          Without changes to {record.primary_constraint_label}, income reliability will likely stay
-          tied to active work.
-        </p>
-
-        <SectionGap />
-
-        <Label>Sector Pattern</Label>
-        <p className="text-xs leading-relaxed" style={{ color: B.muted }}>
-          In the {record.industry_sector} sector, income systems become more stable when
-          recurring revenue or asset income is added.
-        </p>
-      </Page>
-
-      {/* ==================== PAGE 4 — Risk Exposure + Trajectory ==================== */}
-      <Page record={record} insight={record.page_4_key_insight_text}>
-        {/* Risk Exposure Box */}
-        <div className="rounded-lg p-4 sm:p-5 border" style={{ borderColor: B.sandDk, backgroundColor: B.sand }}>
-          <div className="text-[11px] font-semibold uppercase tracking-wider mb-4" style={{ color: B.navy }}>
-            Risk Exposure
-          </div>
-          <div className="space-y-4">
-            <div>
-              <div className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: B.teal }}>Primary Risk</div>
-              <div className="text-xs font-medium" style={{ color: B.navy }}>{record.primary_constraint_label}</div>
+        {/* Industry Benchmark */}
+        <Label>Industry Stability Benchmark</Label>
+        <div className="rounded-lg overflow-hidden border" style={{ borderColor: B.sandDk }}>
+          {[
+            [`Average ${record.industry_sector} Stability Score`, String(bench.avgScore)],
+            ["Top 20% Stability Range", `${bench.top20Range}+`],
+            ["Your Score", String(record.final_score)],
+            ["Distance From Top Stability Tier", `${bench.distance} points`],
+          ].map(([label, value], i) => (
+            <div key={label} className="flex justify-between items-center px-4 py-2 text-[11px]"
+              style={{ backgroundColor: i % 2 === 0 ? B.sand : "white" }}>
+              <span style={{ color: B.muted }}>{label}</span>
+              <span className="font-semibold" style={{ color: i === 2 ? B.purple : B.navy }}>{value}</span>
             </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: B.teal }}>How It Works</div>
-              <p className="text-xs leading-relaxed" style={{ color: B.muted }}>{riskData.mechanism}</p>
-            </div>
-            <div>
-              <div className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: B.teal }}>Impact on Stability</div>
-              <p className="text-xs leading-relaxed" style={{ color: B.muted }}>{riskData.impact}</p>
-            </div>
-          </div>
-        </div>
-
-        <SectionGap />
-
-        {/* Constraint + Priority */}
-        <Label>Main Constraint</Label>
-        <div className="text-xs font-medium" style={{ color: B.navy }}>{record.primary_constraint_label}</div>
-
-        <SectionGap />
-
-        <Label>Priority</Label>
-        <div className="text-xs font-medium" style={{ color: B.navy }}>{record.structural_priority_label}</div>
-
-        <SectionGap />
-
-        <Trajectory
-          currentScore={record.final_score}
-          currentBand={record.stability_band}
-          projectedScore={record.projected_final_score}
-          projectedBand={record.projected_stability_band}
-        />
-      </Page>
-
-      {/* ==================== PAGE 5 — Sector Evolution + Benchmark ==================== */}
-      <Page record={record} insight={record.page_5_key_insight_text}>
-        <Label>Sector Evolution Path</Label>
-        <p className="text-xs mb-4" style={{ color: B.muted }}>
-          This chart shows how income systems in this sector often become more stable over time.
-        </p>
-        <EvolutionPath steps={evolutionSteps} currentLabel={record.current_evolution_stage_label} currentPosition={record.current_evolution_stage_position} />
-
-        <SectionGap />
-
-        <Label>Sector Stability Mechanisms</Label>
-        <p className="text-xs mb-2" style={{ color: B.muted }}>
-          Ways income systems in this sector become more reliable:
-        </p>
-        <ul className="text-xs list-disc list-inside" style={{ color: B.muted }}>
-          {sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
-        </ul>
-
-        <SectionGap />
-
-        <IndustryBenchmark record={record} />
-
-        <SectionGap />
-
-        {/* Drivers */}
-        <Label>Drivers Supporting Stability</Label>
-        <div className="space-y-2">
-          {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
-            <span key={d} className="inline-block text-[10px] font-medium px-2 py-0.5 rounded-md mr-1.5" style={{ backgroundColor: B.sand, color: B.navy }}>{d}</span>
           ))}
         </div>
-      </Page>
 
-      {/* ==================== PAGE 6 — Registry Record ==================== */}
-      <Page record={record} insight={record.page_6_key_insight_text}>
+        {/* Drivers */}
+        <div className="mt-4">
+          <Label>Drivers Supporting Stability</Label>
+          <div className="flex flex-wrap gap-1.5 mt-1">
+            {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
+              <span key={d} className="text-[10px] font-medium px-2 py-0.5 rounded-md" style={{ backgroundColor: B.sand, color: B.navy }}>{d}</span>
+            ))}
+          </div>
+        </div>
+      </ReportPage>
+
+      {/* ==================== PAGE 3 — Improvement Path & Governance ==================== */}
+      <ReportPage record={record}>
+        <h2 className="text-sm font-semibold uppercase tracking-[0.1em] mb-1" style={{ color: B.navy }}>
+          Improvement Path &amp; Governance
+        </h2>
+        <p className="text-xs leading-relaxed mb-4" style={{ color: B.muted }}>
+          {record.page_3_key_insight_text}
+        </p>
+
+        {/* Primary Constraint */}
+        <Label>Primary Structural Constraint</Label>
+        <div className="text-xs font-medium mb-1" style={{ color: B.navy }}>{record.primary_constraint_label}</div>
+        <div className="text-[11px] leading-relaxed space-y-1 mb-1" style={{ color: B.muted }}>
+          <p>{riskData.mechanism}</p>
+          <p>{riskData.impact}</p>
+        </div>
+
+        <SectionDivider />
+
+        {/* Improvement Opportunities */}
+        <Label>Improvement Opportunities</Label>
+        <p className="text-[11px] leading-relaxed mb-2" style={{ color: B.muted }}>
+          {record.structural_improvement_path_text}
+        </p>
+
+        {/* Sector evolution */}
+        <div className="mt-3">
+          <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.muted }}>
+            Sector Evolution Path
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {evolutionSteps.map((step, i) => {
+              const idx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
+              const active = i === idx;
+              const past = i < idx;
+              return (
+                <div key={i} className="flex items-center gap-2">
+                  <span
+                    className="text-[10px] font-medium px-2 py-0.5 rounded"
+                    style={{
+                      backgroundColor: active ? B.navy : past ? B.teal : B.sand,
+                      color: active || past ? "#ffffff" : B.light,
+                    }}
+                  >
+                    {step}
+                  </span>
+                  {i < evolutionSteps.length - 1 && <span className="text-[10px]" style={{ color: B.light }}>&rarr;</span>}
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-[10px] mt-2" style={{ color: B.muted }}>
+            Current Stage: <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
+          </div>
+        </div>
+
+        {/* Sector mechanisms */}
+        <div className="mt-3">
+          <div className="text-[10px] font-medium uppercase tracking-wider mb-1" style={{ color: B.muted }}>
+            Sector Stability Mechanisms
+          </div>
+          <ul className="text-[11px] list-disc list-inside" style={{ color: B.muted }}>
+            {sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
+          </ul>
+        </div>
+
+        <SectionDivider />
+
+        {/* Methodology */}
+        <Label>Methodology</Label>
+        <p className="text-[10px] leading-relaxed" style={{ color: B.muted }}>
+          The Income Stability Score™ evaluates the structural stability of income at a specific point in time.
+          Six structural factors are assessed under Model RP-1.0 using fixed, deterministic scoring criteria.
+          The model does not evaluate investment performance, creditworthiness, or future financial outcomes.
+        </p>
+
+        <SectionDivider />
+
         {/* Disclosure */}
         <Label>Disclosure</Label>
         <p className="text-[10px] leading-relaxed" style={{ color: B.light }}>
@@ -741,23 +621,11 @@ export default function ReviewPage() {
           and not a prediction of future income.
         </p>
 
-        <SectionGap />
-
-        {/* Verification */}
-        <Label>Record Verification</Label>
-        <div className="text-xs leading-relaxed space-y-2" style={{ color: B.muted }}>
-          <p>This assessment is issued as a verifiable RunPayway classification record.</p>
-          <p>
-            Verify this report using the Record ID and Authorization Code at{" "}
-            <span className="font-medium" style={{ color: B.navy }}>RunPayway.com/verify</span>.
-          </p>
-        </div>
-
-        <SectionGap />
+        <SectionDivider />
 
         {/* Official Record */}
         <Label>Official Classification Record</Label>
-        <dl className="space-y-0.5 text-[11px] mt-3">
+        <dl className="space-y-0.5 text-[11px] mt-2">
           {[
             ["Record ID", record.record_id],
             ["Model", record.model_version],
@@ -772,7 +640,17 @@ export default function ReviewPage() {
             </div>
           ))}
         </dl>
-      </Page>
+
+        {/* Verification */}
+        <p className="text-[10px] mt-3 leading-relaxed" style={{ color: B.muted }}>
+          Verify this report at <span className="font-medium" style={{ color: B.navy }}>RunPayway.com/verify</span> using the Record ID and Authorization Code.
+        </p>
+
+        {/* Model reference */}
+        <div className="text-center mt-5 pt-3 border-t" style={{ borderColor: B.sandDk }}>
+          <div className="text-[10px]" style={{ color: B.light }}>RunPayway Structural Stability Model RP-1.0</div>
+        </div>
+      </ReportPage>
 
       {/* Download */}
       <div className="space-y-3 download-section no-print">
