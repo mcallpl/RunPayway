@@ -1807,29 +1807,41 @@ function HeroSection() {
               }}
             />
 
-            {/* Faint concentric scoring rings */}
+            {/* Concentric scoring rings */}
             <div
               className="absolute pointer-events-none"
               style={{
-                width: 340,
-                height: 340,
+                width: 380,
+                height: 380,
                 borderRadius: "50%",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                border: "1px solid rgba(14,26,43,0.04)",
+                border: "1.5px solid rgba(75,63,174,0.06)",
               }}
             />
             <div
               className="absolute pointer-events-none"
               style={{
-                width: 240,
-                height: 240,
+                width: 260,
+                height: 260,
                 borderRadius: "50%",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                border: "1px solid rgba(14,26,43,0.03)",
+                border: "1px solid rgba(75,63,174,0.05)",
+              }}
+            />
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                width: 160,
+                height: 160,
+                borderRadius: "50%",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                border: "1px solid rgba(75,63,174,0.04)",
               }}
             />
 
@@ -1855,11 +1867,14 @@ function HeroSection() {
                 Your Income Stability Score
               </div>
 
-              {/* Score number — the hero element */}
+              {/* Score number — gradient text */}
               <div
                 className="text-[100px] md:text-[128px] lg:text-[148px] font-semibold leading-none"
                 style={{
-                  color: B.navy,
+                  background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
                   letterSpacing: "-0.05em",
                   marginBottom: 6,
                   fontFeatureSettings: "'tnum'",
@@ -1883,14 +1898,7 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* Thin structural divider — hero to classification */}
-      <div
-        className="absolute bottom-0 left-0 right-0"
-        style={{
-          height: 1,
-          background: "rgba(14,26,43,0.06)",
-        }}
-      />
+      {/* No divider — flows into classification */}
 
       {/* Mobile overrides */}
       <style>{`
@@ -1919,7 +1927,7 @@ export default function LandingPage() {
       <HeroSection />
 
       {/* ============ INCOME STABILITY CLASSIFICATION — flows from hero ============ */}
-      <section style={{ backgroundColor: "#ffffff", paddingTop: 80, paddingBottom: 120 }}>
+      <section style={{ backgroundColor: "#ffffff", paddingTop: 40, paddingBottom: 120 }}>
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
           {/* Header */}
           <div className="text-center" style={{ marginBottom: 48 }}>
@@ -1964,21 +1972,35 @@ export default function LandingPage() {
           {/* Four tier cards — directly connected to spectrum bar */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ maxWidth: 880, margin: "16px auto 0" }}>
             {[
-              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626" },
-              { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B" },
-              { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal },
-              { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy },
+              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", active: false },
+              { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", active: false },
+              { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, active: true },
+              { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, active: false },
             ].map((tier, i) => (
               <div
                 key={tier.label}
                 style={{
-                  backgroundColor: "#ffffff",
-                  borderLeft: `1px solid ${B.sandDk}`,
+                  backgroundColor: tier.active ? "rgba(31,109,122,0.04)" : "#ffffff",
+                  borderLeft: `1px solid ${tier.active ? B.teal : B.sandDk}`,
                   borderRight: i === 3 ? `1px solid ${B.sandDk}` : "none",
-                  borderBottom: `1px solid ${B.sandDk}`,
+                  borderBottom: `1px solid ${tier.active ? "rgba(31,109,122,0.20)" : B.sandDk}`,
                   padding: "24px 20px 28px",
+                  position: "relative" as const,
                 }}
               >
+                {/* Active tier badge */}
+                {tier.active && (
+                  <div
+                    className="text-[9px] font-semibold uppercase tracking-[0.14em]"
+                    style={{
+                      color: B.teal,
+                      marginBottom: 10,
+                    }}
+                  >
+                    &#9679; Sample Score: 78
+                  </div>
+                )}
+
                 {/* Color indicator + range */}
                 <div className="flex items-center gap-3 mb-3">
                   <div className="rounded-sm" style={{ width: 4, height: 32, backgroundColor: tier.color }} />
