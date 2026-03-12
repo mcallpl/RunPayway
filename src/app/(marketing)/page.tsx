@@ -1358,7 +1358,7 @@ function HowItWorks() {
     {
       num: "1",
       title: "Answer 6 Questions",
-      desc: "Tell us about your income — where it comes from, how often it arrives, and how predictable it is.",
+      desc: "We assess your income structure — its sources, frequency, and predictability.",
     },
     {
       num: "2",
