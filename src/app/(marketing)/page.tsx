@@ -1186,10 +1186,11 @@ function ScoringFactors() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Title parallax: slow vertical drift + fade at edges */
-  const titleY = (scrollProgress - 0.5) * -40;
+  /* Title parallax: vertical drift + scale + fade at edges */
+  const titleY = (scrollProgress - 0.5) * -80;
+  const titleScale = 1 + (0.5 - Math.abs(scrollProgress - 0.5)) * 0.06;
   const titleOpacity = visible
-    ? 1 - Math.max(0, (scrollProgress - 0.78) * 4.5)
+    ? Math.min(1, 1 - Math.max(0, (scrollProgress - 0.72) * 4)) * Math.min(1, scrollProgress * 5)
     : 0;
 
   const factors = [
@@ -1219,7 +1220,7 @@ function ScoringFactors() {
           style={{
             marginBottom: 72,
             opacity: titleOpacity,
-            transform: `translateY(${visible ? titleY : 20}px) scale(${visible ? 1 : 0.96})`,
+            transform: `translateY(${visible ? titleY : 30}px) scale(${visible ? titleScale : 0.92})`,
             transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
             willChange: "transform, opacity",
           }}
