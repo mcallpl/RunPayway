@@ -1612,223 +1612,294 @@ function HowItWorks() {
 }
 
 /* ------------------------------------------------------------------ */
-/* HERO SECTION — Financial Platform Interface                          */
+/* HERO SECTION — Premium Financial Instrument                          */
 /* ------------------------------------------------------------------ */
 function HeroSection() {
   const [score, setScore] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [cardVisible, setCardVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const el = heroRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
-          const target = 78;
-          const duration = 800;
-          const start = performance.now();
-          const animate = (now: number) => {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease-out cubic
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setScore(Math.round(eased * target));
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
+          // Delay card entrance
+          setTimeout(() => setCardVisible(true), 300);
+          // Animate score count
+          setTimeout(() => {
+            const target = 78;
+            const duration = 1000;
+            const start = performance.now();
+            const animate = (now: number) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              setScore(Math.round(eased * target));
+              if (progress < 1) requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+          }, 800);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 },
     );
-    if (heroRef.current) observer.observe(heroRef.current);
-    return () => observer.disconnect();
+    obs.observe(el);
+    return () => obs.disconnect();
   }, [hasAnimated]);
-
-  // Score position on band (78 out of 100)
-  const scorePosition = 78;
 
   return (
     <section
       ref={heroRef}
-      style={{
-        backgroundColor: B.navy,
-        paddingTop: 120,
-        paddingBottom: 110,
-        position: "relative",
-        overflow: "hidden",
-      }}
+      className="relative overflow-hidden"
+      style={{ background: "#ffffff" }}
     >
-      {/* Subtle gradient overlay */}
+      {/* Faint radial glow — barely visible warmth */}
       <div
+        className="absolute pointer-events-none"
         style={{
-          position: "absolute",
-          inset: 0,
-          background: "linear-gradient(135deg, #0E1A2B 0%, #131F30 50%, #0E1A2B 100%)",
-          pointerEvents: "none",
+          width: 900,
+          height: 900,
+          borderRadius: "50%",
+          top: "50%",
+          right: "-5%",
+          transform: "translateY(-50%)",
+          background: "radial-gradient(circle, rgba(75,63,174,0.03) 0%, transparent 65%)",
         }}
       />
 
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-6" style={{ position: "relative", zIndex: 1 }}>
-        <div className="flex flex-col lg:flex-row items-start" style={{ gap: 120 }}>
-          {/* Left column — copy + CTA (540px) */}
-          <div style={{ maxWidth: 540, flexShrink: 0 }} className="w-full">
+      <div
+        className="relative mx-auto px-6 md:px-10 lg:px-12"
+        style={{ maxWidth: 1200, paddingTop: 140, paddingBottom: 160 }}
+      >
+        <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: 80 }}>
+          {/* Left — Copy + CTA */}
+          <div className="flex-1 lg:max-w-[560px]">
+            {/* Eyebrow */}
+            <div
+              className="font-medium uppercase text-[11px] md:text-[12px]"
+              style={{
+                letterSpacing: "0.14em",
+                color: B.teal,
+                marginBottom: 20,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(8px)",
+                transition: "opacity 500ms ease-out, transform 500ms ease-out",
+              }}
+            >
+              Income Stability Score™
+            </div>
+
             <h1
-              className="text-[36px] md:text-[56px] leading-[1.15]"
-              style={{ color: "#ffffff", fontWeight: 600, marginBottom: 24 }}
+              className="text-[38px] md:text-[52px] lg:text-[58px] font-semibold"
+              style={{
+                color: B.navy,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
+                marginBottom: 24,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(12px)",
+                transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
+              }}
             >
               How Stable Is Your Income?
             </h1>
-            <p
-              className="text-[18px] md:text-[22px] leading-[1.5]"
-              style={{ color: "rgba(255,255,255,0.85)", fontWeight: 400, marginBottom: 18 }}
-            >
-              Get your Income Stability Score&#8482; in under 2 minutes.
-            </p>
-            <p
-              className="text-[15px] md:text-[16px]"
-              style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400, marginBottom: 28 }}
-            >
-              Scores range from 0&ndash;100. Higher scores indicate stronger income stability.
-            </p>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center justify-center transition-all"
-              style={{
-                backgroundColor: B.purple,
-                color: "#ffffff",
-                fontWeight: 500,
-                fontSize: 16,
-                height: 52,
-                paddingLeft: 28,
-                paddingRight: 28,
-                borderRadius: 8,
-                boxShadow: "0 2px 8px rgba(75, 63, 174, 0.3)",
-                width: "auto",
-                maxWidth: 320,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.filter = "brightness(1.1)";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(75, 63, 174, 0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.filter = "brightness(1)";
-                e.currentTarget.style.boxShadow = "0 2px 8px rgba(75, 63, 174, 0.3)";
-              }}
-            >
-              Get My Income Stability Score
-            </Link>
-            <p
-              className="text-[13px] md:text-[14px]"
-              style={{ color: "#9AA4B2", marginTop: 12 }}
-            >
-              Takes under 2 minutes &mdash; Instant results
-            </p>
-          </div>
 
-          {/* Right column — diagnostic score instrument (420px) */}
-          <div className="w-full flex justify-center lg:justify-end" style={{ maxWidth: 420, position: "relative" }}>
-            {/* Radial glow behind instrument */}
+            <p
+              className="text-[17px] md:text-[20px]"
+              style={{
+                color: "rgba(14,26,43,0.65)",
+                lineHeight: 1.65,
+                marginBottom: 40,
+                maxWidth: 460,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
+              }}
+            >
+              Measure the structural stability of your income in under 2 minutes. Scores range from 0–100.
+            </p>
+
+            {/* CTA Button */}
             <div
               style={{
-                position: "absolute",
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 500ms ease-out 400ms, transform 500ms ease-out 400ms",
+              }}
+            >
+              <Link
+                href="/assessment"
+                className="inline-flex items-center justify-center font-semibold
+                           focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{
+                  height: 54,
+                  paddingLeft: 32,
+                  paddingRight: 32,
+                  borderRadius: 12,
+                  background: B.navy,
+                  color: "#F4F1EA",
+                  fontSize: 15,
+                  letterSpacing: "-0.01em",
+                  border: "1px solid rgba(14,26,43,0.90)",
+                  boxShadow: "0 8px 24px rgba(14,26,43,0.18)",
+                  transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
+                  // @ts-expect-error focus ring
+                  "--tw-ring-color": B.teal,
+                }}
+                onMouseEnter={(e) => {
+                  const t = e.currentTarget;
+                  t.style.background = B.purple;
+                  t.style.transform = "translateY(-1px)";
+                  t.style.boxShadow = "0 12px 32px rgba(14,26,43,0.24)";
+                }}
+                onMouseLeave={(e) => {
+                  const t = e.currentTarget;
+                  t.style.background = B.navy;
+                  t.style.transform = "translateY(0)";
+                  t.style.boxShadow = "0 8px 24px rgba(14,26,43,0.18)";
+                }}
+                onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                Get My Income Stability Score
+              </Link>
+
+              <p
+                className="text-[13px] md:text-[14px]"
+                style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em" }}
+              >
+                Takes under 2 minutes &bull; Instant results
+              </p>
+            </div>
+          </div>
+
+          {/* Right — Floating Score Instrument */}
+          <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative" }}>
+            {/* Outer glow ring */}
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                width: 420,
+                height: 420,
+                borderRadius: "50%",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: 500,
-                height: 500,
-                borderRadius: "50%",
-                background: `radial-gradient(circle, rgba(75, 63, 174, 0.07) 0%, transparent 70%)`,
-                pointerEvents: "none",
+                background: "radial-gradient(circle, rgba(75,63,174,0.04) 0%, transparent 70%)",
               }}
             />
 
-            {/* Metric card */}
+            {/* Score Card */}
             <div
-              className="w-full hero-report-surface"
+              className="relative w-full"
               style={{
-                backgroundColor: "#F4F1EA",
-                borderRadius: 14,
-                border: "1px solid #E5E2DB",
-                padding: 40,
-                boxShadow: "0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)",
-                position: "relative",
-                zIndex: 1,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                maxWidth: 420,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)";
+                maxWidth: 380,
+                opacity: cardVisible ? 1 : 0,
+                transform: cardVisible ? "translateY(0)" : "translateY(20px)",
+                transition: "opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1)",
               }}
             >
-              {/* Title */}
+              {/* Card surface */}
               <div
-                className="text-[10px] font-semibold uppercase tracking-[0.18em]"
-                style={{ color: B.navy, marginBottom: 24, opacity: 0.7 }}
+                style={{
+                  background: "#ffffff",
+                  borderRadius: 20,
+                  border: "1px solid rgba(14,26,43,0.06)",
+                  padding: "48px 44px 52px",
+                  boxShadow: "0 1px 2px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.06), 0 24px 64px rgba(14,26,43,0.08)",
+                  transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 1px 2px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.08), 0 32px 80px rgba(14,26,43,0.10)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 1px 2px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.06), 0 24px 64px rgba(14,26,43,0.08)";
+                }}
               >
-                Your Income Stability Score
-              </div>
-
-              {/* Large score */}
-              <div
-                className="text-[72px] md:text-[80px] leading-none"
-                style={{ color: B.navy, fontWeight: 600, marginBottom: 6 }}
-              >
-                {score}
-              </div>
-
-              {/* Classification */}
-              <div
-                className="text-[16px] font-medium"
-                style={{ color: B.teal, marginBottom: 28 }}
-              >
-                Established Stability
-              </div>
-
-              {/* Band progression scale */}
-              <div style={{ marginBottom: 8, position: "relative" }}>
-                {/* Gradient bar */}
+                {/* Label */}
                 <div
-                  className="rounded-full"
+                  className="font-medium uppercase text-[10px] md:text-[11px]"
                   style={{
-                    height: 8,
-                    background: `linear-gradient(90deg, ${B.navy} 0%, ${B.purple} 50%, ${B.teal} 100%)`,
-                    position: "relative",
+                    letterSpacing: "0.14em",
+                    color: "rgba(14,26,43,0.40)",
+                    marginBottom: 32,
                   }}
                 >
-                  {/* Score position indicator */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: `${hasAnimated ? scorePosition : 0}%`,
-                      top: -4,
-                      width: 3,
-                      height: 16,
-                      backgroundColor: B.navy,
-                      borderRadius: 2,
-                      transition: "left 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-                    }}
-                  />
+                  Your Income Stability Score
                 </div>
+
+                {/* Score number */}
+                <div
+                  className="text-[80px] md:text-[96px] font-semibold leading-none"
+                  style={{
+                    color: B.navy,
+                    letterSpacing: "-0.04em",
+                    marginBottom: 8,
+                  }}
+                >
+                  {score}
+                </div>
+
+                {/* Classification */}
+                <div
+                  className="text-[18px] md:text-[20px] font-medium"
+                  style={{ color: B.purple }}
+                >
+                  Established Stability
+                </div>
+
+                {/* Subtle accent line */}
+                <div
+                  style={{
+                    width: 48,
+                    height: 2,
+                    background: B.purple,
+                    marginTop: 28,
+                    opacity: 0.3,
+                    borderRadius: 1,
+                  }}
+                />
               </div>
 
-              {/* Band labels */}
-              <div className="grid grid-cols-4 gap-0.5" style={{ marginBottom: 0 }}>
-                {["Fragile", "Early", "Established", "High"].map((label) => (
-                  <div key={label} className="text-center">
-                    <div className="text-[9px] font-medium" style={{ color: B.navy, opacity: 0.6 }}>{label}</div>
-                  </div>
-                ))}
-              </div>
+              {/* Floating accent — faint border ring offset behind card */}
+              <div
+                className="absolute pointer-events-none"
+                style={{
+                  inset: -1,
+                  borderRadius: 22,
+                  border: "1px solid rgba(75,63,174,0.06)",
+                  transform: "translate(6px, 6px)",
+                  zIndex: -1,
+                }}
+              />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Bottom fade to next section */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{
+          height: 120,
+          background: "linear-gradient(to bottom, transparent, rgba(247,246,243,0.4))",
+        }}
+      />
+
+      {/* Mobile overrides */}
+      <style>{`
+        @media (max-width: 768px) {
+          section:first-of-type > div:nth-child(2) {
+            padding-top: 100px !important;
+            padding-bottom: 120px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
