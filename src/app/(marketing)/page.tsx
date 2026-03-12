@@ -1339,13 +1339,24 @@ function HowItWorks() {
       className="relative"
       style={{
         backgroundColor: B.navy,
-        paddingTop: 160,
-        paddingBottom: 160,
-        marginTop: -40,
-        marginBottom: -40,
-        clipPath: "polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%)",
+        paddingTop: 180,
+        paddingBottom: 180,
       }}
     >
+      {/* Top curve — organic wave transition */}
+      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill={B.navy} />
+        </svg>
+      </div>
+
+      {/* Bottom curve — mirrored organic wave */}
+      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.navy} />
+        </svg>
+      </div>
+
       {/* Faint grid texture */}
       <div
         className="absolute inset-0 pointer-events-none"
