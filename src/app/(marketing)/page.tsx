@@ -308,6 +308,159 @@ function ModelGovernance() {
 }
 
 /* ------------------------------------------------------------------ */
+/* SCORE REGISTRY                                                       */
+/* ------------------------------------------------------------------ */
+function ScoreRegistry() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const fields = [
+    { label: "Registry ID", value: "RP-A7E2F1B3" },
+    { label: "Score Result", value: "78 \u2014 Established Stability" },
+    { label: "Model Version", value: "RP-1.0", purple: true },
+    { label: "Timestamp", value: "2026-03-10 14:42 UTC" },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: "#F4F1EA",
+        paddingTop: 152,
+        paddingBottom: 152,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle vertical grid texture */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(14,26,43,0.035) 0px, rgba(14,26,43,0.035) 1px, transparent 1px, transparent 80px)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="max-w-[1140px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,420px)]"
+          style={{ columnGap: 88, rowGap: 36, alignItems: "start" }}
+        >
+          {/* Left column — editorial text */}
+          <div
+            style={{
+              maxWidth: 640,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            }}
+          >
+            <h2
+              className="text-[32px] md:text-[40px]"
+              style={{
+                color: B.navy,
+                fontWeight: 600,
+                lineHeight: 1.12,
+                letterSpacing: "-0.02em",
+                marginBottom: 18,
+              }}
+            >
+              Score Registry
+            </h2>
+
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              Each <strong style={{ fontWeight: 500, color: B.navy }}>Income Stability Score&#8482;</strong> assessment receives a unique registry ID.
+            </p>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              Registry records include the score result, model version, and assessment timestamp.
+            </p>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              This allows score results to be referenced and verified over time.
+            </p>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: 1.75 }}>
+              Registry records are generated under <strong>RunPayway Model RP-1.0</strong>.
+            </p>
+          </div>
+
+          {/* Right column — registry preview panel */}
+          <article
+            className="lg:justify-self-center"
+            style={{
+              width: "100%",
+              maxWidth: 420,
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.10)",
+              borderRadius: 20,
+              padding: 32,
+              boxShadow: "0 18px 44px rgba(14,26,43,0.10)",
+              position: "relative",
+              overflow: "hidden",
+              alignSelf: "start",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(14px)",
+              transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms, border-color 0.2s ease, box-shadow 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
+              e.currentTarget.style.boxShadow = "0 20px 50px rgba(14,26,43,0.14)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)";
+              e.currentTarget.style.boxShadow = "0 18px 44px rgba(14,26,43,0.10)";
+            }}
+          >
+            {/* Top accent */}
+            <div style={{ width: 56, height: 2, backgroundColor: B.purple, marginBottom: 22 }} />
+
+            {/* Panel header */}
+            <div
+              className="text-[12px] uppercase"
+              style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 18 }}
+            >
+              Registry Record
+            </div>
+
+            {/* Field list */}
+            <div style={{ display: "grid", rowGap: 18 }}>
+              {fields.map((field, i) => (
+                <div key={field.label}>
+                  <div
+                    className="text-[11px] uppercase"
+                    style={{ color: "rgba(14,26,43,0.52)", fontWeight: 500, letterSpacing: "0.10em", marginBottom: 5 }}
+                  >
+                    {field.label}
+                  </div>
+                  <div
+                    className="text-[15px] md:text-[16px]"
+                    style={{ color: field.purple ? B.purple : B.navy, fontWeight: 500, lineHeight: 1.5 }}
+                  >
+                    {field.value}
+                  </div>
+                  {/* Divider after each field except last */}
+                  {i < fields.length - 1 && (
+                    <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginTop: 18 }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* WHY INCOME STABILITY MATTERS                                         */
 /* ------------------------------------------------------------------ */
 function WhyIncomeStabilityMatters() {
@@ -1746,6 +1899,9 @@ export default function LandingPage() {
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
+
+      {/* ============ SCORE REGISTRY ============ */}
+      <ScoreRegistry />
 
       {/* ============ FAQ ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>
