@@ -1214,46 +1214,72 @@ function PreviewYourScoreReport() {
 /* SCORING FACTORS — Model Input Framework                              */
 /* ------------------------------------------------------------------ */
 function ScoringFactors() {
-  const ref = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.12 }
+      { threshold: 0.08 }
     );
-    if (ref.current) observer.observe(ref.current);
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
 
+  /* Scroll-driven parallax: track how far through the section the user is */
+  useEffect(() => {
+    const onScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      /* 0 = section top at viewport bottom, 1 = section bottom at viewport top */
+      const raw = (vh - rect.top) / (rect.height + vh);
+      setScrollProgress(Math.max(0, Math.min(1, raw)));
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* Title parallax: slow vertical drift + fade at edges */
+  const titleY = (scrollProgress - 0.5) * -40;
+  const titleOpacity = visible
+    ? 1 - Math.max(0, (scrollProgress - 0.78) * 4.5)
+    : 0;
+
   const factors = [
-    { num: "01", name: "Recurring Income", desc: "Does your income repeat on its own, like a subscription or salary? Or does it stop the moment you stop working?" },
-    { num: "02", name: "Number of Income Sources", desc: "How many places does your money come from? More sources means less risk if one goes away." },
-    { num: "03", name: "Income Concentration", desc: "How much of your income depends on one client, one job, or one platform? The more concentrated, the more fragile." },
-    { num: "04", name: "Forward Visibility", desc: "Can you see income coming in the future? Contracts, retainers, and scheduled payments all count." },
-    { num: "05", name: "Earnings Consistency", desc: "Does your income stay steady month to month, or does it swing up and down unpredictably?" },
-    { num: "06", name: "Passive Income", desc: "Do you earn money even when you're not actively working? Royalties, investments, and rental income all qualify." },
+    { num: "01", name: "Recurring Income", desc: "Measures how reliably your income renews without active effort." },
+    { num: "02", name: "Income Diversification", desc: "Evaluates whether your income is supported by multiple streams." },
+    { num: "03", name: "Income Concentration", desc: "Assesses your exposure if any single source were disrupted." },
+    { num: "04", name: "Forward Visibility", desc: "Gauges how far into the future your income can be projected." },
+    { num: "05", name: "Earnings Consistency", desc: "Analyzes the stability of your income from period to period." },
+    { num: "06", name: "Passive Income", desc: "Identifies income that continues independent of direct labor." },
   ];
 
   return (
     <section
-      ref={ref}
-      className="scoring-factors-section"
+      ref={sectionRef}
+      className="scoring-factors-section relative"
       style={{
         backgroundColor: "#ffffff",
-        paddingTop: 120,
-        paddingBottom: 120,
+        paddingTop: 140,
+        paddingBottom: 140,
       }}
     >
       <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
-        {/* Header */}
+        {/* Sticky header — parallax drift */}
         <div
+          ref={headerRef}
           className="text-center"
           style={{
-            marginBottom: 64,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 500ms ease-out, transform 500ms ease-out",
+            marginBottom: 72,
+            opacity: titleOpacity,
+            transform: `translateY(${visible ? titleY : 20}px) scale(${visible ? 1 : 0.96})`,
+            transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
+            willChange: "transform, opacity",
           }}
         >
           <div
@@ -1263,16 +1289,16 @@ function ScoringFactors() {
             What We Measure
           </div>
           <h2
-            className="text-[30px] md:text-[40px] font-semibold"
-            style={{ color: B.navy, letterSpacing: "-0.02em", marginBottom: 16 }}
+            className="text-[34px] md:text-[48px] font-semibold"
+            style={{ color: B.navy, letterSpacing: "-0.025em", marginBottom: 16, lineHeight: 1.1 }}
           >
             Six Scoring Factors
           </h2>
           <p
             className="text-[17px] md:text-[18px] mx-auto"
-            style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7, maxWidth: 560 }}
+            style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 520 }}
           >
-            Your score is based on six simple questions about how your income works.
+            Your score is built from six structural dimensions of income health.
           </p>
         </div>
 
@@ -1281,55 +1307,59 @@ function ScoringFactors() {
           className="grid grid-cols-1 md:grid-cols-2"
           style={{ gap: 20, maxWidth: 920, margin: "0 auto" }}
         >
-          {factors.map((factor, i) => (
-            <article
-              key={factor.num}
-              className="group"
-              style={{
-                position: "relative",
-                backgroundColor: "#ffffff",
-                borderRadius: 14,
-                padding: "28px 28px 32px 32px",
-                borderLeft: `3px solid ${B.purple}`,
-                boxShadow: "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(8px)",
-                transition: `opacity 500ms ease-out ${150 + i * 60}ms, transform 500ms ease-out ${150 + i * 60}ms, box-shadow 280ms ease, border-color 280ms ease`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.10), 0 2px 8px rgba(14,26,43,0.06)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              {/* Number */}
-              <div
-                className="text-[12px] font-semibold"
-                style={{ color: B.purple, marginBottom: 12, letterSpacing: "0.04em" }}
+          {factors.map((factor, i) => {
+            const row = Math.floor(i / 2);
+            const cardDelay = 100 + row * 140 + (i % 2) * 70;
+            return (
+              <article
+                key={factor.num}
+                className="group"
+                style={{
+                  position: "relative",
+                  backgroundColor: "#ffffff",
+                  borderRadius: 14,
+                  padding: "28px 28px 32px 32px",
+                  borderLeft: `3px solid ${B.purple}`,
+                  boxShadow: "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : `translateY(${24 + row * 8}px)`,
+                  transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 280ms ease`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.10), 0 2px 8px rgba(14,26,43,0.06)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
               >
-                {factor.num}
-              </div>
+                {/* Number */}
+                <div
+                  className="text-[12px] font-semibold"
+                  style={{ color: B.purple, marginBottom: 12, letterSpacing: "0.04em" }}
+                >
+                  {factor.num}
+                </div>
 
-              {/* Name */}
-              <div
-                className="text-[18px] md:text-[20px] font-semibold"
-                style={{ color: B.navy, lineHeight: 1.3, marginBottom: 10 }}
-              >
-                {factor.name}
-              </div>
+                {/* Name */}
+                <div
+                  className="text-[18px] md:text-[20px] font-semibold"
+                  style={{ color: B.navy, lineHeight: 1.3, marginBottom: 10 }}
+                >
+                  {factor.name}
+                </div>
 
-              {/* Plain English description */}
-              <p
-                className="text-[14px] md:text-[15px]"
-                style={{ color: "rgba(14,26,43,0.58)", lineHeight: 1.7 }}
-              >
-                {factor.desc}
-              </p>
-            </article>
-          ))}
+                {/* Outcome-focused description */}
+                <p
+                  className="text-[14px] md:text-[15px]"
+                  style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.7 }}
+                >
+                  {factor.desc}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
