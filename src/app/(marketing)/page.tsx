@@ -3,6 +3,32 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+/* Shared hook: triggers visibility when element enters viewport.
+   Checks on mount so elements already in view appear immediately. */
+function useInView(threshold = 0) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    /* Already in view on mount? Fire immediately */
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
+      setVisible(true);
+      return;
+    }
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
@@ -91,19 +117,7 @@ const FAQ_ITEMS = [
 /* GLOBAL DISCLAIMER — institutional disclosure                         */
 /* ------------------------------------------------------------------ */
 function Disclaimer() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   return (
     <section
@@ -208,19 +222,7 @@ function Disclaimer() {
 /* FINAL CTA — Premium Assessment Entry                                 */
 /* ------------------------------------------------------------------ */
 function FinalCta() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   return (
     <section
@@ -389,17 +391,7 @@ function FinalCta() {
 /* MODEL GOVERNANCE — scroll-reveal section                             */
 /* ------------------------------------------------------------------ */
 function ModelGovernance() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   return (
     <section
@@ -506,17 +498,7 @@ function ModelGovernance() {
 /* FAQ — Premium Financial Documentation                                */
 /* ------------------------------------------------------------------ */
 function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   const faqItems = [
     {
@@ -682,17 +664,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 /* SCORE REGISTRY                                                       */
 /* ------------------------------------------------------------------ */
 function ScoreRegistry() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   const fields = [
     { label: "Registry ID", value: "RP-A7E2F1B3" },
@@ -835,17 +807,7 @@ function ScoreRegistry() {
 /* WHY INCOME STABILITY MATTERS                                         */
 /* ------------------------------------------------------------------ */
 function WhyIncomeStabilityMatters() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   return (
     <section
@@ -995,19 +957,9 @@ function WhyIncomeStabilityMatters() {
 /* PREVIEW YOUR SCORE REPORT — Financial Assessment Document            */
 /* ------------------------------------------------------------------ */
 function PreviewYourScoreReport() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const { ref, visible } = useInView();
   const [activePage, setActivePage] = useState(0);
   const pages = ["Executive Assessment", "Structural Analysis", "Improvement Path"];
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <section
@@ -1214,19 +1166,9 @@ function PreviewYourScoreReport() {
 /* SCORING FACTORS — Model Input Framework                              */
 /* ------------------------------------------------------------------ */
 function ScoringFactors() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const { ref: sectionRef, visible } = useInView();
   const headerRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.08 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   /* Scroll-driven parallax: track how far through the section the user is */
   useEffect(() => {
@@ -1370,19 +1312,7 @@ function ScoringFactors() {
 /* HOW IT WORKS — Unified Scoring Pipeline + Model Diagram              */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.12 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const { ref, visible } = useInView();
 
   const steps = [
     {
@@ -1567,29 +1497,30 @@ function HeroSection() {
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
+    const trigger = () => {
+      if (hasAnimated) return;
+      setHasAnimated(true);
+      setTimeout(() => setCardVisible(true), 300);
+      setTimeout(() => {
+        const target = 78;
+        const duration = 1000;
+        const start = performance.now();
+        const animate = (now: number) => {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setScore(Math.round(eased * target));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, 800);
+    };
+    /* Fire immediately if already in view */
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) { trigger(); return; }
     const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          // Delay card entrance
-          setTimeout(() => setCardVisible(true), 300);
-          // Animate score count
-          setTimeout(() => {
-            const target = 78;
-            const duration = 1000;
-            const start = performance.now();
-            const animate = (now: number) => {
-              const elapsed = now - start;
-              const progress = Math.min(elapsed / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              setScore(Math.round(eased * target));
-              if (progress < 1) requestAnimationFrame(animate);
-            };
-            requestAnimationFrame(animate);
-          }, 800);
-        }
-      },
-      { threshold: 0.15 },
+      ([entry]) => { if (entry.isIntersecting) { trigger(); obs.disconnect(); } },
+      { threshold: 0 },
     );
     obs.observe(el);
     return () => obs.disconnect();
