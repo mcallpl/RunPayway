@@ -216,92 +216,108 @@ function ModelGovernance() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  const blocks = [
-    {
-      title: "Scope of the Model",
-      lines: [
-        <>The Income Stability Score™ evaluates the structural stability of income at a specific point in time based on <strong style={{ color: B.navy }}>Model RP-1.0</strong>.</>,
-        "The model assesses structural characteristics of income systems and does not evaluate investment performance, creditworthiness, or future financial outcomes.",
-      ],
-    },
-    {
-      title: "Point-in-Time Assessment",
-      lines: [
-        "The Income Stability Score™ reflects income structure at the time the assessment is completed.",
-        "Changes to income sources, revenue continuity, or income concentration may affect the score over time.",
-      ],
-    },
-    {
-      title: "Analytical Use",
-      lines: [
-        "The Income Stability Score™ is designed as a structural analytical tool intended to help individuals better understand the stability characteristics of their income systems.",
-        "The score should not be interpreted as financial, tax, legal, or investment advice.",
-      ],
-    },
-  ];
-
   return (
-    <section ref={ref} className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 64 }}>
-      {/* Divider line — draws left to right */}
-      <div className="mx-auto" style={{ maxWidth: 680, marginBottom: 40 }}>
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: "#F4F1EA",
+        paddingTop: 148,
+        paddingBottom: 148,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle horizontal documentation lines */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(0deg, rgba(14,26,43,0.035) 0px, rgba(14,26,43,0.035) 1px, transparent 1px, transparent 72px)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+        {/* Title + text */}
         <div
           style={{
-            height: 1,
-            backgroundColor: B.sandDk,
-            transformOrigin: "left",
-            transform: visible ? "scaleX(1)" : "scaleX(0)",
-            transition: "transform 0.6s ease-out",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.48s ease-out, transform 0.48s ease-out",
           }}
-        />
-      </div>
-
-      {/* Title */}
-      <h2
-        className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight text-center"
-        style={{
-          color: B.navy,
-          marginBottom: 40,
-          opacity: visible ? 1 : 0,
-          transition: "opacity 0.4s ease",
-          transitionDelay: "100ms",
-        }}
-      >
-        Model Governance
-      </h2>
-
-      {/* Governance blocks */}
-      <div className="mx-auto text-left" style={{ maxWidth: 680 }}>
-        {blocks.map((block, i) => (
-          <div
-            key={block.title}
+        >
+          <h2
+            className="text-[32px] md:text-[40px]"
             style={{
-              marginBottom: i < blocks.length - 1 ? 32 : 0,
-              opacity: visible ? 1 : 0,
-              transition: "opacity 0.4s ease",
-              transitionDelay: `${200 + i * 100}ms`,
+              color: B.navy,
+              fontWeight: 600,
+              lineHeight: 1.12,
+              letterSpacing: "-0.02em",
+              marginBottom: 32,
             }}
           >
-            <h3
-              className="text-[16px] font-semibold"
-              style={{ color: B.navy, marginBottom: 10 }}
-            >
-              {block.title}
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {block.lines.map((line, j) => (
-                <p key={j} className="text-[15px] leading-relaxed" style={{ color: B.muted }}>
-                  {line}
-                </p>
-              ))}
-            </div>
+            Model Governance
+          </h2>
+
+          <div style={{ maxWidth: 640 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              RunPayway Model <span style={{ fontWeight: 500, color: B.purple }}>RP-1.0</span> defines the scoring framework.
+            </p>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              The scoring model, classification scale, and factor definitions are versioned to maintain consistency.
+            </p>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75 }}>
+              Future updates are released as new model versions.
+            </p>
           </div>
-        ))}
+        </div>
+
+        {/* Governance reference panel */}
+        <article
+          style={{
+            marginTop: 36,
+            width: "100%",
+            maxWidth: 420,
+            backgroundColor: "#ffffff",
+            border: "1px solid rgba(14,26,43,0.10)",
+            borderRadius: 18,
+            padding: 28,
+            boxShadow: "0 14px 34px rgba(14,26,43,0.08)",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.48s ease-out 80ms, transform 0.48s ease-out 80ms",
+          }}
+        >
+          {/* Top accent */}
+          <div style={{ width: 48, height: 2, backgroundColor: B.purple, marginBottom: 16 }} />
+
+          {/* Panel header */}
+          <div
+            className="text-[12px] uppercase"
+            style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 10 }}
+          >
+            Model Version
+          </div>
+
+          {/* Version value */}
+          <div
+            className="text-[24px] md:text-[28px]"
+            style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.01em", marginBottom: 14 }}
+          >
+            RP-1.0
+          </div>
+
+          {/* Supporting line */}
+          <p className="text-[15px]" style={{ color: "rgba(14,26,43,0.70)", fontWeight: 400, lineHeight: 1.6 }}>
+            Scoring framework currently in use.
+          </p>
+        </article>
       </div>
     </section>
   );
