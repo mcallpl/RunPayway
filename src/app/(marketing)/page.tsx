@@ -893,6 +893,166 @@ function WhatTheScoreMeasures() {
 }
 
 /* ------------------------------------------------------------------ */
+/* HOW IT WORKS — Financial Scoring Pipeline                            */
+/* ------------------------------------------------------------------ */
+function HowItWorks() {
+  const steps = [
+    { num: "Step 1", desc: "Answer a few questions about your income." },
+    {
+      num: "Step 2",
+      desc: null, // custom render for model emphasis
+    },
+    { num: "Step 3", desc: "Receive your score and structured report instantly." },
+  ];
+
+  return (
+    <section
+      style={{
+        backgroundColor: B.navy,
+        paddingTop: 140,
+        paddingBottom: 140,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle analytical grid background */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
+          backgroundSize: "64px 64px",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        className="max-w-[1100px] mx-auto px-6 md:px-10"
+        style={{ position: "relative", zIndex: 1 }}
+      >
+        {/* Section heading */}
+        <h2
+          className="text-[30px] md:text-[40px] text-center"
+          style={{
+            color: "#F4F1EA",
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+            marginBottom: 70,
+          }}
+        >
+          How It Works
+        </h2>
+
+        {/* Desktop: horizontal pipeline */}
+        <div
+          className="hidden md:grid"
+          style={{ gridTemplateColumns: "1fr auto 1fr auto 1fr", alignItems: "center" }}
+          aria-label="RunPayway scoring process"
+        >
+          {steps.map((step, i) => (
+            <>
+              <article
+                key={step.num}
+                className="group flex flex-col items-center text-center"
+                style={{ maxWidth: 280, margin: "0 auto" }}
+              >
+                {/* Step number */}
+                <div
+                  className="text-[14px] uppercase tracking-[0.08em] group-hover:!text-[#4B3FAE] transition-colors duration-200"
+                  style={{ color: B.teal, fontWeight: 500, marginBottom: 16 }}
+                >
+                  {step.num}
+                </div>
+                {/* Divider */}
+                <div
+                  className="group-hover:opacity-100 transition-opacity duration-200"
+                  style={{
+                    width: 60,
+                    height: 2,
+                    backgroundColor: B.purple,
+                    marginBottom: 18,
+                    opacity: 0.8,
+                  }}
+                />
+                {/* Description */}
+                <p
+                  className="text-[20px]"
+                  style={{ color: "#F4F1EA", fontWeight: 500, lineHeight: 1.6, maxWidth: 260 }}
+                >
+                  {i === 1 ? (
+                    <>
+                      <span style={{ color: B.purple, fontWeight: 600 }}>RunPayway Model RP-1.0</span>{" "}
+                      calculates your score.
+                    </>
+                  ) : (
+                    step.desc
+                  )}
+                </p>
+              </article>
+              {/* Connector rule between steps */}
+              {i < 2 && (
+                <div
+                  key={`connector-${i}`}
+                  className="hiw-connector"
+                  style={{
+                    height: 1,
+                    width: "100%",
+                    backgroundColor: "rgba(255,255,255,0.18)",
+                    alignSelf: "center",
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div className="hiw-connector-sweep" />
+                </div>
+              )}
+            </>
+          ))}
+        </div>
+
+        {/* Mobile: vertical flow */}
+        <div className="md:hidden flex flex-col items-center" aria-label="RunPayway scoring process">
+          {steps.map((step, i) => (
+            <div key={step.num}>
+              <article className="flex flex-col items-center text-center" style={{ maxWidth: 280, margin: "0 auto" }}>
+                <div
+                  className="text-[14px] uppercase tracking-[0.08em]"
+                  style={{ color: B.teal, fontWeight: 500, marginBottom: 16 }}
+                >
+                  {step.num}
+                </div>
+                <div style={{ width: 60, height: 2, backgroundColor: B.purple, marginBottom: 18, opacity: 0.8 }} />
+                <p className="text-[18px]" style={{ color: "#F4F1EA", fontWeight: 500, lineHeight: 1.6 }}>
+                  {i === 1 ? (
+                    <>
+                      <span style={{ color: B.purple, fontWeight: 600 }}>RunPayway Model RP-1.0</span>{" "}
+                      calculates your score.
+                    </>
+                  ) : (
+                    step.desc
+                  )}
+                </p>
+              </article>
+              {/* Vertical connector */}
+              {i < 2 && (
+                <div
+                  style={{
+                    width: 1,
+                    height: 32,
+                    backgroundColor: "rgba(255,255,255,0.2)",
+                    margin: "24px auto",
+                  }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* SCORE SCALE — Financial Rating Scale                                 */
 /* ------------------------------------------------------------------ */
 function ScoreScale() {
@@ -1265,93 +1425,8 @@ export default function LandingPage() {
       {/* ============ SCORE SCALE ============ */}
       <ScoreScale />
 
-      {/* ============ HOW IT WORKS — Process Strip ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 40, paddingBottom: 120 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-          How It Works
-        </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 64, maxWidth: 560 }}>
-          Three steps to your Income Stability Score™ report.
-        </p>
-
-        {/* Steps with connecting line */}
-        <div className="relative" style={{ maxWidth: 900, margin: "0 auto" }}>
-          {/* Horizontal connector line (desktop only) */}
-          <div
-            className="hidden md:block absolute"
-            style={{
-              top: 36,
-              left: "16.67%",
-              right: "16.67%",
-              height: 1,
-              backgroundColor: B.sandDk,
-            }}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-            {[
-              {
-                step: "01",
-                title: "Select Your Plan",
-                desc: "Choose a single assessment or annual monitoring package.",
-              },
-              {
-                step: "02",
-                title: "Complete Six Factors",
-                desc: "Answer six structured questions about your income system. Under two minutes.",
-              },
-              {
-                step: "03",
-                title: "Receive Your Report",
-                desc: "Get your Income Stability Score™ and full PDF assessment record instantly.",
-              },
-            ].map((item, i) => (
-              <div key={item.step} className="flex flex-col items-center text-center relative">
-                {/* Step number circle */}
-                <div
-                  className="flex items-center justify-center rounded-full relative z-10 mb-6"
-                  style={{
-                    width: 72,
-                    height: 72,
-                    backgroundColor: i === 2 ? B.navy : "#ffffff",
-                    border: i === 2 ? "none" : `1.5px solid ${B.sandDk}`,
-                    boxShadow: i === 2 ? "0 4px 20px rgba(14, 26, 43, 0.15)" : "0 2px 8px rgba(0,0,0,0.04)",
-                  }}
-                >
-                  <span
-                    className="text-[22px] font-semibold"
-                    style={{ color: i === 2 ? "#ffffff" : B.navy }}
-                  >
-                    {item.step}
-                  </span>
-                </div>
-
-                {/* Content card */}
-                <div
-                  className="rounded-lg w-full"
-                  style={{
-                    backgroundColor: i === 2 ? B.sand : "#ffffff",
-                    border: `1px solid ${B.sandDk}`,
-                    padding: "24px 20px",
-                  }}
-                >
-                  <div className="text-[15px] font-semibold mb-2" style={{ color: B.navy }}>{item.title}</div>
-                  <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{item.desc}</p>
-                </div>
-
-                {/* Mobile arrow between steps */}
-                {i < 2 && (
-                  <div className="md:hidden flex justify-center mt-4 -mb-4">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M8 3v10m0 0l-3-3m3 3l3-3" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
+      <HowItWorks />
 
       {/* ============ INCOME STABILITY CLASSIFICATION — Unified Section ============ */}
       <section style={{ backgroundColor: "#ffffff", paddingTop: 16, paddingBottom: 120 }}>

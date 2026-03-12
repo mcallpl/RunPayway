@@ -69,6 +69,23 @@ select, input[type="text"], input[type="email"] {
   }
 }
 
+/* How It Works — connector sweep animation */
+@keyframes connectorSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.hiw-connector-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(75, 63, 174, 0.08), transparent);
+  animation: connectorSweep 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hiw-connector-sweep {
+    animation: none;
+  }
+}
+
 /* Editorial stage — report preview */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
