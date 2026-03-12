@@ -61,6 +61,14 @@ select, input[type="text"], input[type="email"] {
   animation: heroSettle 0.7s ease-out both;
 }
 
+/* Hero mobile adjustments */
+@media (max-width: 767px) {
+  .hero-report-surface {
+    padding: 24px !important;
+    max-width: 340px !important;
+  }
+}
+
 /* Editorial stage — report preview */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(12px); }
