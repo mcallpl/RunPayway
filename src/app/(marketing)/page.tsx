@@ -1720,7 +1720,22 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              Get your Income Stability Score™ in minutes.
+              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score™</strong> in minutes.
+            </p>
+
+            <p
+              className="text-[15px] md:text-[17px]"
+              style={{
+                color: "rgba(14,26,43,0.60)",
+                lineHeight: 1.65,
+                marginBottom: 40,
+                maxWidth: 460,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms",
+              }}
+            >
+              Scores range from <strong style={{ fontWeight: 600, color: B.navy }}>0–100</strong>. Higher scores indicate stronger income stability.
             </p>
 
             {/* CTA Button */}
@@ -1728,7 +1743,7 @@ function HeroSection() {
               style={{
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 500ms ease-out 400ms, transform 500ms ease-out 400ms",
+                transition: "opacity 500ms ease-out 450ms, transform 500ms ease-out 450ms",
               }}
             >
               <Link
@@ -1740,27 +1755,27 @@ function HeroSection() {
                   paddingLeft: 32,
                   paddingRight: 32,
                   borderRadius: 12,
-                  background: B.navy,
-                  color: "#F4F1EA",
+                  background: B.purple,
+                  color: "#ffffff",
                   fontSize: 15,
                   letterSpacing: "-0.01em",
-                  border: "1px solid rgba(14,26,43,0.90)",
-                  boxShadow: "0 8px 24px rgba(14,26,43,0.18)",
+                  border: "1px solid rgba(75,63,174,0.90)",
+                  boxShadow: "0 8px 24px rgba(75,63,174,0.25)",
                   transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
                   // @ts-expect-error focus ring
                   "--tw-ring-color": B.teal,
                 }}
                 onMouseEnter={(e) => {
                   const t = e.currentTarget;
-                  t.style.background = B.purple;
+                  t.style.background = "#3D33A0";
                   t.style.transform = "translateY(-1px)";
-                  t.style.boxShadow = "0 12px 32px rgba(14,26,43,0.24)";
+                  t.style.boxShadow = "0 12px 32px rgba(75,63,174,0.35)";
                 }}
                 onMouseLeave={(e) => {
                   const t = e.currentTarget;
-                  t.style.background = B.navy;
+                  t.style.background = B.purple;
                   t.style.transform = "translateY(0)";
-                  t.style.boxShadow = "0 8px 24px rgba(14,26,43,0.18)";
+                  t.style.boxShadow = "0 8px 24px rgba(75,63,174,0.25)";
                 }}
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
