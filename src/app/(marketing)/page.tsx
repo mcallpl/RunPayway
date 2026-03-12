@@ -741,6 +741,158 @@ function SampleReportPreview() {
 }
 
 /* ------------------------------------------------------------------ */
+/* WHAT THE SCORE MEASURES                                              */
+/* ------------------------------------------------------------------ */
+function WhatTheScoreMeasures() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const scorePos = 78;
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: 90,
+        paddingBottom: 90,
+      }}
+      className="wtsm-section"
+    >
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-6">
+        <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: 80 }}>
+          {/* Left column — text (55%) */}
+          <div className="lg:w-[55%]">
+            <h2
+              className="text-[28px] md:text-[36px] leading-[1.15]"
+              style={{ color: B.navy, fontWeight: 600, marginBottom: 24, maxWidth: "18ch" }}
+            >
+              What the Score Measures
+            </h2>
+            <div style={{ maxWidth: "46ch" }}>
+              <p
+                className="text-[16px] md:text-[18px]"
+                style={{ color: B.navy, lineHeight: 1.6, marginBottom: 12 }}
+              >
+                The <strong>Income Stability Score&#8482;</strong> measures the strength of your income structure.
+              </p>
+              <p
+                className="text-[16px] md:text-[18px]"
+                style={{ color: B.navy, lineHeight: 1.6, marginBottom: 12 }}
+              >
+                Scores range from <strong>0&ndash;100</strong>.
+              </p>
+              <p
+                className="text-[16px] md:text-[18px]"
+                style={{ color: B.navy, lineHeight: 1.6, marginBottom: 12 }}
+              >
+                Higher scores indicate stronger income stability.
+              </p>
+              <p
+                className="text-[16px] md:text-[18px]"
+                style={{ color: B.navy, lineHeight: 1.6 }}
+              >
+                The score evaluates six structural factors that determine income durability.
+              </p>
+            </div>
+          </div>
+
+          {/* Right column — score scale visualization (45%) */}
+          <div className="lg:w-[45%]">
+            <div style={{ maxWidth: 340, margin: "0 auto" }} className="lg:ml-auto lg:mr-0">
+              {/* Example score indicator */}
+              <div style={{ position: "relative", marginBottom: 12, paddingLeft: `${scorePos}%` }}>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    transform: "translateX(-50%)",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#ffffff",
+                      border: `2px solid ${B.navy}`,
+                      borderRadius: "50%",
+                      width: 44,
+                      height: 44,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxShadow: "0px 10px 30px rgba(0,0,0,0.06)",
+                    }}
+                  >
+                    <span className="text-[16px]" style={{ fontWeight: 600, color: B.navy }}>78</span>
+                  </div>
+                  <div
+                    className="text-[11px]"
+                    style={{ color: B.teal, fontWeight: 600, marginTop: 4, whiteSpace: "nowrap" }}
+                  >
+                    Established Stability
+                  </div>
+                </div>
+              </div>
+
+              {/* Scale bar */}
+              <div style={{ position: "relative" }}>
+                <div
+                  className="rounded-lg"
+                  style={{
+                    height: 12,
+                    background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`,
+                  }}
+                />
+
+                {/* Score position indicator line */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: visible ? `${scorePos}%` : "0%",
+                    top: -2,
+                    width: 2,
+                    height: 16,
+                    backgroundColor: B.navy,
+                    borderRadius: 1,
+                    transition: "left 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                />
+              </div>
+
+              {/* Band labels */}
+              <div className="grid grid-cols-4 mt-2">
+                {["Fragile", "Early", "Established", "High"].map((label) => (
+                  <div key={label} className="text-center">
+                    <span className="text-[10px] md:text-[11px] font-medium" style={{ color: B.navy, opacity: 0.6 }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Micro label */}
+              <p
+                className="text-[13px] md:text-[14px] text-center"
+                style={{ color: "#5A6B7A", marginTop: 12, lineHeight: 1.4 }}
+              >
+                Every income structure is placed on a standardized 0&ndash;100 stability scale.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* HERO SECTION — Financial Platform Interface                          */
 /* ------------------------------------------------------------------ */
 function HeroSection() {
@@ -997,8 +1149,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Subtle blend into page background */}
-      <div style={{ height: 80, background: "linear-gradient(to bottom, #FAFAFA, #FAFAFA)" }} />
+      {/* ============ WHAT THE SCORE MEASURES ============ */}
+      <WhatTheScoreMeasures />
 
       {/* ============ HOW IT WORKS — Process Strip ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 40, paddingBottom: 120 }}>
