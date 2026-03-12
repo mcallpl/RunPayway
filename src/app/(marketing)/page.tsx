@@ -308,6 +308,166 @@ function ModelGovernance() {
 }
 
 /* ------------------------------------------------------------------ */
+/* WHY INCOME STABILITY MATTERS                                         */
+/* ------------------------------------------------------------------ */
+function WhyIncomeStabilityMatters() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: B.navy,
+        paddingTop: 160,
+        paddingBottom: 160,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle vertical grid lines */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 80px)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+        {/* Title */}
+        <h2
+          className="text-[32px] md:text-[40px]"
+          style={{
+            color: "#F4F1EA",
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+            marginBottom: 56,
+          }}
+        >
+          Why Income Stability Matters
+        </h2>
+
+        {/* Two-column layout */}
+        <div
+          className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]"
+          style={{ columnGap: 80, rowGap: 36, alignItems: "start" }}
+        >
+          {/* Left column — explanatory text */}
+          <div
+            style={{
+              maxWidth: 620,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            }}
+          >
+            {[
+              <>A credit score measures <strong style={{ fontWeight: 500, color: "#F4F1EA" }}>how reliably you repay debt</strong>.</>,
+              <>It does <strong style={{ fontWeight: 500, color: "#F4F1EA" }}>not measure how stable your income is</strong>.</>,
+              <>Two people can have the same credit score but very different income structures.</>,
+              <>One income may be predictable and recurring.</>,
+              <>Another may stop if work stops.</>,
+              <>That difference affects financial risk and long-term planning.</>,
+            ].map((text, i) => (
+              <p
+                key={i}
+                className="text-[16px] md:text-[18px]"
+                style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: 1.75, marginBottom: 22 }}
+              >
+                {text}
+              </p>
+            ))}
+
+            <p
+              className="text-[16px] md:text-[18px]"
+              style={{ color: "#F4F1EA", fontWeight: 500, lineHeight: 1.75, marginTop: 18 }}
+            >
+              The <strong>Income Stability Score&#8482;</strong> measures the stability of your income structure.
+            </p>
+
+            <Link
+              href="/pricing"
+              className="inline-block transition-colors duration-200"
+              style={{
+                color: B.purple,
+                fontWeight: 600,
+                fontSize: 20,
+                marginTop: 36,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = B.teal; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = B.purple; }}
+            >
+              Get your Income Stability Score&#8482;.
+            </Link>
+          </div>
+
+          {/* Right column — comparison panel */}
+          <div
+            className="lg:justify-self-end"
+            style={{
+              maxWidth: 420,
+              width: "100%",
+              backgroundColor: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 20,
+              padding: 32,
+              boxShadow: "0 16px 40px rgba(0,0,0,0.25)",
+              alignSelf: "start",
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out 120ms, transform 0.5s ease-out 120ms",
+            }}
+          >
+            {/* Top accent line */}
+            <div style={{ width: 48, height: 2, backgroundColor: B.purple, marginBottom: 18 }} />
+
+            {/* Entry 1: Credit Score */}
+            <div style={{ marginBottom: 20 }}>
+              <div
+                className="text-[16px] uppercase"
+                style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.04em", marginBottom: 8 }}
+              >
+                Credit Score
+              </div>
+              <p className="text-[16px]" style={{ color: "rgba(244,241,234,0.82)", fontWeight: 400, lineHeight: 1.6 }}>
+                Measures how reliably you repay debt.
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "18px 0" }} />
+
+            {/* Entry 2: Income Stability Score */}
+            <div>
+              <div
+                className="text-[16px] uppercase"
+                style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.04em", marginBottom: 8 }}
+              >
+                Income Stability Score&#8482;
+              </div>
+              <p className="text-[16px]" style={{ color: "rgba(244,241,234,0.82)", fontWeight: 400, lineHeight: 1.6 }}>
+                Measures how stable your income structure is.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* PREVIEW YOUR SCORE REPORT — Financial Assessment Document            */
 /* ------------------------------------------------------------------ */
 function PreviewYourScoreReport() {
@@ -1583,6 +1743,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+
+      {/* ============ WHY INCOME STABILITY MATTERS ============ */}
+      <WhyIncomeStabilityMatters />
 
       {/* ============ FAQ ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>
