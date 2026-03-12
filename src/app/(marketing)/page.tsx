@@ -1405,11 +1405,14 @@ function HowItWorks() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden"
+      className="relative"
       style={{
         backgroundColor: B.navy,
-        paddingTop: 120,
-        paddingBottom: 120,
+        paddingTop: 160,
+        paddingBottom: 160,
+        marginTop: -40,
+        marginBottom: -40,
+        clipPath: "polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%)",
       }}
     >
       {/* Faint grid texture */}
