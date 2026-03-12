@@ -1883,12 +1883,12 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* Bottom fade to next section */}
+      {/* Thin structural divider — hero to classification */}
       <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0"
         style={{
-          height: 120,
-          background: "linear-gradient(to bottom, transparent, rgba(247,246,243,0.4))",
+          height: 1,
+          background: "rgba(14,26,43,0.06)",
         }}
       />
 
@@ -1918,33 +1918,8 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* ============ TRUST STRIP ============ */}
-      <section style={{ backgroundColor: "#F4F1EA", borderTop: "1px solid #E5E2DB", borderBottom: "1px solid #E5E2DB" }}>
-        <div className="max-w-[1200px] mx-auto px-5 sm:px-6" style={{ paddingTop: 16, paddingBottom: 16 }}>
-          {/* Desktop: horizontal row / Mobile: 2×2 grid */}
-          <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-between gap-y-4 gap-x-6 sm:gap-x-12">
-            {[
-              { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", label: "RunPayway Model RP-1.0" },
-              { icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z", label: "Deterministic Scoring" },
-              { icon: "M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z", label: "Instant PDF Report" },
-              { icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z", label: "Secure Payment via Stripe" },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.85 }}>
-                  <path d={item.icon} />
-                </svg>
-                <span className="text-[13px] sm:text-[14px] font-medium text-center sm:text-left" style={{ color: B.navy }}>{item.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
-      <HowItWorks />
-
-      {/* ============ INCOME STABILITY CLASSIFICATION — Unified Section ============ */}
-      <section style={{ backgroundColor: "#ffffff", paddingTop: 16, paddingBottom: 120 }}>
+      {/* ============ INCOME STABILITY CLASSIFICATION — flows from hero ============ */}
+      <section style={{ backgroundColor: "#ffffff", paddingTop: 80, paddingBottom: 120 }}>
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
           {/* Header */}
           <div className="text-center" style={{ marginBottom: 48 }}>
@@ -2041,6 +2016,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
+      <HowItWorks />
 
       {/* ============ SCORING FACTORS — Model Input Framework ============ */}
       <ScoringFactors />
