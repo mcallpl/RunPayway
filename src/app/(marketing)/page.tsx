@@ -1238,6 +1238,7 @@ function ScoringFactors() {
   return (
     <section
       ref={ref}
+      className="scoring-factors-section"
       style={{
         backgroundColor: "#ffffff",
         paddingTop: 120,
@@ -1283,19 +1284,31 @@ function ScoringFactors() {
           {factors.map((factor, i) => (
             <article
               key={factor.num}
+              className="group"
               style={{
-                backgroundColor: "#F4F1EA",
-                borderRadius: 16,
-                padding: "28px 28px 32px",
+                position: "relative",
+                backgroundColor: "#ffffff",
+                borderRadius: 14,
+                padding: "28px 28px 32px 32px",
+                borderLeft: `3px solid ${B.purple}`,
+                boxShadow: "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(8px)",
-                transition: `opacity 500ms ease-out ${150 + i * 60}ms, transform 500ms ease-out ${150 + i * 60}ms`,
+                transition: `opacity 500ms ease-out ${150 + i * 60}ms, transform 500ms ease-out ${150 + i * 60}ms, box-shadow 280ms ease, border-color 280ms ease`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.10), 0 2px 8px rgba(14,26,43,0.06)";
+                e.currentTarget.style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
               {/* Number */}
               <div
                 className="text-[12px] font-semibold"
-                style={{ color: B.purple, marginBottom: 12 }}
+                style={{ color: B.purple, marginBottom: 12, letterSpacing: "0.04em" }}
               >
                 {factor.num}
               </div>
@@ -1311,7 +1324,7 @@ function ScoringFactors() {
               {/* Plain English description */}
               <p
                 className="text-[14px] md:text-[15px]"
-                style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7 }}
+                style={{ color: "rgba(14,26,43,0.58)", lineHeight: 1.7 }}
               >
                 {factor.desc}
               </p>
@@ -1362,18 +1375,28 @@ function HowItWorks() {
   return (
     <section
       ref={ref}
+      className="relative overflow-hidden"
       style={{
-        backgroundColor: "#F4F1EA",
+        backgroundColor: B.navy,
         paddingTop: 120,
         paddingBottom: 120,
       }}
     >
-      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
+      {/* Faint grid texture */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 80px),
+                            repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 80px)`,
+        }}
+      />
+
+      <div className="relative mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
         {/* Header */}
         <div
           className="text-center"
           style={{
-            marginBottom: 64,
+            marginBottom: 72,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(10px)",
             transition: "opacity 500ms ease-out, transform 500ms ease-out",
@@ -1386,14 +1409,14 @@ function HowItWorks() {
             3 Simple Steps
           </div>
           <h2
-            className="text-[30px] md:text-[40px] font-semibold"
-            style={{ color: B.navy, letterSpacing: "-0.02em", marginBottom: 16 }}
+            className="text-[30px] md:text-[42px] font-semibold"
+            style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
           >
             How It Works
           </h2>
           <p
             className="text-[17px] md:text-[18px] mx-auto"
-            style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7, maxWidth: 480 }}
+            style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7, maxWidth: 480 }}
           >
             From start to score in under two minutes.
           </p>
@@ -1409,25 +1432,39 @@ function HowItWorks() {
               key={step.num}
               className="text-center"
               style={{
-                backgroundColor: "#ffffff",
+                backgroundColor: "rgba(244,241,234,0.06)",
                 borderRadius: 16,
-                padding: "36px 28px 40px",
+                padding: "40px 28px 44px",
+                border: "1px solid rgba(244,241,234,0.10)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: `opacity 500ms ease-out ${200 + i * 120}ms, transform 500ms ease-out ${200 + i * 120}ms`,
+                transition: `opacity 500ms ease-out ${200 + i * 120}ms, transform 500ms ease-out ${200 + i * 120}ms, box-shadow 280ms ease, border-color 280ms ease`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.10)";
+                e.currentTarget.style.borderColor = "rgba(244,241,234,0.18)";
+                e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,0,0,0.25)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.06)";
+                e.currentTarget.style.borderColor = "rgba(244,241,234,0.10)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
               {/* Step number */}
               <div
                 className="inline-flex items-center justify-center font-semibold"
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 44,
+                  height: 44,
                   borderRadius: 12,
                   backgroundColor: B.purple,
                   color: "#ffffff",
-                  fontSize: 16,
-                  marginBottom: 20,
+                  fontSize: 17,
+                  marginBottom: 24,
+                  boxShadow: "0 4px 16px rgba(75,63,174,0.35)",
                 }}
               >
                 {step.num}
@@ -1436,7 +1473,7 @@ function HowItWorks() {
               {/* Title */}
               <div
                 className="text-[18px] md:text-[20px] font-semibold"
-                style={{ color: B.navy, marginBottom: 12 }}
+                style={{ color: "#F4F1EA", marginBottom: 14 }}
               >
                 {step.title}
               </div>
@@ -1444,7 +1481,7 @@ function HowItWorks() {
               {/* Description */}
               <p
                 className="text-[14px] md:text-[15px]"
-                style={{ color: "rgba(14,26,43,0.58)", lineHeight: 1.7 }}
+                style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7 }}
               >
                 {step.desc}
               </p>
@@ -1452,19 +1489,33 @@ function HowItWorks() {
           ))}
         </div>
 
+        {/* Connector line between cards — desktop only */}
+        <div
+          className="hidden md:block absolute"
+          style={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, 12px)",
+            width: 600,
+            height: 1,
+            background: `linear-gradient(90deg, transparent, rgba(244,241,234,0.12), rgba(75,63,174,0.20), rgba(244,241,234,0.12), transparent)`,
+            zIndex: 0,
+          }}
+        />
+
         {/* Model reference */}
         <p
           className="text-[13px] text-center mx-auto"
           style={{
-            color: "rgba(14,26,43,0.40)",
-            marginTop: 48,
+            color: "rgba(244,241,234,0.35)",
+            marginTop: 56,
             maxWidth: 500,
             lineHeight: 1.7,
             opacity: visible ? 1 : 0,
             transition: "opacity 500ms ease-out 800ms",
           }}
         >
-          Powered by <strong style={{ fontWeight: 600, color: B.navy }}>RunPayway Model RP-1.0</strong>
+          Powered by <strong style={{ fontWeight: 600, color: "rgba(244,241,234,0.65)" }}>RunPayway Model RP-1.0</strong>
         </p>
       </div>
     </section>
