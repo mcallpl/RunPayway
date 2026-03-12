@@ -207,6 +207,187 @@ function StabilityModelDiagram() {
 }
 
 /* ------------------------------------------------------------------ */
+/* FINAL CTA — Premium Assessment Entry                                 */
+/* ------------------------------------------------------------------ */
+function FinalCta() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.15 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Get Your Income Stability Score"
+      className="relative overflow-hidden"
+      style={{ background: B.navy }}
+    >
+      {/* Faint vertical grid lines */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 80px)`,
+          backgroundSize: "80px 100%",
+        }}
+      />
+
+      {/* Faint circular scoring halo */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 520,
+          height: 520,
+          borderRadius: "50%",
+          border: "1px solid rgba(75,63,174,0.10)",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+
+      <div
+        className="relative mx-auto text-center"
+        style={{
+          maxWidth: 980,
+          paddingTop: 156,
+          paddingBottom: 156,
+          paddingLeft: 40,
+          paddingRight: 40,
+        }}
+      >
+        <div
+          className="mx-auto md:px-0 sm:px-8 px-6"
+          style={{
+            maxWidth: 700,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 520ms ease-out, transform 520ms ease-out",
+          }}
+        >
+          {/* Heading */}
+          <h2
+            className="font-semibold text-[34px] md:text-[44px] lg:text-[52px]"
+            style={{
+              color: "#F4F1EA",
+              lineHeight: 1.08,
+              letterSpacing: "-0.03em",
+              maxWidth: 640,
+              margin: "0 auto 22px auto",
+            }}
+          >
+            Get Your Income Stability Score™
+          </h2>
+
+          {/* Supporting line */}
+          <p
+            className="text-[17px] md:text-[19px] lg:text-[20px]"
+            style={{
+              color: "rgba(244,241,234,0.80)",
+              lineHeight: 1.7,
+              maxWidth: 560,
+              margin: "0 auto 42px auto",
+            }}
+          >
+            Measure the stability of your income.
+          </p>
+
+          {/* CTA Button */}
+          <div className="flex justify-center">
+            <a
+              href="/assessment"
+              className="inline-flex items-center justify-center font-semibold
+                         w-full md:w-auto
+                         focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{
+                height: 56,
+                minWidth: 320,
+                paddingLeft: 28,
+                paddingRight: 28,
+                borderRadius: 14,
+                background: "#F4F1EA",
+                color: B.navy,
+                fontSize: 16,
+                letterSpacing: "-0.01em",
+                border: "1px solid rgba(244,241,234,0.92)",
+                boxShadow: "0 10px 26px rgba(0,0,0,0.22)",
+                transition: "background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
+                // @ts-expect-error focus ring color
+                "--tw-ring-color": B.teal,
+              }}
+              onMouseEnter={(e) => {
+                const t = e.currentTarget;
+                t.style.background = "#EDE9DF";
+                t.style.transform = "translateY(-1px)";
+                t.style.boxShadow = "0 12px 30px rgba(0,0,0,0.26)";
+              }}
+              onMouseLeave={(e) => {
+                const t = e.currentTarget;
+                t.style.background = "#F4F1EA";
+                t.style.transform = "translateY(0)";
+                t.style.boxShadow = "0 10px 26px rgba(0,0,0,0.22)";
+              }}
+              onMouseDown={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              Get My Income Stability Score
+            </a>
+          </div>
+
+          {/* Microcopy */}
+          <p
+            className="text-[14px] md:text-[15px]"
+            style={{
+              color: "rgba(244,241,234,0.66)",
+              lineHeight: 1.6,
+              marginTop: 18,
+            }}
+          >
+            Takes under 2 minutes &bull; Instant results
+          </p>
+        </div>
+      </div>
+
+      {/* Mobile overrides */}
+      <style>{`
+        @media (max-width: 768px) {
+          section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+          }
+          section[aria-label="Get Your Income Stability Score"] a {
+            min-width: 0 !important;
+            height: 54px !important;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+          section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
+            padding-left: 32px !important;
+            padding-right: 32px !important;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          section[aria-label="Get Your Income Stability Score"] [style*="transition"] {
+            transition: opacity 520ms ease-out !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* MODEL GOVERNANCE — scroll-reveal section                             */
 /* ------------------------------------------------------------------ */
 function ModelGovernance() {
@@ -2098,40 +2279,8 @@ export default function LandingPage() {
       {/* ============ FAQ ============ */}
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
 
-      {/* ============ FINAL CTA — Action ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 120, paddingBottom: 120 }}>
-        <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 28 }}>
-          See Where Your Income Structure Falls
-        </h2>
-        <p className="text-base leading-relaxed" style={{ color: B.muted, marginBottom: 20 }}>
-          Complete the structural assessment and receive your Income Stability Score™ report instantly.
-        </p>
-        <p className="text-[13px]" style={{ color: B.light, marginBottom: 40 }}>
-          Assessment based on Model RP-1.0 structural scoring.
-        </p>
-        <Link
-          href="/pricing"
-          className="inline-flex items-center px-8 py-4 text-[15px] font-medium rounded transition-opacity hover:opacity-90"
-          style={{ backgroundColor: B.purple, color: "#ffffff" }}
-        >
-          Get Score
-        </Link>
-        {/* Process indicator */}
-        <div className="flex flex-col items-center gap-2 mt-6" style={{ color: B.muted }}>
-          <span className="text-[13px]">1. Complete Six Structural Factors</span>
-          <span className="text-[13px]">2. See your Income Stability Score™</span>
-          <span className="text-[13px]">3. Receive your PDF assessment report</span>
-        </div>
-        {/* Proof points */}
-        <div className="flex flex-col items-center gap-1 mt-6">
-          <p className="text-[13px]" style={{ color: B.muted }}>
-            Assessment time: <strong style={{ color: B.navy }}>under two minutes</strong>
-          </p>
-          <p className="text-[13px]" style={{ color: B.muted }}>
-            Instant <strong style={{ color: B.navy }}>PDF assessment record</strong>
-          </p>
-        </div>
-      </section>
+      {/* ============ FINAL CTA — Premium Assessment Entry ============ */}
+      <FinalCta />
 
       {/* ============ MODEL GOVERNANCE ============ */}
       <ModelGovernance />
