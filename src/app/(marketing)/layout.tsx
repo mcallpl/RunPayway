@@ -108,24 +108,24 @@ export default function MarketingLayout({
                   paddingLeft: 18,
                   paddingRight: 18,
                   borderRadius: 10,
-                  background: "#0E1A2B",
-                  color: "#F4F1EA",
+                  background: "#4B3FAE",
+                  color: "#ffffff",
                   fontSize: 14,
                   letterSpacing: "-0.01em",
-                  border: "1px solid rgba(14,26,43,0.90)",
-                  boxShadow: "0 6px 14px rgba(0,0,0,0.15)",
+                  border: "1px solid rgba(75,63,174,0.90)",
+                  boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
                   transition: "background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
                   // @ts-expect-error focus ring
                   "--tw-ring-color": "#1F6D7A",
                 }}
                 onMouseEnter={(e) => {
                   const t = e.currentTarget;
-                  t.style.background = "#4B3FAE";
+                  t.style.background = "#3D33A0";
                   t.style.transform = "translateY(-1px)";
                 }}
                 onMouseLeave={(e) => {
                   const t = e.currentTarget;
-                  t.style.background = "#0E1A2B";
+                  t.style.background = "#4B3FAE";
                   t.style.transform = "translateY(0)";
                 }}
                 onMouseDown={(e) => {
@@ -208,12 +208,12 @@ export default function MarketingLayout({
               style={{
                 height: 48,
                 borderRadius: 10,
-                background: "#0E1A2B",
-                color: "#F4F1EA",
+                background: "#4B3FAE",
+                color: "#ffffff",
                 fontSize: 14,
                 letterSpacing: "-0.01em",
-                border: "1px solid rgba(14,26,43,0.90)",
-                boxShadow: "0 6px 14px rgba(0,0,0,0.15)",
+                border: "1px solid rgba(75,63,174,0.90)",
+                boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
               }}
             >
               Get My Income Stability Score
