@@ -1720,7 +1720,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              Measure the structural stability of your income in under 2 minutes. Scores range from 0–100.
+              Get your Income Stability Score™ in minutes.
             </p>
 
             {/* CTA Button */}
@@ -1771,7 +1771,7 @@ function HeroSection() {
                 className="text-[13px] md:text-[14px]"
                 style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em" }}
               >
-                Takes under 2 minutes &bull; Instant results
+                Takes under 2 minutes &mdash; Instant results
               </p>
             </div>
           </div>
