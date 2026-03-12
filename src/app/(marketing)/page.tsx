@@ -1318,7 +1318,7 @@ function HowItWorks() {
   const steps = [
     {
       num: "1",
-      title: "Answer 6 Questions",
+      title: "Income Profile Intake",
       desc: "We assess your income structure — its sources, frequency, and predictability.",
     },
     {
