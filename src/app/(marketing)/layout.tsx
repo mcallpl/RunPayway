@@ -100,7 +100,7 @@ export default function MarketingLayout({
                 Sign In
               </span>
               <Link
-                href="/assessment"
+                href="/pricing"
                 className="inline-flex items-center justify-center font-semibold whitespace-nowrap
                            focus:outline-none focus:ring-2"
                 style={{
@@ -202,7 +202,7 @@ export default function MarketingLayout({
               ))}
             </nav>
             <Link
-              href="/assessment"
+              href="/pricing"
               onClick={() => setMenuOpen(false)}
               className="flex items-center justify-center font-semibold mt-4 w-full"
               style={{

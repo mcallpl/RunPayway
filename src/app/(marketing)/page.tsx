@@ -303,7 +303,7 @@ function FinalCta() {
           {/* CTA Button */}
           <div className="flex justify-center">
             <a
-              href="/assessment"
+              href="/pricing"
               className="inline-flex items-center justify-center font-semibold
                          w-full md:w-auto
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -1634,7 +1634,7 @@ function HeroSection() {
               }}
             >
               <Link
-                href="/assessment"
+                href="/pricing"
                 className="inline-flex items-center justify-center font-semibold
                            focus:outline-none focus:ring-2 focus:ring-offset-2"
                 style={{
