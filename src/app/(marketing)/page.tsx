@@ -893,6 +893,174 @@ function WhatTheScoreMeasures() {
 }
 
 /* ------------------------------------------------------------------ */
+/* SCORING FACTORS — Model Input Framework                              */
+/* ------------------------------------------------------------------ */
+function ScoringFactors() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const factors = [
+    { idx: "01", name: "Recurring Income", desc: "Income that repeats automatically." },
+    { idx: "02", name: "Income Sources", desc: "Multiple sources increase stability." },
+    { idx: "03", name: "Income Concentration", desc: "Dependence on one source increases risk." },
+    { idx: "04", name: "Forward Income Visibility", desc: "Income already scheduled or contracted." },
+    { idx: "05", name: "Earnings Consistency", desc: "How steady income is month to month." },
+    { idx: "06", name: "Income Without Active Labor", desc: "Income that continues without daily work." },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: B.navy,
+        paddingTop: 148,
+        paddingBottom: 148,
+        position: "relative",
+        overflow: "hidden",
+      }}
+      className="scoring-factors-section"
+    >
+      {/* Subtle analytical grid */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 64px)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="max-w-[1180px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+        {/* Header */}
+        <div className="text-center md:text-center mb-[44px] md:mb-0">
+          <h2
+            className="text-[32px] md:text-[40px] text-left md:text-center"
+            style={{
+              color: "#F4F1EA",
+              fontWeight: 600,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+              marginBottom: 18,
+            }}
+          >
+            Scoring Factors
+          </h2>
+          <p
+            className="text-[17px] md:text-[18px] text-left md:text-center"
+            style={{
+              color: "rgba(244,241,234,0.78)",
+              fontWeight: 400,
+              lineHeight: 1.7,
+              maxWidth: 700,
+              marginBottom: 72,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            The score evaluates six factors that determine income durability.
+          </p>
+        </div>
+
+        {/* Factor matrix: 2 cols desktop, 1 col mobile */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2"
+          style={{ columnGap: 28, rowGap: 28 }}
+        >
+          {factors.map((factor, i) => (
+            <article
+              key={factor.idx}
+              aria-label={factor.name}
+              className="group"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.025)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 20,
+                padding: 30,
+                minHeight: 170,
+                maxWidth: 560,
+                marginLeft: "auto",
+                marginRight: "auto",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                position: "relative",
+                overflow: "hidden",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.16)",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 0.5s ease-out ${i * 40}ms, transform 0.5s ease-out ${i * 40}ms, border-color 0.2s ease, background-color 0.2s ease`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.16)";
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)";
+              }}
+            >
+              {/* Factor index */}
+              <div
+                className="text-[12px] uppercase tracking-[0.12em] group-hover:!text-[#4B3FAE] transition-colors duration-200"
+                style={{ color: B.teal, fontWeight: 500, marginBottom: 18 }}
+              >
+                {factor.idx}
+              </div>
+
+              {/* Factor name */}
+              <div
+                className="text-[22px] md:text-[24px]"
+                style={{
+                  color: "#F4F1EA",
+                  fontWeight: 600,
+                  lineHeight: 1.25,
+                  letterSpacing: "-0.015em",
+                  marginBottom: 14,
+                }}
+              >
+                {factor.name}
+              </div>
+
+              {/* Description */}
+              <p
+                className="text-[16px] md:text-[17px]"
+                style={{ color: "rgba(244,241,234,0.80)", fontWeight: 400, lineHeight: 1.7, maxWidth: "95%" }}
+              >
+                {factor.desc}
+              </p>
+
+              {/* Structural accent line */}
+              <div
+                className="sf-accent-line"
+                style={{
+                  position: "absolute",
+                  bottom: 30,
+                  right: 30,
+                  height: 2,
+                  width: 72,
+                  backgroundColor: B.purple,
+                  transition: "width 0.2s ease",
+                }}
+              />
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* HOW IT WORKS — Financial Scoring Pipeline                            */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
@@ -1527,113 +1695,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ SIX FACTORS — Model Understanding ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-          Six Structural Factors Determine Income Stability
-        </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 24, maxWidth: 620 }}>
-          The Income Stability Score™ evaluates six structural dimensions across two pillars to determine overall stability.
-        </p>
-
-        {/* Pillar weight indicators */}
-        <div className="flex justify-center gap-8 mb-12">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: B.navy }} />
-            <span className="text-[12px] font-medium" style={{ color: B.muted }}>Structure Pillar — 60% weight</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: B.teal }} />
-            <span className="text-[12px] font-medium" style={{ color: B.muted }}>Stability Pillar — 40% weight</span>
-          </div>
-        </div>
-
-        {/* Two-pillar layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 text-left" style={{ maxWidth: 920, margin: "0 auto" }}>
-
-          {/* STRUCTURE PILLAR */}
-          <div>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="rounded" style={{ width: 4, height: 20, backgroundColor: B.navy }} />
-              <div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.15em]" style={{ color: B.navy }}>Structure Pillar</div>
-                <div className="text-[10px]" style={{ color: B.light }}>How income is built and organized</div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4">
-              {[
-                { key: "01", title: "Recurring Income Proportion", desc: "The share of income that renews automatically — without renegotiation or finding new clients." },
-                { key: "03", title: "Number of Income Sources", desc: "Total active, independent sources contributing to income. More sources create structural redundancy." },
-                { key: "04", title: "Forward Revenue Visibility", desc: "How much future income is already committed, contracted, or scheduled. Reduces uncertainty." },
-              ].map((factor) => (
-                <div
-                  key={factor.key}
-                  className="rounded-lg overflow-hidden flex"
-                  style={{ backgroundColor: "#ffffff", border: `1px solid ${B.sandDk}` }}
-                >
-                  {/* Left accent */}
-                  <div style={{ width: 4, backgroundColor: B.navy, flexShrink: 0 }} />
-                  <div className="flex-1 p-5">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span
-                        className="flex items-center justify-center text-[12px] font-bold rounded"
-                        style={{ width: 28, height: 28, backgroundColor: B.sand, color: B.navy }}
-                      >
-                        {factor.key}
-                      </span>
-                      <span className="text-[14px] font-semibold" style={{ color: B.navy }}>{factor.title}</span>
-                    </div>
-                    <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{factor.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* STABILITY PILLAR */}
-          <div>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="rounded" style={{ width: 4, height: 20, backgroundColor: B.teal }} />
-              <div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.15em]" style={{ color: B.teal }}>Stability Pillar</div>
-                <div className="text-[10px]" style={{ color: B.light }}>How income holds up under pressure</div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4">
-              {[
-                { key: "02", title: "Income Concentration", desc: "How dependent income is on a small number of sources. High concentration increases exposure to disruption." },
-                { key: "05", title: "Earnings Variability", desc: "Month-to-month consistency of income. Lower variability means more predictable cash flow." },
-                { key: "06", title: "Income Continuity Without Active Labor", desc: "Whether income continues when you stop working. The key differentiator between fragile and durable income." },
-              ].map((factor) => (
-                <div
-                  key={factor.key}
-                  className="rounded-lg overflow-hidden flex"
-                  style={{ backgroundColor: "#ffffff", border: `1px solid ${B.sandDk}` }}
-                >
-                  {/* Left accent */}
-                  <div style={{ width: 4, backgroundColor: B.teal, flexShrink: 0 }} />
-                  <div className="flex-1 p-5">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span
-                        className="flex items-center justify-center text-[12px] font-bold rounded"
-                        style={{ width: 28, height: 28, backgroundColor: B.sand, color: B.teal }}
-                      >
-                        {factor.key}
-                      </span>
-                      <span className="text-[14px] font-semibold" style={{ color: B.navy }}>{factor.title}</span>
-                    </div>
-                    <p className="text-[13px] leading-relaxed" style={{ color: B.muted }}>{factor.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <p className="text-[13px] mx-auto" style={{ color: B.light, marginTop: 48, maxWidth: 640 }}>
-          All six factors are evaluated within Model RP-1.0. Pillar weights are fixed and deterministic.
-        </p>
-      </section>
+      {/* ============ SCORING FACTORS — Model Input Framework ============ */}
+      <ScoringFactors />
 
       {/* ============ STRUCTURAL STABILITY MODEL ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>

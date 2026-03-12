@@ -69,6 +69,23 @@ select, input[type="text"], input[type="email"] {
   }
 }
 
+/* Scoring Factors — accent line hover */
+.group:hover .sf-accent-line {
+  width: 92px !important;
+}
+@media (max-width: 768px) {
+  .sf-accent-line {
+    width: 60px !important;
+  }
+  .group:hover .sf-accent-line {
+    width: 60px !important;
+  }
+  .scoring-factors-section {
+    padding-top: 104px !important;
+    padding-bottom: 104px !important;
+  }
+}
+
 /* How It Works — connector sweep animation */
 @keyframes connectorSweep {
   0% { transform: translateX(-100%); }
