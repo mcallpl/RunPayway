@@ -1776,107 +1776,93 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — Floating Score Instrument */}
+          {/* Right — Floating Score (no card) */}
           <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative" }}>
-            {/* Outer glow ring */}
+            {/* Very faint radial glow behind the score */}
             <div
               className="absolute pointer-events-none"
               style={{
-                width: 420,
-                height: 420,
+                width: 500,
+                height: 500,
                 borderRadius: "50%",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                background: "radial-gradient(circle, rgba(75,63,174,0.04) 0%, transparent 70%)",
+                background: "radial-gradient(circle, rgba(75,63,174,0.035) 0%, transparent 60%)",
               }}
             />
 
-            {/* Score Card */}
+            {/* Faint concentric scoring rings */}
             <div
-              className="relative w-full"
+              className="absolute pointer-events-none"
               style={{
-                maxWidth: 380,
+                width: 340,
+                height: 340,
+                borderRadius: "50%",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                border: "1px solid rgba(14,26,43,0.04)",
+              }}
+            />
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                width: 240,
+                height: 240,
+                borderRadius: "50%",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                border: "1px solid rgba(14,26,43,0.03)",
+              }}
+            />
+
+            {/* Score typography — floating in space */}
+            <div
+              className="relative text-center lg:text-right"
+              style={{
                 opacity: cardVisible ? 1 : 0,
-                transform: cardVisible ? "translateY(0)" : "translateY(20px)",
-                transition: "opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1)",
+                transform: cardVisible ? "translateY(0)" : "translateY(24px)",
+                transition: "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
+                padding: "40px 0",
               }}
             >
-              {/* Card surface */}
+              {/* Label */}
               <div
+                className="font-medium uppercase text-[10px] md:text-[11px]"
                 style={{
-                  background: "#ffffff",
-                  borderRadius: 20,
-                  border: "1px solid rgba(14,26,43,0.06)",
-                  padding: "48px 44px 52px",
-                  boxShadow: "0 1px 2px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.06), 0 24px 64px rgba(14,26,43,0.08)",
-                  transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 1px 2px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.08), 0 32px 80px rgba(14,26,43,0.10)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 2px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.06), 0 24px 64px rgba(14,26,43,0.08)";
+                  letterSpacing: "0.16em",
+                  color: "rgba(14,26,43,0.35)",
+                  marginBottom: 24,
                 }}
               >
-                {/* Label */}
-                <div
-                  className="font-medium uppercase text-[10px] md:text-[11px]"
-                  style={{
-                    letterSpacing: "0.14em",
-                    color: "rgba(14,26,43,0.40)",
-                    marginBottom: 32,
-                  }}
-                >
-                  Your Income Stability Score
-                </div>
-
-                {/* Score number */}
-                <div
-                  className="text-[80px] md:text-[96px] font-semibold leading-none"
-                  style={{
-                    color: B.navy,
-                    letterSpacing: "-0.04em",
-                    marginBottom: 8,
-                  }}
-                >
-                  {score}
-                </div>
-
-                {/* Classification */}
-                <div
-                  className="text-[18px] md:text-[20px] font-medium"
-                  style={{ color: B.purple }}
-                >
-                  Established Stability
-                </div>
-
-                {/* Subtle accent line */}
-                <div
-                  style={{
-                    width: 48,
-                    height: 2,
-                    background: B.purple,
-                    marginTop: 28,
-                    opacity: 0.3,
-                    borderRadius: 1,
-                  }}
-                />
+                Your Income Stability Score
               </div>
 
-              {/* Floating accent — faint border ring offset behind card */}
+              {/* Score number — the hero element */}
               <div
-                className="absolute pointer-events-none"
+                className="text-[100px] md:text-[128px] lg:text-[148px] font-semibold leading-none"
                 style={{
-                  inset: -1,
-                  borderRadius: 22,
-                  border: "1px solid rgba(75,63,174,0.06)",
-                  transform: "translate(6px, 6px)",
-                  zIndex: -1,
+                  color: B.navy,
+                  letterSpacing: "-0.05em",
+                  marginBottom: 6,
+                  fontFeatureSettings: "'tnum'",
                 }}
-              />
+              >
+                {score}
+              </div>
+
+              {/* Classification */}
+              <div
+                className="text-[20px] md:text-[24px] font-medium"
+                style={{
+                  color: B.purple,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Established Stability
+              </div>
             </div>
           </div>
         </div>
