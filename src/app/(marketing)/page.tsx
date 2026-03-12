@@ -1323,7 +1323,7 @@ function HowItWorks() {
     },
     {
       num: "2",
-      title: "We Calculate Your Score",
+      title: "Structural Analysis",
       desc: "Our model analyzes your answers across six factors and places you on a 0–100 stability scale.",
     },
     {
@@ -1381,7 +1381,7 @@ function HowItWorks() {
             className="font-medium uppercase text-[11px]"
             style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}
           >
-            3 Simple Steps
+            Assessment Process
           </div>
           <h2
             className="text-[30px] md:text-[42px] font-semibold"
@@ -1393,7 +1393,7 @@ function HowItWorks() {
             className="text-[17px] md:text-[18px] mx-auto"
             style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7, maxWidth: 480 }}
           >
-            From start to score in under two minutes.
+            A structured diagnostic built on six dimensions of income health.
           </p>
         </div>
 
@@ -1813,8 +1813,14 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* ============ INCOME STABILITY CLASSIFICATION — flows from hero ============ */}
-      <section style={{ backgroundColor: "#ffffff", paddingTop: 40, paddingBottom: 120 }}>
+      {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
+      <HowItWorks />
+
+      {/* ============ SCORING FACTORS — Model Input Framework ============ */}
+      <ScoringFactors />
+
+      {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
+      <section style={{ backgroundColor: "#ffffff", paddingTop: 120, paddingBottom: 120 }}>
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
           {/* Header */}
           <div className="text-center" style={{ marginBottom: 48 }}>
@@ -1925,12 +1931,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
-      <HowItWorks />
-
-      {/* ============ SCORING FACTORS — Model Input Framework ============ */}
-      <ScoringFactors />
 
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
