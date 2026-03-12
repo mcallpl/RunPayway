@@ -31,7 +31,7 @@ export default function MarketingLayout({
       <header
         className="sticky top-0 z-[1000]"
         style={{
-          background: scrolled ? "rgba(244,241,234,0.96)" : "#F4F1EA",
+          background: scrolled ? "rgba(255,255,255,0.96)" : "#ffffff",
           borderBottom: "1px solid rgba(14,26,43,0.08)",
           backdropFilter: scrolled ? "blur(8px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(8px)" : "none",
@@ -177,7 +177,7 @@ export default function MarketingLayout({
           <div
             className="md:hidden"
             style={{
-              background: "#F4F1EA",
+              background: "#ffffff",
               borderTop: "1px solid rgba(14,26,43,0.08)",
               padding: 24,
             }}
