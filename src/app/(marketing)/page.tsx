@@ -86,125 +86,6 @@ const FAQ_ITEMS = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/* STRUCTURAL STABILITY MODEL — pipeline diagram                        */
-/* ------------------------------------------------------------------ */
-function StabilityModelDiagram() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.2 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={ref} className="flex flex-col items-center">
-      {/* Input Layer label */}
-      <div
-        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500"
-        style={{ color: B.light, opacity: visible ? 1 : 0 }}
-      >
-        Input Layer
-      </div>
-
-      {/* Stage 1: Six Factors */}
-      <div
-        className="rounded-lg border px-8 py-5 text-center transition-all duration-700 w-full"
-        style={{
-          maxWidth: 320,
-          borderColor: B.sandDk,
-          backgroundColor: "#ffffff",
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
-        }}
-      >
-        <div className="text-[15px] font-semibold" style={{ color: B.navy }}>Six Structural Factors</div>
-      </div>
-
-      {/* Connector 1 */}
-      <div
-        className="transition-all duration-500 delay-300"
-        style={{
-          width: 2,
-          height: 48,
-          backgroundColor: B.navy,
-          opacity: visible ? 0.2 : 0,
-        }}
-      />
-
-      {/* Driver Layer label */}
-      <div
-        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500 delay-400"
-        style={{ color: B.light, opacity: visible ? 1 : 0 }}
-      >
-        Driver Layer
-      </div>
-
-      {/* Stage 2: Three Drivers */}
-      <div
-        className="grid grid-cols-3 gap-3 sm:gap-4 w-full"
-        style={{ maxWidth: 540 }}
-      >
-        {["Income Structure", "Income Concentration", "Income Continuity"].map((d, i) => (
-          <div
-            key={d}
-            className="rounded-lg border px-3 sm:px-4 py-4 text-center transition-all duration-600"
-            style={{
-              borderColor: B.sandDk,
-              backgroundColor: "#ffffff",
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(12px)",
-              transitionDelay: `${500 + i * 120}ms`,
-            }}
-          >
-            <div className="text-[10px] font-semibold uppercase tracking-wider mb-1" style={{ color: B.light }}>Driver</div>
-            <div className="text-[13px] sm:text-[14px] font-semibold" style={{ color: B.navy }}>{d}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Connector 2 */}
-      <div
-        className="transition-all duration-500 delay-700"
-        style={{
-          width: 2,
-          height: 48,
-          backgroundColor: B.navy,
-          opacity: visible ? 0.2 : 0,
-        }}
-      />
-
-      {/* Output Layer label */}
-      <div
-        className="text-[9px] font-semibold uppercase tracking-[0.2em] mb-2 transition-all duration-500"
-        style={{ color: "rgba(255,255,255,0.5)", opacity: visible ? 1 : 0, transitionDelay: "900ms" }}
-      >
-        Output
-      </div>
-
-      {/* Stage 3: Score Output */}
-      <div
-        className="rounded-2xl px-12 py-7 text-center transition-all duration-700"
-        style={{
-          background: B.gradient,
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
-          boxShadow: visible ? "0 10px 40px rgba(75, 63, 174, 0.28)" : "none",
-          transitionDelay: "1000ms",
-        }}
-      >
-        <div className="text-[20px] sm:text-[22px] font-semibold" style={{ color: "#ffffff" }}>
-          Income Stability Score™
-        </div>
-      </div>
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /* GLOBAL DISCLAIMER — institutional disclosure                         */
@@ -1498,160 +1379,233 @@ function ScoringFactors() {
 }
 
 /* ------------------------------------------------------------------ */
-/* HOW IT WORKS — Financial Scoring Pipeline                            */
+/* HOW IT WORKS — Unified Scoring Pipeline + Model Diagram              */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
-  const steps = [
-    { num: "Step 1", desc: "Answer a few questions about your income." },
-    {
-      num: "Step 2",
-      desc: null, // custom render for model emphasis
-    },
-    { num: "Step 3", desc: "Receive your score and structured report instantly." },
-  ];
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <section
-      style={{
-        backgroundColor: B.navy,
-        paddingTop: 140,
-        paddingBottom: 140,
-        position: "relative",
-        overflow: "hidden",
-      }}
+      ref={sectionRef}
+      aria-label="How It Works"
+      className="relative overflow-hidden"
+      style={{ background: B.navy }}
     >
-      {/* Subtle analytical grid background */}
+      {/* Subtle analytical grid */}
       <div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          position: "absolute",
-          inset: 0,
           backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
           backgroundSize: "64px 64px",
-          pointerEvents: "none",
         }}
       />
 
       <div
-        className="max-w-[1100px] mx-auto px-6 md:px-10"
-        style={{ position: "relative", zIndex: 1 }}
+        className="relative mx-auto px-6 md:px-10"
+        style={{ maxWidth: 1100, paddingTop: 140, paddingBottom: 140, zIndex: 1 }}
       >
         {/* Section heading */}
-        <h2
-          className="text-[30px] md:text-[40px] text-center"
+        <div
+          className="text-center"
           style={{
-            color: "#F4F1EA",
-            fontWeight: 600,
-            letterSpacing: "-0.01em",
-            marginBottom: 70,
+            marginBottom: 80,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 500ms ease-out, transform 500ms ease-out",
           }}
         >
-          How It Works
-        </h2>
+          <h2
+            className="text-[30px] md:text-[40px] font-semibold"
+            style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
+          >
+            How It Works
+          </h2>
+          <p
+            className="text-[17px] md:text-[18px]"
+            style={{ color: "rgba(244,241,234,0.70)", lineHeight: 1.7 }}
+          >
+            How the Income Stability Score™ is structurally determined.
+          </p>
+        </div>
 
-        {/* Desktop: horizontal pipeline */}
+        {/* ---- LAYER 1: INPUT ---- */}
         <div
-          className="hidden md:grid"
-          style={{ gridTemplateColumns: "1fr auto 1fr auto 1fr", alignItems: "center" }}
-          aria-label="RunPayway scoring process"
+          className="flex flex-col items-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
+          }}
         >
-          {steps.map((step, i) => (
-            <>
-              <article
-                key={step.num}
-                className="group flex flex-col items-center text-center"
-                style={{ maxWidth: 280, margin: "0 auto" }}
-              >
-                {/* Step number */}
-                <div
-                  className="text-[14px] uppercase tracking-[0.08em] group-hover:!text-[#4B3FAE] transition-colors duration-200"
-                  style={{ color: B.teal, fontWeight: 500, marginBottom: 16 }}
-                >
-                  {step.num}
-                </div>
-                {/* Divider */}
-                <div
-                  className="group-hover:opacity-100 transition-opacity duration-200"
-                  style={{
-                    width: 60,
-                    height: 2,
-                    backgroundColor: B.purple,
-                    marginBottom: 18,
-                    opacity: 0.8,
-                  }}
-                />
-                {/* Description */}
-                <p
-                  className="text-[20px]"
-                  style={{ color: "#F4F1EA", fontWeight: 500, lineHeight: 1.6, maxWidth: 260 }}
-                >
-                  {i === 1 ? (
-                    <>
-                      <span style={{ color: B.purple, fontWeight: 600 }}>RunPayway Model RP-1.0</span>{" "}
-                      calculates your score.
-                    </>
-                  ) : (
-                    step.desc
-                  )}
-                </p>
-              </article>
-              {/* Connector rule between steps */}
-              {i < 2 && (
-                <div
-                  key={`connector-${i}`}
-                  className="hiw-connector"
-                  style={{
-                    height: 1,
-                    width: "100%",
-                    backgroundColor: "rgba(255,255,255,0.18)",
-                    alignSelf: "center",
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div className="hiw-connector-sweep" />
-                </div>
-              )}
-            </>
-          ))}
+          <div
+            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+            style={{ color: B.teal, marginBottom: 14 }}
+          >
+            Step 1 · Input
+          </div>
+          <div
+            className="rounded-2xl border text-center w-full"
+            style={{
+              maxWidth: 400,
+              borderColor: "rgba(244,241,234,0.12)",
+              background: "rgba(255,255,255,0.04)",
+              padding: "28px 32px",
+            }}
+          >
+            <div className="text-[17px] md:text-[18px] font-semibold" style={{ color: "#F4F1EA", marginBottom: 8 }}>
+              Answer a few questions about your income.
+            </div>
+            <div className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)" }}>
+              Six structural factors across three core drivers
+            </div>
+          </div>
         </div>
 
-        {/* Mobile: vertical flow */}
-        <div className="md:hidden flex flex-col items-center" aria-label="RunPayway scoring process">
-          {steps.map((step, i) => (
-            <div key={step.num}>
-              <article className="flex flex-col items-center text-center" style={{ maxWidth: 280, margin: "0 auto" }}>
+        {/* Connector */}
+        <div
+          className="mx-auto"
+          style={{
+            width: 1,
+            height: 56,
+            background: "rgba(244,241,234,0.15)",
+            opacity: visible ? 1 : 0,
+            transition: "opacity 400ms ease-out 500ms",
+          }}
+        />
+
+        {/* ---- LAYER 2: MODEL PROCESSING ---- */}
+        <div
+          className="flex flex-col items-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
+          }}
+        >
+          <div
+            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+            style={{ color: B.teal, marginBottom: 14 }}
+          >
+            Step 2 · Analysis
+          </div>
+
+          {/* Three driver cards */}
+          <div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full"
+            style={{ maxWidth: 680 }}
+          >
+            {["Income Structure", "Income Concentration", "Income Continuity"].map((driver, i) => (
+              <div
+                key={driver}
+                className="rounded-xl border text-center"
+                style={{
+                  borderColor: "rgba(244,241,234,0.10)",
+                  background: "rgba(255,255,255,0.03)",
+                  padding: "20px 16px",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(10px)",
+                  transition: `opacity 500ms ease-out ${700 + i * 100}ms, transform 500ms ease-out ${700 + i * 100}ms`,
+                }}
+              >
                 <div
-                  className="text-[14px] uppercase tracking-[0.08em]"
-                  style={{ color: B.teal, fontWeight: 500, marginBottom: 16 }}
+                  className="text-[10px] font-medium uppercase tracking-[0.12em]"
+                  style={{ color: "rgba(244,241,234,0.45)", marginBottom: 8 }}
                 >
-                  {step.num}
+                  Driver
                 </div>
-                <div style={{ width: 60, height: 2, backgroundColor: B.purple, marginBottom: 18, opacity: 0.8 }} />
-                <p className="text-[18px]" style={{ color: "#F4F1EA", fontWeight: 500, lineHeight: 1.6 }}>
-                  {i === 1 ? (
-                    <>
-                      <span style={{ color: B.purple, fontWeight: 600 }}>RunPayway Model RP-1.0</span>{" "}
-                      calculates your score.
-                    </>
-                  ) : (
-                    step.desc
-                  )}
-                </p>
-              </article>
-              {/* Vertical connector */}
-              {i < 2 && (
-                <div
-                  style={{
-                    width: 1,
-                    height: 32,
-                    backgroundColor: "rgba(255,255,255,0.2)",
-                    margin: "24px auto",
-                  }}
-                />
-              )}
-            </div>
-          ))}
+                <div className="text-[14px] md:text-[15px] font-semibold" style={{ color: "#F4F1EA" }}>
+                  {driver}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Model label */}
+          <div
+            className="text-center"
+            style={{ marginTop: 20 }}
+          >
+            <span className="text-[14px] font-medium" style={{ color: B.purple }}>
+              RunPayway Model RP-1.0
+            </span>
+            <span className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)" }}>
+              {" "}calculates your score.
+            </span>
+          </div>
         </div>
+
+        {/* Connector */}
+        <div
+          className="mx-auto"
+          style={{
+            width: 1,
+            height: 56,
+            background: "rgba(244,241,234,0.15)",
+            opacity: visible ? 1 : 0,
+            transition: "opacity 400ms ease-out 1000ms",
+          }}
+        />
+
+        {/* ---- LAYER 3: OUTPUT ---- */}
+        <div
+          className="flex flex-col items-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 600ms ease-out 1100ms, transform 600ms ease-out 1100ms",
+          }}
+        >
+          <div
+            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+            style={{ color: B.teal, marginBottom: 14 }}
+          >
+            Step 3 · Output
+          </div>
+          <div
+            className="rounded-2xl text-center w-full"
+            style={{
+              maxWidth: 440,
+              background: B.gradient,
+              padding: "32px 36px",
+              boxShadow: visible ? "0 12px 48px rgba(75, 63, 174, 0.30)" : "none",
+              transition: "box-shadow 800ms ease-out 1200ms",
+            }}
+          >
+            <div className="text-[20px] md:text-[22px] font-semibold" style={{ color: "#ffffff", marginBottom: 8 }}>
+              Income Stability Score™
+            </div>
+            <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.70)" }}>
+              Receive your score and structured report instantly.
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom supporting line */}
+        <p
+          className="text-[13px] text-center mx-auto"
+          style={{
+            color: "rgba(244,241,234,0.45)",
+            marginTop: 64,
+            maxWidth: 640,
+            lineHeight: 1.7,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 500ms ease-out 1400ms",
+          }}
+        >
+          The Structural Stability Model evaluates six income factors across three core drivers to produce the Income Stability Score™.
+        </p>
       </div>
     </section>
   );
@@ -2018,22 +1972,6 @@ export default function LandingPage() {
 
       {/* ============ SCORING FACTORS — Model Input Framework ============ */}
       <ScoringFactors />
-
-      {/* ============ STRUCTURAL STABILITY MODEL ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>
-        <div className="text-center" style={{ marginBottom: 72 }}>
-          <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 28 }}>
-            Structural Stability Model (RP-1.0)
-          </h2>
-          <p className="text-base" style={{ color: B.muted }}>
-            How the Income Stability Score™ is structurally determined.
-          </p>
-        </div>
-        <StabilityModelDiagram />
-        <p className="text-[13px] text-center mx-auto" style={{ color: B.light, marginTop: 72, maxWidth: 640 }}>
-          The Structural Stability Model evaluates six income factors across three core drivers to produce the Income Stability Score™.
-        </p>
-      </section>
 
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
