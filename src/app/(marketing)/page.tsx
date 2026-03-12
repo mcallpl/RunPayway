@@ -893,6 +893,116 @@ function WhatTheScoreMeasures() {
 }
 
 /* ------------------------------------------------------------------ */
+/* SCORE SCALE — Financial Rating Scale                                 */
+/* ------------------------------------------------------------------ */
+function ScoreScale() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      className="score-scale-section"
+      style={{
+        backgroundColor: "#F4F1EA",
+        paddingTop: 90,
+        paddingBottom: 90,
+      }}
+    >
+      <div className="max-w-[1000px] mx-auto px-5 sm:px-6 text-center">
+        {/* 1. Large score display */}
+        <div
+          className="text-[72px] md:text-[96px]"
+          style={{
+            fontWeight: 700,
+            color: B.navy,
+            lineHeight: 1,
+            marginBottom: 10,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(8px)",
+            transition: "opacity 0.5s ease, transform 0.5s ease",
+          }}
+        >
+          78
+        </div>
+
+        {/* 2. Stability classification */}
+        <div
+          className="text-[18px] md:text-[22px] mb-[20px] md:mb-[24px]"
+          style={{
+            fontWeight: 500,
+            color: B.purple,
+          }}
+        >
+          Established Stability
+        </div>
+
+        {/* 3. Stability band labels */}
+        <div
+          className="flex items-center justify-center gap-2 sm:gap-4"
+          style={{ marginBottom: 14, fontSize: 14, fontWeight: 500, color: B.navy }}
+        >
+          {["Fragile", "Early", "Established", "High"].map((label, i) => (
+            <span key={label}>
+              {i > 0 && <span style={{ color: "#C4BDAF", marginRight: 8 }}>|</span>}
+              <span className="md:text-[16px]">{label}</span>
+            </span>
+          ))}
+        </div>
+
+        {/* 4. Horizontal scale bar with score indicator */}
+        <div className="mx-auto" style={{ maxWidth: 420, position: "relative" }}>
+          {/* Scale bar */}
+          <div
+            className="rounded-full h-[10px] md:h-[12px]"
+            style={{
+              background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`,
+            }}
+          />
+
+          {/* Score indicator — small vertical line */}
+          <div
+            style={{
+              position: "absolute",
+              left: visible ? "78%" : "0%",
+              top: -3,
+              width: 3,
+              height: 18,
+              backgroundColor: B.navy,
+              borderRadius: 2,
+              transition: "left 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
+            }}
+          />
+        </div>
+
+        {/* 5. Explanation line */}
+        <p
+          className="mx-auto text-[15px] md:text-[16px]"
+          style={{
+            color: B.navy,
+            lineHeight: 1.5,
+            marginTop: 14,
+            maxWidth: "38ch",
+          }}
+        >
+          Every income structure falls somewhere on the <strong>0&ndash;100 stability scale</strong>.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* HERO SECTION — Financial Platform Interface                          */
 /* ------------------------------------------------------------------ */
 function HeroSection() {
@@ -1151,6 +1261,9 @@ export default function LandingPage() {
 
       {/* ============ WHAT THE SCORE MEASURES ============ */}
       <WhatTheScoreMeasures />
+
+      {/* ============ SCORE SCALE ============ */}
+      <ScoreScale />
 
       {/* ============ HOW IT WORKS — Process Strip ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 40, paddingBottom: 120 }}>
