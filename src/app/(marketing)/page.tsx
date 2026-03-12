@@ -207,6 +207,123 @@ function StabilityModelDiagram() {
 }
 
 /* ------------------------------------------------------------------ */
+/* GLOBAL DISCLAIMER — institutional disclosure                         */
+/* ------------------------------------------------------------------ */
+function Disclaimer() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.15 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Global Disclaimer"
+      className="relative overflow-hidden"
+      style={{ background: "#F4F1EA" }}
+    >
+      {/* Faint horizontal documentation lines */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `repeating-linear-gradient(0deg, rgba(14,26,43,0.03) 0px, rgba(14,26,43,0.03) 1px, transparent 1px, transparent 80px)`,
+          backgroundSize: "100% 80px",
+        }}
+      />
+
+      <div
+        className="relative mx-auto px-6 md:px-8 lg:px-10"
+        style={{
+          maxWidth: 920,
+          paddingTop: 64,
+          paddingBottom: 64,
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(8px)",
+          transition: "opacity 360ms ease-out, transform 360ms ease-out",
+        }}
+      >
+        {/* Structural divider */}
+        <div
+          style={{
+            height: 1,
+            width: "100%",
+            background: "rgba(14,26,43,0.10)",
+            marginBottom: 36,
+          }}
+        />
+
+        {/* Label */}
+        <h2
+          className="font-semibold uppercase text-[11px] md:text-[12px]"
+          style={{
+            color: B.teal,
+            letterSpacing: "0.12em",
+            marginBottom: 12,
+          }}
+        >
+          Global Disclaimer
+        </h2>
+
+        {/* Disclosure text */}
+        <div style={{ maxWidth: 720 }}>
+          <p
+            className="text-[14px] md:text-[15px]"
+            style={{
+              color: "rgba(14,26,43,0.75)",
+              lineHeight: 1.7,
+              marginBottom: 10,
+            }}
+          >
+            The <strong style={{ fontWeight: 500 }}>Income Stability Score™</strong> is a structural income assessment based on information provided by the user.
+          </p>
+          <p
+            className="text-[14px] md:text-[15px]"
+            style={{
+              color: "rgba(14,26,43,0.75)",
+              lineHeight: 1.7,
+            }}
+          >
+            It does not provide financial advice and does not predict future financial outcomes.
+          </p>
+        </div>
+      </div>
+
+      {/* Mobile overrides */}
+      <style>{`
+        @media (max-width: 768px) {
+          section[aria-label="Global Disclaimer"] > div:nth-child(2) {
+            padding-top: 48px !important;
+            padding-bottom: 48px !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1024px) {
+          section[aria-label="Global Disclaimer"] > div:nth-child(2) {
+            padding-left: 32px !important;
+            padding-right: 32px !important;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          section[aria-label="Global Disclaimer"] [style*="transition"] {
+            transition: opacity 360ms ease-out !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* FINAL CTA — Premium Assessment Entry                                 */
 /* ------------------------------------------------------------------ */
 function FinalCta() {
@@ -2286,11 +2403,7 @@ export default function LandingPage() {
       <ModelGovernance />
 
       {/* ============ DISCLAIMER ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 32, paddingBottom: 64 }}>
-        <p className="text-[13px] leading-relaxed mx-auto" style={{ color: B.light, maxWidth: 680 }}>
-          The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
-        </p>
-      </section>
+      <Disclaimer />
     </div>
   );
 }
