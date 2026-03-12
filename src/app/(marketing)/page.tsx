@@ -308,6 +308,182 @@ function ModelGovernance() {
 }
 
 /* ------------------------------------------------------------------ */
+/* FAQ — Premium Financial Documentation                                */
+/* ------------------------------------------------------------------ */
+function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const faqItems = [
+    {
+      q: "What does the Income Stability Score\u2122 measure?",
+      a: "The score evaluates the structural stability of your income system across six factors — including income persistence, source diversity, and forward revenue visibility. It measures how your income is structured, not how much you earn.",
+    },
+    {
+      q: "How long does the assessment take?",
+      a: "The assessment consists of six structured questions and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
+    },
+    {
+      q: "What is included in the report?",
+      a: "Your report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, system diagnosis, industry benchmark comparison, improvement path, and an official PDF assessment record issued under Model RP-1.0.",
+    },
+    {
+      q: "Can I retake the assessment?",
+      a: "Yes. With the Annual Monitoring plan, you receive three assessments over 12 months to track how your income structure evolves. Single assessments can be purchased at any time.",
+    },
+    {
+      q: "How is my data handled?",
+      a: "Your assessment data is processed securely and used only to generate your report. Payment is handled through Stripe Secure Checkout. We do not sell or share your personal information.",
+    },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: B.navy,
+        paddingTop: 152,
+        paddingBottom: 152,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle vertical grid */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 80px)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+        {/* Header */}
+        <div
+          className="text-center md:text-center"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+          }}
+        >
+          <h2
+            className="text-[32px] md:text-[40px] text-left md:text-center"
+            style={{
+              color: "#F4F1EA",
+              fontWeight: 600,
+              lineHeight: 1.12,
+              letterSpacing: "-0.02em",
+              marginBottom: 18,
+            }}
+          >
+            Frequently Asked Questions
+          </h2>
+          <p
+            className="text-[16px] md:text-[18px] text-left md:text-center mx-auto"
+            style={{
+              color: "rgba(244,241,234,0.78)",
+              fontWeight: 400,
+              lineHeight: 1.7,
+              maxWidth: 680,
+              marginBottom: 64,
+            }}
+          >
+            Common questions about the <strong style={{ fontWeight: 500, color: "#F4F1EA" }}>Income Stability Score&#8482;</strong> and assessment.
+          </p>
+        </div>
+
+        {/* FAQ list */}
+        <div
+          className="mx-auto"
+          style={{
+            maxWidth: 820,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 0.5s ease-out 80ms, transform 0.5s ease-out 80ms",
+          }}
+        >
+          {faqItems.map((item, i) => {
+            const isOpen = openFaq === i;
+            return (
+              <div
+                key={i}
+                style={{
+                  borderTop: "1px solid rgba(255,255,255,0.10)",
+                  borderBottom: i === faqItems.length - 1 ? "1px solid rgba(255,255,255,0.10)" : "none",
+                  backgroundColor: isOpen ? "rgba(255,255,255,0.02)" : "transparent",
+                  transition: "border-color 180ms ease, background-color 180ms ease",
+                }}
+              >
+                <button
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between text-left group"
+                  style={{ padding: "26px 0", gap: 24 }}
+                  aria-expanded={isOpen}
+                >
+                  <span
+                    className="text-[17px] md:text-[20px] group-hover:!text-[#F4F1EA] transition-colors duration-[180ms]"
+                    style={{
+                      color: isOpen ? "#F4F1EA" : "rgba(244,241,234,0.88)",
+                      fontWeight: 500,
+                      lineHeight: 1.45,
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {item.q}
+                  </span>
+                  {/* Plus/minus indicator */}
+                  <svg
+                    width="16" height="16" viewBox="0 0 16 16" fill="none"
+                    className="shrink-0 transition-colors duration-[180ms] group-hover:!stroke-[rgba(244,241,234,0.9)]"
+                    stroke="rgba(244,241,234,0.72)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  >
+                    {!isOpen && <line x1="8" y1="2" x2="8" y2="14" />}
+                    <line x1="2" y1="8" x2="14" y2="8" />
+                  </svg>
+                </button>
+                {/* Answer area */}
+                <div
+                  className="overflow-hidden transition-all duration-[220ms] ease-in-out"
+                  style={{ maxHeight: isOpen ? 300 : 0, opacity: isOpen ? 1 : 0 }}
+                >
+                  <p
+                    className="text-[15px] md:text-[16px]"
+                    style={{
+                      color: "rgba(244,241,234,0.76)",
+                      fontWeight: 400,
+                      lineHeight: 1.75,
+                      maxWidth: 680,
+                      paddingTop: 14,
+                      paddingRight: 48,
+                      paddingBottom: 4,
+                    }}
+                  >
+                    {item.a}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* SCORE REGISTRY                                                       */
 /* ------------------------------------------------------------------ */
 function ScoreRegistry() {
@@ -1904,52 +2080,7 @@ export default function LandingPage() {
       <ScoreRegistry />
 
       {/* ============ FAQ ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ paddingTop: 96, paddingBottom: 120 }}>
-        <div className="text-center" style={{ marginBottom: 56 }}>
-          <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-            Frequently Asked Questions
-          </h2>
-          <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 560 }}>
-            Common questions about the Income Stability Score™ and assessment process.
-          </p>
-        </div>
-        <div className="mx-auto" style={{ maxWidth: 680 }}>
-          {FAQ_ITEMS.map((item, i) => {
-            const isOpen = openFaq === i;
-            return (
-              <div
-                key={i}
-                className="border-b"
-                style={{ borderColor: B.sandDk }}
-              >
-                <button
-                  onClick={() => setOpenFaq(isOpen ? null : i)}
-                  className="w-full py-5 flex items-center justify-between gap-4 text-left"
-                >
-                  <span className="text-[15px] font-medium" style={{ color: B.navy }}>
-                    {item.q}
-                  </span>
-                  <svg
-                    width="18" height="18" viewBox="0 0 18 18" fill="none"
-                    className="shrink-0 transition-transform duration-200"
-                    style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-                  >
-                    <path d="M4.5 7l4.5 4 4.5-4" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-                <div
-                  className="overflow-hidden transition-all duration-300 ease-in-out"
-                  style={{ maxHeight: isOpen ? 200 : 0, opacity: isOpen ? 1 : 0 }}
-                >
-                  <p className="text-[14px] leading-relaxed pb-5" style={{ color: B.muted }}>
-                    {item.a}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
 
       {/* ============ FINAL CTA — Action ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 120, paddingBottom: 120 }}>
