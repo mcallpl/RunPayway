@@ -1220,156 +1220,101 @@ function ScoringFactors() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
   const factors = [
-    { idx: "01", name: "Recurring Income", desc: "Income that repeats automatically." },
-    { idx: "02", name: "Income Sources", desc: "Multiple sources increase stability." },
-    { idx: "03", name: "Income Concentration", desc: "Dependence on one source increases risk." },
-    { idx: "04", name: "Forward Income Visibility", desc: "Income already scheduled or contracted." },
-    { idx: "05", name: "Earnings Consistency", desc: "How steady income is month to month." },
-    { idx: "06", name: "Income Without Active Labor", desc: "Income that continues without daily work." },
+    { num: "01", name: "Recurring Income", desc: "Does your income repeat on its own, like a subscription or salary? Or does it stop the moment you stop working?" },
+    { num: "02", name: "Number of Income Sources", desc: "How many places does your money come from? More sources means less risk if one goes away." },
+    { num: "03", name: "Income Concentration", desc: "How much of your income depends on one client, one job, or one platform? The more concentrated, the more fragile." },
+    { num: "04", name: "Forward Visibility", desc: "Can you see income coming in the future? Contracts, retainers, and scheduled payments all count." },
+    { num: "05", name: "Earnings Consistency", desc: "Does your income stay steady month to month, or does it swing up and down unpredictably?" },
+    { num: "06", name: "Passive Income", desc: "Do you earn money even when you're not actively working? Royalties, investments, and rental income all qualify." },
   ];
 
   return (
     <section
       ref={ref}
       style={{
-        backgroundColor: B.navy,
-        paddingTop: 148,
-        paddingBottom: 148,
-        position: "relative",
-        overflow: "hidden",
+        backgroundColor: "#ffffff",
+        paddingTop: 120,
+        paddingBottom: 120,
       }}
-      className="scoring-factors-section"
     >
-      {/* Subtle analytical grid */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 64px)`,
-          pointerEvents: "none",
-        }}
-      />
-
-      <div className="max-w-[1180px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
         {/* Header */}
-        <div className="text-center md:text-center mb-[44px] md:mb-0">
-          <h2
-            className="text-[32px] md:text-[40px] text-left md:text-center"
-            style={{
-              color: "#F4F1EA",
-              fontWeight: 600,
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              marginBottom: 18,
-            }}
+        <div
+          className="text-center"
+          style={{
+            marginBottom: 64,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 500ms ease-out, transform 500ms ease-out",
+          }}
+        >
+          <div
+            className="font-medium uppercase text-[11px]"
+            style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}
           >
-            Scoring Factors
+            What We Measure
+          </div>
+          <h2
+            className="text-[30px] md:text-[40px] font-semibold"
+            style={{ color: B.navy, letterSpacing: "-0.02em", marginBottom: 16 }}
+          >
+            Six Scoring Factors
           </h2>
           <p
-            className="text-[17px] md:text-[18px] text-left md:text-center"
-            style={{
-              color: "rgba(244,241,234,0.78)",
-              fontWeight: 400,
-              lineHeight: 1.7,
-              maxWidth: 700,
-              marginBottom: 72,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
+            className="text-[17px] md:text-[18px] mx-auto"
+            style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7, maxWidth: 560 }}
           >
-            The score evaluates six factors that determine income durability.
+            Your score is based on six simple questions about how your income works.
           </p>
         </div>
 
-        {/* Factor matrix: 2 cols desktop, 1 col mobile */}
+        {/* Factor grid: 2 cols desktop, 1 col mobile */}
         <div
           className="grid grid-cols-1 md:grid-cols-2"
-          style={{ columnGap: 28, rowGap: 28 }}
+          style={{ gap: 20, maxWidth: 920, margin: "0 auto" }}
         >
           {factors.map((factor, i) => (
             <article
-              key={factor.idx}
-              aria-label={factor.name}
-              className="group"
+              key={factor.num}
               style={{
-                backgroundColor: "rgba(255,255,255,0.025)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 20,
-                padding: 30,
-                minHeight: 170,
-                maxWidth: 560,
-                marginLeft: "auto",
-                marginRight: "auto",
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-start",
-                position: "relative",
-                overflow: "hidden",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.16)",
+                backgroundColor: "#F4F1EA",
+                borderRadius: 16,
+                padding: "28px 28px 32px",
                 opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: `opacity 0.5s ease-out ${i * 40}ms, transform 0.5s ease-out ${i * 40}ms, border-color 0.2s ease, background-color 0.2s ease`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.16)";
-                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.025)";
+                transform: visible ? "translateY(0)" : "translateY(8px)",
+                transition: `opacity 500ms ease-out ${150 + i * 60}ms, transform 500ms ease-out ${150 + i * 60}ms`,
               }}
             >
-              {/* Factor index */}
+              {/* Number */}
               <div
-                className="text-[12px] uppercase tracking-[0.12em] group-hover:!text-[#4B3FAE] transition-colors duration-200"
-                style={{ color: B.teal, fontWeight: 500, marginBottom: 18 }}
+                className="text-[12px] font-semibold"
+                style={{ color: B.purple, marginBottom: 12 }}
               >
-                {factor.idx}
+                {factor.num}
               </div>
 
-              {/* Factor name */}
+              {/* Name */}
               <div
-                className="text-[22px] md:text-[24px]"
-                style={{
-                  color: "#F4F1EA",
-                  fontWeight: 600,
-                  lineHeight: 1.25,
-                  letterSpacing: "-0.015em",
-                  marginBottom: 14,
-                }}
+                className="text-[18px] md:text-[20px] font-semibold"
+                style={{ color: B.navy, lineHeight: 1.3, marginBottom: 10 }}
               >
                 {factor.name}
               </div>
 
-              {/* Description */}
+              {/* Plain English description */}
               <p
-                className="text-[16px] md:text-[17px]"
-                style={{ color: "rgba(244,241,234,0.80)", fontWeight: 400, lineHeight: 1.7, maxWidth: "95%" }}
+                className="text-[14px] md:text-[15px]"
+                style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7 }}
               >
                 {factor.desc}
               </p>
-
-              {/* Structural accent line */}
-              <div
-                className="sf-accent-line"
-                style={{
-                  position: "absolute",
-                  bottom: 30,
-                  right: 30,
-                  height: 2,
-                  width: 72,
-                  backgroundColor: B.purple,
-                  transition: "width 0.2s ease",
-                }}
-              />
             </article>
           ))}
         </div>
@@ -1382,229 +1327,144 @@ function ScoringFactors() {
 /* HOW IT WORKS — Unified Scoring Pipeline + Model Diagram              */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const el = sectionRef.current;
+    const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.1 },
+      { threshold: 0.12 },
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
 
+  const steps = [
+    {
+      num: "1",
+      title: "Answer 6 Questions",
+      desc: "Tell us about your income — where it comes from, how often it arrives, and how predictable it is.",
+    },
+    {
+      num: "2",
+      title: "We Calculate Your Score",
+      desc: "Our model analyzes your answers across six factors and places you on a 0–100 stability scale.",
+    },
+    {
+      num: "3",
+      title: "Get Your Report",
+      desc: "Receive your Income Stability Score and a detailed breakdown showing exactly where you stand.",
+    },
+  ];
+
   return (
     <section
-      ref={sectionRef}
-      aria-label="How It Works"
-      className="relative overflow-hidden"
-      style={{ background: B.navy }}
+      ref={ref}
+      style={{
+        backgroundColor: "#F4F1EA",
+        paddingTop: 120,
+        paddingBottom: 120,
+      }}
     >
-      {/* Subtle analytical grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-          backgroundSize: "64px 64px",
-        }}
-      />
-
-      <div
-        className="relative mx-auto px-6 md:px-10"
-        style={{ maxWidth: 1100, paddingTop: 140, paddingBottom: 140, zIndex: 1 }}
-      >
-        {/* Section heading */}
+      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
+        {/* Header */}
         <div
           className="text-center"
           style={{
-            marginBottom: 80,
+            marginBottom: 64,
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transform: visible ? "translateY(0)" : "translateY(10px)",
             transition: "opacity 500ms ease-out, transform 500ms ease-out",
           }}
         >
+          <div
+            className="font-medium uppercase text-[11px]"
+            style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}
+          >
+            3 Simple Steps
+          </div>
           <h2
             className="text-[30px] md:text-[40px] font-semibold"
-            style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
+            style={{ color: B.navy, letterSpacing: "-0.02em", marginBottom: 16 }}
           >
             How It Works
           </h2>
           <p
-            className="text-[17px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.70)", lineHeight: 1.7 }}
+            className="text-[17px] md:text-[18px] mx-auto"
+            style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.7, maxWidth: 480 }}
           >
-            How the Income Stability Score™ is structurally determined.
+            From start to score in under two minutes.
           </p>
         </div>
 
-        {/* ---- LAYER 1: INPUT ---- */}
+        {/* 3 steps — horizontal on desktop, stacked on mobile */}
         <div
-          className="flex flex-col items-center"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
-          }}
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ gap: 24, maxWidth: 960, margin: "0 auto" }}
         >
-          <div
-            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
-            style={{ color: B.teal, marginBottom: 14 }}
-          >
-            Step 1 · Input
-          </div>
-          <div
-            className="rounded-2xl border text-center w-full"
-            style={{
-              maxWidth: 400,
-              borderColor: "rgba(244,241,234,0.12)",
-              background: "rgba(255,255,255,0.04)",
-              padding: "28px 32px",
-            }}
-          >
-            <div className="text-[17px] md:text-[18px] font-semibold" style={{ color: "#F4F1EA", marginBottom: 8 }}>
-              Answer a few questions about your income.
-            </div>
-            <div className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)" }}>
-              Six structural factors across three core drivers
-            </div>
-          </div>
-        </div>
-
-        {/* Connector */}
-        <div
-          className="mx-auto"
-          style={{
-            width: 1,
-            height: 56,
-            background: "rgba(244,241,234,0.15)",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 400ms ease-out 500ms",
-          }}
-        />
-
-        {/* ---- LAYER 2: MODEL PROCESSING ---- */}
-        <div
-          className="flex flex-col items-center"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
-          }}
-        >
-          <div
-            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
-            style={{ color: B.teal, marginBottom: 14 }}
-          >
-            Step 2 · Analysis
-          </div>
-
-          {/* Three driver cards */}
-          <div
-            className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full"
-            style={{ maxWidth: 680 }}
-          >
-            {["Income Structure", "Income Concentration", "Income Continuity"].map((driver, i) => (
+          {steps.map((step, i) => (
+            <article
+              key={step.num}
+              className="text-center"
+              style={{
+                backgroundColor: "#ffffff",
+                borderRadius: 16,
+                padding: "36px 28px 40px",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 500ms ease-out ${200 + i * 120}ms, transform 500ms ease-out ${200 + i * 120}ms`,
+              }}
+            >
+              {/* Step number */}
               <div
-                key={driver}
-                className="rounded-xl border text-center"
+                className="inline-flex items-center justify-center font-semibold"
                 style={{
-                  borderColor: "rgba(244,241,234,0.10)",
-                  background: "rgba(255,255,255,0.03)",
-                  padding: "20px 16px",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(10px)",
-                  transition: `opacity 500ms ease-out ${700 + i * 100}ms, transform 500ms ease-out ${700 + i * 100}ms`,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 12,
+                  backgroundColor: B.purple,
+                  color: "#ffffff",
+                  fontSize: 16,
+                  marginBottom: 20,
                 }}
               >
-                <div
-                  className="text-[10px] font-medium uppercase tracking-[0.12em]"
-                  style={{ color: "rgba(244,241,234,0.45)", marginBottom: 8 }}
-                >
-                  Driver
-                </div>
-                <div className="text-[14px] md:text-[15px] font-semibold" style={{ color: "#F4F1EA" }}>
-                  {driver}
-                </div>
+                {step.num}
               </div>
-            ))}
-          </div>
 
-          {/* Model label */}
-          <div
-            className="text-center"
-            style={{ marginTop: 20 }}
-          >
-            <span className="text-[14px] font-medium" style={{ color: B.purple }}>
-              RunPayway Model RP-1.0
-            </span>
-            <span className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)" }}>
-              {" "}calculates your score.
-            </span>
-          </div>
+              {/* Title */}
+              <div
+                className="text-[18px] md:text-[20px] font-semibold"
+                style={{ color: B.navy, marginBottom: 12 }}
+              >
+                {step.title}
+              </div>
+
+              {/* Description */}
+              <p
+                className="text-[14px] md:text-[15px]"
+                style={{ color: "rgba(14,26,43,0.58)", lineHeight: 1.7 }}
+              >
+                {step.desc}
+              </p>
+            </article>
+          ))}
         </div>
 
-        {/* Connector */}
-        <div
-          className="mx-auto"
-          style={{
-            width: 1,
-            height: 56,
-            background: "rgba(244,241,234,0.15)",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 400ms ease-out 1000ms",
-          }}
-        />
-
-        {/* ---- LAYER 3: OUTPUT ---- */}
-        <div
-          className="flex flex-col items-center"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 600ms ease-out 1100ms, transform 600ms ease-out 1100ms",
-          }}
-        >
-          <div
-            className="text-[10px] font-semibold uppercase tracking-[0.16em]"
-            style={{ color: B.teal, marginBottom: 14 }}
-          >
-            Step 3 · Output
-          </div>
-          <div
-            className="rounded-2xl text-center w-full"
-            style={{
-              maxWidth: 440,
-              background: B.gradient,
-              padding: "32px 36px",
-              boxShadow: visible ? "0 12px 48px rgba(75, 63, 174, 0.30)" : "none",
-              transition: "box-shadow 800ms ease-out 1200ms",
-            }}
-          >
-            <div className="text-[20px] md:text-[22px] font-semibold" style={{ color: "#ffffff", marginBottom: 8 }}>
-              Income Stability Score™
-            </div>
-            <div className="text-[14px]" style={{ color: "rgba(255,255,255,0.70)" }}>
-              Receive your score and structured report instantly.
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom supporting line */}
+        {/* Model reference */}
         <p
           className="text-[13px] text-center mx-auto"
           style={{
-            color: "rgba(244,241,234,0.45)",
-            marginTop: 64,
-            maxWidth: 640,
+            color: "rgba(14,26,43,0.40)",
+            marginTop: 48,
+            maxWidth: 500,
             lineHeight: 1.7,
             opacity: visible ? 1 : 0,
-            transition: "opacity 500ms ease-out 1400ms",
+            transition: "opacity 500ms ease-out 800ms",
           }}
         >
-          The Structural Stability Model evaluates six income factors across three core drivers to produce the Income Stability Score™.
+          Powered by <strong style={{ fontWeight: 600, color: B.navy }}>RunPayway Model RP-1.0</strong>
         </p>
       </div>
     </section>
