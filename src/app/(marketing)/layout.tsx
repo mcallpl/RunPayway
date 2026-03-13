@@ -254,11 +254,39 @@ export default function MarketingLayout({
           className="relative mx-auto"
           style={{
             maxWidth: 1200,
-            padding: "32px 24px",
+            padding: "48px 24px 36px",
           }}
         >
-          {/* Navigation grid */}
-          <nav aria-label="Footer navigation" style={{ marginBottom: 28 }}>
+          {/* Tier 1 — Brand */}
+          <div style={{ marginBottom: 32 }}>
+            <Link
+              href="/"
+              className="font-semibold transition-colors duration-150 focus:outline-none focus:ring-2"
+              style={{
+                fontSize: 20,
+                letterSpacing: "-0.01em",
+                color: "#0E1A2B",
+                // @ts-expect-error focus ring
+                "--tw-ring-color": "#1F6D7A",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#4B3FAE"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+            >
+              RunPayway
+            </Link>
+            <div
+              style={{
+                fontSize: 14,
+                color: "rgba(14,26,43,0.45)",
+                marginTop: 4,
+              }}
+            >
+              Income Stability Score™
+            </div>
+          </div>
+
+          {/* Tier 2 — Primary navigation */}
+          <nav aria-label="Footer navigation" style={{ marginBottom: 24 }}>
             <ul
               className="footer-nav-grid list-none p-0 m-0"
               style={{
@@ -266,6 +294,7 @@ export default function MarketingLayout({
                 gridTemplateColumns: "repeat(6, auto)",
                 gap: 28,
                 alignItems: "center",
+                justifyContent: "start",
               }}
             >
               {[
@@ -282,6 +311,7 @@ export default function MarketingLayout({
                     className="transition-colors duration-160 focus:outline-none focus:ring-2"
                     style={{
                       fontSize: 15,
+                      fontWeight: 500,
                       color: "rgba(14,26,43,0.70)",
                       // @ts-expect-error focus ring
                       "--tw-ring-color": "#1F6D7A",
@@ -296,32 +326,68 @@ export default function MarketingLayout({
             </ul>
           </nav>
 
-          {/* Social links */}
-          <div className="flex items-center" style={{ gap: 20, marginBottom: 28 }}>
-            {[
-              { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
-              { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
-              { href: "https://instagram.com/runpayway", label: "Instagram", ariaLabel: "RunPayway on Instagram" },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.ariaLabel}
-                className="transition-colors duration-160 focus:outline-none focus:ring-2"
-                style={{
-                  fontSize: 14,
-                  color: "rgba(14,26,43,0.55)",
-                  // @ts-expect-error focus ring
-                  "--tw-ring-color": "#1F6D7A",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Tier 3 — Legal nav + Social (secondary weight) */}
+          <div
+            className="footer-secondary-row"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 28,
+            }}
+          >
+            {/* Legal links */}
+            <div className="flex items-center" style={{ gap: 24 }}>
+              {[
+                { href: "#", label: "Contact" },
+                { href: "#", label: "Privacy Policy" },
+                { href: "#", label: "Terms of Use" },
+              ].map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="transition-colors duration-160 focus:outline-none focus:ring-2"
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(14,26,43,0.45)",
+                    // @ts-expect-error focus ring
+                    "--tw-ring-color": "#1F6D7A",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Social links */}
+            <div className="flex items-center" style={{ gap: 18 }}>
+              {[
+                { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
+                { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
+                { href: "https://instagram.com/runpayway", label: "Instagram", ariaLabel: "RunPayway on Instagram" },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.ariaLabel}
+                  className="transition-colors duration-160 focus:outline-none focus:ring-2"
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(14,26,43,0.45)",
+                    // @ts-expect-error focus ring
+                    "--tw-ring-color": "#1F6D7A",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Divider */}
@@ -329,23 +395,23 @@ export default function MarketingLayout({
             style={{
               height: 1,
               width: "100%",
-              background: "rgba(14,26,43,0.08)",
+              background: "rgba(14,26,43,0.06)",
               marginBottom: 24,
             }}
           />
 
-          {/* Legal block */}
+          {/* Tier 4 — Legal block */}
           <div style={{ maxWidth: 520 }}>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               &copy; 2026 RunPayway™. All rights reserved.
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               RunPayway™ is a product of PeopleStar Enterprises, LLC.
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               Orange County, California, USA
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7 }}>
+            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7 }}>
               Structural Stability Model RP-1.0
             </p>
           </div>
@@ -356,7 +422,12 @@ export default function MarketingLayout({
           @media (max-width: 768px) {
             .footer-nav-grid {
               grid-template-columns: repeat(2, auto) !important;
-              gap: 18px !important;
+              gap: 14px 28px !important;
+            }
+            .footer-secondary-row {
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 16px !important;
             }
           }
         `}</style>
