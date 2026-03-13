@@ -126,15 +126,6 @@ function Disclaimer() {
       className="relative overflow-hidden"
       style={{ background: "#F4F1EA" }}
     >
-      {/* Faint horizontal documentation lines */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(14,26,43,0.03) 0px, rgba(14,26,43,0.03) 1px, transparent 1px, transparent 80px)`,
-          backgroundSize: "100% 80px",
-        }}
-      />
-
       <div
         className="relative mx-auto px-6 md:px-8 lg:px-10"
         style={{
@@ -231,15 +222,6 @@ function FinalCta() {
       className="relative overflow-hidden"
       style={{ background: B.navy }}
     >
-      {/* Faint vertical grid lines */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 80px)`,
-          backgroundSize: "80px 100%",
-        }}
-      />
-
       {/* Faint circular scoring halo */}
       <div
         className="absolute pointer-events-none"
@@ -404,16 +386,6 @@ function ModelGovernance() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle horizontal documentation lines */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(14,26,43,0.035) 0px, rgba(14,26,43,0.035) 1px, transparent 1px, transparent 72px)`,
-          pointerEvents: "none",
-        }}
-      />
-
       <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Title + text */}
         <div
@@ -534,16 +506,6 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         overflow: "hidden",
       }}
     >
-      {/* Subtle vertical grid */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 80px)`,
-          pointerEvents: "none",
-        }}
-      />
-
       <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Header */}
         <div
@@ -684,16 +646,6 @@ function ScoreRegistry() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle vertical grid texture */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(14,26,43,0.035) 0px, rgba(14,26,43,0.035) 1px, transparent 1px, transparent 80px)`,
-          pointerEvents: "none",
-        }}
-      />
-
       <div className="max-w-[1140px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         <div
           className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,420px)]"
@@ -820,16 +772,6 @@ function WhyIncomeStabilityMatters() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle vertical grid lines */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 80px)`,
-          pointerEvents: "none",
-        }}
-      />
-
       <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Title */}
         <h2
@@ -1594,15 +1536,6 @@ function HowItWorks() {
           <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.navy} />
         </svg>
       </div>
-
-      {/* Faint grid texture */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 80px),
-                            repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 80px)`,
-        }}
-      />
 
       <div className="relative mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
         {/* Header */}
