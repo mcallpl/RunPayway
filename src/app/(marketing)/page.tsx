@@ -241,8 +241,8 @@ function FinalCta() {
     <section
       ref={ref}
       aria-label="Get Your Income Stability Score"
-      className="relative overflow-hidden navy-grain"
-      style={{ background: `linear-gradient(180deg, ${B.navy} 0%, #1A1540 40%, ${B.purple} 100%)` }}
+      className="relative navy-grain"
+      style={{ background: `linear-gradient(180deg, ${B.navy} 0%, #1A1540 40%, ${B.purple} 100%)`, overflowX: "clip", overflowY: "visible" }}
     >
       {/* Ambient glows */}
       <div style={{ position: "absolute", top: "-25%", left: "50%", width: 800, height: 800, borderRadius: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 60%)", pointerEvents: "none" }} />
