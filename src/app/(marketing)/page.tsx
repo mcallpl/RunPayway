@@ -44,43 +44,43 @@ const INDUSTRY_EXAMPLES = [
   {
     industry: "Professional Services: Moving From Project Work to Recurring Revenue",
     stable: [
-      "multiple income sources",
-      "recurring revenue",
-      "forward income commitments",
-      "income beyond personal labor",
+      "retainer-based client relationships",
+      "recurring service agreements",
+      "forward-booked revenue commitments",
+      "productized service offerings",
     ],
     unstable: [
-      "reliance on a single source",
-      "one-time transactions",
-      "unpredictable revenue cycles",
+      "project-to-project income cycles",
+      "no recurring revenue structure",
+      "income stops when active work stops",
     ],
   },
   {
     industry: "Private Practice: Increasing Revenue Continuity",
     stable: [
-      "multiple income sources",
-      "recurring revenue",
-      "forward income commitments",
-      "income beyond personal labor",
+      "subscription or membership models",
+      "ongoing patient or client panels",
+      "predictable appointment schedules",
+      "ancillary revenue streams",
     ],
     unstable: [
-      "reliance on a single source",
-      "one-time transactions",
-      "unpredictable revenue cycles",
+      "fee-per-visit only billing",
+      "seasonal patient volume swings",
+      "single-location dependence",
     ],
   },
   {
     industry: "Agency Owners: Reducing Client Concentration Risk",
     stable: [
-      "multiple income sources",
-      "recurring revenue",
-      "forward income commitments",
-      "income beyond personal labor",
+      "diversified client base",
+      "monthly managed service contracts",
+      "multi-year engagements",
+      "recurring campaign or maintenance revenue",
     ],
     unstable: [
-      "reliance on a single source",
-      "one-time transactions",
-      "unpredictable revenue cycles",
+      "majority revenue from one client",
+      "project-based billing with no renewals",
+      "high churn rate on accounts",
     ],
   },
 ];
@@ -273,7 +273,7 @@ function FinalCta() {
               margin: "0 auto 42px auto",
             }}
           >
-            Measure the stability of your income.
+            Six questions. One score. A complete structural diagnosis of your income.
           </p>
 
           {/* CTA Button */}
@@ -423,23 +423,10 @@ function ModelGovernance() {
 
           <div style={{ maxWidth: 640 }}>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              RunPayway Model <span style={{ fontWeight: 500, color: B.purple }}>RP-1.0</span> defines the scoring framework.
+              The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: B.purple }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
             </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              The scoring model, classification scale, and factor definitions are versioned to maintain consistency.
-            </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75 }}>
-              Future updates are released as new model versions.
-            </p>
-            <p
-              style={{
-                fontWeight: 400,
-                fontSize: 15,
-                color: "rgba(14,26,43,0.70)",
-                marginTop: 18,
-              }}
-            >
-              Assessments currently run under Model RP-1.0.
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 500, lineHeight: 1.75 }}>
+              Future updates ship as new model versions. Assessments currently run under Model RP-1.0.
             </p>
           </div>
         </div>
@@ -716,16 +703,10 @@ function ScoreRegistry() {
             </h2>
 
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              Each <strong style={{ fontWeight: 500, color: B.navy }}>Income Stability Score&#8482;</strong> assessment receives a unique registry ID.
-            </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              Registry records include the score result, model version, and assessment timestamp.
-            </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              This allows score results to be referenced and verified over time.
+              Every assessment is issued a unique registry ID, linking the score result, model version, and timestamp to a permanent, verifiable record.
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: 1.75 }}>
-              Registry records are generated under <strong>RunPayway Model RP-1.0</strong>.
+              All records are generated under <strong>RunPayway Model RP-1.0</strong> and can be independently verified at any time.
             </p>
           </div>
 
@@ -1634,17 +1615,17 @@ function HowItWorks() {
     {
       num: "1",
       title: "Income Profile Intake",
-      desc: "We assess your income structure — its sources, frequency, and predictability.",
+      desc: "Six structured questions capture your income sources, frequency, and predictability.",
     },
     {
       num: "2",
       title: "Structural Analysis",
-      desc: "Our model analyzes your answers across six factors and places you on a 0–100 stability scale.",
+      desc: "Model RP-1.0 scores your responses across six factors and places you on a 0–100 stability scale.",
     },
     {
       num: "3",
-      title: "Get Your Report",
-      desc: "Receive your Income Stability Score and a detailed breakdown showing exactly where you stand.",
+      title: "Score + Report Delivered",
+      desc: "Your Income Stability Score, classification, and full PDF report are generated instantly.",
     },
   ];
 
@@ -1923,58 +1904,41 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score™</strong> in minutes.
+              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score™</strong> in minutes. Scores range from <strong style={{ fontWeight: 600, color: B.navy }}>0–100</strong>. Higher scores indicate stronger income stability.
             </p>
 
-            {/* Audience clarification */}
-            <p
+            {/* Audience + credibility */}
+            <div
               style={{
-                fontWeight: 400,
-                fontSize: 16,
-                lineHeight: 1.6,
-                color: "rgba(14,26,43,0.70)",
-                maxWidth: 520,
-                marginBottom: 24,
-                opacity: hasAnimated ? 1 : 0,
-                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
-              }}
-            >
-              Designed for independent professionals, founders, and income-driven careers.
-            </p>
-
-            <p
-              className="text-[15px] md:text-[17px]"
-              style={{
-                color: "rgba(14,26,43,0.60)",
-                lineHeight: 1.65,
-                marginBottom: 40,
-                maxWidth: 460,
+                marginBottom: 32,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms",
               }}
             >
-              Scores range from <strong style={{ fontWeight: 600, color: B.navy }}>0–100</strong>. Higher scores indicate stronger income stability.
-            </p>
-
-            {/* Credibility signal */}
-            <p
-              style={{
-                fontWeight: 400,
-                fontSize: 14,
-                letterSpacing: "0.02em",
-                color: "rgba(14,26,43,0.60)",
-                marginTop: 18,
-                marginBottom: 18,
-                opacity: hasAnimated ? 1 : 0,
-                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 600ms ease-out 380ms, transform 600ms ease-out 380ms",
-              }}
-            >
-              Built on deterministic structural scoring.<br />
-              RunPayway Model RP-1.0.
-            </p>
+              <p
+                style={{
+                  fontWeight: 400,
+                  fontSize: 16,
+                  lineHeight: 1.6,
+                  color: "rgba(14,26,43,0.70)",
+                  maxWidth: 520,
+                  marginBottom: 12,
+                }}
+              >
+                Designed for independent professionals, founders, and income-driven careers.
+              </p>
+              <p
+                style={{
+                  fontWeight: 400,
+                  fontSize: 14,
+                  letterSpacing: "0.02em",
+                  color: "rgba(14,26,43,0.50)",
+                }}
+              >
+                Built on deterministic structural scoring. RunPayway Model RP-1.0.
+              </p>
+            </div>
 
             {/* CTA Button */}
             <div
@@ -2409,13 +2373,10 @@ export default function LandingPage() {
       <section style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: 120, paddingBottom: 140 }}>
       <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
-          How Income Structures Become More Stable
+          Stability Patterns by Industry
         </h2>
         <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 40, maxWidth: 640 }}>
-          High-stability income systems tend to share common structural characteristics, regardless of profession.
-        </p>
-        <p className="text-[13px] mx-auto" style={{ color: B.light, marginBottom: 32, maxWidth: 640 }}>
-          Explore structural patterns that increase income stability.
+          The structural factors that drive income stability vary by profession. See what separates high-stability systems from fragile ones in your sector.
         </p>
 
         <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
