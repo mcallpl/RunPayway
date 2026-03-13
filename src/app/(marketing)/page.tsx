@@ -29,6 +29,25 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
+/* Bidirectional variant — does NOT disconnect, so visible toggles on/off as you scroll */
+function useInViewBidi(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+
+  return { ref, visible };
+}
+
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
@@ -1606,250 +1625,139 @@ function ScoringFactors() {
 }
 
 /* ------------------------------------------------------------------ */
-/* HOW IT WORKS — Unified Scoring Pipeline + Model Diagram              */
+/* HOW IT WORKS                                                         */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      /*
-       * Progress 0 = section top at viewport BOTTOM (just entering view)
-       * Progress 0.5 = section top at viewport TOP (sticky pins)
-       * Progress 1.0 = section bottom at viewport bottom (sticky unpins)
-       *
-       * Total travel = vh (entering) + (sectionH - vh) (pinned scrolling) = sectionH
-       * distFromBottom = how far the section top has traveled up from viewport bottom
-       */
-      const distFromBottom = vh - rect.top;
-      const raw = distFromBottom / el.offsetHeight;
-      setProgress(Math.max(0, Math.min(1, raw)));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
-
-  /*
-   * 150vh section → progress 0.67 = sticky pins.
-   * All animations complete by ~0.64, right before pin.
-   * 0.67→1.0 = locked hold (~50vh of scroll).
-   *
-   * 0.10–0.30  Title shrinks 6x → 1x
-   * 0.28–0.36  Label + subtitle
-   * 0.36–0.44  Step 1
-   * 0.44–0.52  Step 2
-   * 0.52–0.60  Step 3
-   * 0.56–0.62  Connector
-   * 0.60–0.66  Footer
-   * 0.67+       LOCKED
-   */
-
-  const shrinkP = rangeMap(0.10, 0.30);
-  const titleScale = 6 - shrinkP * 5;
-
-  const labelP   = rangeMap(0.28, 0.36);
-  const subP     = rangeMap(0.30, 0.38);
-
-  const step1P   = rangeMap(0.36, 0.44);
-  const step2P   = rangeMap(0.44, 0.52);
-  const step3P   = rangeMap(0.52, 0.60);
-
-  const lineP    = rangeMap(0.50, 0.58);
-  const footerP  = rangeMap(0.60, 0.66);
+  const { ref, visible } = useInViewBidi(0.15);
 
   const steps = [
     {
       num: "1",
       title: "Income Profile Intake",
       desc: "Six structured questions capture your income sources, frequency, and predictability.",
-      p: step1P,
     },
     {
       num: "2",
       title: "Structural Analysis",
       desc: "Model RP-1.0 scores your responses across six factors and places you on a 0\u2013100 stability scale.",
-      p: step2P,
     },
     {
       num: "3",
       title: "Score + Report Delivered",
       desc: "Your Income Stability Score, classification, and full PDF report are generated instantly.",
-      p: step3P,
     },
   ];
 
   return (
     <section
-      ref={sectionRef}
-      className="relative"
-      style={{
-        height: "150vh",
-        backgroundColor: B.navy,
-      }}
+      ref={ref}
+      style={{ paddingTop: 120, paddingBottom: 120, background: "#ffffff" }}
     >
-      {/* Top curve */}
-      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill={B.navy} />
-        </svg>
-      </div>
-
-      {/* Bottom curve */}
-      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.navy} />
-        </svg>
-      </div>
-
-      {/* Sticky viewport */}
-      <div
-        className="navy-grain"
-        style={{
-          position: "sticky",
-          top: 0,
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        {/* Ambient purple glow */}
-        <div style={{ position: "absolute", top: "-15%", right: "-8%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
-        {/* Ambient teal glow */}
-        <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
-
-        <div className="relative mx-auto px-6 md:px-10 w-full" style={{ maxWidth: 1100 }}>
-          {/* Header */}
-          <div className="text-center" style={{ marginBottom: 72 }}>
-            <div
-              className="font-medium uppercase text-[11px]"
-              style={{
-                letterSpacing: "0.14em",
-                color: B.teal,
-                marginBottom: 16,
-                opacity: labelP,
-                transform: `translateY(${(1 - labelP) * 10}px)`,
-              }}
-            >
-              Assessment Process
-            </div>
-
-            {/* Single title — starts at 6x, shrinks to 1x */}
-            <h2
-              className="text-[30px] md:text-[42px] font-semibold"
-              style={{
-                color: "#F4F1EA",
-                letterSpacing: "-0.02em",
-                marginBottom: 16,
-                transform: `scale(${titleScale})`,
-                transformOrigin: "center center",
-                willChange: "transform",
-              }}
-            >
-              How It Works
-            </h2>
-
-            <p
-              className="text-[17px] md:text-[18px] mx-auto"
-              style={{
-                color: "rgba(244,241,234,0.55)",
-                lineHeight: 1.7,
-                maxWidth: 480,
-                opacity: subP,
-                transform: `translateY(${(1 - subP) * 10}px)`,
-              }}
-            >
-              A structured diagnostic built on six dimensions of income health.
-            </p>
-          </div>
-
-          {/* 3 steps */}
+      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
+        {/* Header */}
+        <div className="text-center" style={{ marginBottom: 56 }}>
           <div
-            className="grid grid-cols-1 md:grid-cols-3"
-            style={{ gap: 24, maxWidth: 960, margin: "0 auto", position: "relative" }}
+            className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4"
+            style={{
+              color: B.light,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            }}
           >
-            {steps.map((step) => (
+            Assessment Process
+          </div>
+          <h2
+            className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight"
+            style={{
+              color: B.navy,
+              marginBottom: 16,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms",
+            }}
+          >
+            How It Works
+          </h2>
+          <p
+            className="text-base leading-relaxed mx-auto"
+            style={{
+              color: B.muted,
+              maxWidth: 520,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s ease-out 200ms, transform 0.5s ease-out 200ms",
+            }}
+          >
+            A structured diagnostic built on six dimensions of income health.
+          </p>
+        </div>
+
+        {/* 3 step cards */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ gap: 20, maxWidth: 960, margin: "0 auto" }}
+        >
+          {steps.map((step, i) => {
+            const delay = 300 + i * 120;
+            return (
               <article
                 key={step.num}
                 className="text-center"
                 style={{
-                  position: "relative",
-                  backgroundColor: `rgba(244,241,234,${0.04 + step.p * 0.04})`,
+                  backgroundColor: "#ffffff",
                   borderRadius: 16,
-                  padding: "40px 28px 44px",
-                  border: `1px solid rgba(244,241,234,${0.04 + step.p * 0.08})`,
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  boxShadow: `inset 0 1px 0 rgba(244,241,234,${step.p * 0.06}), 0 ${4 + step.p * 8}px ${16 + step.p * 20}px rgba(0,0,0,${0.10 + step.p * 0.15})`,
-                  opacity: step.p,
-                  transform: `translateY(${(1 - step.p) * 40}px) scale(${0.95 + step.p * 0.05})`,
+                  padding: "36px 28px 40px",
+                  border: "1px solid rgba(14,26,43,0.06)",
+                  boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(24px)",
+                  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms, box-shadow 400ms ease, border-color 400ms ease`,
                 }}
                 onMouseEnter={(e) => {
-                  if (step.p < 0.8) return;
-                  e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.10)";
-                  e.currentTarget.style.borderColor = "rgba(244,241,234,0.18)";
-                  e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(244,241,234,0.08), 0 12px 48px rgba(0,0,0,0.30)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = `rgba(244,241,234,${0.04 + step.p * 0.04})`;
-                  e.currentTarget.style.borderColor = `rgba(244,241,234,${0.04 + step.p * 0.08})`;
-                  e.currentTarget.style.boxShadow = `inset 0 1px 0 rgba(244,241,234,${step.p * 0.06}), 0 ${4 + step.p * 8}px ${16 + step.p * 20}px rgba(0,0,0,${0.10 + step.p * 0.15})`;
+                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
                 }}
               >
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg, transparent, rgba(244,241,234,${step.p * 0.12}), transparent)` }} />
                 <div
                   className="inline-flex items-center justify-center font-semibold"
                   style={{
                     width: 44, height: 44, borderRadius: 12,
                     backgroundColor: B.purple, color: "#ffffff", fontSize: 17,
                     marginBottom: 24,
-                    boxShadow: `0 0 ${step.p * 24}px rgba(75,63,174,${step.p * 0.30}), 0 4px ${step.p * 16}px rgba(75,63,174,${step.p * 0.35})`,
+                    boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
                   }}
                 >
                   {step.num}
                 </div>
-                <div className="text-[18px] md:text-[20px] font-semibold" style={{ color: "#F4F1EA", marginBottom: 14 }}>
+                <div className="text-[18px] md:text-[20px] font-semibold" style={{ color: B.navy, marginBottom: 14 }}>
                   {step.title}
                 </div>
-                <p className="text-[14px] md:text-[15px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7 }}>
+                <p className="text-[14px] md:text-[15px]" style={{ color: B.muted, lineHeight: 1.7 }}>
                   {step.desc}
                 </p>
               </article>
-            ))}
+            );
+          })}
+        </div>
 
-            {/* Connector line */}
-            <div
-              className="hidden md:block absolute"
-              style={{
-                top: "50%", left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: `${lineP * 600}px`, height: 1,
-                background: `linear-gradient(90deg, transparent, rgba(244,241,234,${lineP * 0.12}), rgba(75,63,174,${lineP * 0.20}), rgba(244,241,234,${lineP * 0.12}), transparent)`,
-                zIndex: 0, opacity: lineP,
-              }}
-            />
-          </div>
-
-          {/* Model reference */}
+        {/* Model reference */}
+        <div className="text-center" style={{ marginTop: 48 }}>
           <p
-            className="text-[13px] text-center mx-auto"
+            className="text-[12px] font-medium"
             style={{
-              color: "rgba(244,241,234,0.35)",
-              marginTop: 56, maxWidth: 500, lineHeight: 1.7,
-              opacity: footerP,
+              color: B.light,
+              opacity: visible ? 1 : 0,
+              transition: "opacity 0.5s ease-out 700ms",
             }}
           >
-            Powered by <strong style={{ fontWeight: 600, color: "rgba(244,241,234,0.65)" }}>RunPayway Model RP-1.0</strong>
+            Powered by <strong style={{ fontWeight: 600, color: B.muted }}>RunPayway Model RP-1.0</strong>
           </p>
         </div>
       </div>
