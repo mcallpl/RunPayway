@@ -340,7 +340,7 @@ function FinalCta() {
               lineHeight: 1.6,
             }}
           >
-            Takes under 2 minutes &bull; Instant results
+            Takes under 2 minutes &#8212; Instant results
           </p>
         </div>
       </div>
@@ -567,7 +567,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               marginBottom: 64,
             }}
           >
-            Common questions about the <strong style={{ fontWeight: 500, color: "#F4F1EA" }}>Income Stability Score&#8482;</strong> and assessment.
+            What the score measures, what the report includes, and how your data is handled.
           </p>
         </div>
 
@@ -1372,7 +1372,7 @@ function PreviewYourScoreReport() {
             marginBottom: 48,
           }}
         >
-          Every assessment produces a three-page report covering your classification, structural breakdown, and a clear path to improve your score.
+          Every assessment produces a three-page report &#8212; your classification, structural breakdown, and a clear path to improve.
         </p>
 
         {/* Page tabs */}
@@ -1523,7 +1523,7 @@ function ScoringFactors() {
             className="text-[17px] md:text-[18px] mx-auto"
             style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 520 }}
           >
-            Your score is built from six structural dimensions of income health.
+            Each factor isolates a specific structural characteristic of your income system.
           </p>
         </div>
 
@@ -1904,41 +1904,38 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score™</strong> in minutes. Scores range from <strong style={{ fontWeight: 600, color: B.navy }}>0–100</strong>. Higher scores indicate stronger income stability.
+              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score&#8482;</strong> in minutes.
             </p>
 
-            {/* Audience + credibility */}
-            <div
+            <p
+              className="text-[15px] md:text-[16px]"
               style={{
+                color: "rgba(14,26,43,0.55)",
+                lineHeight: 1.65,
+                maxWidth: 460,
+                marginBottom: 28,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
+              }}
+            >
+              Scores range from 0&#8211;100. Higher scores indicate stronger structural stability. Designed for independent professionals, founders, and income-driven careers.
+            </p>
+
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: 13,
+                letterSpacing: "0.02em",
+                color: "rgba(14,26,43,0.42)",
                 marginBottom: 32,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms",
+                transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
               }}
             >
-              <p
-                style={{
-                  fontWeight: 400,
-                  fontSize: 16,
-                  lineHeight: 1.6,
-                  color: "rgba(14,26,43,0.70)",
-                  maxWidth: 520,
-                  marginBottom: 12,
-                }}
-              >
-                Designed for independent professionals, founders, and income-driven careers.
-              </p>
-              <p
-                style={{
-                  fontWeight: 400,
-                  fontSize: 14,
-                  letterSpacing: "0.02em",
-                  color: "rgba(14,26,43,0.50)",
-                }}
-              >
-                Built on deterministic structural scoring. RunPayway Model RP-1.0.
-              </p>
-            </div>
+              Built on deterministic structural scoring &#183; RunPayway Model RP-1.0
+            </p>
 
             {/* CTA Button */}
             <div
@@ -2155,7 +2152,7 @@ export default function LandingPage() {
               Income Stability Classification Scale
             </h2>
             <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
-              The Income Stability Score™ places every income structure on a standardized 0–100 scale and classifies it into one of four stability tiers.
+              Every income structure is scored 0&#8211;100 and classified into one of four stability tiers.
             </p>
             <p
               className="mx-auto"
