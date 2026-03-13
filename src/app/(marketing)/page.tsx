@@ -412,7 +412,7 @@ function ModelGovernance() {
       ref={ref}
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: 228,
+        paddingTop: 160,
         paddingBottom: 148,
         position: "relative",
         overflow: "hidden",
@@ -688,13 +688,13 @@ function ScoreRegistry() {
       ref={ref}
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: 232,
+        paddingTop: 160,
         paddingBottom: 152,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[1140px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         <div
           className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,420px)]"
           style={{ columnGap: 88, rowGap: 36, alignItems: "start" }}
@@ -2105,10 +2105,6 @@ export default function LandingPage() {
       {/* ============ SCORING FACTORS — Model Input Framework ============ */}
       <ScoringFactors />
 
-      {/* Elegant divider */}
-      <div className="section-divider-elegant" style={{ padding: "0 40px" }}>
-        <div className="divider-dot" />
-      </div>
 
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
       <section style={{ paddingTop: 120, paddingBottom: 120, position: "relative" }}>
@@ -2265,7 +2261,7 @@ export default function LandingPage() {
       <div
         className="conversion-strip"
         style={{
-          padding: "48px 40px",
+          padding: "80px 40px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
