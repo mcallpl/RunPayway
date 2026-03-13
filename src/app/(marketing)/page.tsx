@@ -146,7 +146,7 @@ function Disclaimer() {
       ref={ref}
       aria-label="Global Disclaimer"
       className="relative overflow-hidden"
-      style={{ background: "#F4F1EA" }}
+      style={{ background: B.navy }}
     >
       <div
         className="relative mx-auto px-6 md:px-8 lg:px-10"
@@ -164,7 +164,7 @@ function Disclaimer() {
           style={{
             height: 1,
             width: "100%",
-            background: "linear-gradient(90deg, transparent, rgba(14,26,43,0.10), transparent)",
+            background: "linear-gradient(90deg, transparent, rgba(244,241,234,0.12), transparent)",
             marginBottom: 36,
           }}
         />
@@ -186,17 +186,17 @@ function Disclaimer() {
           <p
             className="text-[14px] md:text-[15px]"
             style={{
-              color: "rgba(14,26,43,0.75)",
+              color: "rgba(244,241,234,0.55)",
               lineHeight: 1.7,
               marginBottom: 10,
             }}
           >
-            The <strong style={{ fontWeight: 500 }}>Income Stability Score™</strong> is a structural income assessment based on information provided by the user.
+            The <strong style={{ fontWeight: 500, color: "rgba(244,241,234,0.75)" }}>Income Stability Score™</strong> is a structural income assessment based on information provided by the user.
           </p>
           <p
             className="text-[14px] md:text-[15px]"
             style={{
-              color: "rgba(14,26,43,0.75)",
+              color: "rgba(244,241,234,0.55)",
               lineHeight: 1.7,
             }}
           >
