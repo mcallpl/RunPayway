@@ -1441,18 +1441,32 @@ function ScoringFactors() {
       ref={sectionRef}
       className="scoring-factors-section relative"
       style={{
-        backgroundColor: "#ffffff",
+        background: "linear-gradient(180deg, #ffffff 0%, #FAFAF8 40%, #F7F6F3 100%)",
         paddingTop: 140,
-        paddingBottom: 140,
+        paddingBottom: 160,
       }}
     >
-      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
+      {/* Subtle radial glow behind cards */}
+      <div
+        style={{
+          position: "absolute",
+          top: "40%",
+          left: "50%",
+          width: 900,
+          height: 600,
+          transform: "translate(-50%, -50%)",
+          background: "radial-gradient(ellipse, rgba(75,63,174,0.04) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100, position: "relative", zIndex: 1 }}>
         {/* Sticky header — parallax drift */}
         <div
           ref={headerRef}
           className="text-center"
           style={{
-            marginBottom: 72,
+            marginBottom: 80,
             opacity: titleOpacity,
             transform: `translateY(${visible ? titleY : 30}px) scale(${visible ? titleScale : 0.92})`,
             transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
@@ -1482,7 +1496,7 @@ function ScoringFactors() {
         {/* Factor grid: 2 cols desktop, 1 col mobile */}
         <div
           className="grid grid-cols-1 md:grid-cols-2"
-          style={{ gap: 20, maxWidth: 920, margin: "0 auto" }}
+          style={{ gap: 18, maxWidth: 920, margin: "0 auto" }}
         >
           {factors.map((factor, i) => {
             const row = Math.floor(i / 2);
@@ -1494,29 +1508,43 @@ function ScoringFactors() {
                 style={{
                   position: "relative",
                   backgroundColor: "#ffffff",
-                  borderRadius: 14,
-                  padding: "28px 28px 32px 32px",
-                  borderLeft: `3px solid ${B.purple}`,
-                  boxShadow: "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)",
+                  borderRadius: 16,
+                  padding: "32px 32px 36px 32px",
+                  border: "1px solid rgba(14,26,43,0.06)",
+                  boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                   opacity: visible ? 1 : 0,
                   transform: visible ? "translateY(0)" : `translateY(${24 + row * 8}px)`,
-                  transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 280ms ease`,
+                  transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 400ms ease, transform 400ms ease, border-color 400ms ease`,
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.10), 0 2px 8px rgba(14,26,43,0.06)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.06), 0 1px 3px rgba(14,26,43,0.04)";
+                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
                   e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
                 }}
               >
-                {/* Number */}
+                {/* Subtle top accent line */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
+
+                {/* Number badge */}
                 <div
-                  className="text-[12px] font-semibold"
-                  style={{ color: B.purple, marginBottom: 12, letterSpacing: "0.04em" }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    backgroundColor: "rgba(75,63,174,0.06)",
+                    marginBottom: 16,
+                  }}
                 >
-                  {factor.num}
+                  <span className="text-[12px] font-bold" style={{ color: B.purple }}>{factor.num}</span>
                 </div>
 
                 {/* Name */}
@@ -2054,10 +2082,13 @@ export default function LandingPage() {
       <ScoringFactors />
 
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
-      <section style={{ backgroundColor: "#ffffff", paddingTop: 120, paddingBottom: 120 }}>
-        <div className="max-w-[1100px] mx-auto px-5 sm:px-6">
+      <section style={{ background: "linear-gradient(180deg, #F7F6F3 0%, #F4F1EA 50%, #F7F6F3 100%)", paddingTop: 140, paddingBottom: 140, position: "relative" }}>
+        {/* Subtle radial warmth */}
+        <div style={{ position: "absolute", top: "30%", left: "50%", width: 1000, height: 500, transform: "translate(-50%, -50%)", background: "radial-gradient(ellipse, rgba(31,109,122,0.03) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <div className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ position: "relative", zIndex: 1 }}>
           {/* Header */}
-          <div className="text-center" style={{ marginBottom: 48 }}>
+          <div className="text-center" style={{ marginBottom: 56 }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
               Official Scoring Framework · Model RP-1.0
             </div>
@@ -2072,7 +2103,7 @@ export default function LandingPage() {
           {/* Spectrum bar with tick marks */}
           <div className="mx-auto" style={{ maxWidth: 880, marginBottom: 0 }}>
             <div style={{ position: "relative" }}>
-              <div className="rounded-t-lg" style={{ height: 12, background: B.gradient }} />
+              <div style={{ height: 14, borderRadius: "10px 10px 0 0", background: B.gradient, boxShadow: "0 2px 12px rgba(14,26,43,0.12)" }} />
               {/* Tier separators */}
               {[39, 59, 79].map((pos) => (
                 <div
@@ -2082,13 +2113,15 @@ export default function LandingPage() {
                     left: `${pos}%`,
                     top: 0,
                     width: 2,
-                    height: 12,
-                    backgroundColor: "rgba(255,255,255,0.5)",
+                    height: 14,
+                    backgroundColor: "rgba(255,255,255,0.45)",
                   }}
                 />
               ))}
+              {/* Score marker */}
+              <div style={{ position: "absolute", left: "78%", top: -4, width: 22, height: 22, borderRadius: 999, border: "3px solid #fff", backgroundColor: B.teal, transform: "translateX(-50%)", boxShadow: "0 2px 8px rgba(31,109,122,0.35)" }} />
               {/* Tick labels */}
-              <div className="flex justify-between px-1" style={{ marginTop: 4 }}>
+              <div className="flex justify-between px-1" style={{ marginTop: 6 }}>
                 {[0, 20, 40, 60, 80, 100].map((tick) => (
                   <span key={tick} className="text-[9px] font-medium" style={{ color: B.light }}>{tick}</span>
                 ))}
@@ -2096,44 +2129,65 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Four tier cards — directly connected to spectrum bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ maxWidth: 880, margin: "16px auto 0" }}>
+          {/* Four tier cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 16, maxWidth: 880, margin: "24px auto 0" }}>
             {[
               { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", active: false },
               { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", active: false },
               { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, active: true },
               { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, active: false },
-            ].map((tier, i) => (
+            ].map((tier) => (
               <div
                 key={tier.label}
                 style={{
-                  backgroundColor: tier.active ? "rgba(31,109,122,0.04)" : "#ffffff",
-                  borderLeft: `1px solid ${tier.active ? B.teal : B.sandDk}`,
-                  borderRight: i === 3 ? `1px solid ${B.sandDk}` : "none",
-                  borderBottom: `1px solid ${tier.active ? "rgba(31,109,122,0.20)" : B.sandDk}`,
-                  padding: "24px 20px 28px",
+                  backgroundColor: tier.active ? "#ffffff" : "rgba(255,255,255,0.7)",
+                  backdropFilter: tier.active ? "none" : "blur(8px)",
+                  borderRadius: 14,
+                  border: tier.active ? `1.5px solid ${B.teal}` : "1px solid rgba(14,26,43,0.06)",
+                  padding: "28px 22px 30px",
                   position: "relative" as const,
+                  boxShadow: tier.active
+                    ? `0 4px 20px rgba(31,109,122,0.12), 0 12px 40px rgba(31,109,122,0.06)`
+                    : "0 1px 4px rgba(14,26,43,0.03), 0 4px 16px rgba(14,26,43,0.02)",
+                  transition: "box-shadow 400ms ease, transform 400ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  if (!tier.active) {
+                    e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.06), 0 12px 40px rgba(14,26,43,0.05)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!tier.active) {
+                    e.currentTarget.style.boxShadow = "0 1px 4px rgba(14,26,43,0.03), 0 4px 16px rgba(14,26,43,0.02)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }
                 }}
               >
                 {/* Active tier badge */}
                 {tier.active && (
                   <div
-                    className="text-[9px] font-semibold uppercase tracking-[0.14em]"
                     style={{
-                      color: B.teal,
-                      marginBottom: 10,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "4px 10px",
+                      borderRadius: 999,
+                      backgroundColor: "rgba(31,109,122,0.08)",
+                      marginBottom: 14,
                     }}
                   >
-                    &#9679; Sample Score: 78
+                    <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: B.teal }} />
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.1em]" style={{ color: B.teal }}>
+                      Sample Score: 78
+                    </span>
                   </div>
                 )}
 
-                {/* Color indicator + range */}
+                {/* Color accent + range */}
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="rounded-sm" style={{ width: 4, height: 32, backgroundColor: tier.color }} />
-                  <div>
-                    <div className="text-[26px] font-bold leading-none" style={{ color: B.navy }}>{tier.range}</div>
-                  </div>
+                  <div style={{ width: 4, height: 36, borderRadius: 4, backgroundColor: tier.color }} />
+                  <div className="text-[26px] font-bold leading-none" style={{ color: B.navy }}>{tier.range}</div>
                 </div>
 
                 {/* Tier label */}
@@ -2142,7 +2196,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* One-word summary */}
-                <div className="text-[11px] font-medium uppercase tracking-wider mb-3" style={{ color: B.light }}>
+                <div className="text-[10px] font-medium uppercase tracking-wider mb-3" style={{ color: B.light }}>
                   {tier.summary} income structure
                 </div>
 
@@ -2155,7 +2209,7 @@ export default function LandingPage() {
           </div>
 
           {/* Model reference */}
-          <div className="text-center" style={{ marginTop: 40 }}>
+          <div className="text-center" style={{ marginTop: 48 }}>
             <p className="text-[12px] font-medium" style={{ color: B.muted }}>
               Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time the assessment is completed.
             </p>
