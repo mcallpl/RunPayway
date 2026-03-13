@@ -998,47 +998,28 @@ function PreviewYourScoreReport() {
       {reportHeader}
 
       {/* Key insight */}
-      <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
+      <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>
         This assessment evaluates the structural stability of income systems using six deterministic factors under Model RP-1.0. Score reflects current income architecture, not future outcomes.
       </p>
 
-      {/* Score block */}
-      <div style={{ textAlign: "center", marginBottom: 28 }}>
-        <div className="text-[48px] md:text-[56px]" style={{ color: B.navy, fontWeight: 600, lineHeight: 1 }}>78</div>
-        <div className="text-[17px] md:text-[19px]" style={{ color: B.purple, fontWeight: 600, marginTop: 6 }}>Established Stability</div>
-      </div>
-
-      {/* Spectrum bar */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ position: "relative", marginBottom: 6 }}>
-          <div style={{ height: 8, borderRadius: 999, background: B.gradient }} />
-          {[40, 60, 80].map((pos) => (
-            <div key={pos} style={{ position: "absolute", left: `${pos}%`, top: 0, width: 1, height: 8, backgroundColor: "rgba(255,255,255,0.4)" }} />
-          ))}
-          <div style={{ position: "absolute", left: "78%", top: -3, width: 14, height: 14, borderRadius: 999, border: "2px solid #fff", backgroundColor: B.purple, transform: "translateX(-50%)" }} />
+      {/* Compact score + percentile row */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+        <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center", gap: 14 }}>
+          <div className="text-[28px]" style={{ color: B.navy, fontWeight: 700, lineHeight: 1 }}>78</div>
+          <div>
+            <div className="text-[12px]" style={{ color: B.purple, fontWeight: 600 }}>Established Stability</div>
+            <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>Income Stability Score™</div>
+          </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 2 }}>
-          {[
-            { l: "Limited", r: "0–39" },
-            { l: "Developing", r: "40–59" },
-            { l: "Established", r: "60–79", active: true },
-            { l: "High", r: "80–100" },
-          ].map((b) => (
-            <div key={b.l} style={{ textAlign: "center" }}>
-              <div className="text-[9px]" style={{ fontWeight: 600, color: b.active ? B.navy : B.light }}>{b.l}</div>
-              <div className="text-[8px]" style={{ color: B.light }}>{b.r}</div>
+        <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center" }}>
+          <div>
+            <div className="text-[12px]" style={{ color: B.muted }}>
+              <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Percentile */}
-      <div style={{ padding: "12px 16px", borderRadius: 10, backgroundColor: B.sand, marginBottom: 24 }}>
-        <div className="text-[12px]" style={{ color: B.muted }}>
-          <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
-        </div>
-        <div className="text-[11px]" style={{ color: B.light, marginTop: 4, lineHeight: 1.5 }}>
-          This score exceeds 72% of assessed income systems in the same sector.
+            <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>
+              Exceeds 72% of assessed income systems in this sector.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1331,7 +1312,7 @@ function PreviewYourScoreReport() {
             marginBottom: 16,
           }}
         >
-          Preview Your Score Report
+          What&rsquo;s Inside Your Report
         </h2>
         <p
           className="text-[16px] md:text-[18px]"
@@ -1340,20 +1321,10 @@ function PreviewYourScoreReport() {
             fontWeight: 400,
             lineHeight: 1.7,
             maxWidth: 720,
-            marginBottom: 40,
-          }}
-        >
-          Every assessment produces a structured report explaining your score and income structure.
-        </p>
-        <p
-          className="text-[18px]"
-          style={{
-            color: B.purple,
-            fontWeight: 500,
             marginBottom: 48,
           }}
         >
-          Example Score: <strong>78 &mdash; Established Stability</strong>
+          Every assessment produces a three-page report covering your classification, structural breakdown, and a clear path to improve your score.
         </p>
 
         {/* Page tabs */}
