@@ -1618,11 +1618,17 @@ function HowItWorks() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // progress 0 = section top hits viewport top (sticky pins)
-      // progress 1 = section bottom hits viewport bottom (sticky unpins)
-      const scrolled = Math.max(0, -rect.top);
-      const maxScroll = el.offsetHeight - vh;
-      setProgress(maxScroll > 0 ? Math.min(1, scrolled / maxScroll) : 0);
+      /*
+       * Progress 0 = section top at viewport BOTTOM (just entering view)
+       * Progress 0.5 = section top at viewport TOP (sticky pins)
+       * Progress 1.0 = section bottom at viewport bottom (sticky unpins)
+       *
+       * Total travel = vh (entering) + (sectionH - vh) (pinned scrolling) = sectionH
+       * distFromBottom = how far the section top has traveled up from viewport bottom
+       */
+      const distFromBottom = vh - rect.top;
+      const raw = distFromBottom / el.offsetHeight;
+      setProgress(Math.max(0, Math.min(1, raw)));
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1633,32 +1639,31 @@ function HowItWorks() {
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
   /*
-   * Progress 0 = sticky just pinned, title is HUGE and visible.
-   * With 250vh section: maxScroll = 150vh, so progress 0.40 = 60vh of scrolling.
+   * 200vh section → progress 0.50 = sticky pins (section top at viewport top).
+   * All animations happen 0.20→0.50 (while section scrolls into view).
+   * 0.50→1.00 = section is LOCKED with everything visible.
    *
-   * 0.00        Title visible at 6x — already on screen, no fade needed
-   * 0.00–0.15   Title shrinks 6x → 1x
-   * 0.15–0.20   Label + subtitle
-   * 0.20–0.27   Step 1
-   * 0.27–0.34   Step 2
-   * 0.34–0.41   Step 3
-   * 0.37–0.43   Connector + footer
-   * 0.43+        LOCKED — everything visible, section holds
+   * 0.20–0.32  Title shrinks 6x → 1x (visible as section enters from below)
+   * 0.32–0.36  Label + subtitle
+   * 0.36–0.40  Step 1
+   * 0.40–0.44  Step 2
+   * 0.44–0.48  Step 3 + connector
+   * 0.48–0.50  Footer — everything lands right as section pins
+   * 0.50+       LOCKED
    */
 
-  const shrinkP = rangeMap(0.00, 0.15);
+  const shrinkP = rangeMap(0.20, 0.32);
   const titleScale = 6 - shrinkP * 5;
-  const titleYOffset = (1 - shrinkP) * 100;
 
-  const labelP   = rangeMap(0.15, 0.20);
-  const subP     = rangeMap(0.16, 0.21);
+  const labelP   = rangeMap(0.32, 0.37);
+  const subP     = rangeMap(0.33, 0.38);
 
-  const step1P   = rangeMap(0.21, 0.28);
-  const step2P   = rangeMap(0.28, 0.35);
-  const step3P   = rangeMap(0.35, 0.42);
+  const step1P   = rangeMap(0.37, 0.42);
+  const step2P   = rangeMap(0.42, 0.47);
+  const step3P   = rangeMap(0.47, 0.52);
 
-  const lineP    = rangeMap(0.32, 0.40);
-  const footerP  = rangeMap(0.40, 0.45);
+  const lineP    = rangeMap(0.44, 0.50);
+  const footerP  = rangeMap(0.50, 0.54);
 
   const steps = [
     {
@@ -1686,7 +1691,7 @@ function HowItWorks() {
       ref={sectionRef}
       className="relative"
       style={{
-        height: "250vh",
+        height: "200vh",
         backgroundColor: B.navy,
       }}
     >
@@ -1704,7 +1709,7 @@ function HowItWorks() {
         </svg>
       </div>
 
-      {/* Sticky viewport — pinned while section scrolls */}
+      {/* Sticky viewport */}
       <div
         className="navy-grain"
         style={{
@@ -1722,7 +1727,7 @@ function HowItWorks() {
         {/* Ambient teal glow */}
         <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        {/* Giant title — absolutely positioned, centered in viewport independently */}
+        {/* Giant title — absolutely centered, shrinks with scroll */}
         <h2
           className="font-semibold"
           style={{
@@ -1737,7 +1742,6 @@ function HowItWorks() {
             whiteSpace: "nowrap",
             zIndex: 2,
             willChange: "transform",
-            /* Fade out once shrunk so flow title takes over */
             opacity: shrinkP < 1 ? 1 : 0,
             pointerEvents: "none",
           }}
@@ -1746,7 +1750,7 @@ function HowItWorks() {
         </h2>
 
         <div className="relative mx-auto px-6 md:px-10 w-full" style={{ maxWidth: 1100 }}>
-          {/* Header block — in normal flow, revealed after title shrinks */}
+          {/* Header — fades in as giant title finishes shrinking */}
           <div
             className="text-center"
             style={{
@@ -1755,7 +1759,6 @@ function HowItWorks() {
               transform: `translateY(${(1 - shrinkP) * 20}px)`,
             }}
           >
-            {/* "ASSESSMENT PROCESS" label */}
             <div
               className="font-medium uppercase text-[11px]"
               style={{
@@ -1763,25 +1766,16 @@ function HowItWorks() {
                 color: B.teal,
                 marginBottom: 16,
                 opacity: labelP,
-                transform: `translateY(${(1 - labelP) * 12}px)`,
               }}
             >
               Assessment Process
             </div>
-
-            {/* Normal-size title in flow */}
             <h2
               className="text-[30px] md:text-[42px] font-semibold"
-              style={{
-                color: "#F4F1EA",
-                letterSpacing: "-0.02em",
-                marginBottom: 16,
-              }}
+              style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
             >
               How It Works
             </h2>
-
-            {/* Subtitle */}
             <p
               className="text-[17px] md:text-[18px] mx-auto"
               style={{
@@ -1789,14 +1783,13 @@ function HowItWorks() {
                 lineHeight: 1.7,
                 maxWidth: 480,
                 opacity: subP,
-                transform: `translateY(${(1 - subP) * 20}px)`,
               }}
             >
               A structured diagnostic built on six dimensions of income health.
             </p>
           </div>
 
-          {/* 3 steps — flow in sequentially after header settles */}
+          {/* 3 steps */}
           <div
             className="grid grid-cols-1 md:grid-cols-3"
             style={{ gap: 24, maxWidth: 960, margin: "0 auto", position: "relative" }}
@@ -1815,7 +1808,7 @@ function HowItWorks() {
                   WebkitBackdropFilter: "blur(12px)",
                   boxShadow: `inset 0 1px 0 rgba(244,241,234,${step.p * 0.06}), 0 ${4 + step.p * 8}px ${16 + step.p * 20}px rgba(0,0,0,${0.10 + step.p * 0.15})`,
                   opacity: step.p,
-                  transform: `translateY(${(1 - step.p) * 50}px) scale(${0.92 + step.p * 0.08})`,
+                  transform: `translateY(${(1 - step.p) * 40}px) scale(${0.95 + step.p * 0.05})`,
                 }}
                 onMouseEnter={(e) => {
                   if (step.p < 0.8) return;
@@ -1830,54 +1823,35 @@ function HowItWorks() {
                 }}
               >
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: `linear-gradient(90deg, transparent, rgba(244,241,234,${step.p * 0.12}), transparent)` }} />
-                {/* Step number */}
                 <div
                   className="inline-flex items-center justify-center font-semibold"
                   style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 12,
-                    backgroundColor: B.purple,
-                    color: "#ffffff",
-                    fontSize: 17,
+                    width: 44, height: 44, borderRadius: 12,
+                    backgroundColor: B.purple, color: "#ffffff", fontSize: 17,
                     marginBottom: 24,
                     boxShadow: `0 0 ${step.p * 24}px rgba(75,63,174,${step.p * 0.30}), 0 4px ${step.p * 16}px rgba(75,63,174,${step.p * 0.35})`,
-                    transform: `scale(${0.8 + step.p * 0.2})`,
                   }}
                 >
                   {step.num}
                 </div>
-
-                {/* Title */}
-                <div
-                  className="text-[18px] md:text-[20px] font-semibold"
-                  style={{ color: "#F4F1EA", marginBottom: 14 }}
-                >
+                <div className="text-[18px] md:text-[20px] font-semibold" style={{ color: "#F4F1EA", marginBottom: 14 }}>
                   {step.title}
                 </div>
-
-                {/* Description */}
-                <p
-                  className="text-[14px] md:text-[15px]"
-                  style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7 }}
-                >
+                <p className="text-[14px] md:text-[15px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7 }}>
                   {step.desc}
                 </p>
               </article>
             ))}
 
-            {/* Connector line — desktop only */}
+            {/* Connector line */}
             <div
               className="hidden md:block absolute"
               style={{
-                top: "50%",
-                left: "50%",
+                top: "50%", left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: `${lineP * 600}px`,
-                height: 1,
+                width: `${lineP * 600}px`, height: 1,
                 background: `linear-gradient(90deg, transparent, rgba(244,241,234,${lineP * 0.12}), rgba(75,63,174,${lineP * 0.20}), rgba(244,241,234,${lineP * 0.12}), transparent)`,
-                zIndex: 0,
-                opacity: lineP,
+                zIndex: 0, opacity: lineP,
               }}
             />
           </div>
@@ -1887,11 +1861,8 @@ function HowItWorks() {
             className="text-[13px] text-center mx-auto"
             style={{
               color: "rgba(244,241,234,0.35)",
-              marginTop: 56,
-              maxWidth: 500,
-              lineHeight: 1.7,
+              marginTop: 56, maxWidth: 500, lineHeight: 1.7,
               opacity: footerP,
-              transform: `translateY(${(1 - footerP) * 15}px)`,
             }}
           >
             Powered by <strong style={{ fontWeight: 600, color: "rgba(244,241,234,0.65)" }}>RunPayway Model RP-1.0</strong>
