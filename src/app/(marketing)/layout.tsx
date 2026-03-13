@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -53,18 +54,17 @@ export default function MarketingLayout({
             {/* Left — Brand */}
             <Link
               href="/"
-              className="font-semibold transition-colors duration-150 focus:outline-none focus:ring-2"
-              style={{
-                fontSize: 20,
-                letterSpacing: "-0.01em",
-                color: "#0E1A2B",
-                // @ts-expect-error focus ring
-                "--tw-ring-color": "#1F6D7A",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "#4B3FAE"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+              className="focus:outline-none focus:ring-2"
+              style={{ display: "flex", alignItems: "center" }}
             >
-              RunPayway
+              <Image
+                src="/runpayway-logo.png"
+                alt="RunPayway"
+                width={180}
+                height={21}
+                priority
+                style={{ height: "auto" }}
+              />
             </Link>
 
             {/* Center — Navigation (hidden on mobile) */}
@@ -261,18 +261,16 @@ export default function MarketingLayout({
           <div style={{ marginBottom: 32 }}>
             <Link
               href="/"
-              className="font-semibold transition-colors duration-150 focus:outline-none focus:ring-2"
-              style={{
-                fontSize: 20,
-                letterSpacing: "-0.01em",
-                color: "#0E1A2B",
-                // @ts-expect-error focus ring
-                "--tw-ring-color": "#1F6D7A",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "#4B3FAE"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+              className="focus:outline-none focus:ring-2"
+              style={{ display: "inline-flex", alignItems: "center" }}
             >
-              RunPayway
+              <Image
+                src="/runpayway-logo.png"
+                alt="RunPayway"
+                width={160}
+                height={19}
+                style={{ height: "auto" }}
+              />
             </Link>
             <div
               style={{

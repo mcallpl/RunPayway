@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AppLayout({
   children,
@@ -10,8 +11,14 @@ export default function AppLayout({
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div>
-            <Link href="/" className="text-sm font-semibold tracking-wide text-neutral-900 hover:opacity-70 transition-opacity cursor-pointer">
-              RUNPAYWAY™
+            <Link href="/" className="hover:opacity-70 transition-opacity cursor-pointer inline-flex items-center">
+              <Image
+                src="/runpayway-logo.png"
+                alt="RunPayway"
+                width={140}
+                height={17}
+                style={{ height: "auto" }}
+              />
             </Link>
           </div>
           <div className="text-[10px] sm:text-xs text-neutral-400">
