@@ -142,7 +142,7 @@ function Disclaimer() {
           style={{
             height: 1,
             width: "100%",
-            background: "rgba(14,26,43,0.10)",
+            background: "linear-gradient(90deg, transparent, rgba(14,26,43,0.10), transparent)",
             marginBottom: 36,
           }}
         />
@@ -219,22 +219,16 @@ function FinalCta() {
     <section
       ref={ref}
       aria-label="Get Your Income Stability Score"
-      className="relative overflow-hidden"
+      className="relative overflow-hidden navy-grain"
       style={{ background: B.navy }}
     >
-      {/* Faint circular scoring halo */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 520,
-          height: 520,
-          borderRadius: "50%",
-          border: "1px solid rgba(75,63,174,0.10)",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      />
+      {/* Ambient glows */}
+      <div style={{ position: "absolute", top: "-25%", left: "50%", width: 800, height: 800, borderRadius: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(75,63,174,0.10) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+      {/* Concentric scoring halos */}
+      <div className="absolute pointer-events-none" style={{ width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.06)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 520, height: 520, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.08)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 720, height: 720, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.04)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
 
       <div
         className="relative mx-auto text-center"
@@ -294,28 +288,28 @@ function FinalCta() {
                 minWidth: 320,
                 paddingLeft: 28,
                 paddingRight: 28,
-                borderRadius: 14,
-                background: "#F4F1EA",
+                borderRadius: 16,
+                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
                 color: B.navy,
                 fontSize: 16,
                 letterSpacing: "-0.01em",
                 border: "1px solid rgba(244,241,234,0.92)",
-                boxShadow: "0 10px 26px rgba(0,0,0,0.22)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15)",
                 transition: "background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
                 // @ts-expect-error focus ring color
                 "--tw-ring-color": B.teal,
               }}
               onMouseEnter={(e) => {
                 const t = e.currentTarget;
-                t.style.background = "#EDE9DF";
-                t.style.transform = "translateY(-1px)";
-                t.style.boxShadow = "0 12px 30px rgba(0,0,0,0.26)";
+                t.style.background = "linear-gradient(135deg, #EDECEA 0%, #E5E2DA 100%)";
+                t.style.transform = "translateY(-2px)";
+                t.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 40px rgba(0,0,0,0.30), 0 2px 8px rgba(0,0,0,0.18)";
               }}
               onMouseLeave={(e) => {
                 const t = e.currentTarget;
-                t.style.background = "#F4F1EA";
+                t.style.background = "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)";
                 t.style.transform = "translateY(0)";
-                t.style.boxShadow = "0 10px 26px rgba(0,0,0,0.22)";
+                t.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15)";
               }}
               onMouseDown={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
@@ -365,6 +359,13 @@ function FinalCta() {
           }
         }
       `}</style>
+
+      {/* Bottom wave transition */}
+      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
+        </svg>
+      </div>
     </section>
   );
 }
@@ -380,7 +381,7 @@ function ModelGovernance() {
       ref={ref}
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: 148,
+        paddingTop: 228,
         paddingBottom: 148,
         position: "relative",
         overflow: "hidden",
@@ -431,14 +432,14 @@ function ModelGovernance() {
             border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
             padding: 28,
-            boxShadow: "0 14px 34px rgba(14,26,43,0.08)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 16px 44px rgba(14,26,43,0.08), 0 2px 8px rgba(14,26,43,0.03)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.48s ease-out 80ms, transform 0.48s ease-out 80ms",
           }}
         >
           {/* Top accent */}
-          <div style={{ width: 48, height: 2, backgroundColor: B.purple, marginBottom: 16 }} />
+          <div style={{ width: "100%", height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, transparent 60%)", borderRadius: 2, marginBottom: 16 }} />
 
           {/* Panel header */}
           <div
@@ -498,6 +499,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   return (
     <section
       ref={ref}
+      className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
         paddingTop: 152,
@@ -506,6 +508,24 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         overflow: "hidden",
       }}
     >
+      {/* Top wave transition */}
+      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#0E1A2B" />
+        </svg>
+      </div>
+
+      {/* Bottom wave transition */}
+      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
+        </svg>
+      </div>
+
+      {/* Ambient glows */}
+      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-15%", left: "-8%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
+
       <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Header */}
         <div
@@ -560,7 +580,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                 style={{
                   borderTop: "1px solid rgba(255,255,255,0.10)",
                   borderBottom: i === faqItems.length - 1 ? "1px solid rgba(255,255,255,0.10)" : "none",
-                  backgroundColor: isOpen ? "rgba(255,255,255,0.02)" : "transparent",
+                  backgroundColor: isOpen ? "rgba(75,63,174,0.04)" : "transparent",
                   transition: "border-color 180ms ease, background-color 180ms ease",
                 }}
               >
@@ -607,7 +627,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                       maxWidth: 680,
                       paddingTop: 14,
                       paddingRight: 48,
-                      paddingBottom: 4,
+                      paddingBottom: 20,
                     }}
                   >
                     {item.a}
@@ -640,7 +660,7 @@ function ScoreRegistry() {
       ref={ref}
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: 152,
+        paddingTop: 232,
         paddingBottom: 152,
         position: "relative",
         overflow: "hidden",
@@ -694,10 +714,10 @@ function ScoreRegistry() {
               width: "100%",
               maxWidth: 420,
               backgroundColor: "#ffffff",
-              border: "1px solid rgba(14,26,43,0.10)",
+              border: "1px solid rgba(14,26,43,0.08)",
               borderRadius: 20,
               padding: 32,
-              boxShadow: "0 18px 44px rgba(14,26,43,0.10)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.04)",
               position: "relative",
               overflow: "hidden",
               alignSelf: "start",
@@ -707,15 +727,15 @@ function ScoreRegistry() {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
-              e.currentTarget.style.boxShadow = "0 20px 50px rgba(14,26,43,0.14)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.8), 0 24px 72px rgba(14,26,43,0.14), 0 4px 16px rgba(14,26,43,0.06)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)";
-              e.currentTarget.style.boxShadow = "0 18px 44px rgba(14,26,43,0.10)";
+              e.currentTarget.style.borderColor = "rgba(14,26,43,0.08)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.04)";
             }}
           >
             {/* Top accent */}
-            <div style={{ width: 56, height: 2, backgroundColor: B.purple, marginBottom: 22 }} />
+            <div style={{ width: "100%", height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 60%, transparent 100%)", borderRadius: 2, marginBottom: 22 }} />
 
             {/* Panel header */}
             <div
@@ -743,7 +763,7 @@ function ScoreRegistry() {
                   </div>
                   {/* Divider after each field except last */}
                   {i < fields.length - 1 && (
-                    <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginTop: 18 }} />
+                    <div style={{ height: 1, background: "linear-gradient(90deg, rgba(14,26,43,0.08) 0%, rgba(14,26,43,0.02) 100%)", marginTop: 18 }} />
                   )}
                 </div>
               ))}
@@ -764,6 +784,7 @@ function WhyIncomeStabilityMatters() {
   return (
     <section
       ref={ref}
+      className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
         paddingTop: 160,
@@ -772,6 +793,24 @@ function WhyIncomeStabilityMatters() {
         overflow: "hidden",
       }}
     >
+      {/* Ambient glows */}
+      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+      {/* Top wave transition */}
+      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#0E1A2B" />
+        </svg>
+      </div>
+
+      {/* Bottom wave transition */}
+      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
+          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
+        </svg>
+      </div>
+
       <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Title */}
         <h2
@@ -847,18 +886,28 @@ function WhyIncomeStabilityMatters() {
               maxWidth: 420,
               width: "100%",
               backgroundColor: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.10)",
               borderRadius: 20,
               padding: 32,
-              boxShadow: "0 16px 40px rgba(0,0,0,0.25)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.30)",
               alignSelf: "start",
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: "opacity 0.5s ease-out 120ms, transform 0.5s ease-out 120ms",
+              transition: "opacity 0.5s ease-out 120ms, transform 0.5s ease-out 120ms, border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.16)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.08), 0 24px 72px rgba(0,0,0,0.35)";
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.10)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.30)";
+              e.currentTarget.style.transform = "translateY(0)";
             }}
           >
             {/* Top accent line */}
-            <div style={{ width: 48, height: 2, backgroundColor: B.purple, marginBottom: 18 }} />
+            <div style={{ width: "100%", height: 1, background: "linear-gradient(90deg, #4B3FAE, rgba(31,109,122,0.5), transparent)", borderRadius: 2, marginBottom: 18 }} />
 
             {/* Entry 1: Credit Score */}
             <div style={{ marginBottom: 20 }}>
@@ -874,7 +923,7 @@ function WhyIncomeStabilityMatters() {
             </div>
 
             {/* Divider */}
-            <div style={{ height: 1, background: "rgba(255,255,255,0.08)", margin: "18px 0" }} />
+            <div style={{ height: 1, background: "linear-gradient(90deg, rgba(75,63,174,0.3), rgba(255,255,255,0.08), transparent)", margin: "18px 0" }} />
 
             {/* Entry 2: Income Stability Score */}
             <div>
@@ -1516,7 +1565,7 @@ function HowItWorks() {
   return (
     <section
       ref={ref}
-      className="relative"
+      className="relative navy-grain"
       style={{
         backgroundColor: B.navy,
         paddingTop: 180,
@@ -1536,6 +1585,11 @@ function HowItWorks() {
           <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.navy} />
         </svg>
       </div>
+
+      {/* Ambient purple glow */}
+      <div style={{ position: "absolute", top: "-15%", right: "-8%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
+      {/* Ambient teal glow */}
+      <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
       <div className="relative mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
         {/* Header */}
@@ -1578,27 +1632,32 @@ function HowItWorks() {
               key={step.num}
               className="text-center"
               style={{
+                position: "relative",
                 backgroundColor: "rgba(244,241,234,0.06)",
                 borderRadius: 16,
                 padding: "40px 28px 44px",
                 border: "1px solid rgba(244,241,234,0.10)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
+                boxShadow: "inset 0 1px 0 rgba(244,241,234,0.06), 0 8px 32px rgba(0,0,0,0.20)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: `opacity 500ms ease-out ${200 + i * 120}ms, transform 500ms ease-out ${200 + i * 120}ms, box-shadow 280ms ease, border-color 280ms ease`,
+                transition: `opacity 500ms ease-out ${200 + i * 120}ms, transform 500ms ease-out ${200 + i * 120}ms, box-shadow 280ms ease, border-color 280ms ease, transform 280ms ease`,
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.10)";
                 e.currentTarget.style.borderColor = "rgba(244,241,234,0.18)";
-                e.currentTarget.style.boxShadow = "0 8px 40px rgba(0,0,0,0.25)";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(244,241,234,0.08), 0 12px 48px rgba(0,0,0,0.30)";
+                e.currentTarget.style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.06)";
                 e.currentTarget.style.borderColor = "rgba(244,241,234,0.10)";
-                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(244,241,234,0.06), 0 8px 32px rgba(0,0,0,0.20)";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(244,241,234,0.12), transparent)" }} />
               {/* Step number */}
               <div
                 className="inline-flex items-center justify-center font-semibold"
@@ -1610,7 +1669,7 @@ function HowItWorks() {
                   color: "#ffffff",
                   fontSize: 17,
                   marginBottom: 24,
-                  boxShadow: "0 4px 16px rgba(75,63,174,0.35)",
+                  boxShadow: "0 0 24px rgba(75,63,174,0.30), 0 4px 16px rgba(75,63,174,0.35)",
                 }}
               >
                 {step.num}
@@ -2146,7 +2205,8 @@ export default function LandingPage() {
       </div>{/* ← end continuous canvas */}
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
+      <section style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: 120, paddingBottom: 140 }}>
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           How Income Structures Become More Stable
         </h2>
@@ -2165,13 +2225,25 @@ export default function LandingPage() {
             return (
               <div
                 key={ex.industry}
-                className="rounded-lg border overflow-hidden transition-all"
-                style={{ borderColor: isOpen ? cardColor : B.sandDk, backgroundColor: "#ffffff" }}
+                className="overflow-hidden"
+                style={{
+                  borderColor: isOpen ? cardColor : "rgba(14,26,43,0.06)",
+                  backgroundColor: "#ffffff",
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderRadius: 14,
+                  boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)",
+                  transition: "box-shadow 300ms ease, border-color 300ms ease, transform 300ms ease",
+                }}
               >
                 <button
                   onClick={() => setOpenIndustry(isOpen ? null : i)}
                   className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 transition-colors"
-                  style={{ backgroundColor: isOpen ? cardColor : "#ffffff" }}
+                  style={{ background: isOpen
+                    ? (i === 0 ? "linear-gradient(135deg, #0E1A2B 0%, #1a2a3f 100%)"
+                       : i === 1 ? "linear-gradient(135deg, #4B3FAE 0%, #5a4cc0 100%)"
+                       : "linear-gradient(135deg, #1F6D7A 0%, #287d8c 100%)")
+                    : "#ffffff" }}
                 >
                   <span className="text-[14px] sm:text-[15px] font-semibold" style={{ color: isOpen ? "#ffffff" : B.navy }}>
                     {ex.industry}
@@ -2223,6 +2295,7 @@ export default function LandingPage() {
             );
           })}
         </div>
+      </div>
       </section>
 
 
