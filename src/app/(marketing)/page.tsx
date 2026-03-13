@@ -1722,10 +1722,40 @@ function HowItWorks() {
         {/* Ambient teal glow */}
         <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
+        {/* Giant title — absolutely positioned, centered in viewport independently */}
+        <h2
+          className="font-semibold"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: `translate(-50%, -50%) scale(${titleScale})`,
+            transformOrigin: "center center",
+            color: "#F4F1EA",
+            letterSpacing: "-0.02em",
+            fontSize: 42,
+            whiteSpace: "nowrap",
+            zIndex: 2,
+            willChange: "transform",
+            /* Fade out once shrunk so flow title takes over */
+            opacity: shrinkP < 1 ? 1 : 0,
+            pointerEvents: "none",
+          }}
+        >
+          How It Works
+        </h2>
+
         <div className="relative mx-auto px-6 md:px-10 w-full" style={{ maxWidth: 1100 }}>
-          {/* Header block */}
-          <div className="text-center" style={{ marginBottom: 72 }}>
-            {/* "ASSESSMENT PROCESS" label — fades in after title shrinks */}
+          {/* Header block — in normal flow, revealed after title shrinks */}
+          <div
+            className="text-center"
+            style={{
+              marginBottom: 72,
+              opacity: shrinkP,
+              transform: `translateY(${(1 - shrinkP) * 20}px)`,
+            }}
+          >
+            {/* "ASSESSMENT PROCESS" label */}
             <div
               className="font-medium uppercase text-[11px]"
               style={{
@@ -1739,23 +1769,19 @@ function HowItWorks() {
               Assessment Process
             </div>
 
-            {/* "How It Works" — starts massive at 6x, shrinks to normal on scroll */}
+            {/* Normal-size title in flow */}
             <h2
-              className="font-semibold"
+              className="text-[30px] md:text-[42px] font-semibold"
               style={{
                 color: "#F4F1EA",
                 letterSpacing: "-0.02em",
                 marginBottom: 16,
-                fontSize: 42,
-                transform: `scale(${titleScale}) translateY(${titleYOffset}px)`,
-                transformOrigin: "center center",
-                willChange: "transform",
               }}
             >
               How It Works
             </h2>
 
-            {/* Subtitle — fades in after title settles */}
+            {/* Subtitle */}
             <p
               className="text-[17px] md:text-[18px] mx-auto"
               style={{
