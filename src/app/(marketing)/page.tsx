@@ -1617,10 +1617,12 @@ function HowItWorks() {
       const el = sectionRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const sectionH = el.offsetHeight;
       const vh = window.innerHeight;
-      const raw = (vh - rect.top) / (sectionH + vh);
-      setProgress(Math.max(0, Math.min(1, raw)));
+      // progress 0 = section top hits viewport top (sticky pins)
+      // progress 1 = section bottom hits viewport bottom (sticky unpins)
+      const scrolled = Math.max(0, -rect.top);
+      const maxScroll = el.offsetHeight - vh;
+      setProgress(maxScroll > 0 ? Math.min(1, scrolled / maxScroll) : 0);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -1631,34 +1633,32 @@ function HowItWorks() {
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
   /*
-   * Compressed timeline — everything lands by progress ~0.45.
-   * After that the sticky pin holds the completed view as user scrolls.
+   * Progress 0 = sticky just pinned, title is HUGE and visible.
+   * With 250vh section: maxScroll = 150vh, so progress 0.40 = 60vh of scrolling.
    *
-   * 0.10–0.13  Title fades in at 6x
-   * 0.13–0.15  HOLD — eye locks
-   * 0.15–0.25  Title shrinks 6x → 1x
-   * 0.25–0.28  Label + subtitle
-   * 0.28–0.33  Step 1
-   * 0.33–0.38  Step 2
-   * 0.38–0.43  Step 3
-   * 0.40–0.45  Connector + footer
-   * 0.45+       Locked — everything visible, section holds
+   * 0.00        Title visible at 6x — already on screen, no fade needed
+   * 0.00–0.15   Title shrinks 6x → 1x
+   * 0.15–0.20   Label + subtitle
+   * 0.20–0.27   Step 1
+   * 0.27–0.34   Step 2
+   * 0.34–0.41   Step 3
+   * 0.37–0.43   Connector + footer
+   * 0.43+        LOCKED — everything visible, section holds
    */
 
-  const titleFadeP = rangeMap(0.10, 0.13);
-  const shrinkP = rangeMap(0.15, 0.25);
+  const shrinkP = rangeMap(0.00, 0.15);
   const titleScale = 6 - shrinkP * 5;
-  const titleYOffset = (1 - shrinkP) * 120;
+  const titleYOffset = (1 - shrinkP) * 100;
 
-  const labelP   = rangeMap(0.25, 0.29);
-  const subP     = rangeMap(0.26, 0.30);
+  const labelP   = rangeMap(0.15, 0.20);
+  const subP     = rangeMap(0.16, 0.21);
 
-  const step1P   = rangeMap(0.29, 0.34);
-  const step2P   = rangeMap(0.34, 0.39);
-  const step3P   = rangeMap(0.39, 0.44);
+  const step1P   = rangeMap(0.21, 0.28);
+  const step2P   = rangeMap(0.28, 0.35);
+  const step3P   = rangeMap(0.35, 0.42);
 
-  const lineP    = rangeMap(0.36, 0.42);
-  const footerP  = rangeMap(0.42, 0.46);
+  const lineP    = rangeMap(0.32, 0.40);
+  const footerP  = rangeMap(0.40, 0.45);
 
   const steps = [
     {
@@ -1686,7 +1686,7 @@ function HowItWorks() {
       ref={sectionRef}
       className="relative"
       style={{
-        height: "400vh",
+        height: "250vh",
         backgroundColor: B.navy,
       }}
     >
@@ -1739,7 +1739,7 @@ function HowItWorks() {
               Assessment Process
             </div>
 
-            {/* "How It Works" — fades in massive, holds, then shrinks to normal */}
+            {/* "How It Works" — starts massive at 6x, shrinks to normal on scroll */}
             <h2
               className="font-semibold"
               style={{
@@ -1747,10 +1747,9 @@ function HowItWorks() {
                 letterSpacing: "-0.02em",
                 marginBottom: 16,
                 fontSize: 42,
-                opacity: titleFadeP,
                 transform: `scale(${titleScale}) translateY(${titleYOffset}px)`,
                 transformOrigin: "center center",
-                willChange: "transform, opacity",
+                willChange: "transform",
               }}
             >
               How It Works
