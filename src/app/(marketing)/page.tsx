@@ -2262,11 +2262,11 @@ export default function LandingPage() {
 
       {/* ============ MID-PAGE CONVERSION STRIP — Teal Band ============ */}
       <div style={{ position: "relative" }}>
-        {/* Top fade: sand → teal */}
-        <div style={{ height: 64, background: `linear-gradient(180deg, #F4F1EA 0%, ${B.teal} 100%)` }} />
+        {/* Top fade: sand → purple */}
+        <div style={{ height: 64, background: `linear-gradient(180deg, #F4F1EA 0%, ${B.purple} 100%)` }} />
 
-        {/* Teal band */}
-        <div style={{ background: B.teal, paddingTop: 32, paddingBottom: 32 }}>
+        {/* Purple band */}
+        <div style={{ background: B.purple, paddingTop: 32, paddingBottom: 32 }}>
           <div
             className="conversion-strip"
             style={{
@@ -2298,7 +2298,7 @@ export default function LandingPage() {
                 paddingRight: 18,
                 borderRadius: 10,
                 background: "#ffffff",
-                color: B.teal,
+                color: B.purple,
                 fontSize: 14,
                 border: "none",
                 transition: "background-color 180ms ease, color 180ms ease",
@@ -2307,15 +2307,15 @@ export default function LandingPage() {
                 "--tw-ring-color": "#ffffff",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.background = B.navy; e.currentTarget.style.color = "#ffffff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.color = B.teal; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.color = B.purple; }}
             >
               Get My Income Stability Score
             </Link>
           </div>
         </div>
 
-        {/* Bottom fade: teal → sand */}
-        <div style={{ height: 64, background: `linear-gradient(180deg, ${B.teal} 0%, #F4F1EA 100%)` }} />
+        {/* Bottom fade: purple → sand */}
+        <div style={{ height: 64, background: `linear-gradient(180deg, ${B.purple} 0%, #F4F1EA 100%)` }} />
       </div>
 
       <style>{`
