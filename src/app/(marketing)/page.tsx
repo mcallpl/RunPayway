@@ -319,13 +319,25 @@ function FinalCta() {
             </a>
           </div>
 
+          {/* Pricing anchor */}
+          <p
+            style={{
+              fontWeight: 500,
+              fontSize: 16,
+              color: "rgba(244,241,234,0.85)",
+              marginTop: 14,
+              marginBottom: 4,
+            }}
+          >
+            Single Assessment — $39
+          </p>
+
           {/* Microcopy */}
           <p
             className="text-[14px] md:text-[15px]"
             style={{
               color: "rgba(244,241,234,0.66)",
               lineHeight: 1.6,
-              marginTop: 18,
             }}
           >
             Takes under 2 minutes &bull; Instant results
@@ -418,6 +430,16 @@ function ModelGovernance() {
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75 }}>
               Future updates are released as new model versions.
+            </p>
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: 15,
+                color: "rgba(14,26,43,0.70)",
+                marginTop: 18,
+              }}
+            >
+              Assessments currently run under Model RP-1.0.
             </p>
           </div>
         </div>
@@ -1016,6 +1038,31 @@ function PreviewYourScoreReport() {
 
       {divider}
 
+      {/* Assessment Title */}
+      <div style={{ marginBottom: 14 }}>
+        <div
+          style={{
+            fontWeight: 500,
+            fontSize: 12,
+            letterSpacing: "0.08em",
+            textTransform: "uppercase" as const,
+            color: "rgba(14,26,43,0.55)",
+            marginBottom: 4,
+          }}
+        >
+          Assessment Title
+        </div>
+        <div
+          style={{
+            fontWeight: 600,
+            fontSize: 16,
+            color: B.navy,
+          }}
+        >
+          Jordan Ellis — Ellis Advisory Group
+        </div>
+      </div>
+
       {/* Profile */}
       {label("Profile")}
       <div className="grid grid-cols-2 gap-x-6 gap-y-2">
@@ -1309,7 +1356,7 @@ function PreviewYourScoreReport() {
         </p>
 
         {/* Page tabs */}
-        <div className="flex flex-wrap gap-0 mb-0" style={{ maxWidth: 760, margin: "0 auto 0 auto" }}>
+        <div className="flex flex-wrap gap-0 mb-0" style={{ maxWidth: 820, margin: "0 auto 0 auto" }}>
           {pages.map((label, i) => {
             const isActive = activePage === i;
             return (
@@ -1348,7 +1395,7 @@ function PreviewYourScoreReport() {
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-            maxWidth: 760,
+            maxWidth: 820,
             margin: "0 auto",
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
@@ -1840,6 +1887,23 @@ function HeroSection() {
               Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score™</strong> in minutes.
             </p>
 
+            {/* Audience clarification */}
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+                lineHeight: 1.6,
+                color: "rgba(14,26,43,0.70)",
+                maxWidth: 520,
+                marginBottom: 24,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
+              }}
+            >
+              Designed for independent professionals, founders, and income-driven careers.
+            </p>
+
             <p
               className="text-[15px] md:text-[17px]"
               style={{
@@ -1853,6 +1917,24 @@ function HeroSection() {
               }}
             >
               Scores range from <strong style={{ fontWeight: 600, color: B.navy }}>0–100</strong>. Higher scores indicate stronger income stability.
+            </p>
+
+            {/* Credibility signal */}
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: 14,
+                letterSpacing: "0.02em",
+                color: "rgba(14,26,43,0.60)",
+                marginTop: 18,
+                marginBottom: 18,
+                opacity: hasAnimated ? 1 : 0,
+                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 380ms, transform 600ms ease-out 380ms",
+              }}
+            >
+              Built on deterministic structural scoring.<br />
+              RunPayway Model RP-1.0.
             </p>
 
             {/* CTA Button */}
@@ -2072,6 +2154,19 @@ export default function LandingPage() {
             <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
               The Income Stability Score™ places every income structure on a standardized 0–100 scale and classifies it into one of four stability tiers.
             </p>
+            <p
+              className="mx-auto"
+              style={{
+                fontWeight: 400,
+                fontSize: 16,
+                lineHeight: 1.7,
+                color: "rgba(14,26,43,0.70)",
+                maxWidth: 620,
+                marginTop: 14,
+              }}
+            >
+              Your score reveals how resilient your income structure is — and where it can become stronger.
+            </p>
           </div>
 
           {/* Spectrum bar with tick marks */}
@@ -2198,6 +2293,73 @@ export default function LandingPage() {
       <div className="section-divider-elegant" style={{ padding: "0 40px" }}>
         <div className="divider-dot" />
       </div>
+
+      {/* ============ MID-PAGE CONVERSION STRIP ============ */}
+      <div
+        className="conversion-strip"
+        style={{
+          background: "#F4F1EA",
+          border: "1px solid rgba(14,26,43,0.08)",
+          padding: "22px 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: 920,
+          margin: "0 auto",
+          borderRadius: 14,
+        }}
+      >
+        <p
+          style={{
+            fontWeight: 500,
+            fontSize: 16,
+            color: "#0E1A2B",
+            margin: 0,
+          }}
+        >
+          Measure your Income Stability in under 2 minutes.
+        </p>
+        <Link
+          href="/pricing"
+          className="conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
+                     focus:outline-none focus:ring-2"
+          style={{
+            height: 40,
+            paddingLeft: 18,
+            paddingRight: 18,
+            borderRadius: 10,
+            background: "#0E1A2B",
+            color: "#F4F1EA",
+            fontSize: 14,
+            border: "none",
+            transition: "background-color 180ms ease",
+            flexShrink: 0,
+            // @ts-expect-error focus ring
+            "--tw-ring-color": "#1F6D7A",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = "#0E1A2B"; }}
+        >
+          Get My Income Stability Score
+        </Link>
+      </div>
+
+      <style>{`
+        @media (max-width: 720px) {
+          .conversion-strip {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 14px;
+            padding: 22px 24px !important;
+          }
+          .conversion-strip p {
+            font-size: 15px !important;
+          }
+          .conversion-strip-cta {
+            width: 100% !important;
+          }
+        }
+      `}</style>
 
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />

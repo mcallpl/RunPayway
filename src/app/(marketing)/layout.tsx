@@ -244,160 +244,84 @@ export default function MarketingLayout({
 
       {/* Footer — Institutional Platform Infrastructure */}
       <footer
-        className="relative overflow-hidden"
-        style={{ background: "#0E1A2B" }}
+        className="relative"
+        style={{
+          background: "#FFFFFF",
+          borderTop: "1px solid rgba(14,26,43,0.08)",
+        }}
       >
-        {/* Faint horizontal rule texture */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 80px)`,
-            backgroundSize: "100% 80px",
-          }}
-        />
-
         <div
           className="relative mx-auto"
           style={{
-            maxWidth: 1100,
-            paddingTop: 96,
-            paddingBottom: 72,
-            paddingLeft: 40,
-            paddingRight: 40,
+            maxWidth: 1200,
+            padding: "32px 24px",
           }}
         >
-          {/* Primary 2-column grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ columnGap: 120 }}>
-            {/* Left column — Brand */}
-            <div>
-              <div
-                className="font-semibold"
+          {/* Navigation grid */}
+          <nav aria-label="Footer navigation" style={{ marginBottom: 28 }}>
+            <ul
+              className="footer-nav-grid list-none p-0 m-0"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(6, auto)",
+                gap: 28,
+                alignItems: "center",
+              }}
+            >
+              {[
+                { href: "/", label: "Home" },
+                { href: "/methodology", label: "Methodology" },
+                { href: "/verify", label: "Registry" },
+                { href: "/pricing", label: "Pricing" },
+                { href: "/#faq", label: "FAQ" },
+                { href: "#", label: "About" },
+              ].map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors duration-160 focus:outline-none focus:ring-2"
+                    style={{
+                      fontSize: 15,
+                      color: "rgba(14,26,43,0.70)",
+                      // @ts-expect-error focus ring
+                      "--tw-ring-color": "#1F6D7A",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Social links */}
+          <div className="flex items-center" style={{ gap: 20, marginBottom: 28 }}>
+            {[
+              { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
+              { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
+              { href: "https://instagram.com/runpayway", label: "Instagram", ariaLabel: "RunPayway on Instagram" },
+            ].map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.ariaLabel}
+                className="transition-colors duration-160 focus:outline-none focus:ring-2"
                 style={{
-                  fontSize: 22,
-                  letterSpacing: "-0.01em",
-                  color: "#F4F1EA",
-                  marginBottom: 16,
+                  fontSize: 14,
+                  color: "rgba(14,26,43,0.55)",
+                  // @ts-expect-error focus ring
+                  "--tw-ring-color": "#1F6D7A",
                 }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
               >
-                RunPayway
-              </div>
-              <div
-                style={{
-                  fontSize: 15,
-                  color: "rgba(244,241,234,0.65)",
-                  maxWidth: 260,
-                }}
-              >
-                Income Stability Score™
-              </div>
-            </div>
-
-            {/* Right column — Navigation + Social + Legal links */}
-            <div className="mt-10 md:mt-0">
-              {/* Navigation links */}
-              <nav aria-label="Footer navigation">
-                <ul className="list-none p-0 m-0" style={{ marginBottom: 28 }}>
-                  {[
-                    { href: "/", label: "Home" },
-                    { href: "/methodology", label: "Methodology" },
-                    { href: "/verify", label: "Registry" },
-                    { href: "/#faq", label: "FAQ" },
-                    { href: "#", label: "About" },
-                  ].map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="block transition-colors duration-160"
-                        style={{
-                          fontSize: 15,
-                          lineHeight: 1.9,
-                          color: "rgba(244,241,234,0.82)",
-                          minHeight: 44,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.82)"; }}
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-
-              {/* Social links */}
-              <div style={{ marginBottom: 28 }}>
-                <div
-                  className="font-medium uppercase"
-                  style={{
-                    fontSize: 12,
-                    letterSpacing: "0.12em",
-                    color: "#1F6D7A",
-                    marginBottom: 10,
-                  }}
-                >
-                  Social
-                </div>
-                <ul className="list-none p-0 m-0">
-                  {[
-                    { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
-                    { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
-                    { href: "https://instagram.com/runpayway", label: "Instagram", ariaLabel: "RunPayway on Instagram" },
-                  ].map((link) => (
-                    <li key={link.label}>
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={link.ariaLabel}
-                        className="block transition-colors duration-160"
-                        style={{
-                          fontSize: 15,
-                          lineHeight: 1.9,
-                          color: "rgba(244,241,234,0.82)",
-                          minHeight: 44,
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.82)"; }}
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Contact + Legal links */}
-              <ul className="list-none p-0 m-0">
-                {[
-                  { href: "#", label: "Contact" },
-                  { href: "#", label: "Privacy Policy" },
-                  { href: "#", label: "Terms of Use" },
-                ].map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="block transition-colors duration-160"
-                      style={{
-                        fontSize: 15,
-                        lineHeight: 1.9,
-                        color: "rgba(244,241,234,0.82)",
-                        minHeight: 44,
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.82)"; }}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                {link.label}
+              </a>
+            ))}
           </div>
 
           {/* Divider */}
@@ -405,24 +329,23 @@ export default function MarketingLayout({
             style={{
               height: 1,
               width: "100%",
-              background: "rgba(244,241,234,0.12)",
-              marginTop: 48,
-              marginBottom: 32,
+              background: "rgba(14,26,43,0.08)",
+              marginBottom: 24,
             }}
           />
 
           {/* Legal block */}
           <div style={{ maxWidth: 520 }}>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(244,241,234,0.60)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
               &copy; 2026 RunPayway™. All rights reserved.
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(244,241,234,0.60)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
               RunPayway™ is a product of PeopleStar Enterprises, LLC.
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(244,241,234,0.60)", lineHeight: 1.7, marginBottom: 6 }}>
+            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7, marginBottom: 6 }}>
               Orange County, California, USA
             </p>
-            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(244,241,234,0.60)", lineHeight: 1.7 }}>
+            <p className="text-[13px] md:text-[13px]" style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.7 }}>
               Structural Stability Model RP-1.0
             </p>
           </div>
@@ -431,23 +354,9 @@ export default function MarketingLayout({
         {/* Mobile/tablet overrides */}
         <style>{`
           @media (max-width: 768px) {
-            footer > div:last-of-type:not(style) {
-              padding-top: 72px !important;
-              padding-bottom: 56px !important;
-              padding-left: 24px !important;
-              padding-right: 24px !important;
-            }
-            footer .font-semibold[style*="fontSize: 22"] {
-              font-size: 20px !important;
-            }
-            footer .text-\\[13px\\] {
-              font-size: 12px !important;
-            }
-          }
-          @media (min-width: 769px) and (max-width: 1024px) {
-            footer > div:last-of-type:not(style) {
-              padding-left: 32px !important;
-              padding-right: 32px !important;
+            .footer-nav-grid {
+              grid-template-columns: repeat(2, auto) !important;
+              gap: 18px !important;
             }
           }
         `}</style>
