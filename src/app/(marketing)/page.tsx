@@ -2292,11 +2292,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Elegant divider */}
-      <div className="section-divider-elegant" style={{ padding: "0 40px" }}>
-        <div className="divider-dot" />
-      </div>
-
       {/* ============ MID-PAGE CONVERSION STRIP ============ */}
       <div
         className="conversion-strip"
