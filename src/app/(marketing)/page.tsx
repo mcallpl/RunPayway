@@ -460,18 +460,18 @@ function ModelGovernance() {
             marginTop: 36,
             width: "100%",
             maxWidth: 420,
-            backgroundColor: "rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.15)",
+            backgroundColor: "#ffffff",
+            border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
             padding: 28,
-            boxShadow: "0 16px 44px rgba(0,0,0,0.15)",
+            boxShadow: "0 16px 44px rgba(0,0,0,0.08)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.48s ease-out 80ms, transform 0.48s ease-out 80ms",
           }}
         >
           {/* Top accent */}
-          <div style={{ width: "100%", height: 2, background: "linear-gradient(90deg, rgba(244,241,234,0.4) 0%, transparent 60%)", borderRadius: 2, marginBottom: 16 }} />
+          <div style={{ width: "100%", height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, transparent 60%)`, borderRadius: 2, marginBottom: 16 }} />
 
           {/* Panel header */}
           <div
@@ -484,13 +484,13 @@ function ModelGovernance() {
           {/* Version value */}
           <div
             className="text-[24px] md:text-[28px]"
-            style={{ color: "#F4F1EA", fontWeight: 600, letterSpacing: "0.01em", marginBottom: 14 }}
+            style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.01em", marginBottom: 14 }}
           >
             RP-1.0
           </div>
 
           {/* Supporting line */}
-          <p className="text-[15px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.6 }}>
+          <p className="text-[15px]" style={{ color: "rgba(14,26,43,0.55)", fontWeight: 400, lineHeight: 1.6 }}>
             Scoring framework currently in use.
           </p>
         </article>
