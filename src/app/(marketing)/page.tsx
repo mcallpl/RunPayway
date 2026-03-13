@@ -2261,6 +2261,69 @@ export default function LandingPage() {
       </section>
 
 
+      {/* ============ MID-PAGE CTA ============ */}
+      <div
+        className="conversion-strip"
+        style={{
+          padding: "48px 40px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: 920,
+          margin: "0 auto",
+        }}
+      >
+        <p
+          style={{
+            fontWeight: 500,
+            fontSize: 16,
+            color: B.navy,
+            margin: 0,
+          }}
+        >
+          Measure your Income Stability in under 2 minutes.
+        </p>
+        <Link
+          href="/pricing"
+          className="conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
+                     focus:outline-none focus:ring-2"
+          style={{
+            height: 40,
+            paddingLeft: 18,
+            paddingRight: 18,
+            borderRadius: 10,
+            background: B.purple,
+            color: "#ffffff",
+            fontSize: 14,
+            border: "none",
+            transition: "background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
+            flexShrink: 0,
+            boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.25)"; }}
+        >
+          Get My Income Stability Score
+        </Link>
+      </div>
+
+      <style>{`
+        @media (max-width: 720px) {
+          .conversion-strip {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 14px;
+            padding: 48px 24px !important;
+          }
+          .conversion-strip p {
+            font-size: 15px !important;
+          }
+          .conversion-strip-cta {
+            width: 100% !important;
+          }
+        }
+      `}</style>
+
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
 
