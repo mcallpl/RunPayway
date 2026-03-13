@@ -1639,30 +1639,32 @@ function HowItWorks() {
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
   /*
-   * 200vh section → progress 0.50 = sticky pins.
-   * Animations start immediately as section enters viewport.
+   * 150vh section → progress 0.67 = sticky pins.
+   * All animations complete by ~0.64, right before pin.
+   * 0.67→1.0 = locked hold (~50vh of scroll).
    *
-   * 0.08–0.22  Title shrinks 6x → 1x
-   * 0.20–0.26  Label + subtitle
-   * 0.26–0.32  Step 1
-   * 0.32–0.38  Step 2
-   * 0.38–0.44  Step 3
-   * 0.40–0.46  Connector + footer
-   * 0.46+       LOCKED
+   * 0.10–0.30  Title shrinks 6x → 1x
+   * 0.28–0.36  Label + subtitle
+   * 0.36–0.44  Step 1
+   * 0.44–0.52  Step 2
+   * 0.52–0.60  Step 3
+   * 0.56–0.62  Connector
+   * 0.60–0.66  Footer
+   * 0.67+       LOCKED
    */
 
-  const shrinkP = rangeMap(0.08, 0.22);
+  const shrinkP = rangeMap(0.10, 0.30);
   const titleScale = 6 - shrinkP * 5;
 
-  const labelP   = rangeMap(0.20, 0.26);
-  const subP     = rangeMap(0.21, 0.27);
+  const labelP   = rangeMap(0.28, 0.36);
+  const subP     = rangeMap(0.30, 0.38);
 
-  const step1P   = rangeMap(0.26, 0.32);
-  const step2P   = rangeMap(0.32, 0.38);
-  const step3P   = rangeMap(0.38, 0.44);
+  const step1P   = rangeMap(0.36, 0.44);
+  const step2P   = rangeMap(0.44, 0.52);
+  const step3P   = rangeMap(0.52, 0.60);
 
-  const lineP    = rangeMap(0.36, 0.42);
-  const footerP  = rangeMap(0.42, 0.46);
+  const lineP    = rangeMap(0.50, 0.58);
+  const footerP  = rangeMap(0.60, 0.66);
 
   const steps = [
     {
@@ -1690,7 +1692,7 @@ function HowItWorks() {
       ref={sectionRef}
       className="relative"
       style={{
-        height: "200vh",
+        height: "150vh",
         backgroundColor: B.navy,
       }}
     >
