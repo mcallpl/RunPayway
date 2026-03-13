@@ -59,6 +59,7 @@ export default function PricingPage() {
       />
 
       <div
+        className="pricing-content"
         style={{
           maxWidth: 820,
           margin: "0 auto",
@@ -66,6 +67,13 @@ export default function PricingPage() {
           backgroundColor: "#ffffff",
         }}
       >
+        <style>{`
+          @media (max-width: 768px) {
+            .pricing-content {
+              padding: 72px 20px 80px !important;
+            }
+          }
+        `}</style>
         {/* ============ SECTION 1 — HERO ============ */}
         <div style={{ marginBottom: 64 }}>
           <h1

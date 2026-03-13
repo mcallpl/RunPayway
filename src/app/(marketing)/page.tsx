@@ -371,14 +371,15 @@ const t = e.currentTarget;
       <style>{`
         @media (max-width: 768px) {
           section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 24px !important;
             padding-right: 24px !important;
           }
           section[aria-label="Get Your Income Stability Score"] a {
             min-width: 0 !important;
-            height: 54px !important;
+            width: 100% !important;
+            height: 52px !important;
           }
         }
         @media (min-width: 769px) and (max-width: 1024px) {
@@ -531,6 +532,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   return (
     <section
       ref={ref}
+      aria-label="FAQ"
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
@@ -690,6 +692,7 @@ function ScoreRegistry() {
   return (
     <section
       ref={ref}
+      aria-label="Score Registry"
       style={{
         backgroundColor: "#F4F1EA",
         paddingTop: 160,
@@ -909,6 +912,9 @@ function WhyIncomeStabilityMatters() {
             section[aria-label="Why Income Stability Matters"] > div > div:first-child {
               grid-template-columns: 1fr !important;
             }
+            section[aria-label="Why Income Stability Matters"] > div > div:first-child > div {
+              padding: 28px 24px 32px !important;
+            }
             section[aria-label="Why Income Stability Matters"] > div > div:first-child > div:last-child {
               border-left: none !important;
               border-top: 1px solid rgba(75,63,174,0.20) !important;
@@ -972,7 +978,7 @@ function WhyIncomeStabilityMatters() {
           {/* CTA Button */}
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center font-semibold
+            className="inline-flex items-center justify-center font-semibold w-full sm:w-auto
                        focus:outline-none focus:ring-2 focus:ring-offset-2"
             style={{
               height: 52,
@@ -1110,7 +1116,7 @@ function PreviewYourScoreReport() {
 
       {/* Profile */}
       {label("Profile")}
-      <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
         {[
           ["Classification", "Established Stability"],
           ["Structure", "LLC — Single Operator"],
@@ -1659,6 +1665,7 @@ function HowItWorks() {
   return (
     <section
       ref={ref}
+      aria-label="How It Works"
       style={{ paddingTop: 120, paddingBottom: 120, background: "#ffffff" }}
     >
       <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
@@ -1818,6 +1825,7 @@ function HeroSection() {
   return (
     <section
       ref={heroRef}
+      aria-label="Hero"
       className="relative overflow-hidden"
       style={{ background: "#ffffff" }}
     >
@@ -1858,7 +1866,7 @@ function HeroSection() {
             </div>
 
             <h1
-              className="text-[38px] md:text-[52px] lg:text-[58px] font-semibold"
+              className="text-[34px] sm:text-[38px] md:text-[52px] lg:text-[58px] font-semibold"
               style={{
                 color: B.navy,
                 lineHeight: 1.08,
@@ -1927,7 +1935,7 @@ function HeroSection() {
             >
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center font-semibold
+                className="inline-flex items-center justify-center font-semibold w-full sm:w-auto
                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F6D7A]"
                 style={{
                   height: 54,
@@ -2048,7 +2056,7 @@ const t = e.currentTarget;
 
               {/* Score number — gradient text */}
               <div
-                className="text-[100px] md:text-[128px] lg:text-[148px] font-semibold leading-none"
+                className="text-[64px] sm:text-[100px] md:text-[128px] lg:text-[148px] font-semibold leading-none"
                 style={{
                   background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
                   WebkitBackgroundClip: "text",
@@ -2064,7 +2072,7 @@ const t = e.currentTarget;
 
               {/* Classification */}
               <div
-                className="text-[20px] md:text-[24px] font-medium"
+                className="text-[17px] sm:text-[20px] md:text-[24px] font-medium"
                 style={{
                   color: B.purple,
                   letterSpacing: "-0.01em",
@@ -2082,9 +2090,15 @@ const t = e.currentTarget;
       {/* Mobile overrides */}
       <style>{`
         @media (max-width: 768px) {
-          section:first-of-type > div:nth-child(2) {
-            padding-top: 100px !important;
-            padding-bottom: 120px !important;
+          section[aria-label="Hero"] > div.relative {
+            padding-top: 72px !important;
+            padding-bottom: 56px !important;
+          }
+          section[aria-label="Hero"] .flex-col {
+            gap: 24px !important;
+          }
+          section[aria-label="Hero"] .flex-1.flex .absolute.pointer-events-none {
+            display: none !important;
           }
         }
       `}</style>

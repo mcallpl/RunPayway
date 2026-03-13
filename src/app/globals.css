@@ -136,8 +136,14 @@ select, input[type="text"], input[type="email"] {
     width: 60px !important;
   }
   .scoring-factors-section {
-    padding-top: 104px !important;
-    padding-bottom: 104px !important;
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  .scoring-factors-section > div > div:first-child {
+    margin-bottom: 40px !important;
+  }
+  .scoring-factors-section article {
+    padding: 24px 24px 28px 24px !important;
   }
 }
 
@@ -281,4 +287,90 @@ select, input[type="text"], input[type="email"] {
 
   /* Page header compact */
   .report-page .mb-8.pb-3 { margin-bottom: 4px !important; padding-bottom: 2px !important; }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE — Vertical Rhythm + Layout
+   ============================================ */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* --- How It Works --- */
+  section[aria-label="How It Works"] {
+    padding-top: 72px !important;
+    padding-bottom: 72px !important;
+  }
+  section[aria-label="How It Works"] > div > .text-center:first-child {
+    margin-bottom: 36px !important;
+  }
+  section[aria-label="How It Works"] article {
+    padding: 28px 24px 32px !important;
+  }
+
+  /* --- Classification Scale --- */
+  section[aria-label="Income Stability Classification Scale"] {
+    padding-top: 72px !important;
+    padding-bottom: 72px !important;
+  }
+  section[aria-label="Income Stability Classification Scale"] > div > .text-center:first-child {
+    margin-bottom: 36px !important;
+  }
+
+  /* --- Report Preview --- */
+  section[aria-label="Preview Your Score Report"] {
+    padding-top: 72px !important;
+    padding-bottom: 80px !important;
+  }
+  section[aria-label="Preview Your Score Report"] > div > .text-left {
+    padding: 24px 20px 28px 20px !important;
+  }
+  section[aria-label="Preview Your Score Report"] .flex-wrap > button {
+    font-size: 11px !important;
+    padding: 10px 8px !important;
+  }
+
+  /* --- Industry Patterns --- */
+  section[aria-label="Stability Patterns by Industry"] {
+    padding-top: 72px !important;
+    padding-bottom: 80px !important;
+  }
+
+  /* --- Why Income Stability Matters --- */
+  section[aria-label="Why Income Stability Matters"] {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+
+  /* --- Score Registry --- */
+  section[aria-label="Score Registry"] {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  section[aria-label="Score Registry"] article {
+    padding: 24px !important;
+  }
+
+  /* --- FAQ --- */
+  section[aria-label="FAQ"] {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  section[aria-label="FAQ"] .text-center p,
+  section[aria-label="FAQ"] .md\\:text-center p {
+    margin-bottom: 40px !important;
+  }
+  section[aria-label="FAQ"] .overflow-hidden > p {
+    padding-right: 16px !important;
+  }
+
+  /* --- Model Governance --- */
+  section[aria-label="Model Governance"] {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  section[aria-label="Model Governance"] article {
+    padding: 22px !important;
+  }
 }
