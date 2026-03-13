@@ -2263,7 +2263,7 @@ export default function LandingPage() {
       {/* ============ MID-PAGE CONVERSION STRIP — Teal Band ============ */}
       <div style={{ position: "relative" }}>
         {/* Top fade: sand → purple */}
-        <div style={{ height: 64, background: `linear-gradient(180deg, #F4F1EA 0%, ${B.purple} 100%)` }} />
+        <div style={{ height: 120, background: `linear-gradient(180deg, #F4F1EA 0%, #F4F1EA 10%, rgba(75,63,174,0.08) 35%, rgba(75,63,174,0.35) 65%, ${B.purple} 100%)` }} />
 
         {/* Purple band */}
         <div style={{ background: B.purple, paddingTop: 32, paddingBottom: 32 }}>
@@ -2315,7 +2315,7 @@ export default function LandingPage() {
         </div>
 
         {/* Bottom fade: purple → sand */}
-        <div style={{ height: 64, background: `linear-gradient(180deg, ${B.purple} 0%, #F4F1EA 100%)` }} />
+        <div style={{ height: 120, background: `linear-gradient(180deg, ${B.purple} 0%, rgba(75,63,174,0.35) 35%, rgba(75,63,174,0.08) 65%, #F4F1EA 90%, #F4F1EA 100%)` }} />
       </div>
 
       <style>{`
