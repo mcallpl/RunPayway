@@ -1284,22 +1284,12 @@ function PreviewYourScoreReport() {
     <section
       ref={ref}
       style={{
-        backgroundColor: "#F4F1EA",
-        paddingTop: 160,
-        paddingBottom: 160,
+        paddingTop: 120,
+        paddingBottom: 140,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Subtle horizontal data lines */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 64px)`,
-          pointerEvents: "none",
-        }}
-      />
 
       <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Section header */}
@@ -1441,24 +1431,10 @@ function ScoringFactors() {
       ref={sectionRef}
       className="scoring-factors-section relative"
       style={{
-        background: "linear-gradient(180deg, #ffffff 0%, #FAFAF8 40%, #F7F6F3 100%)",
         paddingTop: 140,
-        paddingBottom: 160,
+        paddingBottom: 140,
       }}
     >
-      {/* Subtle radial glow behind cards */}
-      <div
-        style={{
-          position: "absolute",
-          top: "40%",
-          left: "50%",
-          width: 900,
-          height: 600,
-          transform: "translate(-50%, -50%)",
-          background: "radial-gradient(ellipse, rgba(75,63,174,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
 
       <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100, position: "relative", zIndex: 1 }}>
         {/* Sticky header — parallax drift */}
@@ -2078,13 +2054,19 @@ export default function LandingPage() {
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />
 
+      {/* ============ CONTINUOUS CANVAS: Factors → Classification → Report ============ */}
+      <div className="grain-overlay" style={{ position: "relative", background: "linear-gradient(180deg, #ffffff 0%, #FAFAF8 3%, #F7F6F3 8%, #F4F1EA 25%, #F4F1EA 75%, #F4F1EA 100%)" }}>
+
       {/* ============ SCORING FACTORS — Model Input Framework ============ */}
       <ScoringFactors />
 
+      {/* Elegant divider */}
+      <div className="section-divider-elegant" style={{ padding: "0 40px" }}>
+        <div className="divider-dot" />
+      </div>
+
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
-      <section style={{ background: "linear-gradient(180deg, #F7F6F3 0%, #F4F1EA 50%, #F7F6F3 100%)", paddingTop: 140, paddingBottom: 140, position: "relative" }}>
-        {/* Subtle radial warmth */}
-        <div style={{ position: "absolute", top: "30%", left: "50%", width: 1000, height: 500, transform: "translate(-50%, -50%)", background: "radial-gradient(ellipse, rgba(31,109,122,0.03) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <section style={{ paddingTop: 120, paddingBottom: 120, position: "relative" }}>
 
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ position: "relative", zIndex: 1 }}>
           {/* Header */}
@@ -2220,8 +2202,15 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Elegant divider */}
+      <div className="section-divider-elegant" style={{ padding: "0 40px" }}>
+        <div className="divider-dot" />
+      </div>
+
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
+
+      </div>{/* ← end continuous canvas */}
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
       <section className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center" style={{ paddingTop: 96, paddingBottom: 120 }}>
