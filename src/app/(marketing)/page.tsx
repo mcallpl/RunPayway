@@ -1639,31 +1639,30 @@ function HowItWorks() {
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
   /*
-   * 200vh section → progress 0.50 = sticky pins (section top at viewport top).
-   * All animations happen 0.20→0.50 (while section scrolls into view).
-   * 0.50→1.00 = section is LOCKED with everything visible.
+   * 200vh section → progress 0.50 = sticky pins.
+   * Animations start immediately as section enters viewport.
    *
-   * 0.20–0.32  Title shrinks 6x → 1x (visible as section enters from below)
-   * 0.32–0.36  Label + subtitle
-   * 0.36–0.40  Step 1
-   * 0.40–0.44  Step 2
-   * 0.44–0.48  Step 3 + connector
-   * 0.48–0.50  Footer — everything lands right as section pins
-   * 0.50+       LOCKED
+   * 0.08–0.22  Title shrinks 6x → 1x
+   * 0.20–0.26  Label + subtitle
+   * 0.26–0.32  Step 1
+   * 0.32–0.38  Step 2
+   * 0.38–0.44  Step 3
+   * 0.40–0.46  Connector + footer
+   * 0.46+       LOCKED
    */
 
-  const shrinkP = rangeMap(0.20, 0.32);
+  const shrinkP = rangeMap(0.08, 0.22);
   const titleScale = 6 - shrinkP * 5;
 
-  const labelP   = rangeMap(0.32, 0.37);
-  const subP     = rangeMap(0.33, 0.38);
+  const labelP   = rangeMap(0.20, 0.26);
+  const subP     = rangeMap(0.21, 0.27);
 
-  const step1P   = rangeMap(0.37, 0.42);
-  const step2P   = rangeMap(0.42, 0.47);
-  const step3P   = rangeMap(0.47, 0.52);
+  const step1P   = rangeMap(0.26, 0.32);
+  const step2P   = rangeMap(0.32, 0.38);
+  const step3P   = rangeMap(0.38, 0.44);
 
-  const lineP    = rangeMap(0.44, 0.50);
-  const footerP  = rangeMap(0.50, 0.54);
+  const lineP    = rangeMap(0.36, 0.42);
+  const footerP  = rangeMap(0.42, 0.46);
 
   const steps = [
     {
@@ -1727,38 +1726,9 @@ function HowItWorks() {
         {/* Ambient teal glow */}
         <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-        {/* Giant title — absolutely centered, shrinks with scroll */}
-        <h2
-          className="font-semibold"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: `translate(-50%, -50%) scale(${titleScale})`,
-            transformOrigin: "center center",
-            color: "#F4F1EA",
-            letterSpacing: "-0.02em",
-            fontSize: 42,
-            whiteSpace: "nowrap",
-            zIndex: 2,
-            willChange: "transform",
-            opacity: shrinkP < 1 ? 1 : 0,
-            pointerEvents: "none",
-          }}
-        >
-          How It Works
-        </h2>
-
         <div className="relative mx-auto px-6 md:px-10 w-full" style={{ maxWidth: 1100 }}>
-          {/* Header — fades in as giant title finishes shrinking */}
-          <div
-            className="text-center"
-            style={{
-              marginBottom: 72,
-              opacity: shrinkP,
-              transform: `translateY(${(1 - shrinkP) * 20}px)`,
-            }}
-          >
+          {/* Header */}
+          <div className="text-center" style={{ marginBottom: 72 }}>
             <div
               className="font-medium uppercase text-[11px]"
               style={{
@@ -1766,16 +1736,27 @@ function HowItWorks() {
                 color: B.teal,
                 marginBottom: 16,
                 opacity: labelP,
+                transform: `translateY(${(1 - labelP) * 10}px)`,
               }}
             >
               Assessment Process
             </div>
+
+            {/* Single title — starts at 6x, shrinks to 1x */}
             <h2
               className="text-[30px] md:text-[42px] font-semibold"
-              style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
+              style={{
+                color: "#F4F1EA",
+                letterSpacing: "-0.02em",
+                marginBottom: 16,
+                transform: `scale(${titleScale})`,
+                transformOrigin: "center center",
+                willChange: "transform",
+              }}
             >
               How It Works
             </h2>
+
             <p
               className="text-[17px] md:text-[18px] mx-auto"
               style={{
@@ -1783,6 +1764,7 @@ function HowItWorks() {
                 lineHeight: 1.7,
                 maxWidth: 480,
                 opacity: subP,
+                transform: `translateY(${(1 - subP) * 10}px)`,
               }}
             >
               A structured diagnostic built on six dimensions of income health.
