@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+/* Guard for hover-capable devices — prevents stuck states on iOS */
+const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+
 /* Shared hook: triggers visibility when element enters viewport.
    Checks on mount so elements already in view appear immediately. */
 function useInView(threshold = 0) {
@@ -315,11 +318,11 @@ function FinalCta() {
                 border: "1px solid rgba(244,241,234,0.92)",
                 boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15)",
                 transition: "background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
-                // @ts-expect-error focus ring color
-                "--tw-ring-color": B.teal,
+
               }}
               onMouseEnter={(e) => {
-                const t = e.currentTarget;
+                 if (!canHover()) return;
+const t = e.currentTarget;
                 t.style.background = "linear-gradient(135deg, #EDECEA 0%, #E5E2DA 100%)";
                 t.style.transform = "translateY(-2px)";
                 t.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 40px rgba(0,0,0,0.30), 0 2px 8px rgba(0,0,0,0.18)";
@@ -410,8 +413,9 @@ function ModelGovernance() {
   return (
     <section
       ref={ref}
+      aria-label="Model Governance"
       style={{
-        backgroundColor: "#F4F1EA",
+        backgroundColor: B.purple,
         paddingTop: 160,
         paddingBottom: 148,
         position: "relative",
@@ -430,7 +434,7 @@ function ModelGovernance() {
           <h2
             className="text-[32px] md:text-[40px]"
             style={{
-              color: B.navy,
+              color: "#F4F1EA",
               fontWeight: 600,
               lineHeight: 1.12,
               letterSpacing: "-0.02em",
@@ -441,10 +445,10 @@ function ModelGovernance() {
           </h2>
 
           <div style={{ maxWidth: 640 }}>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
-              The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: B.purple }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+              The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: "#ffffff" }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
             </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.80)", fontWeight: 500, lineHeight: 1.75 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 500, lineHeight: 1.75 }}>
               Future updates ship as new model versions. Assessments currently run under Model RP-1.0.
             </p>
           </div>
@@ -456,18 +460,18 @@ function ModelGovernance() {
             marginTop: 36,
             width: "100%",
             maxWidth: 420,
-            backgroundColor: "#ffffff",
-            border: "1px solid rgba(14,26,43,0.10)",
+            backgroundColor: "rgba(244,241,234,0.08)",
+            border: "1px solid rgba(244,241,234,0.15)",
             borderRadius: 18,
             padding: 28,
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 16px 44px rgba(14,26,43,0.08), 0 2px 8px rgba(14,26,43,0.03)",
+            boxShadow: "0 16px 44px rgba(0,0,0,0.15)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.48s ease-out 80ms, transform 0.48s ease-out 80ms",
           }}
         >
           {/* Top accent */}
-          <div style={{ width: "100%", height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, transparent 60%)", borderRadius: 2, marginBottom: 16 }} />
+          <div style={{ width: "100%", height: 2, background: "linear-gradient(90deg, rgba(244,241,234,0.4) 0%, transparent 60%)", borderRadius: 2, marginBottom: 16 }} />
 
           {/* Panel header */}
           <div
@@ -480,13 +484,13 @@ function ModelGovernance() {
           {/* Version value */}
           <div
             className="text-[24px] md:text-[28px]"
-            style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.01em", marginBottom: 14 }}
+            style={{ color: "#F4F1EA", fontWeight: 600, letterSpacing: "0.01em", marginBottom: 14 }}
           >
             RP-1.0
           </div>
 
           {/* Supporting line */}
-          <p className="text-[15px]" style={{ color: "rgba(14,26,43,0.70)", fontWeight: 400, lineHeight: 1.6 }}>
+          <p className="text-[15px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.6 }}>
             Scoring framework currently in use.
           </p>
         </article>
@@ -748,7 +752,8 @@ function ScoreRegistry() {
               transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms, border-color 0.2s ease, box-shadow 0.2s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
+               if (!canHover()) return;
+e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
               e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.8), 0 24px 72px rgba(14,26,43,0.14), 0 4px 16px rgba(14,26,43,0.06)";
             }}
             onMouseLeave={(e) => {
@@ -806,6 +811,7 @@ function WhyIncomeStabilityMatters() {
   return (
     <section
       ref={ref}
+      aria-label="Why Income Stability Matters"
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
@@ -900,10 +906,10 @@ function WhyIncomeStabilityMatters() {
         {/* Mobile: stack comparison panel */}
         <style>{`
           @media (max-width: 640px) {
-            .max-w-\\[1100px\\] > div:first-child {
+            section[aria-label="Why Income Stability Matters"] > div > div:first-child {
               grid-template-columns: 1fr !important;
             }
-            .max-w-\\[1100px\\] > div:first-child > div:last-child {
+            section[aria-label="Why Income Stability Matters"] > div > div:first-child > div:last-child {
               border-left: none !important;
               border-top: 1px solid rgba(75,63,174,0.20) !important;
             }
@@ -980,11 +986,11 @@ function WhyIncomeStabilityMatters() {
               border: "1px solid rgba(75,63,174,0.90)",
               boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
               transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
-              // @ts-expect-error focus ring
-              "--tw-ring-color": B.teal,
+
             }}
             onMouseEnter={(e) => {
-              const t = e.currentTarget;
+               if (!canHover()) return;
+const t = e.currentTarget;
               t.style.background = "#3D33A0";
               t.style.transform = "translateY(-1px)";
               t.style.boxShadow = "0 12px 32px rgba(75,63,174,0.40)";
@@ -1366,7 +1372,7 @@ function PreviewYourScoreReport() {
         position: "relative",
         overflow: "hidden",
       }}
-    >
+     aria-label="Preview Your Score Report">
 
       <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
         {/* Section header */}
@@ -1506,6 +1512,7 @@ function ScoringFactors() {
   return (
     <section
       ref={sectionRef}
+      aria-label="Six Scoring Factors"
       className="scoring-factors-section relative"
       style={{
         paddingTop: 140,
@@ -1571,7 +1578,8 @@ function ScoringFactors() {
                   overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+                   if (!canHover()) return;
+e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
                   e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
                 }}
@@ -1715,7 +1723,8 @@ function HowItWorks() {
                   transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms, box-shadow 400ms ease, border-color 400ms ease`,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+                   if (!canHover()) return;
+e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
                   e.currentTarget.style.transform = "translateY(-3px)";
                   e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
                 }}
@@ -1919,7 +1928,7 @@ function HeroSection() {
               <Link
                 href="/pricing"
                 className="inline-flex items-center justify-center font-semibold
-                           focus:outline-none focus:ring-2 focus:ring-offset-2"
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F6D7A]"
                 style={{
                   height: 54,
                   paddingLeft: 32,
@@ -1932,11 +1941,11 @@ function HeroSection() {
                   border: "1px solid rgba(75,63,174,0.90)",
                   boxShadow: "0 8px 24px rgba(75,63,174,0.25)",
                   transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
-                  // @ts-expect-error focus ring
-                  "--tw-ring-color": B.teal,
+
                 }}
                 onMouseEnter={(e) => {
-                  const t = e.currentTarget;
+                   if (!canHover()) return;
+const t = e.currentTarget;
                   t.style.background = "#3D33A0";
                   t.style.transform = "translateY(-1px)";
                   t.style.boxShadow = "0 12px 32px rgba(75,63,174,0.35)";
@@ -2107,7 +2116,7 @@ export default function LandingPage() {
 
 
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
-      <section style={{ paddingTop: 120, paddingBottom: 120, position: "relative" }}>
+      <section aria-label="Income Stability Classification Scale" style={{ paddingTop: 120, paddingBottom: 120, position: "relative" }}>
 
         <div className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ position: "relative", zIndex: 1 }}>
           {/* Header */}
@@ -2188,7 +2197,8 @@ export default function LandingPage() {
                   transition: "box-shadow 400ms ease, transform 400ms ease",
                 }}
                 onMouseEnter={(e) => {
-                  if (!tier.active) {
+                   if (!canHover()) return;
+if (!tier.active) {
                     e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.06), 0 12px 40px rgba(14,26,43,0.05)";
                     e.currentTarget.style.transform = "translateY(-2px)";
                   }
@@ -2296,7 +2306,8 @@ export default function LandingPage() {
             flexShrink: 0,
             boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
+          onMouseEnter={(e) => {  if (!canHover()) return;
+e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.25)"; }}
         >
           Get My Income Stability Score
@@ -2326,7 +2337,7 @@ export default function LandingPage() {
       </div>{/* ← end continuous canvas */}
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: 120, paddingBottom: 140 }}>
+      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: 120, paddingBottom: 140 }}>
       <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           Stability Patterns by Industry
@@ -2356,6 +2367,7 @@ export default function LandingPage() {
               >
                 <button
                   onClick={() => setOpenIndustry(isOpen ? null : i)}
+                  aria-expanded={isOpen}
                   className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 transition-colors"
                   style={{ background: isOpen
                     ? (i === 0 ? "linear-gradient(135deg, #0E1A2B 0%, #1a2a3f 100%)"

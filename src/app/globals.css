@@ -73,6 +73,7 @@ body {
   mix-blend-mode: soft-light;
 }
 
+
 /* Form elements */
 select, input[type="text"], input[type="email"] {
   @apply w-full border border-gray-300 rounded px-3 py-2.5 sm:py-2 text-base sm:text-sm bg-white;
