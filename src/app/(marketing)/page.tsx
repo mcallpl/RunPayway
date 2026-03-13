@@ -2333,54 +2333,62 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ============ MID-PAGE CONVERSION STRIP ============ */}
-      <div
-        className="conversion-strip"
-        style={{
-          background: "#F4F1EA",
-          border: "1px solid rgba(14,26,43,0.08)",
-          padding: "22px 40px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: 920,
-          margin: "0 auto",
-          borderRadius: 14,
-        }}
-      >
-        <p
-          style={{
-            fontWeight: 500,
-            fontSize: 16,
-            color: "#0E1A2B",
-            margin: 0,
-          }}
-        >
-          Measure your Income Stability in under 2 minutes.
-        </p>
-        <Link
-          href="/pricing"
-          className="conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
-                     focus:outline-none focus:ring-2"
-          style={{
-            height: 40,
-            paddingLeft: 18,
-            paddingRight: 18,
-            borderRadius: 10,
-            background: "#0E1A2B",
-            color: "#F4F1EA",
-            fontSize: 14,
-            border: "none",
-            transition: "background-color 180ms ease",
-            flexShrink: 0,
-            // @ts-expect-error focus ring
-            "--tw-ring-color": "#1F6D7A",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = "#0E1A2B"; }}
-        >
-          Get My Income Stability Score
-        </Link>
+      {/* ============ MID-PAGE CONVERSION STRIP — Teal Band ============ */}
+      <div style={{ position: "relative" }}>
+        {/* Top fade: sand → teal */}
+        <div style={{ height: 64, background: `linear-gradient(180deg, #F4F1EA 0%, ${B.teal} 100%)` }} />
+
+        {/* Teal band */}
+        <div style={{ background: B.teal, paddingTop: 32, paddingBottom: 32 }}>
+          <div
+            className="conversion-strip"
+            style={{
+              padding: "0 40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              maxWidth: 920,
+              margin: "0 auto",
+            }}
+          >
+            <p
+              style={{
+                fontWeight: 500,
+                fontSize: 16,
+                color: "#ffffff",
+                margin: 0,
+              }}
+            >
+              Measure your Income Stability in under 2 minutes.
+            </p>
+            <Link
+              href="/pricing"
+              className="conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
+                         focus:outline-none focus:ring-2"
+              style={{
+                height: 40,
+                paddingLeft: 18,
+                paddingRight: 18,
+                borderRadius: 10,
+                background: "#ffffff",
+                color: B.teal,
+                fontSize: 14,
+                border: "none",
+                transition: "background-color 180ms ease, color 180ms ease",
+                flexShrink: 0,
+                // @ts-expect-error focus ring
+                "--tw-ring-color": "#ffffff",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = B.navy; e.currentTarget.style.color = "#ffffff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "#ffffff"; e.currentTarget.style.color = B.teal; }}
+            >
+              Get My Income Stability Score
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom fade: teal → sand */}
+        <div style={{ height: 64, background: `linear-gradient(180deg, ${B.teal} 0%, #F4F1EA 100%)` }} />
       </div>
 
       <style>{`
@@ -2389,7 +2397,7 @@ export default function LandingPage() {
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 14px;
-            padding: 22px 24px !important;
+            padding: 0 24px !important;
           }
           .conversion-strip p {
             font-size: 15px !important;
