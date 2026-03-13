@@ -1619,7 +1619,6 @@ function HowItWorks() {
       const rect = el.getBoundingClientRect();
       const sectionH = el.offsetHeight;
       const vh = window.innerHeight;
-      // progress: 0 when top of section hits bottom of viewport, 1 when bottom of section hits top
       const raw = (vh - rect.top) / (sectionH + vh);
       setProgress(Math.max(0, Math.min(1, raw)));
     };
@@ -1628,16 +1627,24 @@ function HowItWorks() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Map progress ranges to 0→1 for each element
   const ease = (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
-  const headerP = rangeMap(0.10, 0.25);
-  const step1P  = rangeMap(0.22, 0.38);
-  const step2P  = rangeMap(0.34, 0.50);
-  const step3P  = rangeMap(0.46, 0.62);
-  const lineP   = rangeMap(0.38, 0.58);
-  const footerP = rangeMap(0.58, 0.70);
+  /* Phase 1: Giant title shrinks — 0.08 → 0.30 */
+  const shrinkP = rangeMap(0.08, 0.30);
+  /* Title starts at 6x (252px) and settles to 42px */
+  const titleScale = 6 - shrinkP * 5; /* 6 → 1 */
+  /* Title starts vertically centered, moves up to header position */
+  const titleYOffset = (1 - shrinkP) * 120; /* 120px → 0 */
+
+  /* Phase 2: Supporting elements fade in after title settles */
+  const labelP   = rangeMap(0.26, 0.36);
+  const subP     = rangeMap(0.30, 0.40);
+  const step1P   = rangeMap(0.38, 0.50);
+  const step2P   = rangeMap(0.48, 0.58);
+  const step3P   = rangeMap(0.56, 0.66);
+  const lineP    = rangeMap(0.50, 0.64);
+  const footerP  = rangeMap(0.64, 0.74);
 
   const steps = [
     {
@@ -1665,26 +1672,25 @@ function HowItWorks() {
       ref={sectionRef}
       className="relative"
       style={{
-        /* Tall section creates scroll runway — sticky child pins the visible content */
-        height: "300vh",
+        height: "500vh",
         backgroundColor: B.navy,
       }}
     >
-      {/* Top curve — organic wave transition */}
+      {/* Top curve */}
       <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
           <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill={B.navy} />
         </svg>
       </div>
 
-      {/* Bottom curve — mirrored organic wave */}
+      {/* Bottom curve */}
       <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
           <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.navy} />
         </svg>
       </div>
 
-      {/* Sticky pinned content — stays centered while section scrolls */}
+      {/* Sticky viewport — pinned while section scrolls */}
       <div
         className="navy-grain"
         style={{
@@ -1703,36 +1709,54 @@ function HowItWorks() {
         <div style={{ position: "absolute", bottom: "-10%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
         <div className="relative mx-auto px-6 md:px-10 w-full" style={{ maxWidth: 1100 }}>
-          {/* Header — fades + slides in first */}
-          <div
-            className="text-center"
-            style={{
-              marginBottom: 72,
-              opacity: headerP,
-              transform: `translateY(${(1 - headerP) * 30}px)`,
-            }}
-          >
+          {/* Header block */}
+          <div className="text-center" style={{ marginBottom: 72 }}>
+            {/* "ASSESSMENT PROCESS" label — fades in after title shrinks */}
             <div
               className="font-medium uppercase text-[11px]"
-              style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}
+              style={{
+                letterSpacing: "0.14em",
+                color: B.teal,
+                marginBottom: 16,
+                opacity: labelP,
+                transform: `translateY(${(1 - labelP) * 12}px)`,
+              }}
             >
               Assessment Process
             </div>
+
+            {/* "How It Works" — starts massive, shrinks to normal */}
             <h2
-              className="text-[30px] md:text-[42px] font-semibold"
-              style={{ color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16 }}
+              className="font-semibold"
+              style={{
+                color: "#F4F1EA",
+                letterSpacing: "-0.02em",
+                marginBottom: 16,
+                fontSize: 42,
+                transform: `scale(${titleScale}) translateY(${titleYOffset}px)`,
+                transformOrigin: "center center",
+                willChange: "transform",
+              }}
             >
               How It Works
             </h2>
+
+            {/* Subtitle — fades in after title settles */}
             <p
               className="text-[17px] md:text-[18px] mx-auto"
-              style={{ color: "rgba(244,241,234,0.55)", lineHeight: 1.7, maxWidth: 480 }}
+              style={{
+                color: "rgba(244,241,234,0.55)",
+                lineHeight: 1.7,
+                maxWidth: 480,
+                opacity: subP,
+                transform: `translateY(${(1 - subP) * 20}px)`,
+              }}
             >
               A structured diagnostic built on six dimensions of income health.
             </p>
           </div>
 
-          {/* 3 steps — each driven by its own scroll progress */}
+          {/* 3 steps — flow in sequentially after header settles */}
           <div
             className="grid grid-cols-1 md:grid-cols-3"
             style={{ gap: 24, maxWidth: 960, margin: "0 auto", position: "relative" }}
@@ -1751,7 +1775,7 @@ function HowItWorks() {
                   WebkitBackdropFilter: "blur(12px)",
                   boxShadow: `inset 0 1px 0 rgba(244,241,234,${step.p * 0.06}), 0 ${4 + step.p * 8}px ${16 + step.p * 20}px rgba(0,0,0,${0.10 + step.p * 0.15})`,
                   opacity: step.p,
-                  transform: `translateY(${(1 - step.p) * 40}px) scale(${0.95 + step.p * 0.05})`,
+                  transform: `translateY(${(1 - step.p) * 50}px) scale(${0.92 + step.p * 0.08})`,
                 }}
                 onMouseEnter={(e) => {
                   if (step.p < 0.8) return;
@@ -1802,7 +1826,7 @@ function HowItWorks() {
               </article>
             ))}
 
-            {/* Connector line between cards — desktop only, grows with scroll */}
+            {/* Connector line — desktop only */}
             <div
               className="hidden md:block absolute"
               style={{
