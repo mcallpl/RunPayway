@@ -173,7 +173,7 @@ function Disclaimer() {
         <h2
           className="font-semibold uppercase text-[11px] md:text-[12px]"
           style={{
-            color: B.teal,
+            color: "#ffffff",
             letterSpacing: "0.12em",
             marginBottom: 12,
           }}
