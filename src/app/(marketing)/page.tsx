@@ -2285,12 +2285,15 @@ if (!tier.active) {
       <div
         className="conversion-strip"
         style={{
-          padding: "80px 40px",
+          padding: "28px 36px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          maxWidth: 920,
+          maxWidth: 780,
           margin: "0 auto",
+          border: "1px solid rgba(14,26,43,0.08)",
+          borderRadius: 16,
+          backgroundColor: "rgba(255,255,255,0.6)",
         }}
       >
         <p
@@ -2333,8 +2336,10 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
           .conversion-strip {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 14px;
-            padding: 48px 24px !important;
+            gap: 16px;
+            padding: 24px 24px !important;
+            margin-left: 20px !important;
+            margin-right: 20px !important;
           }
           .conversion-strip p {
             font-size: 15px !important;
