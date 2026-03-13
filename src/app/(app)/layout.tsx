@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import logoImg from "../../../public/runpayway-logo.png";
 
 export default function AppLayout({
   children,
@@ -13,7 +14,7 @@ export default function AppLayout({
           <div>
             <Link href="/" className="hover:opacity-70 transition-opacity cursor-pointer inline-flex items-center">
               <Image
-                src="/runpayway-logo.png"
+                src={logoImg}
                 alt="RunPayway"
                 width={140}
                 height={17}

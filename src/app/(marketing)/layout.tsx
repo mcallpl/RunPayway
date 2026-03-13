@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import logoImg from "../../../public/runpayway-logo.png";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -58,7 +59,7 @@ export default function MarketingLayout({
               style={{ display: "flex", alignItems: "center" }}
             >
               <Image
-                src="/runpayway-logo.png"
+                src={logoImg}
                 alt="RunPayway"
                 width={180}
                 height={21}
@@ -265,7 +266,7 @@ export default function MarketingLayout({
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <Image
-                src="/runpayway-logo.png"
+                src={logoImg}
                 alt="RunPayway"
                 width={160}
                 height={19}
