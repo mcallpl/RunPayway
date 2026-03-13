@@ -1631,43 +1631,34 @@ function HowItWorks() {
   const rangeMap = (lo: number, hi: number) => ease(Math.max(0, Math.min(1, (progress - lo) / (hi - lo))));
 
   /*
-   * Cognitive timeline — 400vh total scroll, mapped to 0→1 progress.
-   * Every element gets its own window. No overlaps. No dead zones.
+   * Compressed timeline — everything lands by progress ~0.45.
+   * After that the sticky pin holds the completed view as user scrolls.
    *
-   * 0.12–0.14  Title appears at full scale (fade in)
-   * 0.14–0.18  HOLD — giant title sits, eye locks on
-   * 0.18–0.38  Title shrinks 6x → 1x (the main event)
-   * 0.38–0.42  BREATHE — title settled, nothing moves
-   * 0.42–0.48  Label + subtitle fade in together
-   * 0.48–0.50  BREATHE
-   * 0.50–0.58  Step 1 — full attention
-   * 0.58–0.60  BREATHE
-   * 0.60–0.68  Step 2 — full attention
-   * 0.68–0.70  BREATHE
-   * 0.70–0.78  Step 3 — full attention
-   * 0.78–0.82  Connector line + model reference
-   * 0.82–0.88  Everything fully visible, section releases
+   * 0.10–0.13  Title fades in at 6x
+   * 0.13–0.15  HOLD — eye locks
+   * 0.15–0.25  Title shrinks 6x → 1x
+   * 0.25–0.28  Label + subtitle
+   * 0.28–0.33  Step 1
+   * 0.33–0.38  Step 2
+   * 0.38–0.43  Step 3
+   * 0.40–0.45  Connector + footer
+   * 0.45+       Locked — everything visible, section holds
    */
 
-  /* Title fade-in (arrives big) */
-  const titleFadeP = rangeMap(0.12, 0.16);
-  /* Title shrink — HOLD at full scale until 0.18, then shrink */
-  const shrinkP = rangeMap(0.18, 0.38);
+  const titleFadeP = rangeMap(0.10, 0.13);
+  const shrinkP = rangeMap(0.15, 0.25);
   const titleScale = 6 - shrinkP * 5;
   const titleYOffset = (1 - shrinkP) * 120;
 
-  /* Supporting elements — after the breathe at 0.42 */
-  const labelP   = rangeMap(0.42, 0.48);
-  const subP     = rangeMap(0.44, 0.50);
+  const labelP   = rangeMap(0.25, 0.29);
+  const subP     = rangeMap(0.26, 0.30);
 
-  /* Steps — each gets dedicated 8% window with 2% gap between */
-  const step1P   = rangeMap(0.52, 0.60);
-  const step2P   = rangeMap(0.62, 0.70);
-  const step3P   = rangeMap(0.72, 0.80);
+  const step1P   = rangeMap(0.29, 0.34);
+  const step2P   = rangeMap(0.34, 0.39);
+  const step3P   = rangeMap(0.39, 0.44);
 
-  /* Connector + footer — arrive with/after step 3 */
-  const lineP    = rangeMap(0.68, 0.78);
-  const footerP  = rangeMap(0.78, 0.84);
+  const lineP    = rangeMap(0.36, 0.42);
+  const footerP  = rangeMap(0.42, 0.46);
 
   const steps = [
     {
