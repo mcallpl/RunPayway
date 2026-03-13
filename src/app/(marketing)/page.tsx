@@ -241,16 +241,16 @@ function FinalCta() {
     <section
       ref={ref}
       aria-label="Get Your Income Stability Score"
-      className="relative overflow-hidden navy-grain"
+      className="relative navy-grain"
       style={{ background: `linear-gradient(180deg, ${B.navy} 0%, #1A1540 40%, ${B.purple} 100%)` }}
     >
       {/* Ambient glows */}
       <div style={{ position: "absolute", top: "-25%", left: "50%", width: 800, height: 800, borderRadius: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 60%)", pointerEvents: "none" }} />
 
       {/* Concentric scoring halos */}
-      <div className="absolute pointer-events-none" style={{ width: 280, height: 280, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.06)", top: "40%", left: "50%", transform: "translate(-50%, -50%)" }} />
-      <div className="absolute pointer-events-none" style={{ width: 460, height: 460, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.07)", top: "40%", left: "50%", transform: "translate(-50%, -50%)" }} />
-      <div className="absolute pointer-events-none" style={{ width: 640, height: 640, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.04)", top: "40%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.06)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 520, height: 520, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.08)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 720, height: 720, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.04)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
 
       <div
         className="relative mx-auto text-center"
