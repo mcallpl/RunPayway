@@ -220,15 +220,15 @@ function FinalCta() {
       ref={ref}
       aria-label="Get Your Income Stability Score"
       className="relative overflow-hidden navy-grain"
-      style={{ background: B.navy }}
+      style={{ background: `linear-gradient(180deg, ${B.navy} 0%, #1A1540 40%, ${B.purple} 100%)` }}
     >
       {/* Ambient glows */}
-      <div style={{ position: "absolute", top: "-25%", left: "50%", width: 800, height: 800, borderRadius: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(75,63,174,0.10) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-25%", left: "50%", width: 800, height: 800, borderRadius: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 60%)", pointerEvents: "none" }} />
 
       {/* Concentric scoring halos */}
-      <div className="absolute pointer-events-none" style={{ width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.06)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
-      <div className="absolute pointer-events-none" style={{ width: 520, height: 520, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.08)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
-      <div className="absolute pointer-events-none" style={{ width: 720, height: 720, borderRadius: "50%", border: "1px solid rgba(75,63,174,0.04)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.06)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 520, height: 520, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.08)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+      <div className="absolute pointer-events-none" style={{ width: 720, height: 720, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.04)", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
 
       <div
         className="relative mx-auto text-center"
@@ -375,7 +375,7 @@ function FinalCta() {
       {/* Bottom wave transition */}
       <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
+          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.purple} />
         </svg>
       </div>
     </section>
