@@ -51,6 +51,18 @@ function useInViewBidi(threshold = 0.1) {
   return { ref, visible };
 }
 
+/* Runtime mobile detection — bypasses CSS entirely */
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return mobile;
+}
+
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
@@ -140,6 +152,7 @@ const FAQ_ITEMS = [
 /* ------------------------------------------------------------------ */
 function Disclaimer() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   return (
     <section
@@ -149,11 +162,13 @@ function Disclaimer() {
       style={{ background: B.navy }}
     >
       <div
-        className="relative mx-auto px-6 md:px-8 lg:px-10"
+        className="relative mx-auto"
         style={{
           maxWidth: 920,
-          paddingTop: 64,
-          paddingBottom: 64,
+          paddingTop: mobile ? 48 : 64,
+          paddingBottom: mobile ? 48 : 64,
+          paddingLeft: mobile ? 24 : undefined,
+          paddingRight: mobile ? 24 : undefined,
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(8px)",
           transition: "opacity 360ms ease-out, transform 360ms ease-out",
@@ -236,6 +251,7 @@ function Disclaimer() {
 /* ------------------------------------------------------------------ */
 function FinalCta() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   return (
     <section
@@ -256,10 +272,10 @@ function FinalCta() {
         className="relative mx-auto text-center"
         style={{
           maxWidth: 980,
-          paddingTop: 156,
-          paddingBottom: 156,
-          paddingLeft: 40,
-          paddingRight: 40,
+          paddingTop: mobile ? 80 : 156,
+          paddingBottom: mobile ? 80 : 156,
+          paddingLeft: mobile ? 24 : 40,
+          paddingRight: mobile ? 24 : 40,
         }}
       >
         <div
@@ -303,11 +319,11 @@ function FinalCta() {
             <a
               href="/pricing"
               className="inline-flex items-center justify-center font-semibold
-                         w-full md:w-auto
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
-                height: 56,
-                minWidth: 320,
+                height: mobile ? 52 : 56,
+                minWidth: mobile ? 0 : 320,
+                width: mobile ? "100%" : "auto",
                 paddingLeft: 28,
                 paddingRight: 28,
                 borderRadius: 16,
@@ -410,6 +426,7 @@ const t = e.currentTarget;
 /* ------------------------------------------------------------------ */
 function ModelGovernance() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   return (
     <section
@@ -417,13 +434,13 @@ function ModelGovernance() {
       aria-label="Model Governance"
       style={{
         backgroundColor: B.purple,
-        paddingTop: 160,
-        paddingBottom: 148,
+        paddingTop: mobile ? 80 : 160,
+        paddingBottom: mobile ? 80 : 148,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Title + text */}
         <div
           style={{
@@ -464,7 +481,7 @@ function ModelGovernance() {
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
-            padding: 28,
+            padding: mobile ? 22 : 28,
             boxShadow: "0 16px 44px rgba(0,0,0,0.08)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -505,6 +522,7 @@ function ModelGovernance() {
 /* ------------------------------------------------------------------ */
 function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   const faqItems = [
     {
@@ -536,8 +554,8 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
-        paddingTop: 152,
-        paddingBottom: 152,
+        paddingTop: mobile ? 80 : 152,
+        paddingBottom: mobile ? 80 : 152,
         position: "relative",
         overflow: "hidden",
       }}
@@ -560,19 +578,20 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-15%", left: "-8%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-      <div className="max-w-[980px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Header */}
         <div
-          className="text-center md:text-center"
           style={{
+            textAlign: mobile ? "left" : "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
           <h2
-            className="text-[32px] md:text-[40px] text-left md:text-center"
             style={{
+              textAlign: mobile ? "left" : "center",
+              fontSize: mobile ? 32 : 40,
               color: "#F4F1EA",
               fontWeight: 600,
               lineHeight: 1.12,
@@ -583,12 +602,14 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
             Frequently Asked Questions
           </h2>
           <p
-            className="text-[16px] md:text-[18px] text-left md:text-center mx-auto"
             style={{
+              textAlign: mobile ? "left" : "center",
+              fontSize: mobile ? 16 : 18,
               color: "rgba(244,241,234,0.78)",
               fontWeight: 400,
               lineHeight: 1.7,
               maxWidth: 680,
+              margin: "0 auto",
               marginBottom: 64,
             }}
           >
@@ -660,7 +681,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                       lineHeight: 1.75,
                       maxWidth: 680,
                       paddingTop: 14,
-                      paddingRight: 48,
+                      paddingRight: mobile ? 16 : 48,
                       paddingBottom: 20,
                     }}
                   >
@@ -681,6 +702,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 /* ------------------------------------------------------------------ */
 function ScoreRegistry() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   const fields = [
     { label: "Registry ID", value: "RP-A7E2F1B3" },
@@ -695,16 +717,15 @@ function ScoreRegistry() {
       aria-label="Score Registry"
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: 160,
-        paddingBottom: 152,
+        paddingTop: mobile ? 80 : 160,
+        paddingBottom: mobile ? 80 : 152,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         <div
-          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,420px)]"
-          style={{ columnGap: 88, rowGap: 36, alignItems: "start" }}
+          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "minmax(0,1.05fr) minmax(360px,420px)", columnGap: mobile ? 0 : 88, rowGap: 36, alignItems: "start" }}
         >
           {/* Left column — editorial text */}
           <div
@@ -745,7 +766,7 @@ function ScoreRegistry() {
               backgroundColor: "#ffffff",
               border: "1px solid rgba(14,26,43,0.08)",
               borderRadius: 20,
-              padding: 32,
+              padding: mobile ? 24 : 32,
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.04)",
               position: "relative",
               overflow: "hidden",
@@ -810,6 +831,7 @@ e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
 /* ------------------------------------------------------------------ */
 function WhyIncomeStabilityMatters() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   return (
     <section
@@ -818,8 +840,8 @@ function WhyIncomeStabilityMatters() {
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
-        paddingTop: 160,
-        paddingBottom: 160,
+        paddingTop: mobile ? 80 : 160,
+        paddingBottom: mobile ? 80 : 160,
         position: "relative",
         overflow: "hidden",
       }}
@@ -842,15 +864,15 @@ function WhyIncomeStabilityMatters() {
         </svg>
       </div>
 
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Comparison panel — elevated, full-width */}
         <div
           className="mx-auto"
           style={{
             maxWidth: 820,
-            marginBottom: 72,
+            marginBottom: mobile ? 48 : 72,
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
             gap: 0,
             borderRadius: 20,
             overflow: "hidden",
@@ -862,7 +884,7 @@ function WhyIncomeStabilityMatters() {
           }}
         >
           {/* Credit Score side */}
-          <div style={{ padding: "36px 36px 40px", backgroundColor: "rgba(255,255,255,0.03)" }}>
+          <div style={{ padding: mobile ? "28px 24px 32px" : "36px 36px 40px", backgroundColor: "rgba(255,255,255,0.03)" }}>
             <div
               className="text-[11px] uppercase"
               style={{ color: "rgba(244,241,234,0.40)", fontWeight: 500, letterSpacing: "0.12em", marginBottom: 14 }}
@@ -884,7 +906,7 @@ function WhyIncomeStabilityMatters() {
           </div>
 
           {/* Income Stability Score side */}
-          <div style={{ padding: "36px 36px 40px", backgroundColor: "rgba(75,63,174,0.12)", borderLeft: "1px solid rgba(75,63,174,0.20)" }}>
+          <div style={{ padding: mobile ? "28px 24px 32px" : "36px 36px 40px", backgroundColor: "rgba(75,63,174,0.12)", borderLeft: mobile ? "none" : "1px solid rgba(75,63,174,0.20)", borderTop: mobile ? "1px solid rgba(75,63,174,0.20)" : "none" }}>
             <div
               className="text-[11px] uppercase"
               style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 14 }}
@@ -905,22 +927,6 @@ function WhyIncomeStabilityMatters() {
             </p>
           </div>
         </div>
-
-        {/* Mobile: stack comparison panel */}
-        <style>{`
-          @media (max-width: 640px) {
-            section[aria-label="Why Income Stability Matters"] > div > div:first-child {
-              grid-template-columns: 1fr !important;
-            }
-            section[aria-label="Why Income Stability Matters"] > div > div:first-child > div {
-              padding: 28px 24px 32px !important;
-            }
-            section[aria-label="Why Income Stability Matters"] > div > div:first-child > div:last-child {
-              border-left: none !important;
-              border-top: 1px solid rgba(75,63,174,0.20) !important;
-            }
-          }
-        `}</style>
 
         {/* Title */}
         <h2
@@ -978,10 +984,11 @@ function WhyIncomeStabilityMatters() {
           {/* CTA Button */}
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center font-semibold w-full sm:w-auto
+            className="inline-flex items-center justify-center font-semibold
                        focus:outline-none focus:ring-2 focus:ring-offset-2"
             style={{
               height: 52,
+              width: mobile ? "100%" : "auto",
               paddingLeft: 28,
               paddingRight: 28,
               borderRadius: 12,
@@ -1022,6 +1029,7 @@ const t = e.currentTarget;
 /* ------------------------------------------------------------------ */
 function PreviewYourScoreReport() {
   const { ref, visible } = useInView();
+  const mobile = useMobile();
   const [activePage, setActivePage] = useState(0);
   const pages = ["Executive Assessment", "Structural Analysis", "Improvement Path"];
 
@@ -1373,14 +1381,14 @@ function PreviewYourScoreReport() {
     <section
       ref={ref}
       style={{
-        paddingTop: 120,
-        paddingBottom: 140,
+        paddingTop: mobile ? 72 : 120,
+        paddingBottom: mobile ? 80 : 140,
         position: "relative",
         overflow: "hidden",
       }}
      aria-label="Preview Your Score Report">
 
-      <div className="max-w-[1100px] mx-auto px-6 md:px-10" style={{ position: "relative", zIndex: 1 }}>
+      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Section header */}
         <h2
           className="text-[32px] md:text-[40px]"
@@ -1416,8 +1424,8 @@ function PreviewYourScoreReport() {
                 onClick={() => setActivePage(i)}
                 style={{
                   flex: 1,
-                  padding: "14px 16px",
-                  fontSize: 13,
+                  padding: mobile ? "10px 8px" : "14px 16px",
+                  fontSize: mobile ? 11 : 13,
                   fontWeight: 600,
                   letterSpacing: "0.01em",
                   border: "1px solid rgba(14,26,43,0.10)",
@@ -1433,7 +1441,7 @@ function PreviewYourScoreReport() {
                   marginLeft: i > 0 ? -1 : 0,
                 }}
               >
-                <span className="hidden sm:inline">Page {i + 1}: </span>{label}
+                {!mobile && <span>Page {i + 1}: </span>}{label}
               </button>
             );
           })}
@@ -1452,7 +1460,7 @@ function PreviewYourScoreReport() {
             border: "1px solid rgba(14,26,43,0.10)",
             borderTop: "none",
             borderRadius: "0 0 18px 18px",
-            padding: "36px 40px 44px 40px",
+            padding: mobile ? "24px 20px 28px 20px" : "36px 40px 44px 40px",
             boxShadow: "0 24px 80px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.04)",
             position: "relative",
           }}
@@ -1480,6 +1488,7 @@ function PreviewYourScoreReport() {
 /* ------------------------------------------------------------------ */
 function ScoringFactors() {
   const { ref: sectionRef, visible } = useInView();
+  const mobile = useMobile();
   const headerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -1521,18 +1530,18 @@ function ScoringFactors() {
       aria-label="Six Scoring Factors"
       className="scoring-factors-section relative"
       style={{
-        paddingTop: 140,
-        paddingBottom: 140,
+        paddingTop: mobile ? 80 : 140,
+        paddingBottom: mobile ? 80 : 140,
       }}
     >
 
-      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100, position: "relative", zIndex: 1 }}>
+      <div className="mx-auto" style={{ maxWidth: 1100, position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Sticky header — parallax drift */}
         <div
           ref={headerRef}
           className="text-center"
           style={{
-            marginBottom: 80,
+            marginBottom: mobile ? 40 : 80,
             opacity: titleOpacity,
             transform: `translateY(${visible ? titleY : 30}px) scale(${visible ? titleScale : 0.92})`,
             transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
@@ -1561,8 +1570,7 @@ function ScoringFactors() {
 
         {/* Factor grid: 2 cols desktop, 1 col mobile */}
         <div
-          className="grid grid-cols-1 md:grid-cols-2"
-          style={{ gap: 18, maxWidth: 920, margin: "0 auto" }}
+          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 18, maxWidth: 920, margin: "0 auto" }}
         >
           {factors.map((factor, i) => {
             const row = Math.floor(i / 2);
@@ -1575,7 +1583,7 @@ function ScoringFactors() {
                   position: "relative",
                   backgroundColor: "#ffffff",
                   borderRadius: 16,
-                  padding: "32px 32px 36px 32px",
+                  padding: mobile ? "24px 24px 28px 24px" : "32px 32px 36px 32px",
                   border: "1px solid rgba(14,26,43,0.06)",
                   boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                   opacity: visible ? 1 : 0,
@@ -1643,6 +1651,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
   const { ref, visible } = useInViewBidi(0.15);
+  const mobile = useMobile();
 
   const steps = [
     {
@@ -1666,11 +1675,11 @@ function HowItWorks() {
     <section
       ref={ref}
       aria-label="How It Works"
-      style={{ paddingTop: 120, paddingBottom: 120, background: "#ffffff" }}
+      style={{ paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, background: "#ffffff" }}
     >
-      <div className="mx-auto px-6 md:px-10" style={{ maxWidth: 1100 }}>
+      <div className="mx-auto" style={{ maxWidth: 1100, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         {/* Header */}
-        <div className="text-center" style={{ marginBottom: 56 }}>
+        <div className="text-center" style={{ marginBottom: mobile ? 36 : 56 }}>
           <div
             className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4"
             style={{
@@ -1710,8 +1719,7 @@ function HowItWorks() {
 
         {/* 3 step cards */}
         <div
-          className="grid grid-cols-1 md:grid-cols-3"
-          style={{ gap: 20, maxWidth: 960, margin: "0 auto" }}
+          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 20, maxWidth: 960, margin: "0 auto" }}
         >
           {steps.map((step, i) => {
             const delay = 300 + i * 120;
@@ -1722,7 +1730,7 @@ function HowItWorks() {
                 style={{
                   backgroundColor: "#ffffff",
                   borderRadius: 16,
-                  padding: "36px 28px 40px",
+                  padding: mobile ? "28px 24px 32px" : "36px 28px 40px",
                   border: "1px solid rgba(14,26,43,0.06)",
                   boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                   opacity: visible ? 1 : 0,
@@ -1789,6 +1797,7 @@ function HeroSection() {
   const [hasAnimated, setHasAnimated] = useState(false);
   const [cardVisible, setCardVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const mobile = useMobile();
 
   useEffect(() => {
     const el = heroRef.current;
@@ -1844,10 +1853,10 @@ function HeroSection() {
       />
 
       <div
-        className="relative mx-auto px-6 md:px-10 lg:px-12 pt-[72px] md:pt-[140px] pb-[56px] md:pb-[160px]"
-        style={{ maxWidth: 1200 }}
+        className="relative mx-auto"
+        style={{ maxWidth: 1200, paddingTop: mobile ? 72 : 140, paddingBottom: mobile ? 56 : 160, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}
       >
-        <div className="flex flex-col lg:flex-row lg:items-center gap-6 md:gap-[80px]">
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 80 }}>
           {/* Left — Copy + CTA */}
           <div className="flex-1 lg:max-w-[560px]">
             {/* Eyebrow */}
@@ -1866,8 +1875,9 @@ function HeroSection() {
             </div>
 
             <h1
-              className="text-[34px] sm:text-[38px] md:text-[52px] lg:text-[58px] font-semibold"
+              className="font-semibold"
               style={{
+                fontSize: mobile ? 34 : 58,
                 color: B.navy,
                 lineHeight: 1.08,
                 letterSpacing: "-0.03em",
@@ -1935,10 +1945,11 @@ function HeroSection() {
             >
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center font-semibold w-full sm:w-auto
+                className="inline-flex items-center justify-center font-semibold
                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F6D7A]"
                 style={{
                   height: 54,
+                  width: mobile ? "100%" : "auto",
                   paddingLeft: 32,
                   paddingRight: 32,
                   borderRadius: 12,
@@ -1980,62 +1991,30 @@ const t = e.currentTarget;
 
           {/* Right — Floating Score (no card) */}
           <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative" }}>
-            {/* Very faint radial glow behind the score */}
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                width: 500,
-                height: 500,
-                borderRadius: "50%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                background: "radial-gradient(circle, rgba(75,63,174,0.035) 0%, transparent 60%)",
-              }}
-            />
-
-            {/* Concentric scoring rings */}
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                width: 380,
-                height: 380,
-                borderRadius: "50%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                border: "1.5px solid rgba(75,63,174,0.06)",
-              }}
-            />
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                width: 260,
-                height: 260,
-                borderRadius: "50%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                border: "1px solid rgba(75,63,174,0.05)",
-              }}
-            />
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                width: 160,
-                height: 160,
-                borderRadius: "50%",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                border: "1px solid rgba(75,63,174,0.04)",
-              }}
-            />
+            {/* Very faint radial glow + scoring rings — hidden on mobile */}
+            {!mobile && (
+              <>
+                <div
+                  className="absolute pointer-events-none"
+                  style={{
+                    width: 500, height: 500, borderRadius: "50%",
+                    top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+                    background: "radial-gradient(circle, rgba(75,63,174,0.035) 0%, transparent 60%)",
+                  }}
+                />
+                <div className="absolute pointer-events-none" style={{ width: 380, height: 380, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1.5px solid rgba(75,63,174,0.06)" }} />
+                <div className="absolute pointer-events-none" style={{ width: 260, height: 260, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1px solid rgba(75,63,174,0.05)" }} />
+                <div className="absolute pointer-events-none" style={{ width: 160, height: 160, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1px solid rgba(75,63,174,0.04)" }} />
+              </>
+            )}
 
             {/* Score typography — floating in space */}
             <div
-              className="relative text-center lg:text-right py-0 md:py-10"
+              className="relative"
               style={{
+                textAlign: mobile ? "center" : "right",
+                paddingTop: mobile ? 0 : 40,
+                paddingBottom: mobile ? 0 : 40,
                 opacity: cardVisible ? 1 : 0,
                 transform: cardVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
@@ -2055,8 +2034,9 @@ const t = e.currentTarget;
 
               {/* Score number — gradient text */}
               <div
-                className="text-[64px] sm:text-[100px] md:text-[128px] lg:text-[148px] font-semibold leading-none"
+                className="font-semibold leading-none"
                 style={{
+                  fontSize: mobile ? 64 : 148,
                   background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -2085,15 +2065,6 @@ const t = e.currentTarget;
       </div>
 
       {/* No divider — flows into classification */}
-
-      {/* Mobile overrides */}
-      <style>{`
-        @media (max-width: 768px) {
-          section[aria-label="Hero"] .flex-1.flex .absolute.pointer-events-none {
-            display: none !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
@@ -2104,6 +2075,7 @@ const t = e.currentTarget;
 export default function LandingPage() {
   const [openIndustry, setOpenIndustry] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const mobile = useMobile();
 
   return (
     <div className="overflow-x-hidden">
@@ -2122,11 +2094,11 @@ export default function LandingPage() {
 
 
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
-      <section aria-label="Income Stability Classification Scale" style={{ paddingTop: 120, paddingBottom: 120, position: "relative" }}>
+      <section aria-label="Income Stability Classification Scale" style={{ paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, position: "relative" }}>
 
-        <div className="max-w-[1100px] mx-auto px-5 sm:px-6" style={{ position: "relative", zIndex: 1 }}>
+        <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
           {/* Header */}
-          <div className="text-center" style={{ marginBottom: 56 }}>
+          <div className="text-center" style={{ marginBottom: mobile ? 36 : 56 }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
               Official Scoring Framework · Model RP-1.0
             </div>
@@ -2181,7 +2153,7 @@ export default function LandingPage() {
           </div>
 
           {/* Four tier cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: 16, maxWidth: 880, margin: "24px auto 0" }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)", gap: 16, maxWidth: 880, margin: "24px auto 0" }}>
             {[
               { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", active: false },
               { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", active: false },
@@ -2277,12 +2249,16 @@ if (!tier.active) {
       <div
         className="conversion-strip"
         style={{
-          padding: "28px 36px",
+          padding: mobile ? "24px 24px" : "28px 36px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: mobile ? "column" : "row",
+          alignItems: mobile ? "flex-start" : "center",
           justifyContent: "space-between",
+          gap: mobile ? 16 : undefined,
           maxWidth: 780,
           margin: "0 auto",
+          marginLeft: mobile ? 20 : "auto",
+          marginRight: mobile ? 20 : "auto",
           border: "1px solid rgba(14,26,43,0.08)",
           borderRadius: 16,
           backgroundColor: "rgba(255,255,255,0.6)",
@@ -2291,7 +2267,7 @@ if (!tier.active) {
         <p
           style={{
             fontWeight: 500,
-            fontSize: 16,
+            fontSize: mobile ? 15 : 16,
             color: B.navy,
             margin: 0,
           }}
@@ -2313,6 +2289,7 @@ if (!tier.active) {
             border: "none",
             transition: "background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
             flexShrink: 0,
+            width: mobile ? "100%" : undefined,
             boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
           }}
           onMouseEnter={(e) => {  if (!canHover()) return;
@@ -2323,33 +2300,14 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
         </Link>
       </div>
 
-      <style>{`
-        @media (max-width: 720px) {
-          .conversion-strip {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 16px;
-            padding: 24px 24px !important;
-            margin-left: 20px !important;
-            margin-right: 20px !important;
-          }
-          .conversion-strip p {
-            font-size: 15px !important;
-          }
-          .conversion-strip-cta {
-            width: 100% !important;
-          }
-        }
-      `}</style>
-
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
 
       </div>{/* ← end continuous canvas */}
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: 120, paddingBottom: 140 }}>
-      <div className="max-w-[1100px] mx-auto px-5 sm:px-6 text-center">
+      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 80 : 140 }}>
+      <div className="max-w-[1100px] mx-auto text-center" style={{ paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           Stability Patterns by Industry
         </h2>

@@ -5,6 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import logoImg from "../../../public/runpayway-logo.png";
 
+/* Runtime mobile detection — bypasses CSS entirely */
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return mobile;
+}
+
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/methodology", label: "Methodology" },
@@ -19,6 +31,7 @@ export default function MarketingLayout({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const mobile = useMobile();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -27,12 +40,18 @@ export default function MarketingLayout({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close menu when switching to desktop
+  useEffect(() => {
+    if (!mobile) setMenuOpen(false);
+  }, [mobile]);
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
       {/* Header — Institutional Navigation */}
       <header
-        className="sticky top-0 z-[1000]"
+        className="sticky top-0"
         style={{
+          zIndex: 1000,
           background: scrolled ? "rgba(255,255,255,0.96)" : "#ffffff",
           borderBottom: "1px solid rgba(14,26,43,0.08)",
           backdropFilter: scrolled ? "blur(8px)" : "none",
@@ -41,159 +60,184 @@ export default function MarketingLayout({
         }}
       >
         <div
-          className="mx-auto flex items-center px-5 md:px-8 lg:px-10"
+          className="mx-auto flex items-center"
           style={{
             maxWidth: 1200,
-            height: 72,
+            height: mobile ? 56 : 72,
+            paddingLeft: mobile ? 20 : 40,
+            paddingRight: mobile ? 20 : 40,
           }}
         >
-          {/* 3-zone grid */}
-          <div
-            className="grid w-full items-center"
-            style={{ gridTemplateColumns: "auto 1fr auto" }}
+          {/* Logo */}
+          <Link
+            href="/"
+            style={{ display: "flex", alignItems: "center", flexShrink: 0 }}
           >
-            {/* Left — Brand */}
-            <Link
-              href="/"
-              className="focus:outline-none focus:ring-2"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <Image
-                src={logoImg}
-                alt="RunPayway"
-                width={180}
-                height={21}
-                priority
-                style={{ height: "auto" }}
-              />
-            </Link>
+            <Image
+              src={logoImg}
+              alt="RunPayway"
+              width={mobile ? 130 : 180}
+              height={mobile ? 15 : 21}
+              priority
+              style={{ height: "auto" }}
+            />
+          </Link>
 
-            {/* Center — Navigation (hidden on mobile) */}
-            <nav className="hidden md:flex justify-center" style={{ gap: 32 }}>
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="transition-colors duration-160 focus:outline-none focus:ring-2"
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+
+          {/* Desktop nav + CTA */}
+          {!mobile && (
+            <>
+              <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    style={{
+                      fontSize: 15,
+                      color: "rgba(14,26,43,0.80)",
+                      transition: "color 160ms ease",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.80)"; }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <div style={{ display: "flex", alignItems: "center", gap: 24, marginLeft: 32 }}>
+                <span
                   style={{
                     fontSize: 15,
                     color: "rgba(14,26,43,0.80)",
-                    // @ts-expect-error focus ring
-                    "--tw-ring-color": "#1F6D7A",
+                    cursor: "default",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.80)"; }}
                 >
-                  {link.label}
+                  Sign In
+                </span>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center justify-center font-semibold whitespace-nowrap"
+                  style={{
+                    height: 40,
+                    paddingLeft: 18,
+                    paddingRight: 18,
+                    borderRadius: 10,
+                    background: "#4B3FAE",
+                    color: "#ffffff",
+                    fontSize: 14,
+                    letterSpacing: "-0.01em",
+                    border: "1px solid rgba(75,63,174,0.90)",
+                    boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
+                    transition: "background 180ms ease, transform 180ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#3D33A0";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "#4B3FAE";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                  onMouseDown={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  Get My Income Stability Score
                 </Link>
-              ))}
-            </nav>
+              </div>
+            </>
+          )}
 
-            {/* Right — Auth + CTA (hidden on mobile) */}
-            <div className="hidden md:flex items-center" style={{ gap: 24 }}>
-              <span
-                className="cursor-default transition-colors duration-160"
-                style={{
-                  fontSize: 15,
-                  color: "rgba(14,26,43,0.80)",
-                }}
-              >
-                Sign In
-              </span>
-              <Link
-                href="/pricing"
-                className="inline-flex items-center justify-center font-semibold whitespace-nowrap
-                           focus:outline-none focus:ring-2"
-                style={{
-                  height: 40,
-                  paddingLeft: 18,
-                  paddingRight: 18,
-                  borderRadius: 10,
-                  background: "#4B3FAE",
-                  color: "#ffffff",
-                  fontSize: 14,
-                  letterSpacing: "-0.01em",
-                  border: "1px solid rgba(75,63,174,0.90)",
-                  boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
-                  transition: "background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
-                  // @ts-expect-error focus ring
-                  "--tw-ring-color": "#1F6D7A",
-                }}
-                onMouseEnter={(e) => {
-                  const t = e.currentTarget;
-                  t.style.background = "#3D33A0";
-                  t.style.transform = "translateY(-1px)";
-                }}
-                onMouseLeave={(e) => {
-                  const t = e.currentTarget;
-                  t.style.background = "#4B3FAE";
-                  t.style.transform = "translateY(0)";
-                }}
-                onMouseDown={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                Get My Income Stability Score
-              </Link>
-            </div>
-
-            {/* Mobile — hamburger toggle */}
+          {/* Mobile hamburger */}
+          {mobile && (
             <button
-              className="md:hidden flex flex-col justify-center items-center w-10 h-10 ml-auto
-                         focus:outline-none focus:ring-2"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
               style={{
-                // @ts-expect-error focus ring
-                "--tw-ring-color": "#1F6D7A",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: 44,
+                height: 44,
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
               }}
             >
               <span
-                className="block w-5 h-[1.5px] rounded transition-all duration-200"
                 style={{
+                  display: "block",
+                  width: 20,
+                  height: 1.5,
+                  borderRadius: 1,
                   backgroundColor: "#0E1A2B",
-                  transform: menuOpen ? "rotate(45deg) translateY(3px)" : "none",
+                  transition: "transform 200ms ease, opacity 200ms ease",
+                  transform: menuOpen ? "rotate(45deg) translateY(4.5px)" : "none",
                 }}
               />
               <span
-                className="block w-5 h-[1.5px] rounded mt-[5px] transition-all duration-200"
                 style={{
+                  display: "block",
+                  width: 20,
+                  height: 1.5,
+                  borderRadius: 1,
                   backgroundColor: "#0E1A2B",
+                  marginTop: 5,
+                  transition: "opacity 200ms ease",
                   opacity: menuOpen ? 0 : 1,
                 }}
               />
               <span
-                className="block w-5 h-[1.5px] rounded mt-[5px] transition-all duration-200"
                 style={{
+                  display: "block",
+                  width: 20,
+                  height: 1.5,
+                  borderRadius: 1,
                   backgroundColor: "#0E1A2B",
-                  transform: menuOpen ? "rotate(-45deg) translateY(-3px)" : "none",
+                  marginTop: 5,
+                  transition: "transform 200ms ease, opacity 200ms ease",
+                  transform: menuOpen ? "rotate(-45deg) translateY(-4.5px)" : "none",
                 }}
               />
             </button>
-          </div>
+          )}
         </div>
 
-        {/* Mobile menu panel */}
-        {menuOpen && (
+        {/* Mobile menu panel — full screen overlay */}
+        {mobile && menuOpen && (
           <div
-            className="md:hidden"
             style={{
-              background: "#ffffff",
-              borderTop: "1px solid rgba(14,26,43,0.08)",
-              padding: 24,
+              position: "fixed",
+              top: 56,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "rgba(255,255,255,0.98)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              zIndex: 999,
+              padding: "32px 28px",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <nav className="flex flex-col" style={{ gap: 16 }}>
+            <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
               {[...NAV_LINKS, { href: "#", label: "Sign In" }].map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block transition-colors duration-160"
                   style={{
-                    fontSize: 15,
-                    color: "rgba(14,26,43,0.80)",
-                    minHeight: 44,
+                    fontSize: 17,
+                    fontWeight: 600,
+                    color: "#0E1A2B",
+                    padding: "18px 0",
+                    borderBottom: "1px solid rgba(14,26,43,0.06)",
                     display: "flex",
                     alignItems: "center",
                   }}
@@ -202,96 +246,76 @@ export default function MarketingLayout({
                 </Link>
               ))}
             </nav>
-            <Link
-              href="/pricing"
-              onClick={() => setMenuOpen(false)}
-              className="flex items-center justify-center font-semibold mt-4 w-full"
-              style={{
-                height: 48,
-                borderRadius: 10,
-                background: "#4B3FAE",
-                color: "#ffffff",
-                fontSize: 14,
-                letterSpacing: "-0.01em",
-                border: "1px solid rgba(75,63,174,0.90)",
-                boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
-              }}
-            >
-              Get My Income Stability Score
-            </Link>
+            <div style={{ marginTop: 28 }}>
+              <Link
+                href="/pricing"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: 52,
+                  borderRadius: 12,
+                  background: "#4B3FAE",
+                  color: "#ffffff",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  letterSpacing: "-0.01em",
+                  border: "1px solid rgba(75,63,174,0.90)",
+                  boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
+                }}
+              >
+                Get My Income Stability Score
+              </Link>
+            </div>
           </div>
         )}
       </header>
 
-      {/* Mobile header height override */}
-      <style>{`
-        @media (max-width: 768px) {
-          header.sticky > div:first-child {
-            height: 64px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-        }
-        @media (min-width: 769px) and (max-width: 1024px) {
-          header.sticky > div:first-child {
-            padding-left: 32px !important;
-            padding-right: 32px !important;
-          }
-        }
-      `}</style>
-
       {/* Content */}
       <main className="flex-1">{children}</main>
 
-      {/* Footer — Institutional Platform Infrastructure */}
+      {/* Footer */}
       <footer
-        className="relative"
         style={{
           background: "#FFFFFF",
           borderTop: "1px solid rgba(14,26,43,0.08)",
         }}
       >
         <div
-          className="relative mx-auto"
+          className="mx-auto"
           style={{
             maxWidth: 1200,
-            padding: "48px 24px 36px",
+            padding: mobile ? "36px 20px 28px" : "48px 24px 36px",
           }}
         >
-          {/* Tier 1 — Brand */}
-          <div style={{ marginBottom: 32 }}>
-            <Link
-              href="/"
-              className="focus:outline-none focus:ring-2"
-              style={{ display: "inline-flex", alignItems: "center" }}
-            >
+          {/* Brand */}
+          <div style={{ marginBottom: mobile ? 24 : 32 }}>
+            <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
                 src={logoImg}
                 alt="RunPayway"
-                width={160}
-                height={19}
+                width={mobile ? 130 : 160}
+                height={mobile ? 15 : 19}
                 style={{ height: "auto" }}
               />
             </Link>
-            <div
-              style={{
-                fontSize: 14,
-                color: "rgba(14,26,43,0.45)",
-                marginTop: 4,
-              }}
-            >
+            <div style={{ fontSize: 14, color: "rgba(14,26,43,0.45)", marginTop: 4 }}>
               Income Stability Score™
             </div>
           </div>
 
-          {/* Tier 2 — Primary navigation */}
+          {/* Navigation */}
           <nav aria-label="Footer navigation" style={{ marginBottom: 24 }}>
             <ul
-              className="footer-nav-grid list-none p-0 m-0"
               style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
                 display: "grid",
-                gridTemplateColumns: "repeat(6, auto)",
-                gap: 28,
+                gridTemplateColumns: mobile ? "repeat(2, auto)" : "repeat(6, auto)",
+                gap: mobile ? "14px 28px" : 28,
                 alignItems: "center",
                 justifyContent: "start",
               }}
@@ -307,13 +331,11 @@ export default function MarketingLayout({
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="transition-colors duration-160 focus:outline-none focus:ring-2"
                     style={{
                       fontSize: 15,
                       fontWeight: 500,
                       color: "rgba(14,26,43,0.70)",
-                      // @ts-expect-error focus ring
-                      "--tw-ring-color": "#1F6D7A",
+                      transition: "color 160ms ease",
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
@@ -325,18 +347,18 @@ export default function MarketingLayout({
             </ul>
           </nav>
 
-          {/* Tier 3 — Legal nav + Social (secondary weight) */}
+          {/* Legal + Social */}
           <div
-            className="footer-secondary-row"
             style={{
               display: "flex",
-              alignItems: "center",
+              flexDirection: mobile ? "column" : "row",
+              alignItems: mobile ? "flex-start" : "center",
               justifyContent: "space-between",
+              gap: mobile ? 16 : undefined,
               marginBottom: 28,
             }}
           >
-            {/* Legal links */}
-            <div className="flex items-center" style={{ gap: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
               {[
                 { href: "#", label: "Contact" },
                 { href: "#", label: "Privacy Policy" },
@@ -345,12 +367,10 @@ export default function MarketingLayout({
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="transition-colors duration-160 focus:outline-none focus:ring-2"
                   style={{
                     fontSize: 13,
                     color: "rgba(14,26,43,0.45)",
-                    // @ts-expect-error focus ring
-                    "--tw-ring-color": "#1F6D7A",
+                    transition: "color 160ms ease",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
@@ -360,8 +380,7 @@ export default function MarketingLayout({
               ))}
             </div>
 
-            {/* Social links */}
-            <div className="flex items-center" style={{ gap: 18 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
               {[
                 { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
                 { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
@@ -373,12 +392,10 @@ export default function MarketingLayout({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.ariaLabel}
-                  className="transition-colors duration-160 focus:outline-none focus:ring-2"
                   style={{
                     fontSize: 13,
                     color: "rgba(14,26,43,0.45)",
-                    // @ts-expect-error focus ring
-                    "--tw-ring-color": "#1F6D7A",
+                    transition: "color 160ms ease",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
@@ -390,46 +407,24 @@ export default function MarketingLayout({
           </div>
 
           {/* Divider */}
-          <div
-            style={{
-              height: 1,
-              width: "100%",
-              background: "rgba(14,26,43,0.06)",
-              marginBottom: 24,
-            }}
-          />
+          <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 24 }} />
 
-          {/* Tier 4 — Legal block */}
+          {/* Legal */}
           <div style={{ maxWidth: 520 }}>
-            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               &copy; 2026 RunPayway™. All rights reserved.
             </p>
-            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               RunPayway™ is a product of PeopleStar Enterprises, LLC.
             </p>
-            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
               Orange County, California, USA
             </p>
-            <p className="text-[12px]" style={{ color: "rgba(14,26,43,0.40)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7 }}>
               Structural Stability Model RP-1.0
             </p>
           </div>
         </div>
-
-        {/* Mobile/tablet overrides */}
-        <style>{`
-          @media (max-width: 768px) {
-            .footer-nav-grid {
-              grid-template-columns: repeat(2, auto) !important;
-              gap: 14px 28px !important;
-            }
-            .footer-secondary-row {
-              flex-direction: column !important;
-              align-items: flex-start !important;
-              gap: 16px !important;
-            }
-          }
-        `}</style>
       </footer>
     </div>
   );
