@@ -19,6 +19,7 @@ function useMobile(breakpoint = 768) {
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/how-it-works", label: "How It Works" },
   { href: "/methodology", label: "Methodology" },
   { href: "/verify", label: "Registry" },
   { href: "#", label: "About" },
@@ -322,6 +323,7 @@ export default function MarketingLayout({
             >
               {[
                 { href: "/", label: "Home" },
+                { href: "/how-it-works", label: "How It Works" },
                 { href: "/methodology", label: "Methodology" },
                 { href: "/verify", label: "Registry" },
                 { href: "/pricing", label: "Pricing" },
