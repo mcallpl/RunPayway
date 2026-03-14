@@ -1844,10 +1844,10 @@ function HeroSection() {
       />
 
       <div
-        className="relative mx-auto px-6 md:px-10 lg:px-12"
-        style={{ maxWidth: 1200, paddingTop: 140, paddingBottom: 160 }}
+        className="relative mx-auto px-6 md:px-10 lg:px-12 pt-[72px] md:pt-[140px] pb-[56px] md:pb-[160px]"
+        style={{ maxWidth: 1200 }}
       >
-        <div className="flex flex-col lg:flex-row lg:items-center" style={{ gap: 80 }}>
+        <div className="flex flex-col lg:flex-row lg:items-center gap-6 md:gap-[80px]">
           {/* Left — Copy + CTA */}
           <div className="flex-1 lg:max-w-[560px]">
             {/* Eyebrow */}
@@ -2034,12 +2034,11 @@ const t = e.currentTarget;
 
             {/* Score typography — floating in space */}
             <div
-              className="relative text-center lg:text-right"
+              className="relative text-center lg:text-right py-0 md:py-10"
               style={{
                 opacity: cardVisible ? 1 : 0,
                 transform: cardVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
-                padding: "40px 0",
               }}
             >
               {/* Label */}
@@ -2090,13 +2089,6 @@ const t = e.currentTarget;
       {/* Mobile overrides */}
       <style>{`
         @media (max-width: 768px) {
-          section[aria-label="Hero"] > div.relative {
-            padding-top: 72px !important;
-            padding-bottom: 56px !important;
-          }
-          section[aria-label="Hero"] .flex-col {
-            gap: 24px !important;
-          }
           section[aria-label="Hero"] .flex-1.flex .absolute.pointer-events-none {
             display: none !important;
           }
