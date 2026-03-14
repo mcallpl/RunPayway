@@ -21,7 +21,7 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/how-it-works", label: "How It Works" },
   { href: "/methodology", label: "Methodology" },
-  { href: "/verify", label: "Registry" },
+  { href: "/verify", label: "Verify a Score" },
   { href: "#", label: "About" },
 ];
 
@@ -325,7 +325,7 @@ export default function MarketingLayout({
                 { href: "/", label: "Home" },
                 { href: "/how-it-works", label: "How It Works" },
                 { href: "/methodology", label: "Methodology" },
-                { href: "/verify", label: "Registry" },
+                { href: "/verify", label: "Verify a Score" },
                 { href: "/pricing", label: "Pricing" },
                 { href: "/#faq", label: "FAQ" },
                 { href: "#", label: "About" },
