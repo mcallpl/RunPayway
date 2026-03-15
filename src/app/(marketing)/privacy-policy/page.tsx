@@ -257,7 +257,7 @@ export default function PrivacyPolicyPage() {
           {/* Effective date + entity info */}
           <div ref={sectionRefs[0].ref}>
             <Section title="RunPayway™" mobile={mobile} visible={sectionRefs[0].visible}>
-              <P>Effective Date: [Insert Launch Date]</P>
+              <P>Effective Date: April 1, 2026</P>
               <P style={{ fontWeight: 600, color: B.navy, marginBottom: 4 }}>Operated by PeopleStar Enterprises, Inc.</P>
               <P>
                 24312 Airporter Way<br />
