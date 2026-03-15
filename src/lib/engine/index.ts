@@ -19,7 +19,7 @@ import {
   selectCurrentEvolutionStage,
   generatePageInsights,
 } from "./mappings";
-import { getSectorData, SECTOR_IMPROVEMENT_DISCLAIMER } from "./sectors";
+import { getSectorData } from "./sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./percentile";
 import { computeTrajectoryProjection } from "./trajectory";
 import {
@@ -72,7 +72,7 @@ export {
   selectCurrentEvolutionStage,
   generatePageInsights,
 } from "./mappings";
-export { SECTOR_DATA, getSectorData, SECTOR_IMPROVEMENT_DISCLAIMER } from "./sectors";
+export { SECTOR_DATA, getSectorData } from "./sectors";
 export { computePeerPercentile, formatPercentileLabel } from "./percentile";
 export { computeTrajectoryProjection } from "./trajectory";
 export type { TrajectoryProjection } from "./trajectory";
@@ -125,8 +125,8 @@ export async function executeIncomeStabilityEngine(
     scoringResult.final_score
   );
 
-  // Step 8a: Peer percentile
-  const peerPercentile = computePeerPercentile(scoringResult.final_score);
+  // Step 8a: Peer percentile (sector-aware)
+  const peerPercentile = computePeerPercentile(scoringResult.final_score, sectorData.peer_band_distribution);
   const peerPercentileLabel = formatPercentileLabel(peerPercentile);
 
   // Step 8b: Stability trajectory projection
@@ -276,7 +276,10 @@ export async function executeIncomeStabilityEngine(
     sector_mechanisms_payload: JSON.stringify(
       sectorData.sector_stability_mechanisms
     ),
-    structural_improvement_path_text: SECTOR_IMPROVEMENT_DISCLAIMER,
+    sector_avg_score: sectorData.avg_score,
+    sector_top_20_threshold: sectorData.top_20_threshold,
+    constraint_guidance_payload: JSON.stringify(sectorData.constraint_guidance),
+    structural_improvement_path_text: sectorData.improvement_guidance,
 
     // Peer percentile
     peer_stability_percentile: peerPercentile,

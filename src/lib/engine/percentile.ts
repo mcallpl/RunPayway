@@ -1,26 +1,42 @@
 // RUNPAYWAY™ Income Stability Score™ Diagnostic System
 // Model RP-1.0 | Version 1.0 — Peer Stability Percentile (Deterministic)
 
-// Locked band distribution (same as PEER_DISTRIBUTION in report)
+// Default global band distribution (used when no sector distribution provided)
 // Limited: 22%, Developing: 38%, Established: 28%, High: 12%
 // Percentile = percentage of distribution scoring <= subject score
 
-export function computePeerPercentile(finalScore: number): number {
+const DEFAULT_DISTRIBUTION = {
+  limited: 22,
+  developing: 38,
+  established: 28,
+  high: 12,
+};
+
+export function computePeerPercentile(
+  finalScore: number,
+  distribution?: { limited: number; developing: number; established: number; high: number }
+): number {
+  const dist = distribution || DEFAULT_DISTRIBUTION;
+
+  // Cumulative boundaries based on distribution
+  const limitedEnd = dist.limited;
+  const developingEnd = limitedEnd + dist.developing;
+  const establishedEnd = developingEnd + dist.established;
+
   let percentile: number;
 
   if (finalScore <= 39) {
-    // Limited band: 0–39 maps to 0–22nd percentile
-    percentile = (finalScore / 40) * 22;
+    // Limited band: 0–39 maps to 0–limitedEnd percentile
+    percentile = (finalScore / 40) * limitedEnd;
   } else if (finalScore <= 59) {
-    // Developing band: 40–59 maps to 22–60th percentile
-    percentile = 22 + ((finalScore - 40) / 20) * 38;
+    // Developing band: 40–59 maps to limitedEnd–developingEnd percentile
+    percentile = limitedEnd + ((finalScore - 40) / 20) * dist.developing;
   } else if (finalScore <= 79) {
-    // Established band: 60–79 maps to 60–88th percentile
-    percentile = 60 + ((finalScore - 60) / 20) * 28;
+    // Established band: 60–79 maps to developingEnd–establishedEnd percentile
+    percentile = developingEnd + ((finalScore - 60) / 20) * dist.established;
   } else {
-    // High band: 80–100 maps to 88–100th percentile
-    // FIX: divisor was 21 but range 80-100 is 20 wide (offsets 0-20)
-    percentile = 88 + ((finalScore - 80) / 20) * 12;
+    // High band: 80–100 maps to establishedEnd–100 percentile
+    percentile = establishedEnd + ((finalScore - 80) / 20) * dist.high;
   }
 
   return Math.floor(percentile);

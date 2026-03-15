@@ -14,7 +14,7 @@ import {
   selectCurrentEvolutionStage,
   generatePageInsights,
 } from "./engine/mappings";
-import { getSectorData, SECTOR_IMPROVEMENT_DISCLAIMER } from "./engine/sectors";
+import { getSectorData } from "./engine/sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./engine/percentile";
 import { computeTrajectoryProjection } from "./engine/trajectory";
 import {
@@ -97,8 +97,8 @@ export async function executeClientEngine(submission: {
     scoringResult.final_score
   );
 
-  // Peer percentile
-  const peerPercentile = computePeerPercentile(scoringResult.final_score);
+  // Peer percentile (sector-aware)
+  const peerPercentile = computePeerPercentile(scoringResult.final_score, sectorData.peer_band_distribution);
   const peerPercentileLabel = formatPercentileLabel(peerPercentile);
 
   // Trajectory
@@ -216,7 +216,10 @@ export async function executeClientEngine(submission: {
     current_evolution_stage_label: evolutionStage.label,
     current_evolution_stage_position: evolutionStage.position,
     sector_mechanisms_payload: JSON.stringify(sectorData.sector_stability_mechanisms),
-    structural_improvement_path_text: SECTOR_IMPROVEMENT_DISCLAIMER,
+    sector_avg_score: sectorData.avg_score,
+    sector_top_20_threshold: sectorData.top_20_threshold,
+    constraint_guidance_payload: JSON.stringify(sectorData.constraint_guidance),
+    structural_improvement_path_text: sectorData.improvement_guidance,
 
     // Peer percentile
     peer_stability_percentile: peerPercentile,

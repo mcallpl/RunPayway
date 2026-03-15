@@ -56,6 +56,9 @@ interface AssessmentRecord {
   current_evolution_stage_label: string;
   current_evolution_stage_position: number;
   sector_mechanisms_payload: string;
+  sector_avg_score: number;
+  sector_top_20_threshold: number;
+  constraint_guidance_payload: string;
   structural_improvement_path_text: string;
   peer_stability_percentile: number;
   peer_stability_percentile_label: string;
@@ -124,9 +127,9 @@ function percentileExplanation(r: AssessmentRecord): string {
   return `A score at the ${label} percentile means ${name} is less stable than most income systems in the ${r.industry_sector} sector.`;
 }
 
-function getIndustryBenchmark(finalScore: number) {
-  const avgScore = 48;
-  const top20Range = 65;
+function getIndustryBenchmark(finalScore: number, sectorAvg?: number, sectorTop20?: number) {
+  const avgScore = sectorAvg ?? 48;
+  const top20Range = sectorTop20 ?? 65;
   const distance = Math.max(0, top20Range - finalScore);
   return { avgScore, top20Range, distance };
 }
@@ -383,7 +386,7 @@ export default function ReviewPage() {
   const subject = subjectName(record);
   const possessive = subjectPossessive(record);
   const keyFactors = getKeyFactors(record);
-  const bench = getIndustryBenchmark(record.final_score);
+  const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
 
   const handleDownload = async () => {
     setDownloading(true);

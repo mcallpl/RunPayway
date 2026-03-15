@@ -193,6 +193,9 @@ export interface StructuralAssessmentRecord {
   current_evolution_stage_label: string;
   current_evolution_stage_position: number;
   sector_mechanisms_payload: string;
+  sector_avg_score: number;
+  sector_top_20_threshold: number;
+  constraint_guidance_payload: string;
   structural_improvement_path_text: string;
 
   // Report sections (render cache)
