@@ -402,7 +402,7 @@ const t = e.currentTarget;
               lineHeight: 1.6,
             }}
           >
-            Takes under 2 minutes &#8212; Instant results
+            Average completion: 1 min 47 sec &#8212; Instant results
           </p>
           <p
             className="text-[12px] md:text-[13px]"
@@ -416,7 +416,7 @@ const t = e.currentTarget;
               marginRight: "auto",
             }}
           >
-            Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results.
+            Most first-time assessments score between 35&#8211;55. The same inputs always produce the same score.
           </p>
         </div>
       </div>
@@ -1665,7 +1665,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
               }}
             >
-              Six structural factors. One score from 0&#8211;100. A complete diagnosis of how resilient your income really is.
+              You can&#8217;t protect what you haven&#8217;t measured. Six structural factors. One score from 0&#8211;100.
             </p>
 
             <p
@@ -1734,7 +1734,7 @@ const t = e.currentTarget;
                 className="text-[13px] md:text-[14px]"
                 style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em" }}
               >
-                Takes under 2 minutes &mdash; Instant results
+                Average completion: 1 min 47 sec &mdash; Instant results
               </p>
             </div>
           </div>

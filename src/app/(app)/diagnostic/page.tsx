@@ -427,6 +427,16 @@ export default function DiagnosticPage() {
             />
           ))}
         </div>
+
+        {/* Commitment escalation — halfway message */}
+        {currentQuestion >= 3 && !allAnswered && (
+          <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 5, height: 5, borderRadius: 99, background: B.teal }} />
+            <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>
+              {currentQuestion === 3 ? "Halfway there — your score is being calculated." : currentQuestion === 4 ? "Almost done — one factor remaining." : "All factors captured — ready to generate."}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Question card */}

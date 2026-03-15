@@ -502,8 +502,18 @@ export default function InitializationPage() {
         >
           Begin Assessment
         </button>
-        <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 12 }}>
-          The diagnostic consists of 6 structured questions and takes under 2 minutes.
+        {/* Endowed progress — customer feels they've already started */}
+        <div style={{ marginTop: 16 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>Profile complete</span>
+            <span style={{ fontSize: 11, color: B.light }}>6 questions remaining</span>
+          </div>
+          <div style={{ height: 4, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: "15%", borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
+          </div>
+        </div>
+        <p style={{ fontSize: 11, color: B.light, textAlign: "center", marginTop: 10 }}>
+          Average completion: 1 min 47 sec
         </p>
       </div>
     </div>
