@@ -49,7 +49,7 @@ function CheckoutContent() {
         checkout_provider: "placeholder",
       })
     );
-    router.push(planKey === "monitoring" ? "/sign-in" : "/diagnostic-portal");
+    router.push(planKey === "monitoring" ? "/create-account" : "/diagnostic-portal");
   };
 
   return (

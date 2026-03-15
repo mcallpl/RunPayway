@@ -66,19 +66,16 @@ const B = {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-export default function SignInPage() {
+export default function CreateAccountPage() {
   const mobile = useMobile();
   const heroAnim = useInView();
   const formAnim = useInView();
-  const monitorAnim = useInView();
-  const timelineAnim = useInView();
-  const singleAnim = useInView();
-  const noticeAnim = useInView();
+  const infoAnim = useInView();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
-  const [forgotHovered, setForgotHovered] = useState(false);
 
   return (
     <div style={{ background: "#FFFFFF" }}>
@@ -135,7 +132,7 @@ export default function SignInPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Monitoring Portal
+              Annual Monitoring
             </span>
           </div>
 
@@ -149,7 +146,7 @@ export default function SignInPage() {
               marginBottom: 20,
             }}
           >
-            RunPayway Monitoring Portal
+            Create Your Account
           </h1>
 
           <p
@@ -157,11 +154,11 @@ export default function SignInPage() {
               fontSize: mobile ? 15 : 18,
               color: "rgba(255,255,255,0.65)",
               lineHeight: 1.7,
-              maxWidth: 480,
+              maxWidth: 520,
               margin: "0 auto 8px",
             }}
           >
-            Income Stability Score™
+            Set up your Monitoring Portal account to access your three Income Stability Assessments.
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
@@ -171,7 +168,7 @@ export default function SignInPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Sign-in form                                                */}
+      {/*  Create account form                                         */}
       {/* ============================================================ */}
       <section
         style={{
@@ -181,26 +178,50 @@ export default function SignInPage() {
         }}
       >
         <div
-          ref={formAnim.ref}
           className="mx-auto"
           style={{
-            maxWidth: 480,
+            maxWidth: 900,
             paddingLeft: mobile ? 20 : 40,
             paddingRight: mobile ? 20 : 40,
-            opacity: formAnim.visible ? 1 : 0,
-            transform: formAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            display: "flex",
+            flexDirection: mobile ? "column" : "row",
+            gap: mobile ? 32 : 40,
+            alignItems: "start",
           }}
         >
+          {/* Form card */}
           <div
+            ref={formAnim.ref}
             style={{
+              flex: 1,
               background: "#FFFFFF",
               borderRadius: 20,
               border: "1px solid rgba(14,26,43,0.06)",
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+              opacity: formAnim.visible ? 1 : 0,
+              transform: formAnim.visible ? "translateY(0)" : "translateY(24px)",
+              transition: "opacity 700ms ease, transform 700ms ease",
             }}
           >
+            {/* Annual Monitoring badge */}
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "5px 14px",
+                borderRadius: 8,
+                background: "rgba(75,63,174,0.08)",
+                marginBottom: 20,
+              }}
+            >
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.purple }} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                Annual Monitoring Subscriber
+              </span>
+            </div>
+
             <h2
               style={{
                 fontSize: mobile ? 22 : 26,
@@ -210,14 +231,11 @@ export default function SignInPage() {
                 marginBottom: 12,
               }}
             >
-              Sign In
+              Create Account
             </h2>
 
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
-              This portal is available to Annual Monitoring subscribers.
-            </p>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-              Sign in to access your monitoring timeline and historical Income Stability Assessments.
+              Create your account to access the Monitoring Portal. You can take your three assessments at any time within your 12-month subscription.
             </p>
 
             {/* Email */}
@@ -259,7 +277,7 @@ export default function SignInPage() {
             </div>
 
             {/* Password */}
-            <div style={{ marginBottom: 28 }}>
+            <div style={{ marginBottom: 20 }}>
               <label
                 style={{
                   display: "block",
@@ -271,13 +289,13 @@ export default function SignInPage() {
                   marginBottom: 8,
                 }}
               >
-                Password
+                Create Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Create a secure password"
                 style={{
                   width: "100%",
                   height: 48,
@@ -296,7 +314,45 @@ export default function SignInPage() {
               />
             </div>
 
-            {/* Sign In button */}
+            {/* Confirm Password */}
+            <div style={{ marginBottom: 28 }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: B.navy,
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  marginBottom: 8,
+                }}
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                style={{
+                  width: "100%",
+                  height: 48,
+                  padding: "0 16px",
+                  borderRadius: 10,
+                  border: "1px solid rgba(14,26,43,0.12)",
+                  background: B.sand,
+                  fontSize: 14,
+                  color: B.navy,
+                  outline: "none",
+                  transition: "border-color 180ms ease",
+                  boxSizing: "border-box",
+                }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+              />
+            </div>
+
+            {/* Create Account button */}
             <button
               onMouseEnter={() => canHover() && setBtnHovered(true)}
               onMouseLeave={() => setBtnHovered(false)}
@@ -316,34 +372,14 @@ export default function SignInPage() {
                 transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
               }}
             >
-              Sign In
+              Create Account
             </button>
 
-            {/* Forgot password */}
-            <div style={{ textAlign: "center", marginTop: 16 }}>
-              <button
-                onMouseEnter={() => canHover() && setForgotHovered(true)}
-                onMouseLeave={() => setForgotHovered(false)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: forgotHovered ? B.purple : B.muted,
-                  cursor: "pointer",
-                  transition: "color 180ms ease",
-                  padding: 0,
-                }}
-              >
-                Forgot Password
-              </button>
-            </div>
-
-            {/* Don't have an account */}
+            {/* Sign in link */}
             <div style={{ textAlign: "center", marginTop: 20 }}>
-              <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have an account? </span>
+              <span style={{ fontSize: 13, color: B.muted }}>Already have an account? </span>
               <Link
-                href="/pricing"
+                href="/sign-in"
                 style={{
                   fontSize: 13,
                   fontWeight: 600,
@@ -355,7 +391,7 @@ export default function SignInPage() {
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
               >
-                Get Annual Monitoring
+                Sign In
               </Link>
             </div>
 
@@ -366,142 +402,35 @@ export default function SignInPage() {
               <span style={{ fontSize: 12, color: B.light }}>Encrypted session management</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ============================================================ */}
-      {/*  Annual Monitoring upsell                                    */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: "#FFFFFF",
-        }}
-      >
-        <div
-          ref={monitorAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
-            display: "flex",
-            flexDirection: mobile ? "column" : "row",
-            gap: mobile ? 32 : 40,
-            alignItems: "start",
-            opacity: monitorAnim.visible ? 1 : 0,
-            transform: monitorAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          {/* Annual monitoring card */}
+          {/* Right — What you get */}
           <div
+            ref={infoAnim.ref}
             style={{
               flex: 1,
-              background: "#FFFFFF",
-              borderRadius: 20,
-              border: "1px solid rgba(75,63,174,0.20)",
-              padding: mobile ? "32px 24px" : "36px 36px",
-              boxShadow: "0 8px 24px rgba(75,63,174,0.08)",
-              position: "relative",
-            }}
-          >
-            {/* Recommended badge */}
-            <div
-              style={{
-                position: "absolute",
-                top: -14,
-                left: mobile ? 24 : 36,
-                padding: "5px 18px",
-                borderRadius: 100,
-                background: B.purple,
-                color: "#FFFFFF",
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Annual Monitoring
-            </div>
-
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 700, color: B.navy, lineHeight: 1, letterSpacing: "-0.03em" }}>$99</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: B.purple, marginBottom: 16 }}>
-              $33 per assessment
-            </div>
-
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 20 }}>
-              Three assessments that can be taken at any time within one year, measuring how the structural stability of your income evolves over time.
-            </p>
-
-            <div style={{ fontSize: 12, color: B.light, marginBottom: 20 }}>
-              Secure checkout via Stripe
-            </div>
-
-            <Link
-              href="/checkout-placeholder?plan=monitoring"
-              className="inline-flex items-center justify-center font-semibold"
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: B.purple,
-                color: "#FFFFFF",
-                fontSize: 15,
-                letterSpacing: "-0.01em",
-                border: "none",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.background = "#3D33A0";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = B.purple;
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              Start Monitoring →
-            </Link>
-          </div>
-
-          {/* Timeline */}
-          <div
-            ref={timelineAnim.ref}
-            style={{
-              flex: 1,
-              opacity: timelineAnim.visible ? 1 : 0,
-              transform: timelineAnim.visible ? "translateY(0)" : "translateY(24px)",
+              opacity: infoAnim.visible ? 1 : 0,
+              transform: infoAnim.visible ? "translateY(0)" : "translateY(24px)",
               transition: "opacity 700ms ease 140ms, transform 700ms ease 140ms",
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Annual Monitoring Timeline
+              Your Monitoring Plan Includes
             </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
-              Each monitoring plan includes three assessments that can be taken at any time within one year.
-            </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 28 }}>
               {[
-                ["Assessment 1", "Any time"],
-                ["Assessment 2", "Any time"],
-                ["Assessment 3", "Any time"],
-              ].map(([label, month], i) => (
+                ["3 Income Stability Assessments", "Take at any time within 12 months"],
+                ["Monitoring Portal Access", "View your timeline and historical scores"],
+                ["Full Diagnostic Reports", "Score, classification, and improvement path"],
+                ["Score Verification", "Each assessment receives a unique verification ID"],
+              ].map(([title, desc], i) => (
                 <div
-                  key={label}
+                  key={title}
                   style={{
                     display: "flex",
-                    alignItems: "center",
                     gap: 16,
-                    padding: "16px 0",
-                    borderBottom: i < 2 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                    padding: "18px 0",
+                    borderBottom: i < 3 ? "1px solid rgba(14,26,43,0.06)" : "none",
                   }}
                 >
                   <div
@@ -509,127 +438,42 @@ export default function SignInPage() {
                       width: 36,
                       height: 36,
                       borderRadius: 10,
-                      background: i === 0 ? B.navy : "rgba(14,26,43,0.06)",
+                      background: "rgba(75,63,174,0.08)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? "#FFFFFF" : B.navy }}>{i + 1}</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: B.purple }}>{i + 1}</span>
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{label}</div>
-                    <div style={{ fontSize: 12, color: B.light }}>{month}</div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{title}</div>
+                    <div style={{ fontSize: 13, color: B.muted, lineHeight: 1.6 }}>{desc}</div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <p style={{ fontSize: 13, color: B.light, marginTop: 16 }}>
-              All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  Single Assessment + Portal Notice                          */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
-        }}
-      >
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: mobile ? 24 : 28,
-          }}
-        >
-          {/* Single Assessment */}
-          <div
-            ref={singleAnim.ref}
-            style={{
-              background: "#FFFFFF",
-              borderRadius: 16,
-              border: "1px solid rgba(14,26,43,0.06)",
-              padding: mobile ? "28px 24px" : "36px 36px",
-              boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-              opacity: singleAnim.visible ? 1 : 0,
-              transform: singleAnim.visible ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 600ms ease, transform 600ms ease",
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Single Assessment Customers
-            </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              Single Assessment reports are generated immediately after completing the diagnostic and do not require an account login.
-            </p>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
-              To generate a new assessment, simply purchase another diagnostic.
-            </p>
-            <Link
-              href="/checkout-placeholder?plan=single"
-              className="inline-flex items-center justify-center font-semibold"
+            {/* Account notice */}
+            <div
               style={{
-                height: 44,
-                paddingLeft: 22,
-                paddingRight: 22,
-                borderRadius: 10,
-                background: B.navy,
-                color: "#FFFFFF",
-                fontSize: 14,
-                letterSpacing: "-0.01em",
-                border: "none",
-                boxShadow: "0 4px 12px rgba(14,26,43,0.15)",
-                transition: "background 180ms ease, transform 180ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.background = "#1a2a40";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = B.navy;
-                e.currentTarget.style.transform = "translateY(0)";
+                padding: mobile ? "20px 20px" : "24px 24px",
+                borderRadius: 14,
+                background: "#FFFFFF",
+                border: "1px solid rgba(14,26,43,0.06)",
               }}
             >
-              Get Assessment →
-            </Link>
-          </div>
-
-          {/* Portal Access Notice */}
-          <div
-            ref={noticeAnim.ref}
-            style={{
-              background: "#FFFFFF",
-              borderRadius: 16,
-              border: "1px solid rgba(14,26,43,0.06)",
-              padding: mobile ? "28px 24px" : "36px 36px",
-              boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-              opacity: noticeAnim.visible ? 1 : 0,
-              transform: noticeAnim.visible ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 600ms ease 100ms, transform 600ms ease 100ms",
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Portal Access Notice
+              <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+                Account Access
+              </div>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
+                Portal accounts are exclusively available to Annual Monitoring subscribers.
+              </p>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>
+                Single Assessment customers do not need an account — reports are generated instantly after completing the diagnostic.
+              </p>
             </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              The RunPayway Monitoring Portal is designed for subscribers who are tracking structural income stability over time.
-            </p>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
-              Assessments issued through the portal are generated using fixed scoring criteria defined under Structural Stability Model RP-1.0.
-            </p>
           </div>
         </div>
       </section>
