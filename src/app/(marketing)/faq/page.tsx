@@ -96,12 +96,12 @@ const FAQ_CATEGORIES: FaqCategory[] = [
           <>
             <p>The score is generated using six structural dimensions of income generation:</p>
             <ul>
-              <li>Recurring revenue base</li>
-              <li>Income concentration</li>
-              <li>Income source count</li>
-              <li>Forward revenue visibility</li>
-              <li>Earnings variability</li>
-              <li>Income continuity without active labor</li>
+              <li>recurring revenue base</li>
+              <li>income concentration</li>
+              <li>income source count</li>
+              <li>forward revenue visibility</li>
+              <li>earnings variability</li>
+              <li>income continuity without active labor</li>
             </ul>
             <p>These dimensions describe the structural characteristics of how income is produced and sustained.</p>
           </>
@@ -181,12 +181,12 @@ const FAQ_CATEGORIES: FaqCategory[] = [
             <p>Each completed assessment produces a structured report that includes:</p>
             <ul>
               <li>Income Stability Score\u2122 (0\u2013100)</li>
-              <li>Stability classification band</li>
-              <li>Structural drivers supporting stability</li>
-              <li>Structural constraints affecting stability</li>
-              <li>Industry percentile comparison</li>
-              <li>Structural improvement path</li>
-              <li>Official PDF assessment record</li>
+              <li>stability classification band</li>
+              <li>structural drivers supporting stability</li>
+              <li>structural constraints affecting stability</li>
+              <li>industry percentile comparison</li>
+              <li>structural improvement path</li>
+              <li>official PDF assessment record</li>
             </ul>
             <p>The report provides a structured analysis of the stability characteristics of the income system.</p>
           </>
