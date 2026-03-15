@@ -29,6 +29,7 @@ const MORE_LINKS = [
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
+  { href: "#footer", label: "More Links" },
 ];
 
 export default function MarketingLayout({
@@ -379,9 +380,11 @@ export default function MarketingLayout({
 
       {/* Footer */}
       <footer
+        id="footer"
         style={{
           background: "#FAFAFA",
           borderTop: "1px solid rgba(14,26,43,0.06)",
+          scrollMarginTop: 80,
         }}
       >
         <div
