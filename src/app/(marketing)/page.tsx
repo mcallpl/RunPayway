@@ -2312,8 +2312,11 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           Stability Patterns by Industry
         </h2>
-        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 40, maxWidth: 640 }}>
-          The structural factors that drive income stability vary by profession. See what separates high-stability systems from fragile ones in your sector.
+        <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 12, maxWidth: 640 }}>
+          The Income Stability Score™ applies to any industry or profession. The structural factors that drive income stability vary by sector — below are three examples showing what separates high-stability systems from fragile ones.
+        </p>
+        <p className="text-[14px] mx-auto" style={{ color: B.light, marginBottom: 40, maxWidth: 640 }}>
+          These are sample illustrations only. The model evaluates income structure across all industries.
         </p>
 
         <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
