@@ -8,29 +8,66 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <header className="border-b border-gray-200 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-          <div>
-            <Link href="/" className="hover:opacity-70 transition-opacity cursor-pointer inline-flex items-center">
-              <Image
-                src={logoImg}
-                alt="RunPayway"
-                width={140}
-                height={17}
-                style={{ height: "auto" }}
-              />
-            </Link>
-          </div>
-          <div className="text-[10px] sm:text-xs text-neutral-400">
-            RP-1.0 | Version 1.0
+    <div style={{ background: "#F7F6F3", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <header
+        style={{
+          background: "#FFFFFF",
+          borderBottom: "1px solid rgba(14,26,43,0.08)",
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 860,
+            margin: "0 auto",
+            padding: "0 24px",
+            height: 64,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
+            <Image
+              src={logoImg}
+              alt="RunPayway"
+              width={150}
+              height={18}
+              style={{ height: "auto" }}
+            />
+          </Link>
+          <div style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.04em" }}>
+            Model RP-1.0
           </div>
         </div>
       </header>
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">{children}</main>
-      <footer className="border-t border-gray-200 mt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 text-xs text-neutral-400">
-          RunPayway™ Income Stability Assessment — Model RP-1.0 | Version 1.0
+      <main style={{ flex: 1, maxWidth: 860, width: "100%", margin: "0 auto", padding: "32px 24px 48px" }}>
+        {children}
+      </main>
+      <footer
+        style={{
+          borderTop: "1px solid rgba(14,26,43,0.06)",
+          background: "#FFFFFF",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 860,
+            margin: "0 auto",
+            padding: "20px 24px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+            RunPayway™ Income Stability Assessment
+          </span>
+          <span style={{ fontSize: 11, color: "#9CA3AF" }}>
+            Structural Stability Model RP-1.0
+          </span>
         </div>
       </footer>
     </div>
