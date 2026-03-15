@@ -197,6 +197,7 @@ export interface StructuralAssessmentRecord {
   sector_top_20_threshold: number;
   constraint_guidance_payload: string;
   structural_improvement_path_text: string;
+  action_plan_payload: string;
 
   // Report sections (render cache)
   report_sections?: object;

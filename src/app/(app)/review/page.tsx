@@ -60,6 +60,7 @@ interface AssessmentRecord {
   sector_top_20_threshold: number;
   constraint_guidance_payload: string;
   structural_improvement_path_text: string;
+  action_plan_payload: string;
   peer_stability_percentile: number;
   peer_stability_percentile_label: string;
   projected_final_score: number;
@@ -649,6 +650,30 @@ export default function ReviewPage() {
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
           {record.structural_improvement_path_text}
         </p>
+
+        {/* 90-Day Action Plan */}
+        {(() => {
+          const actionPlan: string[] = JSON.parse(record.action_plan_payload || "[]");
+          if (actionPlan.length === 0) return null;
+          return (
+            <div style={{ marginTop: R.sectionGap }}>
+              <Label>90-Day Action Plan</Label>
+              <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
+                Three priority actions based on your primary constraint: {record.primary_constraint_label}
+              </p>
+              <ol style={{ ...T.small, color: B.navy, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: R.itemGap }}>
+                {actionPlan.map((action, i) => (
+                  <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ ...T.small, fontWeight: 600, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
+                    <span style={{ ...T.small, color: B.navy }}>{action}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          );
+        })()}
+
+        <SectionDivider />
 
         {/* Sector evolution */}
         <div style={{ marginTop: R.sectionGap }}>
