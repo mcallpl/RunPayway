@@ -111,15 +111,18 @@ export default function MarketingLayout({
               </nav>
 
               <div style={{ display: "flex", alignItems: "center", gap: 24, marginLeft: 32 }}>
-                <span
+                <Link
+                  href="/sign-in"
                   style={{
                     fontSize: 15,
                     color: "rgba(14,26,43,0.80)",
-                    cursor: "default",
+                    transition: "color 160ms ease",
                   }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.80)"; }}
                 >
                   Sign In
-                </span>
+                </Link>
                 <Link
                   href="/pricing"
                   className="inline-flex items-center justify-center font-semibold whitespace-nowrap"
@@ -230,7 +233,7 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, { href: "#", label: "Sign In" }].map((link) => (
+              {[...NAV_LINKS, { href: "/sign-in", label: "Sign In" }].map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
