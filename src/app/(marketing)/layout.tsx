@@ -24,7 +24,7 @@ const NAV_LINKS = [
   { href: "/methodology", label: "Methodology" },
   { href: "/verify", label: "Verify a Score" },
   { href: "/pricing", label: "Pricing" },
-  { href: "#", label: "About" },
+  { href: "/about", label: "About" },
 ];
 
 export default function MarketingLayout({
@@ -334,7 +334,7 @@ export default function MarketingLayout({
                 { href: "/verify", label: "Verify a Score" },
                 { href: "/pricing", label: "Pricing" },
                 { href: "/#faq", label: "FAQ" },
-                { href: "#", label: "About" },
+                { href: "/about", label: "About" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
