@@ -256,7 +256,7 @@ export default function VerifyPage() {
               Record Verification
             </h2>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-              Verify a RunPayway-issued Income Stability Assessment record.
+              Verify a RunPayway™-issued Income Stability Assessment record.
             </p>
 
             {/* Record ID */}
@@ -424,7 +424,7 @@ export default function VerifyPage() {
                     {[
                       ["Record ID", result.record_id],
                       ["Model Version", result.model_version],
-                      ["Income Stability Score", String(result.final_score)],
+                      ["Income Stability Score™", String(result.final_score)],
                       ["Stability Band", result.stability_band],
                       ["Assessment Date", result.assessment_date],
                       ["Issued", result.issued_timestamp],
@@ -492,7 +492,7 @@ export default function VerifyPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 "Each completed assessment receives a unique Record ID and Authorization Code.",
-                "Enter both credentials above to verify that a score was generated using the official RunPayway\u2122 model.",
+                "Enter both credentials above to verify that a score was generated using the official RunPayway™ model.",
                 "Verification confirms the record exists and returns the score, classification band, and issuance details without exposing internal assessment data.",
               ].map((text, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>

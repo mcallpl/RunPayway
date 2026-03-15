@@ -679,7 +679,7 @@ export default function MethodologyPage() {
               e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
             }}
           >
-            Get My Income Stability Score →
+            Get My Income Stability Score™ →
           </Link>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>

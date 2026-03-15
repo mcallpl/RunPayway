@@ -291,7 +291,7 @@ export default function PricingPage() {
               margin: "0 auto 8px",
             }}
           >
-            RunPayway provides structured income stability diagnostics using the Income Stability Score™.
+            RunPayway™ provides structured income stability diagnostics using the Income Stability Score™.
           </p>
 
           <p

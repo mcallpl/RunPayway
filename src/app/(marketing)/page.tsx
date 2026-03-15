@@ -353,7 +353,7 @@ const t = e.currentTarget;
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Get My Income Stability Score
+              Get My Income Stability Score™
             </a>
           </div>
 
@@ -753,7 +753,7 @@ function ScoreRegistry() {
               Every assessment is issued a unique registry ID, linking the score result, model version, and timestamp to a permanent, verifiable record.
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: 1.75 }}>
-              All records are generated under <strong>RunPayway Model RP-1.0</strong> and can be independently verified at any time.
+              All records are generated under <strong>RunPayway™ Model RP-1.0</strong> and can be independently verified at any time.
             </p>
           </div>
 
@@ -1016,7 +1016,7 @@ const t = e.currentTarget;
             }}
             onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            Get My Income Stability Score
+            Get My Income Stability Score™
           </Link>
         </div>
       </div>
@@ -1340,7 +1340,7 @@ function PreviewYourScoreReport() {
       {/* Disclosure */}
       {label("Disclosure")}
       <p className="text-[10px]" style={{ color: B.light, lineHeight: 1.7 }}>
-        This report is created by a fixed classification model. It is not financial advice. The Income Stability Score is not a credit score, not a measure of net worth, and not a prediction of future income.
+        This report is created by a fixed classification model. It is not financial advice. The Income Stability Score™ is not a credit score, not a measure of net worth, and not a prediction of future income.
       </p>
 
       {divider}
@@ -1370,7 +1370,7 @@ function PreviewYourScoreReport() {
 
       {/* Model reference */}
       <div style={{ textAlign: "center", marginTop: 20, paddingTop: 12, borderTop: `1px solid ${B.sandDk}` }}>
-        <div className="text-[10px]" style={{ color: B.light }}>RunPayway Structural Stability Model RP-1.0</div>
+        <div className="text-[10px]" style={{ color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
       </div>
     </>
   );
@@ -1667,7 +1667,7 @@ function HowItWorks() {
     {
       num: "3",
       title: "Score + Report Delivered",
-      desc: "Your Income Stability Score, classification, and full PDF report are generated instantly.",
+      desc: "Your Income Stability Score™, classification, and full PDF report are generated instantly.",
     },
   ];
 
@@ -1781,7 +1781,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
               transition: "opacity 0.5s ease-out 700ms",
             }}
           >
-            Powered by <strong style={{ fontWeight: 600, color: B.muted }}>RunPayway Model RP-1.0</strong>
+            Powered by <strong style={{ fontWeight: 600, color: B.muted }}>RunPayway™ Model RP-1.0</strong>
           </p>
         </div>
       </div>
@@ -1932,7 +1932,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
               }}
             >
-              Built on deterministic structural scoring &#183; RunPayway Model RP-1.0
+              Built on deterministic structural scoring &#183; RunPayway™ Model RP-1.0
             </p>
 
             {/* CTA Button */}
@@ -1977,7 +1977,7 @@ const t = e.currentTarget;
                 }}
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                Get My Income Stability Score
+                Get My Income Stability Score™
               </Link>
 
               <p
@@ -2030,7 +2030,7 @@ const t = e.currentTarget;
                   marginBottom: 24,
                 }}
               >
-                Your Income Stability Score
+                Your Income Stability Score™
               </div>
 
               {/* Score number — gradient text */}
@@ -2297,7 +2297,7 @@ if (!tier.active) {
 e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.25)"; }}
         >
-          Get My Income Stability Score
+          Get My Income Stability Score™
         </Link>
       </div>
 

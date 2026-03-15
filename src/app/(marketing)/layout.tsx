@@ -150,7 +150,7 @@ export default function MarketingLayout({
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 >
-                  Get My Income Stability Score
+                  Get My Income Stability Score™
                 </Link>
               </div>
             </>
@@ -271,7 +271,7 @@ export default function MarketingLayout({
                   boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
                 }}
               >
-                Get My Income Stability Score
+                Get My Income Stability Score™
               </Link>
             </div>
           </div>
@@ -459,7 +459,7 @@ export default function MarketingLayout({
             }}
           >
             <div style={{ fontSize: 11, fontWeight: 700, color: "#4B3FAE", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 8 }}>
-              RunPayway for Organizations
+              RunPayway™ for Organizations
             </div>
             <p style={{ fontSize: 14, color: "rgba(14,26,43,0.60)", lineHeight: 1.65, marginBottom: 14 }}>
               Enterprise assessments and team-level income stability analysis.

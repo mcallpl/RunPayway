@@ -171,7 +171,7 @@ export default function ContactPage() {
               marginBottom: 24,
             }}
           >
-            Contact RunPayway
+            Contact RunPayway™
           </h1>
 
           <p
@@ -187,7 +187,7 @@ export default function ContactPage() {
           </p>
 
           <p style={{ fontSize: mobile ? 14 : 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 8px" }}>
-            RunPayway inquiries are reviewed by the platform team.
+            RunPayway™ inquiries are reviewed by the platform team.
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>

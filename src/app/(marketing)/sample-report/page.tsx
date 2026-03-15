@@ -711,7 +711,7 @@ export default function SampleReportPage() {
             {/* Disclosure */}
             <Label>Disclosure</Label>
             <p style={{ fontSize: 10, color: B.light, lineHeight: 1.7 }}>
-              This report is created by a fixed classification model. It is not financial advice. The Income Stability Score is not a credit score, not a measure of net worth, and not a prediction of future income.
+              This report is created by a fixed classification model. It is not financial advice. The Income Stability Score™ is not a credit score, not a measure of net worth, and not a prediction of future income.
             </p>
 
             <Divider />
@@ -741,7 +741,7 @@ export default function SampleReportPage() {
 
             {/* Model reference */}
             <div style={{ textAlign: "center", marginTop: 20, paddingTop: 12, borderTop: `1px solid ${B.sandDk}` }}>
-              <div style={{ fontSize: 10, color: B.light }}>RunPayway Structural Stability Model RP-1.0</div>
+              <div style={{ fontSize: 10, color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
             </div>
           </ReportPageCard>
         </div>
@@ -855,7 +855,7 @@ export default function SampleReportPage() {
               e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
             }}
           >
-            Get My Income Stability Score →
+            Get My Income Stability Score™ →
           </Link>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>

@@ -846,7 +846,7 @@ export default function HowItWorksPage() {
               e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
             }}
           >
-            Get My Income Stability Score →
+            Get My Income Stability Score™ →
           </Link>
 
           {/* Footer reference */}

@@ -149,7 +149,7 @@ export default function SignInPage() {
               marginBottom: 20,
             }}
           >
-            RunPayway Monitoring Portal
+            RunPayway™ Monitoring Portal
           </h1>
 
           <p
@@ -625,7 +625,7 @@ export default function SignInPage() {
               Portal Access Notice
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              The RunPayway Monitoring Portal is designed for subscribers who are tracking structural income stability over time.
+              The RunPayway™ Monitoring Portal is designed for subscribers who are tracking structural income stability over time.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
               Assessments issued through the portal are generated using fixed scoring criteria defined under Structural Stability Model RP-1.0.
