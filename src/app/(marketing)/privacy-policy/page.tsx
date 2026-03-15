@@ -265,11 +265,10 @@ export default function PrivacyPolicyPage() {
                 United States
               </P>
               <P>
-                <span style={{ fontWeight: 600, color: B.navy }}>Privacy Contact</span><br />
-                privacy@runpayway.com
+                PeopleStar Enterprises, Inc. acts as the data controller for personal information processed through the RunPayway™ platform.
               </P>
               <P style={{ marginBottom: 0 }}>
-                PeopleStar Enterprises, Inc. acts as the data controller for personal information processed through the RunPayway™ platform.
+                Privacy inquiries and privacy rights requests may be submitted through the RunPayway™ privacy request form available on the website.
               </P>
             </Section>
           </div>
@@ -426,8 +425,7 @@ export default function PrivacyPolicyPage() {
                 "request deletion of personal information",
                 "request limitation of processing",
               ]} />
-              <P>Privacy rights requests must be submitted through the designated privacy request form available on the RunPayway™ website.</P>
-              <P>Requests may also be submitted by email: privacy@runpayway.com</P>
+              <P>Privacy rights requests must be submitted through the RunPayway™ privacy request form available on the website.</P>
               <P>Identity verification may be required before processing a request.</P>
               <P style={{ marginBottom: 0 }}>Verified requests will be responded to within applicable legal timeframes.</P>
             </Section>
@@ -445,7 +443,7 @@ export default function PrivacyPolicyPage() {
                 "the right to non-discrimination",
               ]} />
               <P>RunPayway™ does not sell personal information and does not share personal information for cross-context behavioral advertising.</P>
-              <P style={{ marginBottom: 0 }}>Requests must be submitted through the designated privacy request form or by email to: privacy@runpayway.com</P>
+              <P style={{ marginBottom: 0 }}>Requests must be submitted through the RunPayway™ privacy request form available on the website.</P>
             </Section>
           </div>
 
