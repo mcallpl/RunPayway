@@ -311,7 +311,7 @@ function FinalCta() {
               margin: "0 auto 42px auto",
             }}
           >
-            Six scoring factors. One score. A complete structural diagnosis of your income.
+            Six structural factors. One score. A complete structural diagnosis of your income.
           </p>
 
           {/* CTA Button */}
@@ -1254,7 +1254,7 @@ function ScoringFactors() {
   return (
     <section
       ref={sectionRef}
-      aria-label="Six Scoring Factors"
+      aria-label="Six Structural Factors"
       className="scoring-factors-section relative"
       style={{
         paddingTop: mobile ? 80 : 140,
@@ -1285,7 +1285,7 @@ function ScoringFactors() {
             className="text-[34px] md:text-[48px] font-semibold"
             style={{ color: B.navy, letterSpacing: "-0.025em", marginBottom: 16, lineHeight: 1.1 }}
           >
-            Six Scoring Factors
+            Six Structural Factors
           </h2>
           <p
             className="text-[17px] md:text-[18px] mx-auto"
