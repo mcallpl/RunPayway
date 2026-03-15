@@ -87,16 +87,13 @@ export async function executeIncomeStabilityEngine(
   const validatedInputs = validateDiagnosticInput(submission.inputs);
   const validatedProfile = validateProfileContext(submission.profile);
 
-  // Step 3: Check idempotency — same inputs under same model = return existing
+  // Step 3: Compute input checksum (used in record, but no longer for idempotency)
   const storage = createStorageBackend();
   const inputChecksum = computeInputChecksum(validatedInputs);
-  const existing = await storage.findByInputChecksum(
-    inputChecksum,
-    MODEL_VERSION_FULL
-  );
-  if (existing) {
-    return existing;
-  }
+  // CRITICAL FIX: Idempotency shortcut disabled — findByInputChecksum ignores
+  // profile context (email, industry, name), so different users with the same
+  // 6 inputs would receive each other's reports. Every assessment now produces
+  // a unique record.
 
   // Step 4: Compute deterministic score
   const scoringResult = computeScore(validatedInputs);

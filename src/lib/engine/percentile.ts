@@ -19,7 +19,8 @@ export function computePeerPercentile(finalScore: number): number {
     percentile = 60 + ((finalScore - 60) / 20) * 28;
   } else {
     // High band: 80–100 maps to 88–100th percentile
-    percentile = 88 + ((finalScore - 80) / 21) * 12;
+    // FIX: divisor was 21 but range 80-100 is 20 wide (offsets 0-20)
+    percentile = 88 + ((finalScore - 80) / 20) * 12;
   }
 
   return Math.floor(percentile);

@@ -12,7 +12,8 @@ function DownloadContent() {
   useEffect(() => {
     if (recordId && !downloading) {
       setDownloading(true);
-      window.location.href = `/api/pdf/${recordId}`;
+      // FIX: /api/pdf/${recordId} does not exist; PDF download is handled from the review page
+      window.location.href = `/review`;
     }
   }, [recordId, downloading]);
 

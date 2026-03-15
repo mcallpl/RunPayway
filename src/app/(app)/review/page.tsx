@@ -101,7 +101,7 @@ function indicatorStrengthSummary(r: AssessmentRecord): string {
     r.active_labor_dependence_label,
     r.exposure_concentration_label,
   ];
-  const strong = labels.filter((l) => /high|very high|strong/i.test(l)).length;
+  const strong = labels.filter((l) => /high|very high/i.test(l)).length;
   const moderate = labels.filter((l) => /moderate/i.test(l)).length;
   if (strong >= 4) return "strength in many areas";
   if (strong >= 2) return "some areas of strength";
@@ -160,21 +160,29 @@ const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
 
 // Identify key positive/negative factors for Page 1
 function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string[] } {
+  // For inverted indicators (variability, labor dependence, concentration),
+  // "low/very low" is GOOD and "high/very high" is BAD.
   const factors = [
-    { label: "Income Persistence", value: r.income_persistence_label },
-    { label: "Income Source Diversity", value: r.income_source_diversity_label },
-    { label: "Forward Revenue Visibility", value: r.forward_revenue_visibility_label },
-    { label: "Monthly Income Stability", value: r.income_variability_label },
-    { label: "Active Labor Independence", value: r.active_labor_dependence_label },
-    { label: "Source Concentration", value: r.exposure_concentration_label },
+    { label: "Income Persistence", value: r.income_persistence_label, inverted: false },
+    { label: "Income Source Diversity", value: r.income_source_diversity_label, inverted: false },
+    { label: "Forward Revenue Visibility", value: r.forward_revenue_visibility_label, inverted: false },
+    { label: "Monthly Income Variability", value: r.income_variability_label, inverted: true },
+    { label: "Active Labor Independence", value: r.active_labor_dependence_label, inverted: true },
+    { label: "Source Concentration", value: r.exposure_concentration_label, inverted: true },
   ];
   const positive: string[] = [];
   const risks: string[] = [];
   for (const f of factors) {
-    if (/high|very high|strong/i.test(f.value)) {
-      positive.push(f.label);
-    } else if (/low|very low|limited|weak/i.test(f.value)) {
-      risks.push(f.label);
+    const isHigh = /high|very high/i.test(f.value);
+    const isLow = /low|very low/i.test(f.value);
+    if (f.inverted) {
+      // Inverted: low = positive, high = risk
+      if (isLow) positive.push(f.label);
+      else if (isHigh) risks.push(f.label);
+    } else {
+      // Normal: high = positive, low = risk
+      if (isHigh) positive.push(f.label);
+      else if (isLow) risks.push(f.label);
     }
   }
   // If not enough, add moderate ones
@@ -553,7 +561,7 @@ export default function ReviewPage() {
             ["Income That Continues", record.income_persistence_label],
             ["Number of Income Sources", record.income_source_diversity_label],
             ["Income Already Scheduled", record.forward_revenue_visibility_label],
-            ["Monthly Income Stability", record.income_variability_label],
+            ["Monthly Income Variability", record.income_variability_label],
             ["Dependence on Personal Work", record.active_labor_dependence_label],
             ["Dependence on One Source", record.exposure_concentration_label],
           ].map(([l, v]) => (
