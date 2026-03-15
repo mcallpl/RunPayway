@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -268,7 +269,21 @@ export default function PrivacyPolicyPage() {
                 PeopleStar Enterprises, Inc. acts as the data controller for personal information processed through the RunPayway™ platform.
               </P>
               <P style={{ marginBottom: 0 }}>
-                Privacy inquiries and privacy rights requests may be submitted through the RunPayway™ privacy request form available on the website.
+                Privacy inquiries and privacy rights requests may be submitted through the{" "}
+                <Link
+                  href="/privacy-request"
+                  style={{
+                    color: B.purple,
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    borderBottom: "1px solid rgba(75,63,174,0.30)",
+                    transition: "border-color 180ms ease",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
+                >
+                  RunPayway™ privacy request form
+                </Link>.
               </P>
             </Section>
           </div>
