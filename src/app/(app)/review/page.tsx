@@ -276,6 +276,7 @@ async function downloadPDF(recordId: string) {
   // Fixed capture width for consistent rendering
   const captureWidth = 750;
 
+  // Exactly 3 report pages → exactly 3 PDF pages. One-to-one.
   for (let i = 0; i < pages.length; i++) {
     const el = pages[i] as HTMLElement;
 
@@ -287,7 +288,7 @@ async function downloadPDF(recordId: string) {
     const origHeight = el.style.height;
     const origOverflow = el.style.overflow;
 
-    // Set fixed width but let height be natural (no clipping)
+    // Set fixed width, let height be natural
     el.style.width = `${captureWidth}px`;
     el.style.maxWidth = `${captureWidth}px`;
     el.style.boxSizing = "border-box";
@@ -317,54 +318,28 @@ async function downloadPDF(recordId: string) {
     el.style.height = origHeight;
     el.style.overflow = origOverflow;
 
-    // Scale canvas to fit PDF page width, then paginate if taller than one page
+    // Place each report page on exactly one PDF page — scale to fit
+    if (i > 0) pdf.addPage();
     const imgWidth = contentWidth;
     const imgHeight = (canvas.height / canvas.width) * imgWidth;
 
-    if (imgHeight <= contentHeight) {
-      // Fits on one page — center vertically
-      if (i > 0) pdf.addPage();
-      pdf.addImage(
-        canvas.toDataURL("image/png"),
-        "PNG",
-        margin,
-        margin,
-        imgWidth,
-        imgHeight
-      );
-    } else {
-      // Content taller than one page — split across multiple PDF pages
-      const totalPages = Math.ceil(imgHeight / contentHeight);
-      const sourcePixelsPerPage = Math.floor(canvas.height / totalPages);
+    // If content is taller than page, scale down to fit
+    const scale = imgHeight > contentHeight ? contentHeight / imgHeight : 1;
+    const finalWidth = imgWidth * scale;
+    const finalHeight = imgHeight * scale;
 
-      for (let p = 0; p < totalPages; p++) {
-        if (i > 0 || p > 0) pdf.addPage();
+    // Center on page
+    const xOffset = margin + (contentWidth - finalWidth) / 2;
+    const yOffset = margin;
 
-        // Create a slice canvas for this page
-        const sliceCanvas = document.createElement("canvas");
-        sliceCanvas.width = canvas.width;
-        sliceCanvas.height = sourcePixelsPerPage;
-        const ctx = sliceCanvas.getContext("2d");
-        if (ctx) {
-          ctx.fillStyle = "#ffffff";
-          ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-          ctx.drawImage(
-            canvas,
-            0, p * sourcePixelsPerPage, canvas.width, sourcePixelsPerPage,
-            0, 0, sliceCanvas.width, sourcePixelsPerPage
-          );
-        }
-
-        pdf.addImage(
-          sliceCanvas.toDataURL("image/png"),
-          "PNG",
-          margin,
-          margin,
-          imgWidth,
-          contentHeight
-        );
-      }
-    }
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "PNG",
+      xOffset,
+      yOffset,
+      finalWidth,
+      finalHeight
+    );
   }
 
   const shortId = recordId.slice(0, 8);
