@@ -23,7 +23,6 @@ const NAV_LINKS = [
   { href: "/sample-report", label: "Sample Report" },
   { href: "/methodology", label: "Methodology" },
   { href: "/verify", label: "Verify a Score" },
-  { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
 ];
 
@@ -320,7 +319,7 @@ export default function MarketingLayout({
                 padding: 0,
                 margin: 0,
                 display: "grid",
-                gridTemplateColumns: mobile ? "repeat(2, auto)" : "repeat(6, auto)",
+                gridTemplateColumns: mobile ? "repeat(2, auto)" : "repeat(4, auto)",
                 gap: mobile ? "14px 28px" : 28,
                 alignItems: "center",
                 justifyContent: "start",
