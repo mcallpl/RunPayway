@@ -4,12 +4,27 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { executeClientEngine } from "@/lib/client-engine";
 
+/* ------------------------------------------------------------------ */
+/*  Brand tokens                                                       */
+/* ------------------------------------------------------------------ */
+
+const B = {
+  navy: "#0E1A2B",
+  purple: "#4B3FAE",
+  teal: "#1F6D7A",
+  sand: "#F7F6F3",
+  sandDk: "#EDECEA",
+  muted: "#6B7280",
+  light: "#9CA3AF",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+};
+
+/* ------------------------------------------------------------------ */
+/*  Data                                                               */
+/* ------------------------------------------------------------------ */
+
 const ANSWER_MAP: Record<string, number> = {
-  A: 0,
-  B: 25,
-  C: 50,
-  D: 75,
-  E: 100,
+  A: 0, B: 25, C: 50, D: 75, E: 100,
 };
 
 const STORAGE_KEY = "runpayway_diagnostic_state";
@@ -29,16 +44,9 @@ const QUESTIONS: Question[] = [
   {
     number: 1,
     title: "Recurring Revenue Base",
-    prompt:
-      "What percentage of your income renews automatically through an existing agreement or subscription?",
-    examples: [
-      "subscription services",
-      "contract retainers",
-      "licensing or royalty income",
-      "recurring service agreements",
-    ],
-    definition:
-      "Recurring income renews without requiring new client acquisition.",
+    prompt: "What percentage of your income renews automatically through an existing agreement or subscription?",
+    examples: ["subscription services", "contract retainers", "licensing or royalty income", "recurring service agreements"],
+    definition: "Recurring income renews without requiring new client acquisition.",
     options: [
       { letter: "A", text: "0–10%" },
       { letter: "B", text: "11–30%" },
@@ -50,8 +58,7 @@ const QUESTIONS: Question[] = [
   {
     number: 2,
     title: "Income Concentration",
-    prompt:
-      "Over the previous 12 months, what percentage of your income came from your single largest income source?",
+    prompt: "Over the previous 12 months, what percentage of your income came from your single largest income source?",
     examples: ["employer", "client", "contract group", "asset category"],
     options: [
       { letter: "A", text: "90–100%" },
@@ -64,8 +71,7 @@ const QUESTIONS: Question[] = [
   {
     number: 3,
     title: "Income Source Count",
-    prompt:
-      "Over the previous 12 months, how many income sources each generated at least 10% of your total income?",
+    prompt: "Over the previous 12 months, how many income sources each generated at least 10% of your total income?",
     note: "Only sources contributing 10% or more should be counted.",
     options: [
       { letter: "A", text: "1" },
@@ -78,8 +84,7 @@ const QUESTIONS: Question[] = [
   {
     number: 4,
     title: "Forward Revenue Visibility",
-    prompt:
-      "How many months of income are currently secured under signed or enforceable agreements?",
+    prompt: "How many months of income are currently secured under signed or enforceable agreements?",
     note: "Include only income that is already contractually committed.",
     options: [
       { letter: "A", text: "Less than 1 month" },
@@ -92,8 +97,7 @@ const QUESTIONS: Question[] = [
   {
     number: 5,
     title: "Earnings Variability",
-    prompt:
-      "Over the previous 12 months, how much did your monthly income fluctuate between the highest and lowest months?",
+    prompt: "Over the previous 12 months, how much did your monthly income fluctuate between the highest and lowest months?",
     note: "Measured relative to your average monthly income.",
     options: [
       { letter: "A", text: "More than 75%" },
@@ -106,16 +110,9 @@ const QUESTIONS: Question[] = [
   {
     number: 6,
     title: "Income Continuity Without Active Labor",
-    prompt:
-      "If active work stopped for 90 consecutive days, what percentage of your income would continue automatically?",
-    examples: [
-      "subscriptions",
-      "contract retainers",
-      "royalties",
-      "asset distributions",
-    ],
-    definition:
-      "Income that continues without new work, client acquisition, or servicing activity.",
+    prompt: "If active work stopped for 90 consecutive days, what percentage of your income would continue automatically?",
+    examples: ["subscriptions", "contract retainers", "royalties", "asset distributions"],
+    definition: "Income that continues without new work, client acquisition, or servicing activity.",
     options: [
       { letter: "A", text: "0%" },
       { letter: "B", text: "1–25%" },
@@ -134,6 +131,18 @@ const FIELD_MAP = [
   "earnings_variability",
   "income_continuity_without_active_labor",
 ];
+
+const PROCESSING_STEPS = [
+  "Evaluating structural factors",
+  "Calculating pillar scores",
+  "Applying classification framework",
+  "Generating stability diagnosis",
+  "Compiling assessment record",
+];
+
+/* ------------------------------------------------------------------ */
+/*  Storage                                                            */
+/* ------------------------------------------------------------------ */
 
 function saveAnswersToStorage(answers: (string | null)[]) {
   const data = { answers, timestamp: Date.now() };
@@ -156,14 +165,18 @@ function loadAnswersFromStorage(): (string | null)[] | null {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  Page                                                               */
+/* ------------------------------------------------------------------ */
+
 export default function DiagnosticPage() {
   const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<(string | null)[]>(
-    Array(6).fill(null)
-  );
+  const [answers, setAnswers] = useState<(string | null)[]>(Array(6).fill(null));
   const [submitting, setSubmitting] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -182,6 +195,21 @@ export default function DiagnosticPage() {
     }
   }, [router]);
 
+  // Processing step animation
+  useEffect(() => {
+    if (!showLoading) return;
+    const interval = setInterval(() => {
+      setLoadingStep((prev) => {
+        if (prev >= PROCESSING_STEPS.length - 1) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 600);
+    return () => clearInterval(interval);
+  }, [showLoading]);
+
   const q = QUESTIONS[currentQuestion];
   const selected = answers[currentQuestion];
   const allAnswered = answers.every((a) => a !== null);
@@ -194,13 +222,32 @@ export default function DiagnosticPage() {
       saveAnswersToStorage(next);
       return next;
     });
+
+    // Auto-advance after selection (except last question)
+    if (currentQuestion < 5) {
+      setTimeout(() => {
+        setTransitioning(true);
+        setTimeout(() => {
+          setCurrentQuestion((prev) => Math.min(5, prev + 1));
+          setTransitioning(false);
+        }, 300);
+      }, 400);
+    }
   }, [currentQuestion]);
+
+  const goTo = (index: number) => {
+    setError(null);
+    setTransitioning(true);
+    setTimeout(() => {
+      setCurrentQuestion(index);
+      setTransitioning(false);
+    }, 200);
+  };
 
   const handleSubmit = async () => {
     if (!allAnswered) return;
 
     const profile = JSON.parse(sessionStorage.getItem("rp_profile") || "{}");
-
     const inputs: Record<string, number> = {};
     for (let i = 0; i < 6; i++) {
       inputs[FIELD_MAP[i]] = ANSWER_MAP[answers[i]!];
@@ -213,12 +260,10 @@ export default function DiagnosticPage() {
       const record = await executeClientEngine({ profile, inputs });
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.removeItem(STORAGE_KEY);
-
-      // Show loading card for 3 seconds
       setShowLoading(true);
       setTimeout(() => {
         router.push("/review");
-      }, 3000);
+      }, 3600);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
       setError(message);
@@ -226,31 +271,110 @@ export default function DiagnosticPage() {
     }
   };
 
-  // Loading card
+  /* ================================================================ */
+  /*  Processing screen                                               */
+  /* ================================================================ */
   if (showLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center space-y-6">
-          <h2 className="text-lg font-semibold" style={{ color: "#0E1A2B" }}>
-            Analyzing Your Income Structure
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "70vh",
+        }}
+      >
+        <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
+          {/* Model badge */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "5px 14px",
+              borderRadius: 8,
+              background: "rgba(75,63,174,0.06)",
+              marginBottom: 24,
+            }}
+          >
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: B.purple, animation: "pulse 1.2s ease-in-out infinite" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              Model RP-1.0
+            </span>
+          </div>
+
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
+            Generating Your Assessment
           </h2>
-          <p className="text-sm" style={{ color: "#6B7280" }}>
-            Evaluating structural income patterns using Model RP-1.0.
+          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, marginBottom: 32 }}>
+            Structural Stability Model RP-1.0 is evaluating your income structure.
           </p>
-          <div className="w-full max-w-[256px] h-1.5 rounded-full mx-auto overflow-hidden" style={{ backgroundColor: "#EDE9E0" }}>
+
+          {/* Processing steps */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 0, textAlign: "left", marginBottom: 32 }}>
+            {PROCESSING_STEPS.map((step, i) => (
+              <div
+                key={step}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 14,
+                  padding: "10px 0",
+                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(14,26,43,0.04)" : "none",
+                  opacity: i <= loadingStep ? 1 : 0.25,
+                  transition: "opacity 400ms ease",
+                }}
+              >
+                <div
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: i < loadingStep ? B.teal : i === loadingStep ? B.purple : "rgba(14,26,43,0.08)",
+                    transition: "background 400ms ease",
+                    flexShrink: 0,
+                  }}
+                >
+                  {i < loadingStep ? (
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : i === loadingStep ? (
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff" }} />
+                  ) : null}
+                </div>
+                <span style={{ fontSize: 13, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? B.navy : B.light }}>
+                  {step}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Progress bar */}
+          <div style={{ height: 3, borderRadius: 2, background: B.sandDk, overflow: "hidden" }}>
             <div
-              className="h-full rounded-full"
               style={{
-                backgroundColor: "#4B3FAE",
-                animation: "loadProgress 2.8s ease-in-out forwards",
+                height: "100%",
+                borderRadius: 2,
+                background: B.gradient,
+                animation: "loadProgress 3.4s ease-in-out forwards",
               }}
             />
           </div>
+
           <style>{`
             @keyframes loadProgress {
               0% { width: 0%; }
-              60% { width: 70%; }
+              30% { width: 40%; }
+              70% { width: 80%; }
               100% { width: 100%; }
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.4; }
             }
           `}</style>
         </div>
@@ -258,111 +382,210 @@ export default function DiagnosticPage() {
     );
   }
 
+  /* ================================================================ */
+  /*  Diagnostic instrument                                           */
+  /* ================================================================ */
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-neutral-900">
-          Income Stability Diagnostic
-        </h1>
-        <p className="text-sm text-neutral-500 mt-1">
-          Select the option that most accurately reflects your income structure
-          over the previous 12 months.
-        </p>
-      </div>
-
-      {/* Progress */}
-      <div className="flex gap-1.5">
-        {QUESTIONS.map((_, i) => (
-          <div
-            key={i}
-            className={`h-1 flex-1 rounded-full transition-colors ${
-              answers[i] !== null
-                ? "bg-neutral-800"
-                : i === currentQuestion
-                ? "bg-neutral-400"
-                : "bg-neutral-200"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Question */}
-      <div className="border border-gray-200 rounded-lg bg-white p-4 sm:p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-neutral-400 font-medium">
-            Question {q.number} of 6
-          </span>
+    <div style={{ display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+      {/* Top bar — factor label + progress */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
+              Structural Factor {q.number} of 6
+            </div>
+            <div style={{ fontSize: 11, color: B.light }}>
+              Assessment Timeframe: Previous 12 months
+            </div>
+          </div>
+          <div style={{ fontSize: 11, color: B.light }}>
+            Model RP-1.0
+          </div>
         </div>
 
-        <h2 className="text-base font-semibold text-neutral-900">{q.title}</h2>
-        <p className="text-sm text-neutral-700">{q.prompt}</p>
+        {/* Progress bar */}
+        <div style={{ display: "flex", gap: 4 }}>
+          {QUESTIONS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => answers[i] !== null && goTo(i)}
+              style={{
+                flex: 1,
+                height: 4,
+                borderRadius: 2,
+                border: "none",
+                padding: 0,
+                cursor: answers[i] !== null ? "pointer" : "default",
+                background: answers[i] !== null
+                  ? B.purple
+                  : i === currentQuestion
+                    ? "rgba(75,63,174,0.35)"
+                    : "rgba(14,26,43,0.08)",
+                transition: "background 300ms ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
+      {/* Question card */}
+      <div
+        style={{
+          background: "#FFFFFF",
+          borderRadius: 16,
+          border: "1px solid rgba(14,26,43,0.06)",
+          padding: "32px 28px",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          opacity: transitioning ? 0 : 1,
+          transform: transitioning ? "translateY(8px)" : "translateY(0)",
+          transition: "opacity 200ms ease, transform 200ms ease",
+        }}
+      >
+        {/* Factor title */}
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+          {q.title}
+        </h2>
+
+        {/* Question prompt */}
+        <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
+          {q.prompt}
+        </p>
+
+        {/* Examples */}
         {q.examples && (
-          <div className="text-xs text-neutral-500">
-            <span className="font-medium">Examples may include:</span>
-            <ul className="list-disc list-inside mt-1 space-y-0.5">
-              {q.examples.map((ex) => (
-                <li key={ex}>{ex}</li>
-              ))}
-            </ul>
+          <div style={{ marginBottom: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: B.light }}>Examples: </span>
+            <span style={{ fontSize: 12, color: B.light }}>{q.examples.join(", ")}</span>
           </div>
         )}
 
+        {/* Note */}
         {q.note && (
-          <p className="text-xs text-neutral-500 italic">{q.note}</p>
+          <p style={{ fontSize: 12, color: B.light, fontStyle: "italic", marginBottom: 8 }}>
+            {q.note}
+          </p>
         )}
 
-        <div className="space-y-2 pt-2">
-          {q.options.map((opt) => (
-            <button
-              key={opt.letter}
-              onClick={() => selectAnswer(opt.letter)}
-              className={`option-card w-full text-left flex items-center gap-3 ${
-                selected === opt.letter ? "selected" : ""
-              }`}
-            >
-              <span
-                className={`w-7 h-7 rounded-full border flex items-center justify-center text-xs font-medium shrink-0 ${
-                  selected === opt.letter
-                    ? "border-neutral-700 bg-neutral-800 text-white"
-                    : "border-neutral-300 text-neutral-500"
-                }`}
+        {/* Options */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, flex: 1 }}>
+          {q.options.map((opt) => {
+            const isSelected = selected === opt.letter;
+            return (
+              <button
+                key={opt.letter}
+                onClick={() => selectAnswer(opt.letter)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  padding: "16px 20px",
+                  borderRadius: 12,
+                  border: `1px solid ${isSelected ? B.purple : "rgba(14,26,43,0.08)"}`,
+                  background: isSelected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "border-color 160ms ease, background 160ms ease, transform 120ms ease",
+                  transform: isSelected ? "scale(1)" : "scale(1)",
+                  width: "100%",
+                }}
               >
-                {opt.letter}
-              </span>
-              <span className="text-sm text-neutral-700">{opt.text}</span>
-            </button>
-          ))}
+                {/* Letter indicator */}
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: isSelected ? B.purple : "rgba(14,26,43,0.04)",
+                    color: isSelected ? "#FFFFFF" : B.muted,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    flexShrink: 0,
+                    transition: "background 160ms ease, color 160ms ease",
+                  }}
+                >
+                  {opt.letter}
+                </div>
+
+                {/* Option text */}
+                <span style={{ fontSize: 15, fontWeight: isSelected ? 600 : 400, color: isSelected ? B.navy : B.muted, transition: "color 160ms ease" }}>
+                  {opt.text}
+                </span>
+
+                {/* Selected check */}
+                {isSelected && (
+                  <div style={{ marginLeft: "auto", flexShrink: 0 }}>
+                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                      <path d="M1 6L5.5 10.5L15 1" stroke={B.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
 
+        {/* Definition */}
         {q.definition && (
-          <p className="text-xs text-neutral-400 pt-2 border-t border-gray-100">
-            {q.definition}
-          </p>
+          <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
+            <p style={{ fontSize: 12, color: B.light, lineHeight: 1.6 }}>
+              {q.definition}
+            </p>
+          </div>
         )}
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 20,
+          paddingTop: 16,
+        }}
+      >
         <button
-          onClick={() => { setError(null); setCurrentQuestion(Math.max(0, currentQuestion - 1)); }}
+          onClick={() => goTo(Math.max(0, currentQuestion - 1))}
           disabled={currentQuestion === 0}
-          className="text-sm text-neutral-500 hover:text-neutral-800 disabled:opacity-30 disabled:cursor-not-allowed"
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            color: currentQuestion === 0 ? "rgba(14,26,43,0.20)" : B.muted,
+            background: "none",
+            border: "none",
+            cursor: currentQuestion === 0 ? "not-allowed" : "pointer",
+            padding: "8px 0",
+            transition: "color 160ms ease",
+          }}
         >
           Previous
         </button>
 
-        <div className="flex gap-3">
+        <div style={{ display: "flex", gap: 12 }}>
           {currentQuestion < 5 && (
             <button
-              onClick={() => {
-                setError(null);
-                setCurrentQuestion(Math.min(5, currentQuestion + 1));
-              }}
+              onClick={() => goTo(Math.min(5, currentQuestion + 1))}
               disabled={selected === null}
-              className="px-5 py-2 text-sm font-medium bg-neutral-900 text-white rounded disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                height: 44,
+                paddingLeft: 24,
+                paddingRight: 24,
+                borderRadius: 10,
+                background: selected === null ? "rgba(14,26,43,0.08)" : B.navy,
+                color: selected === null ? B.light : "#FFFFFF",
+                fontSize: 14,
+                fontWeight: 600,
+                border: "none",
+                cursor: selected === null ? "not-allowed" : "pointer",
+                transition: "background 180ms ease",
+              }}
             >
-              Next
+              Next Factor
             </button>
           )}
 
@@ -370,16 +593,39 @@ export default function DiagnosticPage() {
             <button
               onClick={handleSubmit}
               disabled={!allAnswered || submitting}
-              className="px-5 py-2 text-sm font-medium bg-neutral-900 text-white rounded disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                height: 48,
+                paddingLeft: 28,
+                paddingRight: 28,
+                borderRadius: 12,
+                background: !allAnswered || submitting ? "rgba(14,26,43,0.08)" : B.purple,
+                color: !allAnswered || submitting ? B.light : "#FFFFFF",
+                fontSize: 15,
+                fontWeight: 600,
+                border: "none",
+                cursor: !allAnswered || submitting ? "not-allowed" : "pointer",
+                boxShadow: allAnswered && !submitting ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+                transition: "background 180ms ease",
+              }}
             >
-              {submitting ? "Processing..." : "Submit Diagnostic"}
+              {submitting ? "Processing..." : "Generate Assessment"}
             </button>
           )}
         </div>
       </div>
 
       {error && (
-        <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded p-3">
+        <div
+          style={{
+            marginTop: 16,
+            padding: "14px 20px",
+            borderRadius: 12,
+            background: "rgba(220,38,38,0.06)",
+            border: "1px solid rgba(220,38,38,0.14)",
+            fontSize: 14,
+            color: "#DC2626",
+          }}
+        >
           {error}
         </div>
       )}
