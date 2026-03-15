@@ -1814,8 +1814,42 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
+      {/* ============ PILLAR TRANSITION — The Problem → The Category ============ */}
+      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+        <p
+          style={{
+            fontSize: mobile ? 18 : 22,
+            fontWeight: 500,
+            color: "rgba(14,26,43,0.50)",
+            lineHeight: 1.6,
+            maxWidth: 520,
+            margin: "0 auto",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          There&rsquo;s never been a standardized way to measure income stability. <span style={{ color: B.navy, fontWeight: 600 }}>Until now.</span>
+        </p>
+      </div>
+
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />
+
+      {/* ============ PILLAR TRANSITION — The Category → The Metric ============ */}
+      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+        <p
+          style={{
+            fontSize: mobile ? 18 : 22,
+            fontWeight: 500,
+            color: "rgba(14,26,43,0.50)",
+            lineHeight: 1.6,
+            maxWidth: 480,
+            margin: "0 auto",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          One score. Six structural factors. <span style={{ color: B.navy, fontWeight: 600 }}>A complete diagnosis.</span>
+        </p>
+      </div>
 
       {/* ============ CONTINUOUS CANVAS: Factors → Classification → Report ============ */}
       <div className="grain-overlay" style={{ position: "relative", background: "linear-gradient(180deg, #ffffff 0%, #FAFAF8 3%, #F7F6F3 8%, #F4F1EA 25%, #F4F1EA 75%, #F4F1EA 100%)" }}>
@@ -2037,6 +2071,23 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
       <PreviewYourScoreReport />
 
       </div>{/* ← end continuous canvas */}
+
+      {/* ============ PILLAR TRANSITION — The Metric → The Outcome ============ */}
+      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+        <p
+          style={{
+            fontSize: mobile ? 18 : 22,
+            fontWeight: 500,
+            color: "rgba(14,26,43,0.50)",
+            lineHeight: 1.6,
+            maxWidth: 500,
+            margin: "0 auto",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          Know where you stand. <span style={{ color: B.navy, fontWeight: 600 }}>Then decide what to build.</span>
+        </p>
+      </div>
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
       <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 80 : 140 }}>
