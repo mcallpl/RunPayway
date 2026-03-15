@@ -75,47 +75,49 @@ body {
   transform: translateX(-10px);
 }
 
-/* Arrow — grows out from the right of the label on hover */
-.cta-tick .cta-label::after {
-  content: "";
-  display: inline-block;
-  width: 0;
-  height: 2px;
-  margin-left: 0;
-  border-radius: 1px;
-  vertical-align: middle;
-  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1),
-              margin-left 360ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.cta-tick:hover .cta-label::after {
-  width: 28px;
-  margin-left: 10px;
-}
-/* Arrow line color inherits from tick variant via custom property */
-.cta-tick:has(.tick-white) .cta-label::after { background: #ffffff; }
-.cta-tick:has(.tick-navy) .cta-label::after { background: #0E1A2B; }
-.cta-tick:has(.tick-purple) .cta-label::after { background: #4B3FAE; }
-
-/* Arrowhead — chevron at the end of the growing line */
+/* Arrow — line + chevron connected, grows from right of label */
 .cta-tick .cta-arrow {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  border-right: 2px solid currentColor;
-  border-top: 2px solid currentColor;
-  transform: translateY(-50%) rotate(45deg);
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  width: 0;
+  margin-left: 0;
   opacity: 0;
-  transition: opacity 200ms ease 160ms, right 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1),
+              margin-left 360ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 220ms ease 80ms;
 }
 .cta-tick:hover .cta-arrow {
+  width: 32px;
+  margin-left: 12px;
   opacity: 1;
 }
-/* Arrowhead color variants */
-.cta-tick .cta-arrow-white { color: #ffffff; }
-.cta-tick .cta-arrow-navy { color: #0E1A2B; }
-.cta-tick .cta-arrow-purple { color: #4B3FAE; }
+/* Arrow line */
+.cta-tick .cta-arrow::before {
+  content: "";
+  flex: 1;
+  height: 2px;
+  border-radius: 1px;
+  min-width: 0;
+}
+/* Arrow chevron — connected to line */
+.cta-tick .cta-arrow::after {
+  content: "";
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid;
+  border-top: 2px solid;
+  transform: rotate(45deg);
+  margin-left: -1px;
+}
+/* Arrow color variants */
+.cta-tick .cta-arrow-white::before { background: #ffffff; }
+.cta-tick .cta-arrow-white::after { border-color: #ffffff; }
+.cta-tick .cta-arrow-navy::before { background: #0E1A2B; }
+.cta-tick .cta-arrow-navy::after { border-color: #0E1A2B; }
+.cta-tick .cta-arrow-purple::before { background: #4B3FAE; }
+.cta-tick .cta-arrow-purple::after { border-color: #4B3FAE; }
 
 /* Elegant section divider */
 .section-divider-elegant {
