@@ -251,27 +251,31 @@ async function downloadPDF(recordId: string) {
   const contentWidth = pageWidth - margin * 2;
   const contentHeight = pageHeight - margin * 2;
 
-  // Target aspect ratio for letter page content area
-  const targetRatio = contentHeight / contentWidth;
+  // Fixed capture width for consistent rendering
+  const captureWidth = 750;
 
   for (let i = 0; i < pages.length; i++) {
     const el = pages[i] as HTMLElement;
-
-    // Force a fixed width for consistent capture (matching ~7.8in at 96dpi)
-    const captureWidth = 750;
-    const captureHeight = Math.round(captureWidth * targetRatio);
 
     // Save original styles
     const origWidth = el.style.width;
     const origMinHeight = el.style.minHeight;
     const origMaxWidth = el.style.maxWidth;
     const origBoxSizing = el.style.boxSizing;
+    const origHeight = el.style.height;
+    const origOverflow = el.style.overflow;
 
-    // Set fixed dimensions for capture
+    // Set fixed width but let height be natural (no clipping)
     el.style.width = `${captureWidth}px`;
-    el.style.minHeight = `${captureHeight}px`;
     el.style.maxWidth = `${captureWidth}px`;
     el.style.boxSizing = "border-box";
+    el.style.height = "auto";
+    el.style.minHeight = "0";
+    el.style.overflow = "visible";
+
+    // Let the browser reflow, then measure actual height
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const naturalHeight = el.scrollHeight;
 
     const canvas = await html2canvas(el, {
       scale: 2,
@@ -279,7 +283,8 @@ async function downloadPDF(recordId: string) {
       backgroundColor: "#ffffff",
       logging: false,
       width: captureWidth,
-      height: captureHeight,
+      height: naturalHeight,
+      windowWidth: captureWidth,
     });
 
     // Restore original styles
@@ -287,16 +292,57 @@ async function downloadPDF(recordId: string) {
     el.style.minHeight = origMinHeight;
     el.style.maxWidth = origMaxWidth;
     el.style.boxSizing = origBoxSizing;
+    el.style.height = origHeight;
+    el.style.overflow = origOverflow;
 
-    if (i > 0) pdf.addPage();
-    pdf.addImage(
-      canvas.toDataURL("image/png"),
-      "PNG",
-      margin,
-      margin,
-      contentWidth,
-      contentHeight
-    );
+    // Scale canvas to fit PDF page width, then paginate if taller than one page
+    const imgWidth = contentWidth;
+    const imgHeight = (canvas.height / canvas.width) * imgWidth;
+
+    if (imgHeight <= contentHeight) {
+      // Fits on one page — center vertically
+      if (i > 0) pdf.addPage();
+      pdf.addImage(
+        canvas.toDataURL("image/png"),
+        "PNG",
+        margin,
+        margin,
+        imgWidth,
+        imgHeight
+      );
+    } else {
+      // Content taller than one page — split across multiple PDF pages
+      const totalPages = Math.ceil(imgHeight / contentHeight);
+      const sourcePixelsPerPage = Math.floor(canvas.height / totalPages);
+
+      for (let p = 0; p < totalPages; p++) {
+        if (i > 0 || p > 0) pdf.addPage();
+
+        // Create a slice canvas for this page
+        const sliceCanvas = document.createElement("canvas");
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sourcePixelsPerPage;
+        const ctx = sliceCanvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
+          ctx.drawImage(
+            canvas,
+            0, p * sourcePixelsPerPage, canvas.width, sourcePixelsPerPage,
+            0, 0, sliceCanvas.width, sourcePixelsPerPage
+          );
+        }
+
+        pdf.addImage(
+          sliceCanvas.toDataURL("image/png"),
+          "PNG",
+          margin,
+          margin,
+          imgWidth,
+          contentHeight
+        );
+      }
+    }
   }
 
   const shortId = recordId.slice(0, 8);
