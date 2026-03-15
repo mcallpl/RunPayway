@@ -291,7 +291,7 @@ export default function MethodologyPage() {
                 Developed by RunPayway™, the model evaluates six canonical structural dimensions to produce a single integer score and corresponding stability classification band.
               </P>
               <P style={{ marginBottom: 0 }}>
-                The objective of the model is to provide a consistent method for evaluating how stable an income structure is based on how income is generated and sustained.
+                The objective of the model is to provide a consistent analytical method for evaluating how stable an income structure is based on how income is generated and sustained.
               </P>
             </DocSection>
           </div>
@@ -306,7 +306,7 @@ export default function MethodologyPage() {
                 It provides a standardized framework for evaluating key characteristics of income durability, including diversification, persistence, and variability of income streams.
               </P>
               <P style={{ marginBottom: 0 }}>
-                The model evaluates the structure of income generation rather than personal financial performance.
+                The model evaluates the structure of income generation, rather than personal financial performance.
               </P>
             </DocSection>
           </div>
@@ -355,7 +355,7 @@ export default function MethodologyPage() {
                 ))}
               </div>
               <P style={{ marginBottom: 0 }}>
-                These dimensions describe how income is generated, how concentrated or diversified it is, and how stable it is likely to be under disruption.
+                These dimensions describe how income is generated, how diversified or concentrated it is, and how stable it is likely to be under disruption.
               </P>
             </DocSection>
           </div>
@@ -368,29 +368,11 @@ export default function MethodologyPage() {
               <P>
                 The model uses integer arithmetic only. No floating-point calculations, machine learning, randomization, or adaptive scoring are used.
               </P>
-              <P>Inputs are grouped into two scoring pillars:</P>
-              <div style={{ display: "flex", gap: mobile ? 12 : 16, marginBottom: 16 }}>
-                {[
-                  { label: "Structure", weight: "60%", color: B.navy },
-                  { label: "Stability", weight: "40%", color: B.teal },
-                ].map((pillar) => (
-                  <div
-                    key={pillar.label}
-                    style={{
-                      flex: 1,
-                      padding: mobile ? "16px 16px" : "20px 24px",
-                      borderRadius: 12,
-                      background: B.sand,
-                      textAlign: "center",
-                    }}
-                  >
-                    <div style={{ fontSize: 24, fontWeight: 700, color: pillar.color, marginBottom: 4 }}>{pillar.weight}</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{pillar.label}</div>
-                  </div>
-                ))}
-              </div>
+              <P>
+                Inputs are grouped into two scoring pillars representing income structure characteristics and income stability characteristics.
+              </P>
               <P style={{ marginBottom: 0 }}>
-                The final score is calculated as a weighted integer average of the two pillar scores.
+                The final score is calculated using a deterministic weighted scoring framework applied to the pillar scores.
               </P>
             </DocSection>
           </div>
@@ -436,7 +418,7 @@ export default function MethodologyPage() {
                 ))}
               </div>
               <P style={{ marginBottom: 0 }}>
-                These bands provide context for interpreting the structural durability of the income system.
+                These classification bands provide context for interpreting the structural durability of the income system.
               </P>
             </DocSection>
           </div>
@@ -447,12 +429,12 @@ export default function MethodologyPage() {
               <P>The model produces a structured interpretation of the results.</P>
               <P>This interpretation identifies:</P>
               <BulletList items={[
-                "The primary structural constraint (the lowest-scoring dimension)",
-                "The three highest-scoring structural drivers supporting stability",
-                "A structural priority derived from the primary constraint",
+                "The primary structural constraint affecting stability",
+                "The key structural factors supporting stability",
+                "A structural priority derived from the constraint",
               ]} />
               <P style={{ marginBottom: 0 }}>
-                All interpretation selections are deterministic and generated using locked interpretation templates.
+                All interpretation outputs are generated deterministically using locked interpretation templates.
               </P>
             </DocSection>
           </div>
@@ -464,7 +446,7 @@ export default function MethodologyPage() {
                 The assessment evaluates income structure over the preceding twelve-month period based on the information reported by the subject.
               </P>
               <P style={{ marginBottom: 0 }}>
-                The income continuity test evaluates whether income would persist during a hypothetical 90-day period without active work.
+                The income continuity test considers a hypothetical 90-day cessation of active work to evaluate whether income would persist without continued labor.
               </P>
             </DocSection>
           </div>
@@ -494,7 +476,7 @@ export default function MethodologyPage() {
                 The Income Stability Score™ is a classification of current structural characteristics.
               </P>
               <P>
-                The model does not predict future income performance and does not forecast future stability.
+                The model does not forecast income, estimate growth, or predict future financial outcomes.
               </P>
               <P style={{ marginBottom: 0 }}>
                 The score reflects the structural stability of the income system based solely on the information reported at the time of the assessment.
@@ -511,7 +493,7 @@ export default function MethodologyPage() {
                 "Diagnostic questions",
                 "Answer mapping logic",
                 "Canonical input order",
-                "Weighting structure",
+                "Scoring framework",
                 "Classification thresholds",
                 "Tie-break rules",
                 "Interpretation templates",
@@ -580,10 +562,10 @@ export default function MethodologyPage() {
           <div ref={s13.ref}>
             <DocSection title="Methodology Transparency" mobile={mobile} visible={s13.visible} delay={0}>
               <P>
-                The scoring methodology, input structure, weighting system, and classification framework are publicly documented.
+                The scoring methodology, input structure, weighting framework, and classification system are publicly documented.
               </P>
               <P>
-                The model operates under a canonical manifest containing the complete ruleset, weights, and interpretation templates.
+                The model operates under a canonical manifest containing the complete ruleset and interpretation templates.
               </P>
               <P style={{ marginBottom: 0 }}>
                 A verified ruleset checksum ensures consistent scoring across all assessments issued under the same model version.
