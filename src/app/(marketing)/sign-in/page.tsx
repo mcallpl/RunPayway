@@ -185,8 +185,8 @@ export default function SignInPage() {
           className="mx-auto"
           style={{
             maxWidth: 480,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             opacity: formAnim.visible ? 1 : 0,
             transform: formAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
@@ -384,8 +384,8 @@ export default function SignInPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "flex",
             flexDirection: mobile ? "column" : "row",
             gap: mobile ? 32 : 40,
@@ -549,8 +549,8 @@ export default function SignInPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "grid",
             gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
             gap: mobile ? 24 : 28,

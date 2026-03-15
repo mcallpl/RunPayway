@@ -274,8 +274,8 @@ export default function MethodologyPage() {
           className="mx-auto"
           style={{
             maxWidth: 780,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "flex",
             flexDirection: "column",
             gap: mobile ? 20 : 24,
@@ -669,6 +669,7 @@ export default function MethodologyPage() {
               border: "none",
               boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
               transition: "transform 180ms ease, box-shadow 180ms ease",
+              width: mobile ? "100%" : "auto",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-2px)";

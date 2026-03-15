@@ -497,7 +497,7 @@ function ModelGovernance() {
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
-            padding: mobile ? 22 : 28,
+            padding: mobile ? 24 : 28,
             boxShadow: "0 16px 44px rgba(0,0,0,0.08)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -1100,7 +1100,7 @@ function PreviewYourScoreReport() {
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
-            padding: mobile ? "24px 20px 28px 20px" : "36px 40px 44px 40px",
+            padding: mobile ? "24px 24px 28px 24px" : "36px 40px 44px 40px",
             boxShadow: "0 24px 80px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.04)",
             position: "relative",
           }}
@@ -1604,7 +1604,7 @@ function HeroSection() {
             <h1
               className="font-semibold"
               style={{
-                fontSize: mobile ? 30 : 52,
+                fontSize: mobile ? 32 : 52,
                 color: B.navy,
                 lineHeight: 1.12,
                 letterSpacing: "-0.03em",
@@ -1827,7 +1827,7 @@ export default function LandingPage() {
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
       <section aria-label="Income Stability Classification Scale" style={{ paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, position: "relative" }}>
 
-        <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+        <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24 }}>
           {/* Header */}
           <div className="text-center" style={{ marginBottom: mobile ? 36 : 56 }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
@@ -1988,8 +1988,8 @@ if (!tier.active) {
           gap: mobile ? 16 : undefined,
           maxWidth: 780,
           margin: "0 auto",
-          marginLeft: mobile ? 20 : "auto",
-          marginRight: mobile ? 20 : "auto",
+          marginLeft: mobile ? 24 : "auto",
+          marginRight: mobile ? 24 : "auto",
           border: "1px solid rgba(14,26,43,0.08)",
           borderRadius: 16,
           backgroundColor: "rgba(255,255,255,0.6)",
@@ -2010,7 +2010,7 @@ if (!tier.active) {
           className="cta-tick conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
                      focus:outline-none focus:ring-2"
           style={{
-            height: 40,
+            height: mobile ? 48 : 40,
             paddingLeft: 18,
             paddingRight: 18,
             borderRadius: 10,
@@ -2040,7 +2040,7 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
       <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 80 : 140 }}>
-      <div className="max-w-[1100px] mx-auto text-center" style={{ paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+      <div className="max-w-[1100px] mx-auto text-center" style={{ paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24 }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
           Stability Patterns by Industry
         </h2>

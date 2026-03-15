@@ -322,8 +322,8 @@ export default function PricingPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
           }}
         >
           <div
@@ -385,8 +385,8 @@ export default function PricingPage() {
           className="mx-auto"
           style={{
             maxWidth: 780,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             opacity: monitorAnim.visible ? 1 : 0,
             transform: monitorAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
@@ -457,8 +457,8 @@ export default function PricingPage() {
           className="mx-auto"
           style={{
             maxWidth: 780,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             opacity: includesAnim.visible ? 1 : 0,
             transform: includesAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
@@ -524,8 +524,8 @@ export default function PricingPage() {
           className="mx-auto"
           style={{
             maxWidth: 780,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             opacity: processAnim.visible ? 1 : 0,
             transform: processAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
@@ -661,6 +661,7 @@ export default function PricingPage() {
                 letterSpacing: "-0.01em",
                 border: "1px solid rgba(255,255,255,0.18)",
                 transition: "background 180ms ease, transform 180ms ease",
+                width: mobile ? "100%" : "auto",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "rgba(255,255,255,0.18)";
@@ -688,6 +689,7 @@ export default function PricingPage() {
                 border: "none",
                 boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
                 transition: "transform 180ms ease, box-shadow 180ms ease",
+                width: mobile ? "100%" : "auto",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";

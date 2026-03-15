@@ -73,8 +73,8 @@ export default function MarketingLayout({
           style={{
             maxWidth: 1200,
             height: mobile ? 56 : 72,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
           }}
         >
           {/* Logo */}
@@ -511,7 +511,7 @@ export default function MarketingLayout({
                     aria-label="Work email for enterprise waitlist"
                     style={{
                       width: "100%",
-                      height: 36,
+                      height: mobile ? 40 : 36,
                       padding: "0 12px",
                       borderRadius: 7,
                       border: "1px solid rgba(14,26,43,0.10)",
@@ -528,7 +528,7 @@ export default function MarketingLayout({
                   <button
                     type="submit"
                     style={{
-                      height: 36,
+                      height: mobile ? 40 : 36,
                       borderRadius: 7,
                       background: "#4B3FAE",
                       color: "#ffffff",

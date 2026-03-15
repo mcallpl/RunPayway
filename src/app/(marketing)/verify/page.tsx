@@ -227,8 +227,8 @@ export default function VerifyPage() {
           className="mx-auto"
           style={{
             maxWidth: 620,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             opacity: formAnim.visible ? 1 : 0,
             transform: formAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
@@ -480,7 +480,7 @@ export default function VerifyPage() {
           <div
             style={{
               marginTop: 32,
-              padding: mobile ? "24px 20px" : "28px 28px",
+              padding: mobile ? "24px 24px" : "28px 28px",
               borderRadius: 16,
               background: "#FFFFFF",
               border: "1px solid rgba(14,26,43,0.06)",

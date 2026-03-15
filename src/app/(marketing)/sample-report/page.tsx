@@ -349,8 +349,8 @@ export default function SampleReportPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
           }}
         >
           {/* Page 1 explainer */}
@@ -498,8 +498,8 @@ export default function SampleReportPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
           }}
         >
           <div
@@ -597,8 +597,8 @@ export default function SampleReportPage() {
           className="mx-auto"
           style={{
             maxWidth: 860,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
           }}
         >
           {/* Page 3 — Locked */}
@@ -669,7 +669,7 @@ export default function SampleReportPage() {
                 href="/pricing"
                 className="cta-tick inline-flex items-center justify-center font-semibold"
                 style={{
-                  height: 48,
+                  height: 52,
                   paddingLeft: 28,
                   paddingRight: 28,
                   borderRadius: 12,
@@ -680,6 +680,8 @@ export default function SampleReportPage() {
                   border: "none",
                   boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
                   transition: "background 180ms ease, transform 180ms ease",
+                  width: mobile ? "90%" : "auto",
+                  maxWidth: mobile ? 320 : undefined,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = "#3D33A0";
@@ -797,6 +799,7 @@ export default function SampleReportPage() {
               border: "none",
               boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
               transition: "transform 180ms ease, box-shadow 180ms ease",
+              width: mobile ? "100%" : "auto",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-2px)";

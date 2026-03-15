@@ -210,8 +210,8 @@ export default function ContactPage() {
           className="mx-auto"
           style={{
             maxWidth: 940,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "flex",
             flexDirection: mobile ? "column" : "row",
             gap: mobile ? 32 : 40,
@@ -367,7 +367,7 @@ export default function ContactPage() {
                 background: "#FFFFFF",
                 borderRadius: 16,
                 border: "1px solid rgba(14,26,43,0.06)",
-                padding: mobile ? "24px 20px" : "28px 28px",
+                padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >
@@ -391,7 +391,7 @@ export default function ContactPage() {
                 background: "#FFFFFF",
                 borderRadius: 16,
                 border: "1px solid rgba(14,26,43,0.06)",
-                padding: mobile ? "24px 20px" : "28px 28px",
+                padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >
@@ -442,7 +442,7 @@ export default function ContactPage() {
                 background: "#FFFFFF",
                 borderRadius: 16,
                 border: "1px solid rgba(14,26,43,0.06)",
-                padding: mobile ? "24px 20px" : "28px 28px",
+                padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >

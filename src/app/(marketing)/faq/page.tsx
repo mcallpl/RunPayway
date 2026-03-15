@@ -560,8 +560,8 @@ export default function FaqPage() {
           className="mx-auto"
           style={{
             maxWidth: 780,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "flex",
             flexDirection: "column",
             gap: mobile ? 40 : 56,
