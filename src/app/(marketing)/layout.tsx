@@ -153,9 +153,11 @@ export default function MarketingLayout({
                     <div
                       style={{
                         position: "absolute",
-                        top: "100%",
-                        right: 0,
-                        paddingTop: 8,
+                        top: -4,
+                        right: -12,
+                        paddingTop: 36,
+                        paddingLeft: 12,
+                        paddingRight: 12,
                       }}
                     >
                       <div
