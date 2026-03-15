@@ -1990,7 +1990,7 @@ const t = e.currentTarget;
           </div>
 
           {/* Right — Floating Score (no card) */}
-          <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative" }}>
+          <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
             {/* Very faint radial glow + scoring rings — hidden on mobile */}
             {!mobile && (
               <>
@@ -2008,16 +2008,17 @@ const t = e.currentTarget;
               </>
             )}
 
-            {/* Score typography — floating in space */}
+            {/* Score typography — centered in bullseye */}
             <div
-              className="relative"
               style={{
-                textAlign: mobile ? "center" : "right",
-                paddingTop: mobile ? 0 : 40,
-                paddingBottom: mobile ? 0 : 40,
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: `translate(-50%, -50%) ${cardVisible ? "translateY(0)" : "translateY(24px)"}`,
+                textAlign: "center",
                 opacity: cardVisible ? 1 : 0,
-                transform: cardVisible ? "translateY(0)" : "translateY(24px)",
                 transition: "opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1)",
+                whiteSpace: "nowrap",
               }}
             >
               {/* Label */}
