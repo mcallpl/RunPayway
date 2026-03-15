@@ -1048,352 +1048,8 @@ const t = e.currentTarget;
 function PreviewYourScoreReport() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-  const [activePage, setActivePage] = useState(0);
-  const pages = ["Executive Assessment", "Structural Analysis", "Improvement Path"];
 
-  /* ---- Shared report header (appears on every page) ---- */
-  const reportHeader = (
-    <>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-        <div>
-          <div className="text-[20px] md:text-[22px]" style={{ color: B.navy, fontWeight: 600 }}>
-            Income Stability Assessment
-          </div>
-          <div className="text-[13px]" style={{ color: B.purple, fontWeight: 500, letterSpacing: "0.04em", marginTop: 4 }}>
-            Model <strong>RP-1.0</strong>
-          </div>
-        </div>
-        <div className="text-[10px] text-right" style={{ color: B.light, lineHeight: 1.6 }}>
-          <div>A7E2F1B3</div>
-          <div>2026-03-10</div>
-        </div>
-      </div>
-      <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "16px 0 24px 0" }} />
-    </>
-  );
-
-  /* ---- Shared section divider ---- */
-  const divider = <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "20px 0" }} />;
-
-  /* ---- Shared section label ---- */
-  const label = (text: string) => (
-    <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-      {text}
-    </div>
-  );
-
-  /* ==================== PAGE CONTENT ==================== */
-  const page1 = (
-    <>
-      {reportHeader}
-
-      {/* Key insight */}
-      <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>
-        This assessment evaluates the structural stability of income systems using six deterministic factors under Model RP-1.0. Score reflects current income architecture, not future outcomes.
-      </p>
-
-      {/* Compact score + percentile row */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
-        <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center", gap: 14 }}>
-          <div className="text-[28px]" style={{ color: B.navy, fontWeight: 700, lineHeight: 1 }}>78</div>
-          <div>
-            <div className="text-[12px]" style={{ color: B.purple, fontWeight: 600 }}>Established Stability</div>
-            <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>Income Stability Score™</div>
-          </div>
-        </div>
-        <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center" }}>
-          <div>
-            <div className="text-[12px]" style={{ color: B.muted }}>
-              <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
-            </div>
-            <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>
-              Exceeds 72% of assessed income systems in this sector.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {divider}
-
-      {/* Assessment Title */}
-      <div style={{ marginBottom: 14 }}>
-        <div
-          style={{
-            fontWeight: 500,
-            fontSize: 12,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase" as const,
-            color: "rgba(14,26,43,0.55)",
-            marginBottom: 4,
-          }}
-        >
-          Assessment Title
-        </div>
-        <div
-          style={{
-            fontWeight: 600,
-            fontSize: 16,
-            color: B.navy,
-          }}
-        >
-          Jordan Ellis — Ellis Advisory Group
-        </div>
-      </div>
-
-      {/* Profile */}
-      {label("Profile")}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-        {[
-          ["Classification", "Established Stability"],
-          ["Structure", "LLC — Single Operator"],
-          ["Income Model", "Fee-for-Service"],
-          ["Revenue", "Project-Based"],
-          ["Sector", "Professional Services"],
-        ].map(([l, v]) => (
-          <div key={l}>
-            <span className="text-[11px]" style={{ color: B.light }}>{l}: </span>
-            <span className="text-[11px]" style={{ color: B.navy, fontWeight: 500 }}>{v}</span>
-          </div>
-        ))}
-      </div>
-
-      {divider}
-
-      {/* Key Structural Factors */}
-      {label("Key Structural Factors")}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <div className="text-[10px] uppercase" style={{ fontWeight: 600, color: B.teal, letterSpacing: "0.08em", marginBottom: 8 }}>Positive Factors</div>
-          {["Multiple income sources", "Some recurring revenue", "Forward commitments present"].map((f) => (
-            <div key={f} className="flex items-center gap-2 mb-1">
-              <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: B.teal, flexShrink: 0 }} />
-              <span className="text-[11px]" style={{ color: B.navy }}>{f}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div className="text-[10px] uppercase" style={{ fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 8 }}>Structural Risks</div>
-          {["High active labor dependence", "Limited persistent income"].map((f) => (
-            <div key={f} className="flex items-center gap-2 mb-1">
-              <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: B.light, flexShrink: 0 }} />
-              <span className="text-[11px]" style={{ color: B.navy }}>{f}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-
-  const page2 = (
-    <>
-      {reportHeader}
-
-      <div className="text-[12px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.1em", marginBottom: 4 }}>
-        Structural Analysis
-      </div>
-      <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-        This page breaks down the composition of income sources and structural indicators driving the overall stability score.
-      </p>
-
-      {/* Income Structure Map */}
-      {label("Income Structure Map")}
-      <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 24 }}>
-        {[
-          { l: "Active Income", desc: "Earned by doing work", v: 65, c: B.muted },
-          { l: "Semi-Persistent", desc: "Repeats for a while, then stops", v: 25, c: B.teal },
-          { l: "Persistent", desc: "Continues with little work", v: 10, c: B.navy },
-        ].map((bar) => (
-          <div key={bar.l}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-              <span className="text-[11px]" style={{ color: B.muted }}>{bar.l}</span>
-              <span className="text-[11px]" style={{ color: B.navy, fontWeight: 600 }}>{bar.v}%</span>
-            </div>
-            <div style={{ height: 10, borderRadius: 999, backgroundColor: B.sand, overflow: "hidden" }}>
-              <div style={{ height: "100%", borderRadius: 999, width: `${bar.v}%`, backgroundColor: bar.c, transition: "width 0.6s ease" }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {divider}
-
-      {/* Structural Indicators */}
-      {label("Structural Indicators")}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {[
-          ["Income That Continues", "Moderate"],
-          ["Number of Income Sources", "Multiple"],
-          ["Income Already Scheduled", "Some"],
-          ["Monthly Income Stability", "Variable"],
-          ["Dependence on Personal Work", "High"],
-          ["Dependence on One Source", "Low"],
-        ].map(([l, v]) => (
-          <div key={l} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", borderRadius: 8, backgroundColor: B.sand }}>
-            <span className="text-[10px]" style={{ color: B.muted }}>{l}</span>
-            <span className="text-[10px]" style={{ color: B.navy, fontWeight: 600 }}>{v}</span>
-          </div>
-        ))}
-      </div>
-
-      {divider}
-
-      {/* System Diagnosis */}
-      {label("System Diagnosis")}
-      <div className="text-[12px]" style={{ color: B.muted, lineHeight: 1.7 }}>
-        <p style={{ marginBottom: 8 }}>
-          This system operates mainly as a <strong style={{ color: B.navy }}>Labor-Dependent</strong> income system in the <strong style={{ color: B.navy }}>Professional Services</strong> sector.
-        </p>
-        <p>
-          Income mainly comes from active project work. The system shows moderate diversification but limited persistent revenue streams. Because <strong style={{ color: B.navy }}>Income Persistence</strong> is limited, stability depends on continuing to generate new work.
-        </p>
-      </div>
-
-      {divider}
-
-      {/* Industry Benchmark */}
-      {label("Industry Stability Benchmark")}
-      <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${B.sandDk}` }}>
-        {[
-          ["Average Professional Services Score", "62", false],
-          ["Top 20% Stability Range", "80+", false],
-          ["Your Score", "78", true],
-          ["Distance From Top Tier", "2 points", false],
-        ].map(([l, v, highlight], i) => (
-          <div key={l as string} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 16px", backgroundColor: i % 2 === 0 ? B.sand : "#fff" }}>
-            <span className="text-[11px]" style={{ color: B.muted }}>{l as string}</span>
-            <span className="text-[11px]" style={{ fontWeight: 600, color: highlight ? B.purple : B.navy }}>{v as string}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Drivers */}
-      <div style={{ marginTop: 16 }}>
-        {label("Drivers Supporting Stability")}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-          {["Client Diversification", "Recurring Engagements", "Service Expansion"].map((d) => (
-            <span key={d} className="text-[10px]" style={{ fontWeight: 500, padding: "4px 10px", borderRadius: 6, backgroundColor: B.sand, color: B.navy }}>{d}</span>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-
-  const page3 = (
-    <>
-      {reportHeader}
-
-      <div className="text-[12px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.1em", marginBottom: 4 }}>
-        Improvement Path &amp; Governance
-      </div>
-      <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-        Structural actions that may move this income system toward higher stability classification.
-      </p>
-
-      {/* Primary Constraint */}
-      {label("Primary Structural Constraint")}
-      <div className="text-[13px]" style={{ color: B.navy, fontWeight: 600, marginBottom: 6 }}>Income Persistence</div>
-      <div className="text-[12px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 4 }}>
-        Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.
-      </div>
-      <div className="text-[12px]" style={{ color: B.muted, lineHeight: 1.7 }}>
-        Systems dependent on active labor face higher score volatility if conditions change.
-      </div>
-
-      {divider}
-
-      {/* Improvement Opportunities */}
-      {label("Improvement Opportunities")}
-      <p className="text-[12px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>
-        Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores. Structuring intellectual property or productized offerings could create asset-based revenue.
-      </p>
-
-      {/* Sector evolution */}
-      <div style={{ marginBottom: 16 }}>
-        <div className="text-[10px] uppercase" style={{ fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 10 }}>
-          Sector Evolution Path
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-          {["Project-Based", "Recurring Services", "Managed Services", "Asset-Based"].map((step, i) => (
-            <div key={step} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span className="text-[10px]" style={{
-                fontWeight: 500,
-                padding: "4px 10px",
-                borderRadius: 6,
-                backgroundColor: i === 0 ? B.teal : i === 1 ? B.navy : B.sand,
-                color: i <= 1 ? "#fff" : B.light,
-              }}>
-                {step}
-              </span>
-              {i < 3 && <span className="text-[10px]" style={{ color: B.light }}>&rarr;</span>}
-            </div>
-          ))}
-        </div>
-        <div className="text-[10px]" style={{ color: B.muted, marginTop: 8 }}>
-          Current Stage: <strong style={{ color: B.navy }}>Project-Based → Recurring Services</strong>
-        </div>
-      </div>
-
-      {/* Sector mechanisms */}
-      <div style={{ marginBottom: 4 }}>
-        <div className="text-[10px] uppercase" style={{ fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 6 }}>
-          Sector Stability Mechanisms
-        </div>
-        <ul className="text-[11px]" style={{ color: B.muted, listStyleType: "disc", paddingLeft: 16, lineHeight: 1.8 }}>
-          <li>Retainer-based client relationships</li>
-          <li>Productized service packages</li>
-          <li>Licensing intellectual property or frameworks</li>
-        </ul>
-      </div>
-
-      {divider}
-
-      {/* Methodology */}
-      {label("Methodology")}
-      <p className="text-[10px]" style={{ color: B.muted, lineHeight: 1.7, marginBottom: 4 }}>
-        The Income Stability Score™ evaluates the structural stability of income at a specific point in time. Six structural factors are assessed under Model RP-1.0 using fixed, deterministic scoring criteria. The model does not evaluate investment performance, creditworthiness, or future financial outcomes.
-      </p>
-
-      {divider}
-
-      {/* Disclosure */}
-      {label("Disclosure")}
-      <p className="text-[10px]" style={{ color: B.light, lineHeight: 1.7 }}>
-        This report is created by a fixed classification model. It is not financial advice. The Income Stability Score™ is not a credit score, not a measure of net worth, and not a prediction of future income.
-      </p>
-
-      {divider}
-
-      {/* Official Record */}
-      {label("Official Classification Record")}
-      <div style={{ display: "grid", gap: 4, marginTop: 4 }}>
-        {[
-          ["Record ID", "a7e2f1b3-94c1-4d8e-b7a2-3f1e5d9c6b8a"],
-          ["Model", "RP-1.0"],
-          ["Date", "2026-03-10"],
-          ["Score", "78 — Established Stability"],
-          ["Auth Code", "RP-78-A7E2-2026"],
-          ["Registry", "Publicly Listed"],
-        ].map(([l, v]) => (
-          <div key={l} className="flex flex-col sm:flex-row">
-            <span className="text-[10px] sm:w-20 shrink-0" style={{ color: B.light }}>{l}</span>
-            <span className="text-[10px] font-mono break-all" style={{ color: B.navy }}>{v}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Verification */}
-      <p className="text-[10px]" style={{ color: B.muted, marginTop: 12, lineHeight: 1.6 }}>
-        Verify this report at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway.com/verify</span> using the Record ID and Authorization Code.
-      </p>
-
-      {/* Model reference */}
-      <div style={{ textAlign: "center", marginTop: 20, paddingTop: 12, borderTop: `1px solid ${B.sandDk}` }}>
-        <div className="text-[10px]" style={{ color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
-      </div>
-    </>
-  );
-
-  const pageContent = [page1, page2, page3];
+  /* ==================== TRUNCATED PREVIEW — Score + Profile only ==================== */
 
   return (
     <section
@@ -1432,40 +1088,7 @@ function PreviewYourScoreReport() {
           Every assessment produces a three-page report &#8212; your classification, structural breakdown, and a clear path to improve.
         </p>
 
-        {/* Page tabs */}
-        <div className="flex flex-wrap gap-0 mb-0" style={{ maxWidth: 820, margin: "0 auto 0 auto" }}>
-          {pages.map((label, i) => {
-            const isActive = activePage === i;
-            return (
-              <button
-                key={label}
-                onClick={() => setActivePage(i)}
-                style={{
-                  flex: 1,
-                  padding: mobile ? "10px 8px" : "14px 16px",
-                  fontSize: mobile ? 11 : 13,
-                  fontWeight: 600,
-                  letterSpacing: "0.01em",
-                  border: "1px solid rgba(14,26,43,0.10)",
-                  borderBottom: isActive ? "1px solid #fff" : "1px solid rgba(14,26,43,0.10)",
-                  borderTopLeftRadius: i === 0 ? 14 : 0,
-                  borderTopRightRadius: i === pages.length - 1 ? 14 : 0,
-                  backgroundColor: isActive ? "#ffffff" : "rgba(14,26,43,0.03)",
-                  color: isActive ? B.navy : B.light,
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  position: "relative",
-                  zIndex: isActive ? 2 : 1,
-                  marginLeft: i > 0 ? -1 : 0,
-                }}
-              >
-                {!mobile && <span>Page {i + 1}: </span>}{label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Report preview card */}
+        {/* Report preview card — truncated */}
         <div
           className="text-left"
           style={{
@@ -1476,26 +1099,112 @@ function PreviewYourScoreReport() {
             margin: "0 auto",
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
-            borderTop: "none",
-            borderRadius: "0 0 18px 18px",
+            borderRadius: 18,
             padding: mobile ? "24px 20px 28px 20px" : "36px 40px 44px 40px",
             boxShadow: "0 24px 80px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.04)",
             position: "relative",
           }}
         >
-          {/* Active page indicator line */}
-          <div style={{ position: "absolute", top: 0, left: 32, right: 32, height: 2, borderRadius: 2, background: B.gradient }} />
+          {/* Top gradient accent */}
+          <div style={{ position: "absolute", top: 0, left: 24, right: 24, height: 3, borderRadius: "0 0 3px 3px", background: B.gradient }} />
 
-          {pageContent[activePage]}
+          {/* Report header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+            <div>
+              <div className="text-[20px] md:text-[22px]" style={{ color: B.navy, fontWeight: 600 }}>
+                Income Stability Assessment
+              </div>
+              <div className="text-[13px]" style={{ color: B.purple, fontWeight: 500, letterSpacing: "0.04em", marginTop: 4 }}>
+                Model <strong>RP-1.0</strong>
+              </div>
+            </div>
+            <div className="text-[10px] text-right" style={{ color: B.light, lineHeight: 1.6 }}>
+              <div>A7E2F1B3</div>
+              <div>2026-03-10</div>
+            </div>
+          </div>
+          <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "16px 0 24px 0" }} />
+
+          {/* Score + classification */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+            <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center", gap: 14 }}>
+              <div className="text-[28px]" style={{ color: B.navy, fontWeight: 700, lineHeight: 1 }}>78</div>
+              <div>
+                <div className="text-[12px]" style={{ color: B.purple, fontWeight: 600 }}>Established Stability</div>
+                <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>Income Stability Score™</div>
+              </div>
+            </div>
+            <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center" }}>
+              <div>
+                <div className="text-[12px]" style={{ color: B.muted }}>
+                  <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
+                </div>
+                <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>
+                  Exceeds 72% of assessed income systems in this sector.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "0 0 20px 0" }} />
+
+          {/* Profile */}
+          <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>Profile</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2" style={{ marginBottom: 20 }}>
+            {[
+              ["Classification", "Established Stability"],
+              ["Structure", "LLC — Single Operator"],
+              ["Income Model", "Fee-for-Service"],
+              ["Revenue", "Project-Based"],
+              ["Sector", "Professional Services"],
+            ].map(([l, v]) => (
+              <div key={l}>
+                <span className="text-[11px]" style={{ color: B.light }}>{l}: </span>
+                <span className="text-[11px]" style={{ color: B.navy, fontWeight: 500 }}>{v}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Fade-out overlay — signals more content behind paywall */}
+          <div
+            style={{
+              position: "relative",
+              height: 80,
+              overflow: "hidden",
+              marginBottom: -44,
+            }}
+          >
+            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
+            <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>Structural Analysis</div>
+            <div className="text-[11px]" style={{ color: B.muted, lineHeight: 1.7 }}>Income structure breakdown, structural indicators, system diagnosis, industry benchmark...</div>
+            {/* Gradient fade */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 60, background: "linear-gradient(transparent, #ffffff)" }} />
+          </div>
         </div>
 
-        {/* Closing text */}
-        <p
-          className="text-[15px] text-center"
-          style={{ color: "rgba(14,26,43,0.65)", fontWeight: 400, marginTop: 28 }}
-        >
-          Your report is delivered instantly after assessment.
-        </p>
+        {/* View sample report link */}
+        <div className="text-center" style={{ marginTop: 28 }}>
+          <Link
+            href="/sample-report"
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: B.purple,
+              textDecoration: "none",
+              transition: "color 160ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = "#3D33A0"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = B.purple; }}
+          >
+            View the complete sample report &rarr;
+          </Link>
+          <p
+            className="text-[13px]"
+            style={{ color: B.light, marginTop: 8 }}
+          >
+            Your report is delivered instantly after assessment.
+          </p>
+        </div>
       </div>
     </section>
   );

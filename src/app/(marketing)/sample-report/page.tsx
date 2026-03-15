@@ -563,45 +563,21 @@ export default function SampleReportPage() {
               ))}
             </div>
 
-            <Divider />
-
-            {/* System Diagnosis */}
-            <Label>System Diagnosis</Label>
-            <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>
-              <p style={{ marginBottom: 8 }}>
-                This system operates mainly as a <strong style={{ color: B.navy }}>Labor-Dependent</strong> income system in the <strong style={{ color: B.navy }}>Professional Services</strong> sector.
-              </p>
-              <p>
-                Income mainly comes from active project work. The system shows moderate diversification but limited persistent revenue streams. Because <strong style={{ color: B.navy }}>Income Persistence</strong> is limited, stability depends on continuing to generate new work.
-              </p>
-            </div>
-
-            <Divider />
-
-            {/* Industry Benchmark */}
-            <Label>Industry Stability Benchmark</Label>
-            <div style={{ borderRadius: 10, overflow: "hidden", border: `1px solid ${B.sandDk}` }}>
-              {[
-                ["Average Professional Services Score", String(SAMPLE.benchAvg), false],
-                ["Top 20% Stability Range", SAMPLE.benchTop20, false],
-                ["Your Score", String(SAMPLE.score), true],
-                ["Distance From Top Tier", SAMPLE.benchDistance, false],
-              ].map(([l, v, highlight], i) => (
-                <div key={l as string} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 16px", backgroundColor: i % 2 === 0 ? B.sand : "#fff" }}>
-                  <span style={{ fontSize: 11, color: B.muted }}>{l as string}</span>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: highlight ? B.purple : B.navy }}>{v as string}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Drivers */}
-            <div style={{ marginTop: 16 }}>
-              <Label>Drivers Supporting Stability</Label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {SAMPLE.drivers.map((d) => (
-                  <span key={d} style={{ fontSize: 10, fontWeight: 500, padding: "4px 10px", borderRadius: 6, backgroundColor: B.sand, color: B.navy }}>{d}</span>
-                ))}
+            {/* Fade overlay — remaining content locked */}
+            <div style={{ position: "relative", height: 100, overflow: "hidden", marginTop: 16 }}>
+              <Divider />
+              <Label>System Diagnosis</Label>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>
+                This system operates mainly as a Labor-Dependent income system in the Professional Services sector. Income mainly comes from active project work...
               </div>
+              <div style={{ position: "absolute", bottom: 0, left: -20, right: -20, height: 80, background: "linear-gradient(transparent, #ffffff)" }} />
+            </div>
+
+            {/* Locked sections hint */}
+            <div style={{ textAlign: "center", paddingTop: 8 }}>
+              <p style={{ fontSize: 12, color: B.light, fontStyle: "italic" }}>
+                System Diagnosis, Industry Benchmark, and Stability Drivers included in full report.
+              </p>
             </div>
           </ReportPageCard>
         </div>
@@ -625,6 +601,7 @@ export default function SampleReportPage() {
             paddingRight: mobile ? 20 : 40,
           }}
         >
+          {/* Page 3 — Locked */}
           <div
             ref={page3Anim.ref}
             style={{
@@ -638,112 +615,87 @@ export default function SampleReportPage() {
               Page 3: Improvement Path &amp; Governance
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              The third page identifies your primary structural constraint, presents sector-specific improvement opportunities, maps your evolution path, and provides the official classification record with verification credentials.
+              The third page identifies your primary structural constraint, improvement opportunities, evolution path, and official classification record.
             </p>
           </div>
 
-          <ReportPageCard pageNumber={3} pageTitle="Improvement Path & Governance" mobile={mobile} visible={page3Anim.visible} delay={200}>
-            <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-              Structural actions that may move this income system toward higher stability classification.
-            </p>
-
-            {/* Primary Constraint */}
-            <Label>Primary Structural Constraint</Label>
-            <div style={{ fontSize: 13, color: B.navy, fontWeight: 600, marginBottom: 6 }}>{SAMPLE.constraint}</div>
-            <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 4 }}>{SAMPLE.constraintMechanism}</div>
-            <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>{SAMPLE.constraintImpact}</div>
-
-            <Divider />
-
-            {/* Improvement Opportunities */}
-            <Label>Improvement Opportunities</Label>
-            <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>
-              {SAMPLE.improvementText}
-            </p>
-
-            {/* Sector evolution */}
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 10 }}>
-                Sector Evolution Path
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-                {SAMPLE.evolutionSteps.map((step, i) => (
-                  <div key={step} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{
-                      fontSize: 10,
-                      fontWeight: 500,
-                      padding: "4px 10px",
-                      borderRadius: 6,
-                      backgroundColor: i === 0 ? B.teal : i === SAMPLE.currentStageIndex ? B.navy : B.sand,
-                      color: i <= SAMPLE.currentStageIndex ? "#fff" : B.light,
-                    }}>
-                      {step}
-                    </span>
-                    {i < SAMPLE.evolutionSteps.length - 1 && <span style={{ fontSize: 10, color: B.light }}>&rarr;</span>}
-                  </div>
-                ))}
-              </div>
-              <div style={{ fontSize: 10, color: B.muted, marginTop: 8 }}>
-                Current Stage: <strong style={{ color: B.navy }}>{SAMPLE.currentStage}</strong>
-              </div>
+          {/* Locked report card */}
+          <div
+            style={{
+              position: "relative",
+              background: "#FFFFFF",
+              borderRadius: 18,
+              border: "1px solid rgba(14,26,43,0.08)",
+              padding: mobile ? "28px 24px 32px" : "40px 44px 48px",
+              boxShadow: "0 24px 80px rgba(14,26,43,0.08), 0 4px 16px rgba(14,26,43,0.03)",
+              overflow: "hidden",
+              minHeight: 280,
+              opacity: page3Anim.visible ? 1 : 0,
+              transform: page3Anim.visible ? "translateY(0)" : "translateY(28px)",
+              transition: "opacity 700ms ease 200ms, transform 700ms ease 200ms",
+            }}
+          >
+            {/* Blurred preview content */}
+            <div style={{ filter: "blur(6px)", opacity: 0.4, pointerEvents: "none", userSelect: "none" }}>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Primary Structural Constraint</div>
+              <div style={{ fontSize: 13, color: B.navy, fontWeight: 600, marginBottom: 6 }}>Income Persistence</div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Improvement Opportunities</div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores.</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Official Classification Record</div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>Record ID: a7e2f1b3-94c1-4d8e... Model: RP-1.0 Score: 78 — Established Stability</div>
             </div>
 
-            {/* Sector mechanisms */}
-            <div style={{ marginBottom: 4 }}>
-              <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 6 }}>
-                Sector Stability Mechanisms
+            {/* Lock overlay with CTA */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "rgba(255,255,255,0.6)",
+                backdropFilter: "blur(2px)",
+              }}
+            >
+              <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
+                Full Report
               </div>
-              <ul style={{ fontSize: 11, color: B.muted, listStyleType: "disc", paddingLeft: 16, lineHeight: 1.8 }}>
-                {SAMPLE.sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
-              </ul>
+              <p style={{ fontSize: 15, color: B.muted, textAlign: "center", maxWidth: 360, lineHeight: 1.6, marginBottom: 24 }}>
+                Improvement path, structural constraints, evolution mapping, and official classification record are included in your full assessment.
+              </p>
+              <Link
+                href="/pricing"
+                className="cta-tick inline-flex items-center justify-center font-semibold"
+                style={{
+                  height: 48,
+                  paddingLeft: 28,
+                  paddingRight: 28,
+                  borderRadius: 12,
+                  background: B.purple,
+                  color: "#FFFFFF",
+                  fontSize: 15,
+                  letterSpacing: "-0.01em",
+                  border: "none",
+                  boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                  transition: "background 180ms ease, transform 180ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#3D33A0";
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = B.purple;
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
+              >
+                <span className="tick tick-white" />
+                <span className="cta-label">Get Your Full Report</span>
+                <span className="cta-arrow cta-arrow-white" />
+              </Link>
             </div>
-
-            <Divider />
-
-            {/* Methodology */}
-            <Label>Methodology</Label>
-            <p style={{ fontSize: 10, color: B.muted, lineHeight: 1.7, marginBottom: 4 }}>
-              The Income Stability Score™ evaluates the structural stability of income at a specific point in time. Six structural factors are assessed under Model RP-1.0 using fixed, deterministic scoring criteria. The model does not evaluate investment performance, creditworthiness, or future financial outcomes.
-            </p>
-
-            <Divider />
-
-            {/* Disclosure */}
-            <Label>Disclosure</Label>
-            <p style={{ fontSize: 10, color: B.light, lineHeight: 1.7 }}>
-              This report is created by a fixed classification model. It is not financial advice. The Income Stability Score™ is not a credit score, not a measure of net worth, and not a prediction of future income.
-            </p>
-
-            <Divider />
-
-            {/* Official Record */}
-            <Label>Official Classification Record</Label>
-            <div style={{ display: "grid", gap: 4, marginTop: 4 }}>
-              {[
-                ["Record ID", SAMPLE.recordId],
-                ["Model", SAMPLE.model],
-                ["Date", SAMPLE.date],
-                ["Score", `${SAMPLE.score} — ${SAMPLE.band}`],
-                ["Auth Code", SAMPLE.authCode],
-                ["Registry", "Publicly Listed"],
-              ].map(([l, v]) => (
-                <div key={l} style={{ display: "flex", flexDirection: mobile ? "column" : "row" }}>
-                  <span style={{ fontSize: 10, width: mobile ? "auto" : 80, flexShrink: 0, color: B.light }}>{l}</span>
-                  <span style={{ fontSize: 10, fontFamily: "monospace", wordBreak: "break-all", color: B.navy }}>{v}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Verification */}
-            <p style={{ fontSize: 10, color: B.muted, marginTop: 12, lineHeight: 1.6 }}>
-              Verify this report at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway.com/verify</span> using the Record ID and Authorization Code.
-            </p>
-
-            {/* Model reference */}
-            <div style={{ textAlign: "center", marginTop: 20, paddingTop: 12, borderTop: `1px solid ${B.sandDk}` }}>
-              <div style={{ fontSize: 10, color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
-            </div>
-          </ReportPageCard>
+          </div>
         </div>
       </section>
 
