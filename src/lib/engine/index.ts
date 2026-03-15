@@ -19,7 +19,7 @@ import {
   selectCurrentEvolutionStage,
   generatePageInsights,
 } from "./mappings";
-import { getSectorData } from "./sectors";
+import { getSectorData, filterActionPlan } from "./sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./percentile";
 import { computeTrajectoryProjection } from "./trajectory";
 import {
@@ -280,7 +280,13 @@ export async function executeIncomeStabilityEngine(
     sector_top_20_threshold: sectorData.top_20_threshold,
     constraint_guidance_payload: JSON.stringify(sectorData.constraint_guidance),
     structural_improvement_path_text: sectorData.improvement_guidance,
-    action_plan_payload: JSON.stringify(sectorData.action_plan[interpretation.primary_constraint_key] || []),
+    action_plan_payload: JSON.stringify(
+      filterActionPlan(
+        sectorData.action_plan[interpretation.primary_constraint_key] || [],
+        interpretation.primary_constraint_key,
+        { primary_income_model: validatedProfile.primary_income_model, revenue_structure: validatedProfile.revenue_structure }
+      )
+    ),
 
     // Peer percentile
     peer_stability_percentile: peerPercentile,

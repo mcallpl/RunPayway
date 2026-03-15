@@ -22,6 +22,110 @@ export interface SectorData {
   action_plan: Record<string, string[]>;
 }
 
+/* ------------------------------------------------------------------ */
+/* PROFILE-AWARE ACTION FILTERING                                      */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Profiles that already demonstrate a structural characteristic
+ * should not receive advice to build what they already have.
+ *
+ * This map identifies which (constraint, profile_signal) combinations
+ * make the default action #1 redundant, and provides an advanced
+ * replacement action appropriate for someone already at that stage.
+ */
+
+interface ActionOverride {
+  /** Profile field to check */
+  field: "revenue_structure" | "primary_income_model";
+  /** Values that indicate the user already has this structural element */
+  values: string[];
+  /** Replacement action for users who already have it */
+  advanced_action: string;
+}
+
+const ACTION_OVERRIDES: Record<string, ActionOverride[]> = {
+  recurring_income_proportion: [
+    {
+      field: "revenue_structure",
+      values: ["Monthly Recurring Payments", "Long-Term Recurring Income", "Contracted Multi-Month Revenue"],
+      advanced_action: "Increase the proportion of recurring revenue by converting your next 2–3 one-time engagements into retainer or subscription arrangements.",
+    },
+    {
+      field: "primary_income_model",
+      values: ["Subscription / Retainer Services", "Licensing / Royalty Income"],
+      advanced_action: "Expand your existing recurring revenue base by adding a second subscription tier or licensing channel within the next 90 days.",
+    },
+  ],
+  income_continuity_without_active_labor: [
+    {
+      field: "primary_income_model",
+      values: ["Licensing / Royalty Income", "Investment / Dividend Income", "Real Estate Rental Income"],
+      advanced_action: "Scale your existing passive income by adding one additional asset, license, or investment position that generates income independently.",
+    },
+    {
+      field: "revenue_structure",
+      values: ["Long-Term Recurring Income"],
+      advanced_action: "Extend the contract duration of your existing recurring agreements to reduce renewal risk and increase continuity coverage.",
+    },
+  ],
+  forward_revenue_visibility: [
+    {
+      field: "revenue_structure",
+      values: ["Contracted Multi-Month Revenue", "Long-Term Recurring Income"],
+      advanced_action: "Negotiate longer contract terms on your next 2–3 renewals to extend forward visibility beyond the current commitment period.",
+    },
+  ],
+  income_concentration: [
+    {
+      field: "primary_income_model",
+      values: ["Hybrid Multiple Income Sources"],
+      advanced_action: "Rebalance your existing income sources so that no single source exceeds 40% of total revenue within the next quarter.",
+    },
+  ],
+  number_of_income_sources: [
+    {
+      field: "primary_income_model",
+      values: ["Hybrid Multiple Income Sources"],
+      advanced_action: "Add one qualifying income source (contributing at least 10% of total income) from a different revenue category than your current streams.",
+    },
+  ],
+  earnings_variability: [
+    {
+      field: "revenue_structure",
+      values: ["Monthly Recurring Payments", "Long-Term Recurring Income"],
+      advanced_action: "Shift a larger share of variable income toward your existing recurring structures to reduce month-to-month fluctuation below 25%.",
+    },
+  ],
+};
+
+/**
+ * Filters the default action plan based on the user's profile.
+ * If the user's profile indicates they already have the structural
+ * element that action #1 recommends, it swaps in an advanced action.
+ */
+export function filterActionPlan(
+  actions: string[],
+  constraintKey: string,
+  profile: { primary_income_model: string; revenue_structure: string }
+): string[] {
+  if (actions.length === 0) return actions;
+
+  const overrides = ACTION_OVERRIDES[constraintKey] || [];
+  const filtered = [...actions];
+
+  for (const override of overrides) {
+    const profileValue = profile[override.field];
+    if (override.values.includes(profileValue)) {
+      // Replace the first action with the advanced version
+      filtered[0] = override.advanced_action;
+      break; // Only apply one override
+    }
+  }
+
+  return filtered;
+}
+
 export const SECTOR_DATA: Record<string, SectorData> = {
   real_estate: {
     evolution_path_key: "real_estate",

@@ -712,6 +712,9 @@ export default function ReviewPage() {
                   </li>
                 ))}
               </ol>
+              <p style={{ ...T.caption, color: B.light, marginTop: R.paraMb, fontStyle: "italic" }}>
+                These actions are based on structural patterns in {record.industry_sector} for income systems where {record.primary_constraint_label} is the primary limitation. They are illustrative structural examples and do not constitute financial, legal, or investment advice.
+              </p>
             </div>
           );
         })()}
