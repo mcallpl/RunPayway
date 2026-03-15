@@ -331,6 +331,41 @@ const FAQ_CATEGORIES: FaqCategory[] = [
       },
     ],
   },
+  {
+    title: "Licensing",
+    items: [
+      {
+        q: "Can we license the Income Stability Score™ for use in our own products?",
+        a: (
+          <>
+            <p>Yes. The Income Stability Score™ is available for licensing by financial institutions, insurance providers, HR platforms, and other organizations that want to embed income stability measurement into their own products or decision-making workflows.</p>
+            <p>Licensees receive scored results through a secure API — the scoring model, weights, and classification logic remain proprietary and run entirely on RunPayway™ infrastructure. Licensees never access the underlying engine.</p>
+            <p><a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>Contact us</a> to discuss licensing terms and eligibility.</p>
+          </>
+        ),
+      },
+      {
+        q: "How does licensing differ from API access?",
+        a: (
+          <>
+            <p>API access allows an organization to run assessments for its own internal use — evaluating contractors, team members, or portfolio companies within the organization.</p>
+            <p>Licensing allows an organization to embed the Income Stability Score™ as a component of products or services it offers to its own customers. This includes the right to display the score, classification, and structural analysis within third-party platforms under a licensing agreement.</p>
+            <p>Both use the same deterministic Model RP-1.0 engine. The difference is whether the score is used internally or externally.</p>
+          </>
+        ),
+      },
+      {
+        q: "Is white-label or co-branded reporting available?",
+        a: (
+          <>
+            <p>Yes. Licensed partners can receive co-branded or white-label assessment reports generated with their organization's branding alongside the RunPayway™ model certification.</p>
+            <p>All reports are generated on RunPayway™ infrastructure to maintain scoring integrity. The partner receives the finished report — the scoring model and report generation logic remain proprietary.</p>
+            <p><a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>Contact us</a> for licensing and co-branding inquiries.</p>
+          </>
+        ),
+      },
+    ],
+  },
 ];
 
 /* ------------------------------------------------------------------ */
