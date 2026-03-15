@@ -18,12 +18,17 @@ function useMobile(breakpoint = 768) {
 }
 
 const NAV_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/how-it-works", label: "How It Works" },
+  { href: "/pricing", label: "Pricing" },
+];
+
+const MORE_LINKS = [
   { href: "/sample-report", label: "Sample Report" },
   { href: "/methodology", label: "Methodology" },
   { href: "/verify", label: "Verify a Score" },
   { href: "/about", label: "About" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function MarketingLayout({
@@ -32,6 +37,7 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mobile = useMobile();
 
@@ -91,34 +97,118 @@ export default function MarketingLayout({
           {/* Desktop nav + CTA */}
           {!mobile && (
             <>
-              <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
+              <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
                     style={{
-                      fontSize: 15,
-                      color: "rgba(14,26,43,0.80)",
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: "rgba(14,26,43,0.65)",
                       transition: "color 160ms ease",
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.80)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
                   >
                     {link.label}
                   </Link>
                 ))}
+
+                {/* More dropdown */}
+                <div
+                  style={{ position: "relative" }}
+                  onMouseEnter={() => setMoreOpen(true)}
+                  onMouseLeave={() => setMoreOpen(false)}
+                >
+                  <button
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: moreOpen ? "#0E1A2B" : "rgba(14,26,43,0.65)",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: 0,
+                      transition: "color 160ms ease",
+                    }}
+                  >
+                    More
+                    <svg
+                      width="10" height="6" viewBox="0 0 10 6" fill="none"
+                      style={{
+                        transition: "transform 200ms ease",
+                        transform: moreOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      }}
+                    >
+                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+
+                  {moreOpen && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "100%",
+                        right: 0,
+                        paddingTop: 8,
+                      }}
+                    >
+                      <div
+                        style={{
+                          background: "#ffffff",
+                          borderRadius: 12,
+                          border: "1px solid rgba(14,26,43,0.08)",
+                          boxShadow: "0 12px 40px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
+                          padding: "8px 0",
+                          minWidth: 200,
+                        }}
+                      >
+                        {MORE_LINKS.map((link) => (
+                          <Link
+                            key={link.label}
+                            href={link.href}
+                            onClick={() => setMoreOpen(false)}
+                            style={{
+                              display: "block",
+                              padding: "10px 20px",
+                              fontSize: 14,
+                              fontWeight: 500,
+                              color: "rgba(14,26,43,0.70)",
+                              transition: "background 120ms ease, color 120ms ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = "rgba(14,26,43,0.03)";
+                              e.currentTarget.style.color = "#0E1A2B";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = "transparent";
+                              e.currentTarget.style.color = "rgba(14,26,43,0.70)";
+                            }}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </nav>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 24, marginLeft: 32 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
                 <Link
                   href="/sign-in"
                   style={{
-                    fontSize: 15,
-                    color: "rgba(14,26,43,0.80)",
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "rgba(14,26,43,0.65)",
                     transition: "color 160ms ease",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.80)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
                 >
                   Sign In
                 </Link>
@@ -126,16 +216,16 @@ export default function MarketingLayout({
                   href="/pricing"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
-                    height: 40,
+                    height: 38,
                     paddingLeft: 18,
                     paddingRight: 18,
-                    borderRadius: 10,
+                    borderRadius: 9,
                     background: "#4B3FAE",
                     color: "#ffffff",
-                    fontSize: 14,
+                    fontSize: 13,
                     letterSpacing: "-0.01em",
                     border: "1px solid rgba(75,63,174,0.90)",
-                    boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
+                    boxShadow: "0 4px 12px rgba(75,63,174,0.18)",
                     transition: "background 180ms ease, transform 180ms ease",
                   }}
                   onMouseEnter={(e) => {
@@ -151,7 +241,7 @@ export default function MarketingLayout({
                   }}
                 >
                   <span className="tick tick-white" />
-                  <span className="cta-label">Get My Income Stability Score™</span>
+                  <span className="cta-label">Get My Score</span>
                   <span className="cta-arrow cta-arrow-white" />
                 </Link>
               </div>
@@ -234,7 +324,7 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, { href: "/sign-in", label: "Sign In" }].map((link) => (
+              {[...NAV_LINKS, ...MORE_LINKS, { href: "/sign-in", label: "Sign In" }].map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
