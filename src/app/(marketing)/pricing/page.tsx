@@ -347,7 +347,7 @@ export default function PricingPage() {
               title="Annual Monitoring"
               price="$99"
               perUnit="$33 per assessment"
-              description="Three assessments across one year. Track how your income structure evolves over time."
+              description="Three assessments you can take at any time within one year. Track how your income structure evolves over time."
               ctaLabel="Start Monitoring"
               ctaHref="/checkout-placeholder?plan=monitoring"
               mobile={mobile}
@@ -394,7 +394,7 @@ export default function PricingPage() {
             Income Stability Monitoring
           </h2>
           <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.75, marginBottom: 32, maxWidth: 560 }}>
-            Annual monitoring measures how your income structure evolves across time.
+            Annual monitoring measures how your income structure evolves over time. Take your three assessments at any time within one year.
           </p>
 
           {/* Timeline */}
@@ -412,17 +412,17 @@ export default function PricingPage() {
             }}
           >
             {[
-              ["Assessment 1", "Month 0"],
-              ["Assessment 2", "Month 6"],
-              ["Assessment 3", "Month 12"],
-            ].map(([label, month], i) => (
+              ["Assessment 1", "Any time"],
+              ["Assessment 2", "Any time"],
+              ["Assessment 3", "Any time"],
+            ].map(([label, timing], i) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 24 }}>
                 <div style={{ textAlign: "center" }}>
                   <div style={{ width: 40, height: 40, borderRadius: 10, background: i === 0 ? B.navy : "rgba(14,26,43,0.06)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>
                     <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? "#FFFFFF" : B.navy }}>{i + 1}</span>
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{label}</div>
-                  <div style={{ fontSize: 11, color: B.light }}>{month}</div>
+                  <div style={{ fontSize: 11, color: B.light }}>{timing}</div>
                 </div>
                 {i < 2 && !mobile && (
                   <div style={{ width: 40, height: 1, background: "rgba(14,26,43,0.12)" }} />
@@ -432,7 +432,7 @@ export default function PricingPage() {
           </div>
 
           <p style={{ fontSize: 13, color: B.light, marginTop: 16 }}>
-            Each assessment measures the structural stability of income at the time it is issued.
+            All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
           </p>
         </div>
       </section>
@@ -534,7 +534,7 @@ export default function PricingPage() {
             {[
               { step: "Select your assessment option." },
               { step: "You will be redirected to ", bold: "Stripe Secure Checkout", after: "." },
-              { step: "After successful payment, you will be redirected to the ", bold: "RunPayway Diagnostic Portal", after: "." },
+              { step: "After successful payment, Single Assessment customers are directed to the diagnostic. Annual Monitoring subscribers are directed to the ", bold: "Monitoring Portal Sign In", after: "." },
               { step: "Complete the ", bold: "Income Stability Assessment", after: "." },
               { step: "Your ", bold: "Income Stability Score\u2122 report", after: " will be generated and issued as an ", bold2: "Official PDF Assessment Record", after2: "." },
             ].map((item, i) => (
