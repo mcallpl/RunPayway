@@ -184,7 +184,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What is included in the report?",
-    a: "Your report includes your Income Stability Score™, stability classification, structural indicators, income structure map, system diagnosis, industry benchmark comparison, improvement path, and an official PDF assessment record issued under Model RP-1.0.",
+    a: "Your personalized three-page report includes your Income Stability Score™, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
   },
   {
     q: "How is my data handled?",
@@ -603,7 +603,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What is included in the report?",
-      a: "Your report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, system diagnosis, industry benchmark comparison, improvement path, and an official PDF assessment record issued under Model RP-1.0.",
+      a: "Your personalized three-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
     },
     {
       q: "Can I retake the assessment?",
@@ -1147,7 +1147,7 @@ function PreviewYourScoreReport() {
             marginRight: "auto",
           }}
         >
-          Every assessment produces a three-page report &#8212; your classification, structural breakdown, and a clear path to improve.
+          Every assessment produces a personalized three-page report &#8212; your classification, structural priority map, sector-specific benchmarks, and a 90-day action plan.
         </p>
 
         {/* Report preview card — truncated */}
@@ -1441,7 +1441,7 @@ function HowItWorks() {
     {
       num: "3",
       title: "Score + Report Delivered",
-      desc: "Your Income Stability Score™, classification, and full PDF report are generated instantly.",
+      desc: "Your Income Stability Score™, structural priority map, sector benchmarks, and personalized 90-day action plan are generated instantly.",
     },
   ];
 

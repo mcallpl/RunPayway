@@ -178,17 +178,18 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         q: "What is included in the report?",
         a: (
           <>
-            <p>Each completed assessment produces a structured report that includes:</p>
+            <p>Each completed assessment produces a personalized three-page report that includes:</p>
             <ul>
-              <li>Income Stability Score™ (0–100)</li>
-              <li>stability classification band</li>
-              <li>structural drivers supporting stability</li>
-              <li>structural constraints affecting stability</li>
-              <li>industry percentile comparison</li>
-              <li>structural improvement path</li>
-              <li>official PDF assessment record</li>
+              <li>Income Stability Score™ (0–100) with stability classification</li>
+              <li>structural priority map ranking six factors from strongest to weakest</li>
+              <li>income structure map with active, semi-persistent, and persistent income breakdown</li>
+              <li>sector-specific industry benchmarks and percentile comparison</li>
+              <li>system diagnosis with structural drivers and constraints</li>
+              <li>90-day action plan tailored to your primary constraint and industry</li>
+              <li>sector-specific improvement guidance and evolution path</li>
+              <li>official PDF assessment record issued under Model RP-1.0</li>
             </ul>
-            <p>The report provides a structured analysis of the stability characteristics of the income system.</p>
+            <p>Every section is personalized with your Assessment Title and industry sector.</p>
           </>
         ),
       },

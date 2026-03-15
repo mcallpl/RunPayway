@@ -318,7 +318,7 @@ export default function SampleReportPage() {
               margin: "0 auto 20px",
             }}
           >
-            Every assessment produces a three-page institutional report — your classification, structural breakdown, and a clear path to improve.
+            Every assessment produces a personalized three-page report — your classification, structural priority map, sector-specific benchmarks, and a 90-day action plan.
           </p>
 
           <p
@@ -781,7 +781,7 @@ export default function SampleReportPage() {
               margin: "0 auto 36px",
             }}
           >
-            Complete the assessment in a few minutes and receive your full three-page Income Stability Assessment instantly — your score, structural breakdown, and improvement path.
+            Complete the assessment in under two minutes and receive your personalized three-page Income Stability Assessment instantly — your score, structural priority map, and 90-day action plan.
           </p>
 
           <Link

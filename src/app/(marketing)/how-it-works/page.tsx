@@ -528,12 +528,12 @@ export default function HowItWorksPage() {
               title="Score and Report Generation"
               description="Once the model completes its evaluation, the system generates:"
               bullets={[
-                "Income Stability Score™",
-                "Stability classification band",
-                "Structured diagnostic report",
-                "Verification identifier",
+                "Income Stability Score™ with stability classification",
+                "Structural priority map and sector-specific benchmarks",
+                "Personalized three-page diagnostic report with 90-day action plan",
+                "Official assessment record with verification identifier",
               ]}
-              note="The report provides a formal record of the structural evaluation performed by the model."
+              note="Every report is personalized with your Assessment Title, industry sector, and tailored improvement guidance."
               mobile={mobile}
               visible={stepsAnim.visible}
               delay={280}
@@ -805,7 +805,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 12px",
             }}
           >
-            The RunPayway™ assessment can be completed in a few minutes. After submitting the structural inputs, the model calculates the Income Stability Score™ instantly and generates a structured diagnostic report.
+            The RunPayway™ assessment takes under two minutes. After submitting the structural inputs, the model calculates the Income Stability Score™ instantly and generates a personalized three-page report.
           </p>
 
           <p
@@ -817,7 +817,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 36px",
             }}
           >
-            The report provides a clear analytical view of the stability characteristics of an income system.
+            Your report includes sector-specific benchmarks, a structural priority map, and a 90-day action plan tailored to your industry.
           </p>
 
           {/* CTA button */}
