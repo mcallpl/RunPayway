@@ -165,33 +165,6 @@ const INDUSTRY_EXAMPLES = [
   },
 ];
 
-const FAQ_ITEMS = [
-  {
-    q: "What does the Income Stability Score™ measure?",
-    a: "The score evaluates the structural stability of your income system across six factors — including income persistence, source diversity, and forward revenue visibility. It measures how your income is structured, not how much you earn.",
-  },
-  {
-    q: "How long does the assessment take?",
-    a: "The assessment evaluates six structural factors and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
-  },
-  {
-    q: "Is this financial advice?",
-    a: "No. The Income Stability Score™ is a structural analytical tool. It does not evaluate investment performance, creditworthiness, or future financial outcomes, and should not be interpreted as financial, tax, legal, or investment advice.",
-  },
-  {
-    q: "Can I retake the assessment?",
-    a: "Yes. With the Annual Monitoring plan, you receive three assessments over 12 months to track how your income structure evolves. Single assessments can be purchased at any time.",
-  },
-  {
-    q: "What is included in the report?",
-    a: "Your personalized three-page report includes your Income Stability Score™, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
-  },
-  {
-    q: "How is my data handled?",
-    a: "Your assessment data is processed securely and used only to generate your report. Payment is handled through Stripe Secure Checkout. We do not sell or share your personal information.",
-  },
-];
-
 
 /* ------------------------------------------------------------------ */
 /* GLOBAL DISCLAIMER — institutional disclosure                         */
@@ -1290,12 +1263,12 @@ function ScoringFactors() {
     : 0;
 
   const factors = [
-    { num: "01", name: "Recurring Income", desc: "Measures how reliably your income renews without active effort." },
-    { num: "02", name: "Income Diversification", desc: "Evaluates whether your income is supported by multiple streams." },
+    { num: "01", name: "Recurring Revenue Base", desc: "Measures how reliably your income renews without active effort." },
+    { num: "02", name: "Income Source Diversification", desc: "Evaluates whether your income is supported by multiple streams." },
     { num: "03", name: "Income Concentration", desc: "Assesses your exposure if any single source were disrupted." },
-    { num: "04", name: "Forward Visibility", desc: "Gauges how far into the future your income can be projected." },
+    { num: "04", name: "Forward Revenue Visibility", desc: "Gauges how far into the future your income can be projected." },
     { num: "05", name: "Earnings Consistency", desc: "Analyzes the stability of your income from period to period." },
-    { num: "06", name: "Passive Income", desc: "Identifies income that continues independent of direct labor." },
+    { num: "06", name: "Income Without Active Work", desc: "Identifies income that continues independent of direct labor." },
   ];
 
   return (
@@ -1487,7 +1460,7 @@ function HowItWorks() {
               transition: "opacity 0.5s ease-out 200ms, transform 0.5s ease-out 200ms",
             }}
           >
-            A structured diagnostic built on six dimensions of income health.
+            A structured diagnostic built on six dimensions of income stability.
           </p>
         </div>
 

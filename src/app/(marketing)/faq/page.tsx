@@ -224,7 +224,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
           <>
             <p>No.</p>
             <p>Assessment records are immutable once issued.</p>
-            <p>Each record is stored as an append-only entry and cannot be modified, deleted, or regenerated after issuance.</p>
+            <p>Once your assessment record is created, it is permanent. It cannot be changed, deleted, or regenerated.</p>
           </>
         ),
       },

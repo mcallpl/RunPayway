@@ -376,7 +376,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 32px",
             }}
           >
-            The platform applies Structural Stability Model RP-1.0, a deterministic classification model designed to analyze how income is generated, how dependent it is on continued labor, and how durable the structure is under disruption.
+            The platform uses Structural Stability Model RP-1.0 — a fixed scoring system that analyzes how your income is generated, how dependent it is on continued labor, and how durable it is under disruption. The same answers always produce the same score.
           </p>
 
           <p
@@ -507,6 +507,7 @@ export default function HowItWorksPage() {
                 "Reliance on active labor",
                 "Persistence of income without continued work",
                 "Diversification of income streams",
+                "Forward revenue commitments",
                 "Structural protections against disruption",
               ]}
               note="The objective is to classify the architecture of the income system, not personal financial data."
@@ -609,7 +610,7 @@ export default function HowItWorksPage() {
 
           {/* Bands */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {["Fragile Stability", "Early Stability", "Established Stability", "High Stability"].map((band, i) => (
+            {["Limited Stability", "Developing Stability", "Established Stability", "High Stability"].map((band, i) => (
               <ClassificationBand
                 key={band}
                 label={band}
@@ -632,7 +633,7 @@ export default function HowItWorksPage() {
               transitionDelay: "600ms",
             }}
           >
-            These classifications describe the structural strength of the income system.
+            Your classification shows where your income stands — and how far it is from the next tier.
           </p>
         </div>
       </section>
@@ -719,7 +720,7 @@ export default function HowItWorksPage() {
               page.
             </p>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75 }}>
-              The verification system helps maintain the integrity of the Income Stability Score™.
+              Verification ensures every score is authentic and unaltered.
             </p>
           </div>
         </div>

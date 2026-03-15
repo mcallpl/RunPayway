@@ -713,7 +713,7 @@ export default function PricingPage() {
               The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
             </p>
             <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.7 }}>
-              Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results.
+              Your score reflects the structural characteristics of your income system exactly as reported.
             </p>
           </div>
 

@@ -500,7 +500,7 @@ export default function InitializationPage() {
             transition: "background 180ms ease, transform 180ms ease",
           }}
         >
-          Begin Diagnostic
+          Begin Assessment
         </button>
         <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 12 }}>
           The diagnostic consists of 6 structured questions and takes under 2 minutes.

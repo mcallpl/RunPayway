@@ -313,7 +313,7 @@ export default function MethodologyPage() {
 
           {/* 3. Canonical Input Dimensions */}
           <div ref={s3.ref}>
-            <DocSection title="Canonical Input Dimensions" mobile={mobile} visible={s3.visible} delay={0}>
+            <DocSection title="The Six Scoring Factors" mobile={mobile} visible={s3.visible} delay={0}>
               <P>
                 The diagnostic instrument consists of six questions that correspond to six structural input dimensions.
               </P>
@@ -324,11 +324,11 @@ export default function MethodologyPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
                 {[
                   "Recurring Revenue Base",
-                  "Income Concentration",
+                  "Income Source Diversification",
                   "Income Source Count",
                   "Forward Revenue Visibility",
-                  "Earnings Variability",
-                  "Income Continuity Without Active Labor",
+                  "Earnings Consistency",
+                  "Income Without Active Work",
                 ].map((dim) => (
                   <div
                     key={dim}
@@ -366,7 +366,7 @@ export default function MethodologyPage() {
               <P>The scoring process follows a fixed deterministic framework.</P>
               <P>Identical inputs under the same model version always produce identical outputs.</P>
               <P>
-                The model uses integer arithmetic only. No floating-point calculations, machine learning, randomization, or adaptive scoring are used.
+                The model uses fixed scoring rules with no rounding, no AI, no randomization, and no adaptive adjustments. The same inputs always produce the same score.
               </P>
               <P>
                 Inputs are grouped into two scoring pillars representing income structure characteristics and income stability characteristics.
@@ -500,7 +500,7 @@ export default function MethodologyPage() {
                 "Structural priority mapping",
               ]} />
               <P style={{ marginBottom: 0 }}>
-                Historical assessments remain permanently tied to their original model version, ruleset checksum, and interpretation version.
+                Historical assessments remain permanently tied to their original model version, ruleset identifier, and interpretation version.
               </P>
             </DocSection>
           </div>
@@ -515,7 +515,7 @@ export default function MethodologyPage() {
                 Records are append-only and cannot be modified, deleted, or regenerated after issuance.
               </P>
               <P style={{ marginBottom: 0 }}>
-                A cryptographic record hash ensures tamper detection.
+                A built-in integrity check ensures no record can be altered after it is issued.
               </P>
             </DocSection>
           </div>
@@ -565,10 +565,10 @@ export default function MethodologyPage() {
                 The scoring methodology, input structure, weighting framework, and classification system are publicly documented.
               </P>
               <P>
-                The model operates under a canonical manifest containing the complete ruleset and interpretation templates.
+                The model operates under a published ruleset containing the complete ruleset and interpretation templates.
               </P>
               <P style={{ marginBottom: 0 }}>
-                A verified ruleset checksum ensures consistent scoring across all assessments issued under the same model version.
+                A verified ruleset identifier ensures consistent scoring across all assessments issued under the same model version.
               </P>
             </DocSection>
           </div>
@@ -651,7 +651,7 @@ export default function MethodologyPage() {
               margin: "0 auto 36px",
             }}
           >
-            Complete the assessment in a few minutes and receive your Income Stability Score™ instantly with a full structured diagnostic report.
+            Complete the assessment in under two minutes and receive your Income Stability Score™ instantly with a full structured diagnostic report.
           </p>
 
           <Link
