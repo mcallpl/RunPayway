@@ -792,7 +792,7 @@ function ScoreRegistry() {
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.04)",
               position: "relative",
               overflow: "hidden",
-              alignSelf: "start",
+              alignSelf: "center",
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(14px)",
               transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms, border-color 0.2s ease, box-shadow 0.2s ease",
