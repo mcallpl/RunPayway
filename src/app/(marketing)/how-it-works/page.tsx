@@ -501,7 +501,7 @@ export default function HowItWorksPage() {
             <StepCard
               number="01"
               title="Income Profile Intake"
-              description="Six structured questions describe how your income is generated and how dependable it is. The assessment captures key characteristics of the income structure, including:"
+              description="Six structural factors describe how your income is generated and how dependable it is. The assessment captures key characteristics of the income structure, including:"
               bullets={[
                 "Income sources",
                 "Reliance on active labor",

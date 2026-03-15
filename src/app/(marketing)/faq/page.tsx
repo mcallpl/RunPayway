@@ -146,7 +146,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         a: (
           <>
             <p>Most users complete the assessment in under two minutes.</p>
-            <p>The diagnostic consists of six structured questions describing how income is generated and sustained.</p>
+            <p>The diagnostic evaluates six structural factors describing how income is generated and sustained.</p>
           </>
         ),
       },

@@ -126,7 +126,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How long does the assessment take?",
-    a: "The assessment consists of six structured questions and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
+    a: "The assessment evaluates six structural factors and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
   },
   {
     q: "Is this financial advice?",
@@ -181,6 +181,8 @@ function Disclaimer() {
             width: "100%",
             background: "linear-gradient(90deg, transparent, rgba(244,241,234,0.12), transparent)",
             marginBottom: 36,
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         />
 
@@ -191,13 +193,14 @@ function Disclaimer() {
             color: "#ffffff",
             letterSpacing: "0.12em",
             marginBottom: 12,
+            textAlign: "center",
           }}
         >
           Global Disclaimer
         </h2>
 
         {/* Disclosure text */}
-        <div style={{ maxWidth: 720 }}>
+        <div style={{ maxWidth: 720, marginLeft: "auto", marginRight: "auto", textAlign: "center" }}>
           <p
             className="text-[14px] md:text-[15px]"
             style={{
@@ -456,7 +459,7 @@ function ModelGovernance() {
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40, textAlign: "center" }}>
         {/* Title + text */}
         <div
           style={{
@@ -478,7 +481,7 @@ function ModelGovernance() {
             Model Governance
           </h2>
 
-          <div style={{ maxWidth: 640 }}>
+          <div style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
               The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: "#ffffff" }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
             </p>
@@ -494,6 +497,9 @@ function ModelGovernance() {
             marginTop: 36,
             width: "100%",
             maxWidth: 420,
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "left",
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
             borderRadius: 18,
@@ -547,7 +553,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "How long does the assessment take?",
-      a: "The assessment consists of six structured questions and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
+      a: "The assessment evaluates six structural factors and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
     },
     {
       q: "What is included in the report?",
@@ -741,12 +747,13 @@ function ScoreRegistry() {
     >
       <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
         <div
-          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "minmax(0,1.05fr) minmax(360px,420px)", columnGap: mobile ? 0 : 88, rowGap: 36, alignItems: "start" }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", rowGap: 36 }}
         >
-          {/* Left column — editorial text */}
+          {/* Header text */}
           <div
             style={{
               maxWidth: 640,
+              textAlign: "center",
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(12px)",
               transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
@@ -773,9 +780,8 @@ function ScoreRegistry() {
             </p>
           </div>
 
-          {/* Right column — registry preview panel */}
+          {/* Registry preview panel */}
           <article
-            className="lg:justify-self-center"
             style={{
               width: "100%",
               maxWidth: 420,
@@ -952,6 +958,7 @@ function WhyIncomeStabilityMatters() {
             fontWeight: 600,
             letterSpacing: "-0.02em",
             marginBottom: 36,
+            textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms",
@@ -964,6 +971,9 @@ function WhyIncomeStabilityMatters() {
         <div
           style={{
             maxWidth: 660,
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out 200ms, transform 0.5s ease-out 200ms",
@@ -998,44 +1008,46 @@ function WhyIncomeStabilityMatters() {
           </p>
 
           {/* CTA Button */}
-          <Link
-            href="/pricing"
-            className="cta-tick inline-flex items-center justify-center font-semibold
-                       focus:outline-none focus:ring-2 focus:ring-offset-2"
-            style={{
-              height: 52,
-              width: mobile ? "100%" : "auto",
-              paddingLeft: 28,
-              paddingRight: 28,
-              borderRadius: 12,
-              background: B.purple,
-              color: "#ffffff",
-              fontSize: 15,
-              letterSpacing: "-0.01em",
-              border: "1px solid rgba(75,63,174,0.90)",
-              boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
-              transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
+          <div className="flex justify-center">
+            <Link
+              href="/pricing"
+              className="cta-tick inline-flex items-center justify-center font-semibold
+                         focus:outline-none focus:ring-2 focus:ring-offset-2"
+              style={{
+                height: 52,
+                width: mobile ? "100%" : "auto",
+                paddingLeft: 28,
+                paddingRight: 28,
+                borderRadius: 12,
+                background: B.purple,
+                color: "#ffffff",
+                fontSize: 15,
+                letterSpacing: "-0.01em",
+                border: "1px solid rgba(75,63,174,0.90)",
+                boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
+                transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
 
-            }}
-            onMouseEnter={(e) => {
-               if (!canHover()) return;
+              }}
+              onMouseEnter={(e) => {
+                 if (!canHover()) return;
 const t = e.currentTarget;
-              t.style.background = "#3D33A0";
-              t.style.transform = "translateY(-1px)";
-              t.style.boxShadow = "0 12px 32px rgba(75,63,174,0.40)";
-            }}
-            onMouseLeave={(e) => {
-              const t = e.currentTarget;
-              t.style.background = B.purple;
-              t.style.transform = "translateY(0)";
-              t.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)";
-            }}
-            onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            <span className="tick tick-white" />
-            <span className="cta-label">Get My Income Stability Score™</span>
-            <span className="cta-arrow cta-arrow-white" />
-          </Link>
+                t.style.background = "#3D33A0";
+                t.style.transform = "translateY(-1px)";
+                t.style.boxShadow = "0 12px 32px rgba(75,63,174,0.40)";
+              }}
+              onMouseLeave={(e) => {
+                const t = e.currentTarget;
+                t.style.background = B.purple;
+                t.style.transform = "translateY(0)";
+                t.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)";
+              }}
+              onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              <span className="tick tick-white" />
+              <span className="cta-label">Get My Income Stability Score™</span>
+              <span className="cta-arrow cta-arrow-white" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>
@@ -1071,6 +1083,7 @@ function PreviewYourScoreReport() {
             fontWeight: 600,
             letterSpacing: "-0.02em",
             marginBottom: 16,
+            textAlign: "center",
           }}
         >
           What&rsquo;s Inside Your Report
@@ -1083,6 +1096,9 @@ function PreviewYourScoreReport() {
             lineHeight: 1.7,
             maxWidth: 720,
             marginBottom: 48,
+            textAlign: "center",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
           Every assessment produces a three-page report &#8212; your classification, structural breakdown, and a clear path to improve.
@@ -1384,7 +1400,7 @@ function HowItWorks() {
     {
       num: "1",
       title: "Income Profile Intake",
-      desc: "Six structured questions capture your income sources, frequency, and predictability.",
+      desc: "Six structural factors capture your income sources, frequency, and predictability.",
     },
     {
       num: "2",
