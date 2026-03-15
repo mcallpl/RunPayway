@@ -192,6 +192,7 @@ function PricingCard({
       >
         <span className="tick tick-white" />
         <span className="cta-label">{ctaLabel}</span>
+        <span className="cta-arrow cta-arrow-white" />
       </Link>
     </div>
   );

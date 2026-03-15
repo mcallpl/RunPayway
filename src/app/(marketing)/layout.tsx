@@ -152,6 +152,7 @@ export default function MarketingLayout({
                 >
                   <span className="tick tick-white" />
                   <span className="cta-label">Get My Income Stability Score™</span>
+                  <span className="cta-arrow cta-arrow-white" />
                 </Link>
               </div>
             </>

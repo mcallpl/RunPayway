@@ -469,6 +469,7 @@ export default function SignInPage() {
             >
               <span className="tick tick-white" />
               <span className="cta-label">Start Monitoring</span>
+              <span className="cta-arrow cta-arrow-white" />
             </Link>
           </div>
 
@@ -606,6 +607,7 @@ export default function SignInPage() {
             >
               <span className="tick tick-white" />
               <span className="cta-label">Get Assessment</span>
+              <span className="cta-arrow cta-arrow-white" />
             </Link>
           </div>
 

@@ -857,6 +857,7 @@ export default function SampleReportPage() {
           >
             <span className="tick tick-navy" />
             <span className="cta-label">Get My Income Stability Score™</span>
+            <span className="cta-arrow cta-arrow-navy" />
           </Link>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>

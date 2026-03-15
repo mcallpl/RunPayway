@@ -355,6 +355,7 @@ const t = e.currentTarget;
             >
               <span className="tick tick-navy" />
               <span className="cta-label">Get My Income Stability Score™</span>
+              <span className="cta-arrow cta-arrow-navy" />
             </a>
           </div>
 
@@ -1019,6 +1020,7 @@ const t = e.currentTarget;
           >
             <span className="tick tick-white" />
             <span className="cta-label">Get My Income Stability Score™</span>
+            <span className="cta-arrow cta-arrow-white" />
           </Link>
         </div>
       </div>
@@ -1981,6 +1983,7 @@ const t = e.currentTarget;
               >
                 <span className="tick tick-white" />
                 <span className="cta-label">Get My Income Stability Score™</span>
+                <span className="cta-arrow cta-arrow-white" />
               </Link>
 
               <p
@@ -2302,6 +2305,7 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
         >
           <span className="tick tick-white" />
           <span className="cta-label">Get My Income Stability Score™</span>
+          <span className="cta-arrow cta-arrow-white" />
         </Link>
       </div>
 

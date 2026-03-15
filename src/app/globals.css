@@ -33,7 +33,7 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Score Tick CTA — tick on left slides to arrow on right on hover     */
+/* Score Tick CTA — tick fades, text shifts left, arrow grows right    */
 /* ------------------------------------------------------------------ */
 .cta-tick {
   position: relative;
@@ -41,51 +41,81 @@ body {
   padding-left: 36px !important;
   padding-right: 36px !important;
 }
+
+/* Tick — vertical mark on the left, fades out on hover */
 .cta-tick .tick {
   position: absolute;
   top: 50%;
-  left: 14px;
+  left: 16px;
   width: 14px;
   height: 2px;
   border-radius: 1px;
   transform: translateY(-50%) rotate(90deg);
-  transition: left 320ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 320ms ease;
-  opacity: 0.5;
+  transition: opacity 280ms ease;
+  opacity: 0.45;
 }
 .cta-tick:hover .tick {
-  left: calc(100% - 32px);
-  transform: translateY(-50%) rotate(0deg);
-  opacity: 1;
-}
-/* Arrow head — appears on hover */
-.cta-tick .tick::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-right: 2px solid currentColor;
-  border-top: 2px solid currentColor;
-  transform: translateY(-50%) rotate(45deg);
   opacity: 0;
-  transition: opacity 200ms ease 120ms;
 }
-.cta-tick:hover .tick::after {
-  opacity: 1;
-}
+
 /* Tick color variants */
 .cta-tick .tick-white { background: #ffffff; color: #ffffff; }
 .cta-tick .tick-navy { background: #0E1A2B; color: #0E1A2B; }
 .cta-tick .tick-purple { background: #4B3FAE; color: #4B3FAE; }
 
-/* Label stays centered, no shift needed with wider padding */
+/* Label — shifts left on hover */
 .cta-tick .cta-label {
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+.cta-tick:hover .cta-label {
+  transform: translateX(-10px);
+}
+
+/* Arrow — grows out from the right of the label on hover */
+.cta-tick .cta-label::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 2px;
+  margin-left: 0;
+  border-radius: 1px;
+  vertical-align: middle;
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1),
+              margin-left 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cta-tick:hover .cta-label::after {
+  width: 28px;
+  margin-left: 10px;
+}
+/* Arrow line color inherits from tick variant via custom property */
+.cta-tick:has(.tick-white) .cta-label::after { background: #ffffff; }
+.cta-tick:has(.tick-navy) .cta-label::after { background: #0E1A2B; }
+.cta-tick:has(.tick-purple) .cta-label::after { background: #4B3FAE; }
+
+/* Arrowhead — chevron at the end of the growing line */
+.cta-tick .cta-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0;
+  transition: opacity 200ms ease 160ms, right 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cta-tick:hover .cta-arrow {
+  opacity: 1;
+}
+/* Arrowhead color variants */
+.cta-tick .cta-arrow-white { color: #ffffff; }
+.cta-tick .cta-arrow-navy { color: #0E1A2B; }
+.cta-tick .cta-arrow-purple { color: #4B3FAE; }
 
 /* Elegant section divider */
 .section-divider-elegant {
