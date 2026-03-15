@@ -392,8 +392,8 @@ export default function MarketingLayout({
         <div
           className="mx-auto"
           style={{
-            maxWidth: 1200,
-            padding: mobile ? "40px 24px 32px" : "64px 48px 40px",
+            maxWidth: 1100,
+            padding: mobile ? "40px 24px 32px" : "64px 40px 40px",
           }}
         >
           {/* Brand */}
