@@ -292,11 +292,11 @@ export default function MarketingLayout({
           className="mx-auto"
           style={{
             maxWidth: 1200,
-            padding: mobile ? "36px 20px 28px" : "48px 24px 36px",
+            padding: mobile ? "36px 20px 28px" : "56px 40px 36px",
           }}
         >
           {/* Brand */}
-          <div style={{ marginBottom: mobile ? 24 : 32 }}>
+          <div style={{ marginBottom: mobile ? 28 : 40 }}>
             <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
                 src={logoImg}
@@ -311,224 +311,172 @@ export default function MarketingLayout({
             </div>
           </div>
 
-          {/* Navigation */}
-          <nav aria-label="Footer navigation" style={{ marginBottom: 24 }}>
-            <ul
-              style={{
-                listStyle: "none",
-                padding: 0,
-                margin: 0,
-                display: "grid",
-                gridTemplateColumns: mobile ? "repeat(2, auto)" : "repeat(4, auto)",
-                gap: mobile ? "14px 28px" : 28,
-                alignItems: "center",
-                justifyContent: "start",
-              }}
-            >
-              {[
-                { href: "/", label: "Home" },
-                { href: "/how-it-works", label: "How It Works" },
-                { href: "/sample-report", label: "Sample Report" },
-                { href: "/methodology", label: "Methodology" },
-                { href: "/verify", label: "Verify a Score" },
-                { href: "/pricing", label: "Pricing" },
-                { href: "/faq", label: "FAQ" },
-                { href: "/about", label: "About" },
-              ].map((link) => (
-                <li key={link.label}>
+          {/* 5-column nav grid */}
+          <nav
+            aria-label="Footer navigation"
+            style={{
+              display: "grid",
+              gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)",
+              gap: mobile ? 32 : 24,
+              marginBottom: mobile ? 32 : 40,
+            }}
+          >
+            {/* Product */}
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", marginBottom: 14 }}>Product</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {[
+                  { href: "/", label: "Home" },
+                  { href: "/how-it-works", label: "How It Works" },
+                  { href: "/sample-report", label: "Sample Report" },
+                  { href: "/methodology", label: "Methodology" },
+                  { href: "/verify", label: "Verify a Score" },
+                  { href: "/pricing", label: "Pricing" },
+                  { href: "/faq", label: "FAQ" },
+                ].map((link) => (
                   <Link
+                    key={link.label}
                     href={link.href}
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: "rgba(14,26,43,0.70)",
-                      transition: "color 160ms ease",
-                    }}
+                    style={{ fontSize: 13, color: "rgba(14,26,43,0.55)", transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
                   >
                     {link.label}
                   </Link>
-                </li>
-              ))}
-            </ul>
+                ))}
+              </div>
+            </div>
+
+            {/* Company */}
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", marginBottom: 14 }}>Company</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {[
+                  { href: "/about", label: "About" },
+                  { href: "/contact", label: "Contact" },
+                ].map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    style={{ fontSize: 13, color: "rgba(14,26,43,0.55)", transition: "color 160ms ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Governance */}
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", marginBottom: 14 }}>Governance</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {[
+                  { href: "/privacy-policy", label: "Privacy Policy" },
+                  { href: "/terms-of-use", label: "Terms of Use" },
+                  { href: "#", label: "Accessibility" },
+                  { href: "#", label: "Acceptable Use Policy" },
+                  { href: "#", label: "Security Practices" },
+                  { href: "#", label: "Model Version Policy" },
+                ].map((link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    style={{ fontSize: 13, color: "rgba(14,26,43,0.55)", transition: "color 160ms ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Enterprise */}
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", marginBottom: 14 }}>Enterprise</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <span style={{ fontSize: 13, color: "rgba(14,26,43,0.55)" }}>
+                  RunPayway™ for Organizations
+                </span>
+                <form
+                  onSubmit={(e) => { e.preventDefault(); }}
+                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
+                >
+                  <input
+                    type="email"
+                    placeholder="Work email"
+                    aria-label="Work email for enterprise waitlist"
+                    style={{
+                      width: "100%",
+                      height: 36,
+                      padding: "0 12px",
+                      borderRadius: 7,
+                      border: "1px solid rgba(14,26,43,0.10)",
+                      background: "#FAFAFA",
+                      fontSize: 12,
+                      color: "#0E1A2B",
+                      outline: "none",
+                      boxSizing: "border-box" as const,
+                      transition: "border-color 180ms ease",
+                    }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      height: 36,
+                      borderRadius: 7,
+                      background: "#4B3FAE",
+                      color: "#ffffff",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      border: "none",
+                      cursor: "pointer",
+                      transition: "background 180ms ease",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
+                  >
+                    Join the Waitlist
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            {/* Social */}
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", marginBottom: 14 }}>Social</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {[
+                  { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
+                  { href: "https://x.com/runpayway", label: "X" },
+                  { href: "https://instagram.com/runpayway", label: "Instagram" },
+                ].map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: 13, color: "rgba(14,26,43,0.55)", transition: "color 160ms ease" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           </nav>
-
-          {/* CTA */}
-          <div style={{ marginBottom: 28 }}>
-            <Link
-              href="/pricing"
-              className="inline-flex items-center justify-center font-semibold"
-              style={{
-                height: 44,
-                paddingLeft: 22,
-                paddingRight: 22,
-                borderRadius: 10,
-                background: "#4B3FAE",
-                color: "#ffffff",
-                fontSize: 14,
-                letterSpacing: "-0.01em",
-                border: "1px solid rgba(75,63,174,0.90)",
-                boxShadow: "0 4px 12px rgba(75,63,174,0.18)",
-                transition: "background 180ms ease, transform 180ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#3D33A0";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#4B3FAE";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              Assess Your Income Structure
-            </Link>
-          </div>
-
-          {/* Legal + Social */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: mobile ? "column" : "row",
-              alignItems: mobile ? "flex-start" : "center",
-              justifyContent: "space-between",
-              gap: mobile ? 16 : undefined,
-              marginBottom: 28,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-              {[
-                { href: "/contact", label: "Contact" },
-                { href: "/privacy-policy", label: "Privacy Policy" },
-                { href: "/terms-of-use", label: "Terms of Use" },
-              ].map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  style={{
-                    fontSize: 13,
-                    color: "rgba(14,26,43,0.45)",
-                    transition: "color 160ms ease",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-              {[
-                { href: "https://linkedin.com/company/runpayway", label: "LinkedIn", ariaLabel: "RunPayway on LinkedIn" },
-                { href: "https://x.com/runpayway", label: "X", ariaLabel: "RunPayway on X" },
-                { href: "https://instagram.com/runpayway", label: "Instagram", ariaLabel: "RunPayway on Instagram" },
-              ].map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.ariaLabel}
-                  style={{
-                    fontSize: 13,
-                    color: "rgba(14,26,43,0.45)",
-                    transition: "color 160ms ease",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.70)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.45)"; }}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 28 }} />
-
-          {/* Enterprise waitlist */}
-          <div
-            style={{
-              padding: mobile ? "24px 20px" : "28px 32px",
-              borderRadius: 14,
-              background: "rgba(75,63,174,0.04)",
-              border: "1px solid rgba(75,63,174,0.08)",
-              marginBottom: 28,
-              maxWidth: 480,
-            }}
-          >
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#4B3FAE", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 8 }}>
-              RunPayway™ for Organizations
-            </div>
-            <p style={{ fontSize: 14, color: "rgba(14,26,43,0.60)", lineHeight: 1.65, marginBottom: 14 }}>
-              Enterprise assessments and team-level income stability analysis.
-            </p>
-            <form
-              onSubmit={(e) => { e.preventDefault(); }}
-              style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}
-            >
-              <input
-                type="email"
-                placeholder="Work email"
-                aria-label="Work email for enterprise waitlist"
-                style={{
-                  flex: 1,
-                  height: 40,
-                  padding: "0 14px",
-                  borderRadius: 8,
-                  border: "1px solid rgba(14,26,43,0.10)",
-                  background: "#ffffff",
-                  fontSize: 13,
-                  color: "#0E1A2B",
-                  outline: "none",
-                  boxSizing: "border-box" as const,
-                  transition: "border-color 180ms ease",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
-              />
-              <button
-                type="submit"
-                style={{
-                  height: 40,
-                  paddingLeft: 18,
-                  paddingRight: 18,
-                  borderRadius: 8,
-                  background: "#4B3FAE",
-                  color: "#ffffff",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  border: "none",
-                  cursor: "pointer",
-                  whiteSpace: "nowrap" as const,
-                  transition: "background 180ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
-              >
-                Join the Waitlist →
-              </button>
-            </form>
-          </div>
 
           {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 24 }} />
 
-          {/* Legal */}
-          <div style={{ maxWidth: 520 }}>
-            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
-              &copy; 2026 RunPayway™. All rights reserved.
-            </p>
-            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
-              RunPayway™ is a product of PeopleStar Enterprises, LLC.
-            </p>
-            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7, marginBottom: 4 }}>
-              Orange County, California, USA
-            </p>
-            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7 }}>
-              Structural Stability Model RP-1.0
-            </p>
+          {/* Legal strip */}
+          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", lineHeight: 1.7 }}>
+            &copy; 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-1.0
           </div>
         </div>
       </footer>
