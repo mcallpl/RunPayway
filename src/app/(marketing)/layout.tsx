@@ -445,6 +445,74 @@ export default function MarketingLayout({
           </div>
 
           {/* Divider */}
+          <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 28 }} />
+
+          {/* Enterprise waitlist */}
+          <div
+            style={{
+              padding: mobile ? "24px 20px" : "28px 32px",
+              borderRadius: 14,
+              background: "rgba(75,63,174,0.04)",
+              border: "1px solid rgba(75,63,174,0.08)",
+              marginBottom: 28,
+              maxWidth: 480,
+            }}
+          >
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#4B3FAE", letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 8 }}>
+              RunPayway for Organizations
+            </div>
+            <p style={{ fontSize: 14, color: "rgba(14,26,43,0.60)", lineHeight: 1.65, marginBottom: 14 }}>
+              Enterprise assessments and team-level income stability analysis.
+            </p>
+            <form
+              onSubmit={(e) => { e.preventDefault(); }}
+              style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}
+            >
+              <input
+                type="email"
+                placeholder="Work email"
+                aria-label="Work email for enterprise waitlist"
+                style={{
+                  flex: 1,
+                  height: 40,
+                  padding: "0 14px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(14,26,43,0.10)",
+                  background: "#ffffff",
+                  fontSize: 13,
+                  color: "#0E1A2B",
+                  outline: "none",
+                  boxSizing: "border-box" as const,
+                  transition: "border-color 180ms ease",
+                }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
+              />
+              <button
+                type="submit"
+                style={{
+                  height: 40,
+                  paddingLeft: 18,
+                  paddingRight: 18,
+                  borderRadius: 8,
+                  background: "#4B3FAE",
+                  color: "#ffffff",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  border: "none",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap" as const,
+                  transition: "background 180ms ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
+              >
+                Join the Waitlist →
+              </button>
+            </form>
+          </div>
+
+          {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 24 }} />
 
           {/* Legal */}
