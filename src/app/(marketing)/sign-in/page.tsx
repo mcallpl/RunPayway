@@ -444,7 +444,7 @@ export default function SignInPage() {
 
             <Link
               href="/checkout-placeholder?plan=monitoring"
-              className="inline-flex items-center justify-center font-semibold"
+              className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
                 height: 52,
@@ -467,7 +467,8 @@ export default function SignInPage() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Start Monitoring →
+              <span className="tick tick-white" />
+              <span className="cta-label">Start Monitoring</span>
             </Link>
           </div>
 
@@ -579,7 +580,7 @@ export default function SignInPage() {
             </p>
             <Link
               href="/checkout-placeholder?plan=single"
-              className="inline-flex items-center justify-center font-semibold"
+              className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 height: 44,
                 paddingLeft: 22,
@@ -603,7 +604,8 @@ export default function SignInPage() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Get Assessment →
+              <span className="tick tick-white" />
+              <span className="cta-label">Get Assessment</span>
             </Link>
           </div>
 

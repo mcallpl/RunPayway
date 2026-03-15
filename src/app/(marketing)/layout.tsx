@@ -124,7 +124,7 @@ export default function MarketingLayout({
                 </Link>
                 <Link
                   href="/pricing"
-                  className="inline-flex items-center justify-center font-semibold whitespace-nowrap"
+                  className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
                     height: 40,
                     paddingLeft: 18,
@@ -150,7 +150,8 @@ export default function MarketingLayout({
                     e.currentTarget.style.transform = "translateY(0)";
                   }}
                 >
-                  Get My Income Stability Score™
+                  <span className="tick tick-white" />
+                  <span className="cta-label">Get My Income Stability Score™</span>
                 </Link>
               </div>
             </>
@@ -255,6 +256,7 @@ export default function MarketingLayout({
               <Link
                 href="/pricing"
                 onClick={() => setMenuOpen(false)}
+                className="cta-tick"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -269,9 +271,12 @@ export default function MarketingLayout({
                   letterSpacing: "-0.01em",
                   border: "1px solid rgba(75,63,174,0.90)",
                   boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
-                Get My Income Stability Score™
+                <span className="tick tick-white" />
+                <span className="cta-label">Get My Income Stability Score™</span>
               </Link>
             </div>
           </div>

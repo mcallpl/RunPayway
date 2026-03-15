@@ -823,7 +823,7 @@ export default function HowItWorksPage() {
           {/* CTA button */}
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center font-semibold"
+            className="cta-tick inline-flex items-center justify-center font-semibold"
             style={{
               height: mobile ? 52 : 56,
               paddingLeft: mobile ? 28 : 36,
@@ -846,7 +846,8 @@ export default function HowItWorksPage() {
               e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
             }}
           >
-            Get My Income Stability Score™ →
+            <span className="tick tick-navy" />
+            <span className="cta-label">Get My Income Stability Score™</span>
           </Link>
 
           {/* Footer reference */}

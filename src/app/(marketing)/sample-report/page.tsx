@@ -832,7 +832,7 @@ export default function SampleReportPage() {
 
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center font-semibold"
+            className="cta-tick inline-flex items-center justify-center font-semibold"
             style={{
               height: mobile ? 52 : 56,
               paddingLeft: mobile ? 28 : 36,
@@ -855,7 +855,8 @@ export default function SampleReportPage() {
               e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
             }}
           >
-            Get My Income Stability Score™ →
+            <span className="tick tick-navy" />
+            <span className="cta-label">Get My Income Stability Score™</span>
           </Link>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>

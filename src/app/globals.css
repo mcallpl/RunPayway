@@ -32,6 +32,61 @@ body {
   background-size: 200px 200px;
 }
 
+/* ------------------------------------------------------------------ */
+/* Score Tick CTA — tick on left slides to arrow on right on hover     */
+/* ------------------------------------------------------------------ */
+.cta-tick {
+  position: relative;
+  overflow: hidden;
+}
+.cta-tick .tick {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+  transform: translateY(-50%) rotate(90deg);
+  transition: left 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 320ms ease;
+  opacity: 0.5;
+}
+.cta-tick:hover .tick {
+  left: calc(100% - 30px);
+  transform: translateY(-50%) rotate(0deg);
+  opacity: 1;
+}
+/* Arrow head — appears on hover */
+.cta-tick .tick::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+  opacity: 0;
+  transition: opacity 200ms ease 120ms;
+}
+.cta-tick:hover .tick::after {
+  opacity: 1;
+}
+/* Tick color variants */
+.cta-tick .tick-white { background: #ffffff; color: #ffffff; }
+.cta-tick .tick-navy { background: #0E1A2B; color: #0E1A2B; }
+.cta-tick .tick-purple { background: #4B3FAE; color: #4B3FAE; }
+
+/* Shift text slightly right on hover for tick CTAs */
+.cta-tick .cta-label {
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cta-tick:hover .cta-label {
+  transform: translateX(-6px);
+}
+
 /* Elegant section divider */
 .section-divider-elegant {
   display: flex;

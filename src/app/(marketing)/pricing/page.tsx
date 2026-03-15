@@ -165,7 +165,7 @@ function PricingCard({
 
       <Link
         href={ctaHref}
-        className="inline-flex items-center justify-center font-semibold"
+        className="cta-tick inline-flex items-center justify-center font-semibold"
         style={{
           width: "100%",
           height: 52,
@@ -190,7 +190,8 @@ function PricingCard({
           e.currentTarget.style.transform = "translateY(0)";
         }}
       >
-        {ctaLabel}
+        <span className="tick tick-white" />
+        <span className="cta-label">{ctaLabel}</span>
       </Link>
     </div>
   );

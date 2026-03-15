@@ -318,7 +318,7 @@ function FinalCta() {
           <div className="flex justify-center">
             <a
               href="/pricing"
-              className="inline-flex items-center justify-center font-semibold
+              className="cta-tick inline-flex items-center justify-center font-semibold
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
                 height: mobile ? 52 : 56,
@@ -353,7 +353,8 @@ const t = e.currentTarget;
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Get My Income Stability Score™
+              <span className="tick tick-navy" />
+              <span className="cta-label">Get My Income Stability Score™</span>
             </a>
           </div>
 
@@ -984,7 +985,7 @@ function WhyIncomeStabilityMatters() {
           {/* CTA Button */}
           <Link
             href="/pricing"
-            className="inline-flex items-center justify-center font-semibold
+            className="cta-tick inline-flex items-center justify-center font-semibold
                        focus:outline-none focus:ring-2 focus:ring-offset-2"
             style={{
               height: 52,
@@ -1016,7 +1017,8 @@ const t = e.currentTarget;
             }}
             onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            Get My Income Stability Score™
+            <span className="tick tick-white" />
+            <span className="cta-label">Get My Income Stability Score™</span>
           </Link>
         </div>
       </div>
@@ -1945,7 +1947,7 @@ function HeroSection() {
             >
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center font-semibold
+                className="cta-tick inline-flex items-center justify-center font-semibold
                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F6D7A]"
                 style={{
                   height: 54,
@@ -1977,7 +1979,8 @@ const t = e.currentTarget;
                 }}
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                Get My Income Stability Score™
+                <span className="tick tick-white" />
+                <span className="cta-label">Get My Income Stability Score™</span>
               </Link>
 
               <p
@@ -2277,7 +2280,7 @@ if (!tier.active) {
         </p>
         <Link
           href="/pricing"
-          className="conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
+          className="cta-tick conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
                      focus:outline-none focus:ring-2"
           style={{
             height: 40,
@@ -2297,7 +2300,8 @@ if (!tier.active) {
 e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.25)"; }}
         >
-          Get My Income Stability Score™
+          <span className="tick tick-white" />
+          <span className="cta-label">Get My Income Stability Score™</span>
         </Link>
       </div>
 
