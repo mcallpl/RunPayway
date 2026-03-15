@@ -332,7 +332,7 @@ export default function MarketingLayout({
                 { href: "/methodology", label: "Methodology" },
                 { href: "/verify", label: "Verify a Score" },
                 { href: "/pricing", label: "Pricing" },
-                { href: "/#faq", label: "FAQ" },
+                { href: "/faq", label: "FAQ" },
                 { href: "/about", label: "About" },
               ].map((link) => (
                 <li key={link.label}>
