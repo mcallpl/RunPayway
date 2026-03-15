@@ -479,7 +479,7 @@ export default function MarketingLayout({
                   { href: "/accessibility", label: "Accessibility" },
                   { href: "/acceptable-use-policy", label: "Acceptable Use Policy" },
                   { href: "/security-practices", label: "Security Practices" },
-                  { href: "#", label: "Model Version Policy" },
+                  { href: "/model-version-policy", label: "Model Version Policy" },
                 ].map((link) => (
                   <Link
                     key={link.label}
