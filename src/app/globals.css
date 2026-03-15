@@ -38,11 +38,13 @@ body {
 .cta-tick {
   position: relative;
   overflow: hidden;
+  padding-left: 36px !important;
+  padding-right: 36px !important;
 }
 .cta-tick .tick {
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: 14px;
   width: 14px;
   height: 2px;
   border-radius: 1px;
@@ -53,7 +55,7 @@ body {
   opacity: 0.5;
 }
 .cta-tick:hover .tick {
-  left: calc(100% - 30px);
+  left: calc(100% - 32px);
   transform: translateY(-50%) rotate(0deg);
   opacity: 1;
 }
@@ -63,8 +65,8 @@ body {
   position: absolute;
   right: -1px;
   top: 50%;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-right: 2px solid currentColor;
   border-top: 2px solid currentColor;
   transform: translateY(-50%) rotate(45deg);
@@ -79,12 +81,10 @@ body {
 .cta-tick .tick-navy { background: #0E1A2B; color: #0E1A2B; }
 .cta-tick .tick-purple { background: #4B3FAE; color: #4B3FAE; }
 
-/* Shift text slightly right on hover for tick CTAs */
+/* Label stays centered, no shift needed with wider padding */
 .cta-tick .cta-label {
-  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.cta-tick:hover .cta-label {
-  transform: translateX(-6px);
+  position: relative;
+  z-index: 1;
 }
 
 /* Elegant section divider */
