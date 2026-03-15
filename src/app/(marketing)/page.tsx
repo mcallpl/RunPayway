@@ -1951,7 +1951,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
               }}
             >
-              Built on deterministic structural scoring &#183; RunPayway™ Model RP-1.0
+              For professionals, founders, and organizations.
             </p>
 
             {/* CTA Button */}
