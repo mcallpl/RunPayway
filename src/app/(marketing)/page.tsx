@@ -1227,21 +1227,6 @@ function PreviewYourScoreReport() {
             ))}
           </div>
 
-          {/* Fade-out overlay — signals more content behind paywall */}
-          <div
-            style={{
-              position: "relative",
-              height: 80,
-              overflow: "hidden",
-              marginBottom: -44,
-            }}
-          >
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
-            <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>Structural Analysis</div>
-            <div className="text-[11px]" style={{ color: B.muted, lineHeight: 1.7 }}>Income structure breakdown, structural indicators, system diagnosis, industry benchmark...</div>
-            {/* Gradient fade */}
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 60, background: "linear-gradient(transparent, #ffffff)" }} />
-          </div>
         </div>
 
         {/* View sample report link */}
