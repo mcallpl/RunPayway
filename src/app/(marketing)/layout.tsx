@@ -400,7 +400,7 @@ export default function MarketingLayout({
               {[
                 { href: "/contact", label: "Contact" },
                 { href: "/privacy-policy", label: "Privacy Policy" },
-                { href: "#", label: "Terms of Use" },
+                { href: "/terms-of-use", label: "Terms of Use" },
               ].map((link) => (
                 <Link
                   key={link.label}
