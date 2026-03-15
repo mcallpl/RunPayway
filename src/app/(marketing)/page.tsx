@@ -1847,7 +1847,7 @@ export default function LandingPage() {
             letterSpacing: "-0.01em",
           }}
         >
-          One score. Six structural factors. <span style={{ color: B.navy, fontWeight: 600 }}>A complete diagnosis.</span>
+          The score doesn&rsquo;t guess. <span style={{ color: B.navy, fontWeight: 600 }}>It measures.</span>
         </p>
       </div>
 
