@@ -162,6 +162,31 @@ const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
   },
 };
 
+// Rank all 6 factors from strongest to weakest (labels only — no raw values exposed)
+function getRankedFactors(r: AssessmentRecord): { label: string; level: string }[] {
+  const LEVEL_ORDER: Record<string, number> = { "Very High": 5, "High": 4, "Moderate": 3, "Low": 2, "Very Low": 1 };
+  // For inverted indicators, flip the ranking (high label = weak, low label = strong)
+  const factors = [
+    { label: "Income Persistence", level: r.income_persistence_label, inverted: false },
+    { label: "Income Source Diversity", level: r.income_source_diversity_label, inverted: false },
+    { label: "Forward Revenue Visibility", level: r.forward_revenue_visibility_label, inverted: false },
+    { label: "Monthly Income Consistency", level: r.income_variability_label, inverted: true },
+    { label: "Active Labor Independence", level: r.active_labor_dependence_label, inverted: true },
+    { label: "Source Diversification", level: r.exposure_concentration_label, inverted: true },
+  ];
+  return factors
+    .map((f) => {
+      const raw = LEVEL_ORDER[f.level] || 3;
+      const strength = f.inverted ? 6 - raw : raw; // flip so higher = stronger for inverted
+      const displayLevel = f.inverted
+        ? (raw <= 2 ? "Strong" : raw === 3 ? "Moderate" : "Weak")
+        : (raw >= 4 ? "Strong" : raw === 3 ? "Moderate" : "Weak");
+      return { label: f.label, level: displayLevel, _strength: strength };
+    })
+    .sort((a, b) => b._strength - a._strength)
+    .map(({ label, level }) => ({ label, level }));
+}
+
 // Identify key positive/negative factors for Page 1
 function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string[] } {
   // For inverted indicators (variability, labor dependence, concentration),
@@ -387,6 +412,7 @@ export default function ReviewPage() {
   const subject = subjectName(record);
   const possessive = subjectPossessive(record);
   const keyFactors = getKeyFactors(record);
+  const rankedFactors = getRankedFactors(record);
   const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
 
   const handleDownload = async () => {
@@ -489,7 +515,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Key Structural Factors */}
-        <Label>Key Structural Factors Affecting Your Score</Label>
+        <Label>Key Structural Factors — {subject}</Label>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.sectionGap, marginTop: R.paraMb }}>
           <div>
             <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>
@@ -536,7 +562,7 @@ export default function ReviewPage() {
         </p>
 
         {/* Income Structure Map */}
-        <Label>Income Structure Map</Label>
+        <Label>Income Structure Map — {subject}</Label>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
           {possessive} income comes from three types of sources.
         </p>
@@ -580,8 +606,25 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
+        {/* Structural Priority Map */}
+        <Label>Structural Priority Map — {subject}</Label>
+        <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
+          Factors ranked from strongest to weakest based on {possessive} assessment.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          {rankedFactors.map((f, i) => (
+            <div key={f.label} style={{ display: "flex", alignItems: "center", gap: 10, borderRadius: 6, backgroundColor: i === 0 ? "rgba(31,109,122,0.06)" : i >= rankedFactors.length - 1 ? "rgba(14,26,43,0.03)" : "transparent", padding: "5px 10px" }}>
+              <span style={{ ...T.caption, fontWeight: 600, color: i === 0 ? B.teal : i >= rankedFactors.length - 1 ? B.light : B.muted, minWidth: 14 }}>{i + 1}</span>
+              <span style={{ ...T.small, color: B.navy, flex: 1 }}>{f.label}</span>
+              <span style={{ ...T.caption, fontWeight: 500, color: f.level === "Strong" ? B.teal : f.level === "Weak" ? B.muted : B.light }}>{f.level}</span>
+            </div>
+          ))}
+        </div>
+
+        <SectionDivider />
+
         {/* System Diagnosis */}
-        <Label>System Diagnosis</Label>
+        <Label>System Diagnosis — {subject}</Label>
         <div style={{ ...T.body, color: B.muted, display: "flex", flexDirection: "column", gap: R.paraMb }}>
           <p>
             {subject} operates mainly as a <strong style={{ color: B.navy }}>{record.labor_asset_position_label}</strong> income
@@ -600,7 +643,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Industry Benchmark */}
-        <Label>Industry Stability Benchmark</Label>
+        <Label>{record.industry_sector} Stability Benchmark</Label>
         <div style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${B.sandDk}` }}>
           {[
             [`Average ${record.industry_sector} Stability Score`, String(bench.avgScore)],
@@ -617,7 +660,7 @@ export default function ReviewPage() {
 
         {/* Drivers */}
         <div style={{ marginTop: R.sectionGap }}>
-          <Label>Drivers Supporting Stability</Label>
+          <Label>Drivers Supporting {possessive} Stability</Label>
           <div style={{ display: "flex", flexWrap: "wrap", gap: R.itemGap }}>
             {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
               <span key={d} style={{ ...T.caption, fontWeight: 500, borderRadius: 6, backgroundColor: B.sand, color: B.navy, padding: "4px 10px" }}>{d}</span>
@@ -636,7 +679,7 @@ export default function ReviewPage() {
         </p>
 
         {/* Primary Constraint */}
-        <Label>Primary Structural Constraint</Label>
+        <Label>Primary Structural Constraint — {subject}</Label>
         <div style={{ ...T.body, fontWeight: 500, color: B.navy, marginBottom: R.itemGap }}>{record.primary_constraint_label}</div>
         <div style={{ ...T.small, color: B.muted, display: "flex", flexDirection: "column", gap: R.itemGap }}>
           <p>{riskData.mechanism}</p>
@@ -646,7 +689,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Improvement Opportunities */}
-        <Label>Improvement Opportunities</Label>
+        <Label>Improvement Opportunities — {subject}</Label>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
           {record.structural_improvement_path_text}
         </p>
@@ -657,9 +700,9 @@ export default function ReviewPage() {
           if (actionPlan.length === 0) return null;
           return (
             <div style={{ marginTop: R.sectionGap }}>
-              <Label>90-Day Action Plan</Label>
+              <Label>90-Day Action Plan — {subject}</Label>
               <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
-                Three priority actions based on your primary constraint: {record.primary_constraint_label}
+                Three priority actions for {subject} based on the primary constraint: {record.primary_constraint_label}
               </p>
               <ol style={{ ...T.small, color: B.navy, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: R.itemGap }}>
                 {actionPlan.map((action, i) => (
