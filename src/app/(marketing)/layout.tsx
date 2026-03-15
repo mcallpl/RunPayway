@@ -23,6 +23,7 @@ const NAV_LINKS = [
   { href: "/sample-report", label: "Sample Report" },
   { href: "/methodology", label: "Methodology" },
   { href: "/verify", label: "Verify a Score" },
+  { href: "/pricing", label: "Pricing" },
   { href: "#", label: "About" },
 ];
 
