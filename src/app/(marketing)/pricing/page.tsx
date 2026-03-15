@@ -363,6 +363,9 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: B.light }}>
               Secure checkout powered by Stripe · Encrypted payment processing
             </p>
+            <p style={{ fontSize: 13, color: B.light, marginTop: 8, maxWidth: 480, lineHeight: 1.6 }}>
+              Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
+            </p>
           </div>
         </div>
       </section>
@@ -704,8 +707,11 @@ export default function PricingPage() {
             <p style={{ fontSize: 12, color: "rgba(255,255,255,0.40)", lineHeight: 1.7, marginBottom: 8 }}>
               Income Stability assessments are generated using fixed scoring criteria defined under Model RP-1.0.
             </p>
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.28)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.28)", lineHeight: 1.7, marginBottom: 8 }}>
               The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+            </p>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.7 }}>
+              Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results.
             </p>
           </div>
 

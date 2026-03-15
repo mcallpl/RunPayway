@@ -135,6 +135,11 @@ function CheckoutContent() {
           >
             Continue to Assessment
           </button>
+
+          {/* Confidence statement */}
+          <p className="text-[10px] leading-relaxed text-center" style={{ color: B.light, marginTop: 16 }}>
+            Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
+          </p>
         </div>
       </div>
     </div>

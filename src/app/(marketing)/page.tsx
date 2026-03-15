@@ -382,6 +382,20 @@ const t = e.currentTarget;
           >
             Takes under 2 minutes &#8212; Instant results
           </p>
+          <p
+            className="text-[12px] md:text-[13px]"
+            style={{
+              color: "rgba(244,241,234,0.45)",
+              lineHeight: 1.6,
+              marginTop: 8,
+              maxWidth: 440,
+              textAlign: "center" as const,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results.
+          </p>
         </div>
       </div>
 
