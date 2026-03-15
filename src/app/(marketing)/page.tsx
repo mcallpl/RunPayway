@@ -74,6 +74,52 @@ const B = {
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
 };
 
+/* ────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — Enterprise spacing scale (8px base unit)
+   Every value is deliberate. Nothing is arbitrary.
+   ──────────────────────────────────────────────────────────────────── */
+const S = {
+  /* Section vertical rhythm */
+  sectionY:     { desktop: 140, mobile: 80 },   /* primary section padding */
+  sectionYsm:   { desktop: 120, mobile: 72 },   /* secondary (lighter sections) */
+  transitionY:  { desktop: 72, mobile: 48 },     /* pillar transitions */
+  disclaimerY:  { desktop: 64, mobile: 48 },     /* compressed institutional */
+
+  /* Container */
+  maxW:         1100,                             /* content max-width */
+  padX:         { desktop: 40, mobile: 24 },     /* horizontal gutter */
+
+  /* Typography rhythm */
+  h1mb:         24,    /* hero heading → subtext */
+  h2mb:         20,    /* section heading → subtext */
+  subtextMb:    48,    /* subtext → content block */
+  paraMb:       20,    /* between body paragraphs */
+  labelMb:      16,    /* eyebrow label → heading */
+
+  /* Component spacing */
+  cardPad:      { desktop: 32, mobile: 24 },
+  cardRadius:   16,
+  panelRadius:  20,
+  gridGap:      20,
+  gridGapSm:    16,
+
+  /* CTA buttons */
+  ctaH:         52,    /* primary CTA height */
+  ctaHsm:       44,    /* secondary CTA height */
+  ctaPadX:      28,    /* CTA horizontal padding */
+  ctaRadius:    12,    /* CTA border radius */
+
+  /* Line heights */
+  lhHeading:    1.1,
+  lhBody:       1.7,
+  lhDense:      1.5,
+
+  /* Letter spacing */
+  lsHeading:    "-0.02em",
+  lsHero:       "-0.03em",
+  lsLabel:      "0.12em",
+};
+
 const INDUSTRY_EXAMPLES = [
   {
     industry: "Professional Services: Moving From Project Work to Recurring Revenue",
@@ -164,11 +210,11 @@ function Disclaimer() {
       <div
         className="relative mx-auto"
         style={{
-          maxWidth: 920,
-          paddingTop: mobile ? 48 : 64,
-          paddingBottom: mobile ? 48 : 64,
-          paddingLeft: mobile ? 24 : undefined,
-          paddingRight: mobile ? 24 : undefined,
+          maxWidth: S.maxW,
+          paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+          paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(8px)",
           transition: "opacity 360ms ease-out, transform 360ms ease-out",
@@ -191,7 +237,7 @@ function Disclaimer() {
           className="font-semibold uppercase text-[11px] md:text-[12px]"
           style={{
             color: "#ffffff",
-            letterSpacing: "0.12em",
+            letterSpacing: S.lsLabel,
             marginBottom: 12,
             textAlign: "center",
           }}
@@ -205,7 +251,7 @@ function Disclaimer() {
             className="text-[14px] md:text-[15px]"
             style={{
               color: "rgba(244,241,234,0.55)",
-              lineHeight: 1.7,
+              lineHeight: S.lhBody,
               marginBottom: 10,
             }}
           >
@@ -274,11 +320,11 @@ function FinalCta() {
       <div
         className="relative mx-auto text-center"
         style={{
-          maxWidth: 980,
-          paddingTop: mobile ? 80 : 156,
-          paddingBottom: mobile ? 80 : 156,
-          paddingLeft: mobile ? 24 : 40,
-          paddingRight: mobile ? 24 : 40,
+          maxWidth: S.maxW,
+          paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+          paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         }}
       >
         <div
@@ -295,10 +341,10 @@ function FinalCta() {
             className="font-semibold text-[34px] md:text-[44px] lg:text-[52px]"
             style={{
               color: "#F4F1EA",
-              lineHeight: 1.08,
-              letterSpacing: "-0.03em",
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHero,
               maxWidth: 640,
-              margin: "0 auto 22px auto",
+              margin: `0 auto ${S.h2mb}px auto`,
             }}
           >
             Get Your Income Stability Score™
@@ -309,9 +355,9 @@ function FinalCta() {
             className="text-[17px] md:text-[19px] lg:text-[20px]"
             style={{
               color: "rgba(244,241,234,0.80)",
-              lineHeight: 1.7,
+              lineHeight: S.lhBody,
               maxWidth: 560,
-              margin: "0 auto 42px auto",
+              margin: `0 auto ${S.subtextMb}px auto`,
             }}
           >
             Six structural factors. One score. A complete structural diagnosis of your income.
@@ -324,12 +370,12 @@ function FinalCta() {
               className="cta-tick inline-flex items-center justify-center font-semibold
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
-                height: mobile ? 52 : 56,
+                height: S.ctaH,
                 minWidth: mobile ? 0 : 320,
                 width: mobile ? "100%" : "auto",
-                paddingLeft: 28,
-                paddingRight: 28,
-                borderRadius: 16,
+                paddingLeft: S.ctaPadX,
+                paddingRight: S.ctaPadX,
+                borderRadius: S.ctaRadius,
                 background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
                 color: B.navy,
                 fontSize: 16,
@@ -453,13 +499,13 @@ function ModelGovernance() {
       aria-label="Model Governance"
       style={{
         backgroundColor: B.purple,
-        paddingTop: mobile ? 80 : 160,
-        paddingBottom: mobile ? 80 : 148,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40, textAlign: "center" }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
         {/* Title + text */}
         <div
           style={{
@@ -473,19 +519,19 @@ function ModelGovernance() {
             style={{
               color: "#F4F1EA",
               fontWeight: 600,
-              lineHeight: 1.12,
-              letterSpacing: "-0.02em",
-              marginBottom: 32,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
             }}
           >
             Model Governance
           </h2>
 
           <div style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
               The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: "#ffffff" }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
             </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 500, lineHeight: 1.75 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 500, lineHeight: S.lhBody }}>
               Future updates ship as new model versions. Assessments currently run under Model RP-1.0.
             </p>
           </div>
@@ -494,7 +540,7 @@ function ModelGovernance() {
         {/* Governance reference panel */}
         <article
           style={{
-            marginTop: 36,
+            marginTop: S.subtextMb,
             width: "100%",
             maxWidth: 420,
             marginLeft: "auto",
@@ -502,8 +548,8 @@ function ModelGovernance() {
             textAlign: "left",
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
-            borderRadius: 18,
-            padding: mobile ? 24 : 28,
+            borderRadius: S.panelRadius,
+            padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
             boxShadow: "0 16px 44px rgba(0,0,0,0.08)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
@@ -516,7 +562,7 @@ function ModelGovernance() {
           {/* Panel header */}
           <div
             className="text-[12px] uppercase"
-            style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 10 }}
+            style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 10 }}
           >
             Model Version
           </div>
@@ -576,8 +622,8 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
-        paddingTop: mobile ? 80 : 152,
-        paddingBottom: mobile ? 80 : 152,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
@@ -600,7 +646,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-15%", left: "-8%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-      <div className="max-w-[980px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Header */}
         <div
           style={{
@@ -616,9 +662,9 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               fontSize: mobile ? 32 : 40,
               color: "#F4F1EA",
               fontWeight: 600,
-              lineHeight: 1.12,
-              letterSpacing: "-0.02em",
-              marginBottom: 18,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
             }}
           >
             Frequently Asked Questions
@@ -629,10 +675,10 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               fontSize: mobile ? 16 : 18,
               color: "rgba(244,241,234,0.78)",
               fontWeight: 400,
-              lineHeight: 1.7,
+              lineHeight: S.lhBody,
               maxWidth: 680,
               margin: "0 auto",
-              marginBottom: 64,
+              marginBottom: S.subtextMb,
             }}
           >
             What the score measures, what the report includes, and how your data is handled.
@@ -739,15 +785,15 @@ function ScoreRegistry() {
       aria-label="Score Registry"
       style={{
         backgroundColor: "#F4F1EA",
-        paddingTop: mobile ? 80 : 160,
-        paddingBottom: mobile ? 80 : 152,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", rowGap: 36 }}
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", rowGap: S.subtextMb }}
         >
           {/* Header text */}
           <div
@@ -765,17 +811,17 @@ function ScoreRegistry() {
                 color: B.navy,
                 fontWeight: 600,
                 lineHeight: 1.12,
-                letterSpacing: "-0.02em",
-                marginBottom: 18,
+                letterSpacing: S.lsHeading,
+                marginBottom: S.h2mb,
               }}
             >
               Score Registry
             </h2>
 
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: 1.75, marginBottom: 18 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
               Every assessment is issued a unique registry ID, linking the score result, model version, and timestamp to a permanent, verifiable record.
             </p>
-            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: 1.75 }}>
+            <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: S.lhBody }}>
               All records are generated under <strong>RunPayway™ Model RP-1.0</strong> and can be independently verified at any time.
             </p>
           </div>
@@ -787,8 +833,8 @@ function ScoreRegistry() {
               maxWidth: 420,
               backgroundColor: "#ffffff",
               border: "1px solid rgba(14,26,43,0.08)",
-              borderRadius: 20,
-              padding: mobile ? 24 : 32,
+              borderRadius: S.panelRadius,
+              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 60px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.04)",
               position: "relative",
               overflow: "hidden",
@@ -813,24 +859,24 @@ e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
             {/* Panel header */}
             <div
               className="text-[12px] uppercase"
-              style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 18 }}
+              style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 18 }}
             >
               Registry Record
             </div>
 
             {/* Field list */}
-            <div style={{ display: "grid", rowGap: 18 }}>
+            <div style={{ display: "grid", rowGap: S.paraMb }}>
               {fields.map((field, i) => (
                 <div key={field.label}>
                   <div
                     className="text-[11px] uppercase"
-                    style={{ color: "rgba(14,26,43,0.52)", fontWeight: 500, letterSpacing: "0.10em", marginBottom: 5 }}
+                    style={{ color: "rgba(14,26,43,0.52)", fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 5 }}
                   >
                     {field.label}
                   </div>
                   <div
                     className="text-[15px] md:text-[16px]"
-                    style={{ color: field.purple ? B.purple : B.navy, fontWeight: 500, lineHeight: 1.5 }}
+                    style={{ color: field.purple ? B.purple : B.navy, fontWeight: 500, lineHeight: S.lhDense }}
                   >
                     {field.value}
                   </div>
@@ -862,8 +908,8 @@ function WhyIncomeStabilityMatters() {
       className="relative overflow-hidden navy-grain"
       style={{
         backgroundColor: B.navy,
-        paddingTop: mobile ? 80 : 160,
-        paddingBottom: mobile ? 80 : 160,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
@@ -886,17 +932,17 @@ function WhyIncomeStabilityMatters() {
         </svg>
       </div>
 
-      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Comparison panel — elevated, full-width */}
         <div
           className="mx-auto"
           style={{
             maxWidth: 820,
-            marginBottom: mobile ? 48 : 72,
+            marginBottom: mobile ? S.subtextMb : S.transitionY.desktop,
             display: "grid",
             gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
             gap: 0,
-            borderRadius: 20,
+            borderRadius: S.panelRadius,
             overflow: "hidden",
             border: "1px solid rgba(255,255,255,0.10)",
             boxShadow: "0 20px 60px rgba(0,0,0,0.30)",
@@ -909,7 +955,7 @@ function WhyIncomeStabilityMatters() {
           <div style={{ padding: mobile ? "28px 24px 32px" : "36px 36px 40px", backgroundColor: "rgba(255,255,255,0.03)" }}>
             <div
               className="text-[11px] uppercase"
-              style={{ color: "rgba(244,241,234,0.40)", fontWeight: 500, letterSpacing: "0.12em", marginBottom: 14 }}
+              style={{ color: "rgba(244,241,234,0.40)", fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
             >
               What Exists
             </div>
@@ -931,7 +977,7 @@ function WhyIncomeStabilityMatters() {
           <div style={{ padding: mobile ? "28px 24px 32px" : "36px 36px 40px", backgroundColor: "rgba(75,63,174,0.12)", borderLeft: mobile ? "none" : "1px solid rgba(75,63,174,0.20)", borderTop: mobile ? "1px solid rgba(75,63,174,0.20)" : "none" }}>
             <div
               className="text-[11px] uppercase"
-              style={{ color: B.teal, fontWeight: 500, letterSpacing: "0.12em", marginBottom: 14 }}
+              style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
             >
               What&apos;s Missing
             </div>
@@ -956,8 +1002,8 @@ function WhyIncomeStabilityMatters() {
           style={{
             color: "#F4F1EA",
             fontWeight: 600,
-            letterSpacing: "-0.02em",
-            marginBottom: 36,
+            letterSpacing: S.lsHeading,
+            marginBottom: S.h2mb,
             textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
@@ -981,19 +1027,19 @@ function WhyIncomeStabilityMatters() {
         >
           <p
             className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: 1.75, marginBottom: 22 }}
+            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}
           >
             A credit score measures debt repayment behavior. It says nothing about where your income comes from, how it&apos;s structured, or whether it continues when you stop working.
           </p>
           <p
             className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: 1.75, marginBottom: 22 }}
+            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}
           >
             Two people with the same credit score can have fundamentally different income architectures — one recurring and diversified, the other dependent on a single source of active labor.
           </p>
           <p
             className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: 1.75, marginBottom: 36 }}
+            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.subtextMb }}
           >
             That structural difference determines financial resilience. Until now, there was no standardized way to measure it.
           </p>
@@ -1001,7 +1047,7 @@ function WhyIncomeStabilityMatters() {
           {/* Anchor statement */}
           <p
             className="text-[18px] md:text-[20px]"
-            style={{ color: "#F4F1EA", fontWeight: 600, lineHeight: 1.5, marginBottom: 40 }}
+            style={{ color: "#F4F1EA", fontWeight: 600, lineHeight: S.lhDense, marginBottom: S.subtextMb }}
           >
             Your credit score doesn&apos;t capture this.<br />
             Your Income Stability Score&#8482; does.
@@ -1014,11 +1060,11 @@ function WhyIncomeStabilityMatters() {
               className="cta-tick inline-flex items-center justify-center font-semibold
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
               style={{
-                height: 52,
+                height: S.ctaH,
                 width: mobile ? "100%" : "auto",
-                paddingLeft: 28,
-                paddingRight: 28,
-                borderRadius: 12,
+                paddingLeft: S.ctaPadX,
+                paddingRight: S.ctaPadX,
+                borderRadius: S.ctaRadius,
                 background: B.purple,
                 color: "#ffffff",
                 fontSize: 15,
@@ -1067,22 +1113,22 @@ function PreviewYourScoreReport() {
     <section
       ref={ref}
       style={{
-        paddingTop: mobile ? 72 : 120,
-        paddingBottom: mobile ? 80 : 140,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
      aria-label="Preview Your Score Report">
 
-      <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Section header */}
         <h2
           className="text-[32px] md:text-[40px]"
           style={{
             color: B.navy,
             fontWeight: 600,
-            letterSpacing: "-0.02em",
-            marginBottom: 16,
+            letterSpacing: S.lsHeading,
+            marginBottom: S.h2mb,
             textAlign: "center",
           }}
         >
@@ -1093,9 +1139,9 @@ function PreviewYourScoreReport() {
           style={{
             color: "rgba(14,26,43,0.75)",
             fontWeight: 400,
-            lineHeight: 1.7,
+            lineHeight: S.lhBody,
             maxWidth: 720,
-            marginBottom: 48,
+            marginBottom: S.subtextMb,
             textAlign: "center",
             marginLeft: "auto",
             marginRight: "auto",
@@ -1115,8 +1161,8 @@ function PreviewYourScoreReport() {
             margin: "0 auto",
             backgroundColor: "#ffffff",
             border: "1px solid rgba(14,26,43,0.10)",
-            borderRadius: 18,
-            padding: mobile ? "24px 24px 28px 24px" : "36px 40px 44px 40px",
+            borderRadius: S.panelRadius,
+            padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
             boxShadow: "0 24px 80px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.04)",
             position: "relative",
           }}
@@ -1273,18 +1319,18 @@ function ScoringFactors() {
       aria-label="Six Structural Factors"
       className="scoring-factors-section relative"
       style={{
-        paddingTop: mobile ? 80 : 140,
-        paddingBottom: mobile ? 80 : 140,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
 
-      <div className="mx-auto" style={{ maxWidth: 1100, position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Sticky header — parallax drift */}
         <div
           ref={headerRef}
           className="text-center"
           style={{
-            marginBottom: mobile ? 40 : 80,
+            marginBottom: mobile ? S.subtextMb : S.sectionY.mobile,
             opacity: titleOpacity,
             transform: `translateY(${visible ? titleY : 30}px) scale(${visible ? titleScale : 0.92})`,
             transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
@@ -1293,19 +1339,19 @@ function ScoringFactors() {
         >
           <div
             className="font-medium uppercase text-[11px]"
-            style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}
+            style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: S.labelMb }}
           >
             What We Measure
           </div>
           <h2
             className="text-[34px] md:text-[48px] font-semibold"
-            style={{ color: B.navy, letterSpacing: "-0.025em", marginBottom: 16, lineHeight: 1.1 }}
+            style={{ color: B.navy, letterSpacing: S.lsHeading, marginBottom: S.h2mb, lineHeight: S.lhHeading }}
           >
             Six Structural Factors
           </h2>
           <p
             className="text-[17px] md:text-[18px] mx-auto"
-            style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 520 }}
+            style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody, maxWidth: 520 }}
           >
             Each factor isolates a specific structural characteristic of your income system.
           </p>
@@ -1313,7 +1359,7 @@ function ScoringFactors() {
 
         {/* Factor grid: 2 cols desktop, 1 col mobile */}
         <div
-          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 18, maxWidth: 920, margin: "0 auto" }}
+          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, maxWidth: 920, margin: "0 auto" }}
         >
           {factors.map((factor, i) => {
             const row = Math.floor(i / 2);
@@ -1325,8 +1371,8 @@ function ScoringFactors() {
                 style={{
                   position: "relative",
                   backgroundColor: "#ffffff",
-                  borderRadius: 16,
-                  padding: mobile ? "24px 24px 28px 24px" : "32px 32px 36px 32px",
+                  borderRadius: S.cardRadius,
+                  padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
                   border: "1px solid rgba(14,26,43,0.06)",
                   boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                   opacity: visible ? 1 : 0,
@@ -1368,7 +1414,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
                 {/* Name */}
                 <div
                   className="text-[18px] md:text-[20px] font-semibold"
-                  style={{ color: B.navy, lineHeight: 1.3, marginBottom: 10 }}
+                  style={{ color: B.navy, lineHeight: 1.3, marginBottom: S.labelMb - 6 }}
                 >
                   {factor.name}
                 </div>
@@ -1376,7 +1422,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
                 {/* Outcome-focused description */}
                 <p
                   className="text-[14px] md:text-[15px]"
-                  style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.7 }}
+                  style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody }}
                 >
                   {factor.desc}
                 </p>
@@ -1418,11 +1464,11 @@ function HowItWorks() {
     <section
       ref={ref}
       aria-label="How It Works"
-      style={{ paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, background: "#ffffff" }}
+      style={{ paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, background: "#ffffff" }}
     >
-      <div className="mx-auto" style={{ maxWidth: 1100, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Header */}
-        <div className="text-center" style={{ marginBottom: mobile ? 36 : 56 }}>
+        <div className="text-center" style={{ marginBottom: mobile ? S.subtextMb : S.subtextMb + 8 }}>
           <div
             className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4"
             style={{
@@ -1438,7 +1484,7 @@ function HowItWorks() {
             className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight"
             style={{
               color: B.navy,
-              marginBottom: 16,
+              marginBottom: S.h2mb,
               opacity: visible ? 1 : 0,
               transform: visible ? "translateY(0)" : "translateY(12px)",
               transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms",
@@ -1462,7 +1508,7 @@ function HowItWorks() {
 
         {/* 3 step cards */}
         <div
-          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 20, maxWidth: 960, margin: "0 auto" }}
+          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: S.gridGap, maxWidth: 960, margin: "0 auto" }}
         >
           {steps.map((step, i) => {
             const delay = 300 + i * 120;
@@ -1472,8 +1518,8 @@ function HowItWorks() {
                 className="text-center"
                 style={{
                   backgroundColor: "#ffffff",
-                  borderRadius: 16,
-                  padding: mobile ? "28px 24px 32px" : "36px 28px 40px",
+                  borderRadius: S.cardRadius,
+                  padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
                   border: "1px solid rgba(14,26,43,0.06)",
                   boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                   opacity: visible ? 1 : 0,
@@ -1503,10 +1549,10 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
                 >
                   {step.num}
                 </div>
-                <div className="text-[18px] md:text-[20px] font-semibold" style={{ color: B.navy, marginBottom: 14 }}>
+                <div className="text-[18px] md:text-[20px] font-semibold" style={{ color: B.navy, marginBottom: S.labelMb - 2 }}>
                   {step.title}
                 </div>
-                <p className="text-[14px] md:text-[15px]" style={{ color: B.muted, lineHeight: 1.7 }}>
+                <p className="text-[14px] md:text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody }}>
                   {step.desc}
                 </p>
               </article>
@@ -1515,7 +1561,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
         </div>
 
         {/* Model reference */}
-        <div className="text-center" style={{ marginTop: 48 }}>
+        <div className="text-center" style={{ marginTop: S.subtextMb }}>
           <p
             className="text-[12px] font-medium"
             style={{
@@ -1597,7 +1643,7 @@ function HeroSection() {
 
       <div
         className="relative mx-auto"
-        style={{ maxWidth: 1200, paddingTop: mobile ? 72 : 140, paddingBottom: mobile ? 56 : 160, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}
+        style={{ maxWidth: 1200, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}
       >
         <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 80 }}>
           {/* Left — Copy + CTA */}
@@ -1608,7 +1654,7 @@ function HeroSection() {
               style={{
                 letterSpacing: "0.14em",
                 color: B.teal,
-                marginBottom: 20,
+                marginBottom: S.h2mb,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(8px)",
                 transition: "opacity 500ms ease-out, transform 500ms ease-out",
@@ -1622,9 +1668,9 @@ function HeroSection() {
               style={{
                 fontSize: mobile ? 32 : 52,
                 color: B.navy,
-                lineHeight: 1.12,
-                letterSpacing: "-0.03em",
-                marginBottom: 24,
+                lineHeight: S.lhHeading,
+                letterSpacing: S.lsHero,
+                marginBottom: S.h1mb,
                 maxWidth: 520,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(12px)",
@@ -1638,8 +1684,8 @@ function HeroSection() {
               className="text-[17px] md:text-[20px]"
               style={{
                 color: "rgba(14,26,43,0.65)",
-                lineHeight: 1.65,
-                marginBottom: 28,
+                lineHeight: S.lhBody,
+                marginBottom: S.ctaPadX,
                 maxWidth: 460,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
@@ -1653,9 +1699,9 @@ function HeroSection() {
               className="text-[15px] md:text-[16px]"
               style={{
                 color: "rgba(14,26,43,0.55)",
-                lineHeight: 1.65,
+                lineHeight: S.lhBody,
                 maxWidth: 460,
-                marginBottom: 28,
+                marginBottom: S.h1mb,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
@@ -1670,7 +1716,7 @@ function HeroSection() {
                 fontSize: 15,
                 letterSpacing: "0.01em",
                 color: "rgba(14,26,43,0.55)",
-                marginBottom: 32,
+                marginBottom: S.cardPad.desktop,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
@@ -1692,11 +1738,11 @@ function HeroSection() {
                 className="cta-tick inline-flex items-center justify-center font-semibold
                            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F6D7A]"
                 style={{
-                  height: 54,
+                  height: S.ctaH,
                   width: mobile ? "100%" : "auto",
-                  paddingLeft: 32,
-                  paddingRight: 32,
-                  borderRadius: 12,
+                  paddingLeft: S.cardPad.desktop,
+                  paddingRight: S.cardPad.desktop,
+                  borderRadius: S.ctaRadius,
                   background: B.purple,
                   color: "#ffffff",
                   fontSize: 15,
@@ -1831,7 +1877,7 @@ export default function LandingPage() {
       <HeroSection />
 
       {/* ============ PILLAR TRANSITION — The Problem → The Category ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
         <p
           style={{
             fontSize: mobile ? 18 : 22,
@@ -1851,7 +1897,7 @@ export default function LandingPage() {
       <HowItWorks />
 
       {/* ============ PILLAR TRANSITION — The Category → The Metric ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
         <p
           style={{
             fontSize: mobile ? 18 : 22,
@@ -1875,15 +1921,15 @@ export default function LandingPage() {
 
 
       {/* ============ INCOME STABILITY CLASSIFICATION — after factors for context ============ */}
-      <section aria-label="Income Stability Classification Scale" style={{ paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, position: "relative" }}>
+      <section aria-label="Income Stability Classification Scale" style={{ paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, position: "relative" }}>
 
-        <div className="max-w-[1100px] mx-auto" style={{ position: "relative", zIndex: 1, paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24 }}>
+        <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
           {/* Header */}
-          <div className="text-center" style={{ marginBottom: mobile ? 36 : 56 }}>
+          <div className="text-center" style={{ marginBottom: mobile ? S.subtextMb : S.subtextMb + 8 }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
               Official Scoring Framework · Model RP-1.0
             </div>
-            <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
+            <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
               Income Stability Classification Scale
             </h2>
             <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
@@ -1934,7 +1980,7 @@ export default function LandingPage() {
           </div>
 
           {/* Four tier cards */}
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)", gap: 16, maxWidth: 880, margin: "24px auto 0" }}>
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)", gap: S.gridGap, maxWidth: 880, margin: `${S.h1mb}px auto 0` }}>
             {[
               { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", active: false },
               { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", active: false },
@@ -2014,7 +2060,7 @@ if (!tier.active) {
           </div>
 
           {/* Model reference */}
-          <div className="text-center" style={{ marginTop: 48 }}>
+          <div className="text-center" style={{ marginTop: S.subtextMb }}>
             <p className="text-[12px] font-medium" style={{ color: B.muted }}>
               Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time the assessment is completed.
             </p>
@@ -2089,7 +2135,7 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
       </div>{/* ← end continuous canvas */}
 
       {/* ============ PILLAR TRANSITION — The Metric → The Outcome ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? "48px 24px" : "72px 40px", background: "#ffffff" }}>
+      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
         <p
           style={{
             fontSize: mobile ? 18 : 22,
@@ -2106,9 +2152,9 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
       </div>
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 80 : 140 }}>
-      <div className="max-w-[1100px] mx-auto text-center" style={{ paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24 }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: 16 }}>
+      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", textAlign: "center", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
           Stability Patterns by Industry
         </h2>
         <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 12, maxWidth: 640 }}>
