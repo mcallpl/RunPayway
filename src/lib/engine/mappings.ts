@@ -181,27 +181,26 @@ export interface StructuralIncomeMap {
 export function computeStructuralIncomeMap(
   inputs: DiagnosticInput
 ): StructuralIncomeMap {
-  // Active Income: inverse of continuity — how much depends on active work
-  const active_income_level = Math.max(
-    0,
-    100 - inputs.income_continuity_without_active_labor
-  );
+  // Persistent: income that continues without active labor
+  const rawPersistent = inputs.income_continuity_without_active_labor;
 
-  // Semi-Persistent: recurring income that still requires some maintenance
-  const semi_persistent_income_level = Math.floor(
+  // Semi-Persistent: recurring income that still requires some involvement
+  // Derived from recurring revenue and forward visibility, capped so total
+  // never exceeds 100%
+  const rawSemi = Math.floor(
     (inputs.recurring_income_proportion +
       inputs.forward_revenue_visibility) /
       2
   );
+  const cappedSemi = Math.min(rawSemi, 100 - rawPersistent);
 
-  // Persistent: income that continues without active labor
-  const persistent_income_level =
-    inputs.income_continuity_without_active_labor;
+  // Active: remainder — income that depends entirely on active work
+  const rawActive = 100 - cappedSemi - rawPersistent;
 
   return {
-    active_income_level,
-    semi_persistent_income_level,
-    persistent_income_level,
+    active_income_level: Math.max(0, rawActive),
+    semi_persistent_income_level: Math.max(0, cappedSemi),
+    persistent_income_level: Math.max(0, rawPersistent),
   };
 }
 
