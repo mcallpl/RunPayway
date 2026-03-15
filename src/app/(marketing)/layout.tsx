@@ -392,12 +392,12 @@ export default function MarketingLayout({
         <div
           className="mx-auto"
           style={{
-            maxWidth: 1100,
-            padding: mobile ? "40px 24px 32px" : "64px 40px 40px",
+            maxWidth: 1200,
+            padding: mobile ? "40px 24px 32px" : "64px 48px 40px",
           }}
         >
           {/* Brand */}
-          <div style={{ marginBottom: mobile ? 36 : 48 }}>
+          <div style={{ marginBottom: mobile ? 36 : 48, textAlign: "center" }}>
             <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
                 src={logoImg}
@@ -419,6 +419,7 @@ export default function MarketingLayout({
               display: "grid",
               gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)",
               gap: mobile ? "36px 32px" : "0 48px",
+              justifyItems: "center",
               marginBottom: mobile ? 40 : 52,
             }}
           >
@@ -576,7 +577,7 @@ export default function MarketingLayout({
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
           {/* Legal strip */}
-          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", lineHeight: 1.8 }}>
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
             &copy; 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-1.0
           </div>
         </div>
