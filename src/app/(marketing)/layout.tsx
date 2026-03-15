@@ -352,6 +352,37 @@ export default function MarketingLayout({
             </ul>
           </nav>
 
+          {/* CTA */}
+          <div style={{ marginBottom: 28 }}>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center justify-center font-semibold"
+              style={{
+                height: 44,
+                paddingLeft: 22,
+                paddingRight: 22,
+                borderRadius: 10,
+                background: "#4B3FAE",
+                color: "#ffffff",
+                fontSize: 14,
+                letterSpacing: "-0.01em",
+                border: "1px solid rgba(75,63,174,0.90)",
+                boxShadow: "0 4px 12px rgba(75,63,174,0.18)",
+                transition: "background 180ms ease, transform 180ms ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#3D33A0";
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#4B3FAE";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              Assess Your Income Structure
+            </Link>
+          </div>
+
           {/* Legal + Social */}
           <div
             style={{
