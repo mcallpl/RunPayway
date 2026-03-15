@@ -399,7 +399,7 @@ export default function MarketingLayout({
             <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
               {[
                 { href: "/contact", label: "Contact" },
-                { href: "#", label: "Privacy Policy" },
+                { href: "/privacy-policy", label: "Privacy Policy" },
                 { href: "#", label: "Terms of Use" },
               ].map((link) => (
                 <Link
