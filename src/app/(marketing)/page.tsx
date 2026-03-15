@@ -1895,17 +1895,18 @@ function HeroSection() {
             <h1
               className="font-semibold"
               style={{
-                fontSize: mobile ? 34 : 58,
+                fontSize: mobile ? 30 : 52,
                 color: B.navy,
-                lineHeight: 1.08,
+                lineHeight: 1.12,
                 letterSpacing: "-0.03em",
                 marginBottom: 24,
+                maxWidth: 520,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(12px)",
                 transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
               }}
             >
-              How Stable Is Your Income?
+              You&#8217;ve built your income. You&#8217;ve never measured&nbsp;it.
             </h1>
 
             <p
@@ -1913,14 +1914,14 @@ function HeroSection() {
               style={{
                 color: "rgba(14,26,43,0.65)",
                 lineHeight: 1.65,
-                marginBottom: 40,
+                marginBottom: 28,
                 maxWidth: 460,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              Get your <strong style={{ fontWeight: 600, color: B.navy }}>Income Stability Score&#8482;</strong> in minutes.
+              RunPayway™ scores the structural stability of your income &#8212; in under two&nbsp;minutes.
             </p>
 
             <p
@@ -1935,7 +1936,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
               }}
             >
-              Scores range from 0&#8211;100. Higher scores indicate stronger structural stability. Designed for independent professionals, founders, and income-driven careers.
+              Six structural factors. One score from 0&#8211;100. A complete diagnosis of how resilient your income really is.
             </p>
 
             <p
