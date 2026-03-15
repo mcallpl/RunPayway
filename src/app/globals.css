@@ -33,50 +33,33 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Score Tick CTA — tick fades, text shifts left, arrow grows right    */
+/* CTA — subtle bottom border sweep on hover                          */
 /* ------------------------------------------------------------------ */
 .cta-tick {
   position: relative;
   overflow: hidden;
-  padding-left: 28px !important;
-  padding-right: 20px !important;
 }
-
-/* Tick — vertical mark on the left, fades out on hover */
-.cta-tick .tick {
+.cta-tick::after {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 16px;
-  width: 14px;
+  bottom: 0;
+  left: 0;
+  width: 0;
   height: 2px;
-  border-radius: 1px;
-  transform: translateY(-50%) rotate(90deg);
-  transition: opacity 280ms ease;
-  opacity: 0.32;
+  border-radius: 0 1px 0 0;
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-.cta-tick:hover .tick {
-  opacity: 0;
+.cta-tick:hover::after {
+  width: 100%;
 }
+/* Sweep color variants — set via tick class (reused for compatibility) */
+.cta-tick:has(.tick-white)::after { background: rgba(255,255,255,0.5); }
+.cta-tick:has(.tick-navy)::after { background: rgba(14,26,43,0.25); }
+.cta-tick:has(.tick-purple)::after { background: rgba(75,63,174,0.4); }
 
-/* Tick color variants */
-.cta-tick .tick-white { background: #ffffff; color: #ffffff; }
-.cta-tick .tick-navy { background: #0E1A2B; color: #0E1A2B; }
-.cta-tick .tick-purple { background: #4B3FAE; color: #4B3FAE; }
-
-/* Label — slight shift left on hover */
-.cta-tick .cta-label {
-  position: relative;
-  z-index: 1;
-  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.cta-tick:hover .cta-label {
-  transform: translateX(-6px);
-}
-
-/* Arrow — hidden, kept for markup compatibility */
-.cta-tick .cta-arrow {
-  display: none;
-}
+/* Hide tick, label, and arrow markup — kept for compatibility */
+.cta-tick .tick { display: none; }
+.cta-tick .cta-arrow { display: none; }
 
 /* Elegant section divider */
 .section-divider-elegant {
