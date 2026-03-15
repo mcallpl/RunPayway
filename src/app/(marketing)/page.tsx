@@ -1941,10 +1941,10 @@ function HeroSection() {
 
             <p
               style={{
-                fontWeight: 400,
-                fontSize: 13,
-                letterSpacing: "0.02em",
-                color: "rgba(14,26,43,0.42)",
+                fontWeight: 500,
+                fontSize: 15,
+                letterSpacing: "0.01em",
+                color: "rgba(14,26,43,0.55)",
                 marginBottom: 32,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
