@@ -203,14 +203,14 @@ function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string
 // REPORT SPACING TOKENS — purposeful, enterprise-grade
 // ============================================================
 const R = {
-  pagepad:    { sm: 16, md: 24, lg: 36 },  /* page container padding */
-  headerMb:   28,   /* header → first content */
-  sectionGap: 24,   /* between major sections */
-  labelMb:    10,   /* label → content below */
-  paraMb:     12,   /* between paragraphs */
-  itemGap:    8,    /* between list/grid items */
-  dividerMy:  20,   /* divider vertical margin */
-  footerMt:   24,   /* above page footer */
+  pagePad:    32,    /* page container padding — used for PDF capture at 750px */
+  headerMb:   20,    /* header → first content */
+  sectionGap: 16,    /* between major sections */
+  labelMb:    8,     /* label → content below */
+  paraMb:     8,     /* between paragraphs */
+  itemGap:    6,     /* between list/grid items */
+  dividerMy:  14,    /* divider vertical margin */
+  footerMt:   16,    /* above page footer */
 };
 
 // ============================================================
@@ -220,8 +220,8 @@ const R = {
 function ReportHeader({ record }: { record: AssessmentRecord }) {
   return (
     <div style={{ marginBottom: R.headerMb }}>
-      <div className="h-[3px] rounded-t-lg overflow-hidden" style={{ background: B.gradient, margin: "-16px -16px 0" }} />
-      <div style={{ paddingTop: 16, paddingBottom: 12, borderBottom: `1px solid ${B.sandDk}` }}>
+      <div className="h-[3px] rounded-t-lg overflow-hidden" style={{ background: B.gradient, margin: `-${R.pagePad}px -${R.pagePad}px 0` }} />
+      <div style={{ paddingTop: 12, paddingBottom: 10, borderBottom: `1px solid ${B.sandDk}` }}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold tracking-wider" style={{ color: B.navy }}>RUNPAYWAY™</span>
@@ -248,7 +248,7 @@ function SectionDivider() {
 
 function ReportPage({ record, children }: { record: AssessmentRecord; children: React.ReactNode }) {
   return (
-    <div className="report-page bg-white border rounded-lg p-4 sm:p-6 md:p-9" style={{ borderColor: "#E5E7EB" }}>
+    <div className="report-page bg-white border rounded-lg" style={{ borderColor: "#E5E7EB", padding: R.pagePad }}>
       <ReportHeader record={record} />
       {children}
     </div>
@@ -403,7 +403,7 @@ export default function ReviewPage() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <div className="no-print">
         <h1 className="text-lg sm:text-xl font-semibold" style={{ color: B.navy }}>Income Stability Assessment</h1>
         <p className="text-sm mt-1" style={{ color: B.muted }}>Model RP-1.0 | Version 1.0</p>
@@ -419,7 +419,7 @@ export default function ReviewPage() {
         {/* Score presentation */}
         <div style={{ marginBottom: R.sectionGap }}>
           <Label>Income Stability Score™</Label>
-          <div className="text-[56px] font-bold leading-none" style={{ color: B.navy }}>
+          <div className="text-[48px] font-bold leading-none" style={{ color: B.navy }}>
             {record.final_score}
           </div>
           <div className="text-[15px] font-semibold" style={{ color: B.teal, marginTop: 6 }}>
