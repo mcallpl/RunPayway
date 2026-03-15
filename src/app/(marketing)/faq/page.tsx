@@ -78,13 +78,13 @@ interface FaqCategory {
 
 const FAQ_CATEGORIES: FaqCategory[] = [
   {
-    title: "About the Income Stability Score\u2122",
+    title: "About the Income Stability Score™",
     items: [
       {
-        q: "What does the Income Stability Score\u2122 measure?",
+        q: "What does the Income Stability Score™ measure?",
         a: (
           <>
-            <p>The Income Stability Score\u2122 measures the structural stability of an income system.</p>
+            <p>The Income Stability Score™ measures the structural stability of an income system.</p>
             <p>The score evaluates how income is generated, how diversified it is, how dependent it is on active labor, and how resilient the income structure is likely to be under disruption.</p>
             <p>Scores range from 0 to 100, with higher scores indicating stronger structural income stability.</p>
           </>
@@ -117,10 +117,10 @@ const FAQ_CATEGORIES: FaqCategory[] = [
               <div className="faq-table-row faq-table-header">
                 <span>Stability Band</span><span>Score Range</span>
               </div>
-              <div className="faq-table-row"><span>Limited</span><span>0\u201339</span></div>
-              <div className="faq-table-row"><span>Developing</span><span>40\u201359</span></div>
-              <div className="faq-table-row"><span>Established</span><span>60\u201379</span></div>
-              <div className="faq-table-row"><span>High</span><span>80\u2013100</span></div>
+              <div className="faq-table-row"><span>Limited</span><span>0–39</span></div>
+              <div className="faq-table-row"><span>Developing</span><span>40–59</span></div>
+              <div className="faq-table-row"><span>Established</span><span>60–79</span></div>
+              <div className="faq-table-row"><span>High</span><span>80–100</span></div>
             </div>
             <p>These bands provide context for interpreting the structural durability of the income system.</p>
           </>
@@ -131,7 +131,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         a: (
           <>
             <p>No.</p>
-            <p>The Income Stability Score\u2122 is a structural classification, not a prediction.</p>
+            <p>The Income Stability Score™ is a structural classification, not a prediction.</p>
             <p>It evaluates the characteristics of income generation at the time of the assessment based on the information provided by the user.</p>
           </>
         ),
@@ -180,7 +180,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
           <>
             <p>Each completed assessment produces a structured report that includes:</p>
             <ul>
-              <li>Income Stability Score\u2122 (0\u2013100)</li>
+              <li>Income Stability Score™ (0–100)</li>
               <li>stability classification band</li>
               <li>structural drivers supporting stability</li>
               <li>structural constraints affecting stability</li>
@@ -236,7 +236,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         q: "How is my data handled?",
         a: (
           <>
-            <p>Assessment responses are used solely to generate the Income Stability Score\u2122 and the associated diagnostic report.</p>
+            <p>Assessment responses are used solely to generate the Income Stability Score™ and the associated diagnostic report.</p>
             <p>The platform uses encrypted transmission and secure processing systems.</p>
             <p>Assessment records are stored for verification purposes but are not publicly accessible.</p>
           </>
