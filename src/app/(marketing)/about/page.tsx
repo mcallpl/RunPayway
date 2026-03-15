@@ -256,7 +256,7 @@ export default function AboutPage() {
               margin: "0 auto",
             }}
           >
-            The platform is designed to provide individuals and organizations with a consistent analytical method for understanding how stable an income structure is based on its underlying characteristics.
+            The platform is designed to provide professionals, founders, and organizations with a consistent analytical method for understanding how stable an income structure is based on its underlying characteristics.
           </p>
         </div>
       </section>
