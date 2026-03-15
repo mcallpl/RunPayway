@@ -478,7 +478,7 @@ export default function MarketingLayout({
                   { href: "/terms-of-use", label: "Terms of Use" },
                   { href: "/accessibility", label: "Accessibility" },
                   { href: "/acceptable-use-policy", label: "Acceptable Use Policy" },
-                  { href: "#", label: "Security Practices" },
+                  { href: "/security-practices", label: "Security Practices" },
                   { href: "#", label: "Model Version Policy" },
                 ].map((link) => (
                   <Link
