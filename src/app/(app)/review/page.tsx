@@ -200,14 +200,28 @@ function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string
 }
 
 // ============================================================
+// REPORT SPACING TOKENS — purposeful, enterprise-grade
+// ============================================================
+const R = {
+  pagepad:    { sm: 16, md: 24, lg: 36 },  /* page container padding */
+  headerMb:   28,   /* header → first content */
+  sectionGap: 24,   /* between major sections */
+  labelMb:    10,   /* label → content below */
+  paraMb:     12,   /* between paragraphs */
+  itemGap:    8,    /* between list/grid items */
+  dividerMy:  20,   /* divider vertical margin */
+  footerMt:   24,   /* above page footer */
+};
+
+// ============================================================
 // LAYOUT COMPONENTS
 // ============================================================
 
 function ReportHeader({ record }: { record: AssessmentRecord }) {
   return (
-    <div className="mb-6">
-      <div className="h-[3px] -mx-3 sm:-mx-5 md:-mx-8 -mt-3 sm:-mt-5 md:-mt-8 rounded-t-lg overflow-hidden" style={{ background: B.gradient }} />
-      <div className="pt-4 pb-3 border-b" style={{ borderColor: B.sandDk }}>
+    <div style={{ marginBottom: R.headerMb }}>
+      <div className="h-[3px] rounded-t-lg overflow-hidden" style={{ background: B.gradient, margin: "-16px -16px 0" }} />
+      <div style={{ paddingTop: 16, paddingBottom: 12, borderBottom: `1px solid ${B.sandDk}` }}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold tracking-wider" style={{ color: B.navy }}>RUNPAYWAY™</span>
@@ -224,17 +238,17 @@ function ReportHeader({ record }: { record: AssessmentRecord }) {
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[10px] font-semibold uppercase tracking-[0.12em] mb-2" style={{ color: B.muted }}>{children}</div>
+    <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: B.muted, marginBottom: R.labelMb }}>{children}</div>
   );
 }
 
 function SectionDivider() {
-  return <div className="my-5" style={{ height: 1, backgroundColor: B.navy, opacity: 0.08 }} />;
+  return <div style={{ height: 1, backgroundColor: B.navy, opacity: 0.08, marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function ReportPage({ record, children }: { record: AssessmentRecord; children: React.ReactNode }) {
   return (
-    <div className="report-page bg-white border rounded-lg p-3 sm:p-5 md:p-8" style={{ borderColor: "#E5E7EB" }}>
+    <div className="report-page bg-white border rounded-lg p-4 sm:p-6 md:p-9" style={{ borderColor: "#E5E7EB" }}>
       <ReportHeader record={record} />
       {children}
     </div>
@@ -389,7 +403,7 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       <div className="no-print">
         <h1 className="text-lg sm:text-xl font-semibold" style={{ color: B.navy }}>Income Stability Assessment</h1>
         <p className="text-sm mt-1" style={{ color: B.muted }}>Model RP-1.0 | Version 1.0</p>
@@ -398,22 +412,22 @@ export default function ReviewPage() {
       {/* ==================== PAGE 1 — Executive Assessment ==================== */}
       <ReportPage record={record}>
         {/* Executive summary */}
-        <p className="text-xs leading-relaxed mb-5" style={{ color: B.muted }}>
+        <p className="text-xs leading-relaxed" style={{ color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_1_key_insight_text}
         </p>
 
-        {/* Score presentation — institutional, no gradient panel */}
-        <div className="mb-5">
+        {/* Score presentation */}
+        <div style={{ marginBottom: R.sectionGap }}>
           <Label>Income Stability Score™</Label>
           <div className="text-[56px] font-bold leading-none" style={{ color: B.navy }}>
             {record.final_score}
           </div>
-          <div className="text-[15px] font-semibold mt-1" style={{ color: B.teal }}>
+          <div className="text-[15px] font-semibold" style={{ color: B.teal, marginTop: 6 }}>
             {record.stability_band}
           </div>
 
           {/* Metadata */}
-          <div className="flex flex-wrap gap-x-6 gap-y-1 mt-3 text-[10px]" style={{ color: B.light }}>
+          <div className="flex flex-wrap gap-x-6 gap-y-1 text-[10px]" style={{ color: B.light, marginTop: R.paraMb }}>
             <span>Assessment ID: {record.record_id.slice(0, 8)}…</span>
             <span>Generated: {record.assessment_date_utc}</span>
             <span>Model: RP-1.0</span>
@@ -421,8 +435,8 @@ export default function ReviewPage() {
         </div>
 
         {/* Spectrum bar */}
-        <div className="mb-5">
-          <div className="relative" style={{ marginBottom: 6 }}>
+        <div style={{ marginBottom: R.sectionGap }}>
+          <div className="relative" style={{ marginBottom: R.itemGap }}>
             <div className="rounded-full" style={{ height: 8, background: B.gradient }} />
             {[40, 60, 80].map((pos) => (
               <div key={pos} style={{ position: "absolute", left: `${pos}%`, top: 0, width: 1, height: 8, backgroundColor: "rgba(255,255,255,0.4)" }} />
@@ -445,11 +459,11 @@ export default function ReviewPage() {
 
         {/* Percentile */}
         {record.peer_stability_percentile_label && (
-          <div className="mb-4">
+          <div style={{ marginBottom: R.sectionGap }}>
             <p className="text-xs" style={{ color: B.muted }}>
               <span className="font-medium" style={{ color: B.navy }}>{record.peer_stability_percentile_label} percentile</span>{" "}within {record.industry_sector}
             </p>
-            <p className="text-[11px] mt-1 leading-relaxed" style={{ color: B.muted }}>
+            <p className="text-[11px] leading-relaxed" style={{ color: B.muted, marginTop: 6 }}>
               {percentileExplanation(record)}
             </p>
           </div>
@@ -459,7 +473,7 @@ export default function ReviewPage() {
 
         {/* Profile */}
         <Label>Profile</Label>
-        <dl className="space-y-1 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-1.5 sm:space-y-0 text-xs">
+        <dl className="sm:grid sm:grid-cols-2 sm:gap-x-6" style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
           {record.assessment_title && (
             <div className="sm:col-span-2">
               <dt className="inline" style={{ color: B.light }}>Assessment Title: </dt>
@@ -484,12 +498,12 @@ export default function ReviewPage() {
 
         {/* Key Structural Factors */}
         <Label>Key Structural Factors Affecting Your Score</Label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: R.sectionGap, marginTop: R.paraMb }}>
           <div>
-            <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.teal }}>
+            <div className="text-[10px] font-medium uppercase tracking-wider" style={{ color: B.teal, marginBottom: R.labelMb }}>
               Positive Factors
             </div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.positive.map((f) => (
                 <li key={f} className="flex items-center gap-2 text-[11px]" style={{ color: B.navy }}>
                   <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: B.teal }} />
@@ -502,10 +516,10 @@ export default function ReviewPage() {
             </ul>
           </div>
           <div>
-            <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.muted }}>
+            <div className="text-[10px] font-medium uppercase tracking-wider" style={{ color: B.muted, marginBottom: R.labelMb }}>
               Structural Risks
             </div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.risks.map((f) => (
                 <li key={f} className="flex items-center gap-2 text-[11px]" style={{ color: B.navy }}>
                   <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: B.light }} />
@@ -522,26 +536,26 @@ export default function ReviewPage() {
 
       {/* ==================== PAGE 2 — Structural Analysis ==================== */}
       <ReportPage record={record}>
-        <h2 className="text-sm font-semibold uppercase tracking-[0.1em] mb-1" style={{ color: B.navy }}>
+        <h2 className="text-sm font-semibold uppercase tracking-[0.1em]" style={{ color: B.navy, marginBottom: 4 }}>
           Structural Analysis
         </h2>
-        <p className="text-xs leading-relaxed mb-4" style={{ color: B.muted }}>
+        <p className="text-xs leading-relaxed" style={{ color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_2_key_insight_text}
         </p>
 
         {/* Income Structure Map */}
         <Label>Income Structure Map</Label>
-        <p className="text-[11px] mb-2" style={{ color: B.muted }}>
+        <p className="text-[11px]" style={{ color: B.muted, marginBottom: R.paraMb }}>
           {possessive} income comes from three types of sources.
         </p>
-        <div className="space-y-2.5 mb-1">
+        <div style={{ display: "flex", flexDirection: "column", gap: R.paraMb }}>
           {[
             { label: "Active Income", desc: "Earned by doing work", value: record.active_income_level, color: B.muted },
             { label: "Semi-Persistent", desc: "Repeats for a while, then stops", value: record.semi_persistent_income_level, color: B.teal },
             { label: "Persistent", desc: "Continues with little work", value: record.persistent_income_level, color: B.navy },
           ].map((bar) => (
             <div key={bar.label}>
-              <div className="flex justify-between text-[11px] mb-0.5">
+              <div className="flex justify-between text-[11px]" style={{ marginBottom: 4 }}>
                 <span style={{ color: B.muted }}>{bar.label}</span>
                 <span className="font-medium" style={{ color: B.navy }}>{bar.value}%</span>
               </div>
@@ -556,7 +570,7 @@ export default function ReviewPage() {
 
         {/* Structural Indicators */}
         <Label>Structural Indicators</Label>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: R.itemGap }}>
           {[
             ["Income That Continues", record.income_persistence_label],
             ["Number of Income Sources", record.income_source_diversity_label],
@@ -565,7 +579,7 @@ export default function ReviewPage() {
             ["Dependence on Personal Work", record.active_labor_dependence_label],
             ["Dependence on One Source", record.exposure_concentration_label],
           ].map(([l, v]) => (
-            <div key={l} className="flex justify-between rounded-md px-3 py-2" style={{ backgroundColor: B.sand }}>
+            <div key={l} className="flex justify-between rounded-md" style={{ backgroundColor: B.sand, padding: "10px 14px" }}>
               <span className="text-[10px]" style={{ color: B.muted }}>{l}</span>
               <span className="text-[10px] font-medium" style={{ color: B.navy }}>{v}</span>
             </div>
@@ -576,7 +590,7 @@ export default function ReviewPage() {
 
         {/* System Diagnosis */}
         <Label>System Diagnosis</Label>
-        <div className="text-xs leading-relaxed space-y-2" style={{ color: B.muted }}>
+        <div className="text-xs leading-relaxed" style={{ color: B.muted, display: "flex", flexDirection: "column", gap: R.paraMb }}>
           <p>
             {subject} operates mainly as a <strong style={{ color: B.navy }}>{record.labor_asset_position_label}</strong> income
             system in the <strong style={{ color: B.navy }}>{record.industry_sector}</strong> sector.
@@ -602,8 +616,8 @@ export default function ReviewPage() {
             ["Your Score", String(record.final_score)],
             ["Distance From Top Stability Tier", `${bench.distance} points`],
           ].map(([label, value], i) => (
-            <div key={label} className="flex justify-between items-center px-4 py-2 text-[11px]"
-              style={{ backgroundColor: i % 2 === 0 ? B.sand : "white" }}>
+            <div key={label} className="flex justify-between items-center text-[11px]"
+              style={{ backgroundColor: i % 2 === 0 ? B.sand : "white", padding: "10px 16px" }}>
               <span style={{ color: B.muted }}>{label}</span>
               <span className="font-semibold" style={{ color: i === 2 ? B.purple : B.navy }}>{value}</span>
             </div>
@@ -611,11 +625,11 @@ export default function ReviewPage() {
         </div>
 
         {/* Drivers */}
-        <div className="mt-4">
+        <div style={{ marginTop: R.sectionGap }}>
           <Label>Drivers Supporting Stability</Label>
-          <div className="flex flex-wrap gap-1.5 mt-1">
+          <div className="flex flex-wrap" style={{ gap: R.itemGap }}>
             {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
-              <span key={d} className="text-[10px] font-medium px-2 py-0.5 rounded-md" style={{ backgroundColor: B.sand, color: B.navy }}>{d}</span>
+              <span key={d} className="text-[10px] font-medium rounded-md" style={{ backgroundColor: B.sand, color: B.navy, padding: "4px 10px" }}>{d}</span>
             ))}
           </div>
         </div>
@@ -623,17 +637,17 @@ export default function ReviewPage() {
 
       {/* ==================== PAGE 3 — Improvement Path & Governance ==================== */}
       <ReportPage record={record}>
-        <h2 className="text-sm font-semibold uppercase tracking-[0.1em] mb-1" style={{ color: B.navy }}>
+        <h2 className="text-sm font-semibold uppercase tracking-[0.1em]" style={{ color: B.navy, marginBottom: 4 }}>
           Improvement Path &amp; Governance
         </h2>
-        <p className="text-xs leading-relaxed mb-4" style={{ color: B.muted }}>
+        <p className="text-xs leading-relaxed" style={{ color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_3_key_insight_text}
         </p>
 
         {/* Primary Constraint */}
         <Label>Primary Structural Constraint</Label>
-        <div className="text-xs font-medium mb-1" style={{ color: B.navy }}>{record.primary_constraint_label}</div>
-        <div className="text-[11px] leading-relaxed space-y-1 mb-1" style={{ color: B.muted }}>
+        <div className="text-xs font-medium" style={{ color: B.navy, marginBottom: R.itemGap }}>{record.primary_constraint_label}</div>
+        <div className="text-[11px] leading-relaxed" style={{ color: B.muted, display: "flex", flexDirection: "column", gap: R.itemGap }}>
           <p>{riskData.mechanism}</p>
           <p>{riskData.impact}</p>
         </div>
@@ -642,25 +656,26 @@ export default function ReviewPage() {
 
         {/* Improvement Opportunities */}
         <Label>Improvement Opportunities</Label>
-        <p className="text-[11px] leading-relaxed mb-2" style={{ color: B.muted }}>
+        <p className="text-[11px] leading-relaxed" style={{ color: B.muted, marginBottom: R.paraMb }}>
           {record.structural_improvement_path_text}
         </p>
 
         {/* Sector evolution */}
-        <div className="mt-3">
-          <div className="text-[10px] font-medium uppercase tracking-wider mb-2" style={{ color: B.muted }}>
+        <div style={{ marginTop: R.sectionGap }}>
+          <div className="text-[10px] font-medium uppercase tracking-wider" style={{ color: B.muted, marginBottom: R.labelMb }}>
             Sector Evolution Path
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center" style={{ gap: R.itemGap }}>
             {evolutionSteps.map((step, i) => {
               const idx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
               const active = i === idx;
               const past = i < idx;
               return (
-                <div key={i} className="flex items-center gap-2">
+                <div key={i} className="flex items-center" style={{ gap: R.itemGap }}>
                   <span
-                    className="text-[10px] font-medium px-2 py-0.5 rounded"
+                    className="text-[10px] font-medium rounded"
                     style={{
+                      padding: "4px 10px",
                       backgroundColor: active ? B.navy : past ? B.teal : B.sand,
                       color: active || past ? "#ffffff" : B.light,
                     }}
@@ -672,17 +687,17 @@ export default function ReviewPage() {
               );
             })}
           </div>
-          <div className="text-[10px] mt-2" style={{ color: B.muted }}>
+          <div className="text-[10px]" style={{ color: B.muted, marginTop: R.paraMb }}>
             Current Stage: <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
           </div>
         </div>
 
         {/* Sector mechanisms */}
-        <div className="mt-3">
-          <div className="text-[10px] font-medium uppercase tracking-wider mb-1" style={{ color: B.muted }}>
+        <div style={{ marginTop: R.sectionGap }}>
+          <div className="text-[10px] font-medium uppercase tracking-wider" style={{ color: B.muted, marginBottom: R.labelMb }}>
             Sector Stability Mechanisms
           </div>
-          <ul className="text-[11px] list-disc list-inside" style={{ color: B.muted }}>
+          <ul className="text-[11px] list-disc list-inside" style={{ color: B.muted, display: "flex", flexDirection: "column", gap: 4 }}>
             {sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
           </ul>
         </div>
@@ -711,7 +726,7 @@ export default function ReviewPage() {
 
         {/* Official Record */}
         <Label>Official Classification Record</Label>
-        <dl className="space-y-0.5 text-[11px] mt-2">
+        <dl className="text-[11px]" style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginTop: R.paraMb }}>
           {[
             ["Record ID", record.record_id],
             ["Model", record.model_version],
@@ -721,19 +736,19 @@ export default function ReviewPage() {
             ["Registry", record.registry_visibility === "public" ? "Publicly Listed" : "Private Record"],
           ].map(([l, v]) => (
             <div key={l} className="flex flex-col sm:flex-row">
-              <dt className="sm:w-24 shrink-0" style={{ color: B.light }}>{l}</dt>
+              <dt className="sm:w-28 shrink-0" style={{ color: B.light }}>{l}</dt>
               <dd className="font-mono text-[10px] break-all" style={{ color: B.navy }}>{v}</dd>
             </div>
           ))}
         </dl>
 
         {/* Verification */}
-        <p className="text-[10px] mt-3 leading-relaxed" style={{ color: B.muted }}>
+        <p className="text-[10px] leading-relaxed" style={{ color: B.muted, marginTop: R.sectionGap }}>
           Verify this report at <span className="font-medium" style={{ color: B.navy }}>RunPayway.com/verify</span> using the Record ID and Authorization Code.
         </p>
 
         {/* Model reference */}
-        <div className="text-center mt-5 pt-3 border-t" style={{ borderColor: B.sandDk }}>
+        <div className="text-center" style={{ marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
           <div className="text-[10px]" style={{ color: B.light }}>RunPayway Structural Stability Model RP-1.0</div>
         </div>
       </ReportPage>
