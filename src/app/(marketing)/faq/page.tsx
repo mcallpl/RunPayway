@@ -278,6 +278,59 @@ const FAQ_CATEGORIES: FaqCategory[] = [
       },
     ],
   },
+  {
+    title: "Enterprise",
+    items: [
+      {
+        q: "Can RunPayway assess multiple income systems within an organization?",
+        a: (
+          <>
+            <p>Yes. RunPayway™ for Organizations is designed to assess multiple income systems — including contractors, team members, portfolio companies, or business units — under a single enterprise account.</p>
+            <p>Each assessment runs independently under Model RP-1.0, producing a separate score and report for every income system evaluated.</p>
+            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> to get early access.</p>
+          </>
+        ),
+      },
+      {
+        q: "Does RunPayway offer volume licensing or team assessments?",
+        a: (
+          <>
+            <p>Volume licensing and team assessment packages are available through RunPayway™ for Organizations.</p>
+            <p>Enterprise plans include dedicated account management, consolidated billing, and the ability to run assessments across teams or client portfolios at scale.</p>
+            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> for pricing and availability.</p>
+          </>
+        ),
+      },
+      {
+        q: "Can assessment records be shared with third parties?",
+        a: (
+          <>
+            <p>Yes. Every assessment includes a Record ID and Authorization Code that can be shared with any third party — such as a lender, investor, partner, or compliance officer.</p>
+            <p>Third parties can independently verify the score, classification, and model version at <strong>RunPayway.com/verify</strong> without requiring access to the original report.</p>
+          </>
+        ),
+      },
+      {
+        q: "Is RunPayway SOC 2 compliant?",
+        a: (
+          <>
+            <p>RunPayway™ is pursuing SOC 2 Type I certification. The platform is architected with security controls aligned to SOC 2 requirements, including encrypted data transmission, secure processing, and immutable assessment records.</p>
+            <p>Enterprise customers requiring compliance documentation can <a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact us</a> directly.</p>
+          </>
+        ),
+      },
+      {
+        q: "Can we integrate RunPayway into our existing workflow?",
+        a: (
+          <>
+            <p>RunPayway™ offers an API for programmatic access to the scoring engine. Organizations can integrate income stability assessments directly into onboarding flows, underwriting systems, or portfolio management platforms.</p>
+            <p>The API uses the same deterministic Model RP-1.0 engine — identical inputs produce identical results whether submitted through the platform or the API.</p>
+            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> for API documentation and access.</p>
+          </>
+        ),
+      },
+    ],
+  },
 ];
 
 /* ------------------------------------------------------------------ */
