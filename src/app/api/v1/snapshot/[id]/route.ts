@@ -3,11 +3,21 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createStorageBackend } from "@/lib/engine";
+import { validateApiKey } from "@/lib/api-auth";
+import { auditLog, getClientIp } from "@/lib/audit-log";
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // API key authentication
+  if (!validateApiKey(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const { id } = await params;
 
@@ -32,6 +42,14 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    // Audit log: record accessed
+    auditLog({
+      action: "record_accessed",
+      record_id: id,
+      ip: getClientIp(request),
+      timestamp: new Date().toISOString(),
+    });
 
     // Return public fields only
     return NextResponse.json({

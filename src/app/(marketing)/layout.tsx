@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoImg from "../../../public/runpayway-logo.png";
+import CookieConsent from "@/components/CookieConsent";
 
 /* Runtime mobile detection — bypasses CSS entirely */
 function useMobile(breakpoint = 768) {
@@ -582,6 +583,9 @@ export default function MarketingLayout({
           </div>
         </div>
       </footer>
+
+      {/* Cookie Consent Banner — GDPR compliance */}
+      <CookieConsent />
     </div>
   );
 }

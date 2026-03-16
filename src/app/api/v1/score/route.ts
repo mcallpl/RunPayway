@@ -3,8 +3,18 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { executeIncomeStabilityEngine } from "@/lib/engine";
+import { validateApiKey } from "@/lib/api-auth";
+import { auditLog, getClientIp } from "@/lib/audit-log";
 
 export async function POST(request: NextRequest) {
+  // API key authentication
+  if (!validateApiKey(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
 
@@ -14,6 +24,18 @@ export async function POST(request: NextRequest) {
     };
 
     const record = await executeIncomeStabilityEngine(submission);
+
+    // Audit log: record created
+    auditLog({
+      action: "record_created",
+      record_id: record.record_id,
+      ip: getClientIp(request),
+      timestamp: new Date().toISOString(),
+      metadata: {
+        model_version: record.model_version,
+        stability_band: record.stability_band,
+      },
+    });
 
     // Return public fields only (excludes internal hashes, engine snapshot, etc.)
     return NextResponse.json({

@@ -78,6 +78,7 @@ export default function PrivacyRequestPage() {
   const [recordId, setRecordId] = useState("");
   const [message, setMessage] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -329,27 +330,82 @@ export default function PrivacyRequestPage() {
             </div>
 
             {/* Submit */}
-            <button
-              onMouseEnter={() => canHover() && setBtnHovered(true)}
-              onMouseLeave={() => setBtnHovered(false)}
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: btnHovered ? "#3D33A0" : B.purple,
-                color: "#FFFFFF",
-                fontSize: 15,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-                transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
-              }}
-            >
-              Submit Privacy Request
-            </button>
+            {submitted ? (
+              <div
+                style={{
+                  padding: "24px 20px",
+                  borderRadius: 12,
+                  background: "rgba(75,63,174,0.06)",
+                  border: "1px solid rgba(75,63,174,0.12)",
+                  textAlign: "center",
+                }}
+              >
+                <div style={{ fontSize: 20, marginBottom: 8 }}>&#10003;</div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 6 }}>
+                  Privacy Request Initiated
+                </div>
+                <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, margin: 0 }}>
+                  Your email client should have opened with the pre-filled request.
+                  If it did not, please send your request directly to{" "}
+                  <a href="mailto:privacy@runpayway.com" style={{ color: B.purple, textDecoration: "none", fontWeight: 600 }}>
+                    privacy@runpayway.com
+                  </a>.
+                </p>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  const requestTypeLabels: Record<string, string> = {
+                    access: "Request Access to Personal Information",
+                    correction: "Request Correction of Personal Information",
+                    deletion: "Request Deletion of Personal Information",
+                    limitation: "Request Limitation of Processing",
+                    inquiry: "General Privacy Inquiry",
+                  };
+
+                  const subject = encodeURIComponent(
+                    `Privacy Request: ${requestTypeLabels[requestType] || requestType || "General Inquiry"}`
+                  );
+
+                  const bodyParts = [
+                    `Full Name: ${name}`,
+                    `Email: ${email}`,
+                    `Request Type: ${requestTypeLabels[requestType] || requestType || "Not specified"}`,
+                    recordId ? `Record ID: ${recordId}` : "",
+                    "",
+                    "Details:",
+                    message || "(No additional details provided)",
+                    "",
+                    "---",
+                    "Submitted via RunPayway Privacy Request Form",
+                  ].filter(Boolean);
+
+                  const bodyEncoded = encodeURIComponent(bodyParts.join("\n"));
+
+                  window.location.href = `mailto:privacy@runpayway.com?subject=${subject}&body=${bodyEncoded}`;
+                  setSubmitted(true);
+                }}
+                onMouseEnter={() => canHover() && setBtnHovered(true)}
+                onMouseLeave={() => setBtnHovered(false)}
+                style={{
+                  width: "100%",
+                  height: 52,
+                  borderRadius: 12,
+                  background: btnHovered ? "#3D33A0" : B.purple,
+                  color: "#FFFFFF",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  letterSpacing: "-0.01em",
+                  border: "none",
+                  cursor: "pointer",
+                  boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                  transition: "background 180ms ease, transform 180ms ease",
+                  transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
+                }}
+              >
+                Submit Privacy Request
+              </button>
+            )}
 
             {/* Security */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />

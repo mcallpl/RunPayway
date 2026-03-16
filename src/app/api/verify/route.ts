@@ -3,8 +3,18 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createStorageBackend } from "@/lib/engine";
+import { validateApiKey } from "@/lib/api-auth";
+import { auditLog, getClientIp } from "@/lib/audit-log";
 
 export async function POST(request: NextRequest) {
+  // API key authentication
+  if (!validateApiKey(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { record_id, authorization_code } = body;
@@ -36,6 +46,17 @@ export async function POST(request: NextRequest) {
 
     const storage = createStorageBackend();
     const record = await storage.verifyRecord(record_id, authorization_code);
+
+    // Audit log: verification attempt
+    auditLog({
+      action: "record_verified",
+      record_id,
+      ip: getClientIp(request),
+      timestamp: new Date().toISOString(),
+      metadata: {
+        valid: !!record,
+      },
+    });
 
     if (!record) {
       return NextResponse.json({ valid_record: false });
