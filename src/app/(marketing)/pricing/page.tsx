@@ -163,7 +163,7 @@ function PricingCard({
         Secure checkout via Stripe
       </div>
 
-      <Link
+      <a
         href={ctaHref}
         className="cta-tick inline-flex items-center justify-center font-semibold"
         style={{
@@ -175,6 +175,7 @@ function PricingCard({
           fontSize: 15,
           letterSpacing: "-0.01em",
           border: "none",
+          textDecoration: "none",
           boxShadow: recommended
             ? "0 6px 16px rgba(75,63,174,0.25)"
             : "0 4px 12px rgba(14,26,43,0.15)",
@@ -193,7 +194,7 @@ function PricingCard({
         <span className="tick tick-white" />
         <span className="cta-label">{ctaLabel}</span>
         <span className="cta-arrow cta-arrow-white" />
-      </Link>
+      </a>
     </div>
   );
 }
@@ -647,7 +648,7 @@ export default function PricingPage() {
 
           {/* Two CTA buttons */}
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
-            <Link
+            <a
               href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
               className="inline-flex items-center justify-center font-semibold"
               style={{
@@ -660,6 +661,7 @@ export default function PricingPage() {
                 fontSize: 15,
                 letterSpacing: "-0.01em",
                 border: "1px solid rgba(255,255,255,0.18)",
+                textDecoration: "none",
                 transition: "background 180ms ease, transform 180ms ease",
                 width: mobile ? "100%" : "auto",
               }}
@@ -673,8 +675,8 @@ export default function PricingPage() {
               }}
             >
               Single Assessment — $39
-            </Link>
-            <Link
+            </a>
+            <a
               href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
               className="inline-flex items-center justify-center font-semibold"
               style={{
@@ -687,6 +689,7 @@ export default function PricingPage() {
                 fontSize: 15,
                 letterSpacing: "-0.01em",
                 border: "none",
+                textDecoration: "none",
                 boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
                 transition: "transform 180ms ease, box-shadow 180ms ease",
                 width: mobile ? "100%" : "auto",
@@ -701,7 +704,7 @@ export default function PricingPage() {
               }}
             >
               Annual Monitoring — $99
-            </Link>
+            </a>
           </div>
 
           {/* Methodology statement */}
