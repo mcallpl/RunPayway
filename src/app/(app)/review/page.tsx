@@ -407,6 +407,23 @@ export default function ReviewPage() {
     const parsed: AssessmentRecord = JSON.parse(stored);
     setRecord(parsed);
 
+    // Persist record for Verify a Score lookup
+    try {
+      const records = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<Record<string, unknown>>;
+      if (!records.some((r) => r.record_id === parsed.record_id)) {
+        records.push({
+          record_id: parsed.record_id,
+          authorization_code: parsed.authorization_code,
+          model_version: parsed.model_version,
+          final_score: parsed.final_score,
+          stability_band: parsed.stability_band,
+          assessment_date_utc: parsed.assessment_date_utc,
+          issued_timestamp_utc: parsed.issued_timestamp_utc,
+        });
+        localStorage.setItem("rp_records", JSON.stringify(records));
+      }
+    } catch { /* ignore */ }
+
     // Track monitoring assessment usage (once per load)
     if (!monitoringTracked.current) {
       monitoringTracked.current = true;
