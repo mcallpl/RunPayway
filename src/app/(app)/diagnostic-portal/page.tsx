@@ -139,6 +139,7 @@ const selectStyle: React.CSSProperties = {
 
 export default function InitializationPage() {
   const router = useRouter();
+  const [authorized, setAuthorized] = useState(false);
   const [form, setForm] = useState({
     assessment_title: "",
     classification: "",
@@ -151,7 +152,28 @@ export default function InitializationPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    // Payment gate — only paid customers can access the diagnostic
+    const session = sessionStorage.getItem("rp_purchase_session");
+    if (session) {
+      try {
+        const parsed = JSON.parse(session);
+        if (parsed.status === "paid") {
+          setAuthorized(true);
+          return;
+        }
+      } catch { /* invalid session */ }
+    }
+    // No valid purchase session — redirect to pricing
+    router.push("/pricing");
+  }, [router]);
+
+  if (!authorized) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+        <p style={{ fontSize: 14, color: B.light }}>Redirecting to pricing...</p>
+      </div>
+    );
+  }
 
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));

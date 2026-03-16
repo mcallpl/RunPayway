@@ -182,6 +182,22 @@ export default function DiagnosticPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Payment gate
+    const session = sessionStorage.getItem("rp_purchase_session");
+    if (!session) {
+      router.push("/pricing");
+      return;
+    }
+    try {
+      const parsed = JSON.parse(session);
+      if (parsed.status !== "paid") {
+        router.push("/pricing");
+        return;
+      }
+    } catch {
+      router.push("/pricing");
+      return;
+    }
     const profile = sessionStorage.getItem("rp_profile");
     if (!profile) {
       router.push("/diagnostic-portal");
