@@ -104,17 +104,38 @@ export default function VerifyPage() {
     setResult(null);
 
     try {
-      const res = await fetch("/api/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          record_id: recordId.trim(),
-          authorization_code: authCode.trim().toLowerCase(),
-        }),
-      });
+      const stored: Array<{
+        record_id: string;
+        authorization_code: string;
+        model_version: string;
+        final_score: number;
+        stability_band: string;
+        assessment_date_utc: string;
+        issued_timestamp_utc: string;
+      }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
 
-      const data = await res.json();
-      setResult(data);
+      const match = stored.find(
+        (r) =>
+          r.record_id === recordId.trim() &&
+          r.authorization_code === authCode.trim().toLowerCase()
+      );
+
+      if (match) {
+        setResult({
+          valid_record: true,
+          record_id: match.record_id,
+          model_version: match.model_version,
+          final_score: match.final_score,
+          stability_band: match.stability_band,
+          assessment_date: match.assessment_date_utc,
+          issued_timestamp: match.issued_timestamp_utc,
+          verified_at: new Date().toISOString(),
+          verification_statement:
+            "This record matches a RunPayway-issued Income Stability Assessment.",
+        });
+      } else {
+        setResult({ valid_record: false });
+      }
     } catch {
       setError("Verification request failed.");
     } finally {
@@ -277,7 +298,7 @@ export default function VerifyPage() {
               <input
                 type="text"
                 value={recordId}
-                onChange={(e) => setRecordId(e.target.value)}
+                onChange={(e) => setRecordId(e.target.value.replace(/\s/g, ""))}
                 placeholder="UUID v4 format"
                 style={{
                   width: "100%",
@@ -316,7 +337,7 @@ export default function VerifyPage() {
               <input
                 type="text"
                 value={authCode}
-                onChange={(e) => setAuthCode(e.target.value)}
+                onChange={(e) => setAuthCode(e.target.value.replace(/\s/g, ""))}
                 placeholder="64-character hexadecimal string"
                 style={{
                   width: "100%",

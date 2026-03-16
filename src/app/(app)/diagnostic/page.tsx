@@ -276,6 +276,20 @@ export default function DiagnosticPage() {
     try {
       const record = await executeClientEngine({ profile, inputs });
       sessionStorage.setItem("rp_record", JSON.stringify(record));
+
+      // Persist record for Verify a Score lookup
+      const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
+      stored.push({
+        record_id: record.record_id,
+        authorization_code: record.authorization_code,
+        model_version: record.model_version,
+        final_score: record.final_score,
+        stability_band: record.stability_band,
+        assessment_date_utc: record.assessment_date_utc,
+        issued_timestamp_utc: record.issued_timestamp_utc,
+      });
+      localStorage.setItem("rp_records", JSON.stringify(stored));
+
       localStorage.removeItem(STORAGE_KEY);
       setShowLoading(true);
       setTimeout(() => {
