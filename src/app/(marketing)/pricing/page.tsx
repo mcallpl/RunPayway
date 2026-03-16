@@ -339,7 +339,7 @@ export default function PricingPage() {
               price="$39"
               description="One structural measurement of your income system. Receive your Income Stability Score™ and full diagnostic report instantly."
               ctaLabel="Get Assessment"
-              ctaHref="/checkout-placeholder?plan=single"
+              ctaHref="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={0}
@@ -351,7 +351,7 @@ export default function PricingPage() {
               perUnit="$33 per assessment"
               description="Three assessments you can take at any time within one year. Track how your income structure evolves over time."
               ctaLabel="Start Monitoring"
-              ctaHref="/checkout-placeholder?plan=monitoring"
+              ctaHref="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={140}
@@ -648,7 +648,7 @@ export default function PricingPage() {
           {/* Two CTA buttons */}
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
             <Link
-              href="/checkout-placeholder?plan=single"
+              href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
@@ -675,7 +675,7 @@ export default function PricingPage() {
               Single Assessment — $39
             </Link>
             <Link
-              href="/checkout-placeholder?plan=monitoring"
+              href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,

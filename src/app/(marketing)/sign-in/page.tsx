@@ -443,7 +443,7 @@ export default function SignInPage() {
             </div>
 
             <Link
-              href="/checkout-placeholder?plan=monitoring"
+              href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
               className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
@@ -580,7 +580,7 @@ export default function SignInPage() {
               To generate a new assessment, simply purchase another diagnostic.
             </p>
             <Link
-              href="/checkout-placeholder?plan=single"
+              href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
               className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 height: 44,
