@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 const STORAGE_KEY = "rp_cookie_consent";
 
@@ -97,7 +98,7 @@ export default function CookieConsent() {
           Accept
         </button>
 
-        <a
+        <Link
           href="/privacy-policy"
           style={{
             height: 40,
@@ -126,7 +127,7 @@ export default function CookieConsent() {
           }}
         >
           Learn More
-        </a>
+        </Link>
       </div>
     </div>
   );
