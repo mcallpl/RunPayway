@@ -165,6 +165,8 @@ function PricingCard({
 
       <a
         href={ctaHref}
+        target="_top"
+        rel="noopener noreferrer"
         className="cta-tick inline-flex items-center justify-center font-semibold"
         style={{
           width: "100%",
@@ -650,6 +652,8 @@ export default function PricingPage() {
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
             <a
               href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
+              target="_top"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
@@ -678,6 +682,8 @@ export default function PricingPage() {
             </a>
             <a
               href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
+              target="_top"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,

@@ -442,8 +442,10 @@ export default function SignInPage() {
               Secure checkout via Stripe
             </div>
 
-            <Link
+            <a
               href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
+              target="_top"
+              rel="noopener noreferrer"
               className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
@@ -454,6 +456,7 @@ export default function SignInPage() {
                 fontSize: 15,
                 letterSpacing: "-0.01em",
                 border: "none",
+                textDecoration: "none",
                 boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
                 transition: "background 180ms ease, transform 180ms ease",
               }}
@@ -470,7 +473,7 @@ export default function SignInPage() {
               <span className="tick tick-white" />
               <span className="cta-label">Start Monitoring</span>
               <span className="cta-arrow cta-arrow-white" />
-            </Link>
+            </a>
           </div>
 
           {/* Timeline */}
@@ -579,8 +582,10 @@ export default function SignInPage() {
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
               To generate a new assessment, simply purchase another diagnostic.
             </p>
-            <Link
+            <a
               href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
+              target="_top"
+              rel="noopener noreferrer"
               className="cta-tick inline-flex items-center justify-center font-semibold"
               style={{
                 height: 44,
@@ -592,6 +597,7 @@ export default function SignInPage() {
                 fontSize: 14,
                 letterSpacing: "-0.01em",
                 border: "none",
+                textDecoration: "none",
                 boxShadow: "0 4px 12px rgba(14,26,43,0.15)",
                 transition: "background 180ms ease, transform 180ms ease",
               }}
@@ -608,7 +614,7 @@ export default function SignInPage() {
               <span className="tick tick-white" />
               <span className="cta-label">Get Assessment</span>
               <span className="cta-arrow cta-arrow-white" />
-            </Link>
+            </a>
           </div>
 
           {/* Portal Access Notice */}
