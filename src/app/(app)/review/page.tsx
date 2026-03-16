@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useAssessment } from "@/lib/monitoring";
 
 interface AssessmentRecord {
   record_id: string;
@@ -397,12 +398,28 @@ export default function ReviewPage() {
   const router = useRouter();
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const monitoringTracked = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const stored = sessionStorage.getItem("rp_record");
     if (!stored) { router.push("/diagnostic-portal"); return; }
-    setRecord(JSON.parse(stored));
+    const parsed: AssessmentRecord = JSON.parse(stored);
+    setRecord(parsed);
+
+    // Track monitoring assessment usage (once per load)
+    if (!monitoringTracked.current) {
+      monitoringTracked.current = true;
+      try {
+        const purchaseSession = sessionStorage.getItem("rp_purchase_session");
+        if (purchaseSession) {
+          const ps = JSON.parse(purchaseSession);
+          if (ps.plan_key === "annual_monitoring" && ps.monitoring_access_code) {
+            useAssessment(ps.monitoring_access_code, parsed.record_id);
+          }
+        }
+      } catch { /* ignore */ }
+    }
   }, [router]);
 
   if (!record) return null;

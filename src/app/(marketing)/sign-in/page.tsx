@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { getSessionByCode, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -67,18 +69,60 @@ const B = {
 /* ------------------------------------------------------------------ */
 
 export default function SignInPage() {
+  const router = useRouter();
   const mobile = useMobile();
   const heroAnim = useInView();
   const formAnim = useInView();
-  const monitorAnim = useInView();
-  const timelineAnim = useInView();
   const singleAnim = useInView();
   const noticeAnim = useInView();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
+  const [error, setError] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
-  const [forgotHovered, setForgotHovered] = useState(false);
+  const [nextBtnHovered, setNextBtnHovered] = useState(false);
+  const [session, setSession] = useState<MonitoringSession | null>(null);
+
+  const handleLookup = () => {
+    const code = accessCode.trim().toUpperCase();
+    if (!code) {
+      setError("Please enter your access code.");
+      return;
+    }
+    const found = getSessionByCode(code);
+    if (!found) {
+      setError("Access code not found. Please check your code and try again.");
+      return;
+    }
+    if (isExpired(found)) {
+      setError("This monitoring plan has expired. Please purchase a new plan to continue.");
+      return;
+    }
+    setError("");
+    setSession(found);
+  };
+
+  const remaining = session ? getRemaining(session.access_code) : 0;
+  const allUsed = session ? remaining <= 0 : false;
+  const expiresDate = session
+    ? new Date(session.expires_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    : "";
+
+  const handleTakeAssessment = () => {
+    if (!session || allUsed) return;
+    sessionStorage.setItem(
+      "rp_purchase_session",
+      JSON.stringify({
+        plan_key: "annual_monitoring",
+        price_cents: 9900,
+        currency: "USD",
+        intended_assessment_count: 3,
+        status: "paid",
+        checkout_provider: "stripe",
+        monitoring_access_code: session.access_code,
+      }),
+    );
+    router.push("/diagnostic-portal");
+  };
 
   return (
     <div style={{ background: "#FFFFFF" }}>
@@ -171,7 +215,7 @@ export default function SignInPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Sign-in form                                                */}
+      {/*  Access code form / Dashboard                                */}
       {/* ============================================================ */}
       <section
         style={{
@@ -201,339 +245,288 @@ export default function SignInPage() {
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
             }}
           >
-            <h2
-              style={{
-                fontSize: mobile ? 22 : 26,
-                fontWeight: 700,
-                color: B.navy,
-                letterSpacing: "-0.02em",
-                marginBottom: 12,
-              }}
-            >
-              Sign In
-            </h2>
-
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
-              This portal is available to Annual Monitoring subscribers.
-            </p>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-              Sign in to access your monitoring timeline and historical Income Stability Assessments.
-            </p>
-
-            {/* Email */}
-            <div style={{ marginBottom: 20 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: B.navy,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                style={{
-                  width: "100%",
-                  height: 48,
-                  padding: "0 16px",
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
-                  fontSize: 14,
-                  color: B.navy,
-                  outline: "none",
-                  transition: "border-color 180ms ease",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
-              />
-            </div>
-
-            {/* Password */}
-            <div style={{ marginBottom: 28 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: B.navy,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                style={{
-                  width: "100%",
-                  height: 48,
-                  padding: "0 16px",
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
-                  fontSize: 14,
-                  color: B.navy,
-                  outline: "none",
-                  transition: "border-color 180ms ease",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
-              />
-            </div>
-
-            {/* Sign In button */}
-            <button
-              onMouseEnter={() => canHover() && setBtnHovered(true)}
-              onMouseLeave={() => setBtnHovered(false)}
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: btnHovered ? "#3D33A0" : B.purple,
-                color: "#FFFFFF",
-                fontSize: 15,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-                transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
-              }}
-            >
-              Sign In
-            </button>
-
-            {/* Forgot password */}
-            <div style={{ textAlign: "center", marginTop: 16 }}>
-              <button
-                onMouseEnter={() => canHover() && setForgotHovered(true)}
-                onMouseLeave={() => setForgotHovered(false)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: forgotHovered ? B.purple : B.muted,
-                  cursor: "pointer",
-                  transition: "color 180ms ease",
-                  padding: 0,
-                }}
-              >
-                Forgot Password
-              </button>
-            </div>
-
-            {/* Don't have an account */}
-            <div style={{ textAlign: "center", marginTop: 20 }}>
-              <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have an account? </span>
-              <Link
-                href="/pricing"
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: B.purple,
-                  textDecoration: "none",
-                  borderBottom: "1px solid rgba(75,63,174,0.30)",
-                  transition: "border-color 180ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
-              >
-                Get Annual Monitoring
-              </Link>
-            </div>
-
-            {/* Security line */}
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: B.light }}>Secure authentication</span>
-              <span style={{ fontSize: 12, color: B.light }}>Encrypted session management</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  Annual Monitoring upsell                                    */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: "#FFFFFF",
-        }}
-      >
-        <div
-          ref={monitorAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 860,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            display: "flex",
-            flexDirection: mobile ? "column" : "row",
-            gap: mobile ? 32 : 40,
-            alignItems: "start",
-            opacity: monitorAnim.visible ? 1 : 0,
-            transform: monitorAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          {/* Annual monitoring card */}
-          <div
-            style={{
-              flex: 1,
-              background: "#FFFFFF",
-              borderRadius: 20,
-              border: "1px solid rgba(75,63,174,0.20)",
-              padding: mobile ? "32px 24px" : "36px 36px",
-              boxShadow: "0 8px 24px rgba(75,63,174,0.08)",
-              position: "relative",
-            }}
-          >
-            {/* Recommended badge */}
-            <div
-              style={{
-                position: "absolute",
-                top: -14,
-                left: mobile ? 24 : 36,
-                padding: "5px 18px",
-                borderRadius: 100,
-                background: B.purple,
-                color: "#FFFFFF",
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Annual Monitoring
-            </div>
-
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 700, color: B.navy, lineHeight: 1, letterSpacing: "-0.03em" }}>$99</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: B.purple, marginBottom: 16 }}>
-              $33 per assessment
-            </div>
-
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 20 }}>
-              Three assessments that can be taken at any time within one year, measuring how the structural stability of your income evolves over time.
-            </p>
-
-            <div style={{ fontSize: 12, color: B.light, marginBottom: 20 }}>
-              Secure checkout via Stripe
-            </div>
-
-            <a
-              href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
-              target="_top"
-              rel="noopener noreferrer"
-              className="cta-tick inline-flex items-center justify-center font-semibold"
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: B.purple,
-                color: "#FFFFFF",
-                fontSize: 15,
-                letterSpacing: "-0.01em",
-                border: "none",
-                textDecoration: "none",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.background = "#3D33A0";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = B.purple;
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              <span className="tick tick-white" />
-              <span className="cta-label">Start Monitoring</span>
-              <span className="cta-arrow cta-arrow-white" />
-            </a>
-          </div>
-
-          {/* Timeline */}
-          <div
-            ref={timelineAnim.ref}
-            style={{
-              flex: 1,
-              opacity: timelineAnim.visible ? 1 : 0,
-              transform: timelineAnim.visible ? "translateY(0)" : "translateY(24px)",
-              transition: "opacity 700ms ease 140ms, transform 700ms ease 140ms",
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Annual Monitoring Timeline
-            </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
-              Each monitoring plan includes three assessments that can be taken at any time within one year.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[
-                ["Assessment 1", "Any time"],
-                ["Assessment 2", "Any time"],
-                ["Assessment 3", "Any time"],
-              ].map(([label, month], i) => (
-                <div
-                  key={label}
+            {!session ? (
+              /* ---- Access code entry form ---- */
+              <>
+                <h2
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 16,
-                    padding: "16px 0",
-                    borderBottom: i < 2 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                    fontSize: mobile ? 22 : 26,
+                    fontWeight: 700,
+                    color: B.navy,
+                    letterSpacing: "-0.02em",
+                    marginBottom: 12,
                   }}
                 >
-                  <div
+                  Access Monitoring Portal
+                </h2>
+
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
+                  This portal is available to Annual Monitoring subscribers.
+                </p>
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
+                  Enter your access code to view your monitoring timeline and take your next assessment.
+                </p>
+
+                {/* Access Code */}
+                <div style={{ marginBottom: 28 }}>
+                  <label
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 10,
-                      background: i === 0 ? B.navy : "rgba(14,26,43,0.06)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
+                      display: "block",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: B.navy,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      marginBottom: 8,
                     }}
                   >
-                    <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? "#FFFFFF" : B.navy }}>{i + 1}</span>
+                    Access Code
+                  </label>
+                  <input
+                    type="text"
+                    value={accessCode}
+                    onChange={(e) => setAccessCode(e.target.value)}
+                    placeholder="RP-XXXX-XXXX"
+                    style={{
+                      width: "100%",
+                      height: 48,
+                      padding: "0 16px",
+                      borderRadius: 10,
+                      border: "1px solid rgba(14,26,43,0.12)",
+                      background: B.sand,
+                      fontSize: 16,
+                      fontFamily: "monospace",
+                      color: B.navy,
+                      outline: "none",
+                      transition: "border-color 180ms ease",
+                      boxSizing: "border-box",
+                      letterSpacing: "0.04em",
+                    }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleLookup(); }}
+                  />
+                </div>
+
+                {error && (
+                  <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16 }}>{error}</p>
+                )}
+
+                {/* Sign In button */}
+                <button
+                  onClick={handleLookup}
+                  onMouseEnter={() => canHover() && setBtnHovered(true)}
+                  onMouseLeave={() => setBtnHovered(false)}
+                  style={{
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 12,
+                    background: btnHovered ? "#3D33A0" : B.purple,
+                    color: "#FFFFFF",
+                    fontSize: 15,
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                    transition: "background 180ms ease, transform 180ms ease",
+                    transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
+                  }}
+                >
+                  Access Monitoring Portal
+                </button>
+
+                {/* Don't have an account */}
+                <div style={{ textAlign: "center", marginTop: 20 }}>
+                  <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have an access code? </span>
+                  <Link
+                    href="/pricing"
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: B.purple,
+                      textDecoration: "none",
+                      borderBottom: "1px solid rgba(75,63,174,0.30)",
+                      transition: "border-color 180ms ease",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
+                  >
+                    Get Annual Monitoring
+                  </Link>
+                </div>
+
+                {/* Security line */}
+                <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                  <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
+                  <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
+                </div>
+              </>
+            ) : (
+              /* ---- Monitoring dashboard ---- */
+              <>
+                <h2
+                  style={{
+                    fontSize: mobile ? 22 : 26,
+                    fontWeight: 700,
+                    color: B.navy,
+                    letterSpacing: "-0.02em",
+                    marginBottom: 12,
+                  }}
+                >
+                  Monitoring Dashboard
+                </h2>
+
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
+                  Welcome back. Here is the status of your Annual Monitoring plan.
+                </p>
+
+                {/* Status cards */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
+                    <span style={{ fontSize: 13, color: B.muted }}>Assessments Remaining</span>
+                    <span style={{ fontSize: 15, fontWeight: 700, color: allUsed ? "#DC2626" : B.teal }}>{remaining} of 3</span>
                   </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{label}</div>
-                    <div style={{ fontSize: 12, color: B.light }}>{month}</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
+                    <span style={{ fontSize: 13, color: B.muted }}>Plan Expires</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{expiresDate}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
+                    <span style={{ fontSize: 13, color: B.muted }}>Access Code</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, fontFamily: "monospace" }}>{session.access_code}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
+                    <span style={{ fontSize: 13, color: B.muted }}>Email</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{session.email}</span>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            <p style={{ fontSize: 13, color: B.light, marginTop: 16 }}>
-              All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
-            </p>
+                {/* Past assessments */}
+                {session.assessment_records.length > 0 && (
+                  <div style={{ marginBottom: 24 }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
+                      Past Assessments
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      {session.assessment_records.map((recordId, i) => (
+                        <div
+                          key={recordId}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            padding: "10px 14px",
+                            borderRadius: 8,
+                            background: "rgba(75,63,174,0.04)",
+                            border: "1px solid rgba(75,63,174,0.08)",
+                          }}
+                        >
+                          <span style={{ fontSize: 13, fontWeight: 500, color: B.navy }}>Assessment {i + 1}</span>
+                          <span style={{ fontSize: 11, color: B.light, fontFamily: "monospace" }}>{recordId.slice(0, 12)}...</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Action */}
+                {allUsed ? (
+                  <>
+                    <div
+                      style={{
+                        padding: "20px 20px",
+                        borderRadius: 12,
+                        background: "rgba(220,38,38,0.04)",
+                        border: "1px solid rgba(220,38,38,0.12)",
+                        textAlign: "center",
+                        marginBottom: 16,
+                      }}
+                    >
+                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 6 }}>
+                        All Assessments Completed
+                      </div>
+                      <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.6 }}>
+                        You have used all 3 assessments in this monitoring plan. Purchase a new plan to continue tracking your income stability.
+                      </p>
+                    </div>
+                    <a
+                      href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
+                      target="_top"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        height: 52,
+                        lineHeight: "52px",
+                        borderRadius: 12,
+                        background: B.purple,
+                        color: "#FFFFFF",
+                        fontSize: 15,
+                        fontWeight: 600,
+                        letterSpacing: "-0.01em",
+                        border: "none",
+                        textDecoration: "none",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      Purchase New Monitoring Plan
+                    </a>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleTakeAssessment}
+                    onMouseEnter={() => canHover() && setNextBtnHovered(true)}
+                    onMouseLeave={() => setNextBtnHovered(false)}
+                    style={{
+                      width: "100%",
+                      height: 52,
+                      borderRadius: 12,
+                      background: nextBtnHovered ? "#1a5c67" : B.teal,
+                      color: "#FFFFFF",
+                      fontSize: 15,
+                      fontWeight: 600,
+                      letterSpacing: "-0.01em",
+                      border: "none",
+                      cursor: "pointer",
+                      boxShadow: "0 6px 16px rgba(31,109,122,0.25)",
+                      transition: "background 180ms ease, transform 180ms ease",
+                      transform: nextBtnHovered ? "translateY(-1px)" : "translateY(0)",
+                    }}
+                  >
+                    Take Next Assessment
+                  </button>
+                )}
+
+                {/* Back to code entry */}
+                <div style={{ textAlign: "center", marginTop: 16 }}>
+                  <button
+                    onClick={() => { setSession(null); setAccessCode(""); setError(""); }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      fontSize: 13,
+                      fontWeight: 500,
+                      color: B.muted,
+                      cursor: "pointer",
+                      padding: 0,
+                    }}
+                  >
+                    Use a different access code
+                  </button>
+                </div>
+
+                {/* Security line */}
+                <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                  <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
+                  <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -545,7 +538,7 @@ export default function SignInPage() {
         style={{
           paddingTop: mobile ? 56 : 80,
           paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
+          background: "#FFFFFF",
         }}
       >
         <div
@@ -577,7 +570,7 @@ export default function SignInPage() {
               Single Assessment Customers
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              Single Assessment reports are generated immediately after completing the diagnostic and do not require an account login.
+              Single Assessment reports are generated immediately after completing the diagnostic and do not require an access code.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
               To generate a new assessment, simply purchase another diagnostic.

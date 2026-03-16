@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getSessionByCode, getRemaining } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -158,6 +159,14 @@ export default function InitializationPage() {
       try {
         const parsed = JSON.parse(session);
         if (parsed.status === "paid") {
+          // If monitoring plan, verify assessments remain
+          if (parsed.plan_key === "annual_monitoring" && parsed.monitoring_access_code) {
+            const remaining = getRemaining(parsed.monitoring_access_code);
+            if (remaining <= 0) {
+              router.push("/sign-in");
+              return;
+            }
+          }
           setAuthorized(true);
           return;
         }

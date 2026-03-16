@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { createMonitoringSession, type MonitoringSession } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -67,15 +69,62 @@ const B = {
 /* ------------------------------------------------------------------ */
 
 export default function CreateAccountPage() {
+  const router = useRouter();
   const mobile = useMobile();
   const heroAnim = useInView();
   const formAnim = useInView();
   const infoAnim = useInView();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [btnHovered, setBtnHovered] = useState(false);
+  const [activateBtnHovered, setActivateBtnHovered] = useState(false);
+  const [copyBtnHovered, setCopyBtnHovered] = useState(false);
+  const [beginBtnHovered, setBeginBtnHovered] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [session, setSession] = useState<MonitoringSession | null>(null);
+  const [error, setError] = useState("");
+
+  const handleActivate = () => {
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setError("");
+    const newSession = createMonitoringSession(email);
+    setSession(newSession);
+  };
+
+  const handleCopy = async () => {
+    if (!session) return;
+    try {
+      await navigator.clipboard.writeText(session.access_code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      /* fallback — select text manually */
+    }
+  };
+
+  const handleBeginAssessment = () => {
+    if (!session) return;
+    // Set purchase session so diagnostic-portal allows entry
+    sessionStorage.setItem(
+      "rp_purchase_session",
+      JSON.stringify({
+        plan_key: "annual_monitoring",
+        price_cents: 9900,
+        currency: "USD",
+        intended_assessment_count: 3,
+        status: "paid",
+        checkout_provider: "stripe",
+        monitoring_access_code: session.access_code,
+      }),
+    );
+    router.push("/diagnostic-portal");
+  };
+
+  const expiresDate = session
+    ? new Date(session.expires_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    : "";
 
   return (
     <div style={{ background: "#FFFFFF" }}>
@@ -146,7 +195,7 @@ export default function CreateAccountPage() {
               marginBottom: 20,
             }}
           >
-            Create Your Account
+            {session ? "Your Access Code" : "Activate Your Monitoring Plan"}
           </h1>
 
           <p
@@ -158,7 +207,9 @@ export default function CreateAccountPage() {
               margin: "0 auto 8px",
             }}
           >
-            Set up your Monitoring Portal account to access your three Income Stability Assessments.
+            {session
+              ? "Save this code to access your remaining assessments."
+              : "Set up your Monitoring Portal to access your three Income Stability Assessments."}
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
@@ -168,7 +219,7 @@ export default function CreateAccountPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Create account form                                         */}
+      {/*  Activation / Code display                                   */}
       {/* ============================================================ */}
       <section
         style={{
@@ -189,7 +240,7 @@ export default function CreateAccountPage() {
             alignItems: "start",
           }}
         >
-          {/* Form card */}
+          {/* Form / Code card */}
           <div
             ref={formAnim.ref}
             style={{
@@ -222,184 +273,227 @@ export default function CreateAccountPage() {
               </span>
             </div>
 
-            <h2
-              style={{
-                fontSize: mobile ? 22 : 26,
-                fontWeight: 700,
-                color: B.navy,
-                letterSpacing: "-0.02em",
-                marginBottom: 12,
-              }}
-            >
-              Create Account
-            </h2>
+            {!session ? (
+              /* ---- Step 1: Email confirmation ---- */
+              <>
+                <h2
+                  style={{
+                    fontSize: mobile ? 22 : 26,
+                    fontWeight: 700,
+                    color: B.navy,
+                    letterSpacing: "-0.02em",
+                    marginBottom: 12,
+                  }}
+                >
+                  Activate Monitoring
+                </h2>
 
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-              Create your account to access the Monitoring Portal. You can take your three assessments at any time within your 12-month subscription.
-            </p>
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
+                  Enter your email to activate your monitoring plan. You will receive an access code to use for your remaining assessments.
+                </p>
 
-            {/* Email */}
-            <div style={{ marginBottom: 20 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: B.navy,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
-                style={{
-                  width: "100%",
-                  height: 48,
-                  padding: "0 16px",
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
-                  fontSize: 14,
-                  color: B.navy,
-                  outline: "none",
-                  transition: "border-color 180ms ease",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
-              />
-            </div>
+                {/* Email */}
+                <div style={{ marginBottom: 24 }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: B.navy,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      marginBottom: 8,
+                    }}
+                  >
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    style={{
+                      width: "100%",
+                      height: 48,
+                      padding: "0 16px",
+                      borderRadius: 10,
+                      border: "1px solid rgba(14,26,43,0.12)",
+                      background: B.sand,
+                      fontSize: 14,
+                      color: B.navy,
+                      outline: "none",
+                      transition: "border-color 180ms ease",
+                      boxSizing: "border-box",
+                    }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                    onKeyDown={(e) => { if (e.key === "Enter") handleActivate(); }}
+                  />
+                </div>
 
-            {/* Password */}
-            <div style={{ marginBottom: 20 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: B.navy,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                Create Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create a secure password"
-                style={{
-                  width: "100%",
-                  height: 48,
-                  padding: "0 16px",
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
-                  fontSize: 14,
-                  color: B.navy,
-                  outline: "none",
-                  transition: "border-color 180ms ease",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
-              />
-            </div>
+                {error && (
+                  <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16 }}>{error}</p>
+                )}
 
-            {/* Confirm Password */}
-            <div style={{ marginBottom: 28 }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: B.navy,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                  marginBottom: 8,
-                }}
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your password"
-                style={{
-                  width: "100%",
-                  height: 48,
-                  padding: "0 16px",
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
-                  fontSize: 14,
-                  color: B.navy,
-                  outline: "none",
-                  transition: "border-color 180ms ease",
-                  boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
-              />
-            </div>
+                {/* Activate button */}
+                <button
+                  onClick={handleActivate}
+                  onMouseEnter={() => canHover() && setActivateBtnHovered(true)}
+                  onMouseLeave={() => setActivateBtnHovered(false)}
+                  style={{
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 12,
+                    background: activateBtnHovered ? "#3D33A0" : B.purple,
+                    color: "#FFFFFF",
+                    fontSize: 15,
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                    transition: "background 180ms ease, transform 180ms ease",
+                    transform: activateBtnHovered ? "translateY(-1px)" : "translateY(0)",
+                  }}
+                >
+                  Activate Monitoring
+                </button>
 
-            {/* Create Account button */}
-            <button
-              onMouseEnter={() => canHover() && setBtnHovered(true)}
-              onMouseLeave={() => setBtnHovered(false)}
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: btnHovered ? "#3D33A0" : B.purple,
-                color: "#FFFFFF",
-                fontSize: 15,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-                transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
-              }}
-            >
-              Create Account
-            </button>
+                {/* Sign in link */}
+                <div style={{ textAlign: "center", marginTop: 20 }}>
+                  <span style={{ fontSize: 13, color: B.muted }}>Already have an access code? </span>
+                  <Link
+                    href="/sign-in"
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 600,
+                      color: B.purple,
+                      textDecoration: "none",
+                      borderBottom: "1px solid rgba(75,63,174,0.30)",
+                      transition: "border-color 180ms ease",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              </>
+            ) : (
+              /* ---- Step 2: Access code display ---- */
+              <>
+                <h2
+                  style={{
+                    fontSize: mobile ? 22 : 26,
+                    fontWeight: 700,
+                    color: B.navy,
+                    letterSpacing: "-0.02em",
+                    marginBottom: 12,
+                  }}
+                >
+                  Monitoring Activated
+                </h2>
 
-            {/* Sign in link */}
-            <div style={{ textAlign: "center", marginTop: 20 }}>
-              <span style={{ fontSize: 13, color: B.muted }}>Already have an account? </span>
-              <Link
-                href="/sign-in"
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: B.purple,
-                  textDecoration: "none",
-                  borderBottom: "1px solid rgba(75,63,174,0.30)",
-                  transition: "border-color 180ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
-              >
-                Sign In
-              </Link>
-            </div>
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
+                  Your Annual Monitoring plan is now active. Save the access code below — you will need it to access your remaining assessments.
+                </p>
+
+                {/* Access code display */}
+                <div
+                  style={{
+                    padding: mobile ? "24px 20px" : "28px 28px",
+                    borderRadius: 14,
+                    background: "rgba(75,63,174,0.04)",
+                    border: "2px solid rgba(75,63,174,0.18)",
+                    textAlign: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+                    Your Access Code
+                  </div>
+                  <div
+                    style={{
+                      fontSize: mobile ? 28 : 36,
+                      fontWeight: 700,
+                      color: B.navy,
+                      letterSpacing: "0.06em",
+                      fontFamily: "monospace",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {session.access_code}
+                  </div>
+                  <button
+                    onClick={handleCopy}
+                    onMouseEnter={() => canHover() && setCopyBtnHovered(true)}
+                    onMouseLeave={() => setCopyBtnHovered(false)}
+                    style={{
+                      padding: "8px 24px",
+                      borderRadius: 8,
+                      background: copied ? B.teal : copyBtnHovered ? "#3D33A0" : B.purple,
+                      color: "#FFFFFF",
+                      fontSize: 13,
+                      fontWeight: 600,
+                      border: "none",
+                      cursor: "pointer",
+                      transition: "background 180ms ease",
+                    }}
+                  >
+                    {copied ? "Copied!" : "Copy to Clipboard"}
+                  </button>
+                </div>
+
+                <p style={{ fontSize: 13, color: "#DC2626", lineHeight: 1.6, marginBottom: 24, textAlign: "center" }}>
+                  Save this access code. You will need it to access your remaining assessments.
+                </p>
+
+                {/* Plan details */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
+                  {[
+                    ["Assessments", "3 included"],
+                    ["Plan Duration", "12 months"],
+                    ["Expires", expiresDate],
+                    ["Email", session.email],
+                  ].map(([label, value]) => (
+                    <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderRadius: 8, background: B.sand }}>
+                      <span style={{ fontSize: 13, color: B.muted }}>{label}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Begin First Assessment button */}
+                <button
+                  onClick={handleBeginAssessment}
+                  onMouseEnter={() => canHover() && setBeginBtnHovered(true)}
+                  onMouseLeave={() => setBeginBtnHovered(false)}
+                  style={{
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 12,
+                    background: beginBtnHovered ? "#1a5c67" : B.teal,
+                    color: "#FFFFFF",
+                    fontSize: 15,
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 6px 16px rgba(31,109,122,0.25)",
+                    transition: "background 180ms ease, transform 180ms ease",
+                    transform: beginBtnHovered ? "translateY(-1px)" : "translateY(0)",
+                  }}
+                >
+                  Begin First Assessment
+                </button>
+              </>
+            )}
 
             {/* Security line */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: B.light }}>Secure authentication</span>
-              <span style={{ fontSize: 12, color: B.light }}>Encrypted session management</span>
+              <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
+              <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
             </div>
           </div>
 
@@ -465,13 +559,13 @@ export default function CreateAccountPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-                Account Access
+                Access Code Info
               </div>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
-                Portal accounts are exclusively available to Annual Monitoring subscribers.
+                Your access code is your key to the Monitoring Portal. Save it somewhere secure.
               </p>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>
-                Single Assessment customers do not need an account — reports are generated instantly after completing the diagnostic.
+                Single Assessment customers do not need an access code — reports are generated instantly after completing the diagnostic.
               </p>
             </div>
           </div>
