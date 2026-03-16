@@ -318,15 +318,116 @@ select, input[type="text"], input[type="email"] {
   .report-page .mb-8.pb-3 { margin-bottom: 4px !important; padding-bottom: 2px !important; }
 }
 
+/* ============================================================
+   MOBILE-FIRST RESPONSIVE — CSS fallback for all screen sizes
+   Works before JS hydrates, prevents flash of desktop on mobile
+   ============================================================ */
+
+/* --- Base responsive foundations --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+/* SVGs with explicit dimensions keep them; fluid for responsive images */
+svg:not([width]) {
+  max-width: 100%;
+}
+
+/* Prevent horizontal overflow on all devices */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Fluid container padding is handled per-breakpoint below */
+
+/* Touch targets — minimum 44px on touch devices */
+@media (pointer: coarse) {
+  button, a, [role="button"] {
+    min-height: 44px;
+  }
+}
+
 /* ============================================
-   MOBILE RESPONSIVE — Vertical Rhythm + Layout
+   MOBILE (max-width: 768px)
+   Primary mobile layout overrides
    ============================================ */
 @media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
+
+  /* --- Global Layout --- */
+  section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  section > .mx-auto,
+  section > div > .mx-auto {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
   }
 
-  /* --- How It Works --- */
+  /* --- Header / Nav --- */
+  header .mx-auto {
+    height: 56px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  /* Hide desktop nav and CTA group on mobile */
+  header nav:not([style*="flex-direction:column"]) {
+    display: none !important;
+  }
+  header .mx-auto > div[style*="margin-left:28px"],
+  header .mx-auto > div[style*="margin-left: 28px"] {
+    display: none !important;
+  }
+
+  /* --- Hero Sections — all pages use similar pattern --- */
+  section h1 {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* --- Typography scaling --- */
+  section h2 {
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+  }
+  section h3 {
+    font-size: 18px !important;
+  }
+
+  /* --- Grid layouts — stack on mobile --- */
+  [style*="grid-template-columns:repeat(3"],
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns:repeat(5"],
+  [style*="grid-template-columns: repeat(5"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- Footer --- */
+  footer .mx-auto {
+    padding: 36px 20px 28px !important;
+  }
+  footer nav[aria-label="Footer navigation"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 32px 24px !important;
+    justify-items: start !important;
+  }
+
+  /* --- Card padding reduction --- */
+  [style*="padding:40px"],
+  [style*="padding:36px"] {
+    padding: 24px !important;
+  }
+
+  /* --- Section vertical rhythm --- */
   section[aria-label="How It Works"] {
     padding-top: 72px !important;
     padding-bottom: 72px !important;
@@ -338,7 +439,6 @@ select, input[type="text"], input[type="email"] {
     padding: 28px 24px 32px !important;
   }
 
-  /* --- Classification Scale --- */
   section[aria-label="Income Stability Classification Scale"] {
     padding-top: 72px !important;
     padding-bottom: 72px !important;
@@ -347,7 +447,6 @@ select, input[type="text"], input[type="email"] {
     margin-bottom: 36px !important;
   }
 
-  /* --- Report Preview --- */
   section[aria-label="Preview Your Score Report"] {
     padding-top: 72px !important;
     padding-bottom: 80px !important;
@@ -360,19 +459,16 @@ select, input[type="text"], input[type="email"] {
     padding: 10px 8px !important;
   }
 
-  /* --- Industry Patterns --- */
   section[aria-label="Stability Patterns by Industry"] {
     padding-top: 72px !important;
     padding-bottom: 80px !important;
   }
 
-  /* --- Why Income Stability Matters --- */
   section[aria-label="Why Income Stability Matters"] {
     padding-top: 80px !important;
     padding-bottom: 80px !important;
   }
 
-  /* --- Score Registry --- */
   section[aria-label="Score Registry"] {
     padding-top: 80px !important;
     padding-bottom: 80px !important;
@@ -381,7 +477,6 @@ select, input[type="text"], input[type="email"] {
     padding: 24px !important;
   }
 
-  /* --- FAQ --- */
   section[aria-label="FAQ"] {
     padding-top: 80px !important;
     padding-bottom: 80px !important;
@@ -394,12 +489,134 @@ select, input[type="text"], input[type="email"] {
     padding-right: 16px !important;
   }
 
-  /* --- Model Governance --- */
   section[aria-label="Model Governance"] {
     padding-top: 80px !important;
     padding-bottom: 80px !important;
   }
   section[aria-label="Model Governance"] article {
     padding: 22px !important;
+  }
+
+  section[aria-label="Global Disclaimer"] > div:nth-child(2) {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  section[aria-label="Get Your Income Stability Score"] a {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 52px !important;
+  }
+
+  /* --- CTA Buttons — full width on mobile --- */
+  a[class*="cta-tick"],
+  .cta-tick {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* --- Timeline / monitoring assessment row — stack --- */
+  [style*="justify-content:space-between"][style*="flex-wrap"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+  }
+
+  /* --- Cookie consent banner --- stacked on mobile --- */
+  div[style*="position:fixed"][style*="bottom:0"] {
+    flex-direction: column !important;
+    padding: 16px 20px !important;
+    gap: 12px !important;
+  }
+  div[style*="position:fixed"][style*="bottom:0"] p {
+    font-size: 13px !important;
+    text-align: left !important;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE (max-width: 480px)
+   Extra-small screen refinements
+   ============================================ */
+@media (max-width: 480px) {
+  section h1 {
+    font-size: 24px !important;
+  }
+  section h2 {
+    font-size: 22px !important;
+  }
+
+  /* Tighter gutters on very small screens */
+  section > .mx-auto,
+  section > div > .mx-auto {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  header .mx-auto {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  footer .mx-auto {
+    padding: 32px 16px 24px !important;
+  }
+  footer nav[aria-label="Footer navigation"] {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* Pricing cards */
+  [style*="padding:32px 28px"],
+  [style*="padding:28px 24px"] {
+    padding: 24px 20px !important;
+  }
+
+  /* Score pill on how-it-works */
+  [style*="padding:12px 28px"] {
+    padding: 10px 18px !important;
+  }
+}
+
+/* ============================================
+   TABLET (769px – 1024px)
+   Mid-range layout adjustments
+   ============================================ */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .mx-auto {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  footer nav[aria-label="Footer navigation"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 32px 24px !important;
+  }
+
+  section[aria-label="Global Disclaimer"] > div:nth-child(2) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION — accessibility
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
