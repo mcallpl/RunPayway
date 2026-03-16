@@ -48,14 +48,19 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: securityHeaders,
-      },
-    ];
-  },
+  // Security headers — only in dynamic mode (static uses .htaccess)
+  ...(!isStaticExport
+    ? {
+        async headers() {
+          return [
+            {
+              source: "/(.*)",
+              headers: securityHeaders,
+            },
+          ];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

@@ -22,16 +22,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Move API routes aside for static export
-        run: mv src/app/api src/app/_api_dev
+      - name: Move server-only files aside for static export
+        run: |
+          mv src/app/api src/app/_api_dev
+          mv src/middleware.ts src/_middleware_dev.ts
 
       - name: Build static export
         env:
           STATIC_EXPORT: 'true'
         run: npx next build
 
-      - name: Restore API routes
-        run: mv src/app/_api_dev src/app/api
+      - name: Restore server-only files
+        run: |
+          mv src/app/_api_dev src/app/api
+          mv src/_middleware_dev.ts src/middleware.ts
 
       - name: Deploy frontend to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
