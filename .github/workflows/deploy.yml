@@ -45,4 +45,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
           server-dir: /public_html/RunPayway/
-          dangerous-clean-slate: false
+          dangerous-clean-slate: true  # Force full re-upload — revert to false after this deploy
