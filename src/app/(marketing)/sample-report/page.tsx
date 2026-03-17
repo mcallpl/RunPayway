@@ -318,7 +318,7 @@ export default function SampleReportPage() {
               margin: "0 auto 20px",
             }}
           >
-            Your personalized four-page Income Stability Assessment&trade; reveals your score, explains why, shows what&apos;s at risk, and gives you a clear plan to strengthen your income structure.
+            Your personalized five-page Income Stability Assessment&trade; reveals your score, explains why, shows what&apos;s at risk, and gives you a clear plan to strengthen your income structure.
           </p>
 
           <p

@@ -178,7 +178,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         q: "What is included in the report?",
         a: (
           <>
-            <p>Each completed assessment produces a personalized four-page report that includes:</p>
+            <p>Each completed assessment produces a personalized five-page report that includes:</p>
             <ul>
               <li>Income Stability Score™ (0–100) with stability classification</li>
               <li>structural priority map ranking six factors from strongest to weakest</li>
