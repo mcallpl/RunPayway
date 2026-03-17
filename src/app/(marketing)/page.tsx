@@ -1626,7 +1626,7 @@ function HeroSection() {
       >
         <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 80 }}>
           {/* Left — Copy + CTA */}
-          <div className="flex-1 lg:max-w-[560px]" style={{ textAlign: mobile ? "center" : "left" }}>
+          <div className="flex-1 lg:max-w-[560px]" style={{ textAlign: "center" }}>
             {/* Eyebrow */}
             <div
               className="font-medium uppercase text-[11px] md:text-[12px]"
