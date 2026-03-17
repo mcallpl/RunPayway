@@ -449,12 +449,7 @@ const t = e.currentTarget;
         }
       `}</style>
 
-      {/* Bottom wave transition */}
-      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill={B.purple} />
-        </svg>
-      </div>
+      {/* Clean edge — no wave */}
     </section>
   );
 }
@@ -895,15 +890,15 @@ function WhyIncomeStabilityMatters() {
 
       {/* Diagnostic pulse line */}
       <div style={{ position: "absolute", top: "38%", left: 0, right: 0, height: 1, overflow: "hidden", pointerEvents: "none" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(31,109,122,0.25) 40%, rgba(75,63,174,0.30) 60%, transparent 100%)", animation: "pulseSweep 8s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(31,109,122,0.12) 40%, rgba(75,63,174,0.15) 60%, transparent 100%)", animation: "pulseSweep 8s ease-in-out infinite" }} />
       </div>
       <div style={{ position: "absolute", top: "68%", left: 0, right: 0, height: 1, overflow: "hidden", pointerEvents: "none" }}>
-        <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(75,63,174,0.20) 40%, rgba(31,109,122,0.25) 60%, transparent 100%)", animation: "pulseSweep 12s ease-in-out 3s infinite" }} />
+        <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(75,63,174,0.10) 40%, rgba(31,109,122,0.12) 60%, transparent 100%)", animation: "pulseSweep 12s ease-in-out 3s infinite" }} />
       </div>
 
       {/* Ambient glows */}
-      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.04) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.03) 0%, transparent 60%)", pointerEvents: "none" }} />
 
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
@@ -927,8 +922,8 @@ function WhyIncomeStabilityMatters() {
             position: "absolute",
             inset: -40,
             background: "conic-gradient(from 0deg, #0E1A2B, #4B3FAE, #1F6D7A, #4B3FAE, #0E1A2B)",
-            animation: "borderGlow 6s linear infinite",
-            opacity: 0.6,
+            animation: "borderGlow 60s linear infinite",
+            opacity: 0.15,
           }} />
           {/* Inner panel */}
           <div
@@ -2048,22 +2043,12 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* White arc into dark section */}
-      <div style={{ backgroundColor: "#0E1A2B", marginTop: -1 }}>
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: mobile ? 48 : 96 }}>
-          <path d="M0,0 L1440,0 L1440,20 C1080,120 360,120 0,20 Z" fill="#ffffff" />
-        </svg>
-      </div>
+      {/* Clean edge into dark section */}
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
 
-      {/* Dark section exits with white arc */}
-      <div style={{ backgroundColor: "#0E1A2B", marginBottom: -1 }}>
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: mobile ? 48 : 96 }}>
-          <path d="M0,120 L1440,120 L1440,100 C1080,0 360,0 0,100 Z" fill="#ffffff" />
-        </svg>
-      </div>
+      {/* Clean edge out of dark section */}
 
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />

@@ -204,6 +204,7 @@ select, input[type="text"], input[type="email"] {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+/* borderGlow duration: 20s (was 6s — 70 % slower) */
 
 /* Hero bullseye — precision gauge rotation */
 @keyframes heroRingSpin {

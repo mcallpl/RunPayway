@@ -166,7 +166,6 @@ const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
 // Rank all 6 factors from strongest to weakest (labels only — no raw values exposed)
 function getRankedFactors(r: AssessmentRecord): { label: string; level: string }[] {
   const LEVEL_ORDER: Record<string, number> = { "Very High": 5, "High": 4, "Moderate": 3, "Low": 2, "Very Low": 1 };
-  // For inverted indicators, flip the ranking (high label = weak, low label = strong)
   const factors = [
     { label: "Income Persistence", level: r.income_persistence_label, inverted: false },
     { label: "Income Source Diversity", level: r.income_source_diversity_label, inverted: false },
@@ -178,7 +177,7 @@ function getRankedFactors(r: AssessmentRecord): { label: string; level: string }
   return factors
     .map((f) => {
       const raw = LEVEL_ORDER[f.level] || 3;
-      const strength = f.inverted ? 6 - raw : raw; // flip so higher = stronger for inverted
+      const strength = f.inverted ? 6 - raw : raw;
       const displayLevel = f.inverted
         ? (raw <= 2 ? "Strong" : raw === 3 ? "Moderate" : "Weak")
         : (raw >= 4 ? "Strong" : raw === 3 ? "Moderate" : "Weak");
@@ -190,8 +189,6 @@ function getRankedFactors(r: AssessmentRecord): { label: string; level: string }
 
 // Identify key positive/negative factors for Page 1
 function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string[] } {
-  // For inverted indicators (variability, labor dependence, concentration),
-  // "low/very low" is GOOD and "high/very high" is BAD.
   const factors = [
     { label: "Income Persistence", value: r.income_persistence_label, inverted: false },
     { label: "Income Source Diversity", value: r.income_source_diversity_label, inverted: false },
@@ -206,24 +203,29 @@ function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string
     const isHigh = /high|very high/i.test(f.value);
     const isLow = /low|very low/i.test(f.value);
     if (f.inverted) {
-      // Inverted: low = positive, high = risk
       if (isLow) positive.push(f.label);
       else if (isHigh) risks.push(f.label);
     } else {
-      // Normal: high = positive, low = risk
       if (isHigh) positive.push(f.label);
       else if (isLow) risks.push(f.label);
     }
   }
-  // If not enough, add moderate ones
-  if (positive.length < 2) {
+  // Backfill with moderates — ensure at least 3 in each column
+  const used = new Set([...positive, ...risks]);
+  if (positive.length < 3) {
     for (const f of factors) {
-      if (/moderate/i.test(f.value) && positive.length < 2) positive.push(f.label);
+      if (/moderate/i.test(f.value) && !used.has(f.label) && positive.length < 3) {
+        positive.push(f.label);
+        used.add(f.label);
+      }
     }
   }
-  if (risks.length < 2) {
+  if (risks.length < 3) {
     for (const f of factors) {
-      if (/moderate/i.test(f.value) && !positive.includes(f.label) && risks.length < 2) risks.push(f.label);
+      if (/moderate/i.test(f.value) && !used.has(f.label) && risks.length < 3) {
+        risks.push(f.label);
+        used.add(f.label);
+      }
     }
   }
   return { positive: positive.slice(0, 3), risks: risks.slice(0, 3) };
@@ -232,19 +234,17 @@ function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string
 // ============================================================
 // REPORT SPACING TOKENS — purposeful, enterprise-grade
 // ============================================================
-/* Report spacing — tuned for 750px capture → letter-size PDF */
 const R = {
-  pagePad:    32,    /* page container padding */
-  headerMb:   20,    /* header → first content */
-  sectionGap: 16,    /* between major sections */
-  labelMb:    8,     /* label → content below */
-  paraMb:     8,     /* between paragraphs */
-  itemGap:    6,     /* between list/grid items */
-  dividerMy:  14,    /* divider vertical margin */
-  footerMt:   16,    /* above page footer */
+  pagePad:    40,
+  headerMb:   24,
+  sectionGap: 20,
+  labelMb:    10,
+  paraMb:     10,
+  itemGap:    8,
+  dividerMy:  18,
+  footerMt:   20,
 };
 
-/* Report typography — strict hierarchy, no Tailwind text-* classes */
 const T = {
   score:      { fontSize: 48, fontWeight: 700, lineHeight: 1 },
   pageTitle:  { fontSize: 14, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.1em", textTransform: "uppercase" as const },
@@ -261,6 +261,7 @@ const T = {
 // ============================================================
 
 function ReportHeader({ record }: { record: AssessmentRecord }) {
+  const ts = record.issued_timestamp_utc || record.assessment_date_utc;
   return (
     <div style={{ marginBottom: R.headerMb }}>
       <div style={{ height: 3, borderRadius: "6px 6px 0 0", overflow: "hidden", background: B.gradient, margin: `-${R.pagePad}px -${R.pagePad}px 0` }} />
@@ -272,7 +273,7 @@ function ReportHeader({ record }: { record: AssessmentRecord }) {
             <span style={{ ...T.caption, color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
           </div>
           <div style={{ ...T.caption, color: B.light }}>
-            {record.record_id.slice(0, 8)}… · {record.assessment_date_utc}
+            {record.record_id.slice(0, 8)}… · {ts}
           </div>
         </div>
       </div>
@@ -290,6 +291,19 @@ function SectionDivider() {
   return <div style={{ height: 1, backgroundColor: B.navy, opacity: 0.08, marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
+function ConfidentialityFooter({ record }: { record: AssessmentRecord }) {
+  return (
+    <div style={{ marginTop: "auto", paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <span style={{ ...T.caption, color: B.light, fontStyle: "italic" }}>
+        Confidential — Prepared for {record.assessment_title || "Assessment Subject"}
+      </span>
+      <span style={{ ...T.caption, color: B.light }}>
+        RunPayway™ · support@runpayway.com
+      </span>
+    </div>
+  );
+}
+
 function ReportPage({ record, children }: { record: AssessmentRecord; children: React.ReactNode }) {
   return (
     <div className="report-page" style={{
@@ -298,98 +312,714 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       borderRadius: 8,
       padding: R.pagePad,
       boxSizing: "border-box",
+      display: "flex",
+      flexDirection: "column",
+      minHeight: 600,
     }}>
       <ReportHeader record={record} />
-      {children}
+      <div style={{ flex: 1 }}>{children}</div>
+      <ConfidentialityFooter record={record} />
     </div>
   );
 }
 
 // ============================================================
-// PDF DOWNLOAD
+// PDF DOWNLOAD — Native jsPDF text rendering (enterprise-grade)
 // ============================================================
 
-async function downloadPDF(recordId: string) {
-  const html2canvas = (await import("html2canvas")).default;
+async function downloadPDF(record: AssessmentRecord) {
   const { jsPDF } = await import("jspdf");
-
-  const pages = document.querySelectorAll(".report-page");
-  if (!pages.length) return;
+  const QRCode = (await import("qrcode")).default;
 
   const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
-  const pageWidth = 8.5;
-  const pageHeight = 11;
-  const margin = 0.35;
-  const contentWidth = pageWidth - margin * 2;
-  const contentHeight = pageHeight - margin * 2;
+  const TOTAL_PAGES = 4;
 
-  // Fixed capture width for consistent rendering
-  const captureWidth = 750;
+  // ── Metadata ──
+  pdf.setProperties({
+    title: `Income Stability Assessment — ${record.assessment_title || "Report"}`,
+    author: "RunPayway",
+    subject: "Income Stability Score Report",
+    keywords: "income stability, assessment, RunPayway, structural analysis",
+    creator: `RunPayway Model ${record.model_version || "RP-1.0"}`,
+  });
 
-  // Exactly 3 report pages → exactly 3 PDF pages. One-to-one.
-  for (let i = 0; i < pages.length; i++) {
-    const el = pages[i] as HTMLElement;
+  // ── Layout constants ──
+  const PW = 8.5, PH = 11;
+  const ML = 0.65, MR = 0.65, MT = 0.45, MB = 0.75;
+  const CW = PW - ML - MR;
+  const halfCW = (CW - 0.3) / 2;
 
-    // Save original styles
-    const origWidth = el.style.width;
-    const origMaxWidth = el.style.maxWidth;
-    const origBoxSizing = el.style.boxSizing;
-    const origBorder = el.style.border;
-    const origBorderRadius = el.style.borderRadius;
+  // ── Color tuples ──
+  type RGB = [number, number, number];
+  const C = {
+    navy:   [14, 26, 43] as RGB,
+    purple: [75, 63, 174] as RGB,
+    teal:   [31, 109, 122] as RGB,
+    muted:  [107, 114, 128] as RGB,
+    light:  [156, 163, 175] as RGB,
+    sand:   [244, 241, 234] as RGB,
+    sandDk: [237, 233, 224] as RGB,
+    white:  [255, 255, 255] as RGB,
+    tealBg: [235, 246, 247] as RGB,
+    grayBg: [245, 245, 247] as RGB,
+  };
 
-    // Set fixed width for consistent rendering, let height be natural
-    el.style.width = `${captureWidth}px`;
-    el.style.maxWidth = `${captureWidth}px`;
-    el.style.boxSizing = "border-box";
-    el.style.border = "none";
-    el.style.borderRadius = "0";
+  // ── Cursor tracking ──
+  let y = MT;
 
-    // Let the browser reflow, then measure actual height
-    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-    const naturalHeight = el.scrollHeight;
-
-    const canvas = await html2canvas(el, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      width: captureWidth,
-      height: naturalHeight,
-      windowWidth: captureWidth,
-    });
-
-    // Restore original styles
-    el.style.width = origWidth;
-    el.style.maxWidth = origMaxWidth;
-    el.style.boxSizing = origBoxSizing;
-    el.style.border = origBorder;
-    el.style.borderRadius = origBorderRadius;
-
-    // Place each report page on one PDF page — scale to fit
-    if (i > 0) pdf.addPage();
-    const imgWidth = contentWidth;
-    const imgHeight = (canvas.height / canvas.width) * imgWidth;
-
-    // Scale down if content is taller than page
-    const scale = imgHeight > contentHeight ? contentHeight / imgHeight : 1;
-    const finalWidth = imgWidth * scale;
-    const finalHeight = imgHeight * scale;
-
-    // Center vertically on page
-    const xOffset = margin + (contentWidth - finalWidth) / 2;
-    const yOffset = margin;
-
-    pdf.addImage(
-      canvas.toDataURL("image/png"),
-      "PNG",
-      xOffset,
-      yOffset,
-      finalWidth,
-      finalHeight
-    );
+  // ── Typography helpers ──
+  function setFont(style: string, size: number, color: RGB) {
+    pdf.setFont("helvetica", style);
+    pdf.setFontSize(size);
+    pdf.setTextColor(color[0], color[1], color[2]);
   }
 
-  const shortId = recordId.slice(0, 8);
+  function textLines(text: string, maxW: number, size: number, style: string): string[] {
+    pdf.setFont("helvetica", style);
+    pdf.setFontSize(size);
+    return pdf.splitTextToSize(text, maxW);
+  }
+
+  function textHeight(lines: string[], size: number, lineH: number): number {
+    return lines.length * (size / 72) * lineH;
+  }
+
+  function drawWrapped(text: string, x: number, yPos: number, maxW: number, size: number, style: string, color: RGB, lineH = 1.5): number {
+    const lines = textLines(text, maxW, size, style);
+    const spacing = (size / 72) * lineH;
+    setFont(style, size, color);
+    for (let i = 0; i < lines.length; i++) {
+      pdf.text(lines[i], x, yPos + i * spacing);
+    }
+    return yPos + lines.length * spacing;
+  }
+
+  function drawRight(text: string, yPos: number, size: number, style: string, color: RGB) {
+    setFont(style, size, color);
+    pdf.text(text, PW - MR, yPos, { align: "right" });
+  }
+
+  // ── Drawing helpers ──
+  function fillRect(x: number, yPos: number, w: number, h: number, color: RGB) {
+    pdf.setFillColor(color[0], color[1], color[2]);
+    pdf.rect(x, yPos, w, h, "F");
+  }
+
+  function drawGradientBar(yPos: number) {
+    const h = 0.035;
+    const seg = CW / 3;
+    fillRect(ML, yPos, seg + 0.01, h, C.navy);
+    fillRect(ML + seg, yPos, seg + 0.01, h, C.purple);
+    fillRect(ML + seg * 2, yPos, seg, h, C.teal);
+  }
+
+  function drawDivider(yPos: number): number {
+    pdf.setDrawColor(220, 222, 225);
+    pdf.setLineWidth(0.004);
+    pdf.line(ML, yPos, PW - MR, yPos);
+    return yPos + 0.18;
+  }
+
+  function drawLabel(text: string, yPos: number): number {
+    setFont("bold", 8, C.muted);
+    pdf.text(text.toUpperCase(), ML, yPos);
+    return yPos + 0.16;
+  }
+
+  function drawHeader(yPos: number): number {
+    drawGradientBar(yPos);
+    yPos += 0.055;
+
+    // Logo text
+    setFont("bold", 9.5, C.navy);
+    pdf.text("RUNPAYWAY", ML, yPos + 0.12);
+    const logoW = pdf.getTextWidth("RUNPAYWAY");
+    setFont("normal", 5.5, C.navy);
+    pdf.text("\u2122", ML + logoW, yPos + 0.08);
+    setFont("normal", 7.5, C.light);
+    pdf.text("Income Stability Assessment \u00B7 Model RP-1.0", ML + logoW + 0.15, yPos + 0.12);
+
+    // Right: ID + timestamp
+    const ts = record.issued_timestamp_utc || record.assessment_date_utc;
+    drawRight(`${record.record_id.slice(0, 8)}\u2026 \u00B7 ${ts}`, yPos + 0.12, 7.5, "normal", C.light);
+
+    yPos += 0.24;
+    pdf.setDrawColor(...C.sandDk);
+    pdf.setLineWidth(0.005);
+    pdf.line(ML, yPos, PW - MR, yPos);
+    return yPos + 0.2;
+  }
+
+  function drawPageFooter(pageNum: number) {
+    const footerY = PH - MB + 0.15;
+
+    // Confidentiality line
+    pdf.setDrawColor(...C.sandDk);
+    pdf.setLineWidth(0.004);
+    pdf.line(ML, footerY - 0.12, PW - MR, footerY - 0.12);
+
+    setFont("italic", 7, C.light);
+    pdf.text(`Confidential \u2014 Prepared for ${record.assessment_title || "Assessment Subject"}`, ML, footerY);
+
+    // Support contact
+    setFont("normal", 7, C.light);
+    pdf.text("support@runpayway.com", PW - MR, footerY, { align: "right" });
+
+    // Page number
+    setFont("normal", 7.5, C.light);
+    pdf.text(`Page ${pageNum} of ${TOTAL_PAGES}`, PW / 2, footerY + 0.18, { align: "center" });
+  }
+
+  // ── Data preparation ──
+  const subject = subjectName(record);
+  const possessive = subjectPossessive(record);
+  const keyFactors = getKeyFactors(record);
+  const ranked = getRankedFactors(record);
+  const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
+  const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
+  const evolutionSteps: string[] = JSON.parse(record.evolution_path_steps_payload);
+  const sectorMechanisms: string[] = JSON.parse(record.sector_mechanisms_payload);
+  const actionPlan: string[] = JSON.parse(record.action_plan_payload || "[]");
+  const evoIdx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 1 — Executive Assessment
+  // ════════════════════════════════════════════════════════════
+  y = drawHeader(MT);
+
+  // Executive summary
+  y = drawWrapped(record.page_1_key_insight_text, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.18;
+
+  // Score label
+  y = drawLabel("Income Stability Score\u2122", y);
+
+  // Large score number
+  setFont("bold", 40, C.navy);
+  pdf.text(String(record.final_score), ML, y + 0.05);
+  y += 0.42;
+
+  // Band
+  setFont("bold", 13, C.teal);
+  pdf.text(record.stability_band, ML, y);
+  y += 0.22;
+
+  // Metadata line
+  const ts = record.issued_timestamp_utc || record.assessment_date_utc;
+  setFont("normal", 8, C.light);
+  pdf.text(`Assessment ID: ${record.record_id.slice(0, 8)}\u2026`, ML, y);
+  pdf.text(`Generated: ${ts}`, ML + 2.0, y);
+  pdf.text("Model: RP-1.0", ML + 4.5, y);
+  y += 0.25;
+
+  // Spectrum bar
+  const barH = 0.08;
+  const bandW = CW / 4;
+  const barColors: RGB[] = [C.navy, [45, 45, 110], C.teal, [55, 155, 145]];
+  for (let i = 0; i < 4; i++) {
+    fillRect(ML + bandW * i, y, bandW, barH, barColors[i]);
+  }
+  // White dividers
+  pdf.setDrawColor(255, 255, 255);
+  pdf.setLineWidth(0.01);
+  for (let d = 1; d < 4; d++) {
+    pdf.line(ML + bandW * d, y, ML + bandW * d, y + barH);
+  }
+
+  // Score position marker
+  const scorePos = Math.min(Math.max(record.final_score / 100, 0), 1);
+  const markerX = ML + scorePos * CW;
+  pdf.setFillColor(...C.white);
+  pdf.setDrawColor(...C.navy);
+  pdf.setLineWidth(0.015);
+  pdf.circle(markerX, y + barH / 2, 0.04, "FD");
+
+  y += barH + 0.08;
+
+  // Band labels
+  const bands = [
+    { label: "Limited", range: "0\u201339" },
+    { label: "Developing", range: "40\u201359" },
+    { label: "Established", range: "60\u201379" },
+    { label: "High", range: "80\u2013100" },
+  ];
+  for (let i = 0; i < bands.length; i++) {
+    const b = bands[i];
+    const isActive = b.label + " Stability" === record.stability_band;
+    const cx = ML + bandW * i + bandW / 2;
+
+    if (isActive) {
+      pdf.setDrawColor(...C.navy);
+      pdf.setLineWidth(0.012);
+      pdf.rect(ML + bandW * i + 0.04, y - 0.04, bandW - 0.08, 0.32, "S");
+    }
+
+    setFont(isActive ? "bold" : "normal", 7.5, isActive ? C.navy : C.light);
+    pdf.text(b.label, cx, y + 0.08, { align: "center" });
+    setFont(isActive ? "bold" : "normal", 6.5, isActive ? C.navy : C.light);
+    pdf.text(b.range, cx, y + 0.2, { align: "center" });
+  }
+  y += 0.38;
+
+  // Percentile
+  if (record.peer_stability_percentile_label) {
+    setFont("bold", 9.5, C.navy);
+    const percText = `${record.peer_stability_percentile_label} percentile`;
+    pdf.text(percText, ML, y);
+    const pw = pdf.getTextWidth(percText);
+    setFont("normal", 9.5, C.muted);
+    pdf.text(` within ${record.industry_sector}`, ML + pw, y);
+    y += 0.18;
+    y = drawWrapped(percentileExplanation(record), ML, y, CW, 8.5, "normal", C.muted, 1.5);
+    y += 0.08;
+  }
+
+  y = drawDivider(y);
+
+  // Profile
+  y = drawLabel("Profile", y);
+
+  const profileItems: [string, string][] = [];
+  if (record.assessment_title) profileItems.push(["Assessment Title", record.assessment_title]);
+  profileItems.push(
+    ["Classification", record.classification],
+    ["Structure", record.operating_structure],
+    ["Income Model", record.primary_income_model],
+    ["Revenue", record.revenue_structure],
+    ["Sector", record.industry_sector],
+  );
+
+  let profileStartIdx = 0;
+  if (record.assessment_title) {
+    setFont("normal", 9, C.light);
+    pdf.text("Assessment Title: ", ML, y);
+    const lw = pdf.getTextWidth("Assessment Title: ");
+    setFont("bold", 9, C.navy);
+    pdf.text(record.assessment_title, ML + lw, y);
+    y += 0.2;
+    profileStartIdx = 1;
+  }
+
+  const profilePairs = profileItems.slice(profileStartIdx);
+  for (let i = 0; i < profilePairs.length; i += 2) {
+    const [lLabel, lVal] = profilePairs[i];
+    setFont("normal", 9, C.light);
+    pdf.text(`${lLabel}: `, ML, y);
+    const lw = pdf.getTextWidth(`${lLabel}: `);
+    setFont("bold", 9, C.navy);
+    pdf.text(lVal, ML + lw, y);
+
+    if (i + 1 < profilePairs.length) {
+      const [rLabel, rVal] = profilePairs[i + 1];
+      const rx = ML + halfCW + 0.3;
+      setFont("normal", 9, C.light);
+      pdf.text(`${rLabel}: `, rx, y);
+      const rw = pdf.getTextWidth(`${rLabel}: `);
+      setFont("bold", 9, C.navy);
+      pdf.text(rVal, rx + rw, y);
+    }
+    y += 0.2;
+  }
+
+  y = drawDivider(y + 0.02);
+
+  // Key Structural Factors
+  y = drawLabel(`Key Structural Factors \u2014 ${subject}`, y);
+  y += 0.04;
+
+  const colX1 = ML;
+  const colX2 = ML + halfCW + 0.3;
+
+  // Positive column
+  let posY = y;
+  setFont("bold", 7.5, C.teal);
+  pdf.text("POSITIVE FACTORS", colX1, posY);
+  posY += 0.18;
+  const posItems = keyFactors.positive.length > 0 ? keyFactors.positive : ["No strong positive factors identified"];
+  for (const f of posItems) {
+    pdf.setFillColor(...C.teal);
+    pdf.circle(colX1 + 0.04, posY - 0.03, 0.025, "F");
+    setFont("normal", 8.5, keyFactors.positive.length > 0 ? C.navy : C.light);
+    pdf.text(f, colX1 + 0.12, posY);
+    posY += 0.2;
+  }
+
+  // Risks column
+  let riskY = y;
+  setFont("bold", 7.5, C.muted);
+  pdf.text("STRUCTURAL RISKS", colX2, riskY);
+  riskY += 0.18;
+  const riskItems = keyFactors.risks.length > 0 ? keyFactors.risks : ["No significant structural risks identified"];
+  for (const f of riskItems) {
+    pdf.setFillColor(...C.light);
+    pdf.circle(colX2 + 0.04, riskY - 0.03, 0.025, "F");
+    setFont("normal", 8.5, keyFactors.risks.length > 0 ? C.navy : C.light);
+    pdf.text(f, colX2 + 0.12, riskY);
+    riskY += 0.2;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 2 — Structural Analysis
+  // ════════════════════════════════════════════════════════════
+  pdf.addPage();
+  y = drawHeader(MT);
+
+  setFont("bold", 12, C.navy);
+  pdf.text("STRUCTURAL ANALYSIS", ML, y);
+  y += 0.25;
+
+  y = drawWrapped(record.page_2_key_insight_text, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.18;
+
+  // Income Structure Map
+  y = drawLabel(`Income Structure Map \u2014 ${subject}`, y);
+  y = drawWrapped(`${possessive} income comes from three types of sources.`, ML, y, CW, 8.5, "normal", C.muted, 1.5);
+  y += 0.12;
+
+  const incBars: { label: string; value: number; color: RGB }[] = [
+    { label: "Active Income", value: record.active_income_level, color: C.muted },
+    { label: "Semi-Persistent", value: record.semi_persistent_income_level, color: C.teal },
+    { label: "Persistent", value: record.persistent_income_level, color: C.navy },
+  ];
+  for (const bar of incBars) {
+    setFont("normal", 8.5, C.muted);
+    pdf.text(bar.label, ML, y);
+    setFont("bold", 8.5, C.navy);
+    pdf.text(`${bar.value}%`, PW - MR, y, { align: "right" });
+    y += 0.1;
+    fillRect(ML, y, CW, 0.09, C.sand);
+    const barW = Math.max(0.02, (bar.value / 100) * CW);
+    fillRect(ML, y, barW, 0.09, bar.color);
+    y += 0.2;
+  }
+
+  y = drawDivider(y + 0.06);
+
+  // Structural Indicators
+  y = drawLabel("Structural Indicators", y);
+  const indicators: [string, string][] = [
+    ["Income That Continues", record.income_persistence_label],
+    ["Number of Income Sources", record.income_source_diversity_label],
+    ["Income Already Scheduled", record.forward_revenue_visibility_label],
+    ["Monthly Income Variability", record.income_variability_label],
+    ["Dependence on Personal Work", record.active_labor_dependence_label],
+    ["Dependence on One Source", record.exposure_concentration_label],
+  ];
+  for (let i = 0; i < indicators.length; i++) {
+    const [label, value] = indicators[i];
+    if (i % 2 === 0) {
+      fillRect(ML, y - 0.1, CW, 0.28, C.sand);
+    }
+    setFont("normal", 8.5, C.muted);
+    pdf.text(label, ML + 0.1, y);
+    setFont("bold", 8.5, C.navy);
+    pdf.text(value, PW - MR - 0.1, y, { align: "right" });
+    y += 0.28;
+  }
+
+  y = drawDivider(y + 0.06);
+
+  // Structural Priority Map — ALL 6 factors
+  y = drawLabel(`Structural Priority Map \u2014 ${subject}`, y);
+  y = drawWrapped(`Factors ranked from strongest to weakest based on ${possessive} assessment.`, ML, y, CW, 8, "normal", C.muted, 1.5);
+  y += 0.1;
+
+  for (let i = 0; i < ranked.length; i++) {
+    const f = ranked[i];
+    if (i === 0) fillRect(ML, y - 0.1, CW, 0.28, C.tealBg);
+    else if (i === ranked.length - 1) fillRect(ML, y - 0.1, CW, 0.28, C.grayBg);
+
+    const rankColor: RGB = i === 0 ? C.teal : i === ranked.length - 1 ? C.light : C.muted;
+    setFont("bold", 8.5, rankColor);
+    pdf.text(String(i + 1), ML + 0.1, y);
+    setFont("normal", 8.5, C.navy);
+    pdf.text(f.label, ML + 0.3, y);
+    const levelColor: RGB = f.level === "Strong" ? C.teal : f.level === "Weak" ? C.muted : C.light;
+    setFont("bold", 8, levelColor);
+    pdf.text(f.level, PW - MR - 0.1, y, { align: "right" });
+    y += 0.28;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 3 — Diagnosis & Benchmarks
+  // ════════════════════════════════════════════════════════════
+  pdf.addPage();
+  y = drawHeader(MT);
+
+  setFont("bold", 12, C.navy);
+  pdf.text("DIAGNOSIS & BENCHMARKS", ML, y);
+  y += 0.25;
+
+  // System Diagnosis
+  y = drawLabel(`System Diagnosis \u2014 ${subject}`, y);
+
+  // Paragraph 1: classification
+  const diag1 = `${subject} operates mainly as a ${record.labor_asset_position_label} income system in the ${record.industry_sector} sector.`;
+  y = drawWrapped(diag1, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.08;
+
+  // Paragraph 2: income mix
+  const diag2 = `Income mainly comes from ${activeIncomeDependence(record)}. The system shows ${indicatorStrengthSummary(record)}.`;
+  y = drawWrapped(diag2, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.08;
+
+  // Paragraph 3: constraint
+  const diag3 = `Because ${record.primary_constraint_label} is limited, stability depends on continuing to generate new work.`;
+  y = drawWrapped(diag3, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.08;
+
+  y = drawDivider(y);
+
+  // Industry Benchmark
+  y = drawLabel(`${record.industry_sector} Stability Benchmark`, y);
+  const benchRows: [string, string, boolean][] = [
+    [`Average ${record.industry_sector} Stability Score`, String(bench.avgScore), false],
+    ["Top 20% Stability Range", `${bench.top20Range}+`, false],
+    ["Your Score", String(record.final_score), true],
+    ["Distance From Top Stability Tier", `${bench.distance} points`, false],
+  ];
+
+  // Table border
+  pdf.setDrawColor(...C.sandDk);
+  pdf.setLineWidth(0.005);
+  const tableTop = y - 0.1;
+  const rowH = 0.3;
+  pdf.rect(ML, tableTop, CW, rowH * benchRows.length, "S");
+
+  for (let i = 0; i < benchRows.length; i++) {
+    const [label, value, highlight] = benchRows[i];
+    const rowY = tableTop + i * rowH;
+    if (i % 2 === 0) fillRect(ML + 0.003, rowY + 0.003, CW - 0.006, rowH - 0.003, C.sand);
+    // Row divider
+    if (i > 0) {
+      pdf.setDrawColor(...C.sandDk);
+      pdf.setLineWidth(0.003);
+      pdf.line(ML, rowY, PW - MR, rowY);
+    }
+    setFont("normal", 8.5, C.muted);
+    pdf.text(label, ML + 0.12, rowY + 0.19);
+    setFont("bold", 9, highlight ? C.purple : C.navy);
+    pdf.text(value, PW - MR - 0.12, rowY + 0.19, { align: "right" });
+  }
+  y = tableTop + benchRows.length * rowH + 0.18;
+
+  // Drivers
+  y = drawLabel(`Drivers Supporting ${possessive} Stability`, y);
+  const drivers = [record.driver_1_label, record.driver_2_label, record.driver_3_label];
+  let dx = ML;
+  for (const d of drivers) {
+    setFont("bold", 8, C.navy);
+    const dw = pdf.getTextWidth(d) + 0.2;
+    fillRect(dx, y - 0.07, dw, 0.24, C.sand);
+    pdf.text(d, dx + 0.1, y + 0.05);
+    dx += dw + 0.1;
+  }
+  y += 0.35;
+
+  y = drawDivider(y);
+
+  // Primary Constraint
+  y = drawLabel(`Primary Structural Constraint \u2014 ${subject}`, y);
+  setFont("bold", 10, C.navy);
+  pdf.text(record.primary_constraint_label, ML, y);
+  y += 0.22;
+  y = drawWrapped(riskData.mechanism, ML, y, CW, 8.5, "normal", C.muted, 1.5);
+  y += 0.06;
+  y = drawWrapped(riskData.impact, ML, y, CW, 8.5, "normal", C.muted, 1.5);
+  y += 0.12;
+
+  // Projected Score (if available and different)
+  if (record.projected_final_score && record.projected_final_score !== record.final_score) {
+    y = drawDivider(y);
+    y = drawLabel("Projected Score with Structural Improvements", y);
+    setFont("bold", 9.5, C.muted);
+    pdf.text("Current Score: ", ML, y);
+    let projX = ML + pdf.getTextWidth("Current Score: ");
+    setFont("bold", 9.5, C.navy);
+    pdf.text(String(record.final_score), projX, y);
+
+    setFont("bold", 9.5, C.muted);
+    pdf.text("Projected Score: ", ML + 2.5, y);
+    projX = ML + 2.5 + pdf.getTextWidth("Projected Score: ");
+    setFont("bold", 9.5, C.teal);
+    pdf.text(`${record.projected_final_score} (${record.projected_stability_band})`, projX, y);
+    y += 0.25;
+  }
+
+  // ════════════════════════════════════════════════════════════
+  // PAGE 4 — Improvement Path & Governance
+  // ════════════════════════════════════════════════════════════
+  pdf.addPage();
+  y = drawHeader(MT);
+
+  setFont("bold", 12, C.navy);
+  pdf.text("IMPROVEMENT PATH & GOVERNANCE", ML, y);
+  y += 0.25;
+
+  y = drawWrapped(record.page_3_key_insight_text, ML, y, CW, 9.5, "normal", C.muted, 1.6);
+  y += 0.12;
+
+  // Improvement Opportunities
+  y = drawLabel(`Improvement Opportunities \u2014 ${subject}`, y);
+  y = drawWrapped(record.structural_improvement_path_text, ML, y, CW, 8.5, "normal", C.muted, 1.5);
+  y += 0.12;
+
+  // 90-Day Action Plan
+  if (actionPlan.length > 0) {
+    y = drawLabel(`90-Day Action Plan \u2014 ${subject}`, y);
+    y = drawWrapped(
+      `Three priority actions for ${subject} based on the primary constraint: ${record.primary_constraint_label}`,
+      ML, y, CW, 8, "normal", C.muted, 1.5
+    );
+    y += 0.08;
+
+    for (let i = 0; i < actionPlan.length; i++) {
+      setFont("bold", 9, C.teal);
+      pdf.text(`${i + 1}.`, ML, y);
+      const actionLines = textLines(actionPlan[i], CW - 0.3, 8.5, "normal");
+      setFont("normal", 8.5, C.navy);
+      const spacing = (8.5 / 72) * 1.5;
+      for (let j = 0; j < actionLines.length; j++) {
+        pdf.text(actionLines[j], ML + 0.25, y + j * spacing);
+      }
+      y += actionLines.length * spacing + 0.06;
+    }
+
+    // Disclaimer
+    y = drawWrapped(
+      `These actions are based on structural patterns in ${record.industry_sector} for income systems where ${record.primary_constraint_label} is the primary limitation. They are illustrative structural examples and do not constitute financial, legal, or investment advice.`,
+      ML, y + 0.02, CW, 7.5, "italic", C.light, 1.4
+    );
+    y += 0.06;
+  }
+
+  y = drawDivider(y);
+
+  // Sector Evolution Path
+  y = drawLabel("Sector Evolution Path", y);
+  let evX = ML;
+  for (let i = 0; i < evolutionSteps.length; i++) {
+    const step = evolutionSteps[i];
+    const active = i === evoIdx;
+    const past = i < evoIdx;
+
+    setFont("bold", 7.5, active || past ? C.white : C.light);
+    const sw = pdf.getTextWidth(step) + 0.18;
+    const bgColor: RGB = active ? C.navy : past ? C.teal : C.sand;
+    fillRect(evX, y - 0.08, sw, 0.22, bgColor);
+    pdf.text(step, evX + 0.09, y + 0.04);
+    evX += sw + 0.04;
+
+    if (i < evolutionSteps.length - 1) {
+      setFont("normal", 8, C.light);
+      pdf.text("\u2192", evX, y + 0.04);
+      evX += 0.16;
+    }
+  }
+  y += 0.28;
+  setFont("normal", 8, C.muted);
+  pdf.text("Current Stage: ", ML, y);
+  const csw = pdf.getTextWidth("Current Stage: ");
+  setFont("bold", 8, C.navy);
+  pdf.text(record.current_evolution_stage_label, ML + csw, y);
+  y += 0.2;
+
+  // Sector Stability Mechanisms
+  y = drawLabel("Sector Stability Mechanisms", y + 0.06);
+  for (const m of sectorMechanisms) {
+    setFont("normal", 8.5, C.muted);
+    pdf.text(`\u2022  ${m}`, ML + 0.05, y);
+    y += 0.17;
+  }
+
+  y = drawDivider(y + 0.06);
+
+  // Methodology
+  y = drawLabel("Methodology", y);
+  y = drawWrapped(
+    "The Income Stability Score\u2122 evaluates the structural stability of income at a specific point in time. Six structural factors are assessed under Model RP-1.0 using fixed, deterministic scoring criteria. The model does not evaluate investment performance, creditworthiness, or future financial outcomes.",
+    ML, y, CW, 8, "normal", C.muted, 1.5
+  );
+  y += 0.06;
+
+  // Disclosure
+  y = drawDivider(y);
+  y = drawLabel("Disclosure", y);
+  y = drawWrapped(
+    "This report is created by a fixed classification model. It is not financial advice. The Income Stability Score is not a credit score, not a measure of net worth, and not a prediction of future income.",
+    ML, y, CW, 8, "normal", C.light, 1.5
+  );
+  y += 0.06;
+
+  y = drawDivider(y);
+
+  // Official Classification Record
+  y = drawLabel("Official Classification Record", y);
+  const recordFields: [string, string][] = [
+    ["Record ID", record.record_id],
+    ["Model", record.model_version || "RP-1.0 | Version 1.0"],
+    ["Date", record.issued_timestamp_utc || record.assessment_date_utc],
+    ["Score", `${record.final_score} \u2014 ${record.stability_band}`],
+    ["Auth Code", record.authorization_code],
+    ["Registry", record.registry_visibility === "public" ? "Publicly Listed" : "Private Record"],
+  ];
+  for (const [label, value] of recordFields) {
+    setFont("normal", 8, C.light);
+    pdf.text(label, ML, y);
+    setFont("normal", 8, C.navy);
+    pdf.setFont("courier", "normal");
+    pdf.setFontSize(7.5);
+    pdf.text(value, ML + 0.7, y);
+    y += 0.17;
+  }
+  y += 0.06;
+
+  // QR Code for verification
+  const verifyUrl = `https://runpayway.com/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+  try {
+    const qrDataUrl = await QRCode.toDataURL(verifyUrl, { width: 200, margin: 1, color: { dark: "#0E1A2B", light: "#ffffff" } });
+    const qrSize = 0.8;
+    const qrX = PW - MR - qrSize;
+    pdf.addImage(qrDataUrl, "PNG", qrX, y - 0.05, qrSize, qrSize);
+
+    setFont("normal", 8, C.muted);
+    pdf.text("Verify this report at", ML, y + 0.1);
+    setFont("bold", 8.5, C.navy);
+    pdf.text("RunPayway\u2122.com/verify", ML, y + 0.26);
+    setFont("normal", 7.5, C.muted);
+    pdf.text("using the Record ID and Authorization Code,", ML, y + 0.42);
+    pdf.text("or scan the QR code.", ML, y + 0.55);
+  } catch {
+    // Fallback if QR generation fails
+    setFont("normal", 8, C.muted);
+    pdf.text("Verify this report at ", ML, y);
+    const vw = pdf.getTextWidth("Verify this report at ");
+    setFont("bold", 8.5, C.navy);
+    pdf.text("RunPayway\u2122.com/verify", ML + vw, y);
+    y += 0.16;
+    setFont("normal", 8, C.muted);
+    pdf.text("using the Record ID and Authorization Code.", ML, y);
+  }
+
+  // Model reference footer
+  y = PH - MB - 0.15;
+  pdf.setDrawColor(...C.sandDk);
+  pdf.setLineWidth(0.004);
+  pdf.line(ML, y, PW - MR, y);
+  y += 0.14;
+  setFont("normal", 7.5, C.light);
+  pdf.text("RunPayway\u2122 Structural Stability Model RP-1.0", PW / 2, y, { align: "center" });
+
+  // ════════════════════════════════════════════════════════════
+  // ALL PAGES — Add page footers (confidentiality + page numbers)
+  // ════════════════════════════════════════════════════════════
+  for (let p = 1; p <= TOTAL_PAGES; p++) {
+    pdf.setPage(p);
+    drawPageFooter(p);
+  }
+
+  // ── Save ──
+  const shortId = record.record_id.slice(0, 8);
   pdf.save(`RunPayway-Income-Stability-Report-${shortId}.pdf`);
 }
 
@@ -452,10 +1082,11 @@ export default function ReviewPage() {
   const keyFactors = getKeyFactors(record);
   const rankedFactors = getRankedFactors(record);
   const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
+  const evoIdx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
 
   const handleDownload = async () => {
     setDownloading(true);
-    try { await downloadPDF(record.record_id); } finally { setDownloading(false); }
+    try { await downloadPDF(record); } finally { setDownloading(false); }
   };
 
   return (
@@ -485,7 +1116,7 @@ export default function ReviewPage() {
           {/* Metadata */}
           <div style={{ ...T.caption, color: B.light, marginTop: R.paraMb, display: "flex", flexWrap: "wrap", gap: "0 24px" }}>
             <span>Assessment ID: {record.record_id.slice(0, 8)}…</span>
-            <span>Generated: {record.assessment_date_utc}</span>
+            <span>Generated: {record.issued_timestamp_utc || record.assessment_date_utc}</span>
             <span>Model: RP-1.0</span>
           </div>
         </div>
@@ -494,6 +1125,19 @@ export default function ReviewPage() {
         <div style={{ marginBottom: R.sectionGap }}>
           <div style={{ position: "relative", marginBottom: R.itemGap }}>
             <div style={{ height: 8, borderRadius: 99, background: B.gradient }} />
+            {/* Score position marker */}
+            <div style={{
+              position: "absolute",
+              left: `${Math.min(Math.max(record.final_score, 0), 100)}%`,
+              top: -3,
+              width: 14,
+              height: 14,
+              borderRadius: 99,
+              backgroundColor: "#ffffff",
+              border: `2px solid ${B.navy}`,
+              transform: "translateX(-50%)",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+            }} />
             {[40, 60, 80].map((pos) => (
               <div key={pos} style={{ position: "absolute", left: `${pos}%`, top: 0, width: 1, height: 8, backgroundColor: "rgba(255,255,255,0.4)" }} />
             ))}
@@ -593,7 +1237,7 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* ==================== PAGE 2 — Here's Why ==================== */}
+      {/* ==================== PAGE 2 — Structural Analysis ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Structural Analysis
@@ -602,7 +1246,7 @@ export default function ReviewPage() {
           {record.page_2_key_insight_text}
         </p>
 
-        {/* Income Structure Map */}
+        {/* Income Structure Map — color-coded bars */}
         <Label>Income Structure Map — {subject}</Label>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
           {possessive} income comes from three types of sources.
@@ -647,7 +1291,7 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Structural Priority Map */}
+        {/* Structural Priority Map — ALL 6 factors */}
         <Label>Structural Priority Map — {subject}</Label>
         <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
           Factors ranked from strongest to weakest based on {possessive} assessment.
@@ -663,7 +1307,7 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* ==================== PAGE 3 — Here's What's at Risk ==================== */}
+      {/* ==================== PAGE 3 — Diagnosis & Benchmarks ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Diagnosis &amp; Benchmarks
@@ -723,9 +1367,21 @@ export default function ReviewPage() {
           <p>{riskData.mechanism}</p>
           <p>{riskData.impact}</p>
         </div>
+
+        {/* Projected Score */}
+        {record.projected_final_score && record.projected_final_score !== record.final_score && (
+          <>
+            <SectionDivider />
+            <Label>Projected Score with Structural Improvements</Label>
+            <div style={{ ...T.body, display: "flex", gap: 32 }}>
+              <span style={{ color: B.muted }}>Current: <strong style={{ color: B.navy }}>{record.final_score}</strong></span>
+              <span style={{ color: B.muted }}>Projected: <strong style={{ color: B.teal }}>{record.projected_final_score} ({record.projected_stability_band})</strong></span>
+            </div>
+          </>
+        )}
       </ReportPage>
 
-      {/* ==================== PAGE 4 — Here's What to Do ==================== */}
+      {/* ==================== PAGE 4 — Improvement Path & Governance ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Improvement Path &amp; Governance
@@ -774,9 +1430,8 @@ export default function ReviewPage() {
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: R.itemGap }}>
             {evolutionSteps.map((step, i) => {
-              const idx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
-              const active = i === idx;
-              const past = i < idx;
+              const active = i === evoIdx;
+              const past = i < evoIdx;
               return (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: R.itemGap }}>
                   <span
@@ -836,8 +1491,8 @@ export default function ReviewPage() {
         <dl style={{ ...T.small, display: "flex", flexDirection: "column", gap: R.itemGap, marginTop: R.paraMb }}>
           {[
             ["Record ID", record.record_id],
-            ["Model", record.model_version],
-            ["Date", record.assessment_date_utc],
+            ["Model", record.model_version || "RP-1.0 | Version 1.0"],
+            ["Date", record.issued_timestamp_utc || record.assessment_date_utc],
             ["Score", `${record.final_score} — ${record.stability_band}`],
             ["Auth Code", record.authorization_code],
             ["Registry", record.registry_visibility === "public" ? "Publicly Listed" : "Private Record"],
