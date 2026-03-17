@@ -367,14 +367,14 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>1</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                Your Score at a Glance
+                Score, Classification &amp; Profile
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
               Executive Assessment
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              Within seconds of completing your assessment, you see exactly where you stand — your score, your stability classification, and how you rank against others in your industry. No ambiguity. One number that tells you how resilient your income actually is.
+              Your Income Stability Score™ (0–100), stability classification, industry percentile ranking, income profile summary, and key structural factors — positive factors and structural risks identified from your responses.
             </p>
           </div>
 
@@ -519,14 +519,14 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>2</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                What&#39;s Driving Your Score
+                Structure, Indicators &amp; Diagnosis
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
               Structural Analysis
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              This is where you discover why your score is what it is. Each of the six structural factors is ranked from strongest to weakest — showing you exactly where your income structure is solid and where it's exposed. Most people find at least one surprise here.
+              Income structure map (active, semi-persistent, persistent income breakdown), six structural indicators, structural priority map ranking your factors strongest to weakest, system diagnosis, industry stability benchmark, and the drivers supporting your score.
             </p>
           </div>
 
@@ -627,14 +627,14 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>3</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                What to Fix First
+                Constraint, Action Plan &amp; Record
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
               Improvement Path &amp; Governance
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              Your report doesn&#39;t just diagnose — it prescribes. You get a personalized 90-day action plan targeting your primary structural constraint, plus a verifiable assessment record that proves your income stability to anyone who needs to see it.
+              Primary structural constraint with mechanism and impact analysis, improvement opportunities, personalized 90-day action plan, sector evolution path with current stage, sector stability mechanisms, methodology disclosure, and official classification record with verification credentials.
             </p>
           </div>
 
@@ -654,15 +654,47 @@ export default function SampleReportPage() {
               transition: "opacity 700ms ease 200ms, transform 700ms ease 200ms",
             }}
           >
-            {/* Blurred preview content */}
-            <div style={{ filter: "blur(6px)", opacity: 0.4, pointerEvents: "none", userSelect: "none" }}>
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Primary Structural Constraint</div>
-              <div style={{ fontSize: 13, color: B.navy, fontWeight: 600, marginBottom: 6 }}>Income Persistence</div>
-              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Improvement Opportunities</div>
-              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores.</div>
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 8 }}>Official Classification Record</div>
-              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>Record ID: a7e2f1b3-94c1-4d8e... Model: RP-1.0 Score: 78 — Established Stability</div>
+            {/* Blurred preview content — mirrors actual Page 3 structure */}
+            <div style={{ filter: "blur(5px)", opacity: 0.35, pointerEvents: "none", userSelect: "none" }}>
+              {/* Header bar */}
+              <div style={{ height: 3, borderRadius: 6, background: B.gradient, marginBottom: 16 }} />
+
+              {/* Primary Constraint */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
+              <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 6 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>Without structural changes, a 90-day work stoppage would result in significant income disruption.</div>
+              <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
+
+              {/* Improvement Opportunities */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Improvement Opportunities</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 12 }}>Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores.</div>
+
+              {/* 90-Day Action Plan */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>90-Day Action Plan</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 14 }}>
+                <div style={{ fontSize: 11, color: B.navy }}>1. Convert two existing project clients to monthly retainer agreements.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>2. Package one repeatable service as a subscription offering.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>3. Establish 90-day forward pipeline visibility through advance booking.</div>
+              </div>
+              <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
+
+              {/* Evolution Path */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Sector Evolution Path</div>
+              <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+                {["Project-Based", "Retainer Mix", "Recurring Core", "Subscription-Led"].map((s, i) => (
+                  <span key={s} style={{ fontSize: 9, padding: "3px 8px", borderRadius: 4, background: i === 1 ? B.navy : B.sand, color: i === 1 ? "#fff" : B.light }}>{s}</span>
+                ))}
+              </div>
+              <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
+
+              {/* Official Record */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Official Classification Record</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                <div style={{ fontSize: 10, color: B.muted }}>Record ID: a7e2f1b3-94c1-4d8e-b2f6-...</div>
+                <div style={{ fontSize: 10, color: B.muted }}>Model: RP-1.0 | Score: 78 — Established Stability</div>
+                <div style={{ fontSize: 10, color: B.muted }}>Auth Code: RPAC-7E2F-1B3A | Registry: Publicly Listed</div>
+              </div>
             </div>
 
             {/* Lock overlay with CTA */}
