@@ -1774,18 +1774,17 @@ const t = e.currentTarget;
           <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
             {/* Precision gauge — SVG instrument visual */}
             {(() => {
-              const R = 210; // outer arc radius
+              const C = 260; // center of viewBox
+              const VB = 520; // viewBox size — room for labels
+              const R = 190; // outer arc radius
               const circum = 2 * Math.PI * R;
               const scorePercent = 0.78;
-              // Band boundaries at 39%, 59%, 79% of arc
               const bands = [0.39, 0.59, 0.79];
-              // Endpoint position (78% around from top)
               const endAngle = -90 + 360 * scorePercent;
               const endRad = endAngle * Math.PI / 180;
-              const endX = 240 + Math.cos(endRad) * R;
-              const endY = 240 + Math.sin(endRad) * R;
-              // Scale label positions around outer edge
-              // Labels at band thresholds only — no 0 or 100
+              const endX = C + Math.cos(endRad) * R;
+              const endY = C + Math.sin(endRad) * R;
+              const tickOuterR = R + 14;
               const scaleLabels = [
                 { value: 40, angle: -90 + 360 * 0.40 },
                 { value: 60, angle: -90 + 360 * 0.60 },
@@ -1794,88 +1793,82 @@ const t = e.currentTarget;
 
               return (
                 <>
-                  {/* Slowly rotating tick ring */}
-                  <div className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }}>
-                    <svg viewBox="0 0 480 480" fill="none" style={{ width: "100%", height: "100%" }}>
-                      {Array.from({ length: 100 }, (_, i) => {
-                        const angle = (i * 3.6 - 90) * Math.PI / 180;
-                        const isLong = i % 10 === 0;
-                        const isMid = i % 5 === 0 && !isLong;
-                        const isBand = bands.some(b => Math.round(b * 100) === i);
-                        const outerR = 234;
-                        const innerR = isBand ? 216 : isLong ? 220 : isMid ? 224 : 227;
-                        const inScored = i <= 78;
-                        const baseOpacity = isBand ? 0.25 : isLong ? 0.18 : isMid ? 0.10 : 0.05;
-                        const opacity = inScored ? baseOpacity * 1.4 : baseOpacity * 0.5;
-                        const x1 = 240 + Math.cos(angle) * outerR;
-                        const y1 = 240 + Math.sin(angle) * outerR;
-                        const x2 = 240 + Math.cos(angle) * innerR;
-                        const y2 = 240 + Math.sin(angle) * innerR;
-                        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={isBand ? "#1F6D7A" : "#4B3FAE"} strokeWidth={isBand ? 1.5 : isLong ? 1.5 : 0.75} opacity={opacity} />;
-                      })}
-                    </svg>
-                  </div>
+                  {/* Combined gauge SVG */}
+                  <svg className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }} viewBox={`0 0 ${VB} ${VB}`} fill="none">
 
-                  {/* Main gauge SVG — static */}
-                  <svg className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }} viewBox="0 0 480 480" fill="none">
+                    {/* Tick marks — even opacity, scored range slightly emphasized */}
+                    {Array.from({ length: 100 }, (_, i) => {
+                      const angle = (i * 3.6 - 90) * Math.PI / 180;
+                      const isLong = i % 10 === 0;
+                      const isMid = i % 5 === 0 && !isLong;
+                      const isBand = bands.some(b => Math.round(b * 100) === i);
+                      const oR = tickOuterR;
+                      const iR = isBand ? oR - 16 : isLong ? oR - 12 : isMid ? oR - 8 : oR - 5;
+                      const inScored = i <= 78;
+                      const opacity = isBand ? 0.22 : isLong ? (inScored ? 0.16 : 0.10) : isMid ? (inScored ? 0.09 : 0.06) : (inScored ? 0.05 : 0.03);
+                      return (
+                        <line key={i}
+                          x1={C + Math.cos(angle) * oR} y1={C + Math.sin(angle) * oR}
+                          x2={C + Math.cos(angle) * iR} y2={C + Math.sin(angle) * iR}
+                          stroke={isBand ? "#1F6D7A" : "#0E1A2B"} strokeWidth={isBand ? 1.2 : isLong ? 1 : 0.5} opacity={opacity}
+                        />
+                      );
+                    })}
+
                     {/* Faint full-circle track */}
-                    <circle cx="240" cy="240" r={R} stroke="#0E1A2B" strokeWidth="1" opacity="0.04" />
+                    <circle cx={C} cy={C} r={R} stroke="#0E1A2B" strokeWidth="1" opacity="0.04" />
 
                     {/* Score arc — animated draw-in */}
                     <circle
-                      cx="240" cy="240" r={R}
+                      cx={C} cy={C} r={R}
                       stroke="url(#heroScoreArc)" strokeWidth="2.5" strokeLinecap="round"
                       opacity="0.32"
                       strokeDasharray={`${circum * scorePercent} ${circum * (1 - scorePercent)}`}
                       strokeDashoffset={hasAnimated ? 0 : circum * scorePercent}
-                      transform="rotate(-90 240 240)"
+                      transform={`rotate(-90 ${C} ${C})`}
                       style={{ transition: "stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.6s" }}
                     />
 
                     {/* Score endpoint marker */}
-                    <circle
-                      cx={endX} cy={endY} r="4"
-                      fill="#4B3FAE"
+                    <circle cx={endX} cy={endY} r="3.5" fill="#4B3FAE"
                       opacity={hasAnimated ? 0.35 : 0}
                       style={{ transition: "opacity 400ms ease 2.2s" }}
                     />
-                    <circle
-                      cx={endX} cy={endY} r="1.5"
-                      fill="#ffffff"
+                    <circle cx={endX} cy={endY} r="1.5" fill="#ffffff"
                       opacity={hasAnimated ? 0.8 : 0}
                       style={{ transition: "opacity 400ms ease 2.2s" }}
                     />
 
-                    {/* Band boundary markers on arc — small notches at 39, 59, 79 */}
+                    {/* Band boundary notches on arc */}
                     {bands.map((b) => {
                       const a = (-90 + 360 * b) * Math.PI / 180;
-                      const ix = 240 + Math.cos(a) * (R - 6);
-                      const iy = 240 + Math.sin(a) * (R - 6);
-                      const ox = 240 + Math.cos(a) * (R + 6);
-                      const oy = 240 + Math.sin(a) * (R + 6);
-                      return <line key={b} x1={ix} y1={iy} x2={ox} y2={oy} stroke="#1F6D7A" strokeWidth="0.75" opacity="0.15" />;
+                      return (
+                        <line key={b}
+                          x1={C + Math.cos(a) * (R - 5)} y1={C + Math.sin(a) * (R - 5)}
+                          x2={C + Math.cos(a) * (R + 5)} y2={C + Math.sin(a) * (R + 5)}
+                          stroke="#1F6D7A" strokeWidth="0.75" opacity="0.14"
+                        />
+                      );
                     })}
 
-                    {/* Scale labels at band thresholds — with connecting lines */}
+                    {/* Scale labels — with connecting hairline */}
                     {scaleLabels.map(({ value, angle: a }) => {
                       const rad = a * Math.PI / 180;
-                      const tickOuterR = 234;
-                      const lineEndR = tickOuterR + 8;
-                      const labelR = tickOuterR + 18;
-                      const lx = 240 + Math.cos(rad) * labelR;
-                      const ly = 240 + Math.sin(rad) * labelR;
-                      const lx1 = 240 + Math.cos(rad) * tickOuterR;
-                      const ly1 = 240 + Math.sin(rad) * tickOuterR;
-                      const lx2 = 240 + Math.cos(rad) * lineEndR;
-                      const ly2 = 240 + Math.sin(rad) * lineEndR;
+                      const labelR = tickOuterR + 16;
                       const inScored = value <= 78;
                       return (
                         <g key={value}>
-                          <line x1={lx1} y1={ly1} x2={lx2} y2={ly2} stroke="#0E1A2B" strokeWidth="0.5" opacity={inScored ? 0.12 : 0.06} />
-                          <text x={lx} y={ly} textAnchor="middle" dominantBaseline="central"
-                            fontSize="8" fontWeight="600" letterSpacing="0.04em"
-                            fill={inScored ? "#0E1A2B" : "#9CA3AF"}
-                            opacity={inScored ? 0.25 : 0.16}
+                          <line
+                            x1={C + Math.cos(rad) * tickOuterR} y1={C + Math.sin(rad) * tickOuterR}
+                            x2={C + Math.cos(rad) * (tickOuterR + 6)} y2={C + Math.sin(rad) * (tickOuterR + 6)}
+                            stroke="#0E1A2B" strokeWidth="0.5" opacity={inScored ? 0.10 : 0.05}
+                          />
+                          <text
+                            x={C + Math.cos(rad) * labelR} y={C + Math.sin(rad) * labelR}
+                            textAnchor="middle" dominantBaseline="central"
+                            fontSize="9" fontWeight="500" letterSpacing="0.02em"
+                            fill="#0E1A2B"
+                            opacity={inScored ? 0.20 : 0.10}
                             fontFamily="system-ui, -apple-system, sans-serif"
                           >{value}</text>
                         </g>
@@ -1883,41 +1876,37 @@ const t = e.currentTarget;
                     })}
 
                     {/* Structural rings */}
-                    <circle cx="240" cy="240" r="168" stroke="url(#heroRingMid)" strokeWidth="0.5" opacity="0.07" />
-                    <circle cx="240" cy="240" r="126" stroke="url(#heroRingInner)" strokeWidth="0.5" opacity="0.06" />
-                    <circle cx="240" cy="240" r="84" stroke="#1F6D7A" strokeWidth="0.5" opacity="0.05" />
+                    <circle cx={C} cy={C} r="152" stroke="url(#heroRingMid)" strokeWidth="0.5" opacity="0.06" />
+                    <circle cx={C} cy={C} r="114" stroke="url(#heroRingInner)" strokeWidth="0.5" opacity="0.05" />
+                    <circle cx={C} cy={C} r="76" stroke="#1F6D7A" strokeWidth="0.5" opacity="0.04" />
 
                     {/* Bullseye target fills */}
-                    <circle cx="240" cy="240" r="168" fill="url(#heroBullseyeOuter)" opacity="0.018" />
-                    <circle cx="240" cy="240" r="126" fill="url(#heroBullseyeMid)" opacity="0.022" />
-                    <circle cx="240" cy="240" r="84" fill="url(#heroBullseyeInner)" opacity="0.028" />
-                    <circle cx="240" cy="240" r="42" fill="#4B3FAE" opacity="0.035" />
+                    <circle cx={C} cy={C} r="152" fill="url(#heroBullseyeOuter)" opacity="0.015" />
+                    <circle cx={C} cy={C} r="114" fill="url(#heroBullseyeMid)" opacity="0.018" />
+                    <circle cx={C} cy={C} r="76" fill="url(#heroBullseyeInner)" opacity="0.022" />
+                    <circle cx={C} cy={C} r="38" fill="#4B3FAE" opacity="0.028" />
 
-                    {/* Crosshairs */}
-                    <line x1="240" y1="165" x2="240" y2="195" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
-                    <line x1="240" y1="285" x2="240" y2="315" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
-                    <line x1="165" y1="240" x2="195" y2="240" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
-                    <line x1="285" y1="240" x2="315" y2="240" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
-                    <line x1="193" y1="193" x2="205" y2="205" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
-                    <line x1="275" y1="193" x2="287" y2="205" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
-                    <line x1="193" y1="287" x2="205" y2="275" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
-                    <line x1="275" y1="287" x2="287" y2="275" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
+                    {/* Crosshairs — centered on new C */}
+                    <line x1={C} y1={C - 75} x2={C} y2={C - 45} stroke="#0E1A2B" strokeWidth="0.5" opacity="0.06" />
+                    <line x1={C} y1={C + 45} x2={C} y2={C + 75} stroke="#0E1A2B" strokeWidth="0.5" opacity="0.06" />
+                    <line x1={C - 75} y1={C} x2={C - 45} y2={C} stroke="#0E1A2B" strokeWidth="0.5" opacity="0.06" />
+                    <line x1={C + 45} y1={C} x2={C + 75} y2={C} stroke="#0E1A2B" strokeWidth="0.5" opacity="0.06" />
 
                     {/* Gradient definitions */}
                     <defs>
-                      <linearGradient id="heroScoreArc" gradientUnits="userSpaceOnUse" x1="240" y1="30" x2="30" y2="340">
+                      <linearGradient id="heroScoreArc" gradientUnits="userSpaceOnUse" x1={C} y1={C - R} x2={C - R} y2={C + R * 0.5}>
                         <stop offset="0%" stopColor="#0E1A2B" />
                         <stop offset="35%" stopColor="#2A2670" />
                         <stop offset="60%" stopColor="#4B3FAE" />
                         <stop offset="85%" stopColor="#2B5A6E" />
                         <stop offset="100%" stopColor="#1F6D7A" />
                       </linearGradient>
-                      <linearGradient id="heroRingMid" gradientUnits="userSpaceOnUse" x1="72" y1="240" x2="408" y2="240">
+                      <linearGradient id="heroRingMid" gradientUnits="userSpaceOnUse" x1={C - 152} y1={C} x2={C + 152} y2={C}>
                         <stop offset="0%" stopColor="#0E1A2B" />
                         <stop offset="50%" stopColor="#4B3FAE" />
                         <stop offset="100%" stopColor="#0E1A2B" />
                       </linearGradient>
-                      <linearGradient id="heroRingInner" gradientUnits="userSpaceOnUse" x1="114" y1="240" x2="366" y2="240">
+                      <linearGradient id="heroRingInner" gradientUnits="userSpaceOnUse" x1={C - 114} y1={C} x2={C + 114} y2={C}>
                         <stop offset="0%" stopColor="#4B3FAE" />
                         <stop offset="50%" stopColor="#1F6D7A" />
                         <stop offset="100%" stopColor="#4B3FAE" />
