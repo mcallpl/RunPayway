@@ -69,11 +69,9 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
         <div
           style={{
             position: "absolute",
-            top: mobile ? "auto" : -4,
-            bottom: mobile ? "100%" : "auto",
+            top: -4,
             right: 0,
-            paddingTop: mobile ? 0 : 36,
-            paddingBottom: mobile ? 8 : 0,
+            paddingTop: 36,
             zIndex: 10,
           }}
         >
@@ -372,7 +370,10 @@ export default function MarketingLayout({
             </>
           )}
 
-          {/* Mobile hamburger */}
+          {/* Mobile: flag + hamburger */}
+          {mobile && (
+            <LanguageSelector mobile={true} />
+          )}
           {mobile && (
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -469,10 +470,7 @@ export default function MarketingLayout({
                 </Link>
               ))}
             </nav>
-            <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-start" }}>
-              <LanguageSelector mobile={true} />
-            </div>
-            <div style={{ marginTop: 16 }}>
+            <div style={{ marginTop: 28 }}>
               <Link
                 href="/pricing"
                 onClick={() => setMenuOpen(false)}
