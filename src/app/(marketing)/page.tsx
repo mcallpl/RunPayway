@@ -865,9 +865,9 @@ function WhyIncomeStabilityMatters() {
     <section
       ref={ref}
       aria-label="Why Income Stability Matters"
-      className="relative navy-grain"
+      className="relative"
       style={{
-        backgroundColor: B.navy,
+        backgroundColor: "#163a42",
         paddingTop: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
         paddingBottom: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
         position: "relative",
@@ -875,8 +875,8 @@ function WhyIncomeStabilityMatters() {
       }}
     >
       {/* Ambient glows */}
-      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
@@ -1997,20 +1997,20 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* Hero → Dark section curve divider */}
+      {/* Hero → Teal section curve divider */}
       <div style={{ position: "relative", height: 0 }}>
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: mobile ? 60 : 120, display: "block" }}>
-          <path d="M0,120 L0,60 Q360,0 720,60 Q1080,120 1440,60 L1440,120 Z" fill="#0E1A2B" />
+        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
+          <path d="M0,180 L0,100 C240,30 480,0 720,50 C960,100 1200,30 1440,80 L1440,180 Z" fill="#163a42" />
         </svg>
       </div>
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
 
-      {/* Dark section → White curve divider */}
+      {/* Teal section → White curve divider */}
       <div style={{ position: "relative", height: 0 }}>
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: mobile ? 60 : 120, display: "block" }}>
-          <path d="M0,0 L0,60 Q360,120 720,60 Q1080,0 1440,60 L1440,0 Z" fill="#0E1A2B" />
+        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
+          <path d="M0,0 L0,80 C240,150 480,180 720,130 C960,80 1200,150 1440,100 L1440,0 Z" fill="#163a42" />
         </svg>
       </div>
 
