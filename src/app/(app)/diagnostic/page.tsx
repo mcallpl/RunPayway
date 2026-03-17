@@ -180,6 +180,7 @@ export default function DiagnosticPage() {
   const [transitioning, setTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -212,6 +213,13 @@ export default function DiagnosticPage() {
       else setCurrentQuestion(5);
     }
   }, [router]);
+
+  // Live elapsed timer
+  useEffect(() => {
+    if (showLoading) return;
+    const timer = setInterval(() => setElapsed((s) => s + 1), 1000);
+    return () => clearInterval(timer);
+  }, [showLoading]);
 
   // Processing step animation
   useEffect(() => {
@@ -421,8 +429,13 @@ export default function DiagnosticPage() {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 4 }}>
-            Review Your Answers
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
+              Review Your Answers
+            </div>
+            <span style={{ fontSize: 11, color: B.light, fontFeatureSettings: "'tnum'" }}>
+              {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")} · Avg 1:47
+            </span>
           </div>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
             Confirm before we generate your score
@@ -527,8 +540,12 @@ export default function DiagnosticPage() {
               Based on your previous 12 months
             </div>
           </div>
-          <div style={{ fontSize: 11, color: B.light }}>
-            Model RP-1.0
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 11, color: B.light, fontFeatureSettings: "'tnum'" }}>
+              {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
+            </span>
+            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.10)" }}>|</span>
+            <span style={{ fontSize: 11, color: B.light }}>Avg 1:47</span>
           </div>
         </div>
 
@@ -686,20 +703,25 @@ export default function DiagnosticPage() {
         }}
       >
         <button
-          onClick={() => goTo(Math.max(0, currentQuestion - 1))}
-          disabled={currentQuestion === 0}
+          onClick={() => {
+            if (currentQuestion === 0) {
+              router.push("/diagnostic-portal");
+            } else {
+              goTo(currentQuestion - 1);
+            }
+          }}
           style={{
             fontSize: 13,
             fontWeight: 500,
-            color: currentQuestion === 0 ? "rgba(14,26,43,0.20)" : B.muted,
+            color: B.muted,
             background: "none",
             border: "none",
-            cursor: currentQuestion === 0 ? "not-allowed" : "pointer",
+            cursor: "pointer",
             padding: "8px 0",
             transition: "color 160ms ease",
           }}
         >
-          Previous
+          {currentQuestion === 0 ? "Back to profile" : "Previous"}
         </button>
 
         <div style={{ display: "flex", gap: 12 }}>
