@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
 const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
@@ -172,6 +173,7 @@ const INDUSTRY_EXAMPLES = [
 function Disclaimer() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   return (
     <section
@@ -215,7 +217,7 @@ function Disclaimer() {
             textAlign: "center",
           }}
         >
-          Global Disclaimer
+          {t.home.disclaimerTitle}
         </h2>
 
         {/* Disclosure text */}
@@ -228,7 +230,7 @@ function Disclaimer() {
               marginBottom: 10,
             }}
           >
-            The <strong style={{ fontWeight: 500, color: "rgba(244,241,234,0.75)" }}>Income Stability Score™</strong> is a structural income assessment based on information provided by the user.
+            {t.home.disclaimerBody1}
           </p>
           <p
             className="text-[14px] md:text-[15px]"
@@ -237,7 +239,7 @@ function Disclaimer() {
               lineHeight: 1.7,
             }}
           >
-            It does not provide financial advice and does not predict future financial outcomes.
+            {t.home.disclaimerBody2}
           </p>
         </div>
       </div>
@@ -274,6 +276,7 @@ function Disclaimer() {
 function FinalCta() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   return (
     <section
@@ -320,7 +323,7 @@ function FinalCta() {
               margin: `0 auto ${S.h2mb}px auto`,
             }}
           >
-            Get Your Income Stability Score™
+            {t.home.ctaTitle}
           </h2>
 
           {/* Supporting line */}
@@ -333,7 +336,7 @@ function FinalCta() {
               margin: `0 auto ${S.subtextMb}px auto`,
             }}
           >
-            Stop guessing whether your income is stable. Know where your client concentration risk lies, how predictable your revenue actually is, and what to fix first.
+            {t.home.ctaBody}
           </p>
 
           {/* CTA Button */}
@@ -376,7 +379,7 @@ const t = e.currentTarget;
               }}
             >
               <span className="tick tick-navy" />
-              <span className="cta-label">Get My Income Stability Score™</span>
+              <span className="cta-label">{t.nav.getMyScoreFull}</span>
               <span className="cta-arrow cta-arrow-navy" />
             </Link>
           </div>
@@ -391,7 +394,7 @@ const t = e.currentTarget;
               marginBottom: 4,
             }}
           >
-            Single Assessment — $39
+            {t.home.ctaPrice}
           </p>
 
           {/* Microcopy */}
@@ -460,6 +463,7 @@ const t = e.currentTarget;
 function ModelGovernance() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   return (
     <section
@@ -492,7 +496,7 @@ function ModelGovernance() {
               marginBottom: S.h2mb,
             }}
           >
-            Model Governance
+            {t.home.governanceTitle}
           </h2>
 
           <div style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
@@ -559,28 +563,14 @@ function ModelGovernance() {
 function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   const faqItems = [
-    {
-      q: "What does the Income Stability Score\u2122 measure?",
-      a: "The score evaluates the structural stability of your income system across six factors — including income persistence, source diversity, and forward revenue visibility. It measures how your income is structured, not how much you earn.",
-    },
-    {
-      q: "How long does the assessment take?",
-      a: "The assessment takes under two minutes to complete. Your score and full report are delivered instantly.",
-    },
-    {
-      q: "What is included in the report?",
-      a: "Your five-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, a priority map ranking your six factors from strongest to weakest, sector benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint, and an official assessment record issued under Model RP-1.0.",
-    },
-    {
-      q: "Can I retake the assessment?",
-      a: "Yes. With the Annual Monitoring plan, you receive three assessments over 12 months to track how your income structure evolves. Single assessments can be purchased at any time.",
-    },
-    {
-      q: "How is my data handled?",
-      a: "Your assessment data is processed securely and used only to generate your report. Payment is processed through Stripe. We do not sell or share your personal information.",
-    },
+    { q: t.home.faq1Q, a: t.home.faq1A },
+    { q: t.home.faq2Q, a: t.home.faq2A },
+    { q: t.home.faq3Q, a: t.home.faq3A },
+    { q: t.home.faq4Q, a: t.home.faq4A },
+    { q: t.home.faq5Q, a: t.home.faq5A },
   ];
 
   return (
@@ -622,7 +612,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               marginBottom: S.h2mb,
             }}
           >
-            Frequently Asked Questions
+            {t.home.faqTitle}
           </h2>
           <p
             style={{
@@ -636,7 +626,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               marginBottom: S.subtextMb,
             }}
           >
-            What the score measures, what the report includes, and how your data is handled.
+            {t.home.faqSubtitle}
           </p>
         </div>
 
@@ -726,6 +716,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 function ScoreRegistry() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   const fields = [
     { label: "Registry ID", value: "RP-A7E2F1B3" },
@@ -855,6 +846,7 @@ e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
 function WhyIncomeStabilityMatters() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   return (
     <section
@@ -1075,7 +1067,7 @@ const t = e.currentTarget;
               onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
             >
               <span className="tick tick-white" />
-              <span className="cta-label">Get My Income Stability Score™</span>
+              <span className="cta-label">{t.nav.getMyScoreFull}</span>
               <span className="cta-arrow cta-arrow-white" />
             </Link>
           </div>
@@ -1089,6 +1081,7 @@ const t = e.currentTarget;
 /* PREVIEW YOUR SCORE REPORT — Financial Assessment Document            */
 /* ------------------------------------------------------------------ */
 function PreviewYourScoreReport() {
+  const { t } = useLanguage();
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
@@ -1340,6 +1333,7 @@ function FactorRow({ num, name, desc, icon, groupLabel, showGroupLabel, mobile }
 /* SCORING FACTORS — Model Input Framework                              */
 /* ------------------------------------------------------------------ */
 function ScoringFactors() {
+  const { t } = useLanguage();
   const { ref: sectionRef, visible } = useInView();
   const mobile = useMobile();
 
@@ -1432,6 +1426,7 @@ function ScoringFactors() {
 /* HOW IT WORKS                                                         */
 /* ------------------------------------------------------------------ */
 function HowItWorks() {
+  const { t } = useLanguage();
   const { ref, visible } = useInViewBidi(0.15);
   const mobile = useMobile();
 
@@ -1575,6 +1570,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
 /* HERO SECTION — Premium Financial Instrument                          */
 /* ------------------------------------------------------------------ */
 function HeroSection() {
+  const { t } = useLanguage();
   const [score, setScore] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [cardVisible, setCardVisible] = useState(false);
@@ -1672,7 +1668,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
               }}
             >
-              The first standardized score for income&nbsp;stability.
+              {t.home.heroTitle}
             </h1>
 
             <p
@@ -1689,7 +1685,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              You&#8217;ve built your income. Now measure how resilient it actually&nbsp;is.
+              {t.home.heroSubtitle}
             </p>
 
             <p
@@ -1767,7 +1763,7 @@ const t = e.currentTarget;
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 <span className="tick tick-white" />
-                <span className="cta-label">Get My Income Stability Score™</span>
+                <span className="cta-label">{t.nav.getMyScoreFull}</span>
                 <span className="cta-arrow cta-arrow-white" />
               </Link>
 
