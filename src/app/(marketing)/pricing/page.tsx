@@ -474,38 +474,48 @@ export default function PricingPage() {
           {/* Timeline */}
           <div
             style={{
-              display: "flex",
+              display: "grid",
+              gridTemplateColumns: mobile ? "1fr" : "1fr auto 1fr auto 1fr",
               alignItems: "center",
-              justifyContent: "space-between",
-              padding: mobile ? "24px 20px" : "28px 36px",
-              borderRadius: 16,
-              background: B.sand,
+              gap: mobile ? 24 : 0,
+              padding: mobile ? "32px 24px" : "40px 48px",
+              borderRadius: 20,
+              background: "#FFFFFF",
               border: "1px solid rgba(14,26,43,0.06)",
-              flexWrap: "wrap",
-              gap: mobile ? 20 : 12,
+              boxShadow: "0 2px 12px rgba(14,26,43,0.04)",
             }}
           >
             {[
-              ["Assessment 1", "Any time"],
-              ["Assessment 2", "Any time"],
-              ["Assessment 3", "Any time"],
-            ].map(([label, timing], i) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 24 }}>
+              { label: "Assessment 1", timing: "Any time", icon: "1" },
+              { label: "Assessment 2", timing: "Any time", icon: "2" },
+              { label: "Assessment 3", timing: "Any time", icon: "3" },
+            ].map((item, i) => (
+              <div key={item.label} style={{ display: "contents" }}>
                 <div style={{ textAlign: "center" }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: i === 0 ? B.navy : "rgba(14,26,43,0.06)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 8px" }}>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? "#FFFFFF" : B.navy }}>{i + 1}</span>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: 14,
+                    background: `linear-gradient(135deg, ${i === 0 ? B.navy : i === 1 ? B.purple : B.teal} 0%, ${i === 0 ? "#1a2a40" : i === 1 ? "#5a4cc0" : "#287d8c"} 100%)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    margin: "0 auto 12px",
+                    boxShadow: `0 4px 12px ${i === 0 ? "rgba(14,26,43,0.20)" : i === 1 ? "rgba(75,63,174,0.20)" : "rgba(31,109,122,0.20)"}`,
+                  }}>
+                    <span style={{ fontSize: 16, fontWeight: 700, color: "#FFFFFF" }}>{item.icon}</span>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{label}</div>
-                  <div style={{ fontSize: 11, color: B.light }}>{timing}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.label}</div>
+                  <div style={{ fontSize: 12, color: B.light }}>{item.timing}</div>
                 </div>
                 {i < 2 && !mobile && (
-                  <div style={{ width: 40, height: 1, background: "rgba(14,26,43,0.12)" }} />
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
+                    <svg width="40" height="12" viewBox="0 0 40 12" fill="none">
+                      <path d="M0 6h32m0 0l-5-4.5M32 6l-5 4.5" stroke={B.light} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
+                    </svg>
+                  </div>
                 )}
               </div>
             ))}
           </div>
 
-          <p style={{ fontSize: 13, color: B.light, marginTop: 16, textAlign: "center" }}>
+          <p style={{ fontSize: 13, color: B.light, marginTop: 20, textAlign: "center", maxWidth: 480, marginLeft: "auto", marginRight: "auto", lineHeight: 1.6 }}>
             All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
           </p>
         </div>
