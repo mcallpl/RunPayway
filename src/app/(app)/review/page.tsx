@@ -501,12 +501,15 @@ export default function ReviewPage() {
               { label: "Developing", range: "40\u201359" },
               { label: "Established", range: "60\u201379" },
               { label: "High", range: "80\u2013100" },
-            ].map((b) => (
-              <div key={b.label} style={{ textAlign: "center" }}>
-                <div style={{ ...T.micro, color: b.label + " Stability" === record.stability_band ? B.navy : B.light }}>{b.label}</div>
-                <div style={{ fontSize: 8, fontWeight: 400, color: B.light }}>{b.range}</div>
-              </div>
-            ))}
+            ].map((b) => {
+              const isActive = b.label + " Stability" === record.stability_band;
+              return (
+                <div key={b.label} style={{ textAlign: "center", padding: "4px 2px 3px", borderRadius: 4, border: isActive ? `1.5px solid ${B.navy}` : "1.5px solid transparent", backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent" }}>
+                  <div style={{ ...T.micro, fontWeight: isActive ? 700 : T.micro.fontWeight, color: isActive ? B.navy : B.light }}>{b.label}</div>
+                  <div style={{ fontSize: 8, fontWeight: isActive ? 600 : 400, color: isActive ? B.navy : B.light }}>{b.range}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

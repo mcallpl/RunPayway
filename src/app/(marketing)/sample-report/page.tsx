@@ -409,10 +409,6 @@ export default function SampleReportPage() {
                 {[40, 60, 80].map((pos) => (
                   <div key={pos} style={{ position: "absolute", left: `${pos}%`, top: 0, width: 1, height: 8, backgroundColor: "rgba(255,255,255,0.4)" }} />
                 ))}
-                {/* Score marker */}
-                <div style={{ position: "absolute", left: `${SAMPLE.score}%`, top: -3, transform: "translateX(-50%)" }}>
-                  <div style={{ width: 14, height: 14, borderRadius: "50%", border: "2px solid #fff", background: B.purple, boxShadow: "0 2px 6px rgba(0,0,0,0.2)" }} />
-                </div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 2 }}>
                 {[
@@ -420,12 +416,15 @@ export default function SampleReportPage() {
                   { label: "Developing", range: "40–59" },
                   { label: "Established", range: "60–79" },
                   { label: "High", range: "80–100" },
-                ].map((b) => (
-                  <div key={b.label} style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 9, fontWeight: 600, color: b.label + " Stability" === SAMPLE.band ? B.navy : B.light }}>{b.label}</div>
-                    <div style={{ fontSize: 8, color: B.light }}>{b.range}</div>
-                  </div>
-                ))}
+                ].map((b) => {
+                  const isActive = b.label + " Stability" === SAMPLE.band;
+                  return (
+                    <div key={b.label} style={{ textAlign: "center", padding: "4px 2px 3px", borderRadius: 4, border: isActive ? `1.5px solid ${B.navy}` : "1.5px solid transparent", backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent" }}>
+                      <div style={{ fontSize: 9, fontWeight: isActive ? 700 : 600, color: isActive ? B.navy : B.light }}>{b.label}</div>
+                      <div style={{ fontSize: 8, color: isActive ? B.navy : B.light, fontWeight: isActive ? 600 : 400 }}>{b.range}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
