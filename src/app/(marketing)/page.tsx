@@ -1772,68 +1772,72 @@ const t = e.currentTarget;
 
           {/* Right — Floating Score (no card) */}
           <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
-            {/* Abstract animated bullseye */}
-            <>
-              {/* Drifting gradient orbs — abstract depth */}
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 320 : 460, height: mobile ? 320 : 460, borderRadius: "50%",
-                top: "50%", left: "50%",
-                background: "radial-gradient(ellipse at 30% 40%, rgba(75,63,174,0.12) 0%, transparent 55%)",
-                animation: "heroOrbDrift1 12s ease-in-out infinite",
-                filter: "blur(40px)",
-              }} />
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 280 : 400, height: mobile ? 280 : 400, borderRadius: "50%",
-                top: "50%", left: "50%",
-                background: "radial-gradient(ellipse at 70% 60%, rgba(31,109,122,0.10) 0%, transparent 55%)",
-                animation: "heroOrbDrift2 15s ease-in-out infinite",
-                filter: "blur(35px)",
-              }} />
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 240 : 340, height: mobile ? 240 : 340, borderRadius: "50%",
-                top: "50%", left: "50%",
-                background: "radial-gradient(ellipse at 50% 30%, rgba(75,63,174,0.08) 0%, rgba(31,109,122,0.04) 40%, transparent 60%)",
-                animation: "heroOrbDrift3 18s ease-in-out infinite",
-                filter: "blur(30px)",
-              }} />
+            {/* Precision gauge — SVG instrument visual */}
+            <div className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }}>
+              <svg viewBox="0 0 480 480" fill="none" style={{ width: "100%", height: "100%", animation: "heroRingSpin 120s linear infinite" }}>
+                {/* Outer tick ring — 100 fine ticks like a precision dial */}
+                {Array.from({ length: 100 }, (_, i) => {
+                  const angle = (i * 3.6) * Math.PI / 180;
+                  const isLong = i % 10 === 0;
+                  const isMid = i % 5 === 0 && !isLong;
+                  const outerR = 234;
+                  const innerR = isLong ? 220 : isMid ? 224 : 227;
+                  const opacity = isLong ? 0.18 : isMid ? 0.10 : 0.05;
+                  const cx = 240 + Math.cos(angle) * outerR;
+                  const cy = 240 + Math.sin(angle) * outerR;
+                  const cx2 = 240 + Math.cos(angle) * innerR;
+                  const cy2 = 240 + Math.sin(angle) * innerR;
+                  return <line key={i} x1={cx} y1={cy} x2={cx2} y2={cy2} stroke="#4B3FAE" strokeWidth={isLong ? 1.5 : 0.75} opacity={opacity} />;
+                })}
+              </svg>
+            </div>
 
-              {/* Pulsing concentric rings */}
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 340 : 420, height: mobile ? 340 : 420, borderRadius: "50%",
-                top: "50%", left: "50%",
-                border: "1.5px solid rgba(75,63,174,0.10)",
-                animation: "heroRingPulse 6s ease-in-out infinite",
-              }} />
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 250 : 310, height: mobile ? 250 : 310, borderRadius: "50%",
-                top: "50%", left: "50%",
-                border: "1px solid rgba(75,63,174,0.08)",
-                animation: "heroRingPulse2 5s ease-in-out infinite 1s",
-              }} />
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 170 : 210, height: mobile ? 170 : 210, borderRadius: "50%",
-                top: "50%", left: "50%",
-                border: "1px solid rgba(31,109,122,0.07)",
-                animation: "heroRingPulse 7s ease-in-out infinite 2s",
-              }} />
+            {/* Static concentric rings — architectural, not pulsing */}
+            <svg className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }} viewBox="0 0 480 480" fill="none">
+              {/* Outer structural ring */}
+              <circle cx="240" cy="240" r="210" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+              {/* Score arc — partial ring showing 78/100 progress */}
+              <circle
+                cx="240" cy="240" r="210"
+                stroke="url(#scoreArc)" strokeWidth="2" strokeLinecap="round"
+                opacity="0.20"
+                strokeDasharray={`${2 * Math.PI * 210 * 0.78} ${2 * Math.PI * 210 * 0.22}`}
+                transform="rotate(-90 240 240)"
+              />
+              {/* Middle structural ring */}
+              <circle cx="240" cy="240" r="168" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.05" />
+              {/* Inner structural ring */}
+              <circle cx="240" cy="240" r="126" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.06" />
+              {/* Innermost fine ring */}
+              <circle cx="240" cy="240" r="84" stroke="#1F6D7A" strokeWidth="0.5" opacity="0.04" />
 
-              {/* Slow rotating dashed ring — precision/measurement feel */}
-              {!mobile && (
-                <div className="absolute pointer-events-none" style={{
-                  width: 480, height: 480, borderRadius: "50%",
-                  top: "50%", left: "50%",
-                  border: "1px dashed rgba(75,63,174,0.06)",
-                  animation: "heroRingSpin 90s linear infinite",
-                }} />
-              )}
+              {/* Bullseye target rings — concentric filled bands */}
+              <circle cx="240" cy="240" r="168" fill="#4B3FAE" opacity="0.015" />
+              <circle cx="240" cy="240" r="126" fill="#4B3FAE" opacity="0.02" />
+              <circle cx="240" cy="240" r="84" fill="#4B3FAE" opacity="0.025" />
+              <circle cx="240" cy="240" r="42" fill="#4B3FAE" opacity="0.03" />
 
-              {/* Inner glow — warm center behind score */}
-              <div className="absolute pointer-events-none" style={{
-                width: mobile ? 180 : 240, height: mobile ? 180 : 240, borderRadius: "50%",
-                top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-                background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.03) 40%, transparent 70%)",
-              }} />
-            </>
+              {/* Crosshair — subtle center alignment marks */}
+              <line x1="240" y1="165" x2="240" y2="195" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+              <line x1="240" y1="285" x2="240" y2="315" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+              <line x1="165" y1="240" x2="195" y2="240" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+              <line x1="285" y1="240" x2="315" y2="240" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+
+              {/* Diagonal crosshairs — adds detail */}
+              <line x1="193" y1="193" x2="205" y2="205" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
+              <line x1="275" y1="193" x2="287" y2="205" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
+              <line x1="193" y1="287" x2="205" y2="275" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
+              <line x1="275" y1="287" x2="287" y2="275" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
+
+              {/* Gradient definition for score arc */}
+              <defs>
+                <linearGradient id="scoreArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#0E1A2B" />
+                  <stop offset="50%" stopColor="#4B3FAE" />
+                  <stop offset="100%" stopColor="#1F6D7A" />
+                </linearGradient>
+              </defs>
+            </svg>
 
             {/* Score typography — centered in bullseye */}
             <div

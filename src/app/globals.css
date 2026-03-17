@@ -193,30 +193,7 @@ select, input[type="text"], input[type="email"] {
   }
 }
 
-/* Hero bullseye — animated abstract background */
-@keyframes heroOrbDrift1 {
-  0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px) scale(1); }
-  33% { transform: translate(-50%, -50%) translate(30px, -20px) scale(1.08); }
-  66% { transform: translate(-50%, -50%) translate(-20px, 15px) scale(0.95); }
-}
-@keyframes heroOrbDrift2 {
-  0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px) scale(1); }
-  33% { transform: translate(-50%, -50%) translate(-25px, 25px) scale(1.05); }
-  66% { transform: translate(-50%, -50%) translate(20px, -10px) scale(0.92); }
-}
-@keyframes heroOrbDrift3 {
-  0%, 100% { transform: translate(-50%, -50%) translate(0px, 0px) scale(1); }
-  33% { transform: translate(-50%, -50%) translate(15px, 20px) scale(1.1); }
-  66% { transform: translate(-50%, -50%) translate(-30px, -15px) scale(0.96); }
-}
-@keyframes heroRingPulse {
-  0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.03); }
-}
-@keyframes heroRingPulse2 {
-  0%, 100% { opacity: 0.06; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05); }
-}
+/* Hero bullseye — precision gauge rotation */
 @keyframes heroRingSpin {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
