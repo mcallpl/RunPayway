@@ -1396,34 +1396,44 @@ function ScoringFactors() {
                     {/* Icon badge */}
                     <div
                       style={{
-                        display: "inline-flex",
+                        display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        width: 36,
-                        height: 36,
-                        borderRadius: 10,
+                        width: 52,
+                        height: 52,
+                        borderRadius: 14,
                         backgroundColor: "rgba(75,63,174,0.06)",
                         color: B.purple,
                         marginBottom: 16,
+                        marginLeft: "auto",
+                        marginRight: "auto",
                       }}
                     >
-                      {factor.icon}
+                      <div style={{ transform: "scale(1.5)" }}>{factor.icon}</div>
                     </div>
 
                     {/* Name */}
                     <div
-                      className="text-[16px] md:text-[17px] font-semibold"
-                      style={{ color: B.navy, lineHeight: 1.3, marginBottom: S.labelMb - 6 }}
+                      className="text-[16px] md:text-[17px] font-semibold text-center"
+                      style={{ color: B.navy, lineHeight: 1.3, marginBottom: 0 }}
                     >
                       {factor.name}
                     </div>
 
-                    {/* Outcome-focused description */}
+                    {/* Description — hidden by default, fades in on hover */}
                     <p
-                      className="text-[13px] md:text-[14px]"
-                      style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody }}
+                      className="text-[13px] md:text-[14px] text-center opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[80px]"
+                      style={{
+                        color: "rgba(14,26,43,0.55)",
+                        lineHeight: S.lhBody,
+                        transition: "opacity 300ms ease, max-height 300ms ease, margin 300ms ease",
+                        marginTop: 0,
+                        overflow: "hidden",
+                      }}
                     >
-                      {factor.desc}
+                      <span className="block" style={{ paddingTop: 10 }}>
+                        {factor.desc}
+                      </span>
                     </p>
                   </article>
                 );
