@@ -601,11 +601,6 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         overflow: "hidden",
       }}
     >
-      {/* Top gradient fade — white eases into navy */}
-      <div className="absolute left-0 right-0" style={{ top: 0, transform: "translateY(-100%)", height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0) 0%, rgba(14,26,43,0.04) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.30) 75%, #0E1A2B 100%)", pointerEvents: "none" }} />
-
-      {/* Bottom gradient fade — navy eases back out */}
-      <div className="absolute left-0 right-0" style={{ bottom: 0, transform: "translateY(100%)", height: 120, background: "linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.30) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.04) 75%, rgba(14,26,43,0) 100%)", pointerEvents: "none" }} />
 
       {/* Ambient glows */}
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
@@ -883,11 +878,6 @@ function WhyIncomeStabilityMatters() {
       <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-      {/* Top gradient fade — white eases into navy */}
-      <div className="absolute left-0 right-0" style={{ top: 0, transform: "translateY(-100%)", height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0) 0%, rgba(14,26,43,0.04) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.30) 75%, #0E1A2B 100%)", pointerEvents: "none" }} />
-
-      {/* Bottom gradient fade — navy eases back out */}
-      <div className="absolute left-0 right-0" style={{ bottom: 0, transform: "translateY(100%)", height: 120, background: "linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.30) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.04) 75%, rgba(14,26,43,0) 100%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Comparison panel — elevated, full-width */}
@@ -2007,8 +1997,14 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
+      {/* Hero → Dark section seamless blend */}
+      <div style={{ height: mobile ? 140 : 200, background: `linear-gradient(180deg, #ffffff 0%, #fafaf8 10%, #f0eeea 22%, #d8d4cc 36%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.35) 64%, rgba(14,26,43,0.65) 78%, rgba(14,26,43,0.90) 90%, #0E1A2B 100%)` }} />
+
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
+
+      {/* Dark section → White seamless blend */}
+      <div style={{ height: mobile ? 140 : 200, background: `linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.90) 10%, rgba(14,26,43,0.65) 22%, rgba(14,26,43,0.35) 36%, rgba(14,26,43,0.12) 50%, #d8d4cc 64%, #f0eeea 78%, #fafaf8 90%, #ffffff 100%)` }} />
 
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />
