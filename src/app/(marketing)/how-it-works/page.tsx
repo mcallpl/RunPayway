@@ -531,7 +531,7 @@ export default function HowItWorksPage() {
               bullets={[
                 "Income Stability Score™ with stability classification",
                 "Structural priority map and sector-specific benchmarks",
-                "Personalized three-page diagnostic report with 90-day action plan",
+                "Personalized four-page diagnostic report with 90-day action plan",
                 "Official assessment record with verification identifier",
               ]}
               note="Every report is personalized with your Assessment Title, industry sector, and tailored improvement guidance."
@@ -806,7 +806,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 12px",
             }}
           >
-            The RunPayway™ assessment takes under two minutes. After submitting the structural inputs, the model calculates the Income Stability Score™ instantly and generates a personalized three-page report.
+            The RunPayway™ assessment takes under two minutes. After submitting the structural inputs, the model calculates the Income Stability Score™ instantly and generates a personalized four-page report.
           </p>
 
           <p

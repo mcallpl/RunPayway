@@ -576,7 +576,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What is included in the report?",
-      a: "Your personalized three-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
+      a: "Your personalized four-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
     },
     {
       q: "Can I retake the assessment?",
@@ -1098,7 +1098,7 @@ function PreviewYourScoreReport() {
             marginRight: "auto",
           }}
         >
-          Every assessment produces a personalized three-page report &#8212; your classification, structural priority map, sector-specific benchmarks, and a 90-day action plan.
+          Every assessment produces a personalized four-page report &#8212; your classification, structural priority map, sector-specific benchmarks, and a 90-day action plan.
         </p>
 
         {/* Report preview card — truncated */}
