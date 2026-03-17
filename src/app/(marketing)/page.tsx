@@ -1998,13 +1998,13 @@ export default function LandingPage() {
       <HeroSection />
 
       {/* Hero → Dark section seamless blend */}
-      <div style={{ height: mobile ? 140 : 200, background: `linear-gradient(180deg, #ffffff 0%, #fafaf8 10%, #f0eeea 22%, #d8d4cc 36%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.35) 64%, rgba(14,26,43,0.65) 78%, rgba(14,26,43,0.90) 90%, #0E1A2B 100%)` }} />
+      <div style={{ height: mobile ? 100 : 140, background: "linear-gradient(180deg, #ffffff 0%, rgba(14,26,43,0.02) 20%, rgba(14,26,43,0.06) 40%, rgba(14,26,43,0.15) 60%, rgba(14,26,43,0.40) 80%, #0E1A2B 100%)" }} />
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
 
       {/* Dark section → White seamless blend */}
-      <div style={{ height: mobile ? 140 : 200, background: `linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.90) 10%, rgba(14,26,43,0.65) 22%, rgba(14,26,43,0.35) 36%, rgba(14,26,43,0.12) 50%, #d8d4cc 64%, #f0eeea 78%, #fafaf8 90%, #ffffff 100%)` }} />
+      <div style={{ height: mobile ? 100 : 140, background: "linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.40) 20%, rgba(14,26,43,0.15) 40%, rgba(14,26,43,0.06) 60%, rgba(14,26,43,0.02) 80%, #ffffff 100%)" }} />
 
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />
