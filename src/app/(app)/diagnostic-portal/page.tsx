@@ -141,6 +141,7 @@ const selectStyle: React.CSSProperties = {
 export default function InitializationPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
+  const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     assessment_title: "",
     classification: "",
@@ -207,341 +208,376 @@ export default function InitializationPage() {
     e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)";
   };
 
+  const stepTitles = [
+    "Let\u2019s set up your assessment",
+    "Tell us about your income structure",
+    "One more step \u2014 your income context",
+  ];
+
+  const stepDescriptions = [
+    "This information appears on your report and helps us deliver your results.",
+    "This helps us benchmark your score against similar professionals in your field.",
+    "These details provide context for your structural analysis.",
+  ];
+
+  const progressLabels = [
+    "Step 1 of 3 \u2014 Profile Setup",
+    "Step 2 of 3 \u2014 Identity",
+    "Step 3 of 3 \u2014 Income Context",
+  ];
+
+  const progressWidths = ["5%", "10%", "15%"];
+
+  const canContinueStep0 =
+    form.recipient_email.includes("@") && form.assessment_title.trim() !== "";
+
+  const canContinueStep1 =
+    form.classification !== "" && form.operating_structure !== "";
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       {/* Header */}
       <div>
         <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>
-          Income Stability Assessment
+          Step {step + 1} of 3
         </div>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
-          Assessment Profile
+          {stepTitles[step]}
         </h1>
         <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
-          Complete the fields below to begin your Income Stability Score™ assessment. These fields identify your income profile and do not affect your score.
+          {stepDescriptions[step]}
         </p>
       </div>
 
-      {/* Record status */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "14px 20px",
-          borderRadius: 12,
-          background: "#FFFFFF",
-          border: "1px solid rgba(14,26,43,0.06)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
-          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>Assessment Record</span>
-        </div>
-        <span style={{ fontSize: 11, color: B.light }}>Issued Under: RunPayway™</span>
-      </div>
-
-      {/* Section 1 — Identity */}
-      <section
-        style={{
-          background: "#FFFFFF",
-          borderRadius: 16,
-          border: "1px solid rgba(14,26,43,0.06)",
-          padding: "28px 24px",
-        }}
-      >
-        <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>
-          Section 1
-        </div>
-        <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-          Identity &amp; Structure
-        </h2>
-        <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-          How is your income structured? These fields describe the type of entity and operating model.
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {/* Assessment Title */}
-          <div>
-            <label style={labelStyle}>Assessment Title</label>
-            <p style={helperStyle}>Your name or organization name. This appears on your report.</p>
-            <input
-              type="text"
-              value={form.assessment_title}
-              onChange={(e) => update("assessment_title", e.target.value)}
-              placeholder="e.g. Jordan Ellis or Ellis Advisory Group"
-              style={inputStyle}
-              onFocus={focusHandler}
-              onBlur={blurHandler}
-            />
-          </div>
-
-          {/* Classification */}
-          <div>
-            <label style={labelStyle}>Classification</label>
-            <p style={helperStyle}>Are you assessing income as an individual, business, or team?</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {CLASSIFICATIONS.map((c) => (
-                <button
-                  key={c.value}
-                  onClick={() => update("classification", c.value)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 14,
-                    padding: "14px 16px",
-                    borderRadius: 10,
-                    border: `1px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                    background: form.classification === c.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "border-color 160ms ease, background 160ms ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: "50%",
-                      border: `2px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {form.classification === c.value && (
-                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{c.value}</div>
-                    <div style={{ fontSize: 12, color: B.light }}>{c.desc}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Operating Structure */}
-          <div>
-            <label style={labelStyle}>Operating Structure</label>
-            <p style={helperStyle}>How is your work arrangement structured?</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {OPERATING_STRUCTURES.map((o) => (
-                <button
-                  key={o.value}
-                  onClick={() => update("operating_structure", o.value)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 14,
-                    padding: "14px 16px",
-                    borderRadius: 10,
-                    border: `1px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                    background: form.operating_structure === o.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "border-color 160ms ease, background 160ms ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: "50%",
-                      border: `2px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {form.operating_structure === o.value && (
-                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{o.value}</div>
-                    <div style={{ fontSize: 12, color: B.light }}>{o.desc}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 2 — Income Context */}
-      <section
-        style={{
-          background: "#FFFFFF",
-          borderRadius: 16,
-          border: "1px solid rgba(14,26,43,0.06)",
-          padding: "28px 24px",
-        }}
-      >
-        <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>
-          Section 2
-        </div>
-        <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-          Income Context
-        </h2>
-        <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-          Describe the characteristics of your income system. These fields provide context for your report but do not influence your score.
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {/* Primary Income Model */}
-          <div>
-            <label style={labelStyle}>Primary Income Model</label>
-            <p style={helperStyle}>What best describes how you primarily generate income?</p>
-            <select
-              value={form.primary_income_model}
-              onChange={(e) => update("primary_income_model", e.target.value)}
-              style={{ ...selectStyle, color: form.primary_income_model ? B.navy : B.light }}
-              onFocus={focusHandler}
-              onBlur={blurHandler}
-            >
-              <option value="">Select your primary income model</option>
-              {PRIMARY_INCOME_MODELS.map((m) => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Revenue Structure */}
-          <div>
-            <label style={labelStyle}>Revenue Structure</label>
-            <p style={helperStyle}>Select the pattern that best describes how you receive payment for your work.</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {REVENUE_STRUCTURES.map((r) => (
-                <button
-                  key={r.value}
-                  onClick={() => update("revenue_structure", r.value)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 14,
-                    padding: "14px 16px",
-                    borderRadius: 10,
-                    border: `1px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                    background: form.revenue_structure === r.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "border-color 160ms ease, background 160ms ease",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: "50%",
-                      border: `2px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {form.revenue_structure === r.value && (
-                      <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                    )}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{r.value}</div>
-                    <div style={{ fontSize: 12, color: B.light }}>{r.desc}</div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Industry Sector */}
-          <div>
-            <label style={labelStyle}>Industry Sector</label>
-            <p style={helperStyle}>Which industry best describes where your income is generated?</p>
-            <select
-              value={form.industry_sector}
-              onChange={(e) => update("industry_sector", e.target.value)}
-              style={{ ...selectStyle, color: form.industry_sector ? B.navy : B.light }}
-              onFocus={focusHandler}
-              onBlur={blurHandler}
-            >
-              <option value="">Select your industry</option>
-              {INDUSTRY_SECTORS.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 3 — Delivery */}
-      <section
-        style={{
-          background: "#FFFFFF",
-          borderRadius: 16,
-          border: "1px solid rgba(14,26,43,0.06)",
-          padding: "28px 24px",
-        }}
-      >
-        <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6 }}>
-          Section 3
-        </div>
-        <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-          Report Delivery
-        </h2>
-        <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-          Where should we send your Income Stability Score™ report?
-        </p>
-
-        <div>
-          <label style={labelStyle}>Email Address</label>
-          <p style={helperStyle}>Your report will be delivered to this email address.</p>
-          <input
-            type="email"
-            value={form.recipient_email}
-            onChange={(e) => update("recipient_email", e.target.value)}
-            placeholder="you@example.com"
-            style={inputStyle}
-            onFocus={focusHandler}
-            onBlur={blurHandler}
-          />
-        </div>
-      </section>
-
-      {/* Begin button */}
-      <div>
-        <button
-          disabled={!isValid}
-          onClick={handleBegin}
+      {/* Step 0 — Email & Assessment Title */}
+      {step === 0 && (
+        <section
           style={{
-            width: "100%",
-            height: 52,
-            borderRadius: 12,
-            background: isValid ? B.purple : "rgba(14,26,43,0.12)",
-            color: isValid ? "#FFFFFF" : B.light,
-            fontSize: 15,
-            fontWeight: 600,
-            letterSpacing: "-0.01em",
-            border: "none",
-            cursor: isValid ? "pointer" : "not-allowed",
-            boxShadow: isValid ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
-            transition: "background 180ms ease, transform 180ms ease",
+            background: "#FFFFFF",
+            borderRadius: 16,
+            border: "1px solid rgba(14,26,43,0.06)",
+            padding: "28px 24px",
           }}
         >
-          Begin Assessment
-        </button>
-        {/* Endowed progress — customer feels they've already started */}
-        <div style={{ marginTop: 16 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-            <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>Profile complete</span>
-            <span style={{ fontSize: 11, color: B.light }}>6 questions remaining</span>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
+            Report Delivery
+          </h2>
+          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
+            Where should we send your Income Stability Score™ report?
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div>
+              <label style={labelStyle}>Email Address</label>
+              <p style={helperStyle}>Your report will be delivered to this email address.</p>
+              <input
+                type="email"
+                value={form.recipient_email}
+                onChange={(e) => update("recipient_email", e.target.value)}
+                placeholder="you@example.com"
+                style={inputStyle}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              />
+            </div>
+
+            {/* Assessment Title */}
+            <div>
+              <label style={labelStyle}>Assessment Title</label>
+              <p style={helperStyle}>Your name or organization name. This appears on your report.</p>
+              <input
+                type="text"
+                value={form.assessment_title}
+                onChange={(e) => update("assessment_title", e.target.value)}
+                placeholder="e.g. Jordan Ellis or Ellis Advisory Group"
+                style={inputStyle}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              />
+            </div>
           </div>
-          <div style={{ height: 4, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: "15%", borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
+        </section>
+      )}
+
+      {/* Step 1 — Identity */}
+      {step === 1 && (
+        <section
+          style={{
+            background: "#FFFFFF",
+            borderRadius: 16,
+            border: "1px solid rgba(14,26,43,0.06)",
+            padding: "28px 24px",
+          }}
+        >
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
+            Identity &amp; Structure
+          </h2>
+          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
+            How is your income structured? These fields describe the type of entity and operating model.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Classification */}
+            <div>
+              <label style={labelStyle}>Classification</label>
+              <p style={helperStyle}>Are you assessing income as an individual, business, or team?</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {CLASSIFICATIONS.map((c) => (
+                  <button
+                    key={c.value}
+                    onClick={() => update("classification", c.value)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 14,
+                      padding: "14px 16px",
+                      borderRadius: 10,
+                      border: `1px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.10)"}`,
+                      background: form.classification === c.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      transition: "border-color 160ms ease, background 160ms ease",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: `2px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.20)"}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {form.classification === c.value && (
+                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
+                      )}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{c.value}</div>
+                      <div style={{ fontSize: 12, color: B.light }}>{c.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Operating Structure */}
+            <div>
+              <label style={labelStyle}>Operating Structure</label>
+              <p style={helperStyle}>How is your work arrangement structured?</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {OPERATING_STRUCTURES.map((o) => (
+                  <button
+                    key={o.value}
+                    onClick={() => update("operating_structure", o.value)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 14,
+                      padding: "14px 16px",
+                      borderRadius: 10,
+                      border: `1px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.10)"}`,
+                      background: form.operating_structure === o.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      transition: "border-color 160ms ease, background 160ms ease",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: `2px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.20)"}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {form.operating_structure === o.value && (
+                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
+                      )}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{o.value}</div>
+                      <div style={{ fontSize: 12, color: B.light }}>{o.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
+        </section>
+      )}
+
+      {/* Step 2 — Income Context */}
+      {step === 2 && (
+        <section
+          style={{
+            background: "#FFFFFF",
+            borderRadius: 16,
+            border: "1px solid rgba(14,26,43,0.06)",
+            padding: "28px 24px",
+          }}
+        >
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
+            Income Context
+          </h2>
+          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
+            Describe the characteristics of your income system. These fields provide context for your report but do not influence your score.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Primary Income Model */}
+            <div>
+              <label style={labelStyle}>Primary Income Model</label>
+              <p style={helperStyle}>What best describes how you primarily generate income?</p>
+              <select
+                value={form.primary_income_model}
+                onChange={(e) => update("primary_income_model", e.target.value)}
+                style={{ ...selectStyle, color: form.primary_income_model ? B.navy : B.light }}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              >
+                <option value="">Select your primary income model</option>
+                {PRIMARY_INCOME_MODELS.map((m) => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Revenue Structure */}
+            <div>
+              <label style={labelStyle}>Revenue Structure</label>
+              <p style={helperStyle}>Select the pattern that best describes how you receive payment for your work.</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {REVENUE_STRUCTURES.map((r) => (
+                  <button
+                    key={r.value}
+                    onClick={() => update("revenue_structure", r.value)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 14,
+                      padding: "14px 16px",
+                      borderRadius: 10,
+                      border: `1px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.10)"}`,
+                      background: form.revenue_structure === r.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      transition: "border-color 160ms ease, background 160ms ease",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: "50%",
+                        border: `2px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.20)"}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {form.revenue_structure === r.value && (
+                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
+                      )}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{r.value}</div>
+                      <div style={{ fontSize: 12, color: B.light }}>{r.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Industry Sector */}
+            <div>
+              <label style={labelStyle}>Industry Sector</label>
+              <p style={helperStyle}>Which industry best describes where your income is generated?</p>
+              <select
+                value={form.industry_sector}
+                onChange={(e) => update("industry_sector", e.target.value)}
+                style={{ ...selectStyle, color: form.industry_sector ? B.navy : B.light }}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              >
+                <option value="">Select your industry</option>
+                {INDUSTRY_SECTORS.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Continue button for steps 0 and 1 */}
+      {step < 2 && (
+        <div>
+          <button
+            disabled={step === 0 ? !canContinueStep0 : !canContinueStep1}
+            onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}
+            style={{
+              width: "100%",
+              height: 52,
+              borderRadius: 12,
+              background: (step === 0 ? canContinueStep0 : canContinueStep1) ? B.purple : "rgba(14,26,43,0.12)",
+              color: (step === 0 ? canContinueStep0 : canContinueStep1) ? "#FFFFFF" : B.light,
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              border: "none",
+              cursor: (step === 0 ? canContinueStep0 : canContinueStep1) ? "pointer" : "not-allowed",
+              boxShadow: (step === 0 ? canContinueStep0 : canContinueStep1) ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+              transition: "background 180ms ease, transform 180ms ease",
+            }}
+          >
+            Continue
+          </button>
+        </div>
+      )}
+
+      {/* Begin Assessment button for step 2 */}
+      {step === 2 && (
+        <div>
+          <button
+            disabled={!isValid}
+            onClick={handleBegin}
+            style={{
+              width: "100%",
+              height: 52,
+              borderRadius: 12,
+              background: isValid ? B.purple : "rgba(14,26,43,0.12)",
+              color: isValid ? "#FFFFFF" : B.light,
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              border: "none",
+              cursor: isValid ? "pointer" : "not-allowed",
+              boxShadow: isValid ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+              transition: "background 180ms ease, transform 180ms ease",
+            }}
+          >
+            Begin Assessment
+          </button>
+        </div>
+      )}
+
+      {/* Endowed progress — customer feels they've already started */}
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+          <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>{progressLabels[step]}</span>
+          <span style={{ fontSize: 11, color: B.light }}>6 questions remaining</span>
+        </div>
+        <div style={{ height: 4, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
+          <div style={{ height: "100%", width: progressWidths[step], borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
         </div>
         <p style={{ fontSize: 11, color: B.light, textAlign: "center", marginTop: 10 }}>
           Average completion: 1 min 47 sec

@@ -423,10 +423,10 @@ export default function DiagnosticPage() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
-              Structural Factor {q.number} of 6
+              Question {q.number} of 6
             </div>
             <div style={{ fontSize: 11, color: B.light }}>
-              Assessment Timeframe: Previous 12 months
+              Based on your previous 12 months
             </div>
           </div>
           <div style={{ fontSize: 11, color: B.light }}>
@@ -532,24 +532,23 @@ export default function DiagnosticPage() {
                   width: "100%",
                 }}
               >
-                {/* Letter indicator */}
+                {/* Selection indicator */}
                 <div
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 8,
+                    width: 22,
+                    height: 22,
+                    borderRadius: "50%",
+                    border: `2px solid ${isSelected ? B.purple : "rgba(14,26,43,0.15)"}`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: isSelected ? B.purple : "rgba(14,26,43,0.04)",
-                    color: isSelected ? "#FFFFFF" : B.muted,
-                    fontSize: 13,
-                    fontWeight: 700,
                     flexShrink: 0,
-                    transition: "background 160ms ease, color 160ms ease",
+                    transition: "border-color 160ms ease",
                   }}
                 >
-                  {opt.letter}
+                  {isSelected && (
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
+                  )}
                 </div>
 
                 {/* Option text */}
@@ -559,11 +558,9 @@ export default function DiagnosticPage() {
 
                 {/* Selected check */}
                 {isSelected && (
-                  <div style={{ marginLeft: "auto", flexShrink: 0 }}>
-                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                      <path d="M1 6L5.5 10.5L15 1" stroke={B.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
+                  <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="12" viewBox="0 0 16 12" fill="none">
+                    <path d="M1 6L5.5 10.5L15 1" stroke={B.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 )}
               </button>
             );
