@@ -228,27 +228,17 @@ export default function PricingPage() {
 
   const handleSelect = (title: string, price: string) => {
     setTransition({ title, price });
-    // Set session data so diagnostic page payment gate allows entry
+    // Set session data so diagnostic portal payment gate allows entry
     sessionStorage.setItem("rp_purchase_session", JSON.stringify({
       status: "paid",
       plan: title,
       price,
       timestamp: new Date().toISOString(),
     }));
-    // Set a default profile so diagnostic doesn't redirect to portal
-    if (!sessionStorage.getItem("rp_profile")) {
-      sessionStorage.setItem("rp_profile", JSON.stringify({
-        title: "Income Stability Assessment",
-        entity_type: "Individual",
-        income_model: "Fee-for-Service",
-        revenue_type: "Project-Based",
-        industry_sector: "Professional Services",
-      }));
-    }
     setTimeout(() => {
       const match = window.location.pathname.match(/^(\/RunPayway)/);
       const basePath = match ? match[1] : "";
-      window.location.href = `${basePath}/diagnostic/`;
+      window.location.href = `${basePath}/diagnostic-portal/`;
     }, 3000);
   };
 
@@ -280,7 +270,7 @@ export default function PricingPage() {
               {transition.price}
             </div>
             <div style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", lineHeight: 1.6 }}>
-              Redirecting to the Income Stability Assessment™...
+              Setting up your Income Stability Assessment™...
             </div>
           </div>
           <style>{`
