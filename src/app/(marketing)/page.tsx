@@ -942,7 +942,7 @@ function WhyIncomeStabilityMatters() {
               Measures how reliably you repay debt.
             </p>
             <p className="text-[14px]" style={{ color: "rgba(244,241,234,0.35)", fontWeight: 400, lineHeight: 1.7, marginTop: 10 }}>
-              Does not measure income stability.
+              Doesn&apos;t tell you if your income would survive losing a client.
             </p>
           </div>
 
@@ -964,7 +964,7 @@ function WhyIncomeStabilityMatters() {
               Measures how stable your income structure is.
             </p>
             <p className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.7, marginTop: 10 }}>
-              Structural. Deterministic. Versioned.
+              Objective. Consistent. Standardized.
             </p>
           </div>
         </div>
@@ -1002,13 +1002,7 @@ function WhyIncomeStabilityMatters() {
             className="text-[16px] md:text-[18px]"
             style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}
           >
-            A credit score measures debt repayment behavior. It says nothing about where your income comes from, how it&apos;s structured, or whether it continues when you stop working.
-          </p>
-          <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}
-          >
-            Two people with the same credit score can have fundamentally different income architectures — one recurring and diversified, the other dependent on a single source of active labor.
+            Two people with the same credit score can have completely different income realities — one with recurring, diversified revenue, the other dependent on a single source of active labor.
           </p>
           <p
             className="text-[16px] md:text-[18px]"
