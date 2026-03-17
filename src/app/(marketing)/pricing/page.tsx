@@ -229,7 +229,10 @@ export default function PricingPage() {
   const handleSelect = (title: string, price: string) => {
     setTransition({ title, price });
     setTimeout(() => {
-      router.push("/diagnostic");
+      // Detect basePath from current URL (works on static export and dev)
+      const match = window.location.pathname.match(/^(\/RunPayway)/);
+      const basePath = match ? match[1] : "";
+      window.location.href = `${basePath}/diagnostic/`;
     }, 3000);
   };
 
