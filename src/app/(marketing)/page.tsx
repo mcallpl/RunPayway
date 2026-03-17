@@ -1682,7 +1682,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
               }}
             >
-              You&#8217;ve built your income. You&#8217;ve never measured&nbsp;it.
+              The first standardized score for income&nbsp;stability.
             </h1>
 
             <p
@@ -1697,7 +1697,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
               }}
             >
-              RunPayway™ scores the structural stability of your income &#8212; in under two&nbsp;minutes.
+              You&#8217;ve built your income. Now measure how resilient it actually&nbsp;is.
             </p>
 
             <p
@@ -1712,7 +1712,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
               }}
             >
-              You can&#8217;t protect what you haven&#8217;t measured. Six structural factors. One score from 0&#8211;100.
+              RunPayway™ scores the structural stability of your income across six factors &#8212; in under two&nbsp;minutes.
             </p>
 
             <p
@@ -1727,7 +1727,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
               }}
             >
-              For professionals, founders, and organizations.
+              For consultants, practice owners, and agency founders.
             </p>
 
             {/* CTA Button */}
@@ -1882,42 +1882,11 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* ============ PILLAR TRANSITION — The Problem → The Category ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
-        <p
-          style={{
-            fontSize: mobile ? 18 : 22,
-            fontWeight: 500,
-            color: "rgba(14,26,43,0.50)",
-            lineHeight: 1.6,
-            maxWidth: 520,
-            margin: "0 auto",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          There&rsquo;s never been a standardized way to measure income stability. <span style={{ color: B.navy, fontWeight: 600 }}>Until now.</span>
-        </p>
-      </div>
+      {/* ============ WHY INCOME STABILITY MATTERS ============ */}
+      <WhyIncomeStabilityMatters />
 
       {/* ============ HOW IT WORKS — Financial Scoring Pipeline ============ */}
       <HowItWorks />
-
-      {/* ============ PILLAR TRANSITION — The Category → The Metric ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
-        <p
-          style={{
-            fontSize: mobile ? 18 : 22,
-            fontWeight: 500,
-            color: "rgba(14,26,43,0.50)",
-            lineHeight: 1.6,
-            maxWidth: 480,
-            margin: "0 auto",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          The score doesn&rsquo;t guess. <span style={{ color: B.navy, fontWeight: 600 }}>It measures.</span>
-        </p>
-      </div>
 
       {/* ============ CONTINUOUS CANVAS: Factors → Classification → Report ============ */}
       <div className="grain-overlay" style={{ position: "relative", background: "linear-gradient(180deg, #ffffff 0%, #FAFAF8 3%, #F7F6F3 8%, #F4F1EA 25%, #F4F1EA 75%, #F4F1EA 100%)" }}>
@@ -2083,84 +2052,10 @@ export default function LandingPage() {
       </section>
 
 
-      {/* ============ MID-PAGE CTA ============ */}
-      <div
-        className="conversion-strip"
-        style={{
-          padding: mobile ? "24px 24px" : "28px 36px",
-          display: "flex",
-          flexDirection: mobile ? "column" : "row",
-          alignItems: mobile ? "flex-start" : "center",
-          justifyContent: "space-between",
-          gap: mobile ? 16 : undefined,
-          maxWidth: 780,
-          margin: "0 auto",
-          marginLeft: mobile ? 24 : "auto",
-          marginRight: mobile ? 24 : "auto",
-          border: "1px solid rgba(14,26,43,0.08)",
-          borderRadius: 16,
-          backgroundColor: "rgba(255,255,255,0.6)",
-        }}
-      >
-        <p
-          style={{
-            fontWeight: 500,
-            fontSize: mobile ? 15 : 16,
-            color: B.navy,
-            margin: 0,
-          }}
-        >
-          Measure your Income Stability in under 2 minutes.
-        </p>
-        <Link
-          href="/pricing"
-          className="cta-tick conversion-strip-cta inline-flex items-center justify-center font-semibold whitespace-nowrap
-                     focus:outline-none focus:ring-2"
-          style={{
-            height: mobile ? 48 : 40,
-            paddingLeft: 18,
-            paddingRight: 18,
-            borderRadius: 10,
-            background: B.purple,
-            color: "#ffffff",
-            fontSize: 14,
-            border: "none",
-            transition: "background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease",
-            flexShrink: 0,
-            width: mobile ? "100%" : undefined,
-            boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
-          }}
-          onMouseEnter={(e) => {  if (!canHover()) return;
-e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(75,63,174,0.35)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.25)"; }}
-        >
-          <span className="tick tick-white" />
-          <span className="cta-label">Get My Income Stability Score™</span>
-          <span className="cta-arrow cta-arrow-white" />
-        </Link>
-      </div>
-
       {/* ============ PREVIEW YOUR SCORE REPORT ============ */}
       <PreviewYourScoreReport />
 
       </div>{/* ← end continuous canvas */}
-
-      {/* ============ PILLAR TRANSITION — The Metric → The Outcome ============ */}
-      <div style={{ textAlign: "center", padding: mobile ? `${S.transitionY.mobile}px ${S.padX.mobile}px` : `${S.transitionY.desktop}px ${S.padX.desktop}px`, background: "#ffffff" }}>
-        <p
-          style={{
-            fontSize: mobile ? 18 : 22,
-            fontWeight: 500,
-            color: "rgba(14,26,43,0.50)",
-            lineHeight: 1.6,
-            maxWidth: 500,
-            margin: "0 auto",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          Know where you stand. <span style={{ color: B.navy, fontWeight: 600 }}>Then decide what to build.</span>
-        </p>
-      </div>
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
       <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
@@ -2257,12 +2152,6 @@ e.currentTarget.style.background = "#3D33A0"; e.currentTarget.style.transform = 
       </div>
       </section>
 
-
-      {/* ============ WHY INCOME STABILITY MATTERS ============ */}
-      <WhyIncomeStabilityMatters />
-
-      {/* ============ SCORE REGISTRY ============ */}
-      <ScoreRegistry />
 
       {/* ============ FAQ ============ */}
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
