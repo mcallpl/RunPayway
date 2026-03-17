@@ -1997,20 +1997,20 @@ export default function LandingPage() {
       {/* ============ 1. HERO — Financial Platform ============ */}
       <HeroSection />
 
-      {/* Hero → Teal section curve divider */}
-      <div style={{ position: "relative", height: 0 }}>
-        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
-          <path d="M0,180 L0,100 C240,30 480,0 720,50 C960,100 1200,30 1440,80 L1440,180 Z" fill="#0E1A2B" />
+      {/* White arc into dark section */}
+      <div style={{ backgroundColor: "#0E1A2B", marginTop: -1 }}>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: mobile ? 48 : 96 }}>
+          <path d="M0,0 L1440,0 L1440,20 C1080,120 360,120 0,20 Z" fill="#ffffff" />
         </svg>
       </div>
 
       {/* ============ WHY INCOME STABILITY MATTERS ============ */}
       <WhyIncomeStabilityMatters />
 
-      {/* Teal section → White curve divider */}
-      <div style={{ position: "relative", height: 0 }}>
-        <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
-          <path d="M0,0 L0,80 C240,150 480,180 720,130 C960,80 1200,150 1440,100 L1440,0 Z" fill="#0E1A2B" />
+      {/* Dark section exits with white arc */}
+      <div style={{ backgroundColor: "#0E1A2B", marginBottom: -1 }}>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: mobile ? 48 : 96 }}>
+          <path d="M0,120 L1440,120 L1440,100 C1080,0 360,0 0,100 Z" fill="#ffffff" />
         </svg>
       </div>
 
