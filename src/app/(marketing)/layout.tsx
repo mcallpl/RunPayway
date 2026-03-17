@@ -325,6 +325,8 @@ export default function MarketingLayout({
               padding: "32px 28px",
               display: "flex",
               flexDirection: "column",
+              overflowY: "auto",
+              color: "#0E1A2B",
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>

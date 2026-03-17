@@ -380,8 +380,8 @@ html, body {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
-  /* Hide desktop nav and CTA group on mobile */
-  header nav:not([style*="flex-direction:column"]) {
+  /* Hide desktop nav and CTA group on mobile — match both with/without space */
+  header nav:not([style*="flex-direction:column"]):not([style*="flex-direction: column"]) {
     display: none !important;
   }
   header .mx-auto > div[style*="margin-left:28px"],
