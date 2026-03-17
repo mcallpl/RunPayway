@@ -1826,6 +1826,7 @@ const t = e.currentTarget;
 export default function LandingPage() {
   const [openIndustry, setOpenIndustry] = useState<number | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeTierIdx, setActiveTierIdx] = useState(2); /* default: Established Stability */
   const mobile = useMobile();
 
   return (
@@ -1909,113 +1910,118 @@ export default function LandingPage() {
           </div>
 
           {/* Spectrum bar with tick marks */}
-          <div className="mx-auto" style={{ maxWidth: 880, marginBottom: 0 }}>
-            <div style={{ position: "relative" }}>
-              <div style={{ height: 14, borderRadius: "10px 10px 0 0", background: B.gradient, boxShadow: "0 2px 12px rgba(14,26,43,0.12)" }} />
-              {/* Tier separators */}
-              {[39, 59, 79].map((pos) => (
-                <div
-                  key={pos}
-                  style={{
-                    position: "absolute",
-                    left: `${pos}%`,
-                    top: 0,
-                    width: 2,
-                    height: 14,
-                    backgroundColor: "rgba(255,255,255,0.45)",
-                  }}
-                />
-              ))}
-              {/* Score marker */}
-              <div style={{ position: "absolute", left: "78%", top: -4, width: 22, height: 22, borderRadius: 999, border: "3px solid #fff", backgroundColor: B.teal, transform: "translateX(-50%)", boxShadow: "0 2px 8px rgba(31,109,122,0.35)" }} />
-              {/* Tick labels */}
-              <div className="flex justify-between px-1" style={{ marginTop: 6 }}>
-                {[0, 20, 40, 60, 80, 100].map((tick) => (
-                  <span key={tick} className="text-[9px] font-medium" style={{ color: B.light }}>{tick}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Four tier cards */}
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)", gap: S.gridGap, maxWidth: 880, margin: `${S.h1mb}px auto 0` }}>
-            {[
-              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", active: false },
-              { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", active: false },
-              { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, active: true },
-              { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, active: false },
-            ].map((tier) => (
-              <div
-                key={tier.label}
-                style={{
-                  backgroundColor: tier.active ? "#ffffff" : "rgba(255,255,255,0.7)",
-                  backdropFilter: tier.active ? "none" : "blur(8px)",
-                  borderRadius: 14,
-                  border: tier.active ? `1.5px solid ${B.teal}` : "1px solid rgba(14,26,43,0.06)",
-                  padding: "28px 22px 30px",
-                  position: "relative" as const,
-                  boxShadow: tier.active
-                    ? `0 4px 20px rgba(31,109,122,0.12), 0 12px 40px rgba(31,109,122,0.06)`
-                    : "0 1px 4px rgba(14,26,43,0.03), 0 4px 16px rgba(14,26,43,0.02)",
-                  transition: "box-shadow 400ms ease, transform 400ms ease",
-                }}
-                onMouseEnter={(e) => {
-                   if (!canHover()) return;
-if (!tier.active) {
-                    e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.06), 0 12px 40px rgba(14,26,43,0.05)";
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!tier.active) {
-                    e.currentTarget.style.boxShadow = "0 1px 4px rgba(14,26,43,0.03), 0 4px 16px rgba(14,26,43,0.02)";
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }
-                }}
-              >
-                {/* Active tier badge */}
-                {tier.active && (
-                  <div
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "4px 10px",
-                      borderRadius: 999,
-                      backgroundColor: "rgba(31,109,122,0.08)",
-                      marginBottom: 14,
-                    }}
-                  >
-                    <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: B.teal }} />
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.1em]" style={{ color: B.teal }}>
-                      Sample Score: 78
-                    </span>
+          {(() => {
+            const tiers = [
+              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", sliderPos: 20, sampleScore: 20 },
+              { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", sliderPos: 50, sampleScore: 50 },
+              { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, sliderPos: 70, sampleScore: 78 },
+              { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, sliderPos: 90, sampleScore: 92 },
+            ];
+            const active = tiers[activeTierIdx];
+            return (
+              <>
+                <div className="mx-auto" style={{ maxWidth: 880, marginBottom: 0 }}>
+                  <div style={{ position: "relative" }}>
+                    <div style={{ height: 14, borderRadius: "10px 10px 0 0", background: B.gradient, boxShadow: "0 2px 12px rgba(14,26,43,0.12)" }} />
+                    {/* Tier separators */}
+                    {[39, 59, 79].map((pos) => (
+                      <div
+                        key={pos}
+                        style={{
+                          position: "absolute",
+                          left: `${pos}%`,
+                          top: 0,
+                          width: 2,
+                          height: 14,
+                          backgroundColor: "rgba(255,255,255,0.45)",
+                        }}
+                      />
+                    ))}
+                    {/* Score marker — slides to active tier */}
+                    <div style={{ position: "absolute", left: `${active.sliderPos}%`, top: -4, width: 22, height: 22, borderRadius: 999, border: "3px solid #fff", backgroundColor: active.color, transform: "translateX(-50%)", boxShadow: `0 2px 8px ${active.color}59`, transition: "left 400ms cubic-bezier(0.4,0,0.2,1), background-color 400ms ease, box-shadow 400ms ease" }} />
+                    {/* Tick labels */}
+                    <div className="flex justify-between px-1" style={{ marginTop: 6 }}>
+                      {[0, 20, 40, 60, 80, 100].map((tick) => (
+                        <span key={tick} className="text-[9px] font-medium" style={{ color: B.light }}>{tick}</span>
+                      ))}
+                    </div>
                   </div>
-                )}
-
-                {/* Color accent + range */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div style={{ width: 4, height: 36, borderRadius: 4, backgroundColor: tier.color }} />
-                  <div className="text-[26px] font-bold leading-none" style={{ color: B.navy }}>{tier.range}</div>
                 </div>
 
-                {/* Tier label */}
-                <div className="text-[15px] font-semibold mb-1" style={{ color: tier.color }}>
-                  {tier.label} Stability
-                </div>
+                {/* Four tier cards */}
+                <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)", gap: S.gridGap, maxWidth: 880, margin: `${S.h1mb}px auto 0` }}>
+                  {tiers.map((tier, idx) => {
+                    const isActive = idx === activeTierIdx;
+                    return (
+                      <div
+                        key={tier.label}
+                        style={{
+                          backgroundColor: isActive ? "#ffffff" : "rgba(255,255,255,0.7)",
+                          backdropFilter: isActive ? "none" : "blur(8px)",
+                          borderRadius: 14,
+                          border: isActive ? `1.5px solid ${tier.color}` : "1px solid rgba(14,26,43,0.06)",
+                          padding: "28px 22px 30px",
+                          position: "relative" as const,
+                          cursor: "pointer",
+                          boxShadow: isActive
+                            ? `0 4px 20px ${tier.color}1F, 0 12px 40px ${tier.color}0F`
+                            : "0 1px 4px rgba(14,26,43,0.03), 0 4px 16px rgba(14,26,43,0.02)",
+                          transform: isActive ? "translateY(-2px)" : "translateY(0)",
+                          transition: "all 400ms cubic-bezier(0.4,0,0.2,1)",
+                        }}
+                        onMouseEnter={() => {
+                          if (!canHover()) return;
+                          setActiveTierIdx(idx);
+                        }}
+                      >
+                        {/* Active tier badge */}
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "4px 10px",
+                            borderRadius: 999,
+                            backgroundColor: isActive ? `${tier.color}14` : "transparent",
+                            marginBottom: 14,
+                            opacity: isActive ? 1 : 0,
+                            transform: isActive ? "translateY(0)" : "translateY(-4px)",
+                            transition: "opacity 300ms ease, transform 300ms ease, background-color 300ms ease",
+                          }}
+                        >
+                          <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: tier.color }} />
+                          <span className="text-[9px] font-semibold uppercase tracking-[0.1em]" style={{ color: tier.color }}>
+                            Sample Score: {tier.sampleScore}
+                          </span>
+                        </div>
 
-                {/* One-word summary */}
-                <div className="text-[10px] font-medium uppercase tracking-wider mb-3" style={{ color: B.light }}>
-                  {tier.summary} income structure
-                </div>
+                        {/* Color accent + range */}
+                        <div className="flex items-center gap-3 mb-3">
+                          <div style={{ width: 4, height: 36, borderRadius: 4, backgroundColor: tier.color }} />
+                          <div className="text-[26px] font-bold leading-none" style={{ color: B.navy }}>{tier.range}</div>
+                        </div>
 
-                {/* Description */}
-                <p className="text-[12px] leading-[1.7]" style={{ color: B.muted }}>
-                  {tier.desc}
-                </p>
-              </div>
-            ))}
-          </div>
+                        {/* Tier label */}
+                        <div className="text-[15px] font-semibold mb-1" style={{ color: tier.color }}>
+                          {tier.label} Stability
+                        </div>
+
+                        {/* One-word summary */}
+                        <div className="text-[10px] font-medium uppercase tracking-wider mb-3" style={{ color: B.light }}>
+                          {tier.summary} income structure
+                        </div>
+
+                        {/* Description */}
+                        <p className="text-[12px] leading-[1.7]" style={{ color: B.muted }}>
+                          {tier.desc}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            );
+          })()}
 
           {/* Model reference */}
           <div className="text-center" style={{ marginTop: S.subtextMb }}>
