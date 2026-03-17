@@ -315,7 +315,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
         a: (
           <>
             <p>RunPayway™ is pursuing SOC 2 Type I certification. The platform is architected with security controls aligned to SOC 2 requirements, including encrypted data transmission, secure processing, and immutable assessment records.</p>
-            <p>Enterprise customers requiring compliance documentation can reach us through our <a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</a>.</p>
+            <p>Enterprise customers requiring compliance documentation can reach us through our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link>.</p>
           </>
         ),
       },
@@ -340,7 +340,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
           <>
             <p>Yes. The Income Stability Score™ is available for licensing by financial institutions, insurance providers, HR platforms, and other organizations that want to embed income stability measurement into their own products or decision-making workflows.</p>
             <p>Licensees receive scored results through a secure API — the scoring model, weights, and classification logic remain proprietary and run entirely on RunPayway™ infrastructure. Licensees never access the underlying engine.</p>
-            <p>Visit our <a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</a> to discuss licensing terms and eligibility.</p>
+            <p>Visit our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link> to discuss licensing terms and eligibility.</p>
           </>
         ),
       },
@@ -360,7 +360,7 @@ const FAQ_CATEGORIES: FaqCategory[] = [
           <>
             <p>Yes. Licensed partners can receive co-branded or white-label assessment reports generated with their organization's branding alongside the RunPayway™ model certification.</p>
             <p>All reports are generated on RunPayway™ infrastructure to maintain scoring integrity. The partner receives the finished report — the scoring model and report generation logic remain proprietary.</p>
-            <p>Visit our <a href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</a> for licensing and co-branding inquiries.</p>
+            <p>Visit our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link> for licensing and co-branding inquiries.</p>
           </>
         ),
       },
