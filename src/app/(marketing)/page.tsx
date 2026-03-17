@@ -867,7 +867,7 @@ function WhyIncomeStabilityMatters() {
       aria-label="Why Income Stability Matters"
       className="relative"
       style={{
-        backgroundColor: "#163a42",
+        backgroundColor: "#14505b",
         paddingTop: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
         paddingBottom: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
         position: "relative",
@@ -2000,7 +2000,7 @@ export default function LandingPage() {
       {/* Hero → Teal section curve divider */}
       <div style={{ position: "relative", height: 0 }}>
         <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
-          <path d="M0,180 L0,100 C240,30 480,0 720,50 C960,100 1200,30 1440,80 L1440,180 Z" fill="#163a42" />
+          <path d="M0,180 L0,100 C240,30 480,0 720,50 C960,100 1200,30 1440,80 L1440,180 Z" fill="#14505b" />
         </svg>
       </div>
 
@@ -2010,7 +2010,7 @@ export default function LandingPage() {
       {/* Teal section → White curve divider */}
       <div style={{ position: "relative", height: 0 }}>
         <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: mobile ? 90 : 180, display: "block" }}>
-          <path d="M0,0 L0,80 C240,150 480,180 720,130 C960,80 1200,150 1440,100 L1440,0 Z" fill="#163a42" />
+          <path d="M0,0 L0,80 C240,150 480,180 720,130 C960,80 1200,150 1440,100 L1440,0 Z" fill="#14505b" />
         </svg>
       </div>
 
