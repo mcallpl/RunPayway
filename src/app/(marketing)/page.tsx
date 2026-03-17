@@ -1243,85 +1243,96 @@ function PreviewYourScoreReport() {
 }
 
 /* ------------------------------------------------------------------ */
-/* FACTOR CARD — each card observes its own visibility                   */
+/* FACTOR ROW — each row observes its own visibility                     */
 /* ------------------------------------------------------------------ */
-function FactorCard({ factor, index, mobile }: { factor: { name: string; desc: string; icon: React.ReactNode }; index: number; mobile: boolean }) {
-  const { ref, visible } = useInView(0.3);
+function FactorRow({ num, name, desc, icon, groupLabel, showGroupLabel, mobile }: {
+  num: number; name: string; desc: string; icon: React.ReactNode;
+  groupLabel: string; showGroupLabel: boolean; mobile: boolean;
+}) {
+  const { ref, visible } = useInView(0.25);
 
   return (
-    <article
-      ref={ref}
-      className="group"
-      style={{
-        position: "relative",
-        backgroundColor: "#ffffff",
-        borderRadius: S.cardRadius,
-        padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
-        border: "1px solid rgba(14,26,43,0.06)",
-        boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: "opacity 450ms ease-out, transform 450ms ease-out, box-shadow 400ms ease, border-color 400ms ease",
-        overflow: "hidden",
-      }}
-      onMouseEnter={(e) => {
-        if (!canHover()) return;
-        e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
-        e.currentTarget.style.transform = "translateY(-3px)";
-        e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
-      }}
-    >
-      {/* Subtle top accent line */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
+    <div ref={ref}>
+      {/* Group label — only shown above the first factor in each group */}
+      {showGroupLabel && (
+        <div
+          className="text-[11px] font-semibold uppercase"
+          style={{
+            letterSpacing: "0.12em",
+            color: B.teal,
+            marginBottom: 16,
+            marginTop: num > 1 ? 40 : 0,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(8px)",
+            transition: "opacity 400ms ease-out, transform 400ms ease-out",
+          }}
+        >
+          {groupLabel}
+        </div>
+      )}
 
-      {/* Icon badge */}
+      {/* Factor row */}
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: 52,
-          height: 52,
-          borderRadius: 14,
-          backgroundColor: "rgba(75,63,174,0.06)",
-          color: B.purple,
-          marginBottom: 16,
-          marginLeft: "auto",
-          marginRight: "auto",
+          alignItems: mobile ? "flex-start" : "center",
+          gap: mobile ? 16 : 28,
+          padding: mobile ? "20px 0" : "24px 0",
+          borderBottom: "1px solid rgba(14,26,43,0.06)",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateX(0)" : "translateX(-16px)",
+          transition: "opacity 450ms ease-out, transform 450ms ease-out",
         }}
       >
-        <div style={{ transform: "scale(1.5)" }}>{factor.icon}</div>
-      </div>
+        {/* Number */}
+        <div
+          style={{
+            flexShrink: 0,
+            width: mobile ? 28 : 36,
+            fontSize: mobile ? 14 : 16,
+            fontWeight: 600,
+            color: B.light,
+            letterSpacing: "-0.02em",
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
+          {String(num).padStart(2, "0")}
+        </div>
 
-      {/* Name */}
-      <div
-        className="text-[16px] md:text-[17px] font-semibold text-center"
-        style={{ color: B.navy, lineHeight: 1.3, marginBottom: 0 }}
-      >
-        {factor.name}
-      </div>
+        {/* Icon */}
+        <div
+          style={{
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            backgroundColor: "rgba(75,63,174,0.05)",
+            color: B.purple,
+          }}
+        >
+          <div style={{ transform: "scale(1.3)" }}>{icon}</div>
+        </div>
 
-      {/* Description — fades in on hover */}
-      <p
-        className="text-[13px] md:text-[14px] text-center opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[80px]"
-        style={{
-          color: "rgba(14,26,43,0.55)",
-          lineHeight: S.lhBody,
-          transition: "opacity 300ms ease, max-height 300ms ease, margin 300ms ease",
-          marginTop: 0,
-          overflow: "hidden",
-        }}
-      >
-        <span className="block" style={{ paddingTop: 10 }}>
-          {factor.desc}
-        </span>
-      </p>
-    </article>
+        {/* Name + description */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            className="text-[16px] md:text-[17px] font-semibold"
+            style={{ color: B.navy, lineHeight: 1.3, marginBottom: 4 }}
+          >
+            {name}
+          </div>
+          <div
+            className="text-[14px] md:text-[15px]"
+            style={{ color: "rgba(14,26,43,0.50)", lineHeight: 1.55 }}
+          >
+            {desc}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1331,61 +1342,26 @@ function FactorCard({ factor, index, mobile }: { factor: { name: string; desc: s
 function ScoringFactors() {
   const { ref: sectionRef, visible } = useInView();
   const mobile = useMobile();
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
-  /* Scroll-driven parallax: track how far through the section the user is */
-  useEffect(() => {
-    const onScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      /* 0 = section top at viewport bottom, 1 = section bottom at viewport top */
-      const raw = (vh - rect.top) / (rect.height + vh);
-      setScrollProgress(Math.max(0, Math.min(1, raw)));
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  /* Title parallax: vertical drift + scale + fade at edges */
-  const titleY = (scrollProgress - 0.5) * -80;
-  const titleScale = 1 + (0.5 - Math.abs(scrollProgress - 0.5)) * 0.06;
-  const titleOpacity = visible
-    ? Math.min(1, 1 - Math.max(0, (scrollProgress - 0.72) * 4)) * Math.min(1, scrollProgress * 5)
-    : 0;
-
-  const factorGroups = [
-    {
-      label: "Revenue Structure",
-      factors: [
-        { name: "Recurring Revenue Base", desc: "Does income keep arriving if you stop actively selling?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Circular arrow around dollar — renewal */}<path d="M14.5 4.5A6.5 6.5 0 004 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M5.5 15.5A6.5 6.5 0 0016 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M14.5 2v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 18v-3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        )},
-        { name: "Income Source Diversification", desc: "Would losing one client or contract change everything?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Three streams branching from one root */}<path d="M10 16V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10L4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="4" r="1.5" fill="currentColor"/><circle cx="16" cy="4" r="1.5" fill="currentColor"/></svg>
-        )},
-        { name: "Income Concentration", desc: "How exposed are you if your largest source disappears tomorrow?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Pie chart with one dominant slice — concentration risk */}<circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M10 3v7h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 10l-4.95 4.95" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
-        )},
-      ],
-    },
-    {
-      label: "Income Durability",
-      factors: [
-        { name: "Forward Revenue Visibility", desc: "How far ahead can you see income with confidence?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Telescope / looking ahead */}<path d="M2 17l5-8 3 2-5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M7 9l4-6.5 5 3-4 6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="4" r="2" stroke="currentColor" strokeWidth="1.5"/></svg>
-        )},
-        { name: "Earnings Consistency", desc: "Does your income stay steady — or swing month to month?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Flat steady line vs volatile — stability */}<path d="M2 10h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.35"/><path d="M2 10h3l1.5-3 2 6 2-5 1.5 2H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        )},
-        { name: "Income Without Active Work", desc: "What keeps paying you when you step away?", icon: (
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Coins stacking — passive income */}<ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M4 6v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" strokeWidth="1.5"/><path d="M4 9v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V9" stroke="currentColor" strokeWidth="1.5"/></svg>
-        )},
-      ],
-    },
+  const allFactors = [
+    { group: "Revenue Structure", name: "Recurring Revenue Base", desc: "Does income keep arriving if you stop actively selling?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14.5 4.5A6.5 6.5 0 004 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M5.5 15.5A6.5 6.5 0 0016 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M14.5 2v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 18v-3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    )},
+    { group: "Revenue Structure", name: "Income Source Diversification", desc: "Would losing one client or contract change everything?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10L4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="4" r="1.5" fill="currentColor"/><circle cx="16" cy="4" r="1.5" fill="currentColor"/></svg>
+    )},
+    { group: "Revenue Structure", name: "Income Concentration", desc: "How exposed are you if your largest source disappears tomorrow?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M10 3v7h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 10l-4.95 4.95" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    )},
+    { group: "Income Durability", name: "Forward Revenue Visibility", desc: "How far ahead can you see income with confidence?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 17l5-8 3 2-5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M7 9l4-6.5 5 3-4 6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="4" r="2" stroke="currentColor" strokeWidth="1.5"/></svg>
+    )},
+    { group: "Income Durability", name: "Earnings Consistency", desc: "Does your income stay steady — or swing month to month?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.35"/><path d="M2 10h3l1.5-3 2 6 2-5 1.5 2H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    )},
+    { group: "Income Durability", name: "Income Without Active Work", desc: "What keeps paying you when you step away?", icon: (
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M4 6v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" strokeWidth="1.5"/><path d="M4 9v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V9" stroke="currentColor" strokeWidth="1.5"/></svg>
+    )},
   ];
 
   return (
@@ -1398,18 +1374,15 @@ function ScoringFactors() {
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        {/* Sticky header — parallax drift */}
+        {/* Section header */}
         <div
-          ref={headerRef}
           className="text-center"
           style={{
-            marginBottom: mobile ? S.subtextMb : S.sectionY.mobile,
-            opacity: titleOpacity,
-            transform: `translateY(${visible ? titleY : 30}px) scale(${visible ? titleScale : 0.92})`,
-            transition: visible ? "none" : "opacity 600ms ease-out, transform 600ms ease-out",
-            willChange: "transform, opacity",
+            marginBottom: mobile ? 40 : 56,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
           <div
@@ -1432,43 +1405,24 @@ function ScoringFactors() {
           </p>
         </div>
 
-        {/* Factor groups */}
-        {factorGroups.map((group, gi) => (
-          <div key={group.label} style={{ maxWidth: 960, margin: gi === 0 ? "0 auto" : `${S.gridGap + 8}px auto 0` }}>
-            {/* Group label */}
-            <div
-              className="text-[11px] font-semibold uppercase"
-              style={{
-                letterSpacing: "0.12em",
-                color: B.light,
-                marginBottom: 14,
-                paddingLeft: 4,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 400ms ease-out ${gi * 360 + 40}ms, transform 400ms ease-out ${gi * 360 + 40}ms`,
-              }}
-            >
-              {group.label}
-            </div>
-
-            {/* 3-col grid */}
-            <div
-              style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: S.gridGap }}
-            >
-              {group.factors.map((factor, i) => {
-                const cardIndex = gi * 3 + i;
-                return (
-                  <FactorCard
-                    key={factor.name}
-                    factor={factor}
-                    index={cardIndex}
-                    mobile={mobile}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        {/* Factor rows */}
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          {allFactors.map((f, i) => {
+            const showGroupLabel = i === 0 || f.group !== allFactors[i - 1].group;
+            return (
+              <FactorRow
+                key={f.name}
+                num={i + 1}
+                name={f.name}
+                desc={f.desc}
+                icon={f.icon}
+                groupLabel={f.group}
+                showGroupLabel={showGroupLabel}
+                mobile={mobile}
+              />
+            );
+          })}
+        </div>
       </div>
     </section>
   );
