@@ -193,6 +193,18 @@ select, input[type="text"], input[type="email"] {
   }
 }
 
+/* Diagnostic pulse line — traces across dark section */
+@keyframes pulseSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Glowing border rotation for comparison panel */
+@keyframes borderGlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Hero bullseye — precision gauge rotation */
 @keyframes heroRingSpin {
   from { transform: translate(-50%, -50%) rotate(0deg); }

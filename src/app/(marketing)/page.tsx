@@ -893,30 +893,55 @@ function WhyIncomeStabilityMatters() {
         <rect width="100%" height="100%" fill="url(#navyGrid)" mask="url(#navyGridMask)" />
       </svg>
 
+      {/* Diagnostic pulse line */}
+      <div style={{ position: "absolute", top: "38%", left: 0, right: 0, height: 1, overflow: "hidden", pointerEvents: "none" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(31,109,122,0.25) 40%, rgba(75,63,174,0.30) 60%, transparent 100%)", animation: "pulseSweep 8s ease-in-out infinite" }} />
+      </div>
+      <div style={{ position: "absolute", top: "68%", left: 0, right: 0, height: 1, overflow: "hidden", pointerEvents: "none" }}>
+        <div style={{ position: "absolute", top: 0, left: 0, width: "40%", height: "100%", background: "linear-gradient(90deg, transparent 0%, rgba(75,63,174,0.20) 40%, rgba(31,109,122,0.25) 60%, transparent 100%)", animation: "pulseSweep 12s ease-in-out 3s infinite" }} />
+      </div>
+
       {/* Ambient glows */}
       <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
 
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        {/* Comparison panel — elevated, full-width */}
+        {/* Comparison panel — elevated with animated glow border */}
         <div
           className="mx-auto"
           style={{
             maxWidth: 820,
             marginBottom: mobile ? S.subtextMb : S.transitionY.desktop,
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: 0,
-            borderRadius: S.panelRadius,
+            position: "relative",
+            borderRadius: S.panelRadius + 1,
+            padding: 1,
             overflow: "hidden",
-            border: "1px solid rgba(255,255,255,0.10)",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.30)",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
+          {/* Animated gradient border */}
+          <div style={{
+            position: "absolute",
+            inset: -40,
+            background: "conic-gradient(from 0deg, #0E1A2B, #4B3FAE, #1F6D7A, #4B3FAE, #0E1A2B)",
+            animation: "borderGlow 6s linear infinite",
+            opacity: 0.6,
+          }} />
+          {/* Inner panel */}
+          <div
+            style={{
+              position: "relative",
+              display: "grid",
+              gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+              gap: 0,
+              borderRadius: S.panelRadius,
+              overflow: "hidden",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.30)",
+            }}
+          >
           {/* Credit Score side */}
           <div style={{ padding: mobile ? "28px 24px 32px" : "36px 36px 40px", backgroundColor: "rgba(255,255,255,0.03)" }}>
             <div
@@ -959,6 +984,7 @@ function WhyIncomeStabilityMatters() {
             <p className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.7, marginTop: 10 }}>
               Objective. Consistent. Standardized.
             </p>
+          </div>
           </div>
         </div>
 
