@@ -77,6 +77,8 @@ function PricingCard({
   mobile,
   visible,
   delay,
+  onSelect,
+  disabled,
 }: {
   recommended?: boolean;
   title: string;
@@ -88,6 +90,8 @@ function PricingCard({
   mobile: boolean;
   visible: boolean;
   delay: number;
+  onSelect?: (title: string, price: string) => void;
+  disabled?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -163,38 +167,44 @@ function PricingCard({
         Instant access after selection
       </div>
 
-      <a
-        href={ctaHref}
-        className="cta-tick inline-flex items-center justify-center font-semibold"
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          if (!disabled && onSelect) onSelect(title, price);
+        }}
+        disabled={disabled}
+        className={disabled ? "inline-flex items-center justify-center font-semibold" : "cta-tick inline-flex items-center justify-center font-semibold"}
         style={{
           width: "100%",
           height: 52,
           borderRadius: 12,
-          background: recommended ? B.purple : B.navy,
+          background: disabled ? B.light : recommended ? B.purple : B.navy,
           color: "#FFFFFF",
           fontSize: 15,
           letterSpacing: "-0.01em",
           border: "none",
-          textDecoration: "none",
-          boxShadow: recommended
+          cursor: disabled ? "not-allowed" : "pointer",
+          opacity: disabled ? 0.6 : 1,
+          boxShadow: disabled ? "none" : recommended
             ? "0 6px 16px rgba(75,63,174,0.25)"
             : "0 4px 12px rgba(14,26,43,0.15)",
           transition: "background 180ms ease, transform 180ms ease",
         }}
         onMouseEnter={(e) => {
-          if (!canHover()) return;
+          if (disabled || !canHover()) return;
           e.currentTarget.style.background = recommended ? "#3D33A0" : "#1a2a40";
           e.currentTarget.style.transform = "translateY(-1px)";
         }}
         onMouseLeave={(e) => {
+          if (disabled) return;
           e.currentTarget.style.background = recommended ? B.purple : B.navy;
           e.currentTarget.style.transform = "translateY(0)";
         }}
       >
-        <span className="tick tick-white" />
-        <span className="cta-label">{ctaLabel}</span>
-        <span className="cta-arrow cta-arrow-white" />
-      </a>
+        {!disabled && <span className="tick tick-white" />}
+        <span className={disabled ? "" : "cta-label"}>{ctaLabel}</span>
+        {!disabled && <span className="cta-arrow cta-arrow-white" />}
+      </button>
     </div>
   );
 }
@@ -205,6 +215,7 @@ function PricingCard({
 
 export default function PricingPage() {
   const mobile = useMobile();
+  const [transition, setTransition] = useState<{ title: string; price: string } | null>(null);
 
   const heroAnim = useInView();
   const cardsAnim = useInView();
@@ -213,8 +224,50 @@ export default function PricingPage() {
   const processAnim = useInView();
   const ctaAnim = useInView();
 
+  const handleSelect = (title: string, price: string) => {
+    setTransition({ title, price });
+    setTimeout(() => {
+      window.location.href = "/diagnostic";
+    }, 3000);
+  };
+
   return (
     <div style={{ background: "#FFFFFF" }}>
+      {/* Purchase transition overlay */}
+      {transition && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 9999,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: B.navy,
+          animation: "fadeIn 400ms ease forwards",
+        }}>
+          <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: "50%",
+              border: "3px solid rgba(255,255,255,0.15)",
+              borderTopColor: "#ffffff",
+              margin: "0 auto 28px",
+              animation: "spin 0.8s linear infinite",
+            }} />
+            <div style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.45)", marginBottom: 16 }}>
+              Preparing Your Assessment
+            </div>
+            <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#ffffff", marginBottom: 8 }}>
+              {transition.title}
+            </div>
+            <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 32 }}>
+              {transition.price}
+            </div>
+            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", lineHeight: 1.6 }}>
+              Redirecting to the Income Stability Assessment™...
+            </div>
+          </div>
+          <style>{`
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes spin { to { transform: rotate(360deg); } }
+          `}</style>
+        </div>
+      )}
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
@@ -344,6 +397,7 @@ export default function PricingPage() {
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={0}
+              onSelect={handleSelect}
             />
             <PricingCard
               recommended
@@ -351,11 +405,12 @@ export default function PricingPage() {
               price="$99"
               perUnit="$33 per assessment"
               description="Three assessments you can take at any time within one year. Track how your income structure evolves over time."
-              ctaLabel="Start Monitoring"
+              ctaLabel="Coming Soon"
               ctaHref="/diagnostic"
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={140}
+              disabled
             />
           </div>
 
@@ -647,8 +702,8 @@ export default function PricingPage() {
 
           {/* Two CTA buttons */}
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
-            <a
-              href="/diagnostic"
+            <button
+              onClick={() => handleSelect("Single Assessment", "$39")}
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
@@ -660,7 +715,7 @@ export default function PricingPage() {
                 fontSize: 15,
                 letterSpacing: "-0.01em",
                 border: "1px solid rgba(255,255,255,0.18)",
-                textDecoration: "none",
+                cursor: "pointer",
                 transition: "background 180ms ease, transform 180ms ease",
                 width: mobile ? "100%" : "auto",
               }}
@@ -674,36 +729,26 @@ export default function PricingPage() {
               }}
             >
               Single Assessment — $39
-            </a>
-            <a
-              href="/diagnostic"
+            </button>
+            <button
+              disabled
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
                 paddingLeft: 28,
                 paddingRight: 28,
                 borderRadius: 14,
-                background: "#FFFFFF",
-                color: B.navy,
+                background: "rgba(255,255,255,0.25)",
+                color: "rgba(255,255,255,0.5)",
                 fontSize: 15,
                 letterSpacing: "-0.01em",
-                border: "none",
-                textDecoration: "none",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-                transition: "transform 180ms ease, box-shadow 180ms ease",
+                border: "1px solid rgba(255,255,255,0.12)",
+                cursor: "not-allowed",
                 width: mobile ? "100%" : "auto",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.24)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
-              }}
             >
-              Annual Monitoring — $99
-            </a>
+              Annual Monitoring — Coming Soon
+            </button>
           </div>
 
           {/* Methodology statement */}
