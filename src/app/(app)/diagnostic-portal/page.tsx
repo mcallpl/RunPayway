@@ -580,7 +580,7 @@ export default function InitializationPage() {
           <div style={{ height: "100%", width: progressWidths[step], borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
         </div>
         <p style={{ fontSize: 11, color: B.light, textAlign: "center", marginTop: 10 }}>
-          Average completion: 1 min 47 sec
+          Average completion: 1 min 47 sec — starts after Begin Assessment
         </p>
       </div>
     </div>
