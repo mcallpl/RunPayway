@@ -228,8 +228,24 @@ export default function PricingPage() {
 
   const handleSelect = (title: string, price: string) => {
     setTransition({ title, price });
+    // Set session data so diagnostic page payment gate allows entry
+    sessionStorage.setItem("rp_purchase_session", JSON.stringify({
+      status: "paid",
+      plan: title,
+      price,
+      timestamp: new Date().toISOString(),
+    }));
+    // Set a default profile so diagnostic doesn't redirect to portal
+    if (!sessionStorage.getItem("rp_profile")) {
+      sessionStorage.setItem("rp_profile", JSON.stringify({
+        title: "Income Stability Assessment",
+        entity_type: "Individual",
+        income_model: "Fee-for-Service",
+        revenue_type: "Project-Based",
+        industry_sector: "Professional Services",
+      }));
+    }
     setTimeout(() => {
-      // Detect basePath from current URL (works on static export and dev)
       const match = window.location.pathname.match(/^(\/RunPayway)/);
       const basePath = match ? match[1] : "";
       window.location.href = `${basePath}/diagnostic/`;
