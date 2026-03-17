@@ -752,8 +752,46 @@ export default function SampleReportPage() {
         </div>
       </section>
 
-      {/* Bottom spacing */}
-      <div style={{ height: mobile ? 48 : 72, background: B.sand }} />
+      {/* Bottom brand strip */}
+      <section
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          background: B.gradient,
+          paddingTop: mobile ? 56 : 80,
+          paddingBottom: mobile ? 56 : 80,
+        }}
+      >
+        {/* Concentric halos */}
+        {[140, 240, 360].map((size, i) => (
+          <div
+            key={size}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              transform: "translate(-50%, -50%)",
+              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
+              pointerEvents: "none",
+            }}
+          />
+        ))}
+
+        <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+            RunPayway™
+          </div>
+          <div style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.60)", marginBottom: 20 }}>
+            Income Stability Score™
+          </div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
+            Powered by Structural Stability Model RP-1.0
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
