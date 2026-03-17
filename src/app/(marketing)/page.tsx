@@ -601,19 +601,11 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         overflow: "hidden",
       }}
     >
-      {/* Top wave transition */}
-      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#0E1A2B" />
-        </svg>
-      </div>
+      {/* Top gradient fade — white eases into navy */}
+      <div className="absolute left-0 right-0" style={{ top: 0, transform: "translateY(-100%)", height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0) 0%, rgba(14,26,43,0.04) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.30) 75%, #0E1A2B 100%)", pointerEvents: "none" }} />
 
-      {/* Bottom wave transition */}
-      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
-        </svg>
-      </div>
+      {/* Bottom gradient fade — navy eases back out */}
+      <div className="absolute left-0 right-0" style={{ bottom: 0, transform: "translateY(100%)", height: 120, background: "linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.30) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.04) 75%, rgba(14,26,43,0) 100%)", pointerEvents: "none" }} />
 
       {/* Ambient glows */}
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
@@ -891,19 +883,11 @@ function WhyIncomeStabilityMatters() {
       <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
 
-      {/* Top wave transition */}
-      <div className="absolute top-0 left-0 right-0" style={{ transform: "translateY(-99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,80 L0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 Z" fill="#0E1A2B" />
-        </svg>
-      </div>
+      {/* Top gradient fade — white eases into navy */}
+      <div className="absolute left-0 right-0" style={{ top: 0, transform: "translateY(-100%)", height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0) 0%, rgba(14,26,43,0.04) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.30) 75%, #0E1A2B 100%)", pointerEvents: "none" }} />
 
-      {/* Bottom wave transition */}
-      <div className="absolute bottom-0 left-0 right-0" style={{ transform: "translateY(99%)" }}>
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 80 }}>
-          <path d="M0,0 L0,40 Q360,80 720,40 Q1080,0 1440,40 L1440,0 Z" fill="#0E1A2B" />
-        </svg>
-      </div>
+      {/* Bottom gradient fade — navy eases back out */}
+      <div className="absolute left-0 right-0" style={{ bottom: 0, transform: "translateY(100%)", height: 120, background: "linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.30) 25%, rgba(14,26,43,0.12) 50%, rgba(14,26,43,0.04) 75%, rgba(14,26,43,0) 100%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Comparison panel — elevated, full-width */}
