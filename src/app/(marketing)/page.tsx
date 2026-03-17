@@ -1246,8 +1246,7 @@ function PreviewYourScoreReport() {
 /* FACTOR CARD — each card observes its own visibility                   */
 /* ------------------------------------------------------------------ */
 function FactorCard({ factor, index, mobile }: { factor: { name: string; desc: string; icon: React.ReactNode }; index: number; mobile: boolean }) {
-  const { ref, visible } = useInView(0.15);
-  const delay = index * 120;
+  const { ref, visible } = useInView(0.3);
 
   return (
     <article
@@ -1261,8 +1260,8 @@ function FactorCard({ factor, index, mobile }: { factor: { name: string; desc: s
         border: "1px solid rgba(14,26,43,0.06)",
         boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transition: `opacity 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, box-shadow 400ms ease, border-color 400ms ease`,
+        transform: visible ? "translateY(0)" : "translateY(20px)",
+        transition: "opacity 450ms ease-out, transform 450ms ease-out, box-shadow 400ms ease, border-color 400ms ease",
         overflow: "hidden",
       }}
       onMouseEnter={(e) => {
