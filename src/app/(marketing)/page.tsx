@@ -333,7 +333,7 @@ function FinalCta() {
               margin: `0 auto ${S.subtextMb}px auto`,
             }}
           >
-            Six structural factors. One score. A complete structural diagnosis of your income.
+            Stop guessing whether your income is stable. Know exactly where your client concentration risk is, how predictable your revenue actually is, and what to fix first.
           </p>
 
           {/* CTA Button */}
@@ -416,7 +416,7 @@ const t = e.currentTarget;
               marginRight: "auto",
             }}
           >
-            Most first-time assessments score between 35&#8211;55. The same inputs always produce the same score.
+            Most first-time assessments score between 35&#8211;55. If your income depends on active work or a few key clients, this is where you find out.
           </p>
         </div>
       </div>
@@ -992,7 +992,7 @@ function WhyIncomeStabilityMatters() {
             className="text-[16px] md:text-[18px]"
             style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.subtextMb }}
           >
-            That structural difference determines financial resilience. Until now, there was no standardized way to measure it.
+            That structural difference determines financial resilience, business valuation, and whether your income survives disruption. Until now, there was no standardized way to measure it.
           </p>
 
           {/* Anchor statement */}
@@ -1435,17 +1435,17 @@ function HowItWorks() {
     {
       num: "1",
       title: "Income Profile Intake",
-      desc: "Six structural factors capture your income sources, frequency, and predictability.",
+      desc: "Six questions about your recurring revenue, client concentration, income diversification, and forward visibility.",
     },
     {
       num: "2",
       title: "Structural Analysis",
-      desc: "Model RP-1.0 scores your responses across six factors and places you on a 0\u2013100 stability scale.",
+      desc: "Model RP-1.0 evaluates how predictable, diversified, and durable your income structure is — scored 0\u2013100.",
     },
     {
       num: "3",
       title: "Score + Report Delivered",
-      desc: "Your Income Stability Score™, structural priority map, sector benchmarks, and personalized 90-day action plan are generated instantly.",
+      desc: "Your Income Stability Score™, priority map showing what to fix first, sector benchmarks, and a personalized 90-day action plan — delivered instantly.",
     },
   ];
 
@@ -1696,7 +1696,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
               }}
             >
-              RunPayway™ scores the structural stability of your income across six factors &#8212; in under two&nbsp;minutes.
+              RunPayway™ measures how predictable your revenue is, how concentrated your client risk is, and whether your income continues without you &#8212; in under two&nbsp;minutes.
             </p>
 
             <p
