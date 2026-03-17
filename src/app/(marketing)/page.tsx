@@ -1772,22 +1772,68 @@ const t = e.currentTarget;
 
           {/* Right — Floating Score (no card) */}
           <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
-            {/* Very faint radial glow + scoring rings — hidden on mobile */}
-            {!mobile && (
-              <>
-                <div
-                  className="absolute pointer-events-none"
-                  style={{
-                    width: 500, height: 500, borderRadius: "50%",
-                    top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-                    background: "radial-gradient(circle, rgba(75,63,174,0.035) 0%, transparent 60%)",
-                  }}
-                />
-                <div className="absolute pointer-events-none" style={{ width: 380, height: 380, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1.5px solid rgba(75,63,174,0.06)" }} />
-                <div className="absolute pointer-events-none" style={{ width: 260, height: 260, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1px solid rgba(75,63,174,0.05)" }} />
-                <div className="absolute pointer-events-none" style={{ width: 160, height: 160, borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)", border: "1px solid rgba(75,63,174,0.04)" }} />
-              </>
-            )}
+            {/* Abstract animated bullseye */}
+            <>
+              {/* Drifting gradient orbs — abstract depth */}
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 320 : 460, height: mobile ? 320 : 460, borderRadius: "50%",
+                top: "50%", left: "50%",
+                background: "radial-gradient(ellipse at 30% 40%, rgba(75,63,174,0.12) 0%, transparent 55%)",
+                animation: "heroOrbDrift1 12s ease-in-out infinite",
+                filter: "blur(40px)",
+              }} />
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 280 : 400, height: mobile ? 280 : 400, borderRadius: "50%",
+                top: "50%", left: "50%",
+                background: "radial-gradient(ellipse at 70% 60%, rgba(31,109,122,0.10) 0%, transparent 55%)",
+                animation: "heroOrbDrift2 15s ease-in-out infinite",
+                filter: "blur(35px)",
+              }} />
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 240 : 340, height: mobile ? 240 : 340, borderRadius: "50%",
+                top: "50%", left: "50%",
+                background: "radial-gradient(ellipse at 50% 30%, rgba(75,63,174,0.08) 0%, rgba(31,109,122,0.04) 40%, transparent 60%)",
+                animation: "heroOrbDrift3 18s ease-in-out infinite",
+                filter: "blur(30px)",
+              }} />
+
+              {/* Pulsing concentric rings */}
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 340 : 420, height: mobile ? 340 : 420, borderRadius: "50%",
+                top: "50%", left: "50%",
+                border: "1.5px solid rgba(75,63,174,0.10)",
+                animation: "heroRingPulse 6s ease-in-out infinite",
+              }} />
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 250 : 310, height: mobile ? 250 : 310, borderRadius: "50%",
+                top: "50%", left: "50%",
+                border: "1px solid rgba(75,63,174,0.08)",
+                animation: "heroRingPulse2 5s ease-in-out infinite 1s",
+              }} />
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 170 : 210, height: mobile ? 170 : 210, borderRadius: "50%",
+                top: "50%", left: "50%",
+                border: "1px solid rgba(31,109,122,0.07)",
+                animation: "heroRingPulse 7s ease-in-out infinite 2s",
+              }} />
+
+              {/* Slow rotating dashed ring — precision/measurement feel */}
+              {!mobile && (
+                <div className="absolute pointer-events-none" style={{
+                  width: 480, height: 480, borderRadius: "50%",
+                  top: "50%", left: "50%",
+                  border: "1px dashed rgba(75,63,174,0.06)",
+                  animation: "heroRingSpin 90s linear infinite",
+                }} />
+              )}
+
+              {/* Inner glow — warm center behind score */}
+              <div className="absolute pointer-events-none" style={{
+                width: mobile ? 180 : 240, height: mobile ? 180 : 240, borderRadius: "50%",
+                top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+                background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.03) 40%, transparent 70%)",
+              }} />
+            </>
 
             {/* Score typography — centered in bullseye */}
             <div
