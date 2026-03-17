@@ -5,33 +5,27 @@ import Link from "next/link";
 import Image from "next/image";
 import logoImg from "../../../public/runpayway-logo.png";
 import CookieConsent from "@/components/CookieConsent";
+import { useLanguage } from "@/lib/i18n";
+import type { LangCode } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Language selector                                                   */
 /* ------------------------------------------------------------------ */
 
 const LANGUAGES = [
-  { code: "en", label: "English", flag: "🇺🇸" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "pt", label: "Português", flag: "🇧🇷" },
-] as const;
-
-type LangCode = (typeof LANGUAGES)[number]["code"];
+  { code: "en" as LangCode, label: "English", flag: "🇺🇸" },
+  { code: "es" as LangCode, label: "Español", flag: "🇪🇸" },
+  { code: "pt" as LangCode, label: "Português", flag: "🇧🇷" },
+];
 
 function LanguageSelector({ mobile }: { mobile: boolean }) {
-  const [lang, setLang] = useState<LangCode>("en");
+  const { lang, setLang } = useLanguage();
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("rp_lang") as LangCode | null;
-    if (stored && LANGUAGES.some((l) => l.code === stored)) setLang(stored);
-  }, []);
 
   const current = LANGUAGES.find((l) => l.code === lang)!;
 
   const handleSelect = (code: LangCode) => {
     setLang(code);
-    localStorage.setItem("rp_lang", code);
     setOpen(false);
   };
 
@@ -142,21 +136,6 @@ function useMobile(breakpoint = 768) {
   return mobile;
 }
 
-const NAV_LINKS = [
-  { href: "/how-it-works", label: "How It Works" },
-  { href: "/pricing", label: "Pricing" },
-];
-
-const MORE_LINKS = [
-  { href: "/sample-report", label: "Sample Report" },
-  { href: "/methodology", label: "Methodology" },
-  { href: "/verify", label: "Verify a Score" },
-  { href: "/about", label: "About" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
-  { href: "#footer", label: "More Links" },
-];
-
 export default function MarketingLayout({
   children,
 }: {
@@ -166,6 +145,22 @@ export default function MarketingLayout({
   const [moreOpen, setMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mobile = useMobile();
+  const { t } = useLanguage();
+
+  const NAV_LINKS = [
+    { href: "/how-it-works", label: t.nav.howItWorks },
+    { href: "/pricing", label: t.nav.pricing },
+  ];
+
+  const MORE_LINKS = [
+    { href: "/sample-report", label: t.nav.sampleReport },
+    { href: "/methodology", label: t.nav.methodology },
+    { href: "/verify", label: t.nav.verifyAScore },
+    { href: "/about", label: t.nav.about },
+    { href: "/faq", label: t.nav.faq },
+    { href: "/contact", label: t.nav.contact },
+    { href: "#footer", label: t.nav.more },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -262,7 +257,7 @@ export default function MarketingLayout({
                       transition: "color 160ms ease",
                     }}
                   >
-                    More
+                    {t.nav.more}
                     <svg
                       width="10" height="6" viewBox="0 0 10 6" fill="none"
                       style={{
@@ -339,7 +334,7 @@ export default function MarketingLayout({
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
                 >
-                  Sign In
+                  {t.nav.signIn}
                 </Link>
                 <Link
                   href="/pricing"
@@ -370,7 +365,7 @@ export default function MarketingLayout({
                   }}
                 >
                   <span className="tick tick-white" />
-                  <span className="cta-label">Get My Score</span>
+                  <span className="cta-label">{t.nav.getMyScore}</span>
                   <span className="cta-arrow cta-arrow-white" />
                 </Link>
               </div>
@@ -501,7 +496,7 @@ export default function MarketingLayout({
                 }}
               >
                 <span className="tick tick-white" />
-                <span className="cta-label">Get My Income Stability Score™</span>
+                <span className="cta-label">{t.nav.getMyScoreFull}</span>
               </Link>
             </div>
           </div>
@@ -539,7 +534,7 @@ export default function MarketingLayout({
               />
             </Link>
             <div style={{ fontSize: 13, color: "rgba(14,26,43,0.40)", marginTop: 6 }}>
-              Income Stability Score™
+              {t.footer.incomeStabilityScore}
             </div>
           </div>
 
@@ -556,16 +551,16 @@ export default function MarketingLayout({
           >
             {/* Product */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Product</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
-                  { href: "/", label: "Home" },
-                  { href: "/how-it-works", label: "How It Works" },
-                  { href: "/sample-report", label: "Sample Report" },
-                  { href: "/methodology", label: "Methodology" },
-                  { href: "/verify", label: "Verify a Score" },
-                  { href: "/pricing", label: "Pricing" },
-                  { href: "/faq", label: "FAQ" },
+                  { href: "/", label: t.footer.home },
+                  { href: "/how-it-works", label: t.nav.howItWorks },
+                  { href: "/sample-report", label: t.nav.sampleReport },
+                  { href: "/methodology", label: t.nav.methodology },
+                  { href: "/verify", label: t.nav.verifyAScore },
+                  { href: "/pricing", label: t.nav.pricing },
+                  { href: "/faq", label: t.nav.faq },
                 ].map((link) => (
                   <Link
                     key={link.label}
@@ -582,11 +577,11 @@ export default function MarketingLayout({
 
             {/* Company */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Company</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
-                  { href: "/about", label: "About" },
-                  { href: "/contact", label: "Contact" },
+                  { href: "/about", label: t.nav.about },
+                  { href: "/contact", label: t.nav.contact },
                 ].map((link) => (
                   <Link
                     key={link.label}
@@ -603,15 +598,15 @@ export default function MarketingLayout({
 
             {/* Governance */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Governance</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.governance}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
-                  { href: "/privacy-policy", label: "Privacy Policy" },
-                  { href: "/terms-of-use", label: "Terms of Use" },
-                  { href: "/accessibility", label: "Accessibility" },
-                  { href: "/acceptable-use-policy", label: "Acceptable Use Policy" },
-                  { href: "/security-practices", label: "Security Practices" },
-                  { href: "/model-version-policy", label: "Model Version Policy" },
+                  { href: "/privacy-policy", label: t.footer.privacyPolicy },
+                  { href: "/terms-of-use", label: t.footer.termsOfUse },
+                  { href: "/accessibility", label: t.footer.accessibility },
+                  { href: "/acceptable-use-policy", label: t.footer.acceptableUsePolicy },
+                  { href: "/security-practices", label: t.footer.securityPractices },
+                  { href: "/model-version-policy", label: t.footer.modelVersionPolicy },
                 ].map((link) => (
                   <Link
                     key={link.label}
@@ -628,10 +623,10 @@ export default function MarketingLayout({
 
             {/* Enterprise */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Enterprise</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.enterprise}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 <span style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4 }}>
-                  RunPayway™ for Organizations
+                  {t.footer.forOrganizations}
                 </span>
                 <form
                   onSubmit={(e) => { e.preventDefault(); }}
@@ -639,8 +634,8 @@ export default function MarketingLayout({
                 >
                   <input
                     type="email"
-                    placeholder="Work email"
-                    aria-label="Work email for enterprise waitlist"
+                    placeholder={t.footer.workEmail}
+                    aria-label={t.footer.workEmail}
                     style={{
                       width: "100%",
                       height: mobile ? 40 : 36,
@@ -673,7 +668,7 @@ export default function MarketingLayout({
                     onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
                   >
-                    Join the Waitlist
+                    {t.footer.joinWaitlist}
                   </button>
                 </form>
               </div>
@@ -681,7 +676,7 @@ export default function MarketingLayout({
 
             {/* Social */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Social</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.social}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
@@ -709,7 +704,7 @@ export default function MarketingLayout({
 
           {/* Legal strip */}
           <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
-            &copy; 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-1.0
+            {t.footer.legal}
           </div>
         </div>
       </footer>
