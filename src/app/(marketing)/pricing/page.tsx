@@ -426,11 +426,11 @@ export default function PricingPage() {
           </div>
 
           {/* Trust line */}
-          <div style={{ textAlign: "center", marginTop: 28 }}>
+          <div style={{ textAlign: "center", marginTop: 28, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
             <p style={{ fontSize: 13, color: B.light }}>
               Begin your assessment immediately after selecting a plan
             </p>
-            <p style={{ fontSize: 13, color: B.light, marginTop: 8, maxWidth: 480, lineHeight: 1.6, marginLeft: "auto", marginRight: "auto" }}>
+            <p style={{ fontSize: 13, color: B.light, marginTop: 8, lineHeight: 1.6 }}>
               Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
             </p>
           </div>
