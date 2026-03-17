@@ -1799,43 +1799,74 @@ const t = e.currentTarget;
               {/* Score arc — partial ring showing 78/100 progress */}
               <circle
                 cx="240" cy="240" r="210"
-                stroke="url(#scoreArc)" strokeWidth="2" strokeLinecap="round"
-                opacity="0.20"
+                stroke="url(#heroScoreArc)" strokeWidth="2.5" strokeLinecap="round"
+                opacity="0.28"
                 strokeDasharray={`${2 * Math.PI * 210 * 0.78} ${2 * Math.PI * 210 * 0.22}`}
                 transform="rotate(-90 240 240)"
               />
-              {/* Middle structural ring */}
-              <circle cx="240" cy="240" r="168" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.05" />
-              {/* Inner structural ring */}
-              <circle cx="240" cy="240" r="126" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.06" />
-              {/* Innermost fine ring */}
-              <circle cx="240" cy="240" r="84" stroke="#1F6D7A" strokeWidth="0.5" opacity="0.04" />
+              {/* Faint trail behind score arc — full ring at low opacity */}
+              <circle cx="240" cy="240" r="210" stroke="#0E1A2B" strokeWidth="1" opacity="0.03" />
 
-              {/* Bullseye target rings — concentric filled bands */}
-              <circle cx="240" cy="240" r="168" fill="#4B3FAE" opacity="0.015" />
-              <circle cx="240" cy="240" r="126" fill="#4B3FAE" opacity="0.02" />
-              <circle cx="240" cy="240" r="84" fill="#4B3FAE" opacity="0.025" />
-              <circle cx="240" cy="240" r="42" fill="#4B3FAE" opacity="0.03" />
+              {/* Middle structural ring */}
+              <circle cx="240" cy="240" r="168" stroke="url(#heroRingMid)" strokeWidth="0.5" opacity="0.07" />
+              {/* Inner structural ring */}
+              <circle cx="240" cy="240" r="126" stroke="url(#heroRingInner)" strokeWidth="0.5" opacity="0.06" />
+              {/* Innermost fine ring */}
+              <circle cx="240" cy="240" r="84" stroke="#1F6D7A" strokeWidth="0.5" opacity="0.05" />
+
+              {/* Bullseye target rings — concentric filled bands with radial gradient */}
+              <circle cx="240" cy="240" r="168" fill="url(#heroBullseyeOuter)" opacity="0.018" />
+              <circle cx="240" cy="240" r="126" fill="url(#heroBullseyeMid)" opacity="0.022" />
+              <circle cx="240" cy="240" r="84" fill="url(#heroBullseyeInner)" opacity="0.028" />
+              <circle cx="240" cy="240" r="42" fill="#4B3FAE" opacity="0.035" />
 
               {/* Crosshair — subtle center alignment marks */}
-              <line x1="240" y1="165" x2="240" y2="195" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
-              <line x1="240" y1="285" x2="240" y2="315" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
-              <line x1="165" y1="240" x2="195" y2="240" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
-              <line x1="285" y1="240" x2="315" y2="240" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.08" />
+              <line x1="240" y1="165" x2="240" y2="195" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
+              <line x1="240" y1="285" x2="240" y2="315" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
+              <line x1="165" y1="240" x2="195" y2="240" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
+              <line x1="285" y1="240" x2="315" y2="240" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.07" />
 
-              {/* Diagonal crosshairs — adds detail */}
-              <line x1="193" y1="193" x2="205" y2="205" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
-              <line x1="275" y1="193" x2="287" y2="205" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
-              <line x1="193" y1="287" x2="205" y2="275" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
-              <line x1="275" y1="287" x2="287" y2="275" stroke="#4B3FAE" strokeWidth="0.5" opacity="0.05" />
+              {/* Diagonal crosshairs */}
+              <line x1="193" y1="193" x2="205" y2="205" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
+              <line x1="275" y1="193" x2="287" y2="205" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
+              <line x1="193" y1="287" x2="205" y2="275" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
+              <line x1="275" y1="287" x2="287" y2="275" stroke="#0E1A2B" strokeWidth="0.5" opacity="0.04" />
 
-              {/* Gradient definition for score arc */}
+              {/* Gradient definitions */}
               <defs>
-                <linearGradient id="scoreArc" x1="0%" y1="0%" x2="100%" y2="0%">
+                {/* Score arc — navy through purple to teal, mapped around the circle */}
+                <linearGradient id="heroScoreArc" gradientUnits="userSpaceOnUse" x1="240" y1="30" x2="30" y2="340">
                   <stop offset="0%" stopColor="#0E1A2B" />
-                  <stop offset="50%" stopColor="#4B3FAE" />
+                  <stop offset="35%" stopColor="#2A2670" />
+                  <stop offset="60%" stopColor="#4B3FAE" />
+                  <stop offset="85%" stopColor="#2B5A6E" />
                   <stop offset="100%" stopColor="#1F6D7A" />
                 </linearGradient>
+                {/* Ring gradients — subtle brand color shifts around circumference */}
+                <linearGradient id="heroRingMid" gradientUnits="userSpaceOnUse" x1="72" y1="240" x2="408" y2="240">
+                  <stop offset="0%" stopColor="#0E1A2B" />
+                  <stop offset="50%" stopColor="#4B3FAE" />
+                  <stop offset="100%" stopColor="#0E1A2B" />
+                </linearGradient>
+                <linearGradient id="heroRingInner" gradientUnits="userSpaceOnUse" x1="114" y1="240" x2="366" y2="240">
+                  <stop offset="0%" stopColor="#4B3FAE" />
+                  <stop offset="50%" stopColor="#1F6D7A" />
+                  <stop offset="100%" stopColor="#4B3FAE" />
+                </linearGradient>
+                {/* Bullseye fill gradients — radial brand color with depth */}
+                <radialGradient id="heroBullseyeOuter" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#4B3FAE" />
+                  <stop offset="100%" stopColor="#0E1A2B" />
+                </radialGradient>
+                <radialGradient id="heroBullseyeMid" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#4B3FAE" />
+                  <stop offset="60%" stopColor="#2A2670" />
+                  <stop offset="100%" stopColor="#1F6D7A" />
+                </radialGradient>
+                <radialGradient id="heroBullseyeInner" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#4B3FAE" />
+                  <stop offset="100%" stopColor="#4B3FAE" stopOpacity="0.5" />
+                </radialGradient>
               </defs>
             </svg>
 
@@ -1869,7 +1900,7 @@ const t = e.currentTarget;
                 className="font-semibold leading-none"
                 style={{
                   fontSize: mobile ? 64 : 148,
-                  background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
+                  background: `linear-gradient(145deg, ${B.navy} 0%, #2A2670 30%, ${B.purple} 55%, #2B5A6E 80%, ${B.teal} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
