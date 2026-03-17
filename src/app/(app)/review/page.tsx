@@ -297,19 +297,10 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       border: "1px solid #E5E7EB",
       borderRadius: 8,
       padding: R.pagePad,
-      /* Fixed height matching letter-paper aspect ratio at 750px capture width.
-         750 * (11 / 8.5) = 970.6px. Content uses flexbox to distribute space. */
-      minHeight: 970,
-      maxHeight: 970,
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column",
       boxSizing: "border-box",
     }}>
       <ReportHeader record={record} />
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
@@ -339,33 +330,23 @@ async function downloadPDF(recordId: string) {
   for (let i = 0; i < pages.length; i++) {
     const el = pages[i] as HTMLElement;
 
-    // Letter-paper aspect ratio height at capture width
-    const captureHeight = Math.round(captureWidth * (11 / 8.5));
-
     // Save original styles
     const origWidth = el.style.width;
-    const origMinHeight = el.style.minHeight;
-    const origMaxHeight = el.style.maxHeight;
     const origMaxWidth = el.style.maxWidth;
     const origBoxSizing = el.style.boxSizing;
-    const origHeight = el.style.height;
-    const origOverflow = el.style.overflow;
     const origBorder = el.style.border;
     const origBorderRadius = el.style.borderRadius;
 
-    // Set fixed dimensions matching letter paper
+    // Set fixed width for consistent rendering, let height be natural
     el.style.width = `${captureWidth}px`;
     el.style.maxWidth = `${captureWidth}px`;
-    el.style.height = `${captureHeight}px`;
-    el.style.minHeight = `${captureHeight}px`;
-    el.style.maxHeight = `${captureHeight}px`;
     el.style.boxSizing = "border-box";
-    el.style.overflow = "hidden";
     el.style.border = "none";
     el.style.borderRadius = "0";
 
-    // Let the browser reflow
+    // Let the browser reflow, then measure actual height
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const naturalHeight = el.scrollHeight;
 
     const canvas = await html2canvas(el, {
       scale: 2,
@@ -373,32 +354,38 @@ async function downloadPDF(recordId: string) {
       backgroundColor: "#ffffff",
       logging: false,
       width: captureWidth,
-      height: captureHeight,
+      height: naturalHeight,
       windowWidth: captureWidth,
     });
 
     // Restore original styles
     el.style.width = origWidth;
-    el.style.minHeight = origMinHeight;
-    el.style.maxHeight = origMaxHeight;
     el.style.maxWidth = origMaxWidth;
     el.style.boxSizing = origBoxSizing;
-    el.style.height = origHeight;
-    el.style.overflow = origOverflow;
     el.style.border = origBorder;
     el.style.borderRadius = origBorderRadius;
 
-    // Each capture maps exactly to one full letter page
+    // Place each report page on one PDF page — scale to fit
     if (i > 0) pdf.addPage();
+    const imgWidth = contentWidth;
+    const imgHeight = (canvas.height / canvas.width) * imgWidth;
 
-    // Fill the entire page — no margins since content has its own padding
+    // Scale down if content is taller than page
+    const scale = imgHeight > contentHeight ? contentHeight / imgHeight : 1;
+    const finalWidth = imgWidth * scale;
+    const finalHeight = imgHeight * scale;
+
+    // Center vertically on page
+    const xOffset = margin + (contentWidth - finalWidth) / 2;
+    const yOffset = margin;
+
     pdf.addImage(
       canvas.toDataURL("image/png"),
       "PNG",
-      0,
-      0,
-      pageWidth,
-      pageHeight
+      xOffset,
+      yOffset,
+      finalWidth,
+      finalHeight
     );
   }
 
