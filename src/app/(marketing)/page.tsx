@@ -1763,7 +1763,7 @@ const t = e.currentTarget;
 
               <p
                 className="text-[13px] md:text-[14px]"
-                style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em" }}
+                style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em", textAlign: "center" }}
               >
                 Average completion: 1 min 47 sec &mdash; Instant results
               </p>
@@ -1771,7 +1771,7 @@ const t = e.currentTarget;
           </div>
 
           {/* Right — Floating Score (no card) */}
-          <div className="flex-1 flex justify-center lg:justify-end" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
+          <div className="flex-1 flex justify-center" style={{ position: "relative", minHeight: mobile ? 280 : 400 }}>
             {/* Precision gauge — SVG instrument visual */}
             {(() => {
               const C = 260; // center of viewBox

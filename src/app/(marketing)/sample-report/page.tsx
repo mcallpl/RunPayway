@@ -342,7 +342,7 @@ export default function SampleReportPage() {
         style={{
           paddingTop: mobile ? 56 : 80,
           paddingBottom: mobile ? 24 : 40,
-          background: `linear-gradient(180deg, #0E1A2B 0%, rgba(14,26,43,0.85) 4%, rgba(14,26,43,0.40) 10%, rgba(14,26,43,0.12) 18%, ${B.sand} 30%)`,
+          background: `linear-gradient(180deg, rgba(14,26,43,0.06) 0%, rgba(14,26,43,0.02) 8%, ${B.sand} 20%)`,
         }}
       >
         <div
