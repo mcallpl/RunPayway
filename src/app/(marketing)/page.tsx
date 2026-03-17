@@ -1797,7 +1797,7 @@ const t = e.currentTarget;
                 <>
                   {/* Slowly rotating tick ring */}
                   <div className="absolute pointer-events-none" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 340 : 480, height: mobile ? 340 : 480 }}>
-                    <svg viewBox="0 0 480 480" fill="none" style={{ width: "100%", height: "100%", animation: "heroRingSpin 120s linear infinite" }}>
+                    <svg viewBox="0 0 480 480" fill="none" style={{ width: "100%", height: "100%" }}>
                       {Array.from({ length: 100 }, (_, i) => {
                         const angle = (i * 3.6 - 90) * Math.PI / 180;
                         const isLong = i % 10 === 0;
