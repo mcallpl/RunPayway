@@ -235,7 +235,6 @@ export default function SampleReportPage() {
   const page1Anim = useInView();
   const page2Anim = useInView();
   const page3Anim = useInView();
-  const ctaAnim = useInView();
 
   return (
     <div style={{ background: "#FFFFFF" }}>
@@ -363,14 +362,19 @@ export default function SampleReportPage() {
               transition: "opacity 600ms ease, transform 600ms ease",
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-              Report Overview
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: B.navy, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>1</span>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                Your Score at a Glance
+              </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Page 1: Executive Assessment
+              Executive Assessment
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              The first page delivers your Income Stability Score™, stability classification, percentile ranking within your industry sector, profile summary, and the key structural factors influencing your score.
+              Within seconds of completing your assessment, you see exactly where you stand — your score, your stability classification, and how you rank against others in your industry. No ambiguity. One number that tells you how resilient your income actually is.
             </p>
           </div>
 
@@ -510,11 +514,19 @@ export default function SampleReportPage() {
               transition: "opacity 600ms ease, transform 600ms ease",
             }}
           >
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: B.purple, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>2</span>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                What&#39;s Driving Your Score
+              </div>
+            </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Page 2: Structural Analysis
+              Structural Analysis
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              The second page breaks down the composition of your income sources, evaluates six structural indicators, provides a system diagnosis, and benchmarks your score against your industry sector.
+              This is where you discover why your score is what it is. Each of the six structural factors is ranked from strongest to weakest — showing you exactly where your income structure is solid and where it's exposed. Most people find at least one surprise here.
             </p>
           </div>
 
@@ -610,11 +622,19 @@ export default function SampleReportPage() {
               transition: "opacity 600ms ease, transform 600ms ease",
             }}
           >
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: B.teal, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>3</span>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                What to Fix First
+              </div>
+            </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Page 3: Improvement Path &amp; Governance
+              Improvement Path &amp; Governance
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              The third page identifies your primary structural constraint, improvement opportunities, evolution path, and official classification record.
+              Your report doesn&#39;t just diagnose — it prescribes. You get a personalized 90-day action plan targeting your primary structural constraint, plus a verifiable assessment record that proves your income stability to anyone who needs to see it.
             </p>
           </div>
 
@@ -700,125 +720,8 @@ export default function SampleReportPage() {
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/*  CTA                                                         */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        {/* Grain overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        {/* Concentric halos */}
-        {[220, 380, 560].map((size, i) => (
-          <div
-            key={size}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: size,
-              height: size,
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        <div
-          ref={ctaAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 680,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            textAlign: "center",
-            opacity: ctaAnim.visible ? 1 : 0,
-            transform: ctaAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 26 : 38,
-              fontWeight: 700,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.2,
-              marginBottom: 20,
-            }}
-          >
-            Get Your Own Report
-          </h2>
-
-          <p
-            style={{
-              fontSize: mobile ? 14 : 16,
-              color: "rgba(255,255,255,0.60)",
-              lineHeight: 1.75,
-              maxWidth: 520,
-              margin: "0 auto 36px",
-            }}
-          >
-            Complete the assessment in under two minutes and receive your personalized three-page Income Stability Assessment instantly — your score, structural priority map, and 90-day action plan.
-          </p>
-
-          <Link
-            href="/pricing"
-            className="cta-tick inline-flex items-center justify-center font-semibold"
-            style={{
-              height: mobile ? 52 : 56,
-              paddingLeft: mobile ? 28 : 36,
-              paddingRight: mobile ? 28 : 36,
-              borderRadius: 14,
-              background: "#FFFFFF",
-              color: B.navy,
-              fontSize: mobile ? 15 : 16,
-              letterSpacing: "-0.01em",
-              border: "none",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-              transition: "transform 180ms ease, box-shadow 180ms ease",
-              width: mobile ? "100%" : "auto",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.24)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
-            }}
-          >
-            <span className="tick tick-navy" />
-            <span className="cta-label">Get My Income Stability Score™</span>
-            <span className="cta-arrow cta-arrow-navy" />
-          </Link>
-
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
-          </p>
-        </div>
-      </section>
+      {/* Bottom spacing */}
+      <div style={{ height: mobile ? 48 : 72, background: B.sand }} />
     </div>
   );
 }
