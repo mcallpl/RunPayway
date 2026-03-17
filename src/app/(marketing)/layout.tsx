@@ -6,6 +6,130 @@ import Image from "next/image";
 import logoImg from "../../../public/runpayway-logo.png";
 import CookieConsent from "@/components/CookieConsent";
 
+/* ------------------------------------------------------------------ */
+/*  Language selector                                                   */
+/* ------------------------------------------------------------------ */
+
+const LANGUAGES = [
+  { code: "en", label: "English", flag: "🇺🇸" },
+  { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "pt", label: "Português", flag: "🇧🇷" },
+] as const;
+
+type LangCode = (typeof LANGUAGES)[number]["code"];
+
+function LanguageSelector({ mobile }: { mobile: boolean }) {
+  const [lang, setLang] = useState<LangCode>("en");
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("rp_lang") as LangCode | null;
+    if (stored && LANGUAGES.some((l) => l.code === stored)) setLang(stored);
+  }, []);
+
+  const current = LANGUAGES.find((l) => l.code === lang)!;
+
+  const handleSelect = (code: LangCode) => {
+    setLang(code);
+    localStorage.setItem("rp_lang", code);
+    setOpen(false);
+  };
+
+  return (
+    <div
+      style={{ position: "relative" }}
+      onMouseEnter={() => !mobile && setOpen(true)}
+      onMouseLeave={() => !mobile && setOpen(false)}
+    >
+      <button
+        onClick={() => setOpen(!open)}
+        aria-label={`Language: ${current.label}`}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          padding: "4px 8px",
+          borderRadius: 6,
+          border: "1px solid rgba(14,26,43,0.08)",
+          background: open ? "rgba(14,26,43,0.03)" : "transparent",
+          cursor: "pointer",
+          fontSize: mobile ? 18 : 16,
+          lineHeight: 1,
+          transition: "background 160ms ease, border-color 160ms ease",
+        }}
+      >
+        <span role="img" aria-hidden="true">{current.flag}</span>
+        <svg
+          width="8" height="5" viewBox="0 0 8 5" fill="none"
+          style={{
+            transition: "transform 200ms ease",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            opacity: 0.4,
+          }}
+        >
+          <path d="M1 1L4 4L7 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: mobile ? "auto" : -4,
+            bottom: mobile ? "100%" : "auto",
+            right: 0,
+            paddingTop: mobile ? 0 : 36,
+            paddingBottom: mobile ? 8 : 0,
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: 10,
+              border: "1px solid rgba(14,26,43,0.08)",
+              boxShadow: "0 8px 24px rgba(14,26,43,0.10), 0 2px 6px rgba(14,26,43,0.04)",
+              padding: "6px 0",
+              minWidth: 150,
+            }}
+          >
+            {LANGUAGES.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => handleSelect(l.code)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  width: "100%",
+                  padding: "9px 16px",
+                  border: "none",
+                  background: l.code === lang ? "rgba(75,63,174,0.06)" : "transparent",
+                  cursor: "pointer",
+                  fontSize: 13,
+                  fontWeight: l.code === lang ? 600 : 500,
+                  color: l.code === lang ? "#4B3FAE" : "rgba(14,26,43,0.70)",
+                  transition: "background 120ms ease",
+                  textAlign: "left",
+                }}
+                onMouseEnter={(e) => {
+                  if (l.code !== lang) e.currentTarget.style.background = "rgba(14,26,43,0.03)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = l.code === lang ? "rgba(75,63,174,0.06)" : "transparent";
+                }}
+              >
+                <span role="img" aria-hidden="true" style={{ fontSize: 16 }}>{l.flag}</span>
+                <span>{l.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* Runtime mobile detection — bypasses CSS entirely */
 function useMobile(breakpoint = 768) {
   const [mobile, setMobile] = useState(false);
@@ -203,6 +327,7 @@ export default function MarketingLayout({
               </nav>
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
+                <LanguageSelector mobile={false} />
                 <Link
                   href="/sign-in"
                   style={{
@@ -349,7 +474,10 @@ export default function MarketingLayout({
                 </Link>
               ))}
             </nav>
-            <div style={{ marginTop: 28 }}>
+            <div style={{ marginTop: 20, display: "flex", justifyContent: "flex-start" }}>
+              <LanguageSelector mobile={true} />
+            </div>
+            <div style={{ marginTop: 16 }}>
               <Link
                 href="/pricing"
                 onClick={() => setMenuOpen(false)}
