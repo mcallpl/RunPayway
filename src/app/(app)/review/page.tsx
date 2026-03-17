@@ -593,7 +593,7 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* ==================== PAGE 2 — Structural Analysis ==================== */}
+      {/* ==================== PAGE 2 — Here's Why ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Structural Analysis
@@ -661,8 +661,13 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
+      </ReportPage>
 
-        <SectionDivider />
+      {/* ==================== PAGE 3 — Here's What's at Risk ==================== */}
+      <ReportPage record={record}>
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
+          Diagnosis &amp; Benchmarks
+        </h2>
 
         {/* System Diagnosis */}
         <Label>System Diagnosis — {subject}</Label>
@@ -708,16 +713,8 @@ export default function ReviewPage() {
             ))}
           </div>
         </div>
-      </ReportPage>
 
-      {/* ==================== PAGE 3 — Improvement Path & Governance ==================== */}
-      <ReportPage record={record}>
-        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Improvement Path &amp; Governance
-        </h2>
-        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_3_key_insight_text}
-        </p>
+        <SectionDivider />
 
         {/* Primary Constraint */}
         <Label>Primary Structural Constraint — {subject}</Label>
@@ -726,8 +723,16 @@ export default function ReviewPage() {
           <p>{riskData.mechanism}</p>
           <p>{riskData.impact}</p>
         </div>
+      </ReportPage>
 
-        <SectionDivider />
+      {/* ==================== PAGE 4 — Here's What to Do ==================== */}
+      <ReportPage record={record}>
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
+          Improvement Path &amp; Governance
+        </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          {record.page_3_key_insight_text}
+        </p>
 
         {/* Improvement Opportunities */}
         <Label>Improvement Opportunities — {subject}</Label>
@@ -763,7 +768,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Sector evolution */}
-        <div style={{ marginTop: R.sectionGap }}>
+        <div>
           <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>
             Sector Evolution Path
           </div>
@@ -846,12 +851,12 @@ export default function ReviewPage() {
 
         {/* Verification */}
         <p style={{ ...T.caption, color: B.muted, marginTop: R.sectionGap }}>
-          Verify this report at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway.com/verify</span> using the Record ID and Authorization Code.
+          Verify this report at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span> using the Record ID and Authorization Code.
         </p>
 
         {/* Model reference */}
         <div style={{ textAlign: "center", marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
-          <div style={{ ...T.caption, color: B.light }}>RunPayway Structural Stability Model RP-1.0</div>
+          <div style={{ ...T.caption, color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
         </div>
       </ReportPage>
 
