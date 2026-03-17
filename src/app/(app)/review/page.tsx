@@ -269,7 +269,7 @@ function ReportHeader({ record }: { record: AssessmentRecord }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/runpayway-logo.png" alt="RunPayway" style={{ height: 14, width: "auto" }} />
+            <img src="/runpayway-logo-full.png" alt="RunPayway" style={{ height: 16, width: "auto" }} />
             <span style={{ ...T.caption, color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
           </div>
           <div style={{ ...T.caption, color: B.light }}>
@@ -417,27 +417,29 @@ async function downloadPDF(record: AssessmentRecord) {
     pdf.setDrawColor(220, 222, 225);
     pdf.setLineWidth(0.004);
     pdf.line(ML, yPos, PW - MR, yPos);
-    return yPos + 0.18;
+    return yPos + 0.12;
   }
 
   function drawLabel(text: string, yPos: number): number {
     setFont("bold", 8, C.muted);
     pdf.text(text.toUpperCase(), ML, yPos);
-    return yPos + 0.16;
+    return yPos + 0.14;
   }
+
+  // Logo as base64 PNG
+  const LOGO_B64 = "data:image/png;base64,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";
 
   function drawHeader(yPos: number): number {
     drawGradientBar(yPos);
     yPos += 0.055;
 
-    // Logo text
-    setFont("bold", 9.5, C.navy);
-    pdf.text("RUNPAYWAY", ML, yPos + 0.12);
-    const logoW = pdf.getTextWidth("RUNPAYWAY");
-    setFont("normal", 5.5, C.navy);
-    pdf.text("\u2122", ML + logoW, yPos + 0.08);
+    // Logo image
+    const logoH = 0.16;
+    const logoW = logoH * (191 / 60);
+    pdf.addImage(LOGO_B64, "PNG", ML, yPos + 0.02, logoW, logoH);
+
     setFont("normal", 7.5, C.light);
-    pdf.text("Income Stability Assessment \u00B7 Model RP-1.0", ML + logoW + 0.15, yPos + 0.12);
+    pdf.text("Income Stability Assessment \u00B7 Model RP-1.0", ML + logoW + 0.12, yPos + 0.12);
 
     // Right: ID + timestamp
     const ts = record.issued_timestamp_utc || record.assessment_date_utc;
@@ -447,7 +449,7 @@ async function downloadPDF(record: AssessmentRecord) {
     pdf.setDrawColor(...C.sandDk);
     pdf.setLineWidth(0.005);
     pdf.line(ML, yPos, PW - MR, yPos);
-    return yPos + 0.2;
+    return yPos + 0.15;
   }
 
   function drawPageFooter(pageNum: number) {
@@ -489,20 +491,20 @@ async function downloadPDF(record: AssessmentRecord) {
 
   // Executive summary
   y = drawWrapped(record.page_1_key_insight_text, ML, y, CW, 9.5, "normal", C.muted, 1.6);
-  y += 0.18;
+  y += 0.1;
 
   // Score label
   y = drawLabel("Income Stability Score\u2122", y);
 
-  // Large score number
-  setFont("bold", 40, C.navy);
-  pdf.text(String(record.final_score), ML, y + 0.05);
-  y += 0.42;
+  // Large score number — positioned well below label
+  setFont("bold", 36, C.navy);
+  pdf.text(String(record.final_score), ML, y + 0.3);
+  y += 0.38;
 
   // Band
-  setFont("bold", 13, C.teal);
+  setFont("bold", 12, C.teal);
   pdf.text(record.stability_band, ML, y);
-  y += 0.22;
+  y += 0.16;
 
   // Metadata line
   const ts = record.issued_timestamp_utc || record.assessment_date_utc;
@@ -510,7 +512,7 @@ async function downloadPDF(record: AssessmentRecord) {
   pdf.text(`Assessment ID: ${record.record_id.slice(0, 8)}\u2026`, ML, y);
   pdf.text(`Generated: ${ts}`, ML + 2.0, y);
   pdf.text("Model: RP-1.0", ML + 4.5, y);
-  y += 0.25;
+  y += 0.18;
 
   // Spectrum bar
   const barH = 0.08;
@@ -534,7 +536,7 @@ async function downloadPDF(record: AssessmentRecord) {
   pdf.setLineWidth(0.015);
   pdf.circle(markerX, y + barH / 2, 0.04, "FD");
 
-  y += barH + 0.08;
+  y += barH + 0.06;
 
   // Band labels
   const bands = [
@@ -559,7 +561,7 @@ async function downloadPDF(record: AssessmentRecord) {
     setFont(isActive ? "bold" : "normal", 6.5, isActive ? C.navy : C.light);
     pdf.text(b.range, cx, y + 0.2, { align: "center" });
   }
-  y += 0.38;
+  y += 0.32;
 
   // Percentile
   if (record.peer_stability_percentile_label) {
@@ -569,9 +571,9 @@ async function downloadPDF(record: AssessmentRecord) {
     const pw = pdf.getTextWidth(percText);
     setFont("normal", 9.5, C.muted);
     pdf.text(` within ${record.industry_sector}`, ML + pw, y);
-    y += 0.18;
+    y += 0.14;
     y = drawWrapped(percentileExplanation(record), ML, y, CW, 8.5, "normal", C.muted, 1.5);
-    y += 0.08;
+    y += 0.04;
   }
 
   y = drawDivider(y);
@@ -666,15 +668,15 @@ async function downloadPDF(record: AssessmentRecord) {
 
   setFont("bold", 12, C.navy);
   pdf.text("STRUCTURAL ANALYSIS", ML, y);
-  y += 0.25;
+  y += 0.2;
 
   y = drawWrapped(record.page_2_key_insight_text, ML, y, CW, 9.5, "normal", C.muted, 1.6);
-  y += 0.18;
+  y += 0.1;
 
   // Income Structure Map
   y = drawLabel(`Income Structure Map \u2014 ${subject}`, y);
   y = drawWrapped(`${possessive} income comes from three types of sources.`, ML, y, CW, 8.5, "normal", C.muted, 1.5);
-  y += 0.12;
+  y += 0.08;
 
   const incBars: { label: string; value: number; color: RGB }[] = [
     { label: "Active Income", value: record.active_income_level, color: C.muted },
@@ -693,7 +695,7 @@ async function downloadPDF(record: AssessmentRecord) {
     y += 0.2;
   }
 
-  y = drawDivider(y + 0.06);
+  y = drawDivider(y + 0.04);
 
   // Structural Indicators
   y = drawLabel("Structural Indicators", y);
@@ -714,20 +716,20 @@ async function downloadPDF(record: AssessmentRecord) {
     pdf.text(label, ML + 0.1, y);
     setFont("bold", 8.5, C.navy);
     pdf.text(value, PW - MR - 0.1, y, { align: "right" });
-    y += 0.28;
+    y += 0.24;
   }
 
-  y = drawDivider(y + 0.06);
+  y = drawDivider(y + 0.04);
 
   // Structural Priority Map — ALL 6 factors
   y = drawLabel(`Structural Priority Map \u2014 ${subject}`, y);
   y = drawWrapped(`Factors ranked from strongest to weakest based on ${possessive} assessment.`, ML, y, CW, 8, "normal", C.muted, 1.5);
-  y += 0.1;
+  y += 0.06;
 
   for (let i = 0; i < ranked.length; i++) {
     const f = ranked[i];
-    if (i === 0) fillRect(ML, y - 0.1, CW, 0.28, C.tealBg);
-    else if (i === ranked.length - 1) fillRect(ML, y - 0.1, CW, 0.28, C.grayBg);
+    if (i === 0) fillRect(ML, y - 0.08, CW, 0.24, C.tealBg);
+    else if (i === ranked.length - 1) fillRect(ML, y - 0.08, CW, 0.24, C.grayBg);
 
     const rankColor: RGB = i === 0 ? C.teal : i === ranked.length - 1 ? C.light : C.muted;
     setFont("bold", 8.5, rankColor);
@@ -737,7 +739,7 @@ async function downloadPDF(record: AssessmentRecord) {
     const levelColor: RGB = f.level === "Strong" ? C.teal : f.level === "Weak" ? C.muted : C.light;
     setFont("bold", 8, levelColor);
     pdf.text(f.level, PW - MR - 0.1, y, { align: "right" });
-    y += 0.28;
+    y += 0.24;
   }
 
   // ════════════════════════════════════════════════════════════
@@ -748,7 +750,7 @@ async function downloadPDF(record: AssessmentRecord) {
 
   setFont("bold", 12, C.navy);
   pdf.text("DIAGNOSIS & BENCHMARKS", ML, y);
-  y += 0.25;
+  y += 0.2;
 
   // System Diagnosis
   y = drawLabel(`System Diagnosis \u2014 ${subject}`, y);
