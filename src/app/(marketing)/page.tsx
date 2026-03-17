@@ -863,8 +863,8 @@ function WhyIncomeStabilityMatters() {
       className="relative"
       style={{
         backgroundColor: "#0E1A2B",
-        paddingTop: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
-        paddingBottom: mobile ? S.sectionY.mobile + 40 : S.sectionY.desktop + 60,
+        paddingTop: mobile ? S.sectionY.mobile + 20 : S.sectionY.desktop + 32,
+        paddingBottom: mobile ? S.sectionY.mobile + 20 : S.sectionY.desktop + 32,
         position: "relative",
         overflow: "hidden",
       }}
@@ -902,12 +902,12 @@ function WhyIncomeStabilityMatters() {
 
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        {/* Comparison panel — elevated with animated glow border */}
+        {/* Comparison panel — static border + subtle animated warmth */}
         <div
           className="mx-auto"
           style={{
             maxWidth: 820,
-            marginBottom: mobile ? S.subtextMb : S.transitionY.desktop,
+            marginBottom: mobile ? 32 : 48,
             position: "relative",
             borderRadius: S.panelRadius + 1,
             padding: 1,
@@ -917,13 +917,13 @@ function WhyIncomeStabilityMatters() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          {/* Animated gradient border */}
+          {/* Slow animated gradient — ambient warmth only */}
           <div style={{
             position: "absolute",
             inset: -40,
             background: "conic-gradient(from 0deg, #0E1A2B, #4B3FAE, #1F6D7A, #4B3FAE, #0E1A2B)",
             animation: "borderGlow 60s linear infinite",
-            opacity: 0.15,
+            opacity: 0.20,
           }} />
           {/* Inner panel */}
           <div
@@ -934,7 +934,8 @@ function WhyIncomeStabilityMatters() {
               gap: 0,
               borderRadius: S.panelRadius,
               overflow: "hidden",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.30)",
+              border: "1px solid rgba(75,63,174,0.18)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.04)",
             }}
           >
           {/* Credit Score side */}
@@ -983,14 +984,17 @@ function WhyIncomeStabilityMatters() {
           </div>
         </div>
 
+        {/* Thin accent rule — visual thread from panel to argument */}
+        <div style={{ width: 40, height: 1, backgroundColor: "rgba(75,63,174,0.35)", margin: "0 auto 32px", opacity: visible ? 1 : 0, transition: "opacity 0.5s ease-out 100ms" }} />
+
         {/* Title */}
         <h2
-          className="text-[32px] md:text-[40px]"
+          className="text-[28px] md:text-[34px]"
           style={{
             color: "#F4F1EA",
             fontWeight: 600,
-            letterSpacing: S.lsHeading,
-            marginBottom: S.h2mb,
+            letterSpacing: "-0.02em",
+            marginBottom: 20,
             textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
@@ -1000,10 +1004,10 @@ function WhyIncomeStabilityMatters() {
           Why Income Stability Matters
         </h2>
 
-        {/* Consolidated body copy — three firm statements */}
+        {/* Body copy — tighter, more deliberate */}
         <div
           style={{
-            maxWidth: 660,
+            maxWidth: 620,
             marginLeft: "auto",
             marginRight: "auto",
             textAlign: "center",
@@ -1013,22 +1017,22 @@ function WhyIncomeStabilityMatters() {
           }}
         >
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}
+            className="text-[15px] md:text-[17px]"
+            style={{ color: "rgba(244,241,234,0.70)", fontWeight: 400, lineHeight: 1.75, marginBottom: 16 }}
           >
             Two people with the same credit score can have completely different income realities — one with recurring, diversified revenue, the other dependent on a single source of active labor.
           </p>
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(244,241,234,0.86)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.subtextMb }}
+            className="text-[15px] md:text-[17px]"
+            style={{ color: "rgba(244,241,234,0.70)", fontWeight: 400, lineHeight: 1.75, marginBottom: 28 }}
           >
             That structural difference determines financial resilience, business valuation, and whether your income survives disruption. Until now, there was no standardized way to measure it.
           </p>
 
-          {/* Anchor statement */}
+          {/* Anchor statement — elevated */}
           <p
-            className="text-[18px] md:text-[20px]"
-            style={{ color: "#F4F1EA", fontWeight: 600, lineHeight: S.lhDense, marginBottom: S.subtextMb }}
+            className="text-[17px] md:text-[19px]"
+            style={{ color: "rgba(244,241,234,0.95)", fontWeight: 500, lineHeight: 1.5, marginBottom: 28, letterSpacing: "-0.01em" }}
           >
             Your credit score doesn&apos;t capture this.<br />
             Your Income Stability Score&#8482; does.
@@ -1046,12 +1050,12 @@ function WhyIncomeStabilityMatters() {
                 paddingLeft: S.ctaPadX,
                 paddingRight: S.ctaPadX,
                 borderRadius: S.ctaRadius,
-                background: B.purple,
+                background: "rgba(75,63,174,0.85)",
                 color: "#ffffff",
-                fontSize: 15,
+                fontSize: 14,
                 letterSpacing: "-0.01em",
-                border: "1px solid rgba(75,63,174,0.90)",
-                boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
+                border: "1px solid rgba(75,63,174,0.50)",
+                boxShadow: "0 4px 16px rgba(75,63,174,0.20)",
                 transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
 
               }}
