@@ -160,13 +160,11 @@ function PricingCard({
       </p>
 
       <div style={{ fontSize: 12, color: B.light, marginBottom: 16 }}>
-        Secure checkout via Stripe
+        Instant access after selection
       </div>
 
       <a
         href={ctaHref}
-        target="_top"
-        rel="noopener noreferrer"
         className="cta-tick inline-flex items-center justify-center font-semibold"
         style={{
           width: "100%",
@@ -342,7 +340,7 @@ export default function PricingPage() {
               price="$39"
               description="One structural measurement of your income system. Receive your Income Stability Score™ and full diagnostic report instantly."
               ctaLabel="Get Assessment"
-              ctaHref="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
+              ctaHref="/diagnostic"
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={0}
@@ -354,7 +352,7 @@ export default function PricingPage() {
               perUnit="$33 per assessment"
               description="Three assessments you can take at any time within one year. Track how your income structure evolves over time."
               ctaLabel="Start Monitoring"
-              ctaHref="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
+              ctaHref="/diagnostic"
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={140}
@@ -364,7 +362,7 @@ export default function PricingPage() {
           {/* Trust line */}
           <div style={{ textAlign: "center", marginTop: 28 }}>
             <p style={{ fontSize: 13, color: B.light }}>
-              Secure checkout powered by Stripe · Encrypted payment processing
+              Begin your assessment immediately after selecting a plan
             </p>
             <p style={{ fontSize: 13, color: B.light, marginTop: 8, maxWidth: 480, lineHeight: 1.6 }}>
               Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
@@ -541,9 +539,8 @@ export default function PricingPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             {[
               { step: "Select your assessment option." },
-              { step: "You will be redirected to ", bold: "Stripe Secure Checkout", after: "." },
-              { step: "After successful payment, Single Assessment customers are directed to the diagnostic. Annual Monitoring subscribers are directed to the ", bold: "Monitoring Portal Sign In", after: "." },
-              { step: "Complete the ", bold: "Income Stability Assessment", after: "." },
+              { step: "You will be taken directly to the ", bold: "Income Stability Assessment", after: "." },
+              { step: "Complete the diagnostic — six structural questions about your income system." },
               { step: "Your ", bold: "Income Stability Score\u2122 report", after: " will be generated and issued as an ", bold2: "Official PDF Assessment Record", after2: "." },
             ].map((item, i) => (
               <div
@@ -651,9 +648,7 @@ export default function PricingPage() {
           {/* Two CTA buttons */}
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
             <a
-              href="https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00"
-              target="_top"
-              rel="noopener noreferrer"
+              href="/diagnostic"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
@@ -681,9 +676,7 @@ export default function PricingPage() {
               Single Assessment — $39
             </a>
             <a
-              href="https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01"
-              target="_top"
-              rel="noopener noreferrer"
+              href="/diagnostic"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,

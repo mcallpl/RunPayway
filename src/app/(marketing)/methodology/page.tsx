@@ -546,7 +546,7 @@ export default function MethodologyPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  RunPayway.com/verify
+                  RunPayway™.com/verify
                 </Link>
               </div>
               <P>

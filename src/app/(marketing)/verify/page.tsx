@@ -131,7 +131,7 @@ export default function VerifyPage() {
           issued_timestamp: match.issued_timestamp_utc,
           verified_at: new Date().toISOString(),
           verification_statement:
-            "This record matches a RunPayway-issued Income Stability Assessment.",
+            "This record matches a RunPayway™-issued Income Stability Assessment.",
         });
       } else {
         setResult({ valid_record: false });

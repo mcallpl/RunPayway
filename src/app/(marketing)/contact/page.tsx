@@ -375,7 +375,7 @@ export default function ContactPage() {
                 Response Expectations
               </div>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
-                All inquiries are reviewed by the RunPayway team.
+                All inquiries are reviewed by the RunPayway™ team.
               </p>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
                 Responses are typically provided within two business days.

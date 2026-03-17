@@ -377,7 +377,7 @@ export default function PrivacyRequestPage() {
                     message || "(No additional details provided)",
                     "",
                     "---",
-                    "Submitted via RunPayway Privacy Request Form",
+                    "Submitted via RunPayway™ Privacy Request Form",
                   ].filter(Boolean);
 
                   const bodyEncoded = encodeURIComponent(bodyParts.join("\n"));
