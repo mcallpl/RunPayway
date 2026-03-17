@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAssessment } from "@/lib/monitoring";
+import { useLanguage } from "@/lib/i18n";
 
 interface AssessmentRecord {
   record_id: string;
@@ -97,7 +98,7 @@ function subjectPossessive(r: AssessmentRecord): string {
   return name.endsWith("s") ? `${name}\u2019` : `${name}\u2019s`;
 }
 
-function indicatorStrengthSummary(r: AssessmentRecord): string {
+function indicatorStrengthSummary(r: AssessmentRecord, rt: typeof import("@/lib/i18n/en").en.report): string {
   const labels = [
     r.income_persistence_label,
     r.income_source_diversity_label,
@@ -108,25 +109,25 @@ function indicatorStrengthSummary(r: AssessmentRecord): string {
   ];
   const strong = labels.filter((l) => /high|very high/i.test(l)).length;
   const moderate = labels.filter((l) => /moderate/i.test(l)).length;
-  if (strong >= 4) return "strength in many areas";
-  if (strong >= 2) return "some areas of strength";
-  if (moderate >= 3) return "moderate results in several areas";
-  return "early-stage results with limited income that continues on its own";
+  if (strong >= 4) return rt.strengthMany;
+  if (strong >= 2) return rt.strengthSome;
+  if (moderate >= 3) return rt.moderateResults;
+  return rt.earlyStage;
 }
 
-function activeIncomeDependence(r: AssessmentRecord): string {
-  if (r.active_income_level >= 75) return "income from active work";
-  if (r.active_income_level >= 50) return "a mix of active and partly recurring income";
-  return "a mix of active, partly recurring, and ongoing income";
+function activeIncomeDependence(r: AssessmentRecord, rt: typeof import("@/lib/i18n/en").en.report): string {
+  if (r.active_income_level >= 75) return rt.activeWork;
+  if (r.active_income_level >= 50) return rt.mixActiveRecurring;
+  return rt.mixAll;
 }
 
-function percentileExplanation(r: AssessmentRecord): string {
+function percentileExplanation(r: AssessmentRecord, rt: typeof import("@/lib/i18n/en").en.report): string {
   const p = r.peer_stability_percentile;
   const label = r.peer_stability_percentile_label;
   const name = subjectName(r);
-  if (p >= 75) return `A score at the ${label} percentile means ${name} is more stable than most income systems in the ${r.industry_sector} sector.`;
-  if (p >= 50) return `A score at the ${label} percentile means ${name} is about as stable as the average income system in the ${r.industry_sector} sector.`;
-  return `A score at the ${label} percentile means ${name} is less stable than most income systems in the ${r.industry_sector} sector.`;
+  if (p >= 75) return `${name} ${rt.percentileAbove} ${r.industry_sector}.`;
+  if (p >= 50) return `${name} ${rt.percentileAverage} ${r.industry_sector}.`;
+  return `${name} ${rt.percentileBelow} ${r.industry_sector}.`;
 }
 
 function getIndustryBenchmark(finalScore: number, sectorAvg?: number, sectorTop20?: number) {
@@ -136,32 +137,16 @@ function getIndustryBenchmark(finalScore: number, sectorAvg?: number, sectorTop2
   return { avgScore, top20Range, distance };
 }
 
-const RISK_EXPOSURE: Record<string, { mechanism: string; impact: string }> = {
-  "Income Continuity Without Active Labor": {
-    mechanism: "Income depends on ongoing work. If work stops, income stops too.",
-    impact: "A health issue, break, or slowdown could mean no income during that time.",
-  },
-  "Recurring Revenue Base": {
-    mechanism: "Most income comes from one-time payments rather than repeating revenue.",
-    impact: "Stability depends on always finding new clients or deals.",
-  },
-  "Forward Revenue Visibility": {
-    mechanism: "Very little income is already scheduled or committed for future months.",
-    impact: "Income may drop if there are gaps between jobs or clients.",
-  },
-  "Income Concentration": {
-    mechanism: "Most income comes from one or very few sources.",
-    impact: "Losing a main source could cause a big drop in income.",
-  },
-  "Income Source Count": {
-    mechanism: "Income comes from very few independent sources.",
-    impact: "Losing any one source could seriously affect total income.",
-  },
-  "Earnings Variability": {
-    mechanism: "Monthly income changes a lot from month to month.",
-    impact: "It is harder to plan or meet regular financial obligations.",
-  },
-};
+function getRiskExposure(rt: typeof import("@/lib/i18n/en").en.report): Record<string, { mechanism: string; impact: string }> {
+  return {
+    "Income Continuity Without Active Labor": { mechanism: rt.riskContinuityMech, impact: rt.riskContinuityImpact },
+    "Recurring Revenue Base": { mechanism: rt.riskRecurringMech, impact: rt.riskRecurringImpact },
+    "Forward Revenue Visibility": { mechanism: rt.riskVisibilityMech, impact: rt.riskVisibilityImpact },
+    "Income Concentration": { mechanism: rt.riskConcentrationMech, impact: rt.riskConcentrationImpact },
+    "Income Source Count": { mechanism: rt.riskSourceCountMech, impact: rt.riskSourceCountImpact },
+    "Earnings Variability": { mechanism: rt.riskVariabilityMech, impact: rt.riskVariabilityImpact },
+  };
+}
 
 // Rank all 6 factors from strongest to weakest (labels only — no raw values exposed)
 function getRankedFactors(r: AssessmentRecord): { label: string; level: string }[] {
@@ -456,6 +441,8 @@ async function downloadPDF(record: AssessmentRecord) {
 
 export default function ReviewPage() {
   const router = useRouter();
+  const { t } = useLanguage();
+  const rt = t.report;
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [downloading, setDownloading] = useState(false);
   const monitoringTracked = useRef(false);
@@ -503,6 +490,7 @@ export default function ReviewPage() {
 
   const evolutionSteps: string[] = JSON.parse(record.evolution_path_steps_payload);
   const sectorMechanisms: string[] = JSON.parse(record.sector_mechanisms_payload);
+  const RISK_EXPOSURE = getRiskExposure(rt);
   const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
   const subject = subjectName(record);
   const possessive = subjectPossessive(record);
@@ -519,8 +507,8 @@ export default function ReviewPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
       <div className="no-print">
-        <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>Income Stability Assessment</h1>
-        <p style={{ fontSize: 14, color: B.muted, marginTop: 4 }}>Model RP-1.0 | Version 1.0</p>
+        <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>{rt.title}</h1>
+        <p style={{ fontSize: 14, color: B.muted, marginTop: 4 }}>{rt.modelVersion}</p>
       </div>
 
       {/* ==================== PAGE 1 — Executive Assessment ==================== */}
@@ -532,7 +520,7 @@ export default function ReviewPage() {
 
         {/* Score presentation */}
         <div style={{ marginBottom: R.sectionGap }}>
-          <Label>Income Stability Score™</Label>
+          <Label>{rt.scoreLabel}</Label>
           <div style={{ ...T.score, color: B.navy }}>
             {record.final_score}
           </div>
@@ -542,9 +530,9 @@ export default function ReviewPage() {
 
           {/* Metadata */}
           <div style={{ ...T.caption, color: B.light, marginTop: R.paraMb, display: "flex", flexWrap: "wrap", gap: "0 24px" }}>
-            <span>Assessment ID: {record.record_id.slice(0, 8)}…</span>
-            <span>Generated: {record.issued_timestamp_utc || record.assessment_date_utc}</span>
-            <span>Model: RP-1.0</span>
+            <span>{rt.assessmentId} {record.record_id.slice(0, 8)}…</span>
+            <span>{rt.generated} {record.issued_timestamp_utc || record.assessment_date_utc}</span>
+            <span>{rt.model}</span>
           </div>
         </div>
 
@@ -571,10 +559,10 @@ export default function ReviewPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 2 }}>
             {[
-              { label: "Limited", range: "0\u201339" },
-              { label: "Developing", range: "40\u201359" },
-              { label: "Established", range: "60\u201379" },
-              { label: "High", range: "80\u2013100" },
+              { label: rt.limited, range: "0\u201339" },
+              { label: rt.developing, range: "40\u201359" },
+              { label: rt.established, range: "60\u201379" },
+              { label: rt.high, range: "80\u2013100" },
             ].map((b) => {
               const isActive = b.label + " Stability" === record.stability_band;
               return (
@@ -591,10 +579,10 @@ export default function ReviewPage() {
         {record.peer_stability_percentile_label && (
           <div style={{ marginBottom: R.sectionGap }}>
             <p style={{ ...T.body, color: B.muted }}>
-              <span style={{ fontWeight: 500, color: B.navy }}>{record.peer_stability_percentile_label} percentile</span>{" "}within {record.industry_sector}
+              <span style={{ fontWeight: 500, color: B.navy }}>{record.peer_stability_percentile_label} percentile</span>{" "}{rt.percentileWithin} {record.industry_sector}
             </p>
             <p style={{ ...T.small, color: B.muted, marginTop: 6 }}>
-              {percentileExplanation(record)}
+              {percentileExplanation(record, rt)}
             </p>
           </div>
         )}
@@ -602,20 +590,20 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Profile */}
-        <Label>Profile</Label>
+        <Label>{rt.profile}</Label>
         <dl style={{ ...T.body, display: "grid", gridTemplateColumns: "1fr 1fr", gap: `${R.itemGap}px 24px` }}>
           {record.assessment_title && (
             <div style={{ gridColumn: "1 / -1" }}>
-              <dt style={{ display: "inline", color: B.light }}>Assessment Title: </dt>
+              <dt style={{ display: "inline", color: B.light }}>{rt.assessmentTitle} </dt>
               <dd style={{ display: "inline", fontWeight: 500, color: B.navy }}>{record.assessment_title}</dd>
             </div>
           )}
           {[
-            ["Classification", record.classification],
-            ["Structure", record.operating_structure],
-            ["Income Model", record.primary_income_model],
-            ["Revenue", record.revenue_structure],
-            ["Sector", record.industry_sector],
+            [rt.classification, record.classification],
+            [rt.structure, record.operating_structure],
+            [rt.incomeModel, record.primary_income_model],
+            [rt.revenue, record.revenue_structure],
+            [rt.sector, record.industry_sector],
           ].map(([l, v]) => (
             <div key={l}>
               <dt style={{ display: "inline", color: B.light }}>{l}: </dt>
@@ -627,11 +615,11 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Key Structural Factors */}
-        <Label>Key Structural Factors — {subject}</Label>
+        <Label>{rt.keyFactors} — {subject}</Label>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.sectionGap, marginTop: R.paraMb }}>
           <div>
             <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>
-              Positive Factors
+              {rt.positiveFactors}
             </div>
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.positive.map((f) => (
@@ -641,13 +629,13 @@ export default function ReviewPage() {
                 </li>
               ))}
               {keyFactors.positive.length === 0 && (
-                <li style={{ ...T.small, color: B.light }}>No strong positive factors identified</li>
+                <li style={{ ...T.small, color: B.light }}>{rt.noPositive}</li>
               )}
             </ul>
           </div>
           <div>
             <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>
-              Structural Risks
+              {rt.structuralRisks}
             </div>
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.risks.map((f) => (
@@ -657,7 +645,7 @@ export default function ReviewPage() {
                 </li>
               ))}
               {keyFactors.risks.length === 0 && (
-                <li style={{ ...T.small, color: B.light }}>No significant structural risks identified</li>
+                <li style={{ ...T.small, color: B.light }}>{rt.noRisks}</li>
               )}
             </ul>
           </div>
@@ -667,22 +655,22 @@ export default function ReviewPage() {
       {/* ==================== PAGE 2 — Structural Analysis ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Structural Analysis
+          {rt.structuralAnalysis}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_2_key_insight_text}
         </p>
 
         {/* Income Structure Map — color-coded bars */}
-        <Label>Income Structure Map — {subject}</Label>
+        <Label>{rt.incomeStructureMap} — {subject}</Label>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
-          {possessive} income comes from three types of sources.
+          {possessive} {rt.incomeSources}
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: R.paraMb }}>
           {[
-            { label: "Active Income", value: record.active_income_level, color: B.muted },
-            { label: "Semi-Persistent", value: record.semi_persistent_income_level, color: B.teal },
-            { label: "Persistent", value: record.persistent_income_level, color: B.navy },
+            { label: rt.activeIncome, value: record.active_income_level, color: B.muted },
+            { label: rt.semiPersistent, value: record.semi_persistent_income_level, color: B.teal },
+            { label: rt.persistent, value: record.persistent_income_level, color: B.navy },
           ].map((bar) => (
             <div key={bar.label}>
               <div style={{ ...T.small, display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
@@ -699,15 +687,15 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Structural Indicators */}
-        <Label>Structural Indicators</Label>
+        <Label>{rt.structuralIndicators}</Label>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.itemGap }}>
           {[
-            ["Income That Continues", record.income_persistence_label],
-            ["Number of Income Sources", record.income_source_diversity_label],
-            ["Income Already Scheduled", record.forward_revenue_visibility_label],
-            ["Monthly Income Variability", record.income_variability_label],
-            ["Dependence on Personal Work", record.active_labor_dependence_label],
-            ["Dependence on One Source", record.exposure_concentration_label],
+            [rt.incomeThatContinues, record.income_persistence_label],
+            [rt.numberOfSources, record.income_source_diversity_label],
+            [rt.incomeScheduled, record.forward_revenue_visibility_label],
+            [rt.monthlyVariability, record.income_variability_label],
+            [rt.dependencePersonalWork, record.active_labor_dependence_label],
+            [rt.dependenceOneSource, record.exposure_concentration_label],
           ].map(([l, v]) => (
             <div key={l} style={{ display: "flex", justifyContent: "space-between", borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
               <span style={{ ...T.caption, color: B.muted }}>{l}</span>
@@ -719,9 +707,9 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Structural Priority Map — ALL 6 factors */}
-        <Label>Structural Priority Map — {subject}</Label>
+        <Label>{rt.priorityMap} — {subject}</Label>
         <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
-          Factors ranked from strongest to weakest based on {possessive} assessment.
+          {rt.factorsRanked} {possessive}.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
           {rankedFactors.map((f, i) => (
@@ -737,39 +725,38 @@ export default function ReviewPage() {
       {/* ==================== PAGE 3 — Diagnosis & Benchmarks ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Diagnosis &amp; Benchmarks
+          {rt.diagnosisBenchmarks}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_4_key_insight_text}
         </p>
 
         {/* System Diagnosis */}
-        <Label>System Diagnosis — {subject}</Label>
+        <Label>{rt.systemDiagnosis} — {subject}</Label>
         <div style={{ ...T.body, color: B.muted, display: "flex", flexDirection: "column", gap: R.paraMb }}>
           <p>
-            {subject} operates mainly as a <strong style={{ color: B.navy }}>{record.labor_asset_position_label}</strong> income
-            system in the <strong style={{ color: B.navy }}>{record.industry_sector}</strong> sector.
+            {subject} {rt.operatesAs} <strong style={{ color: B.navy }}>{record.labor_asset_position_label}</strong>{" "}
+            {record.industry_sector}.
           </p>
           <p>
-            Income mainly comes from {activeIncomeDependence(record)}.
-            The system shows {indicatorStrengthSummary(record)}.
+            {rt.incomeMainly} {activeIncomeDependence(record, rt)}.
+            {rt.systemShows} {indicatorStrengthSummary(record, rt)}.
           </p>
           <p>
-            Because <strong style={{ color: B.navy }}>{record.primary_constraint_label}</strong> is limited,
-            stability depends on continuing to generate new work.
+            <strong style={{ color: B.navy }}>{record.primary_constraint_label}</strong> {rt.becauseConstraint}
           </p>
         </div>
 
         <SectionDivider />
 
         {/* Industry Benchmark */}
-        <Label>{record.industry_sector} Stability Benchmark</Label>
+        <Label>{record.industry_sector} {rt.stabilityBenchmark}</Label>
         <div style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${B.sandDk}` }}>
           {[
-            [`Average ${record.industry_sector} Stability Score`, String(bench.avgScore)],
-            ["Top 20% Stability Range", `${bench.top20Range}+`],
-            ["Your Score", String(record.final_score)],
-            ["Distance From Top Stability Tier", `${bench.distance} points`],
+            [`${rt.avgScore} ${record.industry_sector}`, String(bench.avgScore)],
+            [rt.top20, `${bench.top20Range}+`],
+            [rt.yourScore, String(record.final_score)],
+            [rt.distanceTop, `${bench.distance} ${rt.points}`],
           ].map(([label, value], i) => (
             <div key={label} style={{ ...T.small, display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: i % 2 === 0 ? B.sand : "white", padding: "8px 14px" }}>
               <span style={{ color: B.muted }}>{label}</span>
@@ -780,7 +767,7 @@ export default function ReviewPage() {
 
         {/* Drivers */}
         <div style={{ marginTop: R.sectionGap }}>
-          <Label>Drivers Supporting {possessive} Stability</Label>
+          <Label>{rt.driversSupporting} {possessive}</Label>
           <div style={{ display: "flex", flexWrap: "wrap", gap: R.itemGap }}>
             {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
               <span key={d} style={{ ...T.caption, fontWeight: 500, borderRadius: 6, backgroundColor: B.sand, color: B.navy, padding: "4px 10px" }}>{d}</span>
@@ -791,7 +778,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Primary Constraint */}
-        <Label>Primary Structural Constraint — {subject}</Label>
+        <Label>{rt.primaryConstraint} — {subject}</Label>
         <div style={{ ...T.body, fontWeight: 500, color: B.navy, marginBottom: R.itemGap }}>{record.primary_constraint_label}</div>
         <div style={{ ...T.small, color: B.muted, display: "flex", flexDirection: "column", gap: R.itemGap }}>
           <p>{riskData.mechanism}</p>
@@ -802,10 +789,10 @@ export default function ReviewPage() {
         {record.projected_final_score && record.projected_final_score !== record.final_score && (
           <>
             <SectionDivider />
-            <Label>Projected Score with Structural Improvements</Label>
+            <Label>{rt.projectedScore}</Label>
             <div style={{ ...T.body, display: "flex", gap: 32 }}>
-              <span style={{ color: B.muted }}>Current: <strong style={{ color: B.navy }}>{record.final_score}</strong></span>
-              <span style={{ color: B.muted }}>Projected: <strong style={{ color: B.teal }}>{record.projected_final_score} ({record.projected_stability_band})</strong></span>
+              <span style={{ color: B.muted }}>{rt.current} <strong style={{ color: B.navy }}>{record.final_score}</strong></span>
+              <span style={{ color: B.muted }}>{rt.projected} <strong style={{ color: B.teal }}>{record.projected_final_score} ({record.projected_stability_band})</strong></span>
             </div>
           </>
         )}
@@ -814,14 +801,14 @@ export default function ReviewPage() {
       {/* ==================== PAGE 4 — Improvement Path ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Improvement Path
+          {rt.improvementPath}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_6_key_insight_text}
         </p>
 
         {/* Improvement Opportunities */}
-        <Label>Improvement Opportunities — {subject}</Label>
+        <Label>{rt.improvementOpportunities} — {subject}</Label>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.paraMb }}>
           {record.structural_improvement_path_text}
         </p>
@@ -832,9 +819,9 @@ export default function ReviewPage() {
           if (actionPlan.length === 0) return null;
           return (
             <div style={{ marginTop: R.sectionGap }}>
-              <Label>90-Day Action Plan — {subject}</Label>
+              <Label>{rt.actionPlan} — {subject}</Label>
               <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
-                Three priority actions for {subject} based on the primary constraint: {record.primary_constraint_label}
+                {rt.actionPlanDesc} {subject}: {record.primary_constraint_label}
               </p>
               <ol style={{ ...T.small, color: B.navy, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: R.itemGap }}>
                 {actionPlan.map((action, i) => (
@@ -845,7 +832,7 @@ export default function ReviewPage() {
                 ))}
               </ol>
               <p style={{ ...T.caption, color: B.light, marginTop: R.paraMb, fontStyle: "italic" }}>
-                These actions are based on structural patterns in {record.industry_sector} for income systems where {record.primary_constraint_label} is the primary limitation. They are illustrative structural examples and do not constitute financial, legal, or investment advice.
+                {rt.actionPlanDisclaimer} {record.industry_sector}. {record.primary_constraint_label}.
               </p>
             </div>
           );
@@ -856,7 +843,7 @@ export default function ReviewPage() {
         {/* Sector evolution */}
         <div>
           <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>
-            Sector Evolution Path
+            {rt.evolutionPath}
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: R.itemGap }}>
             {evolutionSteps.map((step, i) => {
@@ -880,14 +867,14 @@ export default function ReviewPage() {
             })}
           </div>
           <div style={{ ...T.caption, color: B.muted, marginTop: R.paraMb }}>
-            Current Stage: <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
+            {rt.currentStage} <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
           </div>
         </div>
 
         {/* Sector mechanisms */}
         <div style={{ marginTop: R.sectionGap }}>
           <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>
-            Sector Stability Mechanisms
+            {rt.stabilityMechanisms}
           </div>
           <ul style={{ ...T.small, color: B.muted, listStyleType: "disc", listStylePosition: "inside", display: "flex", flexDirection: "column", gap: 4 }}>
             {sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
@@ -898,43 +885,38 @@ export default function ReviewPage() {
       {/* ==================== PAGE 5 — Governance & Official Record ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Governance &amp; Official Record
+          {rt.governanceRecord}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          This section documents the methodology, disclosures, and official classification record for this assessment.
-          All scoring is performed by Model RP-1.0 using fixed, deterministic criteria.
+          {rt.governanceIntro}
         </p>
 
         {/* Methodology */}
-        <Label>Methodology</Label>
+        <Label>{rt.methodologyLabel}</Label>
         <p style={{ ...T.caption, color: B.muted }}>
-          The Income Stability Score™ evaluates the structural stability of income at a specific point in time.
-          Six structural factors are assessed under Model RP-1.0 using fixed, deterministic scoring criteria.
-          The model does not evaluate investment performance, creditworthiness, or future financial outcomes.
+          {rt.methodologyText}
         </p>
 
         <SectionDivider />
 
         {/* Disclosure */}
-        <Label>Disclosure</Label>
+        <Label>{rt.disclosure}</Label>
         <p style={{ ...T.caption, color: B.light }}>
-          This report is created by a fixed classification model. It is not financial advice.
-          The Income Stability Score is not a credit score, not a measure of net worth,
-          and not a prediction of future income.
+          {rt.disclosureText}
         </p>
 
         <SectionDivider />
 
         {/* Official Record */}
-        <Label>Official Classification Record</Label>
+        <Label>{rt.officialRecord}</Label>
         <dl style={{ ...T.small, display: "flex", flexDirection: "column", gap: R.itemGap, marginTop: R.paraMb }}>
           {[
-            ["Record ID", record.record_id],
-            ["Model", record.model_version || "RP-1.0 | Version 1.0"],
-            ["Date", record.issued_timestamp_utc || record.assessment_date_utc],
-            ["Score", `${record.final_score} — ${record.stability_band}`],
-            ["Auth Code", record.authorization_code],
-            ["Registry", record.registry_visibility === "public" ? "Publicly Listed" : "Private Record"],
+            [rt.recordId, record.record_id],
+            [rt.modelLabel, record.model_version || "RP-1.0 | Version 1.0"],
+            [rt.date, record.issued_timestamp_utc || record.assessment_date_utc],
+            [rt.score, `${record.final_score} — ${record.stability_band}`],
+            [rt.authCode, record.authorization_code],
+            [rt.registry, record.registry_visibility === "public" ? rt.publiclyListed : rt.privateRecord],
           ].map(([l, v]) => (
             <div key={l} style={{ display: "flex" }}>
               <dt style={{ width: 80, flexShrink: 0, color: B.light }}>{l}</dt>
@@ -945,12 +927,12 @@ export default function ReviewPage() {
 
         {/* Verification */}
         <p style={{ ...T.caption, color: B.muted, marginTop: R.sectionGap }}>
-          Verify this report at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span> using the Record ID and Authorization Code.
+          {rt.verifyAt} <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span>.
         </p>
 
         {/* Model reference */}
         <div style={{ textAlign: "center", marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
-          <div style={{ ...T.caption, color: B.light }}>RunPayway™ Structural Stability Model RP-1.0</div>
+          <div style={{ ...T.caption, color: B.light }}>{rt.modelReference}</div>
         </div>
       </ReportPage>
 
@@ -962,9 +944,9 @@ export default function ReviewPage() {
           style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease" }}
           onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
           onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
-          {downloading ? "Generating PDF..." : "Download Report"}
+          {downloading ? rt.generatingPdf : rt.downloadReport}
         </button>
-        <p style={{ ...T.body, color: B.light }}>A copy of this report will be sent to your email.</p>
+        <p style={{ ...T.body, color: B.light }}>{rt.emailCopy}</p>
       </div>
 
       <div className="print-footer hidden print:block">RunPayway™ Income Stability Assessment — Model RP-1.0 | Version 1.0</div>
