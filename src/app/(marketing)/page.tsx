@@ -1785,13 +1785,13 @@ const t = e.currentTarget;
               const endX = 240 + Math.cos(endRad) * R;
               const endY = 240 + Math.sin(endRad) * R;
               // Scale label positions around outer edge
-              // Labels at actual band thresholds — meaningful, not arbitrary
+              // Labels at actual band thresholds — 0 and 100 offset to avoid overlap at top
               const scaleLabels = [
-                { value: 0, angle: -90 },
+                { value: 0, angle: -90 - 4 },
                 { value: 40, angle: -90 + 360 * 0.40 },
                 { value: 60, angle: -90 + 360 * 0.60 },
                 { value: 80, angle: -90 + 360 * 0.80 },
-                { value: 100, angle: -90 + 360 },
+                { value: 100, angle: -90 + 4 },
               ];
 
               return (
