@@ -638,7 +638,7 @@ export default function SampleReportPage() {
             </p>
           </div>
 
-          {/* Locked report card */}
+          {/* Partially visible report card — 40% shown, rest fades out */}
           <div
             style={{
               position: "relative",
@@ -648,95 +648,55 @@ export default function SampleReportPage() {
               padding: mobile ? "28px 24px 32px" : "40px 44px 48px",
               boxShadow: "0 24px 80px rgba(14,26,43,0.08), 0 4px 16px rgba(14,26,43,0.03)",
               overflow: "hidden",
-              minHeight: 280,
               opacity: page3Anim.visible ? 1 : 0,
               transform: page3Anim.visible ? "translateY(0)" : "translateY(28px)",
               transition: "opacity 700ms ease 200ms, transform 700ms ease 200ms",
             }}
           >
-            {/* Blurred preview content */}
-            <div style={{ filter: "blur(5px)", opacity: 0.35, pointerEvents: "none", userSelect: "none" }}>
-              {/* Header bar */}
-              <div style={{ height: 3, borderRadius: 6, background: B.gradient, marginBottom: 16 }} />
+            {/* Header bar */}
+            <div style={{ height: 3, borderRadius: 6, background: B.gradient, marginBottom: 16 }} />
 
-              {/* System Diagnosis */}
+            {/* Visible content — top 40% */}
+            <div>
               <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>System Diagnosis</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>This system operates mainly as a Labor-Dependent income system in the Professional Services sector. Income mainly comes from active project work requiring continuous personal involvement to maintain revenue flow.</div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>This system operates mainly as a Labor-Dependent income system in the Professional Services sector. Income mainly comes from active project work requiring continuous personal involvement to maintain revenue flow.</div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
-              {/* Industry Stability Benchmark */}
               <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Industry Stability Benchmark</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-                {[
-                  ["Your Score", "78"],
-                  ["Sector Average", "62"],
-                  ["Top 20%", "80+"],
-                  ["Distance to Top 20%", "2 points"],
-                ].map(([label, value]) => (
-                  <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "6px 12px", borderRadius: 6, backgroundColor: B.sand }}>
-                    <span style={{ fontSize: 10, color: B.muted }}>{label}</span>
-                    <span style={{ fontSize: 10, color: B.navy, fontWeight: 600 }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
-
-              {/* Primary Structural Constraint */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
-              <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
             </div>
 
-            {/* Lock overlay with CTA */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "rgba(255,255,255,0.6)",
-                backdropFilter: "blur(2px)",
-              }}
-            >
-              <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
-                Full Report
+            {/* Blurred content — bottom 60% fades out */}
+            <div style={{ position: "relative" }}>
+              <div style={{ filter: "blur(4px)", opacity: 0.30, pointerEvents: "none", userSelect: "none" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+                  {[
+                    ["Your Score", "78"],
+                    ["Sector Average", "62"],
+                    ["Top 20%", "80+"],
+                    ["Distance to Top 20%", "2 points"],
+                  ].map(([label, value]) => (
+                    <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "6px 12px", borderRadius: 6, backgroundColor: B.sand }}>
+                      <span style={{ fontSize: 10, color: B.muted }}>{label}</span>
+                      <span style={{ fontSize: 10, color: B.navy, fontWeight: 600 }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
+
+                <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
+                <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
+                <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
               </div>
-              <p style={{ fontSize: 15, color: B.muted, textAlign: "center", maxWidth: 360, lineHeight: 1.6, marginBottom: 24 }}>
-                System diagnosis, industry benchmarks, and structural constraint analysis are included in your full assessment.
+
+              {/* Fade-to-white overlay */}
+              <div style={{ position: "absolute", bottom: 0, left: -20, right: -20, height: "70%", background: "linear-gradient(transparent 0%, rgba(255,255,255,0.5) 30%, #ffffff 100%)", pointerEvents: "none" }} />
+            </div>
+
+            {/* Subtle locked hint — no CTA */}
+            <div style={{ textAlign: "center", paddingTop: 8 }}>
+              <p style={{ fontSize: 12, color: B.light, fontStyle: "italic" }}>
+                Industry benchmarks, stability drivers, and constraint analysis included in full report.
               </p>
-              <Link
-                href="/pricing"
-                className="cta-tick inline-flex items-center justify-center font-semibold"
-                style={{
-                  height: 52,
-                  paddingLeft: 28,
-                  paddingRight: 28,
-                  borderRadius: 12,
-                  background: B.purple,
-                  color: "#FFFFFF",
-                  fontSize: 15,
-                  letterSpacing: "-0.01em",
-                  border: "none",
-                  boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                  transition: "background 180ms ease, transform 180ms ease",
-                  width: mobile ? "90%" : "auto",
-                  maxWidth: mobile ? 320 : undefined,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#3D33A0";
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = B.purple;
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                <span className="tick tick-white" />
-                <span className="cta-label">Get Your Full Report</span>
-                <span className="cta-arrow cta-arrow-white" />
-              </Link>
             </div>
           </div>
         </div>
