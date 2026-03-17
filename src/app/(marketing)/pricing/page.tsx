@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
@@ -215,6 +216,7 @@ function PricingCard({
 
 export default function PricingPage() {
   const mobile = useMobile();
+  const router = useRouter();
   const [transition, setTransition] = useState<{ title: string; price: string } | null>(null);
 
   const heroAnim = useInView();
@@ -227,7 +229,7 @@ export default function PricingPage() {
   const handleSelect = (title: string, price: string) => {
     setTransition({ title, price });
     setTimeout(() => {
-      window.location.href = "/diagnostic";
+      router.push("/diagnostic");
     }, 3000);
   };
 
