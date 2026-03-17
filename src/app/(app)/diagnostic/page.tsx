@@ -179,6 +179,7 @@ export default function DiagnosticPage() {
   const [loadingStep, setLoadingStep] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showReview, setShowReview] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -414,6 +415,103 @@ export default function DiagnosticPage() {
   }
 
   /* ================================================================ */
+  /*  Review screen — summary before submission                       */
+  /* ================================================================ */
+  if (showReview) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 4 }}>
+            Review Your Answers
+          </div>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
+            Confirm before we generate your score
+          </h2>
+          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
+            Review each response below. Tap any answer to change it. Once confirmed, your Income Stability Score™ will be calculated immediately.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {QUESTIONS.map((question, i) => {
+            const selectedLetter = answers[i];
+            const selectedOption = question.options.find((o) => o.letter === selectedLetter);
+            return (
+              <button
+                key={i}
+                onClick={() => { setShowReview(false); setCurrentQuestion(i); }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 16,
+                  padding: "18px 20px",
+                  borderRadius: 12,
+                  border: "1px solid rgba(14,26,43,0.06)",
+                  background: "#FFFFFF",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  width: "100%",
+                  transition: "border-color 160ms ease, box-shadow 160ms ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.20)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(75,63,174,0.06)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <div style={{
+                  width: 28, height: 28, borderRadius: "50%",
+                  background: "rgba(75,63,174,0.06)", color: B.purple,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 12, fontWeight: 700, flexShrink: 0,
+                }}>{question.number}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>
+                    {question.title}
+                  </div>
+                  <div style={{ fontSize: 13, color: B.muted }}>
+                    {selectedOption?.text || "Not answered"}
+                  </div>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                  <path d="M10.5 6.5L13 4L10 1L7.5 3.5M10.5 6.5L4.5 12.5H1V9.5L7.5 3.5M10.5 6.5L7.5 3.5" stroke={B.light} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            );
+          })}
+        </div>
+
+        <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
+          <button
+            onClick={() => { setShowReview(false); setCurrentQuestion(5); }}
+            style={{ fontSize: 13, fontWeight: 500, color: B.muted, background: "none", border: "none", cursor: "pointer", padding: "8px 0" }}
+          >
+            Back to questions
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!allAnswered || submitting}
+            style={{
+              height: 48, paddingLeft: 28, paddingRight: 28, borderRadius: 12,
+              background: !allAnswered || submitting ? "rgba(14,26,43,0.08)" : B.purple,
+              color: !allAnswered || submitting ? B.light : "#FFFFFF",
+              fontSize: 15, fontWeight: 600, border: "none",
+              cursor: !allAnswered || submitting ? "not-allowed" : "pointer",
+              boxShadow: allAnswered && !submitting ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+              transition: "background 180ms ease",
+            }}
+          >
+            {submitting ? "Processing..." : "Confirm & Generate Score"}
+          </button>
+        </div>
+
+        {error && (
+          <div style={{ marginTop: 12, padding: "12px 16px", borderRadius: 10, background: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
+            <p style={{ fontSize: 13, color: "#DC2626" }}>{error}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ================================================================ */
   /*  Diagnostic instrument                                           */
   /* ================================================================ */
   return (
@@ -629,24 +727,24 @@ export default function DiagnosticPage() {
 
           {currentQuestion === 5 && (
             <button
-              onClick={handleSubmit}
-              disabled={!allAnswered || submitting}
+              onClick={() => setShowReview(true)}
+              disabled={!allAnswered}
               style={{
                 height: 48,
                 paddingLeft: 28,
                 paddingRight: 28,
                 borderRadius: 12,
-                background: !allAnswered || submitting ? "rgba(14,26,43,0.08)" : B.purple,
-                color: !allAnswered || submitting ? B.light : "#FFFFFF",
+                background: !allAnswered ? "rgba(14,26,43,0.08)" : B.purple,
+                color: !allAnswered ? B.light : "#FFFFFF",
                 fontSize: 15,
                 fontWeight: 600,
                 border: "none",
-                cursor: !allAnswered || submitting ? "not-allowed" : "pointer",
-                boxShadow: allAnswered && !submitting ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+                cursor: !allAnswered ? "not-allowed" : "pointer",
+                boxShadow: allAnswered ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
                 transition: "background 180ms ease",
               }}
             >
-              {submitting ? "Processing..." : "Generate Assessment"}
+              Review Answers
             </button>
           )}
         </div>
