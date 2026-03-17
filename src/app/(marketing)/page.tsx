@@ -501,10 +501,10 @@ function ModelGovernance() {
 
           <div style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-              The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: "#ffffff" }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
+              {t.home.governanceBody}
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 500, lineHeight: S.lhBody }}>
-              Future updates are released as new model versions. All assessments currently run under Model RP-1.0.
+              {t.home.governanceFuture}
             </p>
           </div>
         </div>
@@ -549,7 +549,7 @@ function ModelGovernance() {
 
           {/* Supporting line */}
           <p className="text-[15px]" style={{ color: "rgba(14,26,43,0.55)", fontWeight: 400, lineHeight: 1.6 }}>
-            Scoring framework currently in use.
+            {t.home.scoringFramework}
           </p>
         </article>
       </div>
@@ -761,14 +761,14 @@ function ScoreRegistry() {
                 marginBottom: S.h2mb,
               }}
             >
-              Score Registry
+              {t.home.registryTitle}
             </h2>
 
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 400, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-              Every assessment is issued a unique registry ID, linking the score result, model version, and timestamp to a permanent, verifiable record.
+              {t.home.registrySubtitle}
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(14,26,43,0.78)", fontWeight: 500, lineHeight: S.lhBody }}>
-              All records are generated under <strong>RunPayway™ Model RP-1.0</strong> and can be independently verified at any time.
+              {t.home.registryVerify}
             </p>
           </div>
 
@@ -807,7 +807,7 @@ e.currentTarget.style.borderColor = "rgba(14,26,43,0.16)";
               className="text-[12px] uppercase"
               style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 18 }}
             >
-              Registry Record
+              {t.home.registryRecord}
             </div>
 
             {/* Field list */}
@@ -936,19 +936,19 @@ function WhyIncomeStabilityMatters() {
               className="text-[11px] uppercase"
               style={{ color: "rgba(244,241,234,0.40)", fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
             >
-              What Exists
+              {t.home.whatExists}
             </div>
             <div
               className="text-[20px] md:text-[22px]"
               style={{ color: "rgba(244,241,234,0.70)", fontWeight: 600, letterSpacing: "-0.01em", marginBottom: 12 }}
             >
-              Credit Score
+              {t.home.creditScore}
             </div>
             <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.7 }}>
-              Measures how reliably you repay debt.
+              {t.home.creditScoreDesc}
             </p>
             <p className="text-[14px]" style={{ color: "rgba(244,241,234,0.35)", fontWeight: 400, lineHeight: 1.7, marginTop: 10 }}>
-              Doesn&apos;t tell you if your income would survive losing a client.
+              {t.home.creditScoreMissing}
             </p>
           </div>
 
@@ -958,7 +958,7 @@ function WhyIncomeStabilityMatters() {
               className="text-[11px] uppercase"
               style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
             >
-              What&apos;s Missing
+              {t.home.whatsMissing}
             </div>
             <div
               className="text-[20px] md:text-[22px]"
@@ -967,10 +967,10 @@ function WhyIncomeStabilityMatters() {
               Income Stability Score&#8482;
             </div>
             <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.85)", fontWeight: 400, lineHeight: 1.7 }}>
-              Measures how stable your income structure is.
+              {t.home.issDesc}
             </p>
             <p className="text-[14px]" style={{ color: "rgba(244,241,234,0.55)", fontWeight: 400, lineHeight: 1.7, marginTop: 10 }}>
-              Objective. Consistent. Standardized.
+              {t.home.issTagline}
             </p>
           </div>
           </div>
@@ -993,7 +993,7 @@ function WhyIncomeStabilityMatters() {
             transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms",
           }}
         >
-          Why Income Stability Matters
+          {t.home.whyTitle}
         </h2>
 
         {/* Body copy — tighter, more deliberate */}
@@ -1012,13 +1012,13 @@ function WhyIncomeStabilityMatters() {
             className="text-[15px] md:text-[17px]"
             style={{ color: "rgba(244,241,234,0.70)", fontWeight: 400, lineHeight: 1.75, marginBottom: 16 }}
           >
-            Two people with the same credit score can have completely different income realities — one with recurring, diversified revenue, the other dependent on a single source of active labor.
+            {t.home.whyBody1}
           </p>
           <p
             className="text-[15px] md:text-[17px]"
             style={{ color: "rgba(244,241,234,0.70)", fontWeight: 400, lineHeight: 1.75, marginBottom: 28 }}
           >
-            That structural difference determines financial resilience, business valuation, and whether your income survives disruption. Until now, there was no standardized way to measure it.
+            {t.home.whyBody2}
           </p>
 
           {/* Anchor statement — elevated */}
@@ -1026,8 +1026,8 @@ function WhyIncomeStabilityMatters() {
             className="text-[17px] md:text-[19px]"
             style={{ color: "rgba(244,241,234,0.95)", fontWeight: 500, lineHeight: 1.5, marginBottom: 28, letterSpacing: "-0.01em" }}
           >
-            Your credit score doesn&apos;t capture this.<br />
-            Your Income Stability Score&#8482; does.
+            {t.home.whyCreditDoesnt}<br />
+            {t.home.whyScoreDoes}
           </p>
 
           {/* CTA Button */}
@@ -1110,7 +1110,7 @@ function PreviewYourScoreReport() {
             textAlign: "center",
           }}
         >
-          What&rsquo;s Inside Your Report
+          {t.home.reportTitle}
         </h2>
         <p
           className="text-[16px] md:text-[18px]"
@@ -1125,7 +1125,7 @@ function PreviewYourScoreReport() {
             marginRight: "auto",
           }}
         >
-          Every assessment produces a personalized five-page report &#8212; your classification, structural priority map, sector-specific benchmarks, and a 90-day action plan.
+          {t.home.reportSubtitle}
         </p>
 
         {/* Report preview card — truncated */}
@@ -1338,22 +1338,22 @@ function ScoringFactors() {
   const mobile = useMobile();
 
   const allFactors = [
-    { group: "Revenue Structure", name: "Recurring Revenue Base", desc: "Does income keep arriving if you stop actively selling?", icon: (
+    { group: t.home.revenueStructure, name: t.home.factor1, desc: t.home.factor1Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14.5 4.5A6.5 6.5 0 004 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M5.5 15.5A6.5 6.5 0 0016 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M14.5 2v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 18v-3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
     )},
-    { group: "Revenue Structure", name: "Income Source Diversification", desc: "Would losing one client or contract change everything?", icon: (
+    { group: t.home.revenueStructure, name: t.home.factor2, desc: t.home.factor2Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 16V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10L4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="4" r="1.5" fill="currentColor"/><circle cx="16" cy="4" r="1.5" fill="currentColor"/></svg>
     )},
-    { group: "Revenue Structure", name: "Income Concentration", desc: "How exposed are you if your largest source disappears tomorrow?", icon: (
+    { group: t.home.revenueStructure, name: t.home.factor3, desc: t.home.factor3Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M10 3v7h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 10l-4.95 4.95" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
     )},
-    { group: "Income Durability", name: "Forward Revenue Visibility", desc: "How far ahead can you see income with confidence?", icon: (
+    { group: t.home.incomeDurability, name: t.home.factor4, desc: t.home.factor4Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 17l5-8 3 2-5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M7 9l4-6.5 5 3-4 6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="4" r="2" stroke="currentColor" strokeWidth="1.5"/></svg>
     )},
-    { group: "Income Durability", name: "Earnings Consistency", desc: "Does your income stay steady — or swing month to month?", icon: (
+    { group: t.home.incomeDurability, name: t.home.factor5, desc: t.home.factor5Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.35"/><path d="M2 10h3l1.5-3 2 6 2-5 1.5 2H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
     )},
-    { group: "Income Durability", name: "Income Without Active Work", desc: "What keeps paying you when you step away?", icon: (
+    { group: t.home.incomeDurability, name: t.home.factor6, desc: t.home.factor6Desc, icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M4 6v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" strokeWidth="1.5"/><path d="M4 9v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V9" stroke="currentColor" strokeWidth="1.5"/></svg>
     )},
   ];
@@ -1383,19 +1383,19 @@ function ScoringFactors() {
             className="font-medium uppercase text-[11px]"
             style={{ letterSpacing: "0.14em", color: B.teal, marginBottom: S.labelMb }}
           >
-            What We Measure
+            {t.home.factorsTag}
           </div>
           <h2
             className="text-[34px] md:text-[48px] font-semibold"
             style={{ color: B.navy, letterSpacing: S.lsHeading, marginBottom: S.h2mb, lineHeight: S.lhHeading }}
           >
-            Six Structural Factors
+            {t.home.factorsTitle}
           </h2>
           <p
             className="text-[17px] md:text-[18px] mx-auto"
             style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody, maxWidth: 520 }}
           >
-            Your score is built from six dimensions — grouped into how your revenue is structured and how durable it is over time.
+            {t.home.factorsSubtitle}
           </p>
         </div>
 
@@ -1431,21 +1431,9 @@ function HowItWorks() {
   const mobile = useMobile();
 
   const steps = [
-    {
-      num: "1",
-      title: "Income Profile Intake",
-      desc: "Six questions about your recurring revenue, client concentration, income diversification, and forward visibility.",
-    },
-    {
-      num: "2",
-      title: "Structural Analysis",
-      desc: "Model RP-1.0 evaluates how predictable, diversified, and durable your income structure is — scored 0\u2013100.",
-    },
-    {
-      num: "3",
-      title: "Score + Report Delivered",
-      desc: "Your Income Stability Score™, priority map showing what to fix first, sector benchmarks, and a personalized 90-day action plan — delivered instantly.",
-    },
+    { num: "1", title: t.home.step1Title, desc: t.home.step1Desc },
+    { num: "2", title: t.home.step2Title, desc: t.home.step2Desc },
+    { num: "3", title: t.home.step3Title, desc: t.home.step3Desc },
   ];
 
   return (
@@ -1466,7 +1454,7 @@ function HowItWorks() {
               transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
             }}
           >
-            Assessment Process
+            {t.home.processTag}
           </div>
           <h2
             className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight"
@@ -1478,7 +1466,7 @@ function HowItWorks() {
               transition: "opacity 0.5s ease-out 100ms, transform 0.5s ease-out 100ms",
             }}
           >
-            How It Works
+            {t.home.processTitle}
           </h2>
           <p
             className="text-base leading-relaxed mx-auto"
@@ -1490,7 +1478,7 @@ function HowItWorks() {
               transition: "opacity 0.5s ease-out 200ms, transform 0.5s ease-out 200ms",
             }}
           >
-            A structured diagnostic built on six dimensions of income stability.
+            {t.home.processSubtitle}
           </p>
         </div>
 
@@ -1558,7 +1546,7 @@ e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px r
               transition: "opacity 0.5s ease-out 700ms",
             }}
           >
-            Powered by <strong style={{ fontWeight: 600, color: B.muted }}>RunPayway™ Model RP-1.0</strong>
+            {t.home.poweredBy}
           </p>
         </div>
       </div>
@@ -1702,7 +1690,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 280ms, transform 600ms ease-out 280ms",
               }}
             >
-              RunPayway™ measures how predictable your revenue is, how concentrated your client risk is, and whether your income continues without you &#8212; in under two&nbsp;minutes.
+              {t.home.heroBody}
             </p>
 
             <p
@@ -1717,7 +1705,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
               }}
             >
-              For consultants, practice owners, and agency founders.
+              {t.home.heroAudience}
             </p>
 
             {/* CTA Button */}
@@ -1771,7 +1759,7 @@ const t = e.currentTarget;
                 className="text-[13px] md:text-[14px]"
                 style={{ color: "rgba(14,26,43,0.42)", marginTop: 14, letterSpacing: "0.01em", textAlign: "center" }}
               >
-                Average completion: 1 min 47 sec &mdash; Instant results
+                {t.home.heroCompletion}
               </p>
             </div>
           </div>
@@ -1958,7 +1946,7 @@ const t = e.currentTarget;
                   marginBottom: 24,
                 }}
               >
-                Your Income Stability Score™
+                {t.home.heroScoreLabel}
               </div>
 
               {/* Score number — gradient text */}
