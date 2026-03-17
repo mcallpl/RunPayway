@@ -293,7 +293,7 @@ function SectionDivider() {
 
 function ConfidentialityFooter({ record }: { record: AssessmentRecord }) {
   return (
-    <div style={{ marginTop: "auto", paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <span style={{ ...T.caption, color: B.light, fontStyle: "italic" }}>
         Confidential — Prepared for {record.assessment_title || "Assessment Subject"}
       </span>
@@ -335,7 +335,6 @@ async function downloadPDF(record: AssessmentRecord) {
   if (!pages.length) return;
 
   const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
-  const TOTAL_PAGES = pages.length;
 
   // ── PDF setup ──
   pdf.setProperties({
@@ -349,8 +348,9 @@ async function downloadPDF(record: AssessmentRecord) {
   const pageWidth = 8.5;
   const pageHeight = 11;
   const margin = 0.35;
+  const footerReserve = 0.65;
   const contentWidth = pageWidth - margin * 2;
-  const contentHeight = pageHeight - margin * 2;
+  const contentHeight = pageHeight - margin - footerReserve;
   const captureWidth = 750;
 
   // ── Capture each .report-page as an image and place it on a PDF page ──
@@ -370,6 +370,10 @@ async function downloadPDF(record: AssessmentRecord) {
     el.style.boxSizing = "border-box";
     el.style.border = "none";
     el.style.borderRadius = "0";
+
+    // Hide HTML footer — the PDF overlay renders its own
+    const htmlFooter = el.querySelector(".report-page-footer") as HTMLElement | null;
+    if (htmlFooter) htmlFooter.style.display = "none";
 
     // Let browser reflow, then measure
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -391,6 +395,7 @@ async function downloadPDF(record: AssessmentRecord) {
     el.style.boxSizing = origBoxSizing;
     el.style.border = origBorder;
     el.style.borderRadius = origBorderRadius;
+    if (htmlFooter) htmlFooter.style.display = "";
 
     // Place on PDF page
     if (i > 0) pdf.addPage();
@@ -734,6 +739,9 @@ export default function ReviewPage() {
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Diagnosis &amp; Benchmarks
         </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          {record.page_4_key_insight_text}
+        </p>
 
         {/* System Diagnosis */}
         <Label>System Diagnosis — {subject}</Label>
@@ -803,13 +811,13 @@ export default function ReviewPage() {
         )}
       </ReportPage>
 
-      {/* ==================== PAGE 4 — Improvement Path & Governance ==================== */}
+      {/* ==================== PAGE 4 — Improvement Path ==================== */}
       <ReportPage record={record}>
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Improvement Path &amp; Governance
+          Improvement Path
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_3_key_insight_text}
+          {record.page_6_key_insight_text}
         </p>
 
         {/* Improvement Opportunities */}
@@ -885,8 +893,17 @@ export default function ReviewPage() {
             {sectorMechanisms.map((m) => <li key={m}>{m}</li>)}
           </ul>
         </div>
+      </ReportPage>
 
-        <SectionDivider />
+      {/* ==================== PAGE 5 — Governance & Official Record ==================== */}
+      <ReportPage record={record}>
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
+          Governance &amp; Official Record
+        </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          This section documents the methodology, disclosures, and official classification record for this assessment.
+          All scoring is performed by Model RP-1.0 using fixed, deterministic criteria.
+        </p>
 
         {/* Methodology */}
         <Label>Methodology</Label>
