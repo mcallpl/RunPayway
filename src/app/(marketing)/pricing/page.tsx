@@ -430,7 +430,7 @@ export default function PricingPage() {
             <p style={{ fontSize: 13, color: B.light }}>
               Begin your assessment immediately after selecting a plan
             </p>
-            <p style={{ fontSize: 13, color: B.light, marginTop: 8, maxWidth: 480, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: B.light, marginTop: 8, maxWidth: 480, lineHeight: 1.6, marginLeft: "auto", marginRight: "auto" }}>
               Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
             </p>
           </div>
@@ -459,15 +459,17 @@ export default function PricingPage() {
             transition: "opacity 700ms ease, transform 700ms ease",
           }}
         >
-          <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-            Annual Plan
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+              Annual Plan
+            </div>
+            <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+              Income Stability Monitoring
+            </h2>
+            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.75, marginBottom: 32, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+              Annual monitoring measures how your income structure evolves over time. Take your three assessments at any time within one year.
+            </p>
           </div>
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-            Income Stability Monitoring
-          </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.75, marginBottom: 32, maxWidth: 560 }}>
-            Annual monitoring measures how your income structure evolves over time. Take your three assessments at any time within one year.
-          </p>
 
           {/* Timeline */}
           <div
@@ -503,7 +505,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <p style={{ fontSize: 13, color: B.light, marginTop: 16 }}>
+          <p style={{ fontSize: 13, color: B.light, marginTop: 16, textAlign: "center" }}>
             All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
           </p>
         </div>
@@ -531,7 +533,7 @@ export default function PricingPage() {
             transition: "opacity 700ms ease, transform 700ms ease",
           }}
         >
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 24 }}>
+          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 24, textAlign: "center" }}>
             What Every Assessment Includes
           </h2>
 
@@ -570,7 +572,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <p style={{ fontSize: 13, color: B.light }}>
+          <p style={{ fontSize: 13, color: B.light, textAlign: "center" }}>
             Assessments are generated using fixed scoring criteria under Model RP-1.0.
           </p>
         </div>
@@ -598,7 +600,7 @@ export default function PricingPage() {
             transition: "opacity 700ms ease, transform 700ms ease",
           }}
         >
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32 }}>
+          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
             How the Process Works
           </h2>
 
