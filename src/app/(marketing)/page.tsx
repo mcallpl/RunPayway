@@ -1243,6 +1243,90 @@ function PreviewYourScoreReport() {
 }
 
 /* ------------------------------------------------------------------ */
+/* FACTOR CARD — each card observes its own visibility                   */
+/* ------------------------------------------------------------------ */
+function FactorCard({ factor, index, mobile }: { factor: { name: string; desc: string; icon: React.ReactNode }; index: number; mobile: boolean }) {
+  const { ref, visible } = useInView(0.15);
+  const delay = index * 120;
+
+  return (
+    <article
+      ref={ref}
+      className="group"
+      style={{
+        position: "relative",
+        backgroundColor: "#ffffff",
+        borderRadius: S.cardRadius,
+        padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
+        border: "1px solid rgba(14,26,43,0.06)",
+        boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${delay}ms, box-shadow 400ms ease, border-color 400ms ease`,
+        overflow: "hidden",
+      }}
+      onMouseEnter={(e) => {
+        if (!canHover()) return;
+        e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+        e.currentTarget.style.transform = "translateY(-3px)";
+        e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
+      }}
+    >
+      {/* Subtle top accent line */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
+
+      {/* Icon badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 52,
+          height: 52,
+          borderRadius: 14,
+          backgroundColor: "rgba(75,63,174,0.06)",
+          color: B.purple,
+          marginBottom: 16,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <div style={{ transform: "scale(1.5)" }}>{factor.icon}</div>
+      </div>
+
+      {/* Name */}
+      <div
+        className="text-[16px] md:text-[17px] font-semibold text-center"
+        style={{ color: B.navy, lineHeight: 1.3, marginBottom: 0 }}
+      >
+        {factor.name}
+      </div>
+
+      {/* Description — fades in on hover */}
+      <p
+        className="text-[13px] md:text-[14px] text-center opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[80px]"
+        style={{
+          color: "rgba(14,26,43,0.55)",
+          lineHeight: S.lhBody,
+          transition: "opacity 300ms ease, max-height 300ms ease, margin 300ms ease",
+          marginTop: 0,
+          overflow: "hidden",
+        }}
+      >
+        <span className="block" style={{ paddingTop: 10 }}>
+          {factor.desc}
+        </span>
+      </p>
+    </article>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* SCORING FACTORS — Model Input Framework                              */
 /* ------------------------------------------------------------------ */
 function ScoringFactors() {
@@ -1373,82 +1457,14 @@ function ScoringFactors() {
               style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: S.gridGap }}
             >
               {group.factors.map((factor, i) => {
-                const cardIndex = gi * 3 + i; // 0–5 unique per card
-                const cardDelay = 80 + cardIndex * 120;
+                const cardIndex = gi * 3 + i;
                 return (
-                  <article
+                  <FactorCard
                     key={factor.name}
-                    className="group"
-                    style={{
-                      position: "relative",
-                      backgroundColor: "#ffffff",
-                      borderRadius: S.cardRadius,
-                      padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
-                      border: "1px solid rgba(14,26,43,0.06)",
-                      boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
-                      opacity: visible ? 1 : 0,
-                      transform: visible ? "translateY(0)" : `translateY(${24 + cardIndex * 4}px)`,
-                      transition: `opacity 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${cardDelay}ms, transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${cardDelay}ms, box-shadow 400ms ease, border-color 400ms ease`,
-                      overflow: "hidden",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!canHover()) return;
-                      e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
-                      e.currentTarget.style.transform = "translateY(-3px)";
-                      e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
-                    }}
-                  >
-                    {/* Subtle top accent line */}
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
-
-                    {/* Icon badge */}
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        width: 52,
-                        height: 52,
-                        borderRadius: 14,
-                        backgroundColor: "rgba(75,63,174,0.06)",
-                        color: B.purple,
-                        marginBottom: 16,
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                      }}
-                    >
-                      <div style={{ transform: "scale(1.5)" }}>{factor.icon}</div>
-                    </div>
-
-                    {/* Name */}
-                    <div
-                      className="text-[16px] md:text-[17px] font-semibold text-center"
-                      style={{ color: B.navy, lineHeight: 1.3, marginBottom: 0 }}
-                    >
-                      {factor.name}
-                    </div>
-
-                    {/* Description — hidden by default, fades in on hover */}
-                    <p
-                      className="text-[13px] md:text-[14px] text-center opacity-0 group-hover:opacity-100 max-h-0 group-hover:max-h-[80px]"
-                      style={{
-                        color: "rgba(14,26,43,0.55)",
-                        lineHeight: S.lhBody,
-                        transition: "opacity 300ms ease, max-height 300ms ease, margin 300ms ease",
-                        marginTop: 0,
-                        overflow: "hidden",
-                      }}
-                    >
-                      <span className="block" style={{ paddingTop: 10 }}>
-                        {factor.desc}
-                      </span>
-                    </p>
-                  </article>
+                    factor={factor}
+                    index={cardIndex}
+                    mobile={mobile}
+                  />
                 );
               })}
             </div>
