@@ -1262,13 +1262,35 @@ function ScoringFactors() {
     ? Math.min(1, 1 - Math.max(0, (scrollProgress - 0.72) * 4)) * Math.min(1, scrollProgress * 5)
     : 0;
 
-  const factors = [
-    { num: "01", name: "Recurring Revenue Base", desc: "Measures how reliably your income renews without active effort." },
-    { num: "02", name: "Income Source Diversification", desc: "Evaluates whether your income is supported by multiple streams." },
-    { num: "03", name: "Income Concentration", desc: "Assesses your exposure if any single source were disrupted." },
-    { num: "04", name: "Forward Revenue Visibility", desc: "Gauges how far into the future your income can be projected." },
-    { num: "05", name: "Earnings Consistency", desc: "Analyzes the stability of your income from period to period." },
-    { num: "06", name: "Income Without Active Work", desc: "Identifies income that continues independent of direct labor." },
+  const factorGroups = [
+    {
+      label: "Revenue Structure",
+      factors: [
+        { name: "Recurring Revenue Base", desc: "Does income keep arriving if you stop actively selling?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Circular arrow around dollar — renewal */}<path d="M14.5 4.5A6.5 6.5 0 004 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M5.5 15.5A6.5 6.5 0 0016 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M14.5 2v3h-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M5.5 18v-3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        )},
+        { name: "Income Source Diversification", desc: "Would losing one client or contract change everything?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Three streams branching from one root */}<path d="M10 16V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10L4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><path d="M10 10l6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="4" cy="4" r="1.5" fill="currentColor"/><circle cx="10" cy="4" r="1.5" fill="currentColor"/><circle cx="16" cy="4" r="1.5" fill="currentColor"/></svg>
+        )},
+        { name: "Income Concentration", desc: "How exposed are you if your largest source disappears tomorrow?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Pie chart with one dominant slice — concentration risk */}<circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M10 3v7h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 10l-4.95 4.95" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        )},
+      ],
+    },
+    {
+      label: "Income Durability",
+      factors: [
+        { name: "Forward Revenue Visibility", desc: "How far ahead can you see income with confidence?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Telescope / looking ahead */}<path d="M2 17l5-8 3 2-5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M7 9l4-6.5 5 3-4 6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="14" cy="4" r="2" stroke="currentColor" strokeWidth="1.5"/></svg>
+        )},
+        { name: "Earnings Consistency", desc: "Does your income stay steady — or swing month to month?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Flat steady line vs volatile — stability */}<path d="M2 10h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.35"/><path d="M2 10h3l1.5-3 2 6 2-5 1.5 2H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        )},
+        { name: "Income Without Active Work", desc: "What keeps paying you when you step away?", icon: (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">{/* Coins stacking — passive income */}<ellipse cx="10" cy="6" rx="6" ry="2.5" stroke="currentColor" strokeWidth="1.5"/><path d="M4 6v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V6" stroke="currentColor" strokeWidth="1.5"/><path d="M4 9v3c0 1.38 2.69 2.5 6 2.5s6-1.12 6-2.5V9" stroke="currentColor" strokeWidth="1.5"/></svg>
+        )},
+      ],
+    },
   ];
 
   return (
@@ -1311,83 +1333,104 @@ function ScoringFactors() {
             className="text-[17px] md:text-[18px] mx-auto"
             style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody, maxWidth: 520 }}
           >
-            Each factor isolates a specific structural characteristic of your income system.
+            Your score is built from six dimensions — grouped into how your revenue is structured and how durable it is over time.
           </p>
         </div>
 
-        {/* Factor grid: 2 cols desktop, 1 col mobile */}
-        <div
-          style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, maxWidth: 920, margin: "0 auto" }}
-        >
-          {factors.map((factor, i) => {
-            const row = Math.floor(i / 2);
-            const cardDelay = 100 + row * 140 + (i % 2) * 70;
-            return (
-              <article
-                key={factor.num}
-                className="group"
-                style={{
-                  position: "relative",
-                  backgroundColor: "#ffffff",
-                  borderRadius: S.cardRadius,
-                  padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
-                  border: "1px solid rgba(14,26,43,0.06)",
-                  boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : `translateY(${24 + row * 8}px)`,
-                  transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 400ms ease, transform 400ms ease, border-color 400ms ease`,
-                  overflow: "hidden",
-                }}
-                onMouseEnter={(e) => {
-                   if (!canHover()) return;
-e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
-                }}
-              >
-                {/* Subtle top accent line */}
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
+        {/* Factor groups */}
+        {factorGroups.map((group, gi) => (
+          <div key={group.label} style={{ maxWidth: 960, margin: gi === 0 ? "0 auto" : `${S.gridGap + 8}px auto 0` }}>
+            {/* Group label */}
+            <div
+              className="text-[11px] font-semibold uppercase"
+              style={{
+                letterSpacing: "0.12em",
+                color: B.light,
+                marginBottom: 14,
+                paddingLeft: 4,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(12px)",
+                transition: `opacity 500ms ease-out ${gi * 200}ms, transform 500ms ease-out ${gi * 200}ms`,
+              }}
+            >
+              {group.label}
+            </div>
 
-                {/* Number badge */}
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 32,
-                    height: 32,
-                    borderRadius: 10,
-                    backgroundColor: "rgba(75,63,174,0.06)",
-                    marginBottom: 16,
-                  }}
-                >
-                  <span className="text-[12px] font-bold" style={{ color: B.purple }}>{factor.num}</span>
-                </div>
+            {/* 3-col grid */}
+            <div
+              style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: S.gridGap }}
+            >
+              {group.factors.map((factor, i) => {
+                const cardDelay = 100 + gi * 200 + i * 90;
+                return (
+                  <article
+                    key={factor.name}
+                    className="group"
+                    style={{
+                      position: "relative",
+                      backgroundColor: "#ffffff",
+                      borderRadius: S.cardRadius,
+                      padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
+                      border: "1px solid rgba(14,26,43,0.06)",
+                      boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
+                      opacity: visible ? 1 : 0,
+                      transform: visible ? "translateY(0)" : `translateY(${20 + i * 6}px)`,
+                      transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 400ms ease, border-color 400ms ease`,
+                      overflow: "hidden",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!canHover()) return;
+                      e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08), 0 16px 48px rgba(75,63,174,0.08)";
+                      e.currentTarget.style.transform = "translateY(-3px)";
+                      e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
+                    }}
+                  >
+                    {/* Subtle top accent line */}
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple} 0%, rgba(75,63,174,0.15) 100%)`, opacity: 0.6 }} />
 
-                {/* Name */}
-                <div
-                  className="text-[18px] md:text-[20px] font-semibold"
-                  style={{ color: B.navy, lineHeight: 1.3, marginBottom: S.labelMb - 6 }}
-                >
-                  {factor.name}
-                </div>
+                    {/* Icon badge */}
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: 36,
+                        height: 36,
+                        borderRadius: 10,
+                        backgroundColor: "rgba(75,63,174,0.06)",
+                        color: B.purple,
+                        marginBottom: 16,
+                      }}
+                    >
+                      {factor.icon}
+                    </div>
 
-                {/* Outcome-focused description */}
-                <p
-                  className="text-[14px] md:text-[15px]"
-                  style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody }}
-                >
-                  {factor.desc}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+                    {/* Name */}
+                    <div
+                      className="text-[16px] md:text-[17px] font-semibold"
+                      style={{ color: B.navy, lineHeight: 1.3, marginBottom: S.labelMb - 6 }}
+                    >
+                      {factor.name}
+                    </div>
+
+                    {/* Outcome-focused description */}
+                    <p
+                      className="text-[13px] md:text-[14px]"
+                      style={{ color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody }}
+                    >
+                      {factor.desc}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
