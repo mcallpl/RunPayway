@@ -1785,11 +1785,12 @@ const t = e.currentTarget;
               const endX = 240 + Math.cos(endRad) * R;
               const endY = 240 + Math.sin(endRad) * R;
               // Scale label positions around outer edge
+              // Labels at actual band thresholds — meaningful, not arbitrary
               const scaleLabels = [
                 { value: 0, angle: -90 },
-                { value: 25, angle: -90 + 90 },
-                { value: 50, angle: -90 + 180 },
-                { value: 75, angle: -90 + 270 },
+                { value: 40, angle: -90 + 360 * 0.40 },
+                { value: 60, angle: -90 + 360 * 0.60 },
+                { value: 80, angle: -90 + 360 * 0.80 },
                 { value: 100, angle: -90 + 360 },
               ];
 
@@ -1857,17 +1858,29 @@ const t = e.currentTarget;
                       return <line key={b} x1={ix} y1={iy} x2={ox} y2={oy} stroke="#1F6D7A" strokeWidth="0.75" opacity="0.15" />;
                     })}
 
-                    {/* Scale labels — 0, 25, 50, 75, 100 around outer edge */}
+                    {/* Scale labels at band thresholds — with connecting lines */}
                     {scaleLabels.map(({ value, angle: a }) => {
                       const rad = a * Math.PI / 180;
-                      const labelR = R + 18;
+                      const tickOuterR = 234;
+                      const lineEndR = tickOuterR + 8;
+                      const labelR = tickOuterR + 18;
                       const lx = 240 + Math.cos(rad) * labelR;
                       const ly = 240 + Math.sin(rad) * labelR;
+                      const lx1 = 240 + Math.cos(rad) * tickOuterR;
+                      const ly1 = 240 + Math.sin(rad) * tickOuterR;
+                      const lx2 = 240 + Math.cos(rad) * lineEndR;
+                      const ly2 = 240 + Math.sin(rad) * lineEndR;
+                      const inScored = value <= 78;
                       return (
-                        <text key={value} x={lx} y={ly} textAnchor="middle" dominantBaseline="central"
-                          fontSize="7" fontWeight="500" fill="#4B3FAE" opacity="0.18"
-                          fontFamily="system-ui, -apple-system, sans-serif"
-                        >{value}</text>
+                        <g key={value}>
+                          <line x1={lx1} y1={ly1} x2={lx2} y2={ly2} stroke="#0E1A2B" strokeWidth="0.5" opacity={inScored ? 0.12 : 0.06} />
+                          <text x={lx} y={ly} textAnchor="middle" dominantBaseline="central"
+                            fontSize="8" fontWeight="600" letterSpacing="0.04em"
+                            fill={inScored ? "#0E1A2B" : "#9CA3AF"}
+                            opacity={inScored ? 0.25 : 0.16}
+                            fontFamily="system-ui, -apple-system, sans-serif"
+                          >{value}</text>
+                        </g>
                       );
                     })}
 
