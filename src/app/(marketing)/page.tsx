@@ -333,7 +333,7 @@ function FinalCta() {
               margin: `0 auto ${S.subtextMb}px auto`,
             }}
           >
-            Stop guessing whether your income is stable. Know exactly where your client concentration risk is, how predictable your revenue actually is, and what to fix first.
+            Stop guessing whether your income is stable. Know where your client concentration risk lies, how predictable your revenue actually is, and what to fix first.
           </p>
 
           {/* CTA Button */}
@@ -416,7 +416,7 @@ const t = e.currentTarget;
               marginRight: "auto",
             }}
           >
-            Most first-time assessments score between 35&#8211;55. If your income depends on active work or a few key clients, this is where you find out.
+            Most first-time assessments score between 35&#8211;55. If your income depends on active work or a few key clients, this assessment quantifies that risk.
           </p>
         </div>
       </div>
@@ -500,7 +500,7 @@ function ModelGovernance() {
               The scoring framework, classification scale, and factor definitions are locked to <span style={{ fontWeight: 500, color: "#ffffff" }}>Model RP-1.0</span>. Every assessment runs under the same versioned ruleset — no hidden changes between scores.
             </p>
             <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.75)", fontWeight: 500, lineHeight: S.lhBody }}>
-              Future updates ship as new model versions. Assessments currently run under Model RP-1.0.
+              Future updates are released as new model versions. All assessments currently run under Model RP-1.0.
             </p>
           </div>
         </div>
@@ -567,11 +567,11 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "How long does the assessment take?",
-      a: "The assessment evaluates six structural factors and takes under two minutes to complete. Your score and full PDF report are generated instantly upon completion.",
+      a: "The assessment takes under two minutes to complete. Your score and full report are delivered instantly.",
     },
     {
       q: "What is included in the report?",
-      a: "Your personalized four-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, structural priority map ranking your six factors from strongest to weakest, sector-specific industry benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint and industry, and an official PDF assessment record issued under Model RP-1.0.",
+      a: "Your four-page report includes your Income Stability Score\u2122, stability classification, structural indicators, income structure map, a priority map ranking your six factors from strongest to weakest, sector benchmarks, system diagnosis, a 90-day action plan tailored to your primary constraint, and an official assessment record issued under Model RP-1.0.",
     },
     {
       q: "Can I retake the assessment?",
@@ -579,7 +579,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "How is my data handled?",
-      a: "Your assessment data is processed securely and used only to generate your report. Payment is handled through Stripe Secure Checkout. We do not sell or share your personal information.",
+      a: "Your assessment data is processed securely and used only to generate your report. Payment is processed through Stripe. We do not sell or share your personal information.",
     },
   ];
 
@@ -1187,7 +1187,7 @@ function PreviewYourScoreReport() {
                   <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
                 </div>
                 <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>
-                  Exceeds 72% of assessed income systems in this sector.
+                  Ranks above 72% of assessed income systems in this sector.
                 </div>
               </div>
             </div>
@@ -2060,14 +2060,14 @@ export default function LandingPage() {
                 marginTop: 14,
               }}
             >
-              Your score reveals how resilient your income structure is — and where it can become stronger.
+              Your score reveals how resilient your income structure is — and where to strengthen it.
             </p>
           </div>
 
           {/* Spectrum bar with tick marks */}
           {(() => {
             const tiers = [
-              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Income heavily dependent on active work. Income stops when work stops. No structural support.", color: "#DC2626", sliderPos: 20, sampleScore: 20 },
+              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Heavily dependent on active work. Stops when work stops. No structural support.", color: "#DC2626", sliderPos: 20, sampleScore: 20 },
               { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", sliderPos: 50, sampleScore: 50 },
               { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, sliderPos: 70, sampleScore: 78 },
               { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, sliderPos: 90, sampleScore: 92 },
@@ -2181,7 +2181,7 @@ export default function LandingPage() {
           {/* Model reference */}
           <div className="text-center" style={{ marginTop: S.subtextMb }}>
             <p className="text-[12px] font-medium" style={{ color: B.muted }}>
-              Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time the assessment is completed.
+              Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time of assessment.
             </p>
             <p className="text-[11px] mt-2" style={{ color: B.light }}>
               Band thresholds are deterministic and do not change between assessments.
@@ -2203,10 +2203,10 @@ export default function LandingPage() {
           Stability Patterns by Industry
         </h2>
         <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 12, maxWidth: 640 }}>
-          The Income Stability Score™ applies to any industry or profession. The structural factors that drive income stability vary by sector — below are three examples showing what separates high-stability systems from fragile ones.
+          The Income Stability Score™ applies to any industry or profession. The structural factors that drive stability vary by sector — below are three examples of what separates high-stability systems from fragile ones.
         </p>
         <p className="text-[14px] mx-auto" style={{ color: B.light, marginBottom: 40, maxWidth: 640 }}>
-          These are sample illustrations only. The model evaluates income structure across all industries.
+          These are illustrative examples. The model evaluates income structure across all industries.
         </p>
 
         <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
