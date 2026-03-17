@@ -1362,7 +1362,7 @@ function ScoringFactors() {
                 paddingLeft: 4,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 500ms ease-out ${gi * 200}ms, transform 500ms ease-out ${gi * 200}ms`,
+                transition: `opacity 400ms ease-out ${gi * 360 + 40}ms, transform 400ms ease-out ${gi * 360 + 40}ms`,
               }}
             >
               {group.label}
@@ -1373,7 +1373,8 @@ function ScoringFactors() {
               style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: S.gridGap }}
             >
               {group.factors.map((factor, i) => {
-                const cardDelay = 100 + gi * 200 + i * 90;
+                const cardIndex = gi * 3 + i; // 0–5 unique per card
+                const cardDelay = 80 + cardIndex * 120;
                 return (
                   <article
                     key={factor.name}
@@ -1386,8 +1387,8 @@ function ScoringFactors() {
                       border: "1px solid rgba(14,26,43,0.06)",
                       boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
                       opacity: visible ? 1 : 0,
-                      transform: visible ? "translateY(0)" : `translateY(${20 + i * 6}px)`,
-                      transition: `opacity 600ms ease-out ${cardDelay}ms, transform 600ms ease-out ${cardDelay}ms, box-shadow 400ms ease, border-color 400ms ease`,
+                      transform: visible ? "translateY(0)" : `translateY(${24 + cardIndex * 4}px)`,
+                      transition: `opacity 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${cardDelay}ms, transform 500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) ${cardDelay}ms, box-shadow 400ms ease, border-color 400ms ease`,
                       overflow: "hidden",
                     }}
                     onMouseEnter={(e) => {
