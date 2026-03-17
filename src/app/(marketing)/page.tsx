@@ -338,7 +338,7 @@ function FinalCta() {
 
           {/* CTA Button */}
           <div className="flex justify-center">
-            <a
+            <Link
               href="/pricing"
               className="cta-tick inline-flex items-center justify-center font-semibold
                          focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -378,7 +378,7 @@ const t = e.currentTarget;
               <span className="tick tick-navy" />
               <span className="cta-label">Get My Income Stability Score™</span>
               <span className="cta-arrow cta-arrow-navy" />
-            </a>
+            </Link>
           </div>
 
           {/* Pricing anchor */}
@@ -1626,7 +1626,7 @@ function HeroSection() {
       >
         <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 80 }}>
           {/* Left — Copy + CTA */}
-          <div className="flex-1 lg:max-w-[560px]">
+          <div className="flex-1 lg:max-w-[560px]" style={{ textAlign: mobile ? "center" : "left" }}>
             {/* Eyebrow */}
             <div
               className="font-medium uppercase text-[11px] md:text-[12px]"
@@ -1650,7 +1650,9 @@ function HeroSection() {
                 lineHeight: S.lhHeading,
                 letterSpacing: S.lsHero,
                 marginBottom: S.h1mb,
-                maxWidth: 520,
+                maxWidth: mobile ? undefined : 520,
+                marginLeft: "auto",
+                marginRight: "auto",
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(12px)",
                 transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
@@ -1665,7 +1667,9 @@ function HeroSection() {
                 color: "rgba(14,26,43,0.65)",
                 lineHeight: S.lhBody,
                 marginBottom: S.ctaPadX,
-                maxWidth: 460,
+                maxWidth: mobile ? undefined : 460,
+                marginLeft: "auto",
+                marginRight: "auto",
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 250ms, transform 600ms ease-out 250ms",
@@ -1679,7 +1683,9 @@ function HeroSection() {
               style={{
                 color: "rgba(14,26,43,0.55)",
                 lineHeight: S.lhBody,
-                maxWidth: 460,
+                maxWidth: mobile ? undefined : 460,
+                marginLeft: "auto",
+                marginRight: "auto",
                 marginBottom: S.h1mb,
                 opacity: hasAnimated ? 1 : 0,
                 transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
