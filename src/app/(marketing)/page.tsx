@@ -874,9 +874,28 @@ function WhyIncomeStabilityMatters() {
         overflow: "hidden",
       }}
     >
+      {/* Architectural grid — precision texture */}
+      <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", opacity: 0.04 }}>
+        <defs>
+          <pattern id="navyGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <line x1="60" y1="0" x2="60" y2="60" stroke="#ffffff" strokeWidth="0.5" />
+            <line x1="0" y1="60" x2="60" y2="60" stroke="#ffffff" strokeWidth="0.5" />
+          </pattern>
+          <radialGradient id="navyGridFade" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="40%" stopColor="#ffffff" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="1" />
+          </radialGradient>
+          <mask id="navyGridMask">
+            <rect width="100%" height="100%" fill="url(#navyGridFade)" />
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#navyGrid)" mask="url(#navyGridMask)" />
+      </svg>
+
       {/* Ambient glows */}
-      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-18%", right: "-10%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-12%", left: "-6%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
 
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
