@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useAssessment } from "@/lib/monitoring";
+import { useAssessmentServer } from "@/lib/monitoring";
 import { useLanguage } from "@/lib/i18n";
 
 interface AssessmentRecord {
@@ -513,7 +513,7 @@ export default function ReviewPage() {
         if (purchaseSession) {
           const ps = JSON.parse(purchaseSession);
           if (ps.plan_key === "annual_monitoring" && ps.monitoring_access_code) {
-            useAssessment(ps.monitoring_access_code, parsed.record_id);
+            useAssessmentServer(ps.monitoring_access_code, parsed.record_id);
           }
         }
       } catch { /* ignore */ }

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createMonitoringSession, type MonitoringSession } from "@/lib/monitoring";
+import { createMonitoringSessionServer, type MonitoringSession } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -83,13 +83,29 @@ export default function CreateAccountPage() {
   const [session, setSession] = useState<MonitoringSession | null>(null);
   const [error, setError] = useState("");
 
-  const handleActivate = () => {
+  const handleActivate = async () => {
     if (!email || !email.includes("@")) {
       setError("Please enter a valid email address.");
       return;
     }
     setError("");
-    const newSession = createMonitoringSession(email);
+    // Pass payment token if available for server-side verification
+    const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
+    let paymentToken: string | undefined;
+    let paymentPayload: Record<string, string> | undefined;
+    if (purchaseRaw) {
+      const ps = JSON.parse(purchaseRaw);
+      if (ps.payment_token) {
+        paymentToken = ps.payment_token;
+        paymentPayload = {
+          plan_key: ps.plan_key,
+          timestamp: ps.token_timestamp,
+          nonce: ps.token_nonce,
+          expires_at: ps.token_expires_at,
+        };
+      }
+    }
+    const newSession = await createMonitoringSessionServer(email, paymentToken, paymentPayload);
     setSession(newSession);
   };
 

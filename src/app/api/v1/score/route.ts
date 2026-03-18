@@ -4,20 +4,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { executeIncomeStabilityEngine } from "@/lib/engine";
 import { validateApiKey } from "@/lib/api-auth";
+import { verifyPaymentToken } from "@/lib/payment-token";
 import { auditLog, getClientIp } from "@/lib/audit-log";
 
+function isAuthorized(request: NextRequest, body: Record<string, unknown>): boolean {
+  // Method 1: API key (external integrations)
+  if (validateApiKey(request)) return true;
+
+  // Method 2: Payment token (frontend after checkout)
+  const pt = body._payment_token as string | undefined;
+  const pp = body._payment_payload as Record<string, string> | undefined;
+  if (pt && pp) {
+    return verifyPaymentToken(pt, {
+      plan_key: pp.plan_key as "single_assessment" | "annual_monitoring",
+      timestamp: pp.timestamp,
+      nonce: pp.nonce,
+      expires_at: pp.expires_at,
+    });
+  }
+
+  return false;
+}
+
 export async function POST(request: NextRequest) {
-  // API key authentication
-  if (!validateApiKey(request)) {
+  const body = await request.json();
+
+  // Authenticate via API key or payment token
+  if (!isAuthorized(request, body)) {
     return NextResponse.json(
       { error: "Unauthorized" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
   try {
-    const body = await request.json();
-
     const submission = {
       profile: body.profile,
       inputs: body.inputs,

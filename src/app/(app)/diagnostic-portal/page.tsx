@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSessionByCode, getRemaining } from "@/lib/monitoring";
+import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -154,27 +154,51 @@ export default function InitializationPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Payment gate — only paid customers can access the diagnostic
-    const session = sessionStorage.getItem("rp_purchase_session");
-    if (session) {
+
+    async function verifyAccess() {
+      const session = sessionStorage.getItem("rp_purchase_session");
+      if (!session) { router.push("/pricing"); return; }
+
       try {
         const parsed = JSON.parse(session);
-        if (parsed.status === "paid") {
-          // If monitoring plan, verify assessments remain
-          if (parsed.plan_key === "annual_monitoring" && parsed.monitoring_access_code) {
-            const remaining = getRemaining(parsed.monitoring_access_code);
-            if (remaining <= 0) {
-              router.push("/sign-in");
-              return;
+        if (parsed.status !== "paid") { router.push("/pricing"); return; }
+
+        // Verify payment token server-side (if available)
+        if (parsed.payment_token) {
+          try {
+            const res = await fetch("/api/v1/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                token: parsed.payment_token,
+                plan_key: parsed.plan_key,
+                timestamp: parsed.token_timestamp,
+                nonce: parsed.token_nonce,
+                expires_at: parsed.token_expires_at,
+              }),
+            });
+            if (res.ok) {
+              const data = await res.json();
+              if (!data.valid) { router.push("/pricing"); return; }
             }
+          } catch {
+            // Server unavailable — proceed with client-side check
           }
-          setAuthorized(true);
-          return;
         }
-      } catch { /* invalid session */ }
+
+        // If monitoring plan, verify assessments remain (server-first)
+        if (parsed.plan_key === "annual_monitoring" && parsed.monitoring_access_code) {
+          const remaining = await getRemainingServer(parsed.monitoring_access_code);
+          if (remaining <= 0) { router.push("/sign-in"); return; }
+        }
+
+        setAuthorized(true);
+      } catch {
+        router.push("/pricing");
+      }
     }
-    // No valid purchase session — redirect to pricing
-    router.push("/pricing");
+
+    verifyAccess();
   }, [router]);
 
   if (!authorized) {

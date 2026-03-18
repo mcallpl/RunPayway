@@ -1,5 +1,6 @@
 /* ------------------------------------------------------------------ */
-/*  Annual Monitoring — access code system (localStorage only)         */
+/*  Annual Monitoring — access code system                             */
+/*  Server-first with localStorage fallback for static deployments     */
 /* ------------------------------------------------------------------ */
 
 export interface MonitoringSession {
@@ -15,7 +16,7 @@ export interface MonitoringSession {
 
 const STORAGE_KEY = "rp_monitoring_sessions";
 
-/* ---- helpers ---- */
+/* ---- localStorage helpers (fallback) ---- */
 
 function readSessions(): MonitoringSession[] {
   if (typeof window === "undefined") return [];
@@ -31,11 +32,11 @@ function writeSessions(sessions: MonitoringSession[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
 }
 
-/* ---- public API ---- */
+/* ---- client-only API (fallback for static deployments) ---- */
 
 /** Generate a code in the format RP-XXXX-XXXX */
 export function generateAccessCode(): string {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I to avoid confusion
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let block1 = "";
   let block2 = "";
   for (let i = 0; i < 4; i++) {
@@ -45,7 +46,7 @@ export function generateAccessCode(): string {
   return `RP-${block1}-${block2}`;
 }
 
-/** Create a new monitoring session and persist it */
+/** Create a new monitoring session (localStorage only) */
 export function createMonitoringSession(email: string): MonitoringSession {
   const now = new Date();
   const expires = new Date(now);
@@ -68,7 +69,7 @@ export function createMonitoringSession(email: string): MonitoringSession {
   return session;
 }
 
-/** Look up a session by access code */
+/** Look up a session by access code (localStorage) */
 export function getSessionByCode(code: string): MonitoringSession | null {
   const sessions = readSessions();
   return sessions.find((s) => s.access_code === code) ?? null;
@@ -86,7 +87,7 @@ export function getRemaining(code: string): number {
   return session.assessments_total - session.assessments_used;
 }
 
-/** Use one assessment — returns false if none remaining or expired */
+/** Use one assessment (localStorage only) */
 export function useAssessment(code: string, recordId: string): boolean {
   const sessions = readSessions();
   const idx = sessions.findIndex((s) => s.access_code === code);
@@ -101,4 +102,82 @@ export function useAssessment(code: string, recordId: string): boolean {
   sessions[idx] = session;
   writeSessions(sessions);
   return true;
+}
+
+/* ---- server-backed API (primary — falls back to localStorage) ---- */
+
+/** Create monitoring session via server, fallback to localStorage */
+export async function createMonitoringSessionServer(
+  email: string,
+  paymentToken?: string,
+  paymentPayload?: Record<string, string>,
+): Promise<MonitoringSession> {
+  try {
+    const body: Record<string, unknown> = { action: "create", email };
+    if (paymentToken && paymentPayload) {
+      body.token = paymentToken;
+      body.payload = paymentPayload;
+    }
+    const res = await fetch("/api/v1/monitoring", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error("Server error");
+    const data = await res.json();
+
+    // Also store in localStorage for offline access
+    const session: MonitoringSession = {
+      access_code: data.access_code,
+      email,
+      plan: "annual_monitoring",
+      assessments_total: 3,
+      assessments_used: data.assessments_used ?? 0,
+      created_at: new Date().toISOString(),
+      expires_at: data.expires_at,
+      assessment_records: [],
+    };
+    const sessions = readSessions();
+    sessions.push(session);
+    writeSessions(sessions);
+    return session;
+  } catch {
+    return createMonitoringSession(email);
+  }
+}
+
+/** Verify remaining assessments via server, fallback to localStorage */
+export async function getRemainingServer(code: string): Promise<number> {
+  try {
+    const res = await fetch("/api/v1/monitoring", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "verify", access_code: code }),
+    });
+    if (!res.ok) throw new Error("Server error");
+    const data = await res.json();
+    return data.remaining ?? 0;
+  } catch {
+    return getRemaining(code);
+  }
+}
+
+/** Use an assessment via server, fallback to localStorage */
+export async function useAssessmentServer(code: string, recordId: string): Promise<boolean> {
+  try {
+    const res = await fetch("/api/v1/monitoring", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "use", access_code: code, record_id: recordId }),
+    });
+    if (!res.ok) throw new Error("Server error");
+    const data = await res.json();
+    if (data.success) {
+      // Sync to localStorage
+      useAssessment(code, recordId);
+    }
+    return data.success ?? false;
+  } catch {
+    return useAssessment(code, recordId);
+  }
 }

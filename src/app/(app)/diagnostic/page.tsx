@@ -283,7 +283,36 @@ export default function DiagnosticPage() {
     setError(null);
 
     try {
-      const record = await executeClientEngine({ profile, inputs });
+      // Try server-side scoring first (persisted + verified)
+      // Falls back to client engine for static deployments
+      let record;
+      try {
+        // Include payment token for server-side auth
+        const purchaseSession = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
+        const payloadBody: Record<string, unknown> = { profile, inputs };
+        if (purchaseSession.payment_token) {
+          payloadBody._payment_token = purchaseSession.payment_token;
+          payloadBody._payment_payload = {
+            plan_key: purchaseSession.plan_key,
+            timestamp: purchaseSession.token_timestamp,
+            nonce: purchaseSession.token_nonce,
+            expires_at: purchaseSession.token_expires_at,
+          };
+        }
+        const res = await fetch("/api/v1/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadBody),
+        });
+        if (res.ok) {
+          record = await res.json();
+        } else {
+          throw new Error("Server unavailable");
+        }
+      } catch {
+        // Client-side fallback
+        record = await executeClientEngine({ profile, inputs });
+      }
       sessionStorage.setItem("rp_record", JSON.stringify(record));
 
       // Persist record for Verify a Score lookup

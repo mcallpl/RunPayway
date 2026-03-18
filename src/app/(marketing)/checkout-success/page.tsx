@@ -25,19 +25,43 @@ function CheckoutSuccessContent() {
   const plan = searchParams.get("plan") || "single";
   const [step, setStep] = useState(0);
 
-  // Store purchase session
+  // Store purchase session and obtain signed payment token from server
   useEffect(() => {
-    sessionStorage.setItem(
-      "rp_purchase_session",
-      JSON.stringify({
-        plan_key: plan === "monitoring" ? "annual_monitoring" : "single_assessment",
-        price_cents: plan === "monitoring" ? 9900 : 3900,
-        currency: "USD",
-        intended_assessment_count: plan === "monitoring" ? 3 : 1,
-        status: "paid",
-        checkout_provider: "stripe",
+    const planKey = plan === "monitoring" ? "annual_monitoring" : "single_assessment";
+    const session = {
+      plan_key: planKey,
+      price_cents: plan === "monitoring" ? 9900 : 3900,
+      currency: "USD",
+      intended_assessment_count: plan === "monitoring" ? 3 : 1,
+      status: "paid",
+      checkout_provider: "stripe",
+      // token fields populated below
+      payment_token: "",
+      token_timestamp: "",
+      token_nonce: "",
+      token_expires_at: "",
+    };
+
+    // Fetch signed token from server (prevents forgery)
+    fetch("/api/v1/payment-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan_key: planKey }),
+    })
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (data?.token) {
+          session.payment_token = data.token;
+          session.token_timestamp = data.timestamp;
+          session.token_nonce = data.nonce;
+          session.token_expires_at = data.expires_at;
+        }
+        sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
       })
-    );
+      .catch(() => {
+        // Static deployment fallback — store without server token
+        sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
+      });
   }, [plan]);
 
   // Step animation
