@@ -5,10 +5,11 @@ import type { Translations } from "./types";
 import { en } from "./en";
 import { es } from "./es";
 import { hi } from "./hi";
+import { pt } from "./pt";
 
 export type LangCode = "en" | "es" | "pt" | "hi";
 
-const TRANSLATION_MAP: Record<string, Translations> = { en, es, hi };
+const TRANSLATION_MAP: Record<string, Translations> = { en, es, hi, pt };
 
 const LanguageContext = createContext<{
   lang: LangCode;
