@@ -1800,21 +1800,6 @@ function HeroSection() {
               {t.home.heroBody}
             </p>
 
-            <p
-              style={{
-                fontWeight: 500,
-                fontSize: 15,
-                letterSpacing: "0.01em",
-                color: "rgba(14,26,43,0.55)",
-                marginBottom: S.cardPad.desktop,
-                opacity: hasAnimated ? 1 : 0,
-                transform: hasAnimated ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 600ms ease-out 320ms, transform 600ms ease-out 320ms",
-              }}
-            >
-              {t.home.heroAudience}
-            </p>
-
             {/* CTA Button */}
             <div
               style={{
