@@ -237,6 +237,68 @@ function AccordionItem({
 }
 
 /* ------------------------------------------------------------------ */
+/*  FAQ Category with animation (hook must be in its own component)    */
+/* ------------------------------------------------------------------ */
+
+function FaqCategorySection({
+  cat,
+  openItems,
+  toggleItem,
+  mobile,
+}: {
+  cat: FaqCategory;
+  openItems: Record<string, boolean>;
+  toggleItem: (key: string) => void;
+  mobile: boolean;
+}) {
+  const catAnim = useInView();
+  return (
+    <div ref={catAnim.ref}>
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: B.purple,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase",
+          marginBottom: 18,
+          opacity: catAnim.visible ? 1 : 0,
+          transform: catAnim.visible ? "translateY(0)" : "translateY(12px)",
+          transition: "opacity 600ms ease, transform 600ms ease",
+        }}
+      >
+        {cat.title}
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          opacity: catAnim.visible ? 1 : 0,
+          transform: catAnim.visible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 600ms ease 100ms, transform 600ms ease 100ms",
+        }}
+      >
+        {cat.items.map((item, i) => {
+          const key = `${cat.title}-${i}`;
+          return (
+            <AccordionItem
+              key={key}
+              question={item.q}
+              isOpen={!!openItems[key]}
+              onToggle={() => toggleItem(key)}
+              mobile={mobile}
+            >
+              {item.a}
+            </AccordionItem>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -434,56 +496,9 @@ export default function FaqPage() {
             gap: mobile ? 40 : 56,
           }}
         >
-          {FAQ_CATEGORIES.map((cat) => {
-            const catAnim = useInView();
-            return (
-              <div key={cat.title} ref={catAnim.ref}>
-                {/* Category header */}
-                <div
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: B.purple,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    marginBottom: 18,
-                    opacity: catAnim.visible ? 1 : 0,
-                    transform: catAnim.visible ? "translateY(0)" : "translateY(12px)",
-                    transition: "opacity 600ms ease, transform 600ms ease",
-                  }}
-                >
-                  {cat.title}
-                </div>
-
-                {/* Items */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                    opacity: catAnim.visible ? 1 : 0,
-                    transform: catAnim.visible ? "translateY(0)" : "translateY(16px)",
-                    transition: "opacity 600ms ease 100ms, transform 600ms ease 100ms",
-                  }}
-                >
-                  {cat.items.map((item, i) => {
-                    const key = `${cat.title}-${i}`;
-                    return (
-                      <AccordionItem
-                        key={key}
-                        question={item.q}
-                        isOpen={!!openItems[key]}
-                        onToggle={() => toggleItem(key)}
-                        mobile={mobile}
-                      >
-                        {item.a}
-                      </AccordionItem>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+          {FAQ_CATEGORIES.map((cat) => (
+              <FaqCategorySection key={cat.title} cat={cat} openItems={openItems} toggleItem={toggleItem} mobile={mobile} />
+          ))}
         </div>
       </section>
 

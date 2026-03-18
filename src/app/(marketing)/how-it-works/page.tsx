@@ -296,6 +296,7 @@ export default function HowItWorksPage() {
   const classAnim = useInView();
   const verifyAnim = useInView();
   const ctaAnim = useInView();
+  const deliverAnim = useInView();
 
   return (
     <div style={{ background: "#FFFFFF" }}>
@@ -663,7 +664,6 @@ export default function HowItWorksPage() {
       {/*  Section 4 — What You Receive                                */}
       {/* ============================================================ */}
       {(() => {
-        const deliverAnim = useInView();
         return (
           <section
             style={{
