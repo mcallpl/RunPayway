@@ -489,22 +489,58 @@ function ScoreTrend({ currentScore, records }: { currentScore: number; records: 
 }
 
 // ============================================================
-// PDF DOWNLOAD — canvas-slicing for zero-corruption output
+// PDF DOWNLOAD — smart whitespace-aware slicing
 // ============================================================
 //
 // How it works:
-//   1. Each .report-page is captured at full natural height (never scaled)
-//   2. The canvas image is sliced into page-height strips
-//   3. Each strip becomes its own PDF page — no content is ever lost,
-//      shrunk, or clipped by footers
-//   4. Enterprise overlays (confidentiality, page numbers) are drawn
-//      via jsPDF text commands in a second pass
-//
-// This eliminates every class of corruption:
-//   - Words cut off at page edges  → fixed (strips respect boundaries)
-//   - Missing sections             → fixed (full height captured)
-//   - Jumbled/shrunken text        → fixed (no scale-to-fit)
+//   1. Each .report-page is captured at full natural height
+//   2. If it fits in one PDF page, it's placed directly
+//   3. If it overflows, the canvas is sliced at WHITESPACE GAPS
+//      (not arbitrary pixel positions) so text/charts are never
+//      cut in half
+//   4. Enterprise overlays are drawn in a second pass
 // ============================================================
+
+/** Scan canvas rows near targetY to find a whitespace gap for clean cutting */
+function findSafeCutRow(
+  canvas: HTMLCanvasElement,
+  targetY: number,
+  searchRange: number,
+): number {
+  const width = canvas.width;
+  const minY = Math.max(0, targetY - searchRange);
+  const maxY = targetY; // only search ABOVE target to prevent page overflow
+  const searchHeight = maxY - minY;
+  if (searchHeight <= 0) return targetY;
+
+  const ctx = canvas.getContext("2d")!;
+  const imageData = ctx.getImageData(0, minY, width, searchHeight);
+  const pixels = imageData.data;
+  const sampleStep = Math.max(1, Math.floor(width / 80)); // sample ~80 points per row
+  const threshold = 4; // allow up to 4 non-white samples (anti-aliasing artifacts)
+
+  // Search from closest-to-target upward — first clean row wins
+  for (let offset = 0; offset < searchHeight; offset++) {
+    const localRow = searchHeight - 1 - offset;
+    let nonWhiteCount = 0;
+    const rowStart = localRow * width * 4;
+
+    for (let x = 0; x < width; x += sampleStep) {
+      const idx = rowStart + x * 4;
+      if (pixels[idx] < 245 || pixels[idx + 1] < 245 || pixels[idx + 2] < 245) {
+        nonWhiteCount++;
+        if (nonWhiteCount > threshold) break; // skip row early
+      }
+    }
+
+    if (nonWhiteCount <= threshold) {
+      return minY + localRow;
+    }
+  }
+
+  // No whitespace gap found — fall back to target position
+  return targetY;
+}
 
 async function downloadPDF(record: AssessmentRecord) {
   let html2canvas: typeof import("html2canvas").default;
@@ -530,7 +566,7 @@ async function downloadPDF(record: AssessmentRecord) {
     creator: `RunPayway Model ${record.model_version || "RP-1.0"}`,
   });
 
-  const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, contentH: CH, canvasW, pxPerInch, sliceH } = PDF;
+  const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, canvasW, pxPerInch, sliceH } = PDF;
 
   let pdfPageCount = 0;
 
@@ -574,16 +610,26 @@ async function downloadPDF(record: AssessmentRecord) {
     Object.assign(el.style, saved);
     if (htmlFooter) htmlFooter.style.display = "";
 
-    // ── Slice canvas into page-height strips ──
+    // ── Smart-slice canvas into page-height strips ──
     const totalCanvasH = canvas.height;
-    const strips = Math.max(1, Math.ceil(totalCanvasH / sliceH));
+    let currentY = 0;
 
-    for (let s = 0; s < strips; s++) {
+    while (currentY < totalCanvasH) {
       if (pdfPageCount > 0) pdf.addPage();
       pdfPageCount++;
 
-      const srcY = s * sliceH;
-      const srcH = Math.min(sliceH, totalCanvasH - srcY);
+      let cutY: number;
+      const idealCutY = currentY + sliceH;
+
+      if (idealCutY >= totalCanvasH) {
+        // Last strip — take whatever remains
+        cutY = totalCanvasH;
+      } else {
+        // Find a whitespace gap near the ideal cut point (search up to 200px above)
+        cutY = findSafeCutRow(canvas, idealCutY, 200);
+      }
+
+      const srcH = Math.max(1, cutY - currentY);
 
       // Create sub-canvas for this strip
       const strip = document.createElement("canvas");
@@ -592,11 +638,13 @@ async function downloadPDF(record: AssessmentRecord) {
       const ctx = strip.getContext("2d")!;
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, canvasW, srcH);
-      ctx.drawImage(canvas, 0, srcY, canvasW, srcH, 0, 0, canvasW, srcH);
+      ctx.drawImage(canvas, 0, currentY, canvasW, srcH, 0, 0, canvasW, srcH);
 
       // Place on PDF — exact size, no scaling
       const imgH = srcH / pxPerInch;
       pdf.addImage(strip.toDataURL("image/png"), "PNG", M, M, CW, imgH);
+
+      currentY = cutY;
     }
   }
 
