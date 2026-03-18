@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -140,6 +141,7 @@ function Bullet({ items }: { items: string[] }) {
 
 export default function AccessibilityPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   const s1 = useInView();
@@ -204,7 +206,7 @@ export default function AccessibilityPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Governance
+              {t.accessibilityPage.heroTag}
             </span>
           </div>
 
@@ -218,17 +220,17 @@ export default function AccessibilityPage() {
               marginBottom: 20,
             }}
           >
-            Accessibility Statement
+            {t.accessibilityPage.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.accessibilityPage.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)", marginBottom: 8 }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.accessibilityPage.heroModel}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Effective Date: April 1, 2026
+            {t.accessibilityPage.heroEffectiveDate}
           </p>
         </div>
       </section>
@@ -250,74 +252,74 @@ export default function AccessibilityPage() {
         >
           {/* 1. Commitment */}
           <div ref={s1.ref}>
-            <Section title="Commitment to Accessibility" mobile={mobile} visible={s1.visible}>
-              <P>RunPayway™ is committed to providing a digital experience that is accessible to a broad range of users.</P>
-              <P>Accessibility considerations are incorporated into the design, development, and maintenance of the RunPayway™ platform.</P>
-              <P style={{ marginBottom: 0 }}>The goal is to ensure that users can access and interact with the Income Stability Score™ assessment regardless of device, browser, or assistive technology.</P>
+            <Section title={t.accessibilityPage.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.accessibilityPage.s1P1}</P>
+              <P>{t.accessibilityPage.s1P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s1P3}</P>
             </Section>
           </div>
 
           {/* 2. Standards */}
           <div ref={s2.ref}>
-            <Section title="Accessibility Standards" mobile={mobile} visible={s2.visible}>
-              <P>RunPayway™ strives to align with recognized accessibility standards, including the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA.</P>
-              <P style={{ marginBottom: 0 }}>Accessibility considerations are integrated into platform design, testing, and updates as part of ongoing system development.</P>
+            <Section title={t.accessibilityPage.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.accessibilityPage.s2P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s2P2}</P>
             </Section>
           </div>
 
           {/* 3. Features */}
           <div ref={s3.ref}>
-            <Section title="Accessibility Features" mobile={mobile} visible={s3.visible}>
-              <P>Accessibility features of the RunPayway™ platform may include:</P>
+            <Section title={t.accessibilityPage.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.accessibilityPage.s3P1}</P>
               <Bullet items={[
-                "keyboard-accessible navigation",
-                "structured semantic markup for assistive technologies",
-                "screen-reader compatible form controls",
-                "visible focus indicators for navigation elements",
-                "sufficient color contrast for readability",
-                "clear labeling of form inputs and interactive elements",
-                "logical page structure and content hierarchy",
+                t.accessibilityPage.s3Li1,
+                t.accessibilityPage.s3Li2,
+                t.accessibilityPage.s3Li3,
+                t.accessibilityPage.s3Li4,
+                t.accessibilityPage.s3Li5,
+                t.accessibilityPage.s3Li6,
+                t.accessibilityPage.s3Li7,
               ]} />
-              <P style={{ marginBottom: 0 }}>These features are implemented as part of the platform's design framework and may evolve over time.</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s3P2}</P>
             </Section>
           </div>
 
           {/* 4. Assessment Interface */}
           <div ref={s4.ref}>
-            <Section title="Assessment Interface Accessibility" mobile={mobile} visible={s4.visible}>
-              <P>The Income Stability Score™ assessment interface is designed to support accessibility by:</P>
+            <Section title={t.accessibilityPage.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.accessibilityPage.s4P1}</P>
               <Bullet items={[
-                "using structured form elements",
-                "allowing full keyboard navigation",
-                "avoiding reliance on color alone to convey meaning",
-                "providing accessible validation and error messaging",
-                "avoiding forced time limits during assessment completion",
+                t.accessibilityPage.s4Li1,
+                t.accessibilityPage.s4Li2,
+                t.accessibilityPage.s4Li3,
+                t.accessibilityPage.s4Li4,
+                t.accessibilityPage.s4Li5,
               ]} />
-              <P style={{ marginBottom: 0 }}>Registry verification pages and account management interfaces are designed using similar accessibility principles.</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s4P2}</P>
             </Section>
           </div>
 
           {/* 5. Ongoing Improvements */}
           <div ref={s5.ref}>
-            <Section title="Ongoing Accessibility Improvements" mobile={mobile} visible={s5.visible}>
-              <P>Accessibility is an ongoing effort.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ periodically reviews the platform to identify opportunities for improving usability and accessibility as part of routine system updates and platform improvements.</P>
+            <Section title={t.accessibilityPage.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.accessibilityPage.s5P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s5P2}</P>
             </Section>
           </div>
 
           {/* 6. Compatibility */}
           <div ref={s6.ref}>
-            <Section title="Compatibility Considerations" mobile={mobile} visible={s6.visible}>
-              <P>Accessibility compatibility may vary depending on device configuration, browser version, assistive technology, or third-party software.</P>
-              <P style={{ marginBottom: 0 }}>While RunPayway™ aims to support widely used accessibility tools, full compatibility cannot be guaranteed in all environments.</P>
+            <Section title={t.accessibilityPage.s6Title} mobile={mobile} visible={s6.visible}>
+              <P>{t.accessibilityPage.s6P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s6P2}</P>
             </Section>
           </div>
 
           {/* 7. Requests */}
           <div ref={s7.ref}>
-            <Section title="Accessibility Requests" mobile={mobile} visible={s7.visible}>
+            <Section title={t.accessibilityPage.s7Title} mobile={mobile} visible={s7.visible}>
               <P>
-                If you encounter accessibility barriers while using RunPayway™, you may submit a request through the{" "}
+                {t.accessibilityPage.s7Pre}
                 <Link
                   href="/contact"
                   style={{
@@ -330,11 +332,11 @@ export default function AccessibilityPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  RunPayway™ contact form
-                </Link>{" "}
-                available on the website.
+                  {t.accessibilityPage.s7LinkText}
+                </Link>
+                {t.accessibilityPage.s7Post}
               </P>
-              <P style={{ marginBottom: 0 }}>Accessibility inquiries will be reviewed and addressed within reasonable timeframes.</P>
+              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s7P2}</P>
             </Section>
           </div>
         </div>
@@ -393,13 +395,13 @@ export default function AccessibilityPage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.accessibilityPage.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.accessibilityPage.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.accessibilityPage.closingPowered}
           </p>
         </div>
       </section>

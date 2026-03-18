@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -143,6 +144,7 @@ function Bullet({ items }: { items: string[] }) {
 
 export default function AcceptableUsePolicyPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   const s1 = useInView();
@@ -209,7 +211,7 @@ export default function AcceptableUsePolicyPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Governance
+              {t.acceptableUse.heroTag}
             </span>
           </div>
 
@@ -223,17 +225,17 @@ export default function AcceptableUsePolicyPage() {
               marginBottom: 20,
             }}
           >
-            Acceptable Use Policy
+            {t.acceptableUse.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.acceptableUse.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)", marginBottom: 8 }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.acceptableUse.heroModel}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Effective Date: April 1, 2026
+            {t.acceptableUse.heroEffectiveDate}
           </p>
         </div>
       </section>
@@ -255,103 +257,103 @@ export default function AcceptableUsePolicyPage() {
         >
           {/* 1 */}
           <div ref={s1.ref}>
-            <Section number="1." title="Purpose" mobile={mobile} visible={s1.visible}>
-              <P>This Acceptable Use Policy governs permitted and prohibited uses of the RunPayway™ platform and the Income Stability Score™.</P>
-              <P style={{ marginBottom: 0 }}>Use of the platform constitutes agreement to comply with this policy.</P>
+            <Section number="1." title={t.acceptableUse.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.acceptableUse.s1P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s1P2}</P>
             </Section>
           </div>
 
           {/* 2 */}
           <div ref={s2.ref}>
-            <Section number="2." title="Permitted Use" mobile={mobile} visible={s2.visible}>
-              <P>You may use RunPayway™ solely for personal or internal informational purposes, including to:</P>
+            <Section number="2." title={t.acceptableUse.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.acceptableUse.s2P1}</P>
               <Bullet items={[
-                "complete an Income Stability Score™ assessment",
-                "manage your account",
-                "verify an assessment snapshot through the registry",
-                "submit enterprise or partnership inquiries",
+                t.acceptableUse.s2Li1,
+                t.acceptableUse.s2Li2,
+                t.acceptableUse.s2Li3,
+                t.acceptableUse.s2Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>Use must comply with applicable laws and the RunPayway™ Terms of Use.</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s2P2}</P>
             </Section>
           </div>
 
           {/* 3 */}
           <div ref={s3.ref}>
-            <Section number="3." title="Prohibited Conduct" mobile={mobile} visible={s3.visible}>
-              <P>You may not:</P>
+            <Section number="3." title={t.acceptableUse.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.acceptableUse.s3P1}</P>
               <Bullet items={[
-                "reverse engineer, decompile, or attempt to derive scoring logic",
-                "systematically generate assessments to analyze or infer scoring methodology",
-                "extract, infer, or reconstruct scoring weights or model parameters",
-                "use automated tools, bots, scraping technologies, or data extraction systems",
-                "use platform data or outputs to train machine learning or artificial intelligence systems",
-                "submit false, misleading, or manipulated information",
-                "circumvent authentication or access controls",
-                "attempt to disrupt, degrade, or impair system performance",
-                "interfere with platform security or infrastructure",
-                "use the Income Stability Score™ for unlawful, fraudulent, or deceptive purposes",
-                "represent an Income Stability Score™ as issued by any entity other than RunPayway™",
+                t.acceptableUse.s3Li1,
+                t.acceptableUse.s3Li2,
+                t.acceptableUse.s3Li3,
+                t.acceptableUse.s3Li4,
+                t.acceptableUse.s3Li5,
+                t.acceptableUse.s3Li6,
+                t.acceptableUse.s3Li7,
+                t.acceptableUse.s3Li8,
+                t.acceptableUse.s3Li9,
+                t.acceptableUse.s3Li10,
+                t.acceptableUse.s3Li11,
               ]} />
             </Section>
           </div>
 
           {/* 4 */}
           <div ref={s4.ref}>
-            <Section number="4." title="Misrepresentation of Scores" mobile={mobile} visible={s4.visible}>
-              <P>You may not:</P>
+            <Section number="4." title={t.acceptableUse.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.acceptableUse.s3P1}</P>
               <Bullet items={[
-                "alter an Income Stability Score™ report",
-                "modify registry records",
-                "remove model version references from issued reports",
-                "present edited or partial reports as official outputs",
+                t.acceptableUse.s4Li1,
+                t.acceptableUse.s4Li2,
+                t.acceptableUse.s4Li3,
+                t.acceptableUse.s4Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>Registry verification is the sole mechanism for confirming authenticity of a RunPayway™ assessment.</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s4P2}</P>
             </Section>
           </div>
 
           {/* 5 */}
           <div ref={s5.ref}>
-            <Section number="5." title="Commercial & Regulatory Restrictions" mobile={mobile} visible={s5.visible}>
-              <P>The Income Stability Score™ may not be:</P>
+            <Section number="5." title={t.acceptableUse.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.acceptableUse.s5P1}</P>
               <Bullet items={[
-                "resold",
-                "embedded within third-party products without authorization",
-                "used for credit underwriting decisions",
-                "used for employment screening decisions",
-                "represented as a substitute for legally regulated financial evaluations",
+                t.acceptableUse.s5Li1,
+                t.acceptableUse.s5Li2,
+                t.acceptableUse.s5Li3,
+                t.acceptableUse.s5Li4,
+                t.acceptableUse.s5Li5,
               ]} />
-              <P style={{ marginBottom: 0 }}>Commercial redistribution, institutional use, or platform integration requires written authorization from RunPayway™.</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s5P2}</P>
             </Section>
           </div>
 
           {/* 6 */}
           <div ref={s6.ref}>
-            <Section number="6." title="Rate Limiting & System Protection" mobile={mobile} visible={s6.visible}>
-              <P>To maintain system integrity, RunPayway™ may implement:</P>
+            <Section number="6." title={t.acceptableUse.s6Title} mobile={mobile} visible={s6.visible}>
+              <P>{t.acceptableUse.s6P1}</P>
               <Bullet items={[
-                "request rate limits",
-                "IP monitoring",
-                "submission controls",
-                "access restrictions",
+                t.acceptableUse.s6Li1,
+                t.acceptableUse.s6Li2,
+                t.acceptableUse.s6Li3,
+                t.acceptableUse.s6Li4,
               ]} />
-              <P>Attempting to bypass technical safeguards is prohibited.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ may monitor platform activity to detect abuse, protect infrastructure, and enforce this policy.</P>
+              <P>{t.acceptableUse.s6P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s6P3}</P>
             </Section>
           </div>
 
           {/* 7 */}
           <div ref={s7.ref}>
-            <Section number="7." title="Account Suspension" mobile={mobile} visible={s7.visible}>
-              <P>RunPayway™ may suspend or terminate access if this policy is violated.</P>
-              <P style={{ marginBottom: 0 }}>Suspension may occur without prior notice where necessary to protect system integrity, prevent misuse, or enforce platform policies.</P>
+            <Section number="7." title={t.acceptableUse.s7Title} mobile={mobile} visible={s7.visible}>
+              <P>{t.acceptableUse.s7P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s7P2}</P>
             </Section>
           </div>
 
           {/* 8 */}
           <div ref={s8.ref}>
-            <Section number="8." title="Reporting Violations" mobile={mobile} visible={s8.visible}>
+            <Section number="8." title={t.acceptableUse.s8Title} mobile={mobile} visible={s8.visible}>
               <P style={{ marginBottom: 0 }}>
-                Suspected misuse may be reported through the{" "}
+                {t.acceptableUse.s8Pre}
                 <Link
                   href="/contact"
                   style={{
@@ -364,18 +366,18 @@ export default function AcceptableUsePolicyPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  RunPayway™ contact form
-                </Link>{" "}
-                available on the website.
+                  {t.acceptableUse.s8LinkText}
+                </Link>
+                {t.acceptableUse.s8Post}
               </P>
             </Section>
           </div>
 
           {/* 9 */}
           <div ref={s9.ref}>
-            <Section number="9." title="Relationship to Terms" mobile={mobile} visible={s9.visible}>
-              <P>This Acceptable Use Policy supplements the RunPayway™ Terms of Use.</P>
-              <P style={{ marginBottom: 0 }}>Violations may result in suspension of access, termination of accounts, or legal action where appropriate.</P>
+            <Section number="9." title={t.acceptableUse.s9Title} mobile={mobile} visible={s9.visible}>
+              <P>{t.acceptableUse.s9P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.acceptableUse.s9P2}</P>
             </Section>
           </div>
         </div>
@@ -434,13 +436,13 @@ export default function AcceptableUsePolicyPage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.acceptableUse.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.acceptableUse.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.acceptableUse.closingPowered}
           </p>
         </div>
       </section>

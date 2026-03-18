@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -142,6 +143,7 @@ function Bullet({ items }: { items: string[] }) {
 
 export default function TermsOfUsePage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   const s1 = useInView();
@@ -219,7 +221,7 @@ export default function TermsOfUsePage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Legal
+              {t.termsOfUse.heroTag}
             </span>
           </div>
 
@@ -233,17 +235,17 @@ export default function TermsOfUsePage() {
               marginBottom: 20,
             }}
           >
-            Terms of Use
+            {t.termsOfUse.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.termsOfUse.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)", marginBottom: 8 }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.termsOfUse.heroModel}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Effective Date: April 1, 2026
+            {t.termsOfUse.heroEffectiveDate}
           </p>
         </div>
       </section>
@@ -265,218 +267,218 @@ export default function TermsOfUsePage() {
         >
           {/* 1 */}
           <div ref={s1.ref}>
-            <Section number="1." title="Acceptance of Terms" mobile={mobile} visible={s1.visible}>
-              <P>By creating an account, purchasing an assessment, submitting an inquiry, or affirmatively indicating acceptance during checkout, you agree to these Terms of Use.</P>
-              <P style={{ marginBottom: 0 }}>If you do not agree to these Terms, you may not access or use the RunPayway™ service.</P>
+            <Section number="1." title={t.termsOfUse.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.termsOfUse.s1P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s1P2}</P>
             </Section>
           </div>
 
           {/* 2 */}
           <div ref={s2.ref}>
-            <Section number="2." title="Service Description" mobile={mobile} visible={s2.visible}>
-              <P>RunPayway™ provides access to the Income Stability Score™, a structural income stability measurement generated under Structural Stability Model RP-1.0.</P>
-              <P>The Income Stability Score™ is a descriptive, point-in-time structural assessment based on user-provided information.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ is not a registered investment adviser and does not provide financial advice, investment advice, tax advice, or legal advice.</P>
+            <Section number="2." title={t.termsOfUse.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.termsOfUse.s2P1}</P>
+              <P>{t.termsOfUse.s2P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s2P3}</P>
             </Section>
           </div>
 
           {/* 3 */}
           <div ref={s3.ref}>
-            <Section number="3." title="Eligibility" mobile={mobile} visible={s3.visible}>
-              <P>You must be at least 18 years old to use this service.</P>
-              <P>You represent that all information submitted through the RunPayway™ platform is accurate to the best of your knowledge.</P>
-              <P style={{ marginBottom: 0 }}>Users are responsible for the accuracy and completeness of information submitted through the assessment process. RunPayway™ does not independently verify user-provided inputs.</P>
+            <Section number="3." title={t.termsOfUse.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.termsOfUse.s3P1}</P>
+              <P>{t.termsOfUse.s3P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s3P3}</P>
             </Section>
           </div>
 
           {/* 4 */}
           <div ref={s4.ref}>
-            <Section number="4." title="No Financial Advisory Relationship" mobile={mobile} visible={s4.visible}>
-              <P>Use of the Income Stability Score™ does not create:</P>
+            <Section number="4." title={t.termsOfUse.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.termsOfUse.s4P1}</P>
               <Bullet items={[
-                "a fiduciary relationship",
-                "an advisory relationship",
-                "an investment advisory engagement",
-                "a client relationship",
+                t.termsOfUse.s4Li1,
+                t.termsOfUse.s4Li2,
+                t.termsOfUse.s4Li3,
+                t.termsOfUse.s4Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>The Income Stability Score™ is not a recommendation, endorsement, or suitability determination.</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s4P2}</P>
             </Section>
           </div>
 
           {/* 5 */}
           <div ref={s5.ref}>
-            <Section number="5." title="Structural Measurement Limitation" mobile={mobile} visible={s5.visible}>
-              <P>The Income Stability Score™:</P>
+            <Section number="5." title={t.termsOfUse.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.termsOfUse.s5P1}</P>
               <Bullet items={[
-                "measures structural income characteristics only",
-                "does not predict future financial performance",
-                "does not evaluate income amount or wealth",
-                "does not assess creditworthiness",
+                t.termsOfUse.s5Li1,
+                t.termsOfUse.s5Li2,
+                t.termsOfUse.s5Li3,
+                t.termsOfUse.s5Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>The Income Stability Score™ reflects information provided at the time of submission.</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s5P2}</P>
             </Section>
           </div>
 
           {/* 6 */}
           <div ref={s6.ref}>
-            <Section number="6." title="Deterministic Model Framework" mobile={mobile} visible={s6.visible}>
-              <P>The Income Stability Score™ is generated under Structural Stability Model RP-1.0 using predefined scoring criteria.</P>
-              <P>Scoring methodology is version-controlled.</P>
-              <P>Under the same model version, identical responses are intended to produce identical results.</P>
-              <P style={{ marginBottom: 0 }}>No machine learning or probabilistic adjustments are used under Model RP-1.0.</P>
+            <Section number="6." title={t.termsOfUse.s6Title} mobile={mobile} visible={s6.visible}>
+              <P>{t.termsOfUse.s6P1}</P>
+              <P>{t.termsOfUse.s6P2}</P>
+              <P>{t.termsOfUse.s6P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s6P4}</P>
             </Section>
           </div>
 
           {/* 7 */}
           <div ref={s7.ref}>
-            <Section number="7." title="Payment Terms" mobile={mobile} visible={s7.visible}>
-              <P>All fees are listed in U.S. dollars.</P>
-              <P>Income Stability Score™ assessments are billed either:</P>
+            <Section number="7." title={t.termsOfUse.s7Title} mobile={mobile} visible={s7.visible}>
+              <P>{t.termsOfUse.s7P1}</P>
+              <P>{t.termsOfUse.s7P2}</P>
               <Bullet items={[
-                "as a one-time assessment fee, or",
-                "as an annual subscription for reassessment access",
+                t.termsOfUse.s7Li1,
+                t.termsOfUse.s7Li2,
               ]} />
-              <P>Subscriptions renew automatically at the stated annual rate unless canceled prior to the next billing cycle.</P>
-              <P>No refunds are issued after score generation.</P>
-              <P style={{ marginBottom: 0 }}>If a technical error prevents score generation, RunPayway™ may review the transaction.</P>
+              <P>{t.termsOfUse.s7P3}</P>
+              <P>{t.termsOfUse.s7P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s7P5}</P>
             </Section>
           </div>
 
           {/* 8 */}
           <div ref={s8.ref}>
-            <Section number="8." title="Consent-Based Contact Following User Submission" mobile={mobile} visible={s8.visible}>
-              <P>If you submit an inquiry, create an account, purchase an assessment, or request enterprise information, you consent to be contacted by RunPayway™ in response to that submission.</P>
-              <P>Contact may relate to:</P>
+            <Section number="8." title={t.termsOfUse.s8Title} mobile={mobile} visible={s8.visible}>
+              <P>{t.termsOfUse.s8P1}</P>
+              <P>{t.termsOfUse.s8P2}</P>
               <Bullet items={[
-                "assessment results",
-                "account administration",
-                "billing and subscription management",
-                "enterprise or partnership discussions",
-                "service-related updates",
+                t.termsOfUse.s8Li1,
+                t.termsOfUse.s8Li2,
+                t.termsOfUse.s8Li3,
+                t.termsOfUse.s8Li4,
+                t.termsOfUse.s8Li5,
               ]} />
-              <P>Such contact is limited to responding to your submission and administering the requested service.</P>
-              <P>Optional marketing communications, if offered separately, will include an opt-out mechanism.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not provide financial advisory outreach.</P>
+              <P>{t.termsOfUse.s8P3}</P>
+              <P>{t.termsOfUse.s8P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s8P5}</P>
             </Section>
           </div>
 
           {/* 9 */}
           <div ref={s9.ref}>
-            <Section number="9." title="Intellectual Property" mobile={mobile} visible={s9.visible}>
-              <P>Structural Stability Model RP-1.0, the Income Stability Score™ framework, scoring methodology, and all related platform content are proprietary intellectual property of RunPayway™.</P>
-              <P>The Income Stability Score™ and related reports are provided for individual or internal informational use unless otherwise authorized in writing by RunPayway™.</P>
-              <P>You may not:</P>
+            <Section number="9." title={t.termsOfUse.s9Title} mobile={mobile} visible={s9.visible}>
+              <P>{t.termsOfUse.s9P1}</P>
+              <P>{t.termsOfUse.s9P2}</P>
+              <P>{t.termsOfUse.s9P3}</P>
               <Bullet items={[
-                "reverse engineer scoring logic",
-                "extract scoring weights or model parameters",
-                "replicate or reproduce the methodology",
-                "use the Income Stability Score™ for commercial redistribution without authorization",
-                "access the service through automated scraping, bots, or data extraction tools",
+                t.termsOfUse.s9Li1,
+                t.termsOfUse.s9Li2,
+                t.termsOfUse.s9Li3,
+                t.termsOfUse.s9Li4,
+                t.termsOfUse.s9Li5,
               ]} />
-              <P style={{ marginBottom: 0 }}>All rights reserved.</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s9P4}</P>
             </Section>
           </div>
 
           {/* 10 */}
           <div ref={s10.ref}>
-            <Section number="10." title="Registry Verification" mobile={mobile} visible={s10.visible}>
-              <P>Registry verification confirms record consistency only.</P>
-              <P>Verification confirms that a registry record exists and has not been altered since issuance.</P>
-              <P style={{ marginBottom: 0 }}>Verification does not validate the accuracy of user-provided information used to generate the assessment.</P>
+            <Section number="10." title={t.termsOfUse.s10Title} mobile={mobile} visible={s10.visible}>
+              <P>{t.termsOfUse.s10P1}</P>
+              <P>{t.termsOfUse.s10P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s10P3}</P>
             </Section>
           </div>
 
           {/* 11 */}
           <div ref={s11.ref}>
-            <Section number="11." title="Service Availability" mobile={mobile} visible={s11.visible}>
-              <P>RunPayway™ may modify, suspend, or discontinue portions of the service at any time for maintenance, security, or operational reasons.</P>
-              <P style={{ marginBottom: 0 }}>Reasonable efforts may be made to maintain service availability, but uninterrupted operation is not guaranteed.</P>
+            <Section number="11." title={t.termsOfUse.s11Title} mobile={mobile} visible={s11.visible}>
+              <P>{t.termsOfUse.s11P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s11P2}</P>
             </Section>
           </div>
 
           {/* 12 */}
           <div ref={s12.ref}>
-            <Section number="12." title="Limitation of Liability" mobile={mobile} visible={s12.visible}>
-              <P>To the maximum extent permitted by law:</P>
-              <P>RunPayway™ shall not be liable for indirect, incidental, consequential, special, exemplary, or punitive damages arising from use of the Income Stability Score™.</P>
-              <P>Total liability for any claim shall not exceed the amount paid for the assessment giving rise to the claim.</P>
-              <P style={{ marginBottom: 0 }}>This limitation applies regardless of the legal theory asserted.</P>
+            <Section number="12." title={t.termsOfUse.s12Title} mobile={mobile} visible={s12.visible}>
+              <P>{t.termsOfUse.s12P1}</P>
+              <P>{t.termsOfUse.s12P2}</P>
+              <P>{t.termsOfUse.s12P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s12P4}</P>
             </Section>
           </div>
 
           {/* 13 */}
           <div ref={s13.ref}>
-            <Section number="13." title="Disclaimer of Warranties" mobile={mobile} visible={s13.visible}>
-              <P>The Income Stability Score™ and related services are provided &quot;as is&quot; and &quot;as available.&quot;</P>
-              <P>RunPayway™ disclaims all warranties, express or implied, including:</P>
+            <Section number="13." title={t.termsOfUse.s13Title} mobile={mobile} visible={s13.visible}>
+              <P>{t.termsOfUse.s13P1}</P>
+              <P>{t.termsOfUse.s13P2}</P>
               <Bullet items={[
-                "merchantability",
-                "fitness for a particular purpose",
-                "non-infringement",
-                "accuracy",
+                t.termsOfUse.s13Li1,
+                t.termsOfUse.s13Li2,
+                t.termsOfUse.s13Li3,
+                t.termsOfUse.s13Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>No guarantee is made regarding financial outcomes or suitability for specific decisions.</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s13P3}</P>
             </Section>
           </div>
 
           {/* 14 */}
           <div ref={s14.ref}>
-            <Section number="14." title="Indemnification" mobile={mobile} visible={s14.visible}>
-              <P>You agree to indemnify and hold harmless RunPayway™, its affiliates, officers, and agents from any claims, liabilities, damages, or expenses arising from:</P>
+            <Section number="14." title={t.termsOfUse.s14Title} mobile={mobile} visible={s14.visible}>
+              <P>{t.termsOfUse.s14P1}</P>
               <Bullet items={[
-                "your use of the service",
-                "your violation of these Terms",
-                "your submission of inaccurate information",
+                t.termsOfUse.s14Li1,
+                t.termsOfUse.s14Li2,
+                t.termsOfUse.s14Li3,
               ]} />
             </Section>
           </div>
 
           {/* 15 */}
           <div ref={s15.ref}>
-            <Section number="15." title="Force Majeure" mobile={mobile} visible={s15.visible}>
-              <P style={{ marginBottom: 0 }}>RunPayway™ shall not be liable for delays or failures resulting from events beyond its reasonable control.</P>
+            <Section number="15." title={t.termsOfUse.s15Title} mobile={mobile} visible={s15.visible}>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s15P1}</P>
             </Section>
           </div>
 
           {/* 16 */}
           <div ref={s16.ref}>
-            <Section number="16." title="Data & Snapshot Records" mobile={mobile} visible={s16.visible}>
-              <P>Completed assessments generate time-stamped digital snapshot records.</P>
-              <P>Snapshots reflect user-provided information at the time of submission.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not guarantee long-term archival beyond stated retention policies.</P>
+            <Section number="16." title={t.termsOfUse.s16Title} mobile={mobile} visible={s16.visible}>
+              <P>{t.termsOfUse.s16P1}</P>
+              <P>{t.termsOfUse.s16P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s16P3}</P>
             </Section>
           </div>
 
           {/* 17 */}
           <div ref={s17.ref}>
-            <Section number="17." title="Dispute Resolution & Arbitration" mobile={mobile} visible={s17.visible}>
-              <P>Any dispute arising from these Terms or use of the Income Stability Score™ shall be resolved through binding arbitration on an individual basis.</P>
-              <P>You waive any right to participate in class actions or representative proceedings.</P>
-              <P style={{ marginBottom: 0 }}>If arbitration is deemed unenforceable, any permitted court action shall be brought exclusively in the courts located in California, United States.</P>
+            <Section number="17." title={t.termsOfUse.s17Title} mobile={mobile} visible={s17.visible}>
+              <P>{t.termsOfUse.s17P1}</P>
+              <P>{t.termsOfUse.s17P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s17P3}</P>
             </Section>
           </div>
 
           {/* 18 */}
           <div ref={s18.ref}>
-            <Section number="18." title="Governing Law" mobile={mobile} visible={s18.visible}>
-              <P style={{ marginBottom: 0 }}>These Terms are governed by the laws of the State of California, United States.</P>
+            <Section number="18." title={t.termsOfUse.s18Title} mobile={mobile} visible={s18.visible}>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s18P1}</P>
             </Section>
           </div>
 
           {/* 19 */}
           <div ref={s19.ref}>
-            <Section number="19." title="Contact" mobile={mobile} visible={s19.visible}>
-              <P style={{ marginBottom: 0 }}>Questions regarding these Terms may be submitted through the RunPayway™ contact form available on the website.</P>
+            <Section number="19." title={t.termsOfUse.s19Title} mobile={mobile} visible={s19.visible}>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s19P1}</P>
             </Section>
           </div>
 
           {/* 20 */}
           <div ref={s20.ref}>
-            <Section number="20." title="Modifications to Terms" mobile={mobile} visible={s20.visible}>
-              <P>These Terms may be updated periodically.</P>
-              <P>Material changes will be published with an updated effective date.</P>
-              <P>Changes to scoring methodology will result in a new model version.</P>
-              <P style={{ marginBottom: 0 }}>No silent changes are made to scoring logic.</P>
+            <Section number="20." title={t.termsOfUse.s20Title} mobile={mobile} visible={s20.visible}>
+              <P>{t.termsOfUse.s20P1}</P>
+              <P>{t.termsOfUse.s20P2}</P>
+              <P>{t.termsOfUse.s20P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.termsOfUse.s20P4}</P>
             </Section>
           </div>
         </div>
@@ -535,13 +537,13 @@ export default function TermsOfUsePage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.termsOfUse.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.termsOfUse.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.termsOfUse.closingPowered}
           </p>
         </div>
       </section>

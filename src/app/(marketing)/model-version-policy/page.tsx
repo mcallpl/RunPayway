@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -142,6 +143,7 @@ function Bullet({ items }: { items: string[] }) {
 
 export default function ModelVersionPolicyPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   const s1 = useInView();
@@ -209,7 +211,7 @@ export default function ModelVersionPolicyPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Governance
+              {t.modelVersionPolicy.heroTag}
             </span>
           </div>
 
@@ -223,17 +225,17 @@ export default function ModelVersionPolicyPage() {
               marginBottom: 20,
             }}
           >
-            Model Version Policy
+            {t.modelVersionPolicy.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.modelVersionPolicy.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)", marginBottom: 8 }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.modelVersionPolicy.heroModel}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Effective Date: April 1, 2026
+            {t.modelVersionPolicy.heroEffectiveDate}
           </p>
         </div>
       </section>
@@ -255,116 +257,116 @@ export default function ModelVersionPolicyPage() {
         >
           {/* 1 */}
           <div ref={s1.ref}>
-            <Section number="1." title="Purpose" mobile={mobile} visible={s1.visible}>
-              <P>This Model Version Policy defines how scoring methodology changes are governed, documented, and implemented within RunPayway™.</P>
-              <P style={{ marginBottom: 0 }}>The objective of this policy is to preserve methodological integrity, prevent undisclosed scoring modifications, and maintain historical transparency for all Income Stability Score™ assessments.</P>
+            <Section number="1." title={t.modelVersionPolicy.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.modelVersionPolicy.s1P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s1P2}</P>
             </Section>
           </div>
 
           {/* 2 */}
           <div ref={s2.ref}>
-            <Section number="2." title="Model Identification" mobile={mobile} visible={s2.visible}>
-              <P>Each Income Stability Score™ is generated under a specific model version.</P>
-              <P>Model versions are identified using structured notation (for example RP-1.0).</P>
-              <P style={{ marginBottom: 0 }}>The model version applicable to an assessment is permanently recorded in the associated snapshot record.</P>
+            <Section number="2." title={t.modelVersionPolicy.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.modelVersionPolicy.s2P1}</P>
+              <P>{t.modelVersionPolicy.s2P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s2P3}</P>
             </Section>
           </div>
 
           {/* 3 */}
           <div ref={s3.ref}>
-            <Section number="3." title="Deterministic Scoring" mobile={mobile} visible={s3.visible}>
-              <P>The RunPayway™ scoring system operates as a deterministic model.</P>
-              <P>Under the same model version, identical inputs are intended to produce identical scoring outputs.</P>
-              <P style={{ marginBottom: 0 }}>Model versioning ensures that scoring results can always be interpreted in the context of the methodology used at the time the assessment was generated.</P>
+            <Section number="3." title={t.modelVersionPolicy.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.modelVersionPolicy.s3P1}</P>
+              <P>{t.modelVersionPolicy.s3P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s3P3}</P>
             </Section>
           </div>
 
           {/* 4 */}
           <div ref={s4.ref}>
-            <Section number="4." title="No Silent Methodology Changes" mobile={mobile} visible={s4.visible}>
-              <P>RunPayway™ does not modify scoring methodology without:</P>
+            <Section number="4." title={t.modelVersionPolicy.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.modelVersionPolicy.s4P1}</P>
               <Bullet items={[
-                "assigning a new model version identifier",
-                "documenting the update",
-                "updating public model references",
+                t.modelVersionPolicy.s4Li1,
+                t.modelVersionPolicy.s4Li2,
+                t.modelVersionPolicy.s4Li3,
               ]} />
-              <P>Changes to scoring criteria, input mapping logic, weighting structure, band thresholds, or calculation framework require a version increment.</P>
-              <P style={{ marginBottom: 0 }}>Previously issued assessment snapshots are not recalculated under new model versions.</P>
+              <P>{t.modelVersionPolicy.s4P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s4P3}</P>
             </Section>
           </div>
 
           {/* 5 */}
           <div ref={s5.ref}>
-            <Section number="5." title="Computational Corrections" mobile={mobile} visible={s5.visible}>
-              <P>If a computational error is identified that materially affects scoring output, corrections will be implemented under a new model version identifier.</P>
-              <P style={{ marginBottom: 0 }}>Prior snapshots remain associated with the model version under which they were originally generated.</P>
+            <Section number="5." title={t.modelVersionPolicy.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.modelVersionPolicy.s5P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s5P2}</P>
             </Section>
           </div>
 
           {/* 6 */}
           <div ref={s6.ref}>
-            <Section number="6." title="Snapshot Integrity" mobile={mobile} visible={s6.visible}>
-              <P>Each Income Stability Score™ snapshot includes:</P>
+            <Section number="6." title={t.modelVersionPolicy.s6Title} mobile={mobile} visible={s6.visible}>
+              <P>{t.modelVersionPolicy.s6P1}</P>
               <Bullet items={[
-                "model version identifier",
-                "timestamp (UTC ISO 8601)",
-                "authentication code",
-                "deterministic output score",
+                t.modelVersionPolicy.s6Li1,
+                t.modelVersionPolicy.s6Li2,
+                t.modelVersionPolicy.s6Li3,
+                t.modelVersionPolicy.s6Li4,
               ]} />
-              <P>Snapshot records are not retroactively modified.</P>
-              <P style={{ marginBottom: 0 }}>Snapshots remain permanently associated with the model version under which they were generated.</P>
+              <P>{t.modelVersionPolicy.s6P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s6P3}</P>
             </Section>
           </div>
 
           {/* 7 */}
           <div ref={s7.ref}>
-            <Section number="7." title="Non-Scoring Technical Updates" mobile={mobile} visible={s7.visible}>
-              <P>Technical updates that do not affect scoring methodology may occur without a model version increment.</P>
-              <P>Examples include:</P>
+            <Section number="7." title={t.modelVersionPolicy.s7Title} mobile={mobile} visible={s7.visible}>
+              <P>{t.modelVersionPolicy.s7P1}</P>
+              <P>{t.modelVersionPolicy.s7P2}</P>
               <Bullet items={[
-                "interface improvements",
-                "performance optimizations",
-                "formatting adjustments",
-                "infrastructure updates",
+                t.modelVersionPolicy.s7Li1,
+                t.modelVersionPolicy.s7Li2,
+                t.modelVersionPolicy.s7Li3,
+                t.modelVersionPolicy.s7Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>Such updates do not alter scoring outputs or previously issued results.</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s7P3}</P>
             </Section>
           </div>
 
           {/* 8 */}
           <div ref={s8.ref}>
-            <Section number="8." title="Public Methodology Disclosure" mobile={mobile} visible={s8.visible}>
-              <P>The Methodology page reflects the currently active model version.</P>
-              <P>Archived model summaries may be maintained for historical reference where applicable.</P>
-              <P style={{ marginBottom: 0 }}>Detailed internal scoring parameters are not publicly disclosed.</P>
+            <Section number="8." title={t.modelVersionPolicy.s8Title} mobile={mobile} visible={s8.visible}>
+              <P>{t.modelVersionPolicy.s8P1}</P>
+              <P>{t.modelVersionPolicy.s8P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s8P3}</P>
             </Section>
           </div>
 
           {/* 9 */}
           <div ref={s9.ref}>
-            <Section number="9." title="Historical Model Preservation" mobile={mobile} visible={s9.visible}>
-              <P>When new model versions are introduced:</P>
+            <Section number="9." title={t.modelVersionPolicy.s9Title} mobile={mobile} visible={s9.visible}>
+              <P>{t.modelVersionPolicy.s9P1}</P>
               <Bullet items={[
-                "prior model versions remain identifiable",
-                "registry verification preserves the original model association",
-                "historical outputs remain linked to their respective model versions",
+                t.modelVersionPolicy.s9Li1,
+                t.modelVersionPolicy.s9Li2,
+                t.modelVersionPolicy.s9Li3,
               ]} />
-              <P style={{ marginBottom: 0 }}>This structure ensures long-term interpretability of previously issued assessments.</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s9P2}</P>
             </Section>
           </div>
 
           {/* 10 */}
           <div ref={s10.ref}>
-            <Section number="10." title="Scope" mobile={mobile} visible={s10.visible}>
-              <P>This policy governs:</P>
+            <Section number="10." title={t.modelVersionPolicy.s10Title} mobile={mobile} visible={s10.visible}>
+              <P>{t.modelVersionPolicy.s10P1}</P>
               <Bullet items={[
-                "scoring criteria",
-                "input mapping logic",
-                "weighting structure",
-                "band classification framework",
-                "model version identification practices",
+                t.modelVersionPolicy.s10Li1,
+                t.modelVersionPolicy.s10Li2,
+                t.modelVersionPolicy.s10Li3,
+                t.modelVersionPolicy.s10Li4,
+                t.modelVersionPolicy.s10Li5,
               ]} />
-              <P style={{ marginBottom: 0 }}>This policy does not govern pricing, subscription structure, or promotional offerings.</P>
+              <P style={{ marginBottom: 0 }}>{t.modelVersionPolicy.s10P2}</P>
             </Section>
           </div>
         </div>
@@ -423,13 +425,13 @@ export default function ModelVersionPolicyPage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.modelVersionPolicy.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.modelVersionPolicy.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.modelVersionPolicy.closingPowered}
           </p>
         </div>
       </section>

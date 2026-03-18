@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -83,6 +84,7 @@ interface VerificationResult {
 
 export default function VerifyPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
   const formAnim = useInView();
 
@@ -137,7 +139,7 @@ export default function VerifyPage() {
         setResult({ valid_record: false });
       }
     } catch {
-      setError("Verification request failed.");
+      setError(t.verifyPage.errorText);
     } finally {
       setLoading(false);
     }
@@ -198,7 +200,7 @@ export default function VerifyPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Score Verification
+              {t.verifyPage.heroTag}
             </span>
           </div>
 
@@ -212,7 +214,7 @@ export default function VerifyPage() {
               marginBottom: 20,
             }}
           >
-            Verify a Score
+            {t.verifyPage.heroTitle}
           </h1>
 
           <p
@@ -224,11 +226,11 @@ export default function VerifyPage() {
               margin: "0 auto 8px",
             }}
           >
-            Confirm that an Income Stability Score™ was generated using the official RunPayway™ model.
+            {t.verifyPage.heroSubtitle}
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Enter the Record ID and Authorization Code from an issued assessment.
+            {t.verifyPage.heroNote}
           </p>
         </div>
       </section>
@@ -274,10 +276,10 @@ export default function VerifyPage() {
                 marginBottom: 8,
               }}
             >
-              Record Verification
+              {t.verifyPage.formTitle}
             </h2>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-              Verify a RunPayway™-issued Income Stability Assessment record.
+              {t.verifyPage.formSubtitle}
             </p>
 
             {/* Record ID */}
@@ -293,13 +295,13 @@ export default function VerifyPage() {
                   marginBottom: 8,
                 }}
               >
-                Record ID
+                {t.verifyPage.recordIdLabel}
               </label>
               <input
                 type="text"
                 value={recordId}
                 onChange={(e) => setRecordId(e.target.value.replace(/\s/g, ""))}
-                placeholder="UUID v4 format"
+                placeholder={t.verifyPage.recordIdPlaceholder}
                 style={{
                   width: "100%",
                   height: 48,
@@ -332,13 +334,13 @@ export default function VerifyPage() {
                   marginBottom: 8,
                 }}
               >
-                Authorization Code
+                {t.verifyPage.authCodeLabel}
               </label>
               <input
                 type="text"
                 value={authCode}
                 onChange={(e) => setAuthCode(e.target.value.replace(/\s/g, ""))}
-                placeholder="64-character hexadecimal string"
+                placeholder={t.verifyPage.authCodePlaceholder}
                 style={{
                   width: "100%",
                   height: 48,
@@ -380,7 +382,7 @@ export default function VerifyPage() {
                 transform: btnHovered && isValid && !loading ? "translateY(-1px)" : "translateY(0)",
               }}
             >
-              {loading ? "Verifying..." : "Verify Record"}
+              {loading ? t.verifyPage.verifying : t.verifyPage.verifyButton}
             </button>
           </div>
 
@@ -431,25 +433,25 @@ export default function VerifyPage() {
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
                     <span style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-                      Verified
+                      {t.verifyPage.verifiedBadge}
                     </span>
                   </div>
 
                   {/* Verification statement */}
                   <p style={{ fontSize: 15, color: B.teal, fontWeight: 600, lineHeight: 1.6, marginBottom: 24 }}>
-                    {result.verification_statement}
+                    {t.verifyPage.verificationStatement}
                   </p>
 
                   {/* Record details */}
                   <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                     {[
-                      ["Record ID", result.record_id],
-                      ["Model Version", result.model_version],
-                      ["Income Stability Score™", String(result.final_score)],
-                      ["Stability Band", result.stability_band],
-                      ["Assessment Date", result.assessment_date],
-                      ["Issued", result.issued_timestamp],
-                      ["Verified At", result.verified_at],
+                      [t.verifyPage.labelRecordId, result.record_id],
+                      [t.verifyPage.labelModelVersion, result.model_version],
+                      [t.verifyPage.labelScore, String(result.final_score)],
+                      [t.verifyPage.labelBand, result.stability_band],
+                      [t.verifyPage.labelAssessmentDate, result.assessment_date],
+                      [t.verifyPage.labelIssued, result.issued_timestamp],
+                      [t.verifyPage.labelVerifiedAt, result.verified_at],
                     ].map(([label, value]) => (
                       <div
                         key={label}
@@ -486,11 +488,11 @@ export default function VerifyPage() {
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.light }} />
                     <span style={{ fontSize: 12, fontWeight: 700, color: B.muted, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-                      No Match Found
+                      {t.verifyPage.noMatchBadge}
                     </span>
                   </div>
                   <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>
-                    No matching record found. The provided Record ID and Authorization Code do not correspond to a valid assessment.
+                    {t.verifyPage.noMatchText}
                   </p>
                 </div>
               )}
@@ -508,13 +510,13 @@ export default function VerifyPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              How Verification Works
+              {t.verifyPage.howTitle}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
-                "Each completed assessment receives a unique Record ID and Authorization Code.",
-                "Enter both credentials above to verify that a score was generated using the official RunPayway™ model.",
-                "Verification confirms the record exists and returns the score, classification band, and issuance details without exposing internal assessment data.",
+                t.verifyPage.howStep1,
+                t.verifyPage.howStep2,
+                t.verifyPage.howStep3,
               ].map((text, i) => (
                 <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <div
@@ -540,7 +542,7 @@ export default function VerifyPage() {
 
           {/* Model reference */}
           <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 28, letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.verifyPage.closingPowered}
           </p>
         </div>
       </section>

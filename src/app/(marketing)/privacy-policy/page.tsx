@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -155,6 +156,7 @@ function SubHead({ children }: { children: React.ReactNode }) {
 
 export default function PrivacyPolicyPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   // Create refs for each section
@@ -214,7 +216,7 @@ export default function PrivacyPolicyPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Legal
+              {t.privacyPolicy.heroTag}
             </span>
           </div>
 
@@ -228,14 +230,14 @@ export default function PrivacyPolicyPage() {
               marginBottom: 20,
             }}
           >
-            Privacy Policy
+            {t.privacyPolicy.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.privacyPolicy.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.privacyPolicy.heroModel}
           </p>
         </div>
       </section>
@@ -257,19 +259,13 @@ export default function PrivacyPolicyPage() {
         >
           {/* Effective date + entity info */}
           <div ref={sectionRefs[0].ref}>
-            <Section title="RunPayway™" mobile={mobile} visible={sectionRefs[0].visible}>
-              <P>Effective Date: April 1, 2026</P>
-              <P style={{ fontWeight: 600, color: B.navy, marginBottom: 4 }}>Operated by PeopleStar Enterprises, Inc.</P>
-              <P>
-                24312 Airporter Way<br />
-                Laguna Niguel, California 92677<br />
-                United States
-              </P>
-              <P>
-                PeopleStar Enterprises, Inc. acts as the data controller for personal information processed through the RunPayway™ platform.
-              </P>
+            <Section title={t.privacyPolicy.s0Title} mobile={mobile} visible={sectionRefs[0].visible}>
+              <P>{t.privacyPolicy.s0EffectiveDate}</P>
+              <P style={{ fontWeight: 600, color: B.navy, marginBottom: 4 }}>{t.privacyPolicy.s0Operator}</P>
+              <P>{t.privacyPolicy.s0Address.split("\n").map((line: string, i: number) => (<span key={i}>{line}{i < 2 && <br />}</span>))}</P>
+              <P>{t.privacyPolicy.s0Controller}</P>
               <P style={{ marginBottom: 0 }}>
-                Privacy inquiries and privacy rights requests may be submitted through the{" "}
+                {t.privacyPolicy.s0InquiriesPre}
                 <Link
                   href="/privacy-request"
                   style={{
@@ -282,7 +278,7 @@ export default function PrivacyPolicyPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  RunPayway™ privacy request form
+                  {t.privacyPolicy.s0LinkText}
                 </Link>.
               </P>
             </Section>
@@ -290,216 +286,216 @@ export default function PrivacyPolicyPage() {
 
           {/* 1. Overview */}
           <div ref={sectionRefs[1].ref}>
-            <Section number="1." title="Overview" mobile={mobile} visible={sectionRefs[1].visible}>
-              <P>This Privacy Policy describes how RunPayway™ collects, uses, stores, and protects information in connection with the Income Stability Score™ and related services.</P>
-              <P>This policy applies to information collected through:</P>
+            <Section number="1." title={t.privacyPolicy.s1Title} mobile={mobile} visible={sectionRefs[1].visible}>
+              <P>{t.privacyPolicy.s1P1}</P>
+              <P>{t.privacyPolicy.s1P2}</P>
               <Bullet items={[
-                "the RunPayway™ website",
-                "Income Stability Score™ assessments",
-                "account creation",
-                "subscription management",
-                "inquiry submissions",
-                "registry verification services",
+                t.privacyPolicy.s1Li1,
+                t.privacyPolicy.s1Li2,
+                t.privacyPolicy.s1Li3,
+                t.privacyPolicy.s1Li4,
+                t.privacyPolicy.s1Li5,
+                t.privacyPolicy.s1Li6,
               ]} />
-              <P style={{ marginBottom: 0 }}>RunPayway™ collects only the information reasonably necessary to provide the Income Stability Score™ assessment and operate the platform.</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s1P3}</P>
             </Section>
           </div>
 
           {/* 2. Information Collected */}
           <div ref={sectionRefs[2].ref}>
-            <Section number="2." title="Information Collected" mobile={mobile} visible={sectionRefs[2].visible}>
-              <SubHead>A. Categories of Personal Information Collected</SubHead>
-              <P>RunPayway™ may collect the following categories of personal information:</P>
+            <Section number="2." title={t.privacyPolicy.s2Title} mobile={mobile} visible={sectionRefs[2].visible}>
+              <SubHead>{t.privacyPolicy.s2SubA}</SubHead>
+              <P>{t.privacyPolicy.s2P1}</P>
               <Bullet items={[
-                "Identifiers — name and email address",
-                "Account information — login credentials and account identifiers",
-                "Billing information — subscription and payment transaction details",
-                "Assessment inputs — user-provided responses used to generate the Income Stability Score™",
-                "Technical information — IP address, device type, browser type",
-                "Usage and session data — timestamps, session identifiers, routing data, and error logs",
+                t.privacyPolicy.s2Li1,
+                t.privacyPolicy.s2Li2,
+                t.privacyPolicy.s2Li3,
+                t.privacyPolicy.s2Li4,
+                t.privacyPolicy.s2Li5,
+                t.privacyPolicy.s2Li6,
               ]} />
-              <P>Assessment responses are user-provided inputs used solely to generate the Income Stability Score™ and associated diagnostic report.</P>
+              <P>{t.privacyPolicy.s2P2}</P>
 
-              <SubHead>B. Automatically Collected Information</SubHead>
-              <P>Certain technical information may be collected automatically during use of the RunPayway™ platform, including:</P>
+              <SubHead>{t.privacyPolicy.s2SubB}</SubHead>
+              <P>{t.privacyPolicy.s2P3}</P>
               <Bullet items={[
-                "IP address",
-                "device type",
-                "browser type",
-                "timestamps",
-                "session identifiers",
-                "routing data",
-                "error logs",
+                t.privacyPolicy.s2Li7,
+                t.privacyPolicy.s2Li8,
+                t.privacyPolicy.s2Li9,
+                t.privacyPolicy.s2Li10,
+                t.privacyPolicy.s2Li11,
+                t.privacyPolicy.s2Li12,
+                t.privacyPolicy.s2Li13,
               ]} />
-              <P>This information supports platform security, fraud prevention, and operational integrity.</P>
+              <P>{t.privacyPolicy.s2P4}</P>
 
-              <SubHead>C. Payment Information</SubHead>
-              <P>Payments are processed through Stripe.</P>
-              <P>RunPayway™ does not store full payment card numbers.</P>
-              <P style={{ marginBottom: 0 }}>Stripe may collect and process payment information in accordance with Stripe&apos;s Privacy Policy: https://stripe.com/privacy</P>
+              <SubHead>{t.privacyPolicy.s2SubC}</SubHead>
+              <P>{t.privacyPolicy.s2P5}</P>
+              <P>{t.privacyPolicy.s2P6}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s2P7}</P>
             </Section>
           </div>
 
           {/* 3. Purpose of Processing */}
           <div ref={sectionRefs[3].ref}>
-            <Section number="3." title="Purpose of Processing" mobile={mobile} visible={sectionRefs[3].visible}>
-              <P>Personal information may be used to:</P>
+            <Section number="3." title={t.privacyPolicy.s3Title} mobile={mobile} visible={sectionRefs[3].visible}>
+              <P>{t.privacyPolicy.s3P1}</P>
               <Bullet items={[
-                "generate the Income Stability Score™",
-                "deliver assessment results",
-                "maintain user accounts",
-                "process payments",
-                "administer subscriptions",
-                "respond to user-submitted inquiries",
-                "conduct enterprise or partnership follow-up discussions initiated by the user",
-                "maintain registry verification",
-                "improve system integrity and security",
-                "comply with legal obligations",
+                t.privacyPolicy.s3Li1,
+                t.privacyPolicy.s3Li2,
+                t.privacyPolicy.s3Li3,
+                t.privacyPolicy.s3Li4,
+                t.privacyPolicy.s3Li5,
+                t.privacyPolicy.s3Li6,
+                t.privacyPolicy.s3Li7,
+                t.privacyPolicy.s3Li8,
+                t.privacyPolicy.s3Li9,
+                t.privacyPolicy.s3Li10,
               ]} />
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not sell personal information for monetary consideration and does not share personal information for cross-context behavioral advertising.</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s3P2}</P>
             </Section>
           </div>
 
           {/* 4. Service Providers */}
           <div ref={sectionRefs[4].ref}>
-            <Section number="4." title="Service Providers and Data Sharing" mobile={mobile} visible={sectionRefs[4].visible}>
-              <P>RunPayway™ may share information with service providers that perform operational services on our behalf, including:</P>
+            <Section number="4." title={t.privacyPolicy.s4Title} mobile={mobile} visible={sectionRefs[4].visible}>
+              <P>{t.privacyPolicy.s4P1}</P>
               <Bullet items={[
-                "payment processing",
-                "hosting infrastructure",
-                "email delivery",
-                "security monitoring",
+                t.privacyPolicy.s4Li1,
+                t.privacyPolicy.s4Li2,
+                t.privacyPolicy.s4Li3,
+                t.privacyPolicy.s4Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>These providers process information solely to support the operation of RunPayway™ and are contractually restricted from using personal information for their own purposes.</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s4P2}</P>
             </Section>
           </div>
 
           {/* 5. Consent-Based Contact */}
           <div ref={sectionRefs[5].ref}>
-            <Section number="5." title="Consent-Based Contact Following User Submission" mobile={mobile} visible={sectionRefs[5].visible}>
-              <P>If you submit an inquiry, create an account, purchase an assessment, or request enterprise information, you consent to be contacted by RunPayway™ in response to that submission.</P>
-              <P>Contact may relate to:</P>
+            <Section number="5." title={t.privacyPolicy.s5Title} mobile={mobile} visible={sectionRefs[5].visible}>
+              <P>{t.privacyPolicy.s5P1}</P>
+              <P>{t.privacyPolicy.s5P2}</P>
               <Bullet items={[
-                "assessment results",
-                "billing or subscription administration",
-                "enterprise or partnership discussions",
-                "service-related updates",
+                t.privacyPolicy.s5Li1,
+                t.privacyPolicy.s5Li2,
+                t.privacyPolicy.s5Li3,
+                t.privacyPolicy.s5Li4,
               ]} />
-              <P>Such communication is limited to responding to your submission and administering the requested service.</P>
-              <P>Optional marketing communications, if offered separately, will include an opt-out mechanism.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not provide financial advisory outreach.</P>
+              <P>{t.privacyPolicy.s5P3}</P>
+              <P>{t.privacyPolicy.s5P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s5P5}</P>
             </Section>
           </div>
 
           {/* 6. Data Retention */}
           <div ref={sectionRefs[6].ref}>
-            <Section number="6." title="Data Retention" mobile={mobile} visible={sectionRefs[6].visible}>
-              <P>Personal information is retained only for as long as reasonably necessary to fulfill the purposes described in this policy, unless a longer retention period is required or permitted by law.</P>
-              <P>Assessment results are stored as time-stamped digital records associated with the model version under which the assessment was generated.</P>
-              <P>Account and billing records may be retained to comply with financial, tax, and legal obligations.</P>
-              <P style={{ marginBottom: 0 }}>Retention periods vary depending on the category of information and applicable law.</P>
+            <Section number="6." title={t.privacyPolicy.s6Title} mobile={mobile} visible={sectionRefs[6].visible}>
+              <P>{t.privacyPolicy.s6P1}</P>
+              <P>{t.privacyPolicy.s6P2}</P>
+              <P>{t.privacyPolicy.s6P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s6P4}</P>
             </Section>
           </div>
 
           {/* 7. Data Security */}
           <div ref={sectionRefs[7].ref}>
-            <Section number="7." title="Data Security" mobile={mobile} visible={sectionRefs[7].visible}>
-              <P>RunPayway™ implements reasonable administrative, technical, and organizational safeguards designed to protect personal information.</P>
-              <P style={{ marginBottom: 0 }}>However, no method of transmission over the Internet or electronic storage can guarantee absolute security.</P>
+            <Section number="7." title={t.privacyPolicy.s7Title} mobile={mobile} visible={sectionRefs[7].visible}>
+              <P>{t.privacyPolicy.s7P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s7P2}</P>
             </Section>
           </div>
 
           {/* 8. Public Registry */}
           <div ref={sectionRefs[8].ref}>
-            <Section number="8." title="Public Registry Verification" mobile={mobile} visible={sectionRefs[8].visible}>
-              <P>RunPayway™ provides a registry verification mechanism that confirms record consistency only.</P>
-              <P>Registry responses may display:</P>
+            <Section number="8." title={t.privacyPolicy.s8Title} mobile={mobile} visible={sectionRefs[8].visible}>
+              <P>{t.privacyPolicy.s8P1}</P>
+              <P>{t.privacyPolicy.s8P2}</P>
               <Bullet items={[
-                "Record ID",
-                "Income Stability Score™ value",
-                "stability classification band",
-                "model version",
-                "timestamp",
+                t.privacyPolicy.s8Li1,
+                t.privacyPolicy.s8Li2,
+                t.privacyPolicy.s8Li3,
+                t.privacyPolicy.s8Li4,
+                t.privacyPolicy.s8Li5,
               ]} />
-              <P>Registry verification does not display:</P>
+              <P>{t.privacyPolicy.s8P3}</P>
               <Bullet items={[
-                "assessment responses",
-                "component-level scoring",
-                "personal identifying information",
+                t.privacyPolicy.s8Li6,
+                t.privacyPolicy.s8Li7,
+                t.privacyPolicy.s8Li8,
               ]} />
             </Section>
           </div>
 
           {/* 9. Privacy Rights */}
           <div ref={sectionRefs[9].ref}>
-            <Section number="9." title="Privacy Rights" mobile={mobile} visible={sectionRefs[9].visible}>
-              <P>Depending on your jurisdiction, you may have the right to:</P>
+            <Section number="9." title={t.privacyPolicy.s9Title} mobile={mobile} visible={sectionRefs[9].visible}>
+              <P>{t.privacyPolicy.s9P1}</P>
               <Bullet items={[
-                "request access to personal information",
-                "request correction of inaccurate personal information",
-                "request deletion of personal information",
-                "request limitation of processing",
+                t.privacyPolicy.s9Li1,
+                t.privacyPolicy.s9Li2,
+                t.privacyPolicy.s9Li3,
+                t.privacyPolicy.s9Li4,
               ]} />
-              <P>Privacy rights requests must be submitted through the RunPayway™ privacy request form available on the website.</P>
-              <P>Identity verification may be required before processing a request.</P>
-              <P style={{ marginBottom: 0 }}>Verified requests will be responded to within applicable legal timeframes.</P>
+              <P>{t.privacyPolicy.s9P2}</P>
+              <P>{t.privacyPolicy.s9P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s9P4}</P>
             </Section>
           </div>
 
           {/* 10. California Privacy Notice */}
           <div ref={sectionRefs[10].ref}>
-            <Section number="10." title="California Privacy Notice" mobile={mobile} visible={sectionRefs[10].visible}>
-              <P>If you are a California resident, you have rights under the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA), including:</P>
+            <Section number="10." title={t.privacyPolicy.s10Title} mobile={mobile} visible={sectionRefs[10].visible}>
+              <P>{t.privacyPolicy.s10P1}</P>
               <Bullet items={[
-                "the right to know what personal information is collected",
-                "the right to request deletion",
-                "the right to request correction",
-                "the right to opt out of the sale or sharing of personal information",
-                "the right to non-discrimination",
+                t.privacyPolicy.s10Li1,
+                t.privacyPolicy.s10Li2,
+                t.privacyPolicy.s10Li3,
+                t.privacyPolicy.s10Li4,
+                t.privacyPolicy.s10Li5,
               ]} />
-              <P>RunPayway™ does not sell personal information and does not share personal information for cross-context behavioral advertising.</P>
-              <P style={{ marginBottom: 0 }}>Requests must be submitted through the RunPayway™ privacy request form available on the website.</P>
+              <P>{t.privacyPolicy.s10P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s10P3}</P>
             </Section>
           </div>
 
           {/* 11. Cookies & Tracking */}
           <div ref={sectionRefs[11].ref}>
-            <Section number="11." title="Cookies & Tracking" mobile={mobile} visible={sectionRefs[11].visible}>
-              <P>RunPayway™ uses cookies and similar technologies for:</P>
+            <Section number="11." title={t.privacyPolicy.s11Title} mobile={mobile} visible={sectionRefs[11].visible}>
+              <P>{t.privacyPolicy.s11P1}</P>
               <Bullet items={[
-                "session authentication",
-                "security",
-                "platform functionality",
-                "performance monitoring",
+                t.privacyPolicy.s11Li1,
+                t.privacyPolicy.s11Li2,
+                t.privacyPolicy.s11Li3,
+                t.privacyPolicy.s11Li4,
               ]} />
-              <P>RunPayway™ primarily uses essential cookies required for authentication and system operation. Performance cookies may be used to monitor system reliability.</P>
-              <P>RunPayway™ does not use cookies for behavioral advertising.</P>
-              <P>Users may control cookies through their browser settings. Disabling cookies may affect certain site functionality.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not respond to browser &quot;Do Not Track&quot; signals.</P>
+              <P>{t.privacyPolicy.s11P2}</P>
+              <P>{t.privacyPolicy.s11P3}</P>
+              <P>{t.privacyPolicy.s11P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s11P5}</P>
             </Section>
           </div>
 
           {/* 12. Children's Privacy */}
           <div ref={sectionRefs[12].ref}>
-            <Section number="12." title="Children's Privacy" mobile={mobile} visible={sectionRefs[12].visible}>
-              <P>RunPayway™ is not intended for individuals under 18 years of age.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not knowingly collect personal information from minors.</P>
+            <Section number="12." title={t.privacyPolicy.s12Title} mobile={mobile} visible={sectionRefs[12].visible}>
+              <P>{t.privacyPolicy.s12P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s12P2}</P>
             </Section>
           </div>
 
           {/* 13. International Users */}
           <div ref={sectionRefs[13].ref}>
-            <Section number="13." title="International Users" mobile={mobile} visible={sectionRefs[13].visible}>
-              <P>RunPayway™ operates from the United States.</P>
-              <P style={{ marginBottom: 0 }}>Information may be processed and stored in the United States and may be subject to U.S. law.</P>
+            <Section number="13." title={t.privacyPolicy.s13Title} mobile={mobile} visible={sectionRefs[13].visible}>
+              <P>{t.privacyPolicy.s13P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s13P2}</P>
             </Section>
           </div>
 
           {/* 14. Changes to This Policy */}
           <div ref={sectionRefs[14].ref}>
-            <Section number="14." title="Changes to This Policy" mobile={mobile} visible={sectionRefs[14].visible}>
-              <P>This Privacy Policy may be updated periodically.</P>
-              <P style={{ marginBottom: 0 }}>Material changes will be published with an updated effective date.</P>
+            <Section number="14." title={t.privacyPolicy.s14Title} mobile={mobile} visible={sectionRefs[14].visible}>
+              <P>{t.privacyPolicy.s14P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s14P2}</P>
             </Section>
           </div>
         </div>
@@ -558,13 +554,13 @@ export default function PrivacyPolicyPage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.privacyPolicy.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.privacyPolicy.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.privacyPolicy.closingPowered}
           </p>
         </div>
       </section>

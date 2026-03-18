@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -143,6 +144,7 @@ function Bullet({ items }: { items: string[] }) {
 
 export default function SecurityPracticesPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
 
   const s1 = useInView();
@@ -210,7 +212,7 @@ export default function SecurityPracticesPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Governance
+              {t.securityPractices.heroTag}
             </span>
           </div>
 
@@ -224,17 +226,17 @@ export default function SecurityPracticesPage() {
               marginBottom: 20,
             }}
           >
-            Security Practices
+            {t.securityPractices.heroTitle}
           </h1>
 
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
-            RunPayway™ · Income Stability Score™
+            {t.securityPractices.heroSubtitle}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)", marginBottom: 8 }}>
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.securityPractices.heroModel}
           </p>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Effective Date: April 1, 2026
+            {t.securityPractices.heroEffectiveDate}
           </p>
         </div>
       </section>
@@ -256,96 +258,96 @@ export default function SecurityPracticesPage() {
         >
           {/* 1 */}
           <div ref={s1.ref}>
-            <Section number="1." title="Purpose" mobile={mobile} visible={s1.visible}>
-              <P>This Security Practices statement describes the general safeguards implemented to protect the integrity of the RunPayway™ platform and Income Stability Score™ records.</P>
-              <P>This document provides a high-level overview of security practices and does not disclose detailed technical configurations.</P>
-              <P style={{ marginBottom: 0 }}>This statement is informational in nature and does not constitute a guarantee of security.</P>
+            <Section number="1." title={t.securityPractices.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.securityPractices.s1P1}</P>
+              <P>{t.securityPractices.s1P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s1P3}</P>
             </Section>
           </div>
 
           {/* 2 */}
           <div ref={s2.ref}>
-            <Section number="2." title="Platform Architecture Controls" mobile={mobile} visible={s2.visible}>
-              <P>RunPayway™ incorporates technical and administrative safeguards designed to support:</P>
+            <Section number="2." title={t.securityPractices.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.securityPractices.s2P1}</P>
               <Bullet items={[
-                "deterministic scoring integrity",
-                "snapshot immutability",
-                "controlled access to platform records",
-                "authenticated registry verification",
+                t.securityPractices.s2Li1,
+                t.securityPractices.s2Li2,
+                t.securityPractices.s2Li3,
+                t.securityPractices.s2Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>Security controls are integrated into system design consistent with operational and platform requirements.</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s2P2}</P>
             </Section>
           </div>
 
           {/* 3 */}
           <div ref={s3.ref}>
-            <Section number="3." title="Data Protection Measures" mobile={mobile} visible={s3.visible}>
-              <P>Security measures may include, but are not limited to:</P>
+            <Section number="3." title={t.securityPractices.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.securityPractices.s3P1}</P>
               <Bullet items={[
-                "encrypted transmission of data using HTTPS",
-                "role-based administrative access controls",
-                "authentication safeguards for registry and snapshot retrieval",
-                "structured logging of submission and verification events",
-                "separation of scoring logic from client-facing interfaces",
+                t.securityPractices.s3Li1,
+                t.securityPractices.s3Li2,
+                t.securityPractices.s3Li3,
+                t.securityPractices.s3Li4,
+                t.securityPractices.s3Li5,
               ]} />
-              <P>Sensitive payment data is processed through Stripe, an external payment processor.</P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ does not receive or store full payment card numbers.</P>
+              <P>{t.securityPractices.s3P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s3P3}</P>
             </Section>
           </div>
 
           {/* 4 */}
           <div ref={s4.ref}>
-            <Section number="4." title="Access Controls" mobile={mobile} visible={s4.visible}>
-              <P>Access to administrative systems is restricted to authorized personnel.</P>
-              <P>Permissions are role-based and subject to periodic internal review.</P>
-              <P style={{ marginBottom: 0 }}>Authentication safeguards are implemented to protect registry endpoints, account access, and scoring infrastructure.</P>
+            <Section number="4." title={t.securityPractices.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.securityPractices.s4P1}</P>
+              <P>{t.securityPractices.s4P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s4P3}</P>
             </Section>
           </div>
 
           {/* 5 */}
           <div ref={s5.ref}>
-            <Section number="5." title="Logging & Monitoring" mobile={mobile} visible={s5.visible}>
-              <P>RunPayway™ maintains structured logging designed to support:</P>
+            <Section number="5." title={t.securityPractices.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.securityPractices.s5P1}</P>
               <Bullet items={[
-                "system integrity monitoring",
-                "abuse detection",
-                "audit review",
-                "dispute investigation",
+                t.securityPractices.s5Li1,
+                t.securityPractices.s5Li2,
+                t.securityPractices.s5Li3,
+                t.securityPractices.s5Li4,
               ]} />
-              <P style={{ marginBottom: 0 }}>Logs are retained only as necessary to maintain operational integrity and audit traceability.</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s5P2}</P>
             </Section>
           </div>
 
           {/* 6 */}
           <div ref={s6.ref}>
-            <Section number="6." title="Third-Party Service Providers" mobile={mobile} visible={s6.visible}>
-              <P>RunPayway™ utilizes third-party providers for infrastructure hosting and payment processing.</P>
-              <P>These providers maintain their own security practices and compliance standards.</P>
-              <P>RunPayway™ does not represent or warrant the security practices of third-party providers.</P>
-              <P style={{ marginBottom: 0 }}>Users are subject to the terms and privacy policies of those providers where applicable.</P>
+            <Section number="6." title={t.securityPractices.s6Title} mobile={mobile} visible={s6.visible}>
+              <P>{t.securityPractices.s6P1}</P>
+              <P>{t.securityPractices.s6P2}</P>
+              <P>{t.securityPractices.s6P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s6P4}</P>
             </Section>
           </div>
 
           {/* 7 */}
           <div ref={s7.ref}>
-            <Section number="7." title="Incident Evaluation & Response" mobile={mobile} visible={s7.visible}>
-              <P>Security incidents are evaluated based on potential risk to platform integrity or personal information.</P>
-              <P>If a confirmed incident affects personal information, RunPayway™ will take appropriate steps consistent with applicable law.</P>
-              <P>Response actions may include:</P>
+            <Section number="7." title={t.securityPractices.s7Title} mobile={mobile} visible={s7.visible}>
+              <P>{t.securityPractices.s7P1}</P>
+              <P>{t.securityPractices.s7P2}</P>
+              <P>{t.securityPractices.s7P3}</P>
               <Bullet items={[
-                "investigation",
-                "containment",
-                "remediation",
-                "notification where legally required",
+                t.securityPractices.s7Li1,
+                t.securityPractices.s7Li2,
+                t.securityPractices.s7Li3,
+                t.securityPractices.s7Li4,
               ]} />
             </Section>
           </div>
 
           {/* 8 */}
           <div ref={s8.ref}>
-            <Section number="8." title="Responsible Disclosure" mobile={mobile} visible={s8.visible}>
+            <Section number="8." title={t.securityPractices.s8Title} mobile={mobile} visible={s8.visible}>
               <P>
-                Individuals who believe they have identified a potential security vulnerability may submit a report through the{" "}
+                {t.securityPractices.s8Pre}
                 <Link
                   href="/contact"
                   style={{
@@ -358,28 +360,28 @@ export default function SecurityPracticesPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  RunPayway™ contact form
-                </Link>{" "}
-                available on the website.
+                  {t.securityPractices.s8LinkText}
+                </Link>
+                {t.securityPractices.s8Post}
               </P>
-              <P style={{ marginBottom: 0 }}>RunPayway™ will review responsible disclosures and evaluate them in accordance with internal security procedures.</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s8P2}</P>
             </Section>
           </div>
 
           {/* 9 */}
           <div ref={s9.ref}>
-            <Section number="9." title="Limitations" mobile={mobile} visible={s9.visible}>
-              <P>No system can be guaranteed to be completely secure.</P>
-              <P>RunPayway™ does not warrant that unauthorized access will never occur.</P>
-              <P style={{ marginBottom: 0 }}>Users are responsible for maintaining the confidentiality of their account credentials.</P>
+            <Section number="9." title={t.securityPractices.s9Title} mobile={mobile} visible={s9.visible}>
+              <P>{t.securityPractices.s9P1}</P>
+              <P>{t.securityPractices.s9P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s9P3}</P>
             </Section>
           </div>
 
           {/* 10 */}
           <div ref={s10.ref}>
-            <Section number="10." title="Continuous Review" mobile={mobile} visible={s10.visible}>
-              <P>Security practices are periodically reviewed and may be updated as part of ongoing operational improvements.</P>
-              <P style={{ marginBottom: 0 }}>Updates to security practices will not retroactively alter previously issued Income Stability Score™ snapshot records.</P>
+            <Section number="10." title={t.securityPractices.s10Title} mobile={mobile} visible={s10.visible}>
+              <P>{t.securityPractices.s10P1}</P>
+              <P style={{ marginBottom: 0 }}>{t.securityPractices.s10P2}</P>
             </Section>
           </div>
         </div>
@@ -438,13 +440,13 @@ export default function SecurityPracticesPage() {
           }}
         >
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
+            {t.securityPractices.closingBrand}
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.securityPractices.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.securityPractices.closingPowered}
           </p>
         </div>
       </section>
