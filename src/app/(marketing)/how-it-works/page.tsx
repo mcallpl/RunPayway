@@ -641,7 +641,95 @@ export default function HowItWorksPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Section 4 — Score Verification                              */}
+      {/*  Section 4 — What You Receive                                */}
+      {/* ============================================================ */}
+      {(() => {
+        const deliverAnim = useInView();
+        return (
+          <section
+            style={{
+              paddingTop: mobile ? 64 : 96,
+              paddingBottom: mobile ? 64 : 96,
+              background: "#FFFFFF",
+            }}
+          >
+            <div
+              ref={deliverAnim.ref}
+              className="mx-auto"
+              style={{
+                maxWidth: 1060,
+                paddingLeft: mobile ? 24 : 40,
+                paddingRight: mobile ? 24 : 40,
+              }}
+            >
+              {/* Section header */}
+              <div
+                style={{
+                  textAlign: "center",
+                  marginBottom: mobile ? 48 : 64,
+                  opacity: deliverAnim.visible ? 1 : 0,
+                  transform: deliverAnim.visible ? "translateY(0)" : "translateY(24px)",
+                  transition: "opacity 700ms ease, transform 700ms ease",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+                  {t.howItWorks.deliverTag}
+                </div>
+                <h2 style={{ fontSize: mobile ? 28 : 40, fontWeight: 700, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 16 }}>
+                  {t.howItWorks.deliverTitle}
+                </h2>
+                <p style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.7, maxWidth: 600, margin: "0 auto" }}>
+                  {t.howItWorks.deliverSubtitle}
+                </p>
+              </div>
+
+              {/* Feature grid */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
+                  gap: mobile ? 20 : 24,
+                }}
+              >
+                {[
+                  { title: t.howItWorks.deliverItem1Title, desc: t.howItWorks.deliverItem1Desc, color: B.teal },
+                  { title: t.howItWorks.deliverItem2Title, desc: t.howItWorks.deliverItem2Desc, color: "#DC2626" },
+                  { title: t.howItWorks.deliverItem3Title, desc: t.howItWorks.deliverItem3Desc, color: B.purple },
+                  { title: t.howItWorks.deliverItem4Title, desc: t.howItWorks.deliverItem4Desc, color: B.navy },
+                  { title: t.howItWorks.deliverItem5Title, desc: t.howItWorks.deliverItem5Desc, color: B.teal },
+                  { title: t.howItWorks.deliverItem6Title, desc: t.howItWorks.deliverItem6Desc, color: B.purple },
+                ].map((item, i) => (
+                  <div
+                    key={item.title}
+                    style={{
+                      background: "#FFFFFF",
+                      borderRadius: 16,
+                      border: "1px solid rgba(14,26,43,0.06)",
+                      padding: mobile ? "24px 20px" : "28px 24px",
+                      boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
+                      opacity: deliverAnim.visible ? 1 : 0,
+                      transform: deliverAnim.visible ? "translateY(0)" : "translateY(20px)",
+                      transition: "opacity 600ms ease, transform 600ms ease",
+                      transitionDelay: `${i * 80 + 100}ms`,
+                    }}
+                  >
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: item.color, marginBottom: 16 }} />
+                    <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 10, lineHeight: 1.3 }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ fontSize: mobile ? 14 : 15, color: B.muted, lineHeight: 1.75, margin: 0 }}>
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ============================================================ */}
+      {/*  Section 5 — Score Verification                              */}
       {/* ============================================================ */}
       <section
         style={{
