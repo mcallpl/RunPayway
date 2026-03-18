@@ -248,6 +248,31 @@ export const es: Translations = {
     riskVariabilityImpact: "Es más difícil planificar o cumplir con obligaciones financieras regulares.",
   },
 
+  // ── Escala de Clasificación (página principal) ──
+  classScale: {
+    frameworkTag: "Marco de Puntuación Oficial · Modelo RP-1.0",
+    title: "Escala de Clasificación de Estabilidad de Ingresos",
+    subtitle: "Cada estructura de ingresos se puntúa de 0 a 100 y se clasifica en uno de cuatro niveles de estabilidad.",
+    subtitle2: "Su puntuación revela qué tan resiliente es su estructura de ingresos — y dónde fortalecerla.",
+    limitedLabel: "Limitada",
+    limitedSummary: "Frágil",
+    limitedDesc: "Altamente dependiente del trabajo activo. Se detiene cuando el trabajo se detiene. Sin soporte estructural.",
+    developingLabel: "En Desarrollo",
+    developingSummary: "Parcial",
+    developingDesc: "Existen algunos elementos recurrentes pero los ingresos aún dependen principalmente del esfuerzo activo. Soporte estructural temprano.",
+    establishedLabel: "Establecida",
+    establishedSummary: "Resiliente",
+    establishedDesc: "Fuentes diversificadas con visibilidad futura significativa. Puede absorber interrupciones sin pérdida de ingresos.",
+    highLabel: "Alta",
+    highSummary: "Durable",
+    highDesc: "Los ingresos continúan con mínimo esfuerzo activo. Múltiples fuentes de ingresos persistentes proporcionan durabilidad estructural.",
+    stabilityWord: "Estabilidad",
+    incomeStructure: "estructura de ingresos",
+    sampleScore: "Puntuación de Ejemplo",
+    modelNote: "Las clasificaciones son fijas bajo el <strong>Modelo RP-1.0</strong> y reflejan la estructura de ingresos al momento de la evaluación.",
+    bandNote: "Los umbrales de las bandas son determinísticos y no cambian entre evaluaciones.",
+  },
+
   // ── Cómo Funciona ──
   howItWorks: {
     heroLabel: "Cómo Funciona",

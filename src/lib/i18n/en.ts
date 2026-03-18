@@ -248,6 +248,31 @@ export const en: Translations = {
     riskVariabilityImpact: "It is harder to plan or meet regular financial obligations.",
   },
 
+  // ── Classification Scale (homepage) ──
+  classScale: {
+    frameworkTag: "Official Scoring Framework · Model RP-1.0",
+    title: "Income Stability Classification Scale",
+    subtitle: "Every income structure is scored 0\u2013100 and classified into one of four stability tiers.",
+    subtitle2: "Your score reveals how resilient your income structure is — and where to strengthen it.",
+    limitedLabel: "Limited",
+    limitedSummary: "Fragile",
+    limitedDesc: "Heavily dependent on active work. Stops when work stops. No structural support.",
+    developingLabel: "Developing",
+    developingSummary: "Partial",
+    developingDesc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.",
+    establishedLabel: "Established",
+    establishedSummary: "Resilient",
+    establishedDesc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.",
+    highLabel: "High",
+    highSummary: "Durable",
+    highDesc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.",
+    stabilityWord: "Stability",
+    incomeStructure: "income structure",
+    sampleScore: "Sample Score",
+    modelNote: "Classifications are fixed under <strong>Model RP-1.0</strong> and reflect income structure at the time of assessment.",
+    bandNote: "Band thresholds are deterministic and do not change between assessments.",
+  },
+
   // ── How It Works page ──
   howItWorks: {
     heroLabel: "How It Works",

@@ -248,6 +248,31 @@ export interface Translations {
     riskVariabilityImpact: string;
   };
 
+  // ── Classification Scale (homepage) ──
+  classScale: {
+    frameworkTag: string;
+    title: string;
+    subtitle: string;
+    subtitle2: string;
+    limitedLabel: string;
+    limitedSummary: string;
+    limitedDesc: string;
+    developingLabel: string;
+    developingSummary: string;
+    developingDesc: string;
+    establishedLabel: string;
+    establishedSummary: string;
+    establishedDesc: string;
+    highLabel: string;
+    highSummary: string;
+    highDesc: string;
+    stabilityWord: string;
+    incomeStructure: string;
+    sampleScore: string;
+    modelNote: string;
+    bandNote: string;
+  };
+
   // ── How It Works page ──
   howItWorks: {
     heroLabel: string;

@@ -1994,6 +1994,7 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTierIdx, setActiveTierIdx] = useState(2); /* default: Established Stability */
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   return (
     <div className="overflow-x-hidden">
@@ -2025,13 +2026,13 @@ export default function LandingPage() {
           {/* Header */}
           <div className="text-center" style={{ marginBottom: mobile ? S.subtextMb : S.subtextMb + 8 }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
-              Official Scoring Framework · Model RP-1.0
+              {t.classScale.frameworkTag}
             </div>
             <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
-              Income Stability Classification Scale
+              {t.classScale.title}
             </h2>
             <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
-              Every income structure is scored 0&#8211;100 and classified into one of four stability tiers.
+              {t.classScale.subtitle}
             </p>
             <p
               className="mx-auto"
@@ -2044,17 +2045,17 @@ export default function LandingPage() {
                 marginTop: 14,
               }}
             >
-              Your score reveals how resilient your income structure is — and where to strengthen it.
+              {t.classScale.subtitle2}
             </p>
           </div>
 
           {/* Spectrum bar with tick marks */}
           {(() => {
             const tiers = [
-              { range: "0\u201339", label: "Limited", summary: "Fragile", desc: "Heavily dependent on active work. Stops when work stops. No structural support.", color: "#DC2626", sliderPos: 20, sampleScore: 20 },
-              { range: "40\u201359", label: "Developing", summary: "Partial", desc: "Some recurring elements exist but income still depends primarily on active effort. Early structural support.", color: "#F59E0B", sliderPos: 50, sampleScore: 50 },
-              { range: "60\u201379", label: "Established", summary: "Resilient", desc: "Diversified sources with meaningful forward visibility. Can absorb disruption without income loss.", color: B.teal, sliderPos: 70, sampleScore: 78 },
-              { range: "80\u2013100", label: "High", summary: "Durable", desc: "Income continues with minimal active effort. Multiple persistent revenue sources provide structural durability.", color: B.navy, sliderPos: 90, sampleScore: 92 },
+              { range: "0\u201339", label: t.classScale.limitedLabel, summary: t.classScale.limitedSummary, desc: t.classScale.limitedDesc, color: "#DC2626", sliderPos: 20, sampleScore: 20 },
+              { range: "40\u201359", label: t.classScale.developingLabel, summary: t.classScale.developingSummary, desc: t.classScale.developingDesc, color: "#F59E0B", sliderPos: 50, sampleScore: 50 },
+              { range: "60\u201379", label: t.classScale.establishedLabel, summary: t.classScale.establishedSummary, desc: t.classScale.establishedDesc, color: B.teal, sliderPos: 70, sampleScore: 78 },
+              { range: "80\u2013100", label: t.classScale.highLabel, summary: t.classScale.highSummary, desc: t.classScale.highDesc, color: B.navy, sliderPos: 90, sampleScore: 92 },
             ];
             const active = tiers[activeTierIdx];
             return (
@@ -2130,7 +2131,7 @@ export default function LandingPage() {
                         >
                           <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: tier.color }} />
                           <span className="text-[9px] font-semibold uppercase tracking-[0.1em]" style={{ color: tier.color }}>
-                            Sample Score: {tier.sampleScore}
+                            {t.classScale.sampleScore}: {tier.sampleScore}
                           </span>
                         </div>
 
@@ -2142,12 +2143,12 @@ export default function LandingPage() {
 
                         {/* Tier label */}
                         <div className="text-[15px] font-semibold mb-1" style={{ color: tier.color }}>
-                          {tier.label} Stability
+                          {tier.label} {t.classScale.stabilityWord}
                         </div>
 
                         {/* One-word summary */}
                         <div className="text-[10px] font-medium uppercase tracking-wider mb-3" style={{ color: B.light }}>
-                          {tier.summary} income structure
+                          {tier.summary} {t.classScale.incomeStructure}
                         </div>
 
                         {/* Description */}
@@ -2164,11 +2165,9 @@ export default function LandingPage() {
 
           {/* Model reference */}
           <div className="text-center" style={{ marginTop: S.subtextMb }}>
-            <p className="text-[12px] font-medium" style={{ color: B.muted }}>
-              Classifications are fixed under <strong style={{ color: B.navy }}>Model RP-1.0</strong> and reflect income structure at the time of assessment.
-            </p>
+            <p className="text-[12px] font-medium" style={{ color: B.muted }} dangerouslySetInnerHTML={{ __html: t.classScale.modelNote }} />
             <p className="text-[11px] mt-2" style={{ color: B.light }}>
-              Band thresholds are deterministic and do not change between assessments.
+              {t.classScale.bandNote}
             </p>
           </div>
         </div>
