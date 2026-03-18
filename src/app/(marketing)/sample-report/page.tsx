@@ -609,15 +609,47 @@ export default function SampleReportPage() {
 
             <Divider />
 
-            {/* Structural Indicators */}
+            {/* Structural Radar + Indicators */}
             <Label>{t.sampleReport.structuralIndicators}</Label>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
-              {SAMPLE.indicators.map(([l, v]) => (
-                <div key={l} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", borderRadius: 8, backgroundColor: B.sand }}>
-                  <span style={{ fontSize: 10, color: B.muted }}>{l}</span>
-                  <span style={{ fontSize: 10, color: B.navy, fontWeight: 600 }}>{v}</span>
-                </div>
-              ))}
+            <div style={{ display: "flex", gap: 20, alignItems: mobile ? undefined : "flex-start", flexDirection: mobile ? "column" : "row" }}>
+              {/* Radar chart */}
+              <div style={{ flexShrink: 0, display: "flex", justifyContent: "center" }}>
+                <svg width={200} height={190} viewBox="-10 -5 220 200" style={{ display: "block" }}>
+                  {/* Grid rings */}
+                  {[0.25, 0.5, 0.75, 1.0].map((pct) => {
+                    const pts = [0,1,2,3,4,5].map((i) => {
+                      const a = -Math.PI / 2 + i * (Math.PI / 3);
+                      return `${100 + 65 * pct * Math.cos(a)},${95 + 65 * pct * Math.sin(a)}`;
+                    });
+                    return <polygon key={pct} points={pts.join(" ")} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={0.75} />;
+                  })}
+                  {/* Data polygon — sample values */}
+                  <polygon points="100,37 148,58 145,135 100,150 55,115 48,60" fill="rgba(31,109,122,0.12)" stroke={B.teal} strokeWidth={1.5} />
+                  {[{x:100,y:37},{x:148,y:58},{x:145,y:135},{x:100,y:150},{x:55,y:115},{x:48,y:60}].map((p,i) => (
+                    <circle key={i} cx={p.x} cy={p.y} r={2.5} fill={B.teal} />
+                  ))}
+                  {/* Labels */}
+                  {[
+                    {x:100,y:12,t:"Persistence"},
+                    {x:175,y:55,t:"Diversity"},
+                    {x:173,y:140,t:"Visibility"},
+                    {x:100,y:180,t:"Consistency"},
+                    {x:25,y:140,t:"Independence"},
+                    {x:22,y:55,t:"Spread"},
+                  ].map((l,i) => (
+                    <text key={i} x={l.x} y={l.y} textAnchor="middle" style={{fontSize:8,fill:B.muted,fontWeight:500}}>{l.t}</text>
+                  ))}
+                </svg>
+              </div>
+              {/* Indicators grid */}
+              <div style={{ flex: 1, display: "grid", gridTemplateColumns: "1fr", gap: 8 }}>
+                {SAMPLE.indicators.map(([l, v]) => (
+                  <div key={l} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", borderRadius: 8, backgroundColor: B.sand }}>
+                    <span style={{ fontSize: 10, color: B.muted }}>{l}</span>
+                    <span style={{ fontSize: 10, color: B.navy, fontWeight: 600 }}>{v}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Fade overlay — remaining content locked */}
