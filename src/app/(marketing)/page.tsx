@@ -121,50 +121,7 @@ const S = {
   lsLabel:      "0.12em",
 };
 
-const INDUSTRY_EXAMPLES = [
-  {
-    industry: "Professional Services: Moving From Project Work to Recurring Revenue",
-    stable: [
-      "retainer-based client relationships",
-      "recurring service agreements",
-      "forward-booked revenue commitments",
-      "productized service offerings",
-    ],
-    unstable: [
-      "project-to-project income cycles",
-      "no recurring revenue structure",
-      "income stops when active work stops",
-    ],
-  },
-  {
-    industry: "Private Practice: Increasing Revenue Continuity",
-    stable: [
-      "subscription or membership models",
-      "ongoing patient or client panels",
-      "predictable appointment schedules",
-      "ancillary revenue streams",
-    ],
-    unstable: [
-      "fee-per-visit only billing",
-      "seasonal patient volume swings",
-      "single-location dependence",
-    ],
-  },
-  {
-    industry: "Agency Owners: Reducing Client Concentration Risk",
-    stable: [
-      "diversified client base",
-      "monthly managed service contracts",
-      "multi-year engagements",
-      "recurring campaign or maintenance revenue",
-    ],
-    unstable: [
-      "majority revenue from one client",
-      "project-based billing with no renewals",
-      "high churn rate on accounts",
-    ],
-  },
-];
+// INDUSTRY_EXAMPLES moved inside LandingPage to access translations
 
 
 /* ------------------------------------------------------------------ */
@@ -1996,6 +1953,24 @@ export default function LandingPage() {
   const mobile = useMobile();
   const { t } = useLanguage();
 
+  const INDUSTRY_EXAMPLES = [
+    {
+      industry: t.industryPatterns.ind1Title,
+      stable: [t.industryPatterns.ind1Stable1, t.industryPatterns.ind1Stable2, t.industryPatterns.ind1Stable3, t.industryPatterns.ind1Stable4],
+      unstable: [t.industryPatterns.ind1Unstable1, t.industryPatterns.ind1Unstable2, t.industryPatterns.ind1Unstable3],
+    },
+    {
+      industry: t.industryPatterns.ind2Title,
+      stable: [t.industryPatterns.ind2Stable1, t.industryPatterns.ind2Stable2, t.industryPatterns.ind2Stable3, t.industryPatterns.ind2Stable4],
+      unstable: [t.industryPatterns.ind2Unstable1, t.industryPatterns.ind2Unstable2, t.industryPatterns.ind2Unstable3],
+    },
+    {
+      industry: t.industryPatterns.ind3Title,
+      stable: [t.industryPatterns.ind3Stable1, t.industryPatterns.ind3Stable2, t.industryPatterns.ind3Stable3, t.industryPatterns.ind3Stable4],
+      unstable: [t.industryPatterns.ind3Unstable1, t.industryPatterns.ind3Unstable2, t.industryPatterns.ind3Unstable3],
+    },
+  ];
+
   return (
     <div className="overflow-x-hidden">
 
@@ -2183,13 +2158,13 @@ export default function LandingPage() {
       <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", textAlign: "center", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
-          Stability Patterns by Industry
+          {t.industryPatterns.title}
         </h2>
         <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 12, maxWidth: 640 }}>
-          The Income Stability Score™ applies to any industry or profession. The structural factors that drive stability vary by sector — below are three examples of what separates high-stability systems from fragile ones.
+          {t.industryPatterns.subtitle}
         </p>
         <p className="text-[14px] mx-auto" style={{ color: B.light, marginBottom: 40, maxWidth: 640 }}>
-          These are illustrative examples. The model evaluates income structure across all industries.
+          {t.industryPatterns.note}
         </p>
 
         <div className="flex flex-col gap-3 text-left" style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -2240,7 +2215,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                       <div>
                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.teal, marginBottom: 12 }}>
-                          More Stable Income Systems Often Include
+                          {t.industryPatterns.stableHeading}
                         </div>
                         <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                           {ex.stable.map((item) => (
@@ -2253,7 +2228,7 @@ export default function LandingPage() {
                       </div>
                       <div>
                         <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light, marginBottom: 12 }}>
-                          Common Sources of Instability
+                          {t.industryPatterns.unstableHeading}
                         </div>
                         <ul style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                           {ex.unstable.map((item) => (

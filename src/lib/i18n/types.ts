@@ -248,6 +248,39 @@ export interface Translations {
     riskVariabilityImpact: string;
   };
 
+  // ── Industry Patterns (homepage) ──
+  industryPatterns: {
+    title: string;
+    subtitle: string;
+    note: string;
+    stableHeading: string;
+    unstableHeading: string;
+    ind1Title: string;
+    ind1Stable1: string;
+    ind1Stable2: string;
+    ind1Stable3: string;
+    ind1Stable4: string;
+    ind1Unstable1: string;
+    ind1Unstable2: string;
+    ind1Unstable3: string;
+    ind2Title: string;
+    ind2Stable1: string;
+    ind2Stable2: string;
+    ind2Stable3: string;
+    ind2Stable4: string;
+    ind2Unstable1: string;
+    ind2Unstable2: string;
+    ind2Unstable3: string;
+    ind3Title: string;
+    ind3Stable1: string;
+    ind3Stable2: string;
+    ind3Stable3: string;
+    ind3Stable4: string;
+    ind3Unstable1: string;
+    ind3Unstable2: string;
+    ind3Unstable3: string;
+  };
+
   // ── Classification Scale (homepage) ──
   classScale: {
     frameworkTag: string;
