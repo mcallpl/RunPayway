@@ -2398,11 +2398,22 @@ export default function LandingPage() {
       </section>
 
 
-      {/* ============ FAQ ============ */}
-      <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
-
       {/* ============ FINAL CTA — Premium Assessment Entry ============ */}
       <FinalCta />
+
+      {/* ============ FAQ — catches remaining objections ============ */}
+      <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+
+      {/* ============ SECONDARY CTA — for post-FAQ visitors ============ */}
+      <section style={{ textAlign: "center", paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, background: B.sand }}>
+        <Link
+          href="/pricing"
+          className="text-[14px] font-semibold"
+          style={{ color: B.purple, textDecoration: "underline", textUnderlineOffset: 3 }}
+        >
+          {t.nav.getMyScoreFull} →
+        </Link>
+      </section>
 
       {/* ============ MODEL GOVERNANCE ============ */}
       <ModelGovernance />
