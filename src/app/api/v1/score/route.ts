@@ -142,6 +142,11 @@ export async function POST(request: NextRequest) {
       sector_mechanisms_payload: record.sector_mechanisms_payload,
       structural_improvement_path_text:
         record.structural_improvement_path_text,
+      // Sector benchmarks
+      sector_avg_score: record.sector_avg_score,
+      sector_top_20_threshold: record.sector_top_20_threshold,
+      constraint_guidance_payload: record.constraint_guidance_payload,
+      action_plan_payload: record.action_plan_payload,
       // Peer percentile
       peer_stability_percentile: record.peer_stability_percentile,
       peer_stability_percentile_label: record.peer_stability_percentile_label,

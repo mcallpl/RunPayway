@@ -1,9 +1,59 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAssessmentServer } from "@/lib/monitoring";
 import { useLanguage } from "@/lib/i18n";
+
+// ============================================================
+// ERROR BOUNDARY — catches rendering crashes gracefully
+// ============================================================
+class ReportErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean; error: string }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: "" };
+  }
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error: error.message || "Unknown error" };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: 40, textAlign: "center" }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, color: "#0E1A2B", marginBottom: 12 }}>
+            Something went wrong loading your report
+          </h2>
+          <p style={{ fontSize: 14, color: "#6B7280", marginBottom: 24, maxWidth: 400 }}>
+            Your assessment was saved. Please try refreshing the page. If the problem persists, contact support@runpayway.com.
+          </p>
+          <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 24 }}>{this.state.error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#fff", backgroundColor: "#0E1A2B", border: "none", borderRadius: 6, cursor: "pointer" }}
+          >
+            Refresh Page
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ============================================================
+// SAFE JSON PARSE — prevents crashes from missing/corrupt payloads
+// ============================================================
+function safeJsonParse<T>(json: string | undefined | null, fallback: T): T {
+  if (!json) return fallback;
+  try {
+    return JSON.parse(json);
+  } catch {
+    return fallback;
+  }
+}
 
 interface AssessmentRecord {
   record_id: string;
@@ -457,8 +507,16 @@ function ScoreTrend({ currentScore, records }: { currentScore: number; records: 
 // ============================================================
 
 async function downloadPDF(record: AssessmentRecord) {
-  const html2canvas = (await import("html2canvas")).default;
-  const { jsPDF } = await import("jspdf");
+  let html2canvas: typeof import("html2canvas").default;
+  let jsPDF: typeof import("jspdf").jsPDF;
+
+  try {
+    html2canvas = (await import("html2canvas")).default;
+    jsPDF = (await import("jspdf")).jsPDF;
+  } catch {
+    alert("PDF generation libraries failed to load. Please check your connection and try again.");
+    return;
+  }
 
   const pages = document.querySelectorAll(".report-page");
   if (!pages.length) return;
@@ -595,12 +653,26 @@ export default function ReviewPage() {
     window.scrollTo(0, 0);
     const stored = sessionStorage.getItem("rp_record");
     if (!stored) { router.push("/diagnostic-portal"); return; }
-    const parsed: AssessmentRecord = JSON.parse(stored);
+
+    let parsed: AssessmentRecord;
+    try {
+      parsed = JSON.parse(stored);
+    } catch {
+      router.push("/diagnostic-portal");
+      return;
+    }
+
+    // Validate critical fields exist
+    if (!parsed || !parsed.record_id || typeof parsed.final_score !== "number") {
+      router.push("/diagnostic-portal");
+      return;
+    }
+
     setRecord(parsed);
 
     // Persist record for Verify a Score lookup
     try {
-      const records = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<Record<string, unknown>>;
+      const records = safeJsonParse<Array<Record<string, unknown>>>(localStorage.getItem("rp_records"), []);
       if (!records.some((r) => r.record_id === parsed.record_id)) {
         records.push({
           record_id: parsed.record_id,
@@ -623,7 +695,7 @@ export default function ReviewPage() {
         if (purchaseSession) {
           const ps = JSON.parse(purchaseSession);
           if (ps.plan_key === "annual_monitoring" && ps.monitoring_access_code) {
-            useAssessmentServer(ps.monitoring_access_code, parsed.record_id);
+            void useAssessmentServer(ps.monitoring_access_code, parsed.record_id);
           }
         }
       } catch { /* ignore */ }
@@ -632,44 +704,45 @@ export default function ReviewPage() {
     // Auto-send report via email (once per load)
     if (!emailSent.current) {
       emailSent.current = true;
-      // Get email from Stripe checkout session (primary) or profile (fallback)
-      const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
-      const profileRaw = sessionStorage.getItem("rp_profile");
-      const email =
-        (purchaseRaw ? JSON.parse(purchaseRaw).customer_email : null) ||
-        (profileRaw ? JSON.parse(profileRaw).recipient_email : null);
-      if (email) {
-        setEmailStatus("sending");
-        fetch("/api/v1/send-report", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            recipientEmail: email,
-            assessmentTitle: parsed.assessment_title,
-            finalScore: parsed.final_score,
-            stabilityBand: parsed.stability_band,
-            recordId: parsed.record_id,
-            modelVersion: parsed.model_version,
-            issuedTimestamp: parsed.issued_timestamp_utc,
-            industrySector: parsed.industry_sector,
-            classification: parsed.classification,
-            primaryConstraintLabel: parsed.primary_constraint_label,
-            bandInterpretationText: parsed.band_interpretation_text,
-            peerPercentileLabel: parsed.peer_stability_percentile_label,
-          }),
-        })
-          .then((res) => res.ok ? setEmailStatus("sent") : setEmailStatus("error"))
-          .catch(() => setEmailStatus("error"));
-      }
+      try {
+        const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
+        const profileRaw = sessionStorage.getItem("rp_profile");
+        const email =
+          (purchaseRaw ? safeJsonParse<Record<string, string>>(purchaseRaw, {}).customer_email : null) ||
+          (profileRaw ? safeJsonParse<Record<string, string>>(profileRaw, {}).recipient_email : null);
+        if (email) {
+          setEmailStatus("sending");
+          fetch("/api/v1/send-report", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              recipientEmail: email,
+              assessmentTitle: parsed.assessment_title,
+              finalScore: parsed.final_score,
+              stabilityBand: parsed.stability_band,
+              recordId: parsed.record_id,
+              modelVersion: parsed.model_version,
+              issuedTimestamp: parsed.issued_timestamp_utc,
+              industrySector: parsed.industry_sector,
+              classification: parsed.classification,
+              primaryConstraintLabel: parsed.primary_constraint_label,
+              bandInterpretationText: parsed.band_interpretation_text,
+              peerPercentileLabel: parsed.peer_stability_percentile_label,
+            }),
+          })
+            .then((res) => res.ok ? setEmailStatus("sent") : setEmailStatus("error"))
+            .catch(() => setEmailStatus("error"));
+        }
+      } catch { /* ignore email errors */ }
     }
   }, [router]);
 
   if (!record) return null;
 
-  const evolutionSteps: string[] = JSON.parse(record.evolution_path_steps_payload);
-  const sectorMechanisms: string[] = JSON.parse(record.sector_mechanisms_payload);
-  const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = JSON.parse(record.advisor_discussion_guide_payload || '{"talking_points":[],"client_questions":[],"red_flags":[],"next_steps":[]}');
-  const productRecs: { category: string; rationale: string; urgency: string }[] = JSON.parse(record.product_recommendations_payload || "[]");
+  const evolutionSteps: string[] = safeJsonParse(record.evolution_path_steps_payload, []);
+  const sectorMechanisms: string[] = safeJsonParse(record.sector_mechanisms_payload, []);
+  const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = safeJsonParse(record.advisor_discussion_guide_payload, { talking_points: [], client_questions: [], red_flags: [], next_steps: [] });
+  const productRecs: { category: string; rationale: string; urgency: string }[] = safeJsonParse(record.product_recommendations_payload, []);
   const RISK_EXPOSURE = getRiskExposure(rt);
   const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
   const subject = subjectName(record);
@@ -677,14 +750,24 @@ export default function ReviewPage() {
   const keyFactors = getKeyFactors(record);
   const rankedFactors = getRankedFactors(record);
   const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
-  const evoIdx = evolutionSteps.length > 1 ? Math.round((record.current_evolution_stage_position / 100) * (evolutionSteps.length - 1)) : 0;
+  const evoIdx = evolutionSteps.length > 1 ? Math.round(((record.current_evolution_stage_position || 0) / 100) * (evolutionSteps.length - 1)) : 0;
 
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const handleDownload = async () => {
     setDownloading(true);
-    try { await downloadPDF(record); } finally { setDownloading(false); }
+    setDownloadError(null);
+    try {
+      await downloadPDF(record);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "PDF generation failed";
+      setDownloadError(msg);
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (
+    <ReportErrorBoundary>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 40, maxWidth: PDF.captureW + 48, margin: "0 auto", padding: "0 0 40px" }}>
       <div className="no-print" style={{ width: "100%", textAlign: "center" }}>
         <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>{rt.title}</h1>
@@ -788,7 +871,8 @@ export default function ReviewPage() {
             {/* Score trend for monitoring plan users */}
             {(() => {
               try {
-                const allRecords = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<{ final_score: number; assessment_date_utc: string }>;
+                if (typeof window === "undefined") return null;
+                const allRecords = safeJsonParse<Array<{ final_score: number; assessment_date_utc: string }>>(localStorage.getItem("rp_records"), []);
                 if (allRecords.length >= 2) return <ScoreTrend currentScore={record.final_score} records={allRecords} />;
               } catch { /* ignore */ }
               return null;
@@ -1193,7 +1277,7 @@ export default function ReviewPage() {
         </div>
         {/* Constraint-specific guidance */}
         {(() => {
-          const guidance: string[] = JSON.parse(record.constraint_guidance_payload || "[]");
+          const guidance: string[] = safeJsonParse(record.constraint_guidance_payload, []);
           if (guidance.length === 0) return null;
           return (
             <div style={{ marginTop: R.paraMb, borderRadius: 6, backgroundColor: "rgba(31,109,122,0.04)", border: `1px solid rgba(31,109,122,0.12)`, padding: "10px 12px" }}>
@@ -1245,7 +1329,7 @@ export default function ReviewPage() {
 
         {/* 90-Day Action Plan */}
         {(() => {
-          const actionPlan: string[] = JSON.parse(record.action_plan_payload || "[]");
+          const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
           if (actionPlan.length === 0) return null;
           return (
             <div style={{ marginTop: R.sectionGap }}>
@@ -1558,7 +1642,7 @@ export default function ReviewPage() {
         <Label>Your Top 3 Actions</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {(() => {
-            const actionPlan: string[] = JSON.parse(record.action_plan_payload || "[]");
+            const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
             return actionPlan.slice(0, 3).map((action, i) => (
               <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <span style={{
@@ -1613,6 +1697,12 @@ export default function ReviewPage() {
           {downloading ? rt.generatingPdf : rt.downloadReport}
         </button>
 
+        {downloadError && (
+          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
+            <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>PDF download failed: {downloadError}. Try refreshing the page.</p>
+          </div>
+        )}
+
         {/* Email delivery status */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {emailStatus === "sending" && (
@@ -1666,5 +1756,6 @@ export default function ReviewPage() {
         }
       `}</style>
     </div>
+    </ReportErrorBoundary>
   );
 }
