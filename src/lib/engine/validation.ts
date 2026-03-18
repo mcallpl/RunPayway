@@ -130,9 +130,10 @@ export function validateProfileContext(profile: unknown): ProfileContext {
     throw new ValidationError(`Invalid industry_sector: ${obj.industry_sector}`);
   }
 
-  // Basic email validation
+  // Email validation — must be user@domain.tld format
   const email = obj.recipient_email as string;
-  if (!email.includes("@") || !email.includes(".")) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!emailRegex.test(email)) {
     throw new ValidationError(`Invalid recipient_email: ${email}`);
   }
 

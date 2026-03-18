@@ -13,8 +13,12 @@
 export function validateApiKey(request: Request): boolean {
   const configuredKey = process.env.RUNPAYWAY_API_KEY;
 
-  // If no API key is configured, skip auth (static deployment / dev mode)
+  // If no API key is configured, allow only in development
   if (!configuredKey) {
+    if (process.env.NODE_ENV === "production") {
+      console.error("[SECURITY] RUNPAYWAY_API_KEY is not set in production — rejecting all API requests");
+      return false;
+    }
     return true;
   }
 
@@ -44,18 +48,11 @@ export function validateApiKey(request: Request): boolean {
  * Constant-time string comparison to prevent timing attacks.
  */
 function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) {
-    // Still do a comparison to avoid leaking length info via timing
-    let result = a.length ^ b.length;
-    for (let i = 0; i < a.length; i++) {
-      result |= a.charCodeAt(i) ^ (b.charCodeAt(i % b.length) || 0);
-    }
-    return result === 0;
-  }
-
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  // Pad to equal length to prevent length-leak via timing
+  const maxLen = Math.max(a.length, b.length);
+  let result = a.length ^ b.length; // non-zero if lengths differ → always false
+  for (let i = 0; i < maxLen; i++) {
+    result |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
   }
   return result === 0;
 }
