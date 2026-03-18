@@ -1085,106 +1085,191 @@ function PreviewYourScoreReport() {
           {t.home.reportSubtitle}
         </p>
 
-        {/* Report preview card — truncated */}
-        <div
-          className="text-left"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-            maxWidth: 820,
-            margin: "0 auto",
-            backgroundColor: "#ffffff",
-            border: "1px solid rgba(14,26,43,0.10)",
-            borderRadius: S.panelRadius,
-            padding: mobile ? `${S.cardPad.mobile}px` : `${S.cardPad.desktop}px`,
-            boxShadow: "0 24px 80px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.04)",
-            position: "relative",
-          }}
-        >
-          {/* Top gradient accent */}
-          <div style={{ position: "absolute", top: 0, left: 24, right: 24, height: 3, borderRadius: "0 0 3px 3px", background: B.gradient }} />
-
-          {/* Report header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-            <div>
-              <div className="text-[20px] md:text-[22px]" style={{ color: B.navy, fontWeight: 600 }}>
-                Income Stability Assessment
+        {/* Enterprise report preview — multi-panel showcase */}
+        <div style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          maxWidth: 900,
+          margin: "0 auto",
+        }}>
+          {/* Top row — Score card + Continuity estimate */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 16 }}>
+            {/* Score card */}
+            <div style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.08)",
+              borderRadius: 14,
+              padding: mobile ? "24px 20px" : "28px 28px",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              <div style={{ position: "absolute", top: 0, left: 20, right: 20, height: 3, borderRadius: "0 0 3px 3px", background: B.gradient }} />
+              <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>Income Stability Score™</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
+                <span className="text-[40px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>78</span>
+                <span className="text-[15px]" style={{ fontWeight: 600, color: B.teal }}>Established Stability</span>
               </div>
-              <div className="text-[13px]" style={{ color: B.purple, fontWeight: 500, letterSpacing: "0.04em", marginTop: 4 }}>
-                Model <strong>RP-1.0</strong>
+              <div className="text-[11px]" style={{ color: B.muted }}>
+                <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
+              </div>
+              <div style={{ height: 6, borderRadius: 99, background: B.gradient, marginTop: 14, position: "relative" }}>
+                <div style={{ position: "absolute", left: "78%", top: -2, width: 10, height: 10, borderRadius: 99, backgroundColor: "#fff", border: `2px solid ${B.navy}`, transform: "translateX(-50%)" }} />
               </div>
             </div>
-            <div className="text-[10px] text-right" style={{ color: B.light, lineHeight: 1.6 }}>
-              <div>A7E2F1B3</div>
-              <div>2026-03-10</div>
+
+            {/* Continuity estimate */}
+            <div style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.08)",
+              borderRadius: 14,
+              padding: mobile ? "24px 20px" : "28px 28px",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+            }}>
+              <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>Income Continuity Estimate</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
+                <span className="text-[32px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>38%</span>
+                <span className="text-[12px]" style={{ color: B.muted }}>continues without active work</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 10 }}>
+                <span className="text-[20px]" style={{ fontWeight: 600, color: B.teal }}>4 months</span>
+                <span className="text-[11px]" style={{ color: B.muted }}>estimated continuity</span>
+              </div>
+              <p className="text-[10px]" style={{ color: B.muted, lineHeight: 1.5, margin: 0 }}>
+                If active work stopped today, approximately 38% of income would continue for an estimated 4 months through existing commitments and recurring arrangements.
+              </p>
             </div>
           </div>
-          <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "16px 0 24px 0" }} />
 
-          {/* Score + classification */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
-            <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center", gap: 14 }}>
-              <div className="text-[28px]" style={{ color: B.navy, fontWeight: 700, lineHeight: 1 }}>78</div>
-              <div>
-                <div className="text-[12px]" style={{ color: B.purple, fontWeight: 600 }}>Established Stability</div>
-                <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>Income Stability Score™</div>
+          {/* Middle row — Risk scenario + Radar chart + Recommendations */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 16, marginBottom: 16 }}>
+            {/* Risk scenario */}
+            <div style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.08)",
+              borderRadius: 14,
+              padding: "20px",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+            }}>
+              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>Risk Scenario</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <span className="text-[24px]" style={{ fontWeight: 700, color: B.navy }}>78</span>
+                <span className="text-[14px]" style={{ color: B.light }}>&rarr;</span>
+                <span className="text-[24px]" style={{ fontWeight: 700, color: "#DC2626" }}>56</span>
+                <span className="text-[11px]" style={{ fontWeight: 600, color: "#DC2626" }}>-22 pts</span>
               </div>
+              <p className="text-[10px]" style={{ color: B.muted, lineHeight: 1.5, margin: 0 }}>
+                If the largest income source were lost, the score would drop to Developing Stability.
+              </p>
             </div>
-            <div style={{ padding: "12px 20px", borderRadius: 10, backgroundColor: B.sand, display: "flex", alignItems: "center" }}>
-              <div>
-                <div className="text-[12px]" style={{ color: B.muted }}>
-                  <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> within Professional Services
-                </div>
-                <div className="text-[10px]" style={{ color: B.light, marginTop: 2 }}>
-                  Ranks above 72% of assessed income systems in this sector.
-                </div>
+
+            {/* Radar chart preview */}
+            <div style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.08)",
+              borderRadius: 14,
+              padding: "20px",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}>
+              <div className="text-[10px] uppercase" style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8, alignSelf: "flex-start" }}>Structural Radar</div>
+              {/* Simplified radar preview */}
+              <svg width={140} height={130} viewBox="0 0 140 130" style={{ display: "block" }}>
+                {/* Grid */}
+                <polygon points="70,15 120,42 120,88 70,115 20,88 20,42" fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth="0.75" />
+                <polygon points="70,35 100,52 100,78 70,95 40,78 40,52" fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth="0.75" />
+                {/* Data */}
+                <polygon points="70,30 108,48 105,92 70,100 35,75 28,45" fill="rgba(31,109,122,0.12)" stroke={B.teal} strokeWidth="1.5" />
+                {[{x:70,y:30},{x:108,y:48},{x:105,y:92},{x:70,y:100},{x:35,y:75},{x:28,y:45}].map((p,i) => (
+                  <circle key={i} cx={p.x} cy={p.y} r={2.5} fill={B.teal} />
+                ))}
+                {/* Labels */}
+                {[{x:70,y:8,t:"Persistence"},{x:130,y:45,t:"Diversity"},{x:128,y:95,t:"Visibility"},{x:70,y:125,t:"Consistency"},{x:8,y:95,t:"Independence"},{x:5,y:45,t:"Spread"}].map((l,i) => (
+                  <text key={i} x={l.x} y={l.y} textAnchor="middle" style={{fontSize:7,fill:B.muted,fontWeight:500}}>{l.t}</text>
+                ))}
+              </svg>
+            </div>
+
+            {/* Service recommendations preview */}
+            <div style={{
+              backgroundColor: "#ffffff",
+              border: "1px solid rgba(14,26,43,0.08)",
+              borderRadius: 14,
+              padding: "20px",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
+            }}>
+              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>Service Recommendations</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {[
+                  { name: "Income Protection", urgency: "High", color: B.teal },
+                  { name: "Revenue Restructuring", urgency: "High", color: B.teal },
+                  { name: "Diversification Advisory", urgency: "Med", color: B.navy },
+                ].map((rec) => (
+                  <div key={rec.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="text-[11px]" style={{ color: B.navy, fontWeight: 500 }}>{rec.name}</span>
+                    <span className="text-[8px]" style={{ fontWeight: 600, padding: "2px 6px", borderRadius: 3, backgroundColor: rec.color, color: "#fff" }}>{rec.urgency}</span>
+                  </div>
+                ))}
               </div>
+              <p className="text-[9px]" style={{ color: B.light, marginTop: 10, lineHeight: 1.4, fontStyle: "italic" }}>
+                Ranked by urgency based on structural gaps
+              </p>
             </div>
           </div>
 
-          <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "0 0 20px 0" }} />
-
-          {/* Profile */}
-          <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>Profile</div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2" style={{ marginBottom: 20 }}>
+          {/* Bottom row — feature highlights */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 12 }}>
             {[
-              ["Classification", "Established Stability"],
-              ["Structure", "LLC — Single Operator"],
-              ["Income Model", "Fee-for-Service"],
-              ["Revenue", "Project-Based"],
-              ["Sector", "Professional Services"],
-            ].map(([l, v]) => (
-              <div key={l}>
-                <span className="text-[11px]" style={{ color: B.light }}>{l}: </span>
-                <span className="text-[11px]" style={{ color: B.navy, fontWeight: 500 }}>{v}</span>
+              { label: "90-Day Action Plan", desc: "Industry-specific steps" },
+              { label: "Advisor Discussion Guide", desc: "Talking points & questions" },
+              { label: "Client Summary", desc: "Shareable tearsheet" },
+              { label: "QR-Verified Record", desc: "Instant verification" },
+            ].map((feat) => (
+              <div key={feat.label} style={{
+                backgroundColor: "#ffffff",
+                border: "1px solid rgba(14,26,43,0.06)",
+                borderRadius: 10,
+                padding: "14px 16px",
+                textAlign: "center",
+              }}>
+                <div className="text-[11px]" style={{ fontWeight: 600, color: B.navy, marginBottom: 2 }}>{feat.label}</div>
+                <div className="text-[10px]" style={{ color: B.light }}>{feat.desc}</div>
               </div>
             ))}
           </div>
-
         </div>
 
         {/* View sample report link */}
-        <div className="text-center" style={{ marginTop: 28 }}>
+        <div className="text-center" style={{ marginTop: 32 }}>
           <Link
             href="/sample-report"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
               fontSize: 15,
               fontWeight: 600,
-              color: B.purple,
+              color: "#ffffff",
+              backgroundColor: B.purple,
+              padding: "12px 28px",
+              borderRadius: 10,
               textDecoration: "none",
-              transition: "color 160ms ease",
+              boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
+              transition: "background 180ms ease, transform 180ms ease",
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "#3D33A0"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = B.purple; }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#3D33A0"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.purple; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            View the complete sample report &rarr;
+            {t.home.viewSample}
           </Link>
           <p
             className="text-[13px]"
-            style={{ color: B.light, marginTop: 8 }}
+            style={{ color: B.light, marginTop: 12 }}
           >
-            Your report is delivered instantly after assessment.
+            {t.home.reportDelivered}
           </p>
         </div>
       </div>
