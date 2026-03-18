@@ -1177,7 +1177,7 @@ function PreviewYourScoreReport() {
             }}>
               <div className="text-[10px] uppercase" style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8, alignSelf: "flex-start" }}>{t.home.reportRadarTitle}</div>
               {/* Simplified radar preview */}
-              <svg width={180} height={140} viewBox="-20 0 180 140" style={{ display: "block" }}>
+              <svg width="100%" viewBox="-40 -5 220 145" style={{ display: "block", overflow: "visible", maxWidth: 220 }}>
                 {/* Grid */}
                 <polygon points="70,15 120,42 120,88 70,115 20,88 20,42" fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth="0.75" />
                 <polygon points="70,35 100,52 100,78 70,95 40,78 40,52" fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth="0.75" />
@@ -1187,7 +1187,7 @@ function PreviewYourScoreReport() {
                   <circle key={i} cx={p.x} cy={p.y} r={2.5} fill={B.teal} />
                 ))}
                 {/* Labels */}
-                {[{x:70,y:8,t:"Persistence"},{x:135,y:45,t:"Diversity"},{x:133,y:95,t:"Visibility"},{x:70,y:132,t:"Consistency"},{x:5,y:95,t:"Independence"},{x:3,y:45,t:"Spread"}].map((l,i) => (
+                {[{x:70,y:6,t:"Persistence"},{x:138,y:45,t:"Diversity"},{x:136,y:97,t:"Visibility"},{x:70,y:132,t:"Consistency"},{x:2,y:97,t:"Independence"},{x:0,y:45,t:"Spread"}].map((l,i) => (
                   <text key={i} x={l.x} y={l.y} textAnchor="middle" style={{fontSize:7,fill:B.muted,fontWeight:500}}>{l.t}</text>
                 ))}
               </svg>

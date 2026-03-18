@@ -401,7 +401,7 @@ function ReportPage({ record, children, pageLabel }: { record: AssessmentRecord;
 
 // ── Radar Chart for 6 structural factors (SVG) ──
 function RadarChart({ factors }: { factors: { label: string; value: number }[] }) {
-  const cx = 140, cy = 120, r = 85;
+  const cx = 120, cy = 105, r = 75;
   const n = factors.length;
   const angleStep = (2 * Math.PI) / n;
   const startAngle = -Math.PI / 2;
@@ -418,7 +418,7 @@ function RadarChart({ factors }: { factors: { label: string; value: number }[] }
   const dataPath = dataPoints.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + "Z";
 
   return (
-    <svg width={280} height={250} viewBox="0 0 280 250" style={{ display: "block" }} role="img" aria-label="Structural factor radar chart showing strength across 6 income stability dimensions">
+    <svg width={240} height={220} viewBox="-10 -5 260 230" style={{ display: "block", overflow: "visible" }} role="img" aria-label="Structural factor radar chart showing strength across 6 income stability dimensions">
       {/* Grid rings */}
       {rings.map((pct) => {
         const pts = Array.from({ length: n }, (_, i) => getPoint(i, pct));
@@ -438,7 +438,7 @@ function RadarChart({ factors }: { factors: { label: string; value: number }[] }
       ))}
       {/* Labels */}
       {factors.map((f, i) => {
-        const p = getPoint(i, 1.22);
+        const p = getPoint(i, 1.30);
         const anchor = p.x < cx - 10 ? "end" : p.x > cx + 10 ? "start" : "middle";
         return (
           <text key={i} x={p.x} y={p.y} textAnchor={anchor} dominantBaseline="central"

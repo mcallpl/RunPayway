@@ -614,7 +614,7 @@ export default function SampleReportPage() {
             <div style={{ display: "flex", gap: 20, alignItems: mobile ? undefined : "flex-start", flexDirection: mobile ? "column" : "row" }}>
               {/* Radar chart */}
               <div style={{ flexShrink: 0, display: "flex", justifyContent: "center" }}>
-                <svg width={200} height={190} viewBox="-10 -5 220 200" style={{ display: "block" }}>
+                <svg width={200} height={190} viewBox="-40 -5 280 200" style={{ display: "block", overflow: "visible" }}>
                   {/* Grid rings */}
                   {[0.25, 0.5, 0.75, 1.0].map((pct) => {
                     const pts = [0,1,2,3,4,5].map((i) => {
