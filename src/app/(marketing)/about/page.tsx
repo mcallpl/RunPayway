@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -130,6 +131,7 @@ function P({ children, style }: { children: React.ReactNode; style?: React.CSSPr
 
 export default function AboutPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   const heroAnim = useInView();
   const s1 = useInView();
@@ -194,7 +196,7 @@ export default function AboutPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              About
+              {t.about.heroTag}
             </span>
           </div>
 
@@ -208,7 +210,7 @@ export default function AboutPage() {
               marginBottom: 24,
             }}
           >
-            About RunPayway™
+            {t.about.heroTitle}
           </h1>
 
           <p
@@ -220,7 +222,7 @@ export default function AboutPage() {
               margin: "0 auto 16px",
             }}
           >
-            RunPayway™ is a structural income stability diagnostic platform.
+            {t.about.heroDesc1}
           </p>
 
           <p
@@ -232,7 +234,7 @@ export default function AboutPage() {
               margin: "0 auto 16px",
             }}
           >
-            The platform evaluates how stable an income structure is based on how income is generated and sustained. Assessments are performed using a deterministic analytical model known as the Structural Stability Model RP-1.0.
+            {t.about.heroDesc2}
           </p>
 
           <p
@@ -244,7 +246,7 @@ export default function AboutPage() {
               margin: "0 auto 16px",
             }}
           >
-            RunPayway™ produces a standardized metric called the Income Stability Score™, which measures the structural durability of an income system.
+            {t.about.heroDesc3}
           </p>
 
           <p
@@ -256,7 +258,7 @@ export default function AboutPage() {
               margin: "0 auto",
             }}
           >
-            The platform is designed to provide professionals, founders, and organizations with a consistent analytical method for understanding how stable an income structure is based on its underlying characteristics.
+            {t.about.heroDesc4}
           </p>
         </div>
       </section>
@@ -283,75 +285,43 @@ export default function AboutPage() {
         >
           {/* The Income Stability Score */}
           <div ref={s1.ref}>
-            <DocSection title="The Income Stability Score™" mobile={mobile} visible={s1.visible}>
-              <P>
-                The Income Stability Score™ is a structural classification metric that evaluates income stability on a scale from 0 to 100.
-              </P>
-              <P>
-                The score measures the structural characteristics of income generation rather than the financial performance of the individual or organization.
-              </P>
-              <P>
-                The model evaluates six structural dimensions that describe how income behaves under disruption, variability, and reliance on active labor.
-              </P>
-              <P style={{ marginBottom: 0 }}>
-                Scores are generated using deterministic scoring rules defined under Structural Stability Model RP-1.0.
-              </P>
+            <DocSection title={t.about.s1Title} mobile={mobile} visible={s1.visible}>
+              <P>{t.about.s1P1}</P>
+              <P>{t.about.s1P2}</P>
+              <P>{t.about.s1P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.about.s1P4}</P>
             </DocSection>
           </div>
 
           {/* What the Model Measures */}
           <div ref={s2.ref}>
-            <DocSection title="What the Model Measures" mobile={mobile} visible={s2.visible}>
-              <P>
-                RunPayway™ evaluates the structural stability of income systems.
-              </P>
-              <P>
-                The model analyzes factors such as income diversification, recurring revenue characteristics, income concentration, earnings variability, and income continuity without active labor.
-              </P>
-              <P>
-                These characteristics describe how stable an income structure is likely to be under disruption.
-              </P>
-              <P style={{ marginBottom: 0 }}>
-                The model evaluates the structure of income generation rather than financial outcomes.
-              </P>
+            <DocSection title={t.about.s2Title} mobile={mobile} visible={s2.visible}>
+              <P>{t.about.s2P1}</P>
+              <P>{t.about.s2P2}</P>
+              <P>{t.about.s2P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.about.s2P4}</P>
             </DocSection>
           </div>
 
           {/* Model Governance */}
           <div ref={s3.ref}>
-            <DocSection title="Model Governance" mobile={mobile} visible={s3.visible}>
-              <P>
-                RunPayway™ assessments are generated using a deterministic scoring framework governed by a version-controlled model system.
-              </P>
-              <P>
-                Each assessment applies fixed scoring rules defined under the active model version.
-              </P>
-              <P>
-                Identical inputs under the same model version always produce identical outputs.
-              </P>
-              <P>
-                Any change to model inputs, scoring logic, classification thresholds, or interpretation templates requires a formal model version update.
-              </P>
-              <P style={{ marginBottom: 0 }}>
-                All assessments remain permanently tied to the model version under which they were issued.
-              </P>
+            <DocSection title={t.about.s3Title} mobile={mobile} visible={s3.visible}>
+              <P>{t.about.s3P1}</P>
+              <P>{t.about.s3P2}</P>
+              <P>{t.about.s3P3}</P>
+              <P>{t.about.s3P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.about.s3P5}</P>
             </DocSection>
           </div>
 
           {/* Assessment Integrity and Verification */}
           <div ref={s4.ref}>
-            <DocSection title="Assessment Integrity and Verification" mobile={mobile} visible={s4.visible}>
-              <P>
-                Each RunPayway™ assessment produces an immutable record.
-              </P>
-              <P>
-                Every issued assessment receives a unique Record ID and Authorization Code that allow the record to be independently verified.
-              </P>
-              <P>
-                Verification confirms that the score was generated by the RunPayway™ model and that the assessment record has not been modified.
-              </P>
+            <DocSection title={t.about.s4Title} mobile={mobile} visible={s4.visible}>
+              <P>{t.about.s4P1}</P>
+              <P>{t.about.s4P2}</P>
+              <P>{t.about.s4P3}</P>
               <P style={{ marginBottom: 0 }}>
-                Assessment verification can be performed through the{" "}
+                {t.about.s4P4pre}{" "}
                 <Link
                   href="/verify"
                   style={{
@@ -364,29 +334,25 @@ export default function AboutPage() {
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
-                  Verify a Score
+                  {t.about.s4LinkText}
                 </Link>{" "}
-                system.
+                {t.about.s4P4post}
               </P>
             </DocSection>
           </div>
 
           {/* Analytical Scope */}
           <div ref={s5.ref}>
-            <DocSection title="Analytical Scope" mobile={mobile} visible={s5.visible}>
-              <P>
-                RunPayway™ provides analytical assessments of income structure.
-              </P>
-              <P>
-                The platform evaluates structural income stability only and does not assess:
-              </P>
+            <DocSection title={t.about.s5Title} mobile={mobile} visible={s5.visible}>
+              <P>{t.about.s5P1}</P>
+              <P>{t.about.s5P2}</P>
               <ul style={{ padding: 0, margin: "0 0 12px", listStyle: "none" }}>
                 {[
-                  "Creditworthiness",
-                  "Net worth",
-                  "Investment performance",
-                  "Debt capacity",
-                  "Future income growth",
+                  t.about.s5List1,
+                  t.about.s5List2,
+                  t.about.s5List3,
+                  t.about.s5List4,
+                  t.about.s5List5,
                 ].map((item) => (
                   <li
                     key={item}
@@ -403,12 +369,8 @@ export default function AboutPage() {
                   </li>
                 ))}
               </ul>
-              <P>
-                The Income Stability Score™ reflects the structural characteristics of income at the time of assessment based on information provided by the user.
-              </P>
-              <P style={{ marginBottom: 0 }}>
-                RunPayway™ does not provide financial, investment, or tax advice.
-              </P>
+              <P>{t.about.s5P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.about.s5P4}</P>
             </DocSection>
           </div>
         </div>
@@ -476,10 +438,10 @@ export default function AboutPage() {
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.about.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.about.poweredBy}
           </p>
         </div>
       </section>

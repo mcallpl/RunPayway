@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -274,6 +275,7 @@ function ClassificationBand({
 
 export default function HowItWorksPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   const heroAnim = useInView();
   const processAnim = useInView();
@@ -338,7 +340,7 @@ export default function HowItWorksPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              How It Works
+              {t.howItWorks.heroLabel}
             </span>
           </div>
 
@@ -352,7 +354,7 @@ export default function HowItWorksPage() {
               marginBottom: 24,
             }}
           >
-            RunPayway™ — How It Works
+            {t.howItWorks.heroTitle}
           </h1>
 
           <p
@@ -364,7 +366,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 20px",
             }}
           >
-            RunPayway™ evaluates the structural stability of an income system.
+            {t.howItWorks.heroDesc1}
           </p>
 
           <p
@@ -376,7 +378,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 32px",
             }}
           >
-            The platform uses Structural Stability Model RP-1.0 — a fixed scoring system that analyzes how your income is generated, how dependent it is on continued labor, and how durable it is under disruption. The same answers always produce the same score.
+            {t.howItWorks.heroDesc2}
           </p>
 
           <p
@@ -388,7 +390,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 32px",
             }}
           >
-            The system produces a single output metric:
+            {t.howItWorks.heroDesc3}
           </p>
 
           {/* Score pill */}
@@ -404,10 +406,10 @@ export default function HowItWorksPage() {
             }}
           >
             <span style={{ fontSize: mobile ? 18 : 22, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em" }}>
-              Income Stability Score™
+              {t.howItWorks.scoreLabel}
             </span>
             <span style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.50)", fontWeight: 500 }}>
-              (0–100)
+              {t.howItWorks.scoreRange}
             </span>
           </div>
 
@@ -418,7 +420,7 @@ export default function HowItWorksPage() {
               marginTop: 16,
             }}
           >
-            Higher scores indicate stronger structural income stability.
+            {t.howItWorks.heroFooter}
           </p>
         </div>
       </section>
@@ -462,7 +464,7 @@ export default function HowItWorksPage() {
                 marginBottom: 14,
               }}
             >
-              Assessment Process
+              {t.howItWorks.processTag}
             </div>
             <h2
               style={{
@@ -474,7 +476,7 @@ export default function HowItWorksPage() {
                 marginBottom: 16,
               }}
             >
-              How It Works
+              {t.howItWorks.processTitle}
             </h2>
             <p
               style={{
@@ -485,7 +487,7 @@ export default function HowItWorksPage() {
                 margin: "0 auto",
               }}
             >
-              A structural diagnostic evaluating the stability of an income system.
+              {t.howItWorks.processSubtitle}
             </p>
           </div>
 
@@ -500,41 +502,41 @@ export default function HowItWorksPage() {
           >
             <StepCard
               number="01"
-              title="Income Profile Intake"
-              description="Six structural factors describe how your income is generated and how dependable it is. The assessment captures key characteristics of the income structure, including:"
+              title={t.howItWorks.step1Title}
+              description={t.howItWorks.step1Desc}
               bullets={[
-                "Income sources",
-                "Reliance on active labor",
-                "Persistence of income without continued work",
-                "Diversification of income streams",
-                "Forward revenue commitments",
-                "Structural protections against disruption",
+                t.howItWorks.step1Bullet1,
+                t.howItWorks.step1Bullet2,
+                t.howItWorks.step1Bullet3,
+                t.howItWorks.step1Bullet4,
+                t.howItWorks.step1Bullet5,
+                t.howItWorks.step1Bullet6,
               ]}
-              note="The objective is to classify the architecture of the income system, not personal financial data."
+              note={t.howItWorks.step1Note}
               mobile={mobile}
               visible={stepsAnim.visible}
               delay={0}
             />
             <StepCard
               number="02"
-              title="Structural Analysis"
-              description="Structural Stability Model RP-1.0 evaluates the responses across six structural factors and calculates the Income Stability Score™ (0–100). The model applies deterministic scoring rules. Identical structural inputs will always produce the same score."
-              note="No subjective interpretation or AI judgment is used in the scoring process."
+              title={t.howItWorks.step2Title}
+              description={t.howItWorks.step2Desc}
+              note={t.howItWorks.step2Note}
               mobile={mobile}
               visible={stepsAnim.visible}
               delay={140}
             />
             <StepCard
               number="03"
-              title="Score and Report Generation"
-              description="Once the model completes its evaluation, the system generates:"
+              title={t.howItWorks.step3Title}
+              description={t.howItWorks.step3Desc}
               bullets={[
-                "Income Stability Score™ with stability classification",
-                "Structural priority map and sector-specific benchmarks",
-                "Personalized five-page diagnostic report with 90-day action plan",
-                "Official assessment record with verification identifier",
+                t.howItWorks.step3Bullet1,
+                t.howItWorks.step3Bullet2,
+                t.howItWorks.step3Bullet3,
+                t.howItWorks.step3Bullet4,
               ]}
-              note="Every report is personalized with your Assessment Title, industry sector, and tailored improvement guidance."
+              note={t.howItWorks.step3Note}
               mobile={mobile}
               visible={stepsAnim.visible}
               delay={280}
@@ -581,7 +583,7 @@ export default function HowItWorksPage() {
                 marginBottom: 14,
               }}
             >
-              Classification System
+              {t.howItWorks.classTag}
             </div>
             <h2
               style={{
@@ -593,7 +595,7 @@ export default function HowItWorksPage() {
                 marginBottom: 16,
               }}
             >
-              Stability Classification
+              {t.howItWorks.classTitle}
             </h2>
             <p
               style={{
@@ -604,13 +606,13 @@ export default function HowItWorksPage() {
                 margin: "0 auto",
               }}
             >
-              Every score is placed within a structural stability classification band. The classification provides context for how durable the income system is likely to be under economic disruption.
+              {t.howItWorks.classDesc}
             </p>
           </div>
 
           {/* Bands */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {["Limited Stability", "Developing Stability", "Established Stability", "High Stability"].map((band, i) => (
+            {[t.howItWorks.bandLimited, t.howItWorks.bandDeveloping, t.howItWorks.bandEstablished, t.howItWorks.bandHigh].map((band, i) => (
               <ClassificationBand
                 key={band}
                 label={band}
@@ -633,7 +635,7 @@ export default function HowItWorksPage() {
               transitionDelay: "600ms",
             }}
           >
-            Your classification shows where your income stands — and how far it is from the next tier.
+            {t.howItWorks.classFooter}
           </p>
         </div>
       </section>
@@ -671,7 +673,7 @@ export default function HowItWorksPage() {
               marginBottom: 14,
             }}
           >
-            Verification
+            {t.howItWorks.verifyTag}
           </div>
           <h2
             style={{
@@ -683,7 +685,7 @@ export default function HowItWorksPage() {
               marginBottom: 20,
             }}
           >
-            Score Verification
+            {t.howItWorks.verifyTitle}
           </h2>
 
           <div
@@ -696,13 +698,13 @@ export default function HowItWorksPage() {
             }}
           >
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75 }}>
-              Each completed assessment receives a unique verification identifier.
+              {t.howItWorks.verifyDesc1}
             </p>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75 }}>
-              This identifier allows third parties to confirm that a score was generated using the official RunPayway™ model.
+              {t.howItWorks.verifyDesc2}
             </p>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75 }}>
-              Verification can be performed through the{" "}
+              {t.howItWorks.verifyDesc3pre}{" "}
               <Link
                 href="/verify"
                 style={{
@@ -715,12 +717,12 @@ export default function HowItWorksPage() {
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
               >
-                Verify a Score
+                {t.howItWorks.verifyLinkText}
               </Link>{" "}
-              page.
+              {t.howItWorks.verifyDesc3post}
             </p>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75 }}>
-              Verification ensures every score is authentic and unaltered.
+              {t.howItWorks.verifyDesc4}
             </p>
           </div>
         </div>
@@ -794,7 +796,7 @@ export default function HowItWorksPage() {
               marginBottom: 20,
             }}
           >
-            Run an Assessment
+            {t.howItWorks.ctaTitle}
           </h2>
 
           <p
@@ -806,7 +808,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 12px",
             }}
           >
-            The RunPayway™ assessment takes under two minutes. After submitting the structural inputs, the model calculates the Income Stability Score™ instantly and generates a personalized five-page report.
+            {t.howItWorks.ctaDesc1}
           </p>
 
           <p
@@ -818,7 +820,7 @@ export default function HowItWorksPage() {
               margin: "0 auto 36px",
             }}
           >
-            Your report includes sector-specific benchmarks, a structural priority map, and a 90-day action plan tailored to your industry.
+            {t.howItWorks.ctaDesc2}
           </p>
 
           {/* CTA button */}
@@ -849,7 +851,7 @@ export default function HowItWorksPage() {
             }}
           >
             <span className="tick tick-navy" />
-            <span className="cta-label">Get My Income Stability Score™</span>
+            <span className="cta-label">{t.howItWorks.ctaButton}</span>
             <span className="cta-arrow cta-arrow-navy" />
           </Link>
 
@@ -862,7 +864,7 @@ export default function HowItWorksPage() {
               letterSpacing: "0.02em",
             }}
           >
-            Powered by Structural Stability Model RP-1.0
+            {t.howItWorks.poweredBy}
           </p>
         </div>
       </section>

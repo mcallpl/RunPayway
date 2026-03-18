@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
+import type { Translations } from "@/lib/i18n/types";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -76,297 +78,71 @@ interface FaqCategory {
   items: FaqItem[];
 }
 
-const FAQ_CATEGORIES: FaqCategory[] = [
+function getFaqCategories(t: Translations): FaqCategory[] { return [
   {
-    title: "About the Income Stability Score™",
+    title: t.faqPage.cat1Title,
     items: [
-      {
-        q: "What does the Income Stability Score™ measure?",
-        a: (
-          <>
-            <p>The Income Stability Score™ measures the structural stability of an income system.</p>
-            <p>The score evaluates how income is generated, how diversified it is, how dependent it is on active labor, and how resilient the income structure is likely to be under disruption.</p>
-            <p>Scores range from 0 to 100, with higher scores indicating stronger structural income stability.</p>
-          </>
-        ),
-      },
-      {
-        q: "What factors influence the score?",
-        a: (
-          <>
-            <p>The score is generated using six structural dimensions of income generation:</p>
-            <ul>
-              <li>recurring revenue base</li>
-              <li>income concentration</li>
-              <li>income source count</li>
-              <li>forward revenue visibility</li>
-              <li>earnings variability</li>
-              <li>income continuity without active labor</li>
-            </ul>
-            <p>These dimensions describe the structural characteristics of how income is produced and sustained.</p>
-          </>
-        ),
-      },
-      {
-        q: "What does a good score look like?",
-        a: (
-          <>
-            <p>Higher scores indicate a more structurally stable income system.</p>
-            <p>Scores are interpreted within four classification bands:</p>
-            <div className="faq-table">
-              <div className="faq-table-row faq-table-header">
-                <span>Stability Band</span><span>Score Range</span>
-              </div>
-              <div className="faq-table-row"><span>Limited</span><span>0–39</span></div>
-              <div className="faq-table-row"><span>Developing</span><span>40–59</span></div>
-              <div className="faq-table-row"><span>Established</span><span>60–79</span></div>
-              <div className="faq-table-row"><span>High</span><span>80–100</span></div>
-            </div>
-            <p>These bands provide context for interpreting the structural durability of the income system.</p>
-          </>
-        ),
-      },
-      {
-        q: "Does the score predict future income?",
-        a: (
-          <>
-            <p>No.</p>
-            <p>The Income Stability Score™ is a structural classification, not a prediction.</p>
-            <p>It evaluates the characteristics of income generation at the time of the assessment based on the information provided by the user.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat1Q1, a: (<><p>{t.faqPage.cat1A1P1}</p><p>{t.faqPage.cat1A1P2}</p><p>{t.faqPage.cat1A1P3}</p></>) },
+      { q: t.faqPage.cat1Q2, a: (<><p>{t.faqPage.cat1A2P1}</p><ul><li>{t.faqPage.cat1A2Li1}</li><li>{t.faqPage.cat1A2Li2}</li><li>{t.faqPage.cat1A2Li3}</li><li>{t.faqPage.cat1A2Li4}</li><li>{t.faqPage.cat1A2Li5}</li><li>{t.faqPage.cat1A2Li6}</li></ul><p>{t.faqPage.cat1A2P2}</p></>) },
+      { q: t.faqPage.cat1Q3, a: (<><p>{t.faqPage.cat1A3P1}</p><p>{t.faqPage.cat1A3P2}</p><div className="faq-table"><div className="faq-table-row faq-table-header"><span>{t.faqPage.cat1A3ThBand}</span><span>{t.faqPage.cat1A3ThRange}</span></div><div className="faq-table-row"><span>{t.report.limited}</span><span>0–39</span></div><div className="faq-table-row"><span>{t.report.developing}</span><span>40–59</span></div><div className="faq-table-row"><span>{t.report.established}</span><span>60–79</span></div><div className="faq-table-row"><span>{t.report.high}</span><span>80–100</span></div></div><p>{t.faqPage.cat1A3P3}</p></>) },
+      { q: t.faqPage.cat1Q4, a: (<><p>{t.faqPage.cat1A4P1}</p><p>{t.faqPage.cat1A4P2}</p><p>{t.faqPage.cat1A4P3}</p></>) },
     ],
   },
   {
-    title: "About the Assessment",
+    title: t.faqPage.cat2Title,
     items: [
-      {
-        q: "How long does the assessment take?",
-        a: (
-          <>
-            <p>Most users complete the assessment in under two minutes.</p>
-            <p>The diagnostic evaluates six structural factors describing how income is generated and sustained.</p>
-          </>
-        ),
-      },
-      {
-        q: "What information is required?",
-        a: (
-          <>
-            <p>The assessment asks questions about the structure of income generation, such as the number of income sources, the degree of recurring income, and how dependent income is on active work.</p>
-            <p>The assessment does not require detailed financial records or documentation.</p>
-          </>
-        ),
-      },
-      {
-        q: "Can I retake the assessment?",
-        a: (
-          <>
-            <p>Yes.</p>
-            <p>Each new assessment measures the structure of income at the time it is taken.</p>
-            <p>Users who want to track how their income structure evolves over time can purchase additional assessments or use the Annual Monitoring plan.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat2Q1, a: (<><p>{t.faqPage.cat2A1P1}</p><p>{t.faqPage.cat2A1P2}</p></>) },
+      { q: t.faqPage.cat2Q2, a: (<><p>{t.faqPage.cat2A2P1}</p><p>{t.faqPage.cat2A2P2}</p></>) },
+      { q: t.faqPage.cat2Q3, a: (<><p>{t.faqPage.cat2A3P1}</p><p>{t.faqPage.cat2A3P2}</p><p>{t.faqPage.cat2A3P3}</p></>) },
     ],
   },
   {
-    title: "Assessment Reports",
+    title: t.faqPage.cat3Title,
     items: [
-      {
-        q: "What is included in the report?",
-        a: (
-          <>
-            <p>Each completed assessment produces a personalized five-page report that includes:</p>
-            <ul>
-              <li>Income Stability Score™ (0–100) with stability classification</li>
-              <li>structural priority map ranking six factors from strongest to weakest</li>
-              <li>income structure map with active, semi-persistent, and persistent income breakdown</li>
-              <li>sector-specific industry benchmarks and percentile comparison</li>
-              <li>system diagnosis with structural drivers and constraints</li>
-              <li>90-day action plan tailored to your primary constraint and industry</li>
-              <li>sector-specific improvement guidance and evolution path</li>
-              <li>official PDF assessment record issued under Model RP-1.0</li>
-            </ul>
-            <p>Every section is personalized with your Assessment Title and industry sector.</p>
-          </>
-        ),
-      },
-      {
-        q: "How is the score calculated?",
-        a: (
-          <>
-            <p>Scores are generated using Structural Stability Model RP-1.0.</p>
-            <p>The model applies deterministic scoring rules to the structural inputs provided in the assessment.</p>
-            <p>Identical inputs under the same model version always produce identical results.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat3Q1, a: (<><p>{t.faqPage.cat3A1P1}</p><ul><li>{t.faqPage.cat3A1Li1}</li><li>{t.faqPage.cat3A1Li2}</li><li>{t.faqPage.cat3A1Li3}</li><li>{t.faqPage.cat3A1Li4}</li><li>{t.faqPage.cat3A1Li5}</li><li>{t.faqPage.cat3A1Li6}</li><li>{t.faqPage.cat3A1Li7}</li><li>{t.faqPage.cat3A1Li8}</li></ul><p>{t.faqPage.cat3A1P2}</p></>) },
+      { q: t.faqPage.cat3Q2, a: (<><p>{t.faqPage.cat3A2P1}</p><p>{t.faqPage.cat3A2P2}</p><p>{t.faqPage.cat3A2P3}</p></>) },
     ],
   },
   {
-    title: "Assessment Records and Verification",
+    title: t.faqPage.cat4Title,
     items: [
-      {
-        q: "How can a score be verified?",
-        a: (
-          <>
-            <p>Each issued assessment receives a Record ID and Authorization Code.</p>
-            <p>These identifiers allow the assessment record to be verified using the <Link href="/verify" style={{ color: B.purple, fontWeight: 600, textDecoration: "none", borderBottom: "1px solid rgba(75,63,174,0.30)" }}>Verify a Score</Link> system.</p>
-            <p>Verification confirms that the record was generated by the RunPayway™ model and that the assessment record has not been modified.</p>
-          </>
-        ),
-      },
-      {
-        q: "Can an issued assessment be changed?",
-        a: (
-          <>
-            <p>No.</p>
-            <p>Assessment records are immutable once issued.</p>
-            <p>Once your assessment record is created, it is permanent. It cannot be changed, deleted, or regenerated.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat4Q1, a: (<><p>{t.faqPage.cat4A1P1}</p><p>{t.faqPage.cat4A1P2}</p><p>{t.faqPage.cat4A1P3}</p></>) },
+      { q: t.faqPage.cat4Q2, a: (<><p>{t.faqPage.cat4A2P1}</p><p>{t.faqPage.cat4A2P2}</p><p>{t.faqPage.cat4A2P3}</p></>) },
     ],
   },
   {
-    title: "Privacy and Data Handling",
+    title: t.faqPage.cat5Title,
     items: [
-      {
-        q: "How is my data handled?",
-        a: (
-          <>
-            <p>Assessment responses are used solely to generate the Income Stability Score™ and the associated diagnostic report.</p>
-            <p>The platform uses encrypted transmission and secure processing systems.</p>
-            <p>Assessment records are stored for verification purposes but are not publicly accessible.</p>
-          </>
-        ),
-      },
-      {
-        q: "Is my information shared with third parties?",
-        a: (
-          <>
-            <p>No.</p>
-            <p>RunPayway™ does not sell or distribute assessment data.</p>
-            <p>Information is used only for generating the diagnostic report and maintaining the verification system.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat5Q1, a: (<><p>{t.faqPage.cat5A1P1}</p><p>{t.faqPage.cat5A1P2}</p><p>{t.faqPage.cat5A1P3}</p></>) },
+      { q: t.faqPage.cat5Q2, a: (<><p>{t.faqPage.cat5A2P1}</p><p>{t.faqPage.cat5A2P2}</p><p>{t.faqPage.cat5A2P3}</p></>) },
     ],
   },
   {
-    title: "Pricing and Plans",
+    title: t.faqPage.cat6Title,
     items: [
-      {
-        q: "What is the difference between Single Assessment and Annual Monitoring?",
-        a: (
-          <>
-            <p>Single Assessment ($39) provides a one-time measurement of income stability.</p>
-            <p>Annual Monitoring ($99) provides three assessments across one year, allowing users to track how their income structure evolves over time.</p>
-          </>
-        ),
-      },
-      {
-        q: "Do I need an account?",
-        a: (
-          <>
-            <p>Accounts are required only for Annual Monitoring subscribers, who use the RunPayway™ Monitoring Portal to access historical assessments.</p>
-            <p>Single Assessment users receive their report immediately after completing the diagnostic.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat6Q1, a: (<><p>{t.faqPage.cat6A1P1}</p><p>{t.faqPage.cat6A1P2}</p></>) },
+      { q: t.faqPage.cat6Q2, a: (<><p>{t.faqPage.cat6A2P1}</p><p>{t.faqPage.cat6A2P2}</p></>) },
     ],
   },
   {
-    title: "Enterprise",
+    title: t.faqPage.cat7Title,
     items: [
-      {
-        q: "Can RunPayway™ assess multiple income systems within an organization?",
-        a: (
-          <>
-            <p>Yes. RunPayway™ for Organizations is designed to assess multiple income systems — including contractors, team members, portfolio companies, or business units — under a single enterprise account.</p>
-            <p>Each assessment runs independently under Model RP-1.0, producing a separate score and report for every income system evaluated.</p>
-            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> to get early access.</p>
-          </>
-        ),
-      },
-      {
-        q: "Does RunPayway™ offer volume licensing or team assessments?",
-        a: (
-          <>
-            <p>Volume licensing and team assessment packages are available through RunPayway™ for Organizations.</p>
-            <p>Enterprise plans include dedicated account management, consolidated billing, and the ability to run assessments across teams or client portfolios at scale.</p>
-            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> for pricing and availability.</p>
-          </>
-        ),
-      },
-      {
-        q: "Can assessment records be shared with third parties?",
-        a: (
-          <>
-            <p>Yes. Every assessment includes a Record ID and Authorization Code that can be shared with any third party — such as a lender, investor, partner, or compliance officer.</p>
-            <p>Third parties can independently verify the score, classification, and model version at <strong>RunPayway™.com/verify</strong> without requiring access to the original report.</p>
-          </>
-        ),
-      },
-      {
-        q: "Is RunPayway™ SOC 2 compliant?",
-        a: (
-          <>
-            <p>RunPayway™ is pursuing SOC 2 Type I certification. The platform is architected with security controls aligned to SOC 2 requirements, including encrypted data transmission, secure processing, and immutable assessment records.</p>
-            <p>Enterprise customers requiring compliance documentation can reach us through our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link>.</p>
-          </>
-        ),
-      },
-      {
-        q: "Can we integrate RunPayway™ into our existing workflow?",
-        a: (
-          <>
-            <p>RunPayway™ offers an API for programmatic access to the scoring engine. Organizations can integrate income stability assessments directly into onboarding flows, underwriting systems, or portfolio management platforms.</p>
-            <p>The API uses the same deterministic Model RP-1.0 engine — identical inputs produce identical results whether submitted through the platform or the API.</p>
-            <p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>Join the enterprise waitlist</a> for API documentation and access.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A1P3}</a></p></>) },
+      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A2P3}</a></p></>) },
+      { q: t.faqPage.cat7Q3, a: (<><p>{t.faqPage.cat7A3P1}</p><p>{t.faqPage.cat7A3P2}</p></>) },
+      { q: t.faqPage.cat7Q4, a: (<><p>{t.faqPage.cat7A4P1}</p><p>{t.faqPage.cat7A4P2}</p></>) },
+      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A5P3}</a></p></>) },
     ],
   },
   {
-    title: "Licensing",
+    title: t.faqPage.cat8Title,
     items: [
-      {
-        q: "Can we license the Income Stability Score™ for use in our own products?",
-        a: (
-          <>
-            <p>Yes. The Income Stability Score™ is available for licensing by financial institutions, insurance providers, HR platforms, and other organizations that want to embed income stability measurement into their own products or decision-making workflows.</p>
-            <p>Licensees receive scored results through a secure API — the scoring model, weights, and classification logic remain proprietary and run entirely on RunPayway™ infrastructure. Licensees never access the underlying engine.</p>
-            <p>Visit our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link> to discuss licensing terms and eligibility.</p>
-          </>
-        ),
-      },
-      {
-        q: "How does licensing differ from API access?",
-        a: (
-          <>
-            <p>API access allows an organization to run assessments for its own internal use — evaluating contractors, team members, or portfolio companies within the organization.</p>
-            <p>Licensing allows an organization to embed the Income Stability Score™ as a component of products or services it offers to its own customers. This includes the right to display the score, classification, and structural analysis within third-party platforms under a licensing agreement.</p>
-            <p>Both use the same deterministic Model RP-1.0 engine. The difference is whether the score is used internally or externally.</p>
-          </>
-        ),
-      },
-      {
-        q: "Is white-label or co-branded reporting available?",
-        a: (
-          <>
-            <p>Yes. Licensed partners can receive co-branded or white-label assessment reports generated with their organization's branding alongside the RunPayway™ model certification.</p>
-            <p>All reports are generated on RunPayway™ infrastructure to maintain scoring integrity. The partner receives the finished report — the scoring model and report generation logic remain proprietary.</p>
-            <p>Visit our <Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>contact page</Link> for licensing and co-branding inquiries.</p>
-          </>
-        ),
-      },
+      { q: t.faqPage.cat8Q1, a: (<><p>{t.faqPage.cat8A1P1}</p><p>{t.faqPage.cat8A1P2}</p><p><Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat8A1P3}</Link></p></>) },
+      { q: t.faqPage.cat8Q2, a: (<><p>{t.faqPage.cat8A2P1}</p><p>{t.faqPage.cat8A2P2}</p><p>{t.faqPage.cat8A2P3}</p></>) },
+      { q: t.faqPage.cat8Q3, a: (<><p>{t.faqPage.cat8A3P1}</p><p>{t.faqPage.cat8A3P2}</p><p><Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat8A3P3}</Link></p></>) },
     ],
   },
-];
+]; }
 
 /* ------------------------------------------------------------------ */
 /*  Accordion item                                                     */
@@ -466,8 +242,10 @@ function AccordionItem({
 
 export default function FaqPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const FAQ_CATEGORIES = getFaqCategories(t);
 
   const toggleItem = (key: string) => {
     setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -605,7 +383,7 @@ export default function FaqPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Support
+              {t.faqPage.heroTag}
             </span>
           </div>
 
@@ -619,7 +397,7 @@ export default function FaqPage() {
               marginBottom: 20,
             }}
           >
-            Frequently Asked Questions
+            {t.faqPage.heroTitle}
           </h1>
 
           <p
@@ -631,7 +409,7 @@ export default function FaqPage() {
               margin: "0 auto",
             }}
           >
-            Common questions about the Income Stability Score™, the assessment process, and how assessment records are generated and verified.
+            {t.faqPage.heroSubtitle}
           </p>
         </div>
       </section>
@@ -765,10 +543,10 @@ export default function FaqPage() {
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.faqPage.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.faqPage.poweredBy}
           </p>
         </div>
       </section>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -217,6 +218,7 @@ function PricingCard({
 export default function PricingPage() {
   const mobile = useMobile();
   const router = useRouter();
+  const { t } = useLanguage();
   const [transition, setTransition] = useState<{ title: string; price: string } | null>(null);
 
   const heroAnim = useInView();
@@ -261,7 +263,7 @@ export default function PricingPage() {
               animation: "spin 0.8s linear infinite",
             }} />
             <div style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.45)", marginBottom: 16 }}>
-              Preparing Your Assessment
+              {t.pricing.transitionPreparing}
             </div>
             <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#ffffff", marginBottom: 8 }}>
               {transition.title}
@@ -270,7 +272,7 @@ export default function PricingPage() {
               {transition.price}
             </div>
             <div style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", lineHeight: 1.6 }}>
-              Setting up your Income Stability Assessment™...
+              {t.pricing.transitionSetting}
             </div>
           </div>
           <style>{`
@@ -332,7 +334,7 @@ export default function PricingPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Income Stability Assessment
+              {t.pricing.heroTag}
             </span>
           </div>
 
@@ -346,7 +348,7 @@ export default function PricingPage() {
               marginBottom: 20,
             }}
           >
-            Measure Your Income Stability
+            {t.pricing.heroTitle}
           </h1>
 
           <p
@@ -358,7 +360,7 @@ export default function PricingPage() {
               margin: "0 auto 8px",
             }}
           >
-            RunPayway™ provides structured income stability diagnostics using the Income Stability Score™.
+            {t.pricing.heroDesc}
           </p>
 
           <p
@@ -367,7 +369,7 @@ export default function PricingPage() {
               color: "rgba(255,255,255,0.40)",
             }}
           >
-            Model RP-1.0 | Version 1.0
+            {t.pricing.heroModel}
           </p>
         </div>
       </section>
@@ -400,10 +402,10 @@ export default function PricingPage() {
             }}
           >
             <PricingCard
-              title="Single Assessment"
-              price="$39"
-              description="One structural measurement of your income system. Receive your Income Stability Score™ and full diagnostic report instantly."
-              ctaLabel="Get Assessment"
+              title={t.pricing.singleTitle}
+              price={t.pricing.singlePrice}
+              description={t.pricing.singleDesc}
+              ctaLabel={t.pricing.singleCta}
               ctaHref="/diagnostic"
               mobile={mobile}
               visible={cardsAnim.visible}
@@ -412,11 +414,11 @@ export default function PricingPage() {
             />
             <PricingCard
               recommended
-              title="Annual Monitoring"
-              price="$99"
-              perUnit="$33 per assessment"
-              description="Three assessments you can take at any time within one year. Track how your income structure evolves over time."
-              ctaLabel="Coming Soon"
+              title={t.pricing.annualTitle}
+              price={t.pricing.annualPrice}
+              perUnit={t.pricing.annualPer}
+              description={t.pricing.annualDesc}
+              ctaLabel={t.pricing.annualCta}
               ctaHref="/diagnostic"
               mobile={mobile}
               visible={cardsAnim.visible}
@@ -428,10 +430,10 @@ export default function PricingPage() {
           {/* Trust line */}
           <div style={{ textAlign: "center", marginTop: 28, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
             <p style={{ fontSize: 13, color: B.light }}>
-              Begin your assessment immediately after selecting a plan
+              {t.pricing.trustLine1}
             </p>
             <p style={{ fontSize: 13, color: B.light, marginTop: 8, lineHeight: 1.6 }}>
-              Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
+              {t.pricing.trustLine2}
             </p>
           </div>
         </div>
@@ -461,13 +463,13 @@ export default function PricingPage() {
         >
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Annual Plan
+              {t.pricing.annualPlanTag}
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Income Stability Monitoring
+              {t.pricing.monitoringTitle}
             </h2>
             <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.75, marginBottom: 32, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-              Annual monitoring measures how your income structure evolves over time. Take your three assessments at any time within one year.
+              {t.pricing.monitoringDesc}
             </p>
           </div>
 
@@ -486,9 +488,9 @@ export default function PricingPage() {
             }}
           >
             {[
-              { label: "Assessment 1", timing: "Any time", icon: "1" },
-              { label: "Assessment 2", timing: "Any time", icon: "2" },
-              { label: "Assessment 3", timing: "Any time", icon: "3" },
+              { label: `${t.pricing.assessment} 1`, timing: t.pricing.anyTime, icon: "1" },
+              { label: `${t.pricing.assessment} 2`, timing: t.pricing.anyTime, icon: "2" },
+              { label: `${t.pricing.assessment} 3`, timing: t.pricing.anyTime, icon: "3" },
             ].map((item, i) => (
               <div key={item.label} style={{ display: "contents" }}>
                 <div style={{ textAlign: "center" }}>
@@ -516,7 +518,7 @@ export default function PricingPage() {
           </div>
 
           <p style={{ fontSize: 13, color: B.light, marginTop: 20, textAlign: "center", maxWidth: 480, marginLeft: "auto", marginRight: "auto", lineHeight: 1.6 }}>
-            All three assessments must be used within 12 months of purchase. Each measures the structural stability of income at the time it is issued.
+            {t.pricing.monitoringNote}
           </p>
         </div>
       </section>
@@ -544,7 +546,7 @@ export default function PricingPage() {
           }}
         >
           <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 24, textAlign: "center" }}>
-            What Every Assessment Includes
+            {t.pricing.includesTitle}
           </h2>
 
           <div
@@ -556,13 +558,13 @@ export default function PricingPage() {
             }}
           >
             {[
-              "Income Stability Score\u2122 (0\u2013100)",
-              "Stability Classification",
-              "Structural Drivers",
-              "Structural Constraints",
-              "Industry Percentile Comparison",
-              "Structural Improvement Path",
-              "Official PDF Assessment Record",
+              t.pricing.includesItem1,
+              t.pricing.includesItem2,
+              t.pricing.includesItem3,
+              t.pricing.includesItem4,
+              t.pricing.includesItem5,
+              t.pricing.includesItem6,
+              t.pricing.includesItem7,
             ].map((item) => (
               <div
                 key={item}
@@ -583,7 +585,7 @@ export default function PricingPage() {
           </div>
 
           <p style={{ fontSize: 13, color: B.light, textAlign: "center" }}>
-            Assessments are generated using fixed scoring criteria under Model RP-1.0.
+            {t.pricing.includesNote}
           </p>
         </div>
       </section>
@@ -611,15 +613,15 @@ export default function PricingPage() {
           }}
         >
           <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
-            How the Process Works
+            {t.pricing.processTitle}
           </h2>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             {[
-              { step: "Select your assessment option." },
-              { step: "You will be taken directly to the ", bold: "Income Stability Assessment", after: "." },
-              { step: "Complete the diagnostic — six structural questions about your income system." },
-              { step: "Your ", bold: "Income Stability Score\u2122 report", after: " will be generated and issued as an ", bold2: "Official PDF Assessment Record", after2: "." },
+              { step: t.pricing.processStep1 },
+              { step: t.pricing.processStep2pre, bold: t.pricing.processStep2bold, after: t.pricing.processStep2post },
+              { step: t.pricing.processStep3 },
+              { step: t.pricing.processStep4pre, bold: t.pricing.processStep4bold1, after: t.pricing.processStep4mid, bold2: t.pricing.processStep4bold2, after2: t.pricing.processStep4post },
             ].map((item, i) => (
               <div
                 key={i}
@@ -716,11 +718,11 @@ export default function PricingPage() {
           }}
         >
           <h2 style={{ fontSize: mobile ? 26 : 38, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 20 }}>
-            Choose Your Assessment
+            {t.pricing.ctaTitle}
           </h2>
 
           <p style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 520, margin: "0 auto 36px" }}>
-            Choose how you would like to measure the structural stability of your income system.
+            {t.pricing.ctaDesc}
           </p>
 
           {/* Two CTA buttons */}
@@ -751,7 +753,7 @@ export default function PricingPage() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Single Assessment — $39
+              {t.pricing.singleCta2}
             </button>
             <button
               disabled
@@ -770,25 +772,25 @@ export default function PricingPage() {
                 width: mobile ? "100%" : "auto",
               }}
             >
-              Annual Monitoring — Coming Soon
+              {t.pricing.annualCta2}
             </button>
           </div>
 
           {/* Methodology statement */}
           <div style={{ marginTop: 48, maxWidth: 520, margin: "48px auto 0" }}>
             <p style={{ fontSize: 12, color: "rgba(255,255,255,0.40)", lineHeight: 1.7, marginBottom: 8 }}>
-              Income Stability assessments are generated using fixed scoring criteria defined under Model RP-1.0.
+              {t.pricing.methodology1}
             </p>
             <p style={{ fontSize: 11, color: "rgba(255,255,255,0.28)", lineHeight: 1.7, marginBottom: 8 }}>
-              The Income Stability Score™ is a structural income assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+              {t.pricing.methodology2}
             </p>
             <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.7 }}>
-              Your score reflects the structural characteristics of your income system exactly as reported.
+              {t.pricing.methodology3}
             </p>
           </div>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 28, letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.pricing.poweredBy}
           </p>
         </div>
       </section>

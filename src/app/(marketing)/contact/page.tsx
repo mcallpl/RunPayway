@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -68,6 +69,7 @@ const B = {
 
 export default function ContactPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
   const formAnim = useInView();
   const sideAnim = useInView();
@@ -157,7 +159,7 @@ export default function ContactPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Contact
+              {t.contact.heroTag}
             </span>
           </div>
 
@@ -171,7 +173,7 @@ export default function ContactPage() {
               marginBottom: 24,
             }}
           >
-            Contact RunPayway™
+            {t.contact.heroTitle}
           </h1>
 
           <p
@@ -183,15 +185,15 @@ export default function ContactPage() {
               margin: "0 auto 16px",
             }}
           >
-            For questions regarding the Income Stability Score™, assessment reports, verification records, or platform information, please submit the inquiry form below.
+            {t.contact.heroDesc}
           </p>
 
           <p style={{ fontSize: mobile ? 14 : 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 8px" }}>
-            RunPayway™ inquiries are reviewed by the platform team.
+            {t.contact.heroNote}
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Responses are typically provided within two business days.
+            {t.contact.heroResponse}
           </p>
         </div>
       </section>
@@ -234,18 +236,18 @@ export default function ContactPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-              Submit an Inquiry
+              {t.contact.formTag}
             </div>
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 28 }} />
 
             {/* Full Name */}
             <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Full Name</label>
+              <label style={labelStyle}>{t.contact.fullName}</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your full name"
+                placeholder={t.contact.fullNamePlaceholder}
                 style={inputStyle}
                 onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
@@ -254,12 +256,12 @@ export default function ContactPage() {
 
             {/* Email Address */}
             <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Email Address</label>
+              <label style={labelStyle}>{t.contact.emailAddress}</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t.contact.emailPlaceholder}
                 style={inputStyle}
                 onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
@@ -268,7 +270,7 @@ export default function ContactPage() {
 
             {/* Subject */}
             <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Subject</label>
+              <label style={labelStyle}>{t.contact.subject}</label>
               <select
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
@@ -285,23 +287,23 @@ export default function ContactPage() {
                 onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
               >
-                <option value="" disabled>Select a subject</option>
-                <option value="general">General Inquiry</option>
-                <option value="assessment">Assessment Question</option>
-                <option value="verification">Verification Question</option>
-                <option value="technical">Technical Issue</option>
-                <option value="partnership">Partnership Inquiry</option>
-                <option value="other">Other</option>
+                <option value="" disabled>{t.contact.subjectPlaceholder}</option>
+                <option value="general">{t.contact.subjectGeneral}</option>
+                <option value="assessment">{t.contact.subjectAssessment}</option>
+                <option value="verification">{t.contact.subjectVerification}</option>
+                <option value="technical">{t.contact.subjectTechnical}</option>
+                <option value="partnership">{t.contact.subjectPartnership}</option>
+                <option value="other">{t.contact.subjectOther}</option>
               </select>
             </div>
 
             {/* Message */}
             <div style={{ marginBottom: 28 }}>
-              <label style={labelStyle}>Message</label>
+              <label style={labelStyle}>{t.contact.message}</label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Describe your question or inquiry..."
+                placeholder={t.contact.messagePlaceholder}
                 rows={5}
                 style={{
                   ...inputStyle,
@@ -337,14 +339,14 @@ export default function ContactPage() {
                 transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
               }}
             >
-              Submit Inquiry
+              {t.contact.submit}
             </button>
 
             {/* Security line */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: B.light }}>Secure form submission</span>
-              <span style={{ fontSize: 12, color: B.light }}>Encrypted data transmission</span>
+              <span style={{ fontSize: 12, color: B.light }}>{t.contact.secureForm}</span>
+              <span style={{ fontSize: 12, color: B.light }}>{t.contact.encryptedData}</span>
             </div>
           </div>
 
@@ -372,16 +374,16 @@ export default function ContactPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-                Response Expectations
+                {t.contact.responseTag}
               </div>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
-                All inquiries are reviewed by the RunPayway™ team.
+                {t.contact.responseP1}
               </p>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
-                Responses are typically provided within two business days.
+                {t.contact.responseP2}
               </p>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75 }}>
-                If your question relates to a specific assessment, please include your Record ID if available.
+                {t.contact.responseP3}
               </p>
             </div>
 
@@ -396,16 +398,16 @@ export default function ContactPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-                Alternative Resources
+                {t.contact.resourcesTag}
               </div>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 16 }}>
-                Many common questions are answered in the following resources:
+                {t.contact.resourcesDesc}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
-                  { href: "/faq", label: "FAQ" },
-                  { href: "/methodology", label: "Methodology" },
-                  { href: "/verify", label: "Verify a Score" },
+                  { href: "/faq", label: t.nav.faq },
+                  { href: "/methodology", label: t.nav.methodology },
+                  { href: "/verify", label: t.nav.verifyAScore },
                 ].map((link) => (
                   <Link
                     key={link.label}
@@ -432,7 +434,7 @@ export default function ContactPage() {
                 ))}
               </div>
               <p style={{ fontSize: 13, color: B.light, lineHeight: 1.7, marginTop: 14 }}>
-                These sections provide detailed information about the Income Stability Score™, the RunPayway assessment process, and assessment verification.
+                {t.contact.resourcesNote}
               </p>
             </div>
 
@@ -447,13 +449,13 @@ export default function ContactPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-                Security Notice
+                {t.contact.securityTag}
               </div>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
-                Do not include sensitive financial information in your message.
+                {t.contact.securityP1}
               </p>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75 }}>
-                The contact form is intended for general platform inquiries and support questions.
+                {t.contact.securityP2}
               </p>
             </div>
           </div>
@@ -516,10 +518,10 @@ export default function ContactPage() {
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            Income Stability Score™
+            {t.contact.closingSubtitle}
           </div>
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.contact.poweredBy}
           </p>
         </div>
       </section>

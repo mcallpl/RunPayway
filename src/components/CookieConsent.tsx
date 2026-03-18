@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 const STORAGE_KEY = "rp_cookie_consent";
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Only show if consent hasn't been given
@@ -61,13 +63,12 @@ export default function CookieConsent() {
           textAlign: "center",
         }}
       >
-        RunPayway uses essential cookies for platform functionality. No tracking
-        or advertising cookies are used.
+        {t.cookie.mainText}
         {expanded && (
           <span style={{ display: "block", marginTop: 12, fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
-            <strong style={{ color: "rgba(255,255,255,0.70)" }}>What we store:</strong> Assessment progress is saved in your browser&apos;s session storage so you don&apos;t lose your work if you navigate away. Cookie consent preference is saved in local storage. No personal information is stored in cookies.
+            <strong style={{ color: "rgba(255,255,255,0.70)" }}>{t.cookie.whatWeStore}</strong> {t.cookie.whatWeStoreDetail}
             <br /><br />
-            <strong style={{ color: "rgba(255,255,255,0.70)" }}>What we don&apos;t do:</strong> No third-party analytics, no advertising pixels, no cross-site tracking, no data sold or shared. Your assessment data is used only to generate your report.
+            <strong style={{ color: "rgba(255,255,255,0.70)" }}>{t.cookie.whatWeDontDo}</strong> {t.cookie.whatWeDontDoDetail}
           </span>
         )}
       </p>
@@ -102,7 +103,7 @@ export default function CookieConsent() {
             e.currentTarget.style.background = "#4B3FAE";
           }}
         >
-          Accept
+          {t.cookie.accept}
         </button>
 
         <button
@@ -132,7 +133,7 @@ export default function CookieConsent() {
             e.currentTarget.style.color = "rgba(255,255,255,0.60)";
           }}
         >
-          {expanded ? "Less" : "Learn More"}
+          {expanded ? t.cookie.less : t.cookie.learnMore}
         </button>
       </div>
     </div>
