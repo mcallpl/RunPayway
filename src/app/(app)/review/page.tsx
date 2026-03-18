@@ -49,7 +49,12 @@ class ReportErrorBoundary extends Component<
 function safeJsonParse<T>(json: string | undefined | null, fallback: T): T {
   if (!json) return fallback;
   try {
-    return JSON.parse(json);
+    const parsed = JSON.parse(json);
+    // Guard: if fallback is an array but parsed is not, return fallback
+    if (Array.isArray(fallback) && !Array.isArray(parsed)) return fallback;
+    // Guard: if fallback is a plain object but parsed is not, return fallback
+    if (fallback !== null && typeof fallback === "object" && !Array.isArray(fallback) && (typeof parsed !== "object" || parsed === null || Array.isArray(parsed))) return fallback;
+    return parsed;
   } catch {
     return fallback;
   }
@@ -1325,7 +1330,8 @@ export default function ReviewPage() {
         </div>
         {/* Constraint-specific guidance */}
         {(() => {
-          const guidance: string[] = safeJsonParse(record.constraint_guidance_payload, []);
+          const guidanceRaw = safeJsonParse(record.constraint_guidance_payload, {});
+          const guidance: string[] = Array.isArray(guidanceRaw) ? guidanceRaw : Object.values(guidanceRaw);
           if (guidance.length === 0) return null;
           return (
             <div style={{ marginTop: R.paraMb, borderRadius: 6, backgroundColor: "rgba(31,109,122,0.04)", border: `1px solid rgba(31,109,122,0.12)`, padding: "10px 12px" }}>
