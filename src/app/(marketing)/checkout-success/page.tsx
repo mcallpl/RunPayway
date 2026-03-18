@@ -23,6 +23,9 @@ function CheckoutSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") || "single";
+  // Stripe redirects with session_id and customer email
+  const stripeSessionId = searchParams.get("session_id") || "";
+  const customerEmail = searchParams.get("email") || searchParams.get("customer_email") || "";
   const [step, setStep] = useState(0);
 
   // Store purchase session and obtain signed payment token from server
@@ -35,6 +38,9 @@ function CheckoutSuccessContent() {
       intended_assessment_count: plan === "monitoring" ? 3 : 1,
       status: "paid",
       checkout_provider: "stripe",
+      // Stripe session data (populated when Stripe is connected)
+      stripe_session_id: stripeSessionId,
+      customer_email: customerEmail,
       // token fields populated below
       payment_token: "",
       token_timestamp: "",

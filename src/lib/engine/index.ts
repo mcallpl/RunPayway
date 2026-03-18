@@ -196,8 +196,8 @@ export async function executeIncomeStabilityEngine(
     record_hash: recordHash,
 
     // Subject linkage
-    subject_identifier: validatedProfile.recipient_email,
-    recipient_email: validatedProfile.recipient_email,
+    subject_identifier: validatedProfile.recipient_email || validatedProfile.assessment_title || recordId,
+    recipient_email: validatedProfile.recipient_email || "",
 
     // Profile context
     assessment_title: validatedProfile.assessment_title || "",
@@ -315,10 +315,8 @@ export async function executeIncomeStabilityEngine(
   await storage.saveRecord(record);
 
   // Step 15: Supersede prior records for same subject
-  await storage.supersedePriorRecords(
-    validatedProfile.recipient_email,
-    recordId
-  );
+  const subjectId = validatedProfile.recipient_email || validatedProfile.assessment_title || recordId;
+  await storage.supersedePriorRecords(subjectId, recordId);
 
   return record;
 }

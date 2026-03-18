@@ -524,9 +524,12 @@ export default function ReviewPage() {
     // Auto-send report via email (once per load)
     if (!emailSent.current) {
       emailSent.current = true;
-      // Get email from profile (collected during checkout/diagnostic-portal)
+      // Get email from Stripe checkout session (primary) or profile (fallback)
+      const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
       const profileRaw = sessionStorage.getItem("rp_profile");
-      const email = profileRaw ? JSON.parse(profileRaw).recipient_email : null;
+      const email =
+        (purchaseRaw ? JSON.parse(purchaseRaw).customer_email : null) ||
+        (profileRaw ? JSON.parse(profileRaw).recipient_email : null);
       if (email) {
         setEmailStatus("sending");
         fetch("/api/v1/send-report", {

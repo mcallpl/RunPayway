@@ -76,7 +76,7 @@ export interface ProfileContext {
   primary_income_model: string;
   revenue_structure: string;
   industry_sector: string;
-  recipient_email: string;
+  recipient_email?: string;
 }
 
 export interface DiagnosticSubmission {

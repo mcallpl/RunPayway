@@ -149,8 +149,21 @@ export default function InitializationPage() {
     primary_income_model: "",
     revenue_structure: "",
     industry_sector: "",
-    recipient_email: "",
+    recipient_email: "", // populated from Stripe checkout, not user input
   });
+
+  // Pre-fill email from Stripe checkout session
+  useEffect(() => {
+    const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
+    if (purchaseRaw) {
+      try {
+        const ps = JSON.parse(purchaseRaw);
+        if (ps.customer_email) {
+          setForm((prev) => ({ ...prev, recipient_email: ps.customer_email }));
+        }
+      } catch { /* ignore */ }
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -217,8 +230,7 @@ export default function InitializationPage() {
     form.operating_structure &&
     form.primary_income_model &&
     form.revenue_structure &&
-    form.industry_sector &&
-    form.recipient_email.includes("@");
+    form.industry_sector;
 
   const handleBegin = () => {
     sessionStorage.setItem("rp_profile", JSON.stringify(form));
@@ -252,8 +264,7 @@ export default function InitializationPage() {
 
   const progressWidths = ["5%", "10%", "15%"];
 
-  const canContinueStep0 =
-    form.recipient_email.includes("@") && form.assessment_title.trim() !== "";
+  const canContinueStep0 = form.assessment_title.trim() !== "";
 
   const canContinueStep1 =
     form.classification !== "" && form.operating_structure !== "";
@@ -284,27 +295,13 @@ export default function InitializationPage() {
           }}
         >
           <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-            Report Delivery
+            Assessment Setup
           </h2>
           <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-            Where should we send your Income Stability Score™ report?
+            This information appears on your report. Your report will be sent to the email used during checkout.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <div>
-              <label style={labelStyle}>Email Address</label>
-              <p style={helperStyle}>Your report will be delivered to this email address.</p>
-              <input
-                type="email"
-                value={form.recipient_email}
-                onChange={(e) => update("recipient_email", e.target.value)}
-                placeholder="you@example.com"
-                style={inputStyle}
-                onFocus={focusHandler}
-                onBlur={blurHandler}
-              />
-            </div>
-
             {/* Assessment Title */}
             <div>
               <label style={labelStyle}>Assessment Title</label>

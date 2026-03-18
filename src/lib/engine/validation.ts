@@ -80,7 +80,6 @@ export function validateProfileContext(profile: unknown): ProfileContext {
     "primary_income_model",
     "revenue_structure",
     "industry_sector",
-    "recipient_email",
   ];
 
   for (const field of required) {
@@ -130,10 +129,9 @@ export function validateProfileContext(profile: unknown): ProfileContext {
     throw new ValidationError(`Invalid industry_sector: ${obj.industry_sector}`);
   }
 
-  // Email validation — must be user@domain.tld format
-  const email = obj.recipient_email as string;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  if (!emailRegex.test(email)) {
+  // Email validation — optional (comes from Stripe checkout, not user input)
+  const email = typeof obj.recipient_email === "string" ? obj.recipient_email : "";
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     throw new ValidationError(`Invalid recipient_email: ${email}`);
   }
 
@@ -145,6 +143,6 @@ export function validateProfileContext(profile: unknown): ProfileContext {
     primary_income_model: obj.primary_income_model as string,
     revenue_structure: obj.revenue_structure as string,
     industry_sector: obj.industry_sector as string,
-    recipient_email: obj.recipient_email as string,
+    recipient_email: email || undefined,
   };
 }
