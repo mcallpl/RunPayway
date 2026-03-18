@@ -701,6 +701,11 @@ export default function MarketingLayout({
           {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
+          {/* Language availability */}
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.40)", textAlign: "center", marginBottom: 12 }}>
+            Available in: English • Español • Português • हिन्दी
+          </div>
+
           {/* Legal strip */}
           <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
             {t.footer.legal}
