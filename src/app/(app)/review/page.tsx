@@ -693,6 +693,7 @@ export default function ReviewPage() {
   const rt = t.report;
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const monitoringTracked = useRef(false);
   const emailSent = useRef(false);
@@ -800,7 +801,6 @@ export default function ReviewPage() {
   const bench = getIndustryBenchmark(record.final_score, record.sector_avg_score, record.sector_top_20_threshold);
   const evoIdx = evolutionSteps.length > 1 ? Math.round(((record.current_evolution_stage_position || 0) / 100) * (evolutionSteps.length - 1)) : 0;
 
-  const [downloadError, setDownloadError] = useState<string | null>(null);
   const handleDownload = async () => {
     setDownloading(true);
     setDownloadError(null);
