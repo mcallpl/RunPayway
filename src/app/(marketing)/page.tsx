@@ -1106,7 +1106,7 @@ function PreviewYourScoreReport() {
               overflow: "hidden",
             }}>
               <div style={{ position: "absolute", top: 0, left: 20, right: 20, height: 3, borderRadius: "0 0 3px 3px", background: B.gradient }} />
-              <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>Income Stability Score™</div>
+              <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>{t.home.reportScoreLabel}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
                 <span className="text-[40px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>78</span>
                 <span className="text-[15px]" style={{ fontWeight: 600, color: B.teal }}>Established Stability</span>
@@ -1127,17 +1127,17 @@ function PreviewYourScoreReport() {
               padding: mobile ? "24px 20px" : "28px 28px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
             }}>
-              <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>Income Continuity Estimate</div>
+              <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10 }}>{t.home.reportContinuityLabel}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
                 <span className="text-[32px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>38%</span>
-                <span className="text-[12px]" style={{ color: B.muted }}>continues without active work</span>
+                <span className="text-[12px]" style={{ color: B.muted }}>{t.home.reportContinuityUnit}</span>
               </div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 10 }}>
-                <span className="text-[20px]" style={{ fontWeight: 600, color: B.teal }}>4 months</span>
-                <span className="text-[11px]" style={{ color: B.muted }}>estimated continuity</span>
+                <span className="text-[20px]" style={{ fontWeight: 600, color: B.teal }}>4 {t.home.reportContinuityMonths}</span>
+                <span className="text-[11px]" style={{ color: B.muted }}>{t.home.reportContinuityEstimated}</span>
               </div>
               <p className="text-[10px]" style={{ color: B.muted, lineHeight: 1.5, margin: 0 }}>
-                If active work stopped today, approximately 38% of income would continue for an estimated 4 months through existing commitments and recurring arrangements.
+                {t.home.reportContinuityDesc}
               </p>
             </div>
           </div>
@@ -1152,15 +1152,15 @@ function PreviewYourScoreReport() {
               padding: "20px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
             }}>
-              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>Risk Scenario</div>
+              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>{t.home.reportRiskTitle}</div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
                 <span className="text-[24px]" style={{ fontWeight: 700, color: B.navy }}>78</span>
                 <span className="text-[14px]" style={{ color: B.light }}>&rarr;</span>
                 <span className="text-[24px]" style={{ fontWeight: 700, color: "#DC2626" }}>56</span>
-                <span className="text-[11px]" style={{ fontWeight: 600, color: "#DC2626" }}>-22 pts</span>
+                <span className="text-[11px]" style={{ fontWeight: 600, color: "#DC2626" }}>-22 {t.home.reportRiskPts}</span>
               </div>
               <p className="text-[10px]" style={{ color: B.muted, lineHeight: 1.5, margin: 0 }}>
-                If the largest income source were lost, the score would drop to Developing Stability.
+                {t.home.reportRiskDesc}
               </p>
             </div>
 
@@ -1175,7 +1175,7 @@ function PreviewYourScoreReport() {
               flexDirection: "column",
               alignItems: "center",
             }}>
-              <div className="text-[10px] uppercase" style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8, alignSelf: "flex-start" }}>Structural Radar</div>
+              <div className="text-[10px] uppercase" style={{ color: B.purple, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8, alignSelf: "flex-start" }}>{t.home.reportRadarTitle}</div>
               {/* Simplified radar preview */}
               <svg width={140} height={130} viewBox="0 0 140 130" style={{ display: "block" }}>
                 {/* Grid */}
@@ -1201,7 +1201,7 @@ function PreviewYourScoreReport() {
               padding: "20px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
             }}>
-              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>Service Recommendations</div>
+              <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>{t.home.reportRecsTitle}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
                   { name: "Income Protection", urgency: "High", color: B.teal },
@@ -1215,7 +1215,7 @@ function PreviewYourScoreReport() {
                 ))}
               </div>
               <p className="text-[9px]" style={{ color: B.light, marginTop: 10, lineHeight: 1.4, fontStyle: "italic" }}>
-                Ranked by urgency based on structural gaps
+                {t.home.reportRecsNote}
               </p>
             </div>
           </div>
@@ -1223,10 +1223,10 @@ function PreviewYourScoreReport() {
           {/* Bottom row — feature highlights */}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 12 }}>
             {[
-              { label: "90-Day Action Plan", desc: "Industry-specific steps" },
-              { label: "Advisor Discussion Guide", desc: "Talking points & questions" },
-              { label: "Client Summary", desc: "Shareable tearsheet" },
-              { label: "QR-Verified Record", desc: "Instant verification" },
+              { label: t.home.reportFeat1Label, desc: t.home.reportFeat1Desc },
+              { label: t.home.reportFeat2Label, desc: t.home.reportFeat2Desc },
+              { label: t.home.reportFeat3Label, desc: t.home.reportFeat3Desc },
+              { label: t.home.reportFeat4Label, desc: t.home.reportFeat4Desc },
             ].map((feat) => (
               <div key={feat.label} style={{
                 backgroundColor: "#ffffff",

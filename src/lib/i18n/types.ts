@@ -101,6 +101,27 @@ export interface Translations {
     reportSubtitle: string;
     viewSample: string;
     reportDelivered: string;
+    // Report preview section
+    reportScoreLabel: string;
+    reportContinuityLabel: string;
+    reportContinuityUnit: string;
+    reportContinuityMonths: string;
+    reportContinuityEstimated: string;
+    reportContinuityDesc: string;
+    reportRiskTitle: string;
+    reportRiskPts: string;
+    reportRiskDesc: string;
+    reportRadarTitle: string;
+    reportRecsTitle: string;
+    reportRecsNote: string;
+    reportFeat1Label: string;
+    reportFeat1Desc: string;
+    reportFeat2Label: string;
+    reportFeat2Desc: string;
+    reportFeat3Label: string;
+    reportFeat3Desc: string;
+    reportFeat4Label: string;
+    reportFeat4Desc: string;
     registryTitle: string;
     registrySubtitle: string;
     registryVerify: string;
