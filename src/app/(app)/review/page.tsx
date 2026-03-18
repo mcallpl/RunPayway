@@ -555,12 +555,21 @@ export default function ReviewPage() {
         {/* Score presentation */}
         <div style={{ marginBottom: R.sectionGap }}>
           <Label>{rt.scoreLabel}</Label>
-          <div style={{ ...T.score, color: B.navy }}>
-            {record.final_score}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
+            <div style={{ ...T.score, color: B.navy }}>
+              {record.final_score}
+            </div>
+            <div style={{ ...T.band, color: B.teal }}>
+              {record.stability_band}
+            </div>
           </div>
-          <div style={{ ...T.band, color: B.teal, marginTop: 6 }}>
-            {record.stability_band}
-          </div>
+
+          {/* Band interpretation */}
+          {record.band_interpretation_text && (
+            <p style={{ ...T.small, color: B.muted, marginTop: R.paraMb }}>
+              {record.band_interpretation_text}
+            </p>
+          )}
 
           {/* Metadata */}
           <div style={{ ...T.caption, color: B.light, marginTop: R.paraMb, display: "flex", flexWrap: "wrap", gap: "0 24px" }}>
@@ -740,6 +749,37 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
+        {/* Labor-Asset Position */}
+        {record.labor_asset_position_label && (
+          <>
+            <SectionDivider />
+            <Label>Labor-Asset Position — {subject}</Label>
+            <div style={{ marginBottom: R.paraMb }}>
+              {/* Spectrum bar */}
+              <div style={{ position: "relative", height: 8, borderRadius: 99, background: `linear-gradient(90deg, ${B.muted} 0%, ${B.teal} 50%, ${B.navy} 100%)`, marginBottom: 6 }}>
+                <div style={{
+                  position: "absolute",
+                  left: `${Math.min(Math.max(record.labor_asset_marker_position, 0), 100)}%`,
+                  top: -3,
+                  width: 14, height: 14, borderRadius: 99,
+                  backgroundColor: "#ffffff", border: `2px solid ${B.navy}`,
+                  transform: "translateX(-50%)", boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                }} />
+              </div>
+              <div style={{ ...T.caption, display: "flex", justifyContent: "space-between", color: B.light }}>
+                <span>Labor-Dependent</span>
+                <span style={{ fontWeight: 500, color: B.navy }}>{record.labor_asset_position_label}</span>
+                <span>Asset-Driven</span>
+              </div>
+            </div>
+            {record.labor_asset_framework_text && (
+              <p style={{ ...T.caption, color: B.muted }}>{record.labor_asset_framework_text}</p>
+            )}
+          </>
+        )}
+
+        <SectionDivider />
+
         {/* Structural Priority Map — ALL 6 factors */}
         <Label>{rt.priorityMap} — {subject}</Label>
         <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
@@ -762,7 +802,7 @@ export default function ReviewPage() {
           {rt.diagnosisBenchmarks}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_4_key_insight_text}
+          {record.page_3_key_insight_text || record.page_4_key_insight_text}
         </p>
 
         {/* System Diagnosis */}
@@ -799,25 +839,53 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* Drivers */}
+        {/* Peer benchmark narrative */}
+        {record.peer_benchmark_text && (
+          <p style={{ ...T.caption, color: B.muted, marginTop: R.paraMb }}>
+            {record.peer_benchmark_text}
+          </p>
+        )}
+
+        {/* Drivers — with detailed explanations */}
         <div style={{ marginTop: R.sectionGap }}>
           <Label>{rt.driversSupporting} {possessive}</Label>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: R.itemGap }}>
-            {[record.driver_1_label, record.driver_2_label, record.driver_3_label].map((d) => (
-              <span key={d} style={{ ...T.caption, fontWeight: 500, borderRadius: 6, backgroundColor: B.sand, color: B.navy, padding: "4px 10px" }}>{d}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
+            {[
+              { label: record.driver_1_label, text: record.driver_1_text },
+              { label: record.driver_2_label, text: record.driver_2_text },
+              { label: record.driver_3_label, text: record.driver_3_text },
+            ].map((d) => (
+              <div key={d.label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{d.label}</div>
+                {d.text && <div style={{ ...T.caption, color: B.muted }}>{d.text}</div>}
+              </div>
             ))}
           </div>
         </div>
 
         <SectionDivider />
 
-        {/* Primary Constraint */}
+        {/* Primary Constraint — with detailed explanation + guidance */}
         <Label>{rt.primaryConstraint} — {subject}</Label>
         <div style={{ ...T.body, fontWeight: 500, color: B.navy, marginBottom: R.itemGap }}>{record.primary_constraint_label}</div>
         <div style={{ ...T.small, color: B.muted, display: "flex", flexDirection: "column", gap: R.itemGap }}>
+          {record.primary_constraint_text && <p>{record.primary_constraint_text}</p>}
           <p>{riskData.mechanism}</p>
           <p>{riskData.impact}</p>
         </div>
+        {/* Constraint-specific guidance */}
+        {(() => {
+          const guidance: string[] = JSON.parse(record.constraint_guidance_payload || "[]");
+          if (guidance.length === 0) return null;
+          return (
+            <div style={{ marginTop: R.paraMb, borderRadius: 6, backgroundColor: "rgba(31,109,122,0.04)", border: `1px solid rgba(31,109,122,0.12)`, padding: "10px 12px" }}>
+              <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Guidance</div>
+              <ul style={{ ...T.caption, color: B.muted, margin: 0, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 2 }}>
+                {guidance.map((g, i) => <li key={i}>{g}</li>)}
+              </ul>
+            </div>
+          );
+        })()}
 
         {/* Projected Score */}
         {record.projected_final_score && record.projected_final_score !== record.final_score && (
@@ -840,6 +908,16 @@ export default function ReviewPage() {
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_6_key_insight_text}
         </p>
+
+        {/* Structural Priority */}
+        {record.structural_priority_label && (
+          <div style={{ marginBottom: R.sectionGap, borderRadius: 6, backgroundColor: "rgba(75,63,174,0.04)", border: `1px solid rgba(75,63,174,0.10)`, padding: "10px 12px" }}>
+            <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 3 }}>Structural Priority: {record.structural_priority_label}</div>
+            {record.structural_priority_text && (
+              <div style={{ ...T.caption, color: B.muted }}>{record.structural_priority_text}</div>
+            )}
+          </div>
+        )}
 
         {/* Improvement Opportunities */}
         <Label>{rt.improvementOpportunities} — {subject}</Label>
@@ -922,7 +1000,7 @@ export default function ReviewPage() {
           {rt.governanceRecord}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {rt.governanceIntro}
+          {record.page_5_key_insight_text || rt.governanceIntro}
         </p>
 
         {/* Methodology */}
