@@ -376,7 +376,37 @@ const t = e.currentTarget;
               marginRight: "auto",
             }}
           >
-            Most first-time assessments score between 35&#8211;55. If your income depends on active work or a few key clients, this assessment quantifies that risk.
+            {t.home.ctaFirstTime}
+          </p>
+
+          {/* Urgency */}
+          <p
+            className="text-[13px] md:text-[14px]"
+            style={{
+              color: "rgba(244,241,234,0.60)",
+              lineHeight: 1.6,
+              marginTop: 16,
+              maxWidth: 480,
+              textAlign: "center" as const,
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontStyle: "italic",
+            }}
+          >
+            {t.home.ctaUrgency}
+          </p>
+
+          {/* Reassurance */}
+          <p
+            className="text-[11px] md:text-[12px]"
+            style={{
+              color: "rgba(244,241,234,0.40)",
+              lineHeight: 1.6,
+              marginTop: 12,
+              letterSpacing: "0.04em",
+            }}
+          >
+            {t.home.ctaReassurance}
           </p>
         </div>
       </div>
@@ -1054,6 +1084,39 @@ function PreviewYourScoreReport() {
         overflow: "hidden",
       }}
      aria-label="Preview Your Score Report">
+
+      {/* Human-element scenario quote */}
+      <div style={{
+        maxWidth: 600,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        textAlign: "center",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: "opacity 0.6s ease, transform 0.6s ease",
+      }}>
+        <p style={{
+          fontSize: mobile ? 18 : 22,
+          fontWeight: 400,
+          fontStyle: "italic",
+          color: B.navy,
+          lineHeight: 1.65,
+          marginBottom: 16,
+          letterSpacing: "-0.01em",
+        }}>
+          {t.home.scenarioQuote}
+        </p>
+        <p style={{
+          fontSize: 14,
+          color: B.muted,
+          lineHeight: 1.5,
+        }}>
+          {t.home.scenarioNote}
+        </p>
+      </div>
 
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Section header */}

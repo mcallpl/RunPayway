@@ -97,6 +97,8 @@ export interface Translations {
     whatsMissing: string;
     issDesc: string;
     issTagline: string;
+    scenarioQuote: string;
+    scenarioNote: string;
     reportTitle: string;
     reportSubtitle: string;
     viewSample: string;
@@ -147,6 +149,8 @@ export interface Translations {
     ctaBody: string;
     ctaPrice: string;
     ctaCompletion: string;
+    ctaUrgency: string;
+    ctaReassurance: string;
     ctaFirstTime: string;
     disclaimerTitle: string;
     disclaimerBody1: string;
