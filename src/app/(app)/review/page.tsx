@@ -264,7 +264,7 @@ const PDF = {
 // LAYOUT COMPONENTS
 // ============================================================
 
-function ReportHeader({ record }: { record: AssessmentRecord }) {
+function ReportHeader({ record, pageLabel }: { record: AssessmentRecord; pageLabel?: string }) {
   const ts = record.issued_timestamp_utc || record.assessment_date_utc;
   return (
     <div style={{ marginBottom: R.headerMb }}>
@@ -276,8 +276,9 @@ function ReportHeader({ record }: { record: AssessmentRecord }) {
             <img src="/runpayway-logo-full.png" alt="RunPayway" style={{ height: 18, width: "auto" }} />
             <span style={{ ...T.caption, color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
           </div>
-          <div style={{ ...T.caption, color: B.light }}>
-            {record.record_id.slice(0, 8)}… · {ts}
+          <div style={{ ...T.caption, color: B.light, textAlign: "right" }}>
+            {pageLabel && <div style={{ fontWeight: 500, color: B.muted, marginBottom: 1 }}>{pageLabel}</div>}
+            <div>{record.record_id.slice(0, 8)}… · {ts}</div>
           </div>
         </div>
       </div>
@@ -308,7 +309,7 @@ function ConfidentialityFooter({ record }: { record: AssessmentRecord }) {
   );
 }
 
-function ReportPage({ record, children }: { record: AssessmentRecord; children: React.ReactNode }) {
+function ReportPage({ record, children, pageLabel }: { record: AssessmentRecord; children: React.ReactNode; pageLabel?: string }) {
   return (
     <div className="report-page" style={{
       width: PDF.captureW,
@@ -324,9 +325,103 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       overflow: "visible",
       boxShadow: "0 2px 16px rgba(14,26,43,0.06), 0 1px 4px rgba(14,26,43,0.04)",
     }}>
-      <ReportHeader record={record} />
+      <ReportHeader record={record} pageLabel={pageLabel} />
       <div style={{ flex: 1 }}>{children}</div>
       <ConfidentialityFooter record={record} />
+    </div>
+  );
+}
+
+// ── Radar Chart for 6 structural factors (SVG) ──
+function RadarChart({ factors }: { factors: { label: string; value: number }[] }) {
+  const cx = 120, cy = 110, r = 85;
+  const n = factors.length;
+  const angleStep = (2 * Math.PI) / n;
+  const startAngle = -Math.PI / 2;
+
+  const getPoint = (i: number, pct: number) => {
+    const angle = startAngle + i * angleStep;
+    return { x: cx + r * pct * Math.cos(angle), y: cy + r * pct * Math.sin(angle) };
+  };
+
+  // Grid rings
+  const rings = [0.25, 0.5, 0.75, 1.0];
+  // Data polygon
+  const dataPoints = factors.map((f, i) => getPoint(i, f.value / 100));
+  const dataPath = dataPoints.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + "Z";
+
+  return (
+    <svg width={240} height={230} viewBox="0 0 240 230" style={{ display: "block" }} role="img" aria-label="Structural factor radar chart showing strength across 6 income stability dimensions">
+      {/* Grid rings */}
+      {rings.map((pct) => {
+        const pts = Array.from({ length: n }, (_, i) => getPoint(i, pct));
+        const path = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x},${p.y}`).join(" ") + "Z";
+        return <path key={pct} d={path} fill="none" stroke={B.sandDk} strokeWidth={0.75} />;
+      })}
+      {/* Axis lines */}
+      {factors.map((_, i) => {
+        const p = getPoint(i, 1);
+        return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke={B.sandDk} strokeWidth={0.5} />;
+      })}
+      {/* Data polygon */}
+      <path d={dataPath} fill="rgba(31,109,122,0.12)" stroke={B.teal} strokeWidth={1.5} />
+      {/* Data points */}
+      {dataPoints.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={3} fill={B.teal} />
+      ))}
+      {/* Labels */}
+      {factors.map((f, i) => {
+        const p = getPoint(i, 1.22);
+        const anchor = p.x < cx - 10 ? "end" : p.x > cx + 10 ? "start" : "middle";
+        return (
+          <text key={i} x={p.x} y={p.y} textAnchor={anchor} dominantBaseline="central"
+            style={{ fontSize: 8, fontWeight: 500, fill: B.muted }}>
+            {f.label}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
+
+// ── QR Code component (uses qrcode package) ──
+function QRCodeImage({ recordId }: { recordId: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    import("qrcode").then((QRCode) => {
+      QRCode.toCanvas(canvas, `https://runpayway.com/verify?id=${recordId}`, {
+        width: 72,
+        margin: 0,
+        color: { dark: "#0E1A2B", light: "#FFFFFF" },
+      });
+    }).catch(() => {
+      // QR code library not available — leave canvas empty
+    });
+  }, [recordId]);
+
+  return <canvas ref={canvasRef} width={72} height={72} style={{ width: 72, height: 72, borderRadius: 4 }} />;
+}
+
+// ── Score trend for monitoring plan users ──
+function ScoreTrend({ currentScore, records }: { currentScore: number; records: Array<{ final_score: number; assessment_date_utc: string }> }) {
+  if (records.length < 2) return null;
+  const sorted = [...records].sort((a, b) => a.assessment_date_utc.localeCompare(b.assessment_date_utc));
+  const prev = sorted[sorted.length - 2];
+  const diff = currentScore - prev.final_score;
+  const arrow = diff > 0 ? "\u2191" : diff < 0 ? "\u2193" : "\u2192";
+  const color = diff > 0 ? B.teal : diff < 0 ? "#DC2626" : B.muted;
+
+  return (
+    <div aria-label={`Score ${diff > 0 ? "increased" : diff < 0 ? "decreased" : "unchanged"} by ${Math.abs(diff)} points`} style={{
+      display: "inline-flex", alignItems: "center", gap: 6,
+      padding: "4px 10px", borderRadius: 6, backgroundColor: `${color}10`,
+      marginLeft: 12,
+    }}>
+      <span style={{ fontSize: 14, fontWeight: 700, color }}>{arrow} {diff > 0 ? "+" : ""}{diff}</span>
+      <span style={{ ...T.caption, color: B.muted }}>vs prior</span>
     </div>
   );
 }
@@ -582,8 +677,65 @@ export default function ReviewPage() {
         <p style={{ fontSize: 14, color: B.muted, marginTop: 4 }}>{rt.modelVersion}</p>
       </div>
 
-      {/* ==================== PAGE 1 — Executive Assessment ==================== */}
+      {/* ==================== COVER PAGE ==================== */}
       <ReportPage record={record}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "40px 0" }}>
+          {/* Logo */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/runpayway-logo-full.png" alt="RunPayway" style={{ height: 36, width: "auto", marginBottom: 40 }} />
+
+          {/* Title */}
+          <div style={{ fontSize: 28, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
+            Income Stability Assessment
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: B.teal, letterSpacing: "0.06em", marginBottom: 40 }}>
+            Structural Stability Model RP-1.0
+          </div>
+
+          {/* Divider */}
+          <div style={{ width: 60, height: 2, backgroundColor: B.navy, opacity: 0.12, marginBottom: 40 }} />
+
+          {/* Subject */}
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ ...T.label, color: B.light, marginBottom: 6 }}>PREPARED FOR</div>
+            <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
+              {record.assessment_title || "Assessment Subject"}
+            </div>
+          </div>
+
+          {/* Score preview */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 32 }}>
+            <span style={{ fontSize: 56, fontWeight: 700, color: B.navy, lineHeight: 1 }}>{record.final_score}</span>
+            <span style={{ fontSize: 18, fontWeight: 600, color: B.teal }}>{record.stability_band}</span>
+          </div>
+
+          {/* Meta grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 440 }}>
+            {[
+              ["Record ID", record.record_id.slice(0, 8) + "…"],
+              ["Issued", (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0]],
+              ["Industry", record.industry_sector],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <div style={{ ...T.caption, color: B.light, marginBottom: 2 }}>{label}</div>
+                <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Divider */}
+          <div style={{ width: 60, height: 2, backgroundColor: B.navy, opacity: 0.12, margin: "40px 0" }} />
+
+          {/* Confidentiality */}
+          <div style={{ ...T.caption, color: B.light, maxWidth: 400, lineHeight: 1.6 }}>
+            This document is confidential and prepared exclusively for the named recipient.
+            Unauthorized distribution is prohibited. Verify authenticity at RunPayway.com/verify.
+          </div>
+        </div>
+      </ReportPage>
+
+      {/* ==================== PAGE 1 — Executive Assessment ==================== */}
+      <ReportPage record={record} pageLabel="Page 1 — Executive Assessment">
         {/* Executive summary */}
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_1_key_insight_text}
@@ -592,13 +744,21 @@ export default function ReviewPage() {
         {/* Score presentation */}
         <div style={{ marginBottom: R.sectionGap }}>
           <Label>{rt.scoreLabel}</Label>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
             <div style={{ ...T.score, color: B.navy }}>
               {record.final_score}
             </div>
             <div style={{ ...T.band, color: B.teal }}>
               {record.stability_band}
             </div>
+            {/* Score trend for monitoring plan users */}
+            {(() => {
+              try {
+                const allRecords = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<{ final_score: number; assessment_date_utc: string }>;
+                if (allRecords.length >= 2) return <ScoreTrend currentScore={record.final_score} records={allRecords} />;
+              } catch { /* ignore */ }
+              return null;
+            })()}
           </div>
 
           {/* Band interpretation */}
@@ -617,7 +777,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Spectrum bar */}
-        <div style={{ marginBottom: R.sectionGap }}>
+        <div style={{ marginBottom: R.sectionGap }} role="img" aria-label={`Score spectrum showing ${record.final_score} out of 100, classified as ${record.stability_band}`}>
           <div style={{ position: "relative", marginBottom: R.itemGap }}>
             <div style={{ height: 8, borderRadius: 99, background: B.gradient }} />
             {/* Score position marker */}
@@ -666,6 +826,26 @@ export default function ReviewPage() {
             </p>
           </div>
         )}
+
+        {/* "What This Means" plain-language callout */}
+        <div aria-label="Plain-language score summary" style={{
+          borderRadius: 8,
+          background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(31,109,122,0.04) 100%)`,
+          border: `1px solid rgba(31,109,122,0.10)`,
+          padding: "12px 16px",
+          marginBottom: R.sectionGap,
+        }}>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>What This Means</div>
+          <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
+            {record.final_score >= 80
+              ? `${subject} demonstrates high structural income stability. Income systems are well-diversified with strong persistence mechanisms. This income structure would likely maintain significant continuity even during disruptions.`
+              : record.final_score >= 60
+              ? `${subject} has established meaningful structural stability. Core income mechanisms are functional, though specific areas could be strengthened. The income system shows moderate resilience to disruption.`
+              : record.final_score >= 40
+              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence mechanisms. Targeted structural changes could significantly improve resilience.`
+              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor with minimal persistence or diversification. Structural improvements are recommended.`}
+          </p>
+        </div>
 
         <SectionDivider />
 
@@ -733,7 +913,7 @@ export default function ReviewPage() {
       </ReportPage>
 
       {/* ==================== PAGE 2 — Structural Analysis ==================== */}
-      <ReportPage record={record}>
+      <ReportPage record={record} pageLabel="Page 2 — Structural Analysis">
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           {rt.structuralAnalysis}
         </h2>
@@ -782,6 +962,18 @@ export default function ReviewPage() {
               <span style={{ ...T.caption, fontWeight: 500, color: B.navy }}>{v}</span>
             </div>
           ))}
+        </div>
+
+        {/* Radar chart — visual shape of income structure */}
+        <div style={{ display: "flex", justifyContent: "center", marginTop: R.sectionGap }}>
+          <RadarChart factors={[
+            { label: "Persistence", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_persistence_label] || 50 },
+            { label: "Diversification", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_source_diversity_label] || 50 },
+            { label: "Visibility", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.forward_revenue_visibility_label] || 50 },
+            { label: "Consistency", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_variability_label] || 50) },
+            { label: "Independence", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.active_labor_dependence_label] || 50) },
+            { label: "Spread", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.exposure_concentration_label] || 50) },
+          ]} />
         </div>
 
         <SectionDivider />
@@ -834,7 +1026,7 @@ export default function ReviewPage() {
       </ReportPage>
 
       {/* ==================== PAGE 3 — Diagnosis & Benchmarks ==================== */}
-      <ReportPage record={record}>
+      <ReportPage record={record} pageLabel="Page 3 — Diagnosis & Benchmarks">
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           {rt.diagnosisBenchmarks}
         </h2>
@@ -938,7 +1130,7 @@ export default function ReviewPage() {
       </ReportPage>
 
       {/* ==================== PAGE 4 — Improvement Path ==================== */}
-      <ReportPage record={record}>
+      <ReportPage record={record} pageLabel="Page 4 — Improvement Path">
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           {rt.improvementPath}
         </h2>
@@ -1032,7 +1224,7 @@ export default function ReviewPage() {
       </ReportPage>
 
       {/* ==================== PAGE 5 — Governance & Official Record ==================== */}
-      <ReportPage record={record}>
+      <ReportPage record={record} pageLabel="Page 5 — Governance & Record">
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           {rt.governanceRecord}
         </h2>
@@ -1074,10 +1266,21 @@ export default function ReviewPage() {
           ))}
         </dl>
 
-        {/* Verification */}
-        <p style={{ ...T.caption, color: B.muted, marginTop: R.sectionGap }}>
-          {rt.verifyAt} <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span>.
-        </p>
+        {/* Verification with QR code */}
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 20, marginTop: R.sectionGap }}>
+          <div style={{ flex: 1 }}>
+            <p style={{ ...T.caption, color: B.muted }}>
+              {rt.verifyAt} <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span>.
+            </p>
+            <p style={{ ...T.caption, color: B.light, marginTop: 4 }}>
+              Scan the QR code to verify this assessment record instantly.
+            </p>
+          </div>
+          {/* QR code rendered via canvas */}
+          <div aria-label="QR code linking to score verification page">
+            <QRCodeImage recordId={record.record_id} />
+          </div>
+        </div>
 
         {/* Model reference */}
         <div style={{ textAlign: "center", marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
@@ -1121,7 +1324,33 @@ export default function ReviewPage() {
         <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }`}</style>
       </div>
 
-      <div className="print-footer hidden print:block">RunPayway™ Income Stability Assessment — Model RP-1.0 | Version 1.0</div>
+      {/* ── Print stylesheet + dark mode ── */}
+      <style>{`
+        @media print {
+          .no-print, .download-section { display: none !important; }
+          .report-page {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0.5in !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+          }
+          .report-page + .report-page {
+            page-break-before: always;
+          }
+          body { background: white !important; }
+        }
+        @media (prefers-color-scheme: dark) {
+          .report-page {
+            background-color: #ffffff !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
