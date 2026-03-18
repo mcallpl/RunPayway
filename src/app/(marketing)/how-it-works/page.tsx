@@ -209,11 +209,13 @@ function StepCard({
 
 function ClassificationBand({
   label,
+  range,
   index,
   mobile,
   visible,
 }: {
   label: string;
+  range: string;
   index: number;
   mobile: boolean;
   visible: boolean;
@@ -261,9 +263,20 @@ function ClassificationBand({
           fontWeight: 600,
           color: c.text,
           letterSpacing: "-0.01em",
+          flex: 1,
         }}
       >
         {label}
+      </span>
+      <span
+        style={{
+          fontSize: mobile ? 13 : 14,
+          fontWeight: 500,
+          color: c.text,
+          opacity: 0.6,
+        }}
+      >
+        {range}
       </span>
     </div>
   );
@@ -612,10 +625,16 @@ export default function HowItWorksPage() {
 
           {/* Bands */}
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[t.howItWorks.bandLimited, t.howItWorks.bandDeveloping, t.howItWorks.bandEstablished, t.howItWorks.bandHigh].map((band, i) => (
+            {[
+              { label: t.howItWorks.bandLimited, range: "0\u201339" },
+              { label: t.howItWorks.bandDeveloping, range: "40\u201359" },
+              { label: t.howItWorks.bandEstablished, range: "60\u201379" },
+              { label: t.howItWorks.bandHigh, range: "80\u2013100" },
+            ].map((band, i) => (
               <ClassificationBand
-                key={band}
-                label={band}
+                key={band.label}
+                label={band.label}
+                range={band.range}
                 index={i}
                 mobile={mobile}
                 visible={classAnim.visible}
