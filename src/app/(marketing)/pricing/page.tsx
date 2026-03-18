@@ -565,6 +565,13 @@ export default function PricingPage() {
               t.pricing.includesItem5,
               t.pricing.includesItem6,
               t.pricing.includesItem7,
+              t.pricing.includesItem8,
+              t.pricing.includesItem9,
+              t.pricing.includesItem10,
+              t.pricing.includesItem11,
+              t.pricing.includesItem12,
+              t.pricing.includesItem13,
+              t.pricing.includesItem14,
             ].map((item) => (
               <div
                 key={item}

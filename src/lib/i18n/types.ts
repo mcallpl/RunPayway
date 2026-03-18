@@ -448,6 +448,13 @@ export interface Translations {
     includesItem5: string;
     includesItem6: string;
     includesItem7: string;
+    includesItem8: string;
+    includesItem9: string;
+    includesItem10: string;
+    includesItem11: string;
+    includesItem12: string;
+    includesItem13: string;
+    includesItem14: string;
     includesNote: string;
     processTitle: string;
     processStep1: string;

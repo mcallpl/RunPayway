@@ -110,6 +110,29 @@ const SAMPLE = {
   benchAvg: 62,
   benchTop20: "80+",
   benchDistance: "2 points",
+  // New features
+  continuityPct: 38,
+  continuityMonths: 4,
+  continuityText: "If active work stopped today, approximately 38% of Jordan Ellis's income would continue for an estimated 4 months. The majority of income requires ongoing active work to sustain.",
+  riskScenarioDrop: 22,
+  riskScenarioScore: 56,
+  riskScenarioBand: "Developing Stability",
+  riskScenarioText: "If Jordan Ellis's largest income source were lost, the score would decline significantly — by approximately 22 points to 56, moving from Established Stability to Developing Stability.",
+  productRecs: [
+    { category: "Disability & Income Protection", urgency: "High", rationale: "Income is moderately dependent on active work. Disability insurance would safeguard against disruption from health events." },
+    { category: "Revenue Model Restructuring", urgency: "High", rationale: "Most income comes from one-time transactions. Advisory on transitioning to retainer models would build a predictable revenue base." },
+    { category: "Business Diversification Advisory", urgency: "Medium", rationale: "High revenue concentration creates outsized risk. Strategic advisory on client acquisition would reduce this exposure." },
+  ],
+  advisorTalkingPoints: [
+    "The client has built meaningful stability (78/100), but specific structural gaps prevent reaching the top tier. Focus on the primary constraint: Income Persistence.",
+    "Approximately 38% of income would continue without active work — this is progress, but leaves significant exposure to disruption.",
+    "The 90-day action plan targets the highest-leverage structural change. Walking through these steps together creates accountability.",
+  ],
+  advisorQuestions: [
+    "If you couldn't work for 90 days, what percentage of your current income would continue arriving?",
+    "Are there any services you provide that could be packaged into a recurring or subscription model?",
+    "What would happen to your income if your largest single client or contract ended tomorrow?",
+  ],
 };
 
 /* ------------------------------------------------------------------ */
@@ -407,6 +430,26 @@ export default function SampleReportPage() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Income Continuity Estimate — NEW */}
+            <div style={{
+              borderRadius: 10,
+              backgroundColor: B.sand,
+              padding: "14px 18px",
+              marginBottom: 20,
+            }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
+                <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{SAMPLE.continuityPct}%</span>
+                <span style={{ fontSize: 11, color: B.muted }}>income continues without active work</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 16, fontWeight: 600, color: B.teal }}>{SAMPLE.continuityMonths} months</span>
+                <span style={{ fontSize: 10, color: B.muted }}>estimated continuity</span>
+              </div>
+              <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+                {SAMPLE.continuityText}
+              </p>
             </div>
 
             {/* Spectrum bar */}
@@ -858,6 +901,90 @@ export default function SampleReportPage() {
                 <span className="cta-arrow cta-arrow-white" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/*  New Features Preview — what the full report includes        */}
+      {/* ============================================================ */}
+      <section style={{ paddingTop: mobile ? 48 : 72, paddingBottom: mobile ? 48 : 72, background: "#FFFFFF" }}>
+        <div className="mx-auto" style={{ maxWidth: 860, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
+          <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+              Beyond the Score
+            </div>
+            <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+              Every Report Also Includes
+            </h2>
+            <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 560, margin: "0 auto" }}>
+              Actionable tools designed for advisors, clients, and decision-makers — not just a score.
+            </p>
+          </div>
+
+          {/* Feature grid */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 20 }}>
+            {/* Risk Scenario */}
+            <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Risk Scenario</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{SAMPLE.score}</span>
+                <span style={{ fontSize: 14, color: B.light }}>&rarr;</span>
+                <span style={{ fontSize: 28, fontWeight: 700, color: "#DC2626" }}>{SAMPLE.riskScenarioScore}</span>
+              </div>
+              <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
+                Shows what happens if your largest income source is lost. Quantifies concentration risk.
+              </p>
+            </div>
+
+            {/* Advisor Discussion Guide */}
+            <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Advisor Discussion Guide</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
+                {SAMPLE.advisorTalkingPoints.slice(0, 2).map((tp, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{i + 1}.</span>
+                    <span style={{ fontSize: 10, color: B.muted, lineHeight: 1.5 }}>{tp.slice(0, 80)}…</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
+                Structured talking points, client questions, and red flags for the advisor-client meeting.
+              </p>
+            </div>
+
+            {/* Service Recommendations */}
+            <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Service Recommendations</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
+                {SAMPLE.productRecs.map((rec, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 10, color: B.navy, fontWeight: 500 }}>{rec.category}</span>
+                    <span style={{ fontSize: 8, fontWeight: 600, padding: "2px 6px", borderRadius: 3, backgroundColor: rec.urgency === "High" ? B.teal : B.light, color: "#fff" }}>{rec.urgency}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
+                Product and service categories ranked by urgency based on the structural assessment.
+              </p>
+            </div>
+          </div>
+
+          {/* Additional features row */}
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 20, marginTop: 20 }}>
+            {[
+              { icon: "📊", title: "Structural Radar Chart", desc: "SVG visualization of all 6 factors showing the shape of your income structure at a glance." },
+              { icon: "📋", title: "Client Action Summary", desc: "One-page tearsheet with score, top 3 actions, and QR verification — designed to share." },
+              { icon: "🔐", title: "QR-Verified Record", desc: "Every report includes a QR code linking to instant verification of the official assessment record." },
+            ].map((feat) => (
+              <div key={feat.title} style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "20px", display: "flex", gap: 14, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 24, flexShrink: 0 }}>{feat.icon}</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{feat.title}</div>
+                  <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6, margin: 0 }}>{feat.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
