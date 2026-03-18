@@ -16,6 +16,7 @@ const LANGUAGES = [
   { code: "en" as LangCode, label: "English", flag: "🇺🇸" },
   { code: "es" as LangCode, label: "Español", flag: "🇪🇸" },
   { code: "pt" as LangCode, label: "Português", flag: "🇧🇷" },
+  { code: "hi" as LangCode, label: "हिन्दी", flag: "🇮🇳" },
 ];
 
 function LanguageSelector({ mobile }: { mobile: boolean }) {

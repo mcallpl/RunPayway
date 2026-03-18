@@ -4,10 +4,11 @@ import { createContext, useContext, useState, useEffect, useCallback } from "rea
 import type { Translations } from "./types";
 import { en } from "./en";
 import { es } from "./es";
+import { hi } from "./hi";
 
-export type LangCode = "en" | "es" | "pt";
+export type LangCode = "en" | "es" | "pt" | "hi";
 
-const TRANSLATION_MAP: Record<string, Translations> = { en, es };
+const TRANSLATION_MAP: Record<string, Translations> = { en, es, hi };
 
 const LanguageContext = createContext<{
   lang: LangCode;
@@ -24,7 +25,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const stored = localStorage.getItem("rp_lang") as LangCode | null;
-    if (stored && (stored === "en" || stored === "es" || stored === "pt")) {
+    if (stored && (stored === "en" || stored === "es" || stored === "pt" || stored === "hi")) {
       setLangState(stored);
     }
   }, []);
