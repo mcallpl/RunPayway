@@ -723,8 +723,25 @@ export default function ReviewPage() {
             ))}
           </div>
 
+          {/* Table of Contents */}
+          <div style={{ width: "100%", maxWidth: 320, textAlign: "left", margin: "0 auto" }}>
+            <div style={{ ...T.label, color: B.light, marginBottom: 10 }}>CONTENTS</div>
+            {[
+              ["1", "Executive Assessment"],
+              ["2", "Structural Analysis"],
+              ["3", "Diagnosis & Benchmarks"],
+              ["4", "Improvement Path"],
+              ["5", "Governance & Official Record"],
+            ].map(([num, title]) => (
+              <div key={num} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.04)" }}>
+                <span style={{ ...T.caption, fontWeight: 600, color: B.teal, minWidth: 16 }}>{num}</span>
+                <span style={{ ...T.small, color: B.navy }}>{title}</span>
+              </div>
+            ))}
+          </div>
+
           {/* Divider */}
-          <div style={{ width: 60, height: 2, backgroundColor: B.navy, opacity: 0.12, margin: "40px 0" }} />
+          <div style={{ width: 60, height: 2, backgroundColor: B.navy, opacity: 0.12, margin: "32px 0" }} />
 
           {/* Confidentiality */}
           <div style={{ ...T.caption, color: B.light, maxWidth: 400, lineHeight: 1.6 }}>
@@ -827,26 +844,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* "What This Means" plain-language callout */}
-        <div aria-label="Plain-language score summary" style={{
-          borderRadius: 8,
-          background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(31,109,122,0.04) 100%)`,
-          border: `1px solid rgba(31,109,122,0.10)`,
-          padding: "12px 16px",
-          marginBottom: R.sectionGap,
-        }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>What This Means</div>
-          <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
-            {record.final_score >= 80
-              ? `${subject} demonstrates high structural income stability. Income systems are well-diversified with strong persistence mechanisms. This income structure would likely maintain significant continuity even during disruptions.`
-              : record.final_score >= 60
-              ? `${subject} has established meaningful structural stability. Core income mechanisms are functional, though specific areas could be strengthened. The income system shows moderate resilience to disruption.`
-              : record.final_score >= 40
-              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence mechanisms. Targeted structural changes could significantly improve resilience.`
-              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor with minimal persistence or diversification. Structural improvements are recommended.`}
-          </p>
-        </div>
-
         <SectionDivider />
 
         {/* Profile */}
@@ -910,6 +907,26 @@ export default function ReviewPage() {
             </ul>
           </div>
         </div>
+
+        {/* "What This Means" plain-language callout */}
+        <div aria-label="Plain-language score summary" style={{
+          borderRadius: 8,
+          background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(31,109,122,0.04) 100%)`,
+          border: `1px solid rgba(31,109,122,0.10)`,
+          padding: "12px 16px",
+          marginTop: R.sectionGap,
+        }}>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>What This Means</div>
+          <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
+            {record.final_score >= 80
+              ? `${subject} demonstrates high structural income stability. Income systems are well-diversified with strong persistence mechanisms. This income structure would likely maintain significant continuity even during disruptions.`
+              : record.final_score >= 60
+              ? `${subject} has established meaningful structural stability. Core income mechanisms are functional, though specific areas could be strengthened. The income system shows moderate resilience to disruption.`
+              : record.final_score >= 40
+              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence mechanisms. Targeted structural changes could significantly improve resilience.`
+              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor with minimal persistence or diversification. Structural improvements are recommended.`}
+          </p>
+        </div>
       </ReportPage>
 
       {/* ==================== PAGE 2 — Structural Analysis ==================== */}
@@ -946,37 +963,37 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Structural Indicators */}
+        {/* Structural Indicators — radar chart + data grid side by side */}
         <Label>{rt.structuralIndicators}</Label>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.itemGap }}>
-          {[
-            [rt.incomeThatContinues, record.income_persistence_label],
-            [rt.numberOfSources, record.income_source_diversity_label],
-            [rt.incomeScheduled, record.forward_revenue_visibility_label],
-            [rt.monthlyVariability, record.income_variability_label],
-            [rt.dependencePersonalWork, record.active_labor_dependence_label],
-            [rt.dependenceOneSource, record.exposure_concentration_label],
-          ].map(([l, v]) => (
-            <div key={l} style={{ display: "flex", justifyContent: "space-between", borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
-              <span style={{ ...T.caption, color: B.muted }}>{l}</span>
-              <span style={{ ...T.caption, fontWeight: 500, color: B.navy }}>{v}</span>
-            </div>
-          ))}
+        <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+          {/* Radar chart */}
+          <div style={{ flexShrink: 0 }}>
+            <RadarChart factors={[
+              { label: "Persistence", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_persistence_label] || 50 },
+              { label: "Diversification", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_source_diversity_label] || 50 },
+              { label: "Visibility", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.forward_revenue_visibility_label] || 50 },
+              { label: "Consistency", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_variability_label] || 50) },
+              { label: "Independence", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.active_labor_dependence_label] || 50) },
+              { label: "Spread", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.exposure_concentration_label] || 50) },
+            ]} />
+          </div>
+          {/* Data grid */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: R.itemGap }}>
+            {[
+              [rt.incomeThatContinues, record.income_persistence_label],
+              [rt.numberOfSources, record.income_source_diversity_label],
+              [rt.incomeScheduled, record.forward_revenue_visibility_label],
+              [rt.monthlyVariability, record.income_variability_label],
+              [rt.dependencePersonalWork, record.active_labor_dependence_label],
+              [rt.dependenceOneSource, record.exposure_concentration_label],
+            ].map(([l, v]) => (
+              <div key={l} style={{ display: "flex", justifyContent: "space-between", borderRadius: 6, backgroundColor: B.sand, padding: "7px 12px" }}>
+                <span style={{ ...T.caption, color: B.muted }}>{l}</span>
+                <span style={{ ...T.caption, fontWeight: 500, color: B.navy }}>{v}</span>
+              </div>
+            ))}
+          </div>
         </div>
-
-        {/* Radar chart — visual shape of income structure */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: R.sectionGap }}>
-          <RadarChart factors={[
-            { label: "Persistence", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_persistence_label] || 50 },
-            { label: "Diversification", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_source_diversity_label] || 50 },
-            { label: "Visibility", value: { "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.forward_revenue_visibility_label] || 50 },
-            { label: "Consistency", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.income_variability_label] || 50) },
-            { label: "Independence", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.active_labor_dependence_label] || 50) },
-            { label: "Spread", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.exposure_concentration_label] || 50) },
-          ]} />
-        </div>
-
-        <SectionDivider />
 
         {/* Labor-Asset Position */}
         {record.labor_asset_position_label && (
