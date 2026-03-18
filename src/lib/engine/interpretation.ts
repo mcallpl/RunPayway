@@ -69,20 +69,20 @@ const DRIVER_TEXTS: Record<CanonicalKey, string> = {
     "A meaningful portion of income continues even during periods of reduced active work. This persistence — through recurring contracts, asset income, or automated revenue — provides a structural safety net.",
 };
 
-// Structural priority text templates
+// Structural priority text templates — observational, not prescriptive
 const PRIORITY_TEXTS: Record<CanonicalKey, string> = {
   income_continuity_without_active_labor:
-    "Building income persistence — revenue that continues without active work — would have the greatest single impact on this score. Even shifting 15-20% of income from active to persistent would meaningfully change the structural profile.",
+    "Income persistence — revenue that continues without active work — is the structural factor with the greatest weight in this score. Income systems that shift even a portion of revenue from active to persistent tend to show measurably different structural profiles.",
   recurring_income_proportion:
-    "Expanding the recurring revenue base is the highest-leverage structural change available. Converting even 2-3 existing client relationships from project-based to retainer-based would create a predictable income floor.",
+    "The recurring revenue base is the structural factor with the most room for change. Income systems that include retainer-based or subscription-based arrangements tend to exhibit more predictable monthly revenue patterns.",
   forward_revenue_visibility:
-    "Extending forward revenue commitments — through longer contracts, advance bookings, or multi-month agreements — would provide the most immediate improvement to structural stability and reduce month-to-month uncertainty.",
+    "Forward revenue visibility — income committed through contracts, advance bookings, or multi-month agreements — is the structural factor most directly associated with reduced month-to-month uncertainty in this profile.",
   income_concentration:
-    "Reducing dependence on the largest income source is the most critical structural priority. Adding 2-3 new qualifying revenue sources would significantly reduce concentration risk and improve overall durability.",
+    "Revenue concentration on a limited number of sources is the most prominent structural characteristic in this profile. Income systems with broader source distribution tend to show greater resilience to individual source loss.",
   number_of_income_sources:
-    "Increasing the number of qualifying income sources is the fastest path to structural improvement. Each new independent source that contributes at least 10% of total income adds meaningful diversification.",
+    "The number of qualifying income sources is the structural factor with the most direct path to measured improvement. Each independent source contributing at least 10% of total income adds measurable diversification.",
   earnings_variability:
-    "Reducing month-to-month income fluctuation through more predictable revenue arrangements would have the greatest stabilizing effect on this income system's structural profile.",
+    "Month-to-month income fluctuation is the structural characteristic most affecting this profile. Income systems with more predictable revenue arrangements tend to show greater structural consistency.",
 };
 
 export function selectInterpretation(

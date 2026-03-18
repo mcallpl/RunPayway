@@ -877,8 +877,8 @@ export default function ReviewPage() {
               ["3", "Diagnosis & Benchmarks"],
               ["4", "Improvement Path"],
               ["5", "Summary & Official Record"],
-              ["6", "Advisor Discussion Guide"],
-              ["7", "Service Recommendations"],
+              ["6", "Advisor Reference"],
+              ["7", "Related Service Categories"],
               ["8", "Client Action Summary"],
             ].map(([num, title]) => (
               <div key={num} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.04)" }}>
@@ -1090,12 +1090,12 @@ export default function ReviewPage() {
           <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>What This Means</div>
           <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
             {record.final_score >= 80
-              ? `${subject} demonstrates high structural income stability. Income systems are well-diversified with strong persistence mechanisms. This income structure would likely maintain significant continuity even during disruptions.`
+              ? `${subject} demonstrates high structural income stability. Income sources are well-diversified with strong persistence characteristics. This income structure exhibits significant continuity indicators under Model RP-1.0.`
               : record.final_score >= 60
-              ? `${subject} has established meaningful structural stability. Core income mechanisms are functional, though specific areas could be strengthened. The income system shows moderate resilience to disruption.`
+              ? `${subject} has established meaningful structural stability. Core income characteristics are functional, though specific areas differ from top-tier profiles. The income system shows moderate structural resilience.`
               : record.final_score >= 40
-              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence mechanisms. Targeted structural changes could significantly improve resilience.`
-              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor with minimal persistence or diversification. Structural improvements are recommended.`}
+              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence characteristics. This is a common structural profile in the early stages of income evolution.`
+              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor with minimal persistence or diversification. This structural profile is common in labor-intensive income systems.`}
           </p>
         </div>
       </ReportPage>
@@ -1531,16 +1531,16 @@ export default function ReviewPage() {
       </ReportPage>
 
       {/* ==================== PAGE 6 — Advisor Discussion Guide ==================== */}
-      <ReportPage record={record} pageLabel="Page 6 — Advisor Discussion Guide">
+      <ReportPage record={record} pageLabel="Page 6 — Advisor Reference">
         <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          Advisor Discussion Guide
+          Advisor Reference
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          Structured framework for the advisor-client conversation based on this assessment.
+          Structural observations for reference in advisor-client conversations. This is not financial advice — consult a licensed professional for specific guidance.
         </p>
 
-        {/* Talking Points */}
-        <Label>Talking Points</Label>
+        {/* Structural Context */}
+        <Label>Structural Context</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {advisorGuide.talking_points.map((tp, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -1552,8 +1552,8 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Client Questions */}
-        <Label>Questions to Ask the Client</Label>
+        {/* Exploration Questions */}
+        <Label>Exploration Questions</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {advisorGuide.client_questions.map((q, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
@@ -1563,11 +1563,11 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* Red Flags */}
+        {/* Notable Structural Observations */}
         {advisorGuide.red_flags.length > 0 && (
           <>
             <SectionDivider />
-            <Label>Red Flags to Address</Label>
+            <Label>Notable Structural Observations</Label>
             <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {advisorGuide.red_flags.map((rf, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.10)", padding: "8px 12px" }}>
@@ -1581,8 +1581,8 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Next Steps */}
-        <Label>Next Steps</Label>
+        {/* Possible Follow-Up Topics */}
+        <Label>Possible Follow-Up Topics</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
           {advisorGuide.next_steps.map((ns, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -1595,12 +1595,12 @@ export default function ReviewPage() {
 
       {/* ==================== PAGE 7 — Service Recommendations ==================== */}
       {productRecs.length > 0 && (
-        <ReportPage record={record} pageLabel="Page 7 — Service Recommendations">
+        <ReportPage record={record} pageLabel="Page 7 — Service Categories">
           <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-            Product & Service Recommendations
+            Related Service Categories
           </h2>
           <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-            Based on the structural assessment, the following categories of products or services would address identified gaps in {record.assessment_title || "this income system"}&apos;s stability profile.
+            Based on the structural characteristics identified in this assessment, the following professional service categories are commonly explored by individuals with similar income profiles. These are observations, not recommendations — consult a licensed professional for specific guidance.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: R.paraMb }}>
@@ -1633,9 +1633,11 @@ export default function ReviewPage() {
           <SectionDivider />
 
           <div style={{ ...T.caption, color: B.light, fontStyle: "italic", lineHeight: 1.55 }}>
-            These recommendations are structural observations based on the Income Stability Score™ assessment.
-            They are not financial advice. Specific product selection should be discussed with the appropriate
-            licensed professional based on the client&apos;s complete financial situation.
+            IMPORTANT: The categories listed above are structural observations only. RunPayway does not provide
+            financial, insurance, investment, tax, or legal advice and is not a licensed advisory firm. No fiduciary
+            or advisory relationship is created by this report. All decisions regarding specific products or services
+            should be made in consultation with appropriately licensed professionals based on the individual&apos;s
+            complete financial situation.
           </div>
         </ReportPage>
       )}
@@ -1687,7 +1689,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Top 3 Actions */}
-        <Label>Your Top 3 Actions</Label>
+        <Label>Key Structural Observations</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {(() => {
             const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
