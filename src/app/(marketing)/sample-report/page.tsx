@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -231,6 +232,7 @@ function ReportPageCard({
 
 export default function SampleReportPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
   const heroAnim = useInView();
   const page1Anim = useInView();
   const page2Anim = useInView();
@@ -292,7 +294,7 @@ export default function SampleReportPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Sample Report
+              {t.sampleReport.heroTag}
             </span>
           </div>
 
@@ -306,7 +308,7 @@ export default function SampleReportPage() {
               marginBottom: 24,
             }}
           >
-            See What You&apos;ll Discover
+            {t.sampleReport.heroTitle}
           </h1>
 
           <p
@@ -318,7 +320,7 @@ export default function SampleReportPage() {
               margin: "0 auto 20px",
             }}
           >
-            Your personalized five-page Income Stability Assessment&trade; reveals your score, explains why, shows what&apos;s at risk, and gives you a clear plan to strengthen your income structure.
+            {t.sampleReport.heroDesc}
           </p>
 
           <p
@@ -330,7 +332,7 @@ export default function SampleReportPage() {
               margin: "0 auto",
             }}
           >
-            This is a sample report for a Professional Services consultant scored under Model RP-1.0. Your report will reflect your own income structure.
+            {t.sampleReport.heroNote}
           </p>
         </div>
       </section>
@@ -368,22 +370,22 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>1</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                Clarity
+                {t.sampleReport.clarityTag}
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Executive Assessment
+              {t.sampleReport.page1Title}
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              Your Income Stability Score&trade; (0&ndash;100), stability classification, industry percentile ranking, income profile summary, and key structural factors &mdash; positive factors and structural risks identified from your responses.
+              {t.sampleReport.page1Desc}
             </p>
           </div>
 
           {/* Report card */}
-          <ReportPageCard pageNumber={1} pageTitle="Executive Assessment" mobile={mobile} visible={page1Anim.visible} delay={200}>
+          <ReportPageCard pageNumber={1} pageTitle={t.sampleReport.page1Title} mobile={mobile} visible={page1Anim.visible} delay={200}>
             {/* Key insight */}
             <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, marginBottom: 20 }}>
-              This assessment evaluates the structural stability of income systems using six deterministic factors under Model RP-1.0. Score reflects current income architecture, not future outcomes.
+              {t.sampleReport.page1Insight}
             </p>
 
             {/* Score + percentile */}
@@ -401,7 +403,7 @@ export default function SampleReportPage() {
                     <span style={{ fontWeight: 600, color: B.navy }}>{SAMPLE.percentile} percentile</span> within {SAMPLE.sector}
                   </div>
                   <div style={{ fontSize: 10, color: B.light, marginTop: 2 }}>
-                    Exceeds 72% of assessed income systems in this sector.
+                    {t.sampleReport.percentileExceeds}
                   </div>
                 </div>
               </div>
@@ -438,20 +440,20 @@ export default function SampleReportPage() {
             {/* Assessment Title */}
             <div style={{ marginBottom: 14 }}>
               <div style={{ fontWeight: 500, fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.55)", marginBottom: 4 }}>
-                Assessment Title
+                {t.sampleReport.assessmentTitle}
               </div>
               <div style={{ fontWeight: 600, fontSize: 16, color: B.navy }}>{SAMPLE.title}</div>
             </div>
 
             {/* Profile */}
-            <Label>Profile</Label>
+            <Label>{t.sampleReport.profile}</Label>
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: "8px 24px" }}>
               {[
-                ["Classification", SAMPLE.classification],
-                ["Structure", SAMPLE.structure],
-                ["Income Model", SAMPLE.incomeModel],
-                ["Revenue", SAMPLE.revenue],
-                ["Sector", SAMPLE.sector],
+                [t.sampleReport.classification, SAMPLE.classification],
+                [t.sampleReport.structure, SAMPLE.structure],
+                [t.sampleReport.incomeModel, SAMPLE.incomeModel],
+                [t.sampleReport.revenue, SAMPLE.revenue],
+                [t.sampleReport.sector, SAMPLE.sector],
               ].map(([l, v]) => (
                 <div key={l}>
                   <span style={{ fontSize: 11, color: B.light }}>{l}: </span>
@@ -463,10 +465,10 @@ export default function SampleReportPage() {
             <Divider />
 
             {/* Key Structural Factors */}
-            <Label>Key Structural Factors</Label>
+            <Label>{t.sampleReport.keyFactors}</Label>
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 16 }}>
               <div>
-                <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.teal, letterSpacing: "0.08em", marginBottom: 8 }}>Positive Factors</div>
+                <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.teal, letterSpacing: "0.08em", marginBottom: 8 }}>{t.sampleReport.positiveFactors}</div>
                 {SAMPLE.positiveFactors.map((f) => (
                   <div key={f} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                     <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: B.teal, flexShrink: 0 }} />
@@ -475,7 +477,7 @@ export default function SampleReportPage() {
                 ))}
               </div>
               <div>
-                <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 8 }}>Structural Risks</div>
+                <div style={{ fontSize: 10, textTransform: "uppercase", fontWeight: 600, color: B.muted, letterSpacing: "0.08em", marginBottom: 8 }}>{t.sampleReport.structuralRisks}</div>
                 {SAMPLE.risks.map((f) => (
                   <div key={f} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                     <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: B.light, flexShrink: 0 }} />
@@ -520,32 +522,32 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>2</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                Understanding
+                {t.sampleReport.understandingTag}
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Structural Analysis
+              {t.sampleReport.page2Title}
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              Income structure map showing your active, semi-persistent, and persistent income breakdown. Six structural indicators evaluated. Your factors ranked strongest to weakest in the structural priority map.
+              {t.sampleReport.page2Desc}
             </p>
           </div>
 
-          <ReportPageCard pageNumber={2} pageTitle="Structural Analysis" mobile={mobile} visible={page2Anim.visible} delay={200}>
+          <ReportPageCard pageNumber={2} pageTitle={t.sampleReport.page2Title} mobile={mobile} visible={page2Anim.visible} delay={200}>
             <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-              This page breaks down the composition of income sources and structural indicators driving the overall stability score.
+              {t.sampleReport.page2Insight}
             </p>
 
             {/* Income Structure Map */}
-            <Label>Income Structure Map</Label>
+            <Label>{t.sampleReport.incomeStructureMap}</Label>
             <p style={{ fontSize: 11, color: B.muted, marginBottom: 12 }}>
-              Jordan Ellis — Ellis Advisory Group&apos;s income comes from three types of sources.
+              {t.sampleReport.incomeSourcesNote}
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 24 }}>
               {[
-                { l: "Active Income", desc: "Earned by doing work", v: SAMPLE.activeIncome, c: B.muted },
-                { l: "Semi-Persistent", desc: "Repeats for a while, then stops", v: SAMPLE.semiPersistent, c: B.teal },
-                { l: "Persistent", desc: "Continues with little work", v: SAMPLE.persistent, c: B.navy },
+                { l: t.sampleReport.activeIncome, desc: t.sampleReport.activeIncomeDesc, v: SAMPLE.activeIncome, c: B.muted },
+                { l: t.sampleReport.semiPersistent, desc: t.sampleReport.semiPersistentDesc, v: SAMPLE.semiPersistent, c: B.teal },
+                { l: t.sampleReport.persistent, desc: t.sampleReport.persistentDesc, v: SAMPLE.persistent, c: B.navy },
               ].map((bar) => (
                 <div key={bar.l}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
@@ -565,7 +567,7 @@ export default function SampleReportPage() {
             <Divider />
 
             {/* Structural Indicators */}
-            <Label>Structural Indicators</Label>
+            <Label>{t.sampleReport.structuralIndicators}</Label>
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
               {SAMPLE.indicators.map(([l, v]) => (
                 <div key={l} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 14px", borderRadius: 8, backgroundColor: B.sand }}>
@@ -578,9 +580,9 @@ export default function SampleReportPage() {
             {/* Fade overlay — remaining content locked */}
             <div style={{ position: "relative", height: 100, overflow: "hidden", marginTop: 16 }}>
               <Divider />
-              <Label>Structural Priority Map</Label>
+              <Label>{t.sampleReport.priorityMapLabel}</Label>
               <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7 }}>
-                Your structural factors ranked from strongest to weakest, showing relative contribution to your overall stability score...
+                {t.sampleReport.priorityMapTeaser}
               </div>
               <div style={{ position: "absolute", bottom: 0, left: -20, right: -20, height: 80, background: "linear-gradient(transparent, #ffffff)" }} />
             </div>
@@ -588,7 +590,7 @@ export default function SampleReportPage() {
             {/* Locked sections hint */}
             <div style={{ textAlign: "center", paddingTop: 8 }}>
               <p style={{ fontSize: 12, color: B.light, fontStyle: "italic" }}>
-                Structural Priority Map included in full report.
+                {t.sampleReport.priorityMapLocked}
               </p>
             </div>
           </ReportPageCard>
@@ -627,14 +629,14 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>3</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                Awareness
+                {t.sampleReport.awarenessTag}
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Diagnosis &amp; Benchmarks
+              {t.sampleReport.page3Title}
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              System diagnosis explaining how your income operates, industry stability benchmarks showing where you stand vs. your sector, stability drivers, and your primary structural constraint with mechanism and impact analysis.
+              {t.sampleReport.page3Desc}
             </p>
           </div>
 
@@ -658,11 +660,11 @@ export default function SampleReportPage() {
 
             {/* Visible content — top 40% */}
             <div>
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>System Diagnosis</div>
-              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>This system operates mainly as a Labor-Dependent income system in the Professional Services sector. Income mainly comes from active project work requiring continuous personal involvement to maintain revenue flow.</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>{t.sampleReport.systemDiagnosis}</div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>{t.sampleReport.systemDiagnosisText}</div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Industry Stability Benchmark</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>{t.sampleReport.industryBenchmark}</div>
             </div>
 
             {/* Blurred content — bottom 60% fades out */}
@@ -695,7 +697,7 @@ export default function SampleReportPage() {
             {/* Subtle locked hint — no CTA */}
             <div style={{ textAlign: "center", paddingTop: 8 }}>
               <p style={{ fontSize: 12, color: B.light, fontStyle: "italic" }}>
-                Industry benchmarks, stability drivers, and constraint analysis included in full report.
+                {t.sampleReport.page3Locked}
               </p>
             </div>
           </div>
@@ -735,14 +737,14 @@ export default function SampleReportPage() {
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF" }}>4</span>
               </div>
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-                Agency
+                {t.sampleReport.agencyTag}
               </div>
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Improvement Path &amp; Governance
+              {t.sampleReport.page4Title}
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 600 }}>
-              Improvement opportunities, personalized 90-day action plan targeting your primary constraint, sector evolution path, sector stability mechanisms, methodology, disclosure, and official verifiable classification record.
+              {t.sampleReport.page4Desc}
             </p>
           </div>
 
@@ -819,10 +821,10 @@ export default function SampleReportPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>
-                Full Report
+                {t.sampleReport.fullReportLabel}
               </div>
               <p style={{ fontSize: 15, color: B.muted, textAlign: "center", maxWidth: 360, lineHeight: 1.6, marginBottom: 24 }}>
-                Your personalized 90-day action plan, sector evolution path, and official classification record are included in your full assessment.
+                {t.sampleReport.fullReportDesc}
               </p>
               <Link
                 href="/pricing"
@@ -852,7 +854,7 @@ export default function SampleReportPage() {
                 }}
               >
                 <span className="tick tick-white" />
-                <span className="cta-label">Get Your Full Report</span>
+                <span className="cta-label">{t.sampleReport.fullReportCta}</span>
                 <span className="cta-arrow cta-arrow-white" />
               </Link>
             </div>
@@ -893,10 +895,10 @@ export default function SampleReportPage() {
             RunPayway&trade;
           </div>
           <div style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.60)", marginBottom: 20 }}>
-            Income Stability Score&trade;
+            {t.sampleReport.closingSubtitle}
           </div>
           <div style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.sampleReport.poweredBy}
           </div>
         </div>
       </section>

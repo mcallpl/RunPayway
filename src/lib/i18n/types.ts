@@ -248,6 +248,60 @@ export interface Translations {
     riskVariabilityImpact: string;
   };
 
+  // ── Sample Report page ──
+  sampleReport: {
+    heroTag: string;
+    heroTitle: string;
+    heroDesc: string;
+    heroNote: string;
+    clarityTag: string;
+    page1Title: string;
+    page1Desc: string;
+    page1Insight: string;
+    percentileExceeds: string;
+    assessmentTitle: string;
+    profile: string;
+    classification: string;
+    structure: string;
+    incomeModel: string;
+    revenue: string;
+    sector: string;
+    keyFactors: string;
+    positiveFactors: string;
+    structuralRisks: string;
+    understandingTag: string;
+    page2Title: string;
+    page2Desc: string;
+    page2Insight: string;
+    incomeStructureMap: string;
+    incomeSourcesNote: string;
+    activeIncome: string;
+    activeIncomeDesc: string;
+    semiPersistent: string;
+    semiPersistentDesc: string;
+    persistent: string;
+    persistentDesc: string;
+    structuralIndicators: string;
+    priorityMapLabel: string;
+    priorityMapTeaser: string;
+    priorityMapLocked: string;
+    awarenessTag: string;
+    page3Title: string;
+    page3Desc: string;
+    systemDiagnosis: string;
+    systemDiagnosisText: string;
+    industryBenchmark: string;
+    page3Locked: string;
+    agencyTag: string;
+    page4Title: string;
+    page4Desc: string;
+    fullReportLabel: string;
+    fullReportDesc: string;
+    fullReportCta: string;
+    closingSubtitle: string;
+    poweredBy: string;
+  };
+
   // ── Industry Patterns (homepage) ──
   industryPatterns: {
     title: string;
