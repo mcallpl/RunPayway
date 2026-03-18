@@ -77,6 +77,9 @@ interface AssessmentRecord {
   risk_scenario_band: string;
   risk_scenario_drop: number;
   risk_scenario_text: string;
+  // Advisor tools
+  advisor_discussion_guide_payload: string;
+  product_recommendations_payload: string;
 }
 
 // ============================================================
@@ -665,6 +668,8 @@ export default function ReviewPage() {
 
   const evolutionSteps: string[] = JSON.parse(record.evolution_path_steps_payload);
   const sectorMechanisms: string[] = JSON.parse(record.sector_mechanisms_payload);
+  const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = JSON.parse(record.advisor_discussion_guide_payload || '{"talking_points":[],"client_questions":[],"red_flags":[],"next_steps":[]}');
+  const productRecs: { category: string; rationale: string; urgency: string }[] = JSON.parse(record.product_recommendations_payload || "[]");
   const RISK_EXPOSURE = getRiskExposure(rt);
   const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
   const subject = subjectName(record);
@@ -740,7 +745,10 @@ export default function ReviewPage() {
               ["2", "Structural Analysis"],
               ["3", "Diagnosis & Benchmarks"],
               ["4", "Improvement Path"],
-              ["5", "Governance & Official Record"],
+              ["5", "Summary & Official Record"],
+              ["6", "Advisor Discussion Guide"],
+              ["7", "Service Recommendations"],
+              ["8", "Client Action Summary"],
             ].map(([num, title]) => (
               <div key={num} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.04)" }}>
                 <span style={{ ...T.caption, fontWeight: 600, color: B.teal, minWidth: 16 }}>{num}</span>
@@ -1387,6 +1395,210 @@ export default function ReviewPage() {
         {/* Model reference */}
         <div style={{ textAlign: "center", marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
           <div style={{ ...T.caption, color: B.light }}>{rt.modelReference}</div>
+        </div>
+      </ReportPage>
+
+      {/* ==================== PAGE 6 — Advisor Discussion Guide ==================== */}
+      <ReportPage record={record} pageLabel="Page 6 — Advisor Discussion Guide">
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
+          Advisor Discussion Guide
+        </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          Structured framework for the advisor-client conversation based on this assessment.
+        </p>
+
+        {/* Talking Points */}
+        <Label>Talking Points</Label>
+        <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
+          {advisorGuide.talking_points.map((tp, i) => (
+            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <span style={{ ...T.caption, fontWeight: 700, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
+              <span style={{ ...T.small, color: B.navy, lineHeight: 1.55 }}>{tp}</span>
+            </div>
+          ))}
+        </div>
+
+        <SectionDivider />
+
+        {/* Client Questions */}
+        <Label>Questions to Ask the Client</Label>
+        <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
+          {advisorGuide.client_questions.map((q, i) => (
+            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+              <span style={{ ...T.caption, fontWeight: 600, color: B.purple, flexShrink: 0 }}>Q{i + 1}</span>
+              <span style={{ ...T.small, color: B.navy, fontStyle: "italic" }}>&ldquo;{q}&rdquo;</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Red Flags */}
+        {advisorGuide.red_flags.length > 0 && (
+          <>
+            <SectionDivider />
+            <Label>Red Flags to Address</Label>
+            <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
+              {advisorGuide.red_flags.map((rf, i) => (
+                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.10)", padding: "8px 12px" }}>
+                  <span style={{ ...T.caption, fontWeight: 700, color: "#DC2626", flexShrink: 0 }}>!</span>
+                  <span style={{ ...T.small, color: B.navy }}>{rf}</span>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        <SectionDivider />
+
+        {/* Next Steps */}
+        <Label>Next Steps</Label>
+        <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
+          {advisorGuide.next_steps.map((ns, i) => (
+            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+              <span style={{ width: 20, height: 20, borderRadius: 4, backgroundColor: B.navy, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...T.micro }}>{i + 1}</span>
+              <span style={{ ...T.small, color: B.navy }}>{ns}</span>
+            </div>
+          ))}
+        </div>
+      </ReportPage>
+
+      {/* ==================== PAGE 7 — Service Recommendations ==================== */}
+      {productRecs.length > 0 && (
+        <ReportPage record={record} pageLabel="Page 7 — Service Recommendations">
+          <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
+            Product & Service Recommendations
+          </h2>
+          <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+            Based on the structural assessment, the following categories of products or services would address identified gaps in {record.assessment_title || "this income system"}&apos;s stability profile.
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: R.paraMb }}>
+            {productRecs.map((rec, i) => (
+              <div key={i} style={{
+                borderRadius: 8,
+                border: `1px solid ${rec.urgency === "High" ? "rgba(31,109,122,0.15)" : rec.urgency === "Medium" ? "rgba(14,26,43,0.08)" : "rgba(14,26,43,0.04)"}`,
+                backgroundColor: rec.urgency === "High" ? "rgba(31,109,122,0.03)" : "#ffffff",
+                padding: "14px 16px",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{rec.category}</div>
+                  <span style={{
+                    ...T.micro,
+                    padding: "2px 8px",
+                    borderRadius: 4,
+                    backgroundColor: rec.urgency === "High" ? B.teal : rec.urgency === "Medium" ? B.navy : B.light,
+                    color: "#ffffff",
+                  }}>
+                    {rec.urgency}
+                  </span>
+                </div>
+                <p style={{ ...T.caption, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                  {rec.rationale}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <SectionDivider />
+
+          <div style={{ ...T.caption, color: B.light, fontStyle: "italic", lineHeight: 1.55 }}>
+            These recommendations are structural observations based on the Income Stability Score™ assessment.
+            They are not financial advice. Specific product selection should be discussed with the appropriate
+            licensed professional based on the client&apos;s complete financial situation.
+          </div>
+        </ReportPage>
+      )}
+
+      {/* ==================== PAGE 8 — Client Action Summary (Tearsheet) ==================== */}
+      <ReportPage record={record} pageLabel="Client Summary">
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/runpayway-logo-full.png" alt="RunPayway" style={{ height: 24, width: "auto", marginBottom: 16 }} />
+          <div style={{ fontSize: 20, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
+            {record.assessment_title || "Income Stability Assessment"}
+          </div>
+          <div style={{ ...T.caption, color: B.light }}>
+            {(record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0]} · {record.industry_sector} · Model {record.model_version || "RP-1.0"}
+          </div>
+        </div>
+
+        {/* Score block */}
+        <div style={{
+          textAlign: "center",
+          borderRadius: 8,
+          background: `linear-gradient(135deg, rgba(14,26,43,0.02) 0%, rgba(31,109,122,0.03) 100%)`,
+          border: `1px solid ${B.sandDk}`,
+          padding: "20px",
+          marginBottom: R.sectionGap,
+        }}>
+          <div style={{ fontSize: 56, fontWeight: 700, color: B.navy, lineHeight: 1 }}>{record.final_score}</div>
+          <div style={{ ...T.band, color: B.teal, marginTop: 6 }}>{record.stability_band}</div>
+          <div style={{ ...T.caption, color: B.muted, marginTop: 8 }}>
+            {record.peer_stability_percentile_label} percentile in {record.industry_sector}
+          </div>
+        </div>
+
+        {/* Key metrics grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.itemGap, marginBottom: R.sectionGap }}>
+          {[
+            ["Income Continuity", `${record.income_continuity_pct}% for ${record.income_continuity_months}mo`],
+            ["Risk Exposure", `-${record.risk_scenario_drop} pts if largest source lost`],
+            ["Primary Constraint", record.primary_constraint_label],
+            ["Structural Priority", record.structural_priority_label],
+          ].map(([l, v]) => (
+            <div key={l} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+              <div style={{ ...T.caption, color: B.light }}>{l}</div>
+              <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
+            </div>
+          ))}
+        </div>
+
+        <SectionDivider />
+
+        {/* Top 3 Actions */}
+        <Label>Your Top 3 Actions</Label>
+        <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
+          {(() => {
+            const actionPlan: string[] = JSON.parse(record.action_plan_payload || "[]");
+            return actionPlan.slice(0, 3).map((action, i) => (
+              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{
+                  width: 22, height: 22, borderRadius: 6,
+                  backgroundColor: B.teal, color: "#ffffff",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0, ...T.micro
+                }}>{i + 1}</span>
+                <span style={{ ...T.small, color: B.navy, lineHeight: 1.55 }}>{action}</span>
+              </div>
+            ));
+          })()}
+        </div>
+
+        <SectionDivider />
+
+        {/* Verification + QR */}
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Record ID: {record.record_id.slice(0, 8)}…</div>
+            <div style={{ ...T.caption, color: B.muted }}>
+              Verify at <span style={{ fontWeight: 500, color: B.navy }}>RunPayway.com/verify</span>
+            </div>
+          </div>
+          <div aria-label="QR code for verification">
+            <QRCodeImage recordId={record.record_id} />
+          </div>
+        </div>
+
+        {/* Next assessment date */}
+        <div style={{ textAlign: "center", marginTop: R.sectionGap, padding: "10px", borderRadius: 6, backgroundColor: B.sand }}>
+          <div style={{ ...T.caption, color: B.muted }}>
+            Recommended next assessment: <strong style={{ color: B.navy }}>
+              {(() => {
+                const d = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
+                d.setMonth(d.getMonth() + (record.final_score >= 60 ? 6 : 3));
+                return d.toISOString().split("T")[0];
+              })()}
+            </strong>
+          </div>
         </div>
       </ReportPage>
 

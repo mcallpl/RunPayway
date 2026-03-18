@@ -410,6 +410,206 @@ export function computeRiskScenario(
 }
 
 // ============================================================
+// ADVISOR DISCUSSION GUIDE
+// ============================================================
+
+export interface AdvisorDiscussionGuide {
+  talking_points: string[];
+  client_questions: string[];
+  red_flags: string[];
+  next_steps: string[];
+}
+
+export function generateAdvisorDiscussionGuide(
+  inputs: DiagnosticInput,
+  finalScore: number,
+  band: StabilityBand,
+  constraintLabel: string,
+  industrySector: string,
+  continuityPct: number,
+  riskDrop: number,
+): AdvisorDiscussionGuide {
+  const talking_points: string[] = [];
+  const client_questions: string[] = [];
+  const red_flags: string[] = [];
+  const next_steps: string[] = [];
+
+  // Talking points — score-tier specific
+  if (finalScore >= 80) {
+    talking_points.push(`This score places the client in the top tier of income stability within ${industrySector}. The conversation should focus on preserving this position and optimizing for growth.`);
+    talking_points.push("Structural foundations are strong — the client has multiple income sources, meaningful persistence, and reasonable diversification.");
+    talking_points.push("Discuss whether current stability could support strategic investments, hiring, or expansion without jeopardizing the income base.");
+  } else if (finalScore >= 60) {
+    talking_points.push(`The client has built meaningful stability (${finalScore}/100), but specific structural gaps prevent reaching the top tier. Focus on the primary constraint: ${constraintLabel}.`);
+    talking_points.push(`Approximately ${continuityPct}% of income would continue without active work — this is progress, but leaves significant exposure to disruption.`);
+    talking_points.push("The 90-day action plan targets the highest-leverage structural change. Walking through these steps together creates accountability.");
+  } else if (finalScore >= 40) {
+    talking_points.push(`The score of ${finalScore} indicates a developing income structure. The client is building stability but still depends heavily on active effort for most revenue.`);
+    talking_points.push(`The primary constraint — ${constraintLabel} — is the single most impactful area to address. Frame this as an opportunity, not a problem.`);
+    talking_points.push("Focus the conversation on the first action item in the 90-day plan. One structural change is more valuable than attempting everything at once.");
+  } else {
+    talking_points.push(`A score of ${finalScore} indicates early-stage income structure. The client's income is primarily labor-dependent, which is common in ${industrySector} but creates significant vulnerability.`);
+    talking_points.push("This is not a criticism of earnings or success — the score measures structural resilience, not income level. High earners can have low stability scores.");
+    talking_points.push("Start with the most accessible structural change: even shifting 10-15% of income from active to recurring would meaningfully change the profile.");
+  }
+
+  // Client questions — always relevant, prioritized by constraint
+  if (inputs.income_continuity_without_active_labor <= 25) {
+    client_questions.push("If you couldn't work for 90 days, what percentage of your current income would continue arriving?");
+    client_questions.push("Are there any services you provide that could be packaged into a recurring or subscription model?");
+  }
+  if (inputs.recurring_income_proportion <= 25) {
+    client_questions.push("What percentage of this month's revenue was already committed before the month started?");
+    client_questions.push("Have you considered converting any project-based clients to retainer arrangements?");
+  }
+  if (inputs.income_concentration <= 25) {
+    client_questions.push("What would happen to your income if your largest single client or contract ended tomorrow?");
+    client_questions.push("How many clients or sources would you need to lose before income dropped more than 30%?");
+  }
+  if (inputs.forward_revenue_visibility <= 25) {
+    client_questions.push("How many months of revenue do you have contractually committed or reasonably certain?");
+    client_questions.push("What could you do this quarter to lock in revenue for the next 6 months?");
+  }
+  if (inputs.number_of_income_sources <= 25) {
+    client_questions.push("How many independent sources contribute at least 10% of your total income?");
+    client_questions.push("What's one additional revenue stream you could launch within 90 days?");
+  }
+  if (inputs.earnings_variability <= 25) {
+    client_questions.push("How much does your monthly income vary — what's the difference between your best and worst months?");
+    client_questions.push("Would converting any variable-fee arrangements to fixed monthly retainers help smooth out cash flow?");
+  }
+  // Ensure at least 3 questions
+  if (client_questions.length < 3) {
+    client_questions.push("What structural change would make you feel most confident about your income over the next 12 months?");
+    client_questions.push("If you were to bring on a partner or hire, how would that affect your income structure?");
+  }
+
+  // Red flags
+  if (riskDrop > 20) {
+    red_flags.push(`High concentration risk: losing the largest income source would drop the score by ${riskDrop} points. Discuss diversification urgently.`);
+  }
+  if (continuityPct < 20) {
+    red_flags.push("Less than 20% of income continues without active work. The client has minimal safety net if unable to work due to health, family, or market disruption.");
+  }
+  if (inputs.forward_revenue_visibility <= 25 && inputs.recurring_income_proportion <= 25) {
+    red_flags.push("Both forward visibility and recurring revenue are low — the client essentially starts from zero each month. This creates compounding uncertainty.");
+  }
+  if (finalScore < 40 && band === "Limited Stability") {
+    red_flags.push("Limited Stability classification may affect the client's ability to secure favorable terms on business credit, insurance, or partnership agreements.");
+  }
+
+  // Next steps
+  next_steps.push("Review the 90-day action plan together and commit to the first action item with a specific deadline.");
+  next_steps.push(`Schedule a follow-up assessment in ${finalScore >= 60 ? "6" : "3"} months to measure structural progress.`);
+  if (riskDrop > 15) {
+    next_steps.push("Prioritize a diversification strategy before the next review — reducing concentration risk should be the immediate focus.");
+  }
+  next_steps.push("Share the Client Summary page with the client as a reference document and accountability tool.");
+
+  return {
+    talking_points: talking_points.slice(0, 4),
+    client_questions: client_questions.slice(0, 4),
+    red_flags: red_flags.slice(0, 3),
+    next_steps: next_steps.slice(0, 4),
+  };
+}
+
+// ============================================================
+// PRODUCT/SERVICE RECOMMENDATION MATRIX
+// ============================================================
+
+export interface ProductRecommendation {
+  category: string;
+  rationale: string;
+  urgency: "High" | "Medium" | "Low";
+}
+
+export function generateProductRecommendations(
+  inputs: DiagnosticInput,
+  finalScore: number,
+  constraintKey: string,
+  industrySector: string,
+): ProductRecommendation[] {
+  const recs: ProductRecommendation[] = [];
+
+  // Persistence-related recommendations
+  if (inputs.income_continuity_without_active_labor <= 50) {
+    recs.push({
+      category: "Disability & Income Protection",
+      rationale: `Income is ${inputs.income_continuity_without_active_labor <= 25 ? "heavily" : "moderately"} dependent on active work. Disability insurance or income protection coverage would safeguard against disruption from health events.`,
+      urgency: inputs.income_continuity_without_active_labor <= 25 ? "High" : "Medium",
+    });
+  }
+
+  // Concentration-related recommendations
+  if (inputs.income_concentration <= 50) {
+    recs.push({
+      category: "Business Diversification Advisory",
+      rationale: "High revenue concentration on a small number of sources creates outsized risk. Strategic advisory on client acquisition, market expansion, or new revenue channels would reduce this exposure.",
+      urgency: inputs.income_concentration <= 25 ? "High" : "Medium",
+    });
+  }
+
+  // Key-person risk
+  if (inputs.income_continuity_without_active_labor <= 25 && inputs.number_of_income_sources <= 50) {
+    recs.push({
+      category: "Key-Person Insurance",
+      rationale: "The income system depends on one person's continuous output with limited source diversification. Key-person coverage protects against the financial impact of the primary earner being unable to work.",
+      urgency: "High",
+    });
+  }
+
+  // Forward visibility recommendations
+  if (inputs.forward_revenue_visibility <= 50) {
+    recs.push({
+      category: "Cash Flow & Contract Structuring",
+      rationale: "Limited forward revenue visibility creates planning uncertainty. Advisory on contract structuring, advance payment terms, or pipeline management would improve predictability.",
+      urgency: inputs.forward_revenue_visibility <= 25 ? "High" : "Medium",
+    });
+  }
+
+  // Recurring revenue recommendations
+  if (inputs.recurring_income_proportion <= 50) {
+    recs.push({
+      category: "Revenue Model Restructuring",
+      rationale: `Most income in this ${industrySector} system comes from one-time transactions. Advisory on transitioning to subscription, retainer, or membership models would build a predictable revenue base.`,
+      urgency: inputs.recurring_income_proportion <= 25 ? "High" : "Medium",
+    });
+  }
+
+  // Variability recommendations
+  if (inputs.earnings_variability <= 50) {
+    recs.push({
+      category: "Financial Planning & Reserves",
+      rationale: "Significant month-to-month income variation requires more sophisticated cash flow planning, reserve management, and potentially a line of credit to smooth operational spending.",
+      urgency: inputs.earnings_variability <= 25 ? "High" : "Medium",
+    });
+  }
+
+  // Wealth building for high scorers
+  if (finalScore >= 70) {
+    recs.push({
+      category: "Wealth Management & Growth Strategy",
+      rationale: "Strong structural stability creates capacity for strategic investment, expansion, or wealth building. The income base is durable enough to support calculated risk-taking.",
+      urgency: "Medium",
+    });
+  }
+
+  // Estate/succession for asset-heavy
+  if (inputs.income_continuity_without_active_labor >= 75) {
+    recs.push({
+      category: "Estate & Succession Planning",
+      rationale: "Significant persistent income (asset-derived or recurring) creates estate planning considerations. Proper structuring ensures income continuity across generations or ownership transitions.",
+      urgency: "Low",
+    });
+  }
+
+  // Sort by urgency, take top 4
+  const order = { High: 0, Medium: 1, Low: 2 };
+  return recs.sort((a, b) => order[a.urgency] - order[b.urgency]).slice(0, 4);
+}
+
+// ============================================================
 // PAGE KEY INSIGHT TEXTS
 // ============================================================
 

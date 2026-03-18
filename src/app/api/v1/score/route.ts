@@ -160,6 +160,9 @@ export async function POST(request: NextRequest) {
       risk_scenario_band: record.risk_scenario_band,
       risk_scenario_drop: record.risk_scenario_drop,
       risk_scenario_text: record.risk_scenario_text,
+      // Advisor tools
+      advisor_discussion_guide_payload: record.advisor_discussion_guide_payload,
+      product_recommendations_payload: record.product_recommendations_payload,
       // Registry
       registry_visibility: record.registry_visibility,
     });

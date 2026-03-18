@@ -20,6 +20,8 @@ import {
   generatePageInsights,
   computeIncomeContinuityEstimate,
   computeRiskScenario,
+  generateAdvisorDiscussionGuide,
+  generateProductRecommendations,
 } from "./mappings";
 import { getSectorData, filterActionPlan } from "./sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./percentile";
@@ -137,7 +139,20 @@ export async function executeIncomeStabilityEngine(
   // Step 8c: Risk scenario analysis
   const riskScenario = computeRiskScenario(validatedInputs, scoringResult.final_score, validatedProfile);
 
-  // Step 8d: Stability trajectory projection
+  // Step 8d: Advisor discussion guide
+  const advisorGuide = generateAdvisorDiscussionGuide(
+    validatedInputs, scoringResult.final_score, scoringResult.stability_band,
+    interpretation.primary_constraint_label, validatedProfile.industry_sector,
+    continuityEstimate.income_continuity_pct, riskScenario.risk_scenario_drop,
+  );
+
+  // Step 8e: Product recommendations
+  const productRecs = generateProductRecommendations(
+    validatedInputs, scoringResult.final_score,
+    interpretation.primary_constraint_key, validatedProfile.industry_sector,
+  );
+
+  // Step 8f: Stability trajectory projection
   const trajectory = computeTrajectoryProjection(
     validatedInputs,
     interpretation.primary_constraint_key
@@ -319,6 +334,12 @@ export async function executeIncomeStabilityEngine(
     risk_scenario_band: riskScenario.risk_scenario_band,
     risk_scenario_drop: riskScenario.risk_scenario_drop,
     risk_scenario_text: riskScenario.risk_scenario_text,
+
+    // Advisor discussion guide
+    advisor_discussion_guide_payload: JSON.stringify(advisorGuide),
+
+    // Product recommendations
+    product_recommendations_payload: JSON.stringify(productRecs),
 
     // Registry fields
     registry_status: DEFAULT_REGISTRY_STATUS,

@@ -15,6 +15,8 @@ import {
   generatePageInsights,
   computeIncomeContinuityEstimate,
   computeRiskScenario,
+  generateAdvisorDiscussionGuide,
+  generateProductRecommendations,
 } from "./engine/mappings";
 import { getSectorData, filterActionPlan } from "./engine/sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./engine/percentile";
@@ -106,6 +108,19 @@ export async function executeClientEngine(submission: {
   // Income continuity + risk scenario
   const continuityEstimate = computeIncomeContinuityEstimate(validatedInputs, validatedProfile);
   const riskScenario = computeRiskScenario(validatedInputs, scoringResult.final_score, validatedProfile);
+
+  // Advisor discussion guide
+  const advisorGuide = generateAdvisorDiscussionGuide(
+    validatedInputs, scoringResult.final_score, scoringResult.stability_band,
+    interpretation.primary_constraint_label, validatedProfile.industry_sector,
+    continuityEstimate.income_continuity_pct, riskScenario.risk_scenario_drop,
+  );
+
+  // Product recommendations
+  const productRecs = generateProductRecommendations(
+    validatedInputs, scoringResult.final_score,
+    interpretation.primary_constraint_key, validatedProfile.industry_sector,
+  );
 
   // Trajectory
   const trajectory = computeTrajectoryProjection(
@@ -255,6 +270,10 @@ export async function executeClientEngine(submission: {
     risk_scenario_band: riskScenario.risk_scenario_band,
     risk_scenario_drop: riskScenario.risk_scenario_drop,
     risk_scenario_text: riskScenario.risk_scenario_text,
+
+    // Advisor tools
+    advisor_discussion_guide_payload: JSON.stringify(advisorGuide),
+    product_recommendations_payload: JSON.stringify(productRecs),
 
     // Registry
     registry_visibility: "private",

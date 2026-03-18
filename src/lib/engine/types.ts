@@ -221,10 +221,16 @@ export interface StructuralAssessmentRecord {
   income_continuity_text: string;     // plain-language description
 
   // Risk scenario
-  risk_scenario_score: number;        // score if largest client/source removed
-  risk_scenario_band: string;         // band after loss
-  risk_scenario_drop: number;         // point drop
-  risk_scenario_text: string;         // narrative
+  risk_scenario_score: number;
+  risk_scenario_band: string;
+  risk_scenario_drop: number;
+  risk_scenario_text: string;
+
+  // Advisor discussion guide
+  advisor_discussion_guide_payload: string; // JSON
+
+  // Product recommendations
+  product_recommendations_payload: string;  // JSON
 
   // Registry fields
   registry_status: "Active" | "Superseded" | "Revoked";
