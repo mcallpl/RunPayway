@@ -87,7 +87,7 @@ const SAMPLE = {
   constraint: "Income Persistence",
   constraintMechanism: "Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.",
   constraintImpact: "Systems dependent on active labor face higher score volatility if conditions change.",
-  improvementText: "Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores. Structuring intellectual property or productized offerings could create asset-based revenue.",
+  improvementText: "Income systems that include recurring service agreements alongside project-based work tend to exhibit higher persistence scores. Structures with intellectual property or productized offerings often demonstrate asset-based revenue characteristics.",
   indicators: [
     ["Income That Continues", "Moderate"],
     ["Number of Income Sources", "Multiple"],
@@ -119,18 +119,18 @@ const SAMPLE = {
   riskScenarioBand: "Developing Stability",
   riskScenarioText: "If Jordan Ellis's largest income source were lost, the score would decline significantly — by approximately 22 points to 56, moving from Established Stability to Developing Stability.",
   productRecs: [
-    { category: "Disability & Income Protection", urgency: "High", rationale: "Income is moderately dependent on active work. Disability insurance would safeguard against disruption from health events." },
-    { category: "Revenue Model Restructuring", urgency: "High", rationale: "Most income comes from one-time transactions. Advisory on transitioning to retainer models would build a predictable revenue base." },
-    { category: "Business Diversification Advisory", urgency: "Medium", rationale: "High revenue concentration creates outsized risk. Strategic advisory on client acquisition would reduce this exposure." },
+    { category: "Income Protection Planning", urgency: "High", rationale: "Income is moderately dependent on active work. A licensed insurance professional can assess whether protection coverage is appropriate for this structural profile." },
+    { category: "Revenue Structure Analysis", urgency: "High", rationale: "Most income comes from one-time transactions. Income systems that include retainer-based arrangements tend to exhibit more predictable revenue patterns." },
+    { category: "Diversification Review", urgency: "Medium", rationale: "Revenue is concentrated across a limited number of sources. A qualified business advisor can evaluate strategies for broadening the revenue base." },
   ],
   advisorTalkingPoints: [
-    "The client has built meaningful stability (78/100), but specific structural gaps prevent reaching the top tier. Focus on the primary constraint: Income Persistence.",
-    "Approximately 38% of income would continue without active work — this is progress, but leaves significant exposure to disruption.",
-    "The 90-day action plan targets the highest-leverage structural change. Walking through these steps together creates accountability.",
+    "The client has built meaningful stability (78/100), though specific structural characteristics — particularly Income Persistence — distinguish this profile from top-tier systems.",
+    "Approximately 38% of income would continue without active work. This reflects the current balance between active and persistent revenue.",
+    "The structural observations in this report identify areas where the income system differs most from higher-scoring profiles.",
   ],
   advisorQuestions: [
     "If you couldn't work for 90 days, what percentage of your current income would continue arriving?",
-    "Are there any services you provide that could be packaged into a recurring or subscription model?",
+    "Are any of the services you provide structured as recurring or subscription-based arrangements?",
     "What would happen to your income if your largest single client or contract ended tomorrow?",
   ],
 };
@@ -816,19 +816,19 @@ export default function SampleReportPage() {
               <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
               <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
               <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 6 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>Without structural changes, a 90-day work stoppage would result in significant income disruption.</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>At this structural level, a 90-day work stoppage would affect a significant portion of total income.</div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
-              {/* Improvement Opportunities */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Improvement Opportunities</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 12 }}>Shifting 10–15% of income from project-based to recurring service agreements would improve persistence scores.</div>
+              {/* Structural Observations */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Structural Observations</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 12 }}>Income systems that include recurring service agreements alongside project work tend to exhibit higher persistence scores.</div>
 
-              {/* 90-Day Action Plan */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>90-Day Action Plan</div>
+              {/* Structural Pathways */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Structural Pathways</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 14 }}>
-                <div style={{ fontSize: 11, color: B.navy }}>1. Convert two existing project clients to monthly retainer agreements.</div>
-                <div style={{ fontSize: 11, color: B.navy }}>2. Package one repeatable service as a subscription offering.</div>
-                <div style={{ fontSize: 11, color: B.navy }}>3. Establish 90-day forward pipeline visibility through advance booking.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>1. Structures that include monthly retainer arrangements tend to show increased recurring revenue.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>2. Income systems with productized subscription offerings tend to exhibit more predictable patterns.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>3. Profiles with 90-day forward pipeline visibility tend to demonstrate stronger revenue predictability.</div>
               </div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 

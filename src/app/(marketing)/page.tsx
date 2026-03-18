@@ -1193,7 +1193,7 @@ function PreviewYourScoreReport() {
               </svg>
             </div>
 
-            {/* Service recommendations preview */}
+            {/* Related service categories preview */}
             <div style={{
               backgroundColor: "#ffffff",
               border: "1px solid rgba(14,26,43,0.08)",
@@ -1204,9 +1204,9 @@ function PreviewYourScoreReport() {
               <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 12 }}>{t.home.reportRecsTitle}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
-                  { name: "Income Protection", urgency: "High", color: B.teal },
-                  { name: "Revenue Restructuring", urgency: "High", color: B.teal },
-                  { name: "Diversification Advisory", urgency: "Med", color: B.navy },
+                  { name: "Income Protection Planning", urgency: "High", color: B.teal },
+                  { name: "Revenue Structure Analysis", urgency: "High", color: B.teal },
+                  { name: "Diversification Review", urgency: "Med", color: B.navy },
                 ].map((rec) => (
                   <div key={rec.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span className="text-[11px]" style={{ color: B.navy, fontWeight: 500 }}>{rec.name}</span>
