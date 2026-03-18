@@ -220,25 +220,25 @@ function getKeyFactors(r: AssessmentRecord): { positive: string[]; risks: string
 // REPORT SPACING TOKENS — enterprise-grade, PDF-safe
 // ============================================================
 const R = {
-  pagePad:    36,
-  headerMb:   18,
-  sectionGap: 16,
+  pagePad:    40,
+  headerMb:   20,
+  sectionGap: 18,
   labelMb:    8,
-  paraMb:     8,
-  itemGap:    6,
-  dividerMy:  14,
-  footerMt:   16,
+  paraMb:     10,
+  itemGap:    7,
+  dividerMy:  16,
+  footerMt:   18,
 };
 
 const T = {
-  score:      { fontSize: 44, fontWeight: 700, lineHeight: 1 },
-  pageTitle:  { fontSize: 13, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.1em", textTransform: "uppercase" as const },
-  band:       { fontSize: 14, fontWeight: 600, lineHeight: 1.3 },
-  body:       { fontSize: 11.5, fontWeight: 400, lineHeight: 1.55 },
-  small:      { fontSize: 10.5, fontWeight: 400, lineHeight: 1.45 },
-  label:      { fontSize: 9.5, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  caption:    { fontSize: 9.5, fontWeight: 400, lineHeight: 1.45 },
-  micro:      { fontSize: 8.5, fontWeight: 600, lineHeight: 1.3 },
+  score:      { fontSize: 48, fontWeight: 700, lineHeight: 1 },
+  pageTitle:  { fontSize: 14, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.1em", textTransform: "uppercase" as const },
+  band:       { fontSize: 15, fontWeight: 600, lineHeight: 1.3 },
+  body:       { fontSize: 12.5, fontWeight: 400, lineHeight: 1.6 },
+  small:      { fontSize: 11, fontWeight: 400, lineHeight: 1.5 },
+  label:      { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  caption:    { fontSize: 10, fontWeight: 400, lineHeight: 1.5 },
+  micro:      { fontSize: 9, fontWeight: 600, lineHeight: 1.3 },
 };
 
 // ── PDF page dimensions ──
@@ -316,12 +316,13 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       minHeight: PDF.previewH,
       backgroundColor: "#ffffff",
       border: "1px solid #E5E7EB",
-      borderRadius: 8,
+      borderRadius: 6,
       padding: R.pagePad,
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
       overflow: "visible",
+      boxShadow: "0 2px 16px rgba(14,26,43,0.06), 0 1px 4px rgba(14,26,43,0.04)",
     }}>
       <ReportHeader record={record} />
       <div style={{ flex: 1 }}>{children}</div>
@@ -575,7 +576,7 @@ export default function ReviewPage() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW + 48, margin: "0 auto" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 40, maxWidth: PDF.captureW + 48, margin: "0 auto", padding: "0 0 40px" }}>
       <div className="no-print" style={{ width: "100%", textAlign: "center" }}>
         <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>{rt.title}</h1>
         <p style={{ fontSize: 14, color: B.muted, marginTop: 4 }}>{rt.modelVersion}</p>
