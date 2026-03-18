@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -159,6 +160,7 @@ function BulletList({ items, style }: { items: string[]; style?: React.CSSProper
 
 export default function MethodologyPage() {
   const mobile = useMobile();
+  const { t } = useLanguage();
 
   const heroAnim = useInView();
   const s1 = useInView();
@@ -230,7 +232,7 @@ export default function MethodologyPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Model Documentation
+              {t.methodology.heroTag}
             </span>
           </div>
 
@@ -244,7 +246,7 @@ export default function MethodologyPage() {
               marginBottom: 20,
             }}
           >
-            Income Stability Score™
+            {t.methodology.heroTitle}
           </h1>
 
           <p
@@ -256,7 +258,7 @@ export default function MethodologyPage() {
               margin: "0 auto",
             }}
           >
-            Structural Stability Model RP-1.0 | Version 1.0
+            {t.methodology.heroSubtitle}
           </p>
         </div>
       </section>
@@ -283,44 +285,44 @@ export default function MethodologyPage() {
         >
           {/* 1. Methodology Overview */}
           <div ref={s1.ref}>
-            <DocSection title="Methodology Overview" mobile={mobile} visible={s1.visible} delay={0}>
+            <DocSection title={t.methodology.s1Title} mobile={mobile} visible={s1.visible} delay={0}>
               <P>
-                The Income Stability Score™ is a deterministic model that classifies the structural stability of an income system.
+                {t.methodology.s1P1}
               </P>
               <P>
-                Developed by RunPayway™, the model evaluates six canonical structural dimensions to produce a single integer score and corresponding stability classification band.
+                {t.methodology.s1P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The objective of the model is to provide a consistent analytical method for evaluating how stable an income structure is based on how income is generated and sustained.
+                {t.methodology.s1P3}
               </P>
             </DocSection>
           </div>
 
           {/* 2. Purpose of the Model */}
           <div ref={s2.ref}>
-            <DocSection title="Purpose of the Model" mobile={mobile} visible={s2.visible} delay={0}>
+            <DocSection title={t.methodology.s2Title} mobile={mobile} visible={s2.visible} delay={0}>
               <P>
-                The model is designed to classify the structural stability of income systems.
+                {t.methodology.s2P1}
               </P>
               <P>
-                It provides a standardized framework for evaluating key characteristics of income durability, including diversification, persistence, and variability of income streams.
+                {t.methodology.s2P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The model evaluates the structure of income generation, rather than personal financial performance.
+                {t.methodology.s2P3}
               </P>
             </DocSection>
           </div>
 
           {/* 3. Canonical Input Dimensions */}
           <div ref={s3.ref}>
-            <DocSection title="The Six Scoring Factors" mobile={mobile} visible={s3.visible} delay={0}>
+            <DocSection title={t.methodology.s3Title} mobile={mobile} visible={s3.visible} delay={0}>
               <P>
-                The diagnostic instrument consists of Six Structural Factors that correspond to six structural input dimensions.
+                {t.methodology.s3P1}
               </P>
               <P>
-                Each dimension is scored on a five-point scale and converted to integer values used in the scoring calculation.
+                {t.methodology.s3P2}
               </P>
-              <P>The six canonical input dimensions are:</P>
+              <P>{t.methodology.s3P3}</P>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
                 {[
                   "Recurring Revenue Base",
@@ -355,32 +357,32 @@ export default function MethodologyPage() {
                 ))}
               </div>
               <P style={{ marginBottom: 0 }}>
-                These dimensions describe how income is generated, how diversified or concentrated it is, and how stable it is likely to be under disruption.
+                {t.methodology.s3P4}
               </P>
             </DocSection>
           </div>
 
           {/* 4. Deterministic Scoring Framework */}
           <div ref={s4.ref}>
-            <DocSection title="Deterministic Scoring Framework" mobile={mobile} visible={s4.visible} delay={0}>
-              <P>The scoring process follows a fixed deterministic framework.</P>
-              <P>Identical inputs under the same model version always produce identical outputs.</P>
+            <DocSection title={t.methodology.s4Title} mobile={mobile} visible={s4.visible} delay={0}>
+              <P>{t.methodology.s4P1}</P>
+              <P>{t.methodology.s4P2}</P>
               <P>
-                The model uses fixed scoring rules with no rounding, no AI, no randomization, and no adaptive adjustments. The same inputs always produce the same score.
+                {t.methodology.s4P3}
               </P>
               <P>
-                Inputs are grouped into two scoring pillars representing income structure characteristics and income stability characteristics.
+                {t.methodology.s4P4}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The final score is calculated using a deterministic weighted scoring framework applied to the pillar scores.
+                {t.methodology.s4P5}
               </P>
             </DocSection>
           </div>
 
           {/* 5. Stability Classification System */}
           <div ref={s5.ref}>
-            <DocSection title="Stability Classification System" mobile={mobile} visible={s5.visible} delay={0}>
-              <P>The final score is mapped to one of four stability classification bands.</P>
+            <DocSection title={t.methodology.s5Title} mobile={mobile} visible={s5.visible} delay={0}>
+              <P>{t.methodology.s5P1}</P>
               <div style={{ borderRadius: 12, overflow: "hidden", border: `1px solid ${B.sandDk}`, marginBottom: 16 }}>
                 <div
                   style={{
@@ -390,8 +392,8 @@ export default function MethodologyPage() {
                     background: B.navy,
                   }}
                 >
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Stability Band</span>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.08em", textTransform: "uppercase", textAlign: "right" }}>Score Range</span>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.08em", textTransform: "uppercase" }}>{t.methodology.s5Band}</span>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.08em", textTransform: "uppercase", textAlign: "right" }}>{t.methodology.s5Range}</span>
                 </div>
                 {[
                   { band: "Limited", range: "0–39", dot: "#DC2626" },
@@ -418,112 +420,115 @@ export default function MethodologyPage() {
                 ))}
               </div>
               <P style={{ marginBottom: 0 }}>
-                These classification bands provide context for interpreting the structural durability of the income system.
+                {t.methodology.s5P2}
               </P>
             </DocSection>
           </div>
 
           {/* 6. Structural Interpretation Framework */}
           <div ref={s6.ref}>
-            <DocSection title="Structural Interpretation Framework" mobile={mobile} visible={s6.visible} delay={0}>
-              <P>The model produces a structured interpretation of the results.</P>
-              <P>This interpretation identifies:</P>
+            <DocSection title={t.methodology.s6Title} mobile={mobile} visible={s6.visible} delay={0}>
+              <P>{t.methodology.s6P1}</P>
+              <P>{t.methodology.s6P2}</P>
               <BulletList items={[
-                "The primary structural constraint affecting stability",
-                "The key structural factors supporting stability",
-                "A structural priority derived from the constraint",
+                t.methodology.s6Li1,
+                t.methodology.s6Li2,
+                t.methodology.s6Li3,
+                t.methodology.s6Li4,
+                t.methodology.s6Li5,
+                t.methodology.s6Li6,
               ]} />
               <P style={{ marginBottom: 0 }}>
-                All interpretation outputs are generated deterministically using locked interpretation templates.
+                {t.methodology.s6P3}
               </P>
             </DocSection>
           </div>
 
           {/* 7. Diagnostic Timeframe */}
           <div ref={s7.ref}>
-            <DocSection title="Diagnostic Timeframe" mobile={mobile} visible={s7.visible} delay={0}>
+            <DocSection title={t.methodology.s7Title} mobile={mobile} visible={s7.visible} delay={0}>
               <P>
-                The assessment evaluates income structure over the preceding twelve-month period based on the information reported by the subject.
+                {t.methodology.s7P1}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The income continuity test considers a hypothetical 90-day cessation of active work to evaluate whether income would persist without continued labor.
+                {t.methodology.s7P2}
               </P>
             </DocSection>
           </div>
 
           {/* 8. Analytical Scope */}
           <div ref={s8.ref}>
-            <DocSection title="Analytical Scope" mobile={mobile} visible={s8.visible} delay={0}>
-              <P>The model evaluates structural income stability only.</P>
-              <P>The diagnostic does not assess:</P>
+            <DocSection title={t.methodology.s8Title} mobile={mobile} visible={s8.visible} delay={0}>
+              <P>{t.methodology.s8P1}</P>
+              <P>{t.methodology.s8P2}</P>
               <BulletList items={[
-                "Creditworthiness",
-                "Net worth",
-                "Investment performance",
-                "Debt capacity",
-                "Future income growth",
+                t.methodology.s8Li1,
+                t.methodology.s8Li2,
+                t.methodology.s8Li3,
+                t.methodology.s8Li4,
+                t.methodology.s8Li5,
               ]} />
               <P style={{ marginBottom: 0 }}>
-                The assessment is analytical in nature and does not constitute financial advice.
+                {t.methodology.s8P3}
               </P>
             </DocSection>
           </div>
 
           {/* 9. Non-Predictive Nature */}
           <div ref={s9.ref}>
-            <DocSection title="Non-Predictive Nature" mobile={mobile} visible={s9.visible} delay={0}>
+            <DocSection title={t.methodology.s9Title} mobile={mobile} visible={s9.visible} delay={0}>
               <P>
-                The Income Stability Score™ is a classification of current structural characteristics.
+                {t.methodology.s9P1}
               </P>
               <P>
-                The model does not forecast income, estimate growth, or predict future financial outcomes.
+                {t.methodology.s9P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The score reflects the structural stability of the income system based solely on the information reported at the time of the assessment.
+                {t.methodology.s9P3}
               </P>
             </DocSection>
           </div>
 
           {/* 10. Model Version Governance */}
           <div ref={s10.ref}>
-            <DocSection title="Model Version Governance" mobile={mobile} visible={s10.visible} delay={0}>
-              <P>Any change to the model requires a formal version update.</P>
-              <P>Changes requiring a version update include:</P>
+            <DocSection title={t.methodology.s10Title} mobile={mobile} visible={s10.visible} delay={0}>
+              <P>{t.methodology.s10P1}</P>
+              <P>{t.methodology.s10P2}</P>
               <BulletList items={[
-                "Diagnostic questions",
-                "Answer mapping logic",
-                "Canonical input order",
-                "Scoring framework",
-                "Classification thresholds",
-                "Tie-break rules",
-                "Interpretation templates",
-                "Structural priority mapping",
+                t.methodology.s10Li1,
+                t.methodology.s10Li2,
+                t.methodology.s10Li3,
+                t.methodology.s10Li4,
+                t.methodology.s10Li5,
+                t.methodology.s10Li6,
+                t.methodology.s10Li7,
+                t.methodology.s10Li8,
               ]} />
               <P style={{ marginBottom: 0 }}>
-                Historical assessments remain permanently tied to their original model version, ruleset identifier, and interpretation version.
+                {t.methodology.s10P3}
               </P>
             </DocSection>
           </div>
 
           {/* 11. Assessment Record Integrity */}
           <div ref={s11.ref}>
-            <DocSection title="Assessment Record Integrity" mobile={mobile} visible={s11.visible} delay={0}>
+            <DocSection title={t.methodology.s11Title} mobile={mobile} visible={s11.visible} delay={0}>
               <P>
-                Each issued assessment produces an immutable record identified by a unique Record ID and Authorization Code.
+                {t.methodology.s11P1}
               </P>
               <P>
-                Records are append-only and cannot be modified, deleted, or regenerated after issuance.
+                {t.methodology.s11P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                A built-in integrity check ensures no record can be altered after it is issued.
+                {t.methodology.s11P3}
               </P>
             </DocSection>
           </div>
 
           {/* 12. Independent Verification */}
           <div ref={s12.ref}>
-            <DocSection title="Independent Verification" mobile={mobile} visible={s12.visible} delay={0}>
-              <P>Issued assessments may be independently verified at:</P>
+            <DocSection title={t.methodology.s12Title} mobile={mobile} visible={s12.visible} delay={0}>
+              <P>{t.methodology.s12P1}</P>
               <div
                 style={{
                   padding: "14px 20px",
@@ -550,25 +555,25 @@ export default function MethodologyPage() {
                 </Link>
               </div>
               <P>
-                Verification requires the Record ID and Authorization Code.
+                {t.methodology.s12P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                The verification system confirms that the record exists and returns the score, classification band, and issuance details without exposing internal assessment data.
+                {t.methodology.s12P3}
               </P>
             </DocSection>
           </div>
 
           {/* 13. Methodology Transparency */}
           <div ref={s13.ref}>
-            <DocSection title="Methodology Transparency" mobile={mobile} visible={s13.visible} delay={0}>
+            <DocSection title={t.methodology.s13Title} mobile={mobile} visible={s13.visible} delay={0}>
               <P>
-                The scoring methodology, input structure, weighting framework, and classification system are publicly documented.
+                {t.methodology.s13P1}
               </P>
               <P>
-                The model operates under a published ruleset containing the complete ruleset and interpretation templates.
+                {t.methodology.s13P2}
               </P>
               <P style={{ marginBottom: 0 }}>
-                A verified ruleset identifier ensures consistent scoring across all assessments issued under the same model version.
+                {t.methodology.s13P3}
               </P>
             </DocSection>
           </div>
@@ -639,7 +644,7 @@ export default function MethodologyPage() {
               marginBottom: 20,
             }}
           >
-            Run Your Assessment
+            {t.methodology.ctaTitle}
           </h2>
 
           <p
@@ -651,7 +656,7 @@ export default function MethodologyPage() {
               margin: "0 auto 36px",
             }}
           >
-            Complete the assessment in under two minutes and receive your Income Stability Score™ instantly with a full structured diagnostic report.
+            {t.methodology.ctaDesc}
           </p>
 
           <Link
@@ -681,12 +686,12 @@ export default function MethodologyPage() {
             }}
           >
             <span className="tick tick-navy" />
-            <span className="cta-label">Get My Income Stability Score™</span>
+            <span className="cta-label">{t.methodology.ctaButton}</span>
             <span className="cta-arrow cta-arrow-navy" />
           </Link>
 
           <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 32, letterSpacing: "0.02em" }}>
-            Powered by Structural Stability Model RP-1.0
+            {t.methodology.closingPowered}
           </p>
         </div>
       </section>

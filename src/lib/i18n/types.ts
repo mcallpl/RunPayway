@@ -732,6 +732,38 @@ export interface Translations {
     poweredBy: string;
   };
 
+  // ── Methodology page ──
+  methodology: {
+    heroTag: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    s1Title: string; s1P1: string; s1P2: string; s1P3: string;
+    s2Title: string; s2P1: string; s2P2: string; s2P3: string;
+    s3Title: string; s3P1: string; s3P2: string; s3P3: string;
+    s3Dim1: string; s3Dim2: string; s3Dim3: string; s3Dim4: string; s3Dim5: string; s3Dim6: string;
+    s3P4: string;
+    s4Title: string; s4P1: string; s4P2: string; s4P3: string; s4P4: string; s4P5: string;
+    s5Title: string; s5P1: string; s5P2: string;
+    s5Band: string; s5Range: string;
+    s5B1: string; s5R1: string; s5B2: string; s5R2: string; s5B3: string; s5R3: string; s5B4: string; s5R4: string;
+    s6Title: string; s6P1: string; s6P2: string;
+    s6Li1: string; s6Li2: string; s6Li3: string; s6Li4: string; s6Li5: string; s6Li6: string;
+    s6P3: string;
+    s7Title: string; s7P1: string; s7P2: string;
+    s8Title: string; s8P1: string; s8P2: string;
+    s8Li1: string; s8Li2: string; s8Li3: string; s8Li4: string; s8Li5: string;
+    s8P3: string;
+    s9Title: string; s9P1: string; s9P2: string; s9P3: string;
+    s10Title: string; s10P1: string; s10P2: string;
+    s10Li1: string; s10Li2: string; s10Li3: string; s10Li4: string; s10Li5: string; s10Li6: string; s10Li7: string; s10Li8: string;
+    s10P3: string;
+    s11Title: string; s11P1: string; s11P2: string; s11P3: string;
+    s12Title: string; s12P1: string; s12P2: string; s12P3: string;
+    s13Title: string; s13P1: string; s13P2: string; s13P3: string;
+    ctaTitle: string; ctaDesc: string; ctaButton: string;
+    closingPowered: string;
+  };
+
   // ── Privacy Policy page ──
   privacyPolicy: {
     heroTag: string;
