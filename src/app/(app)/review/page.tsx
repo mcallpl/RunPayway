@@ -479,7 +479,9 @@ export default function ReviewPage() {
   const rt = t.report;
   const [record, setRecord] = useState<AssessmentRecord | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const monitoringTracked = useRef(false);
+  const emailSent = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -517,6 +519,37 @@ export default function ReviewPage() {
           }
         }
       } catch { /* ignore */ }
+    }
+
+    // Auto-send report via email (once per load)
+    if (!emailSent.current) {
+      emailSent.current = true;
+      // Get email from profile (collected during checkout/diagnostic-portal)
+      const profileRaw = sessionStorage.getItem("rp_profile");
+      const email = profileRaw ? JSON.parse(profileRaw).recipient_email : null;
+      if (email) {
+        setEmailStatus("sending");
+        fetch("/api/v1/send-report", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipientEmail: email,
+            assessmentTitle: parsed.assessment_title,
+            finalScore: parsed.final_score,
+            stabilityBand: parsed.stability_band,
+            recordId: parsed.record_id,
+            modelVersion: parsed.model_version,
+            issuedTimestamp: parsed.issued_timestamp_utc,
+            industrySector: parsed.industry_sector,
+            classification: parsed.classification,
+            primaryConstraintLabel: parsed.primary_constraint_label,
+            bandInterpretationText: parsed.band_interpretation_text,
+            peerPercentileLabel: parsed.peer_stability_percentile_label,
+          }),
+        })
+          .then((res) => res.ok ? setEmailStatus("sent") : setEmailStatus("error"))
+          .catch(() => setEmailStatus("error"));
+      }
     }
   }, [router]);
 
@@ -1048,8 +1081,8 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* Download */}
-      <div className="download-section no-print" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {/* Download + Email Status */}
+      <div className="download-section no-print" style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
         <button
           onClick={handleDownload}
           disabled={downloading}
@@ -1058,7 +1091,30 @@ export default function ReviewPage() {
           onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
           {downloading ? rt.generatingPdf : rt.downloadReport}
         </button>
-        <p style={{ ...T.body, color: B.light }}>{rt.emailCopy}</p>
+
+        {/* Email delivery status */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {emailStatus === "sending" && (
+            <>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.light, animation: "pulse 1.2s infinite" }} />
+              <span style={{ fontSize: 13, color: B.muted }}>Sending report to your email...</span>
+            </>
+          )}
+          {emailStatus === "sent" && (
+            <>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal }} />
+              <span style={{ fontSize: 13, color: B.teal, fontWeight: 500 }}>Report sent to your email</span>
+            </>
+          )}
+          {emailStatus === "error" && (
+            <>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.muted }} />
+              <span style={{ fontSize: 13, color: B.muted }}>Email delivery unavailable — download PDF above</span>
+            </>
+          )}
+        </div>
+
+        <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }`}</style>
       </div>
 
       <div className="print-footer hidden print:block">RunPayway™ Income Stability Assessment — Model RP-1.0 | Version 1.0</div>
