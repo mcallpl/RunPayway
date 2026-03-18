@@ -64,7 +64,7 @@ export const es: Translations = {
     processTitle: "Cómo Funciona",
     processSubtitle: "Un diagnóstico estructurado basado en seis dimensiones de estabilidad de ingresos.",
     step1Title: "Perfil de Ingresos",
-    step1Desc: "Seis preguntas sobre sus ingresos recurrentes, concentración de clientes, diversificación de ingresos y visibilidad a futuro.",
+    step1Desc: "Seis Factores Estructurales sobre sus ingresos recurrentes, concentración de clientes, diversificación de ingresos y visibilidad a futuro.",
     step2Title: "Análisis Estructural",
     step2Desc: "El Modelo RP-1.0 evalúa qué tan predecible, diversificada y duradera es la estructura de sus ingresos — puntuación de 0 a 100.",
     step3Title: "Puntuación + Informe Entregado",

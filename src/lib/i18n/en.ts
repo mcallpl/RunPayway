@@ -64,7 +64,7 @@ export const en: Translations = {
     processTitle: "How It Works",
     processSubtitle: "A structured diagnostic built on six dimensions of income stability.",
     step1Title: "Income Profile Intake",
-    step1Desc: "Six questions about your recurring revenue, client concentration, income diversification, and forward visibility.",
+    step1Desc: "Six Structural Factors about your recurring revenue, client concentration, income diversification, and forward visibility.",
     step2Title: "Structural Analysis",
     step2Desc: "Model RP-1.0 evaluates how predictable, diversified, and durable your income structure is — scored 0–100.",
     step3Title: "Score + Report Delivered",

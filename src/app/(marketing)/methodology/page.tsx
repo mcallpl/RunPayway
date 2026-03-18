@@ -315,7 +315,7 @@ export default function MethodologyPage() {
           <div ref={s3.ref}>
             <DocSection title="The Six Scoring Factors" mobile={mobile} visible={s3.visible} delay={0}>
               <P>
-                The diagnostic instrument consists of six questions that correspond to six structural input dimensions.
+                The diagnostic instrument consists of Six Structural Factors that correspond to six structural input dimensions.
               </P>
               <P>
                 Each dimension is scored on a five-point scale and converted to integer values used in the scoring calculation.
