@@ -53,8 +53,8 @@ export const en: Translations = {
   // ── Homepage ──
   home: {
     heroTag: "Income Stability Score™",
-    heroTitle: "If you stopped working tomorrow, how long would your income last?",
-    heroSubtitle: "Most people don\u2019t know. Now you can measure it.",
+    heroTitle: "Your income has a stability score. Do you know what it is?",
+    heroSubtitle: "",
     heroBody: "RunPayway\u2122 measures how safe your income really is \u2014 how spread out it is across clients, how much keeps coming in without you, and what happens if your biggest source goes away. Takes under two minutes.",
     heroAudience: "For anyone whose income depends on more than a paycheck.",
     heroCompletion: "Average completion: 1 min 47 sec — Instant results",

@@ -53,8 +53,8 @@ export const es: Translations = {
   // ── Página principal ──
   home: {
     heroTag: "Income Stability Score™",
-    heroTitle: "Si dejara de trabajar mañana, \u00bfcuánto tiempo durarían sus ingresos?",
-    heroSubtitle: "La mayoría de las personas no lo saben. Ahora puede medirlo.",
+    heroTitle: "Sus ingresos tienen un puntaje de estabilidad. \u00bfSabe cuál es?",
+    heroSubtitle: "",
     heroBody: "RunPayway\u2122 evalúa la estabilidad estructural de sus ingresos \u2014 qué tan diversificados están, cuánto continúa sin usted y qué tan expuesto está a un solo cliente o contrato. En menos de dos minutos.",
     heroAudience: "Para cualquiera cuyo ingreso dependa de más que un salario fijo.",
     heroCompletion: "Tiempo promedio: 1 min 47 seg — Resultados instantáneos",

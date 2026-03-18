@@ -53,8 +53,8 @@ export const pt: Translations = {
   // ── Página Inicial ──
   home: {
     heroTag: "Income Stability Score™",
-    heroTitle: "Se você parasse de trabalhar amanhã, quanto tempo sua renda duraria?",
-    heroSubtitle: "A maioria das pessoas não sabe. Agora você pode medir.",
+    heroTitle: "Sua renda tem uma pontuação de estabilidade. Você sabe qual é?",
+    heroSubtitle: "",
     heroBody: "A RunPayway\u2122 avalia a estabilidade estrutural da sua renda \u2014 quão diversificada é, quanto continua sem você e quão exposto você está a um único cliente ou contrato. Em menos de dois minutos.",
     heroAudience: "Para qualquer pessoa cuja renda dependa de mais do que um salário fixo.",
     heroCompletion: "Tempo médio: 1 min 47 seg — Resultados instantâneos",

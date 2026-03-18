@@ -1764,6 +1764,7 @@ function HeroSection() {
               {t.home.heroTitle}
             </h1>
 
+            {t.home.heroSubtitle && (
             <p
               className="text-[17px] md:text-[20px]"
               style={{
@@ -1780,6 +1781,7 @@ function HeroSection() {
             >
               {t.home.heroSubtitle}
             </p>
+            )}
 
             <p
               className="text-[15px] md:text-[16px]"
