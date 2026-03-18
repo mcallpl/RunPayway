@@ -1,12 +1,117 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoImg from "../../../public/runpayway-logo.png";
 import CookieConsent from "@/components/CookieConsent";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
+
+/* ------------------------------------------------------------------ */
+/*  Global animation styles (injected once)                             */
+/* ------------------------------------------------------------------ */
+
+const HEADER_STYLES = `
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes dropdownOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-6px) scale(0.97); }
+}
+@keyframes mobileSlideIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mobileFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.header-nav-link {
+  position: relative;
+}
+.header-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background: #4B3FAE;
+  border-radius: 1px;
+  transition: width 280ms cubic-bezier(0.22, 1, 0.36, 1), left 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.header-nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+.dropdown-panel {
+  transform-origin: top center;
+}
+.dropdown-panel[data-state="entering"],
+.dropdown-panel[data-state="open"] {
+  animation: dropdownIn 240ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.dropdown-panel[data-state="exiting"] {
+  animation: dropdownOut 180ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.dropdown-item {
+  transition: background 200ms cubic-bezier(0.22, 1, 0.36, 1), color 200ms cubic-bezier(0.22, 1, 0.36, 1), padding-left 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dropdown-item:hover {
+  background: rgba(75, 63, 174, 0.04);
+  color: #0E1A2B;
+  padding-left: 24px;
+}
+.mobile-overlay {
+  animation: mobileSlideIn 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.mobile-nav-item {
+  animation: mobileFadeIn 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+`;
+
+/* ------------------------------------------------------------------ */
+/*  Animated dropdown hook                                              */
+/* ------------------------------------------------------------------ */
+
+function useAnimatedDropdown(delay = 120) {
+  const [visible, setVisible] = useState(false);
+  const [state, setState] = useState<"closed" | "entering" | "open" | "exiting">("closed");
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const open = useCallback(() => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; }
+    if (state === "open" || state === "entering") return;
+    setVisible(true);
+    setState("entering");
+    openTimer.current = setTimeout(() => setState("open"), 240);
+  }, [state]);
+
+  const close = useCallback(() => {
+    if (openTimer.current) { clearTimeout(openTimer.current); openTimer.current = null; }
+    if (state === "closed" || state === "exiting") return;
+    setState("exiting");
+    closeTimer.current = setTimeout(() => { setVisible(false); setState("closed"); }, 180);
+  }, [state]);
+
+  const toggle = useCallback(() => {
+    if (state === "open" || state === "entering") close();
+    else open();
+  }, [state, open, close]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+      if (openTimer.current) clearTimeout(openTimer.current);
+    };
+  }, []);
+
+  return { visible, state, open, close, toggle };
+}
 
 /* ------------------------------------------------------------------ */
 /*  Language selector                                                   */
@@ -21,44 +126,46 @@ const LANGUAGES = [
 
 function LanguageSelector({ mobile }: { mobile: boolean }) {
   const { lang, setLang } = useLanguage();
-  const [open, setOpen] = useState(false);
+  const dropdown = useAnimatedDropdown();
 
   const current = LANGUAGES.find((l) => l.code === lang)!;
 
   const handleSelect = (code: LangCode) => {
     setLang(code);
-    setOpen(false);
+    dropdown.close();
   };
 
   return (
     <div
       style={{ position: "relative" }}
-      onMouseEnter={() => !mobile && setOpen(true)}
-      onMouseLeave={() => !mobile && setOpen(false)}
+      onMouseEnter={() => !mobile && dropdown.open()}
+      onMouseLeave={() => !mobile && dropdown.close()}
     >
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => dropdown.toggle()}
         aria-label={`Language: ${current.label}`}
+        aria-expanded={dropdown.visible}
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 4,
-          padding: "4px 8px",
-          borderRadius: 6,
+          gap: 5,
+          padding: "5px 10px",
+          borderRadius: 8,
           border: "1px solid rgba(14,26,43,0.08)",
-          background: open ? "rgba(14,26,43,0.03)" : "transparent",
+          background: dropdown.visible ? "rgba(14,26,43,0.03)" : "transparent",
           cursor: "pointer",
           fontSize: mobile ? 18 : 16,
           lineHeight: 1,
-          transition: "background 160ms ease, border-color 160ms ease",
+          transition: "background 240ms cubic-bezier(0.22, 1, 0.36, 1), border-color 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1)",
+          boxShadow: dropdown.visible ? "0 0 0 3px rgba(75,63,174,0.08)" : "0 0 0 0px transparent",
         }}
       >
         <span role="img" aria-hidden="true">{current.flag}</span>
         <svg
           width="8" height="5" viewBox="0 0 8 5" fill="none"
           style={{
-            transition: "transform 200ms ease",
-            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+            transform: dropdown.visible ? "rotate(180deg)" : "rotate(0deg)",
             opacity: 0.4,
           }}
         >
@@ -66,7 +173,7 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
         </svg>
       </button>
 
-      {open && (
+      {dropdown.visible && (
         <div
           style={{
             position: "absolute",
@@ -77,43 +184,46 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
           }}
         >
           <div
+            className="dropdown-panel"
+            data-state={dropdown.state}
             style={{
               background: "#ffffff",
-              borderRadius: 10,
+              borderRadius: 12,
               border: "1px solid rgba(14,26,43,0.08)",
-              boxShadow: "0 8px 24px rgba(14,26,43,0.10), 0 2px 6px rgba(14,26,43,0.04)",
+              boxShadow: "0 12px 40px rgba(14,26,43,0.12), 0 4px 12px rgba(14,26,43,0.06)",
               padding: "6px 0",
-              minWidth: 150,
+              minWidth: 160,
+              overflow: "hidden",
             }}
           >
-            {LANGUAGES.map((l) => (
+            {LANGUAGES.map((l, i) => (
               <button
                 key={l.code}
+                className="dropdown-item"
                 onClick={() => handleSelect(l.code)}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
                   width: "100%",
-                  padding: "9px 16px",
+                  padding: "10px 16px",
                   border: "none",
                   background: l.code === lang ? "rgba(75,63,174,0.06)" : "transparent",
                   cursor: "pointer",
                   fontSize: 13,
                   fontWeight: l.code === lang ? 600 : 500,
                   color: l.code === lang ? "#4B3FAE" : "rgba(14,26,43,0.70)",
-                  transition: "background 120ms ease",
                   textAlign: "left",
-                }}
-                onMouseEnter={(e) => {
-                  if (l.code !== lang) e.currentTarget.style.background = "rgba(14,26,43,0.03)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = l.code === lang ? "rgba(75,63,174,0.06)" : "transparent";
+                  animationDelay: `${i * 30}ms`,
                 }}
               >
-                <span role="img" aria-hidden="true" style={{ fontSize: 16 }}>{l.flag}</span>
+                <span role="img" aria-hidden="true" style={{ fontSize: 16, transition: "transform 200ms ease" }}>{l.flag}</span>
                 <span>{l.label}</span>
+                {l.code === lang && (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ marginLeft: "auto" }}>
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#4B3FAE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
               </button>
             ))}
           </div>
@@ -141,10 +251,10 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mobile = useMobile();
   const { t } = useLanguage();
+  const moreDropdown = useAnimatedDropdown();
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
@@ -175,16 +285,20 @@ export default function MarketingLayout({
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
+      {/* Injected animation styles */}
+      <style dangerouslySetInnerHTML={{ __html: HEADER_STYLES }} />
+
       {/* Header — Institutional Navigation */}
       <header
         className="sticky top-0"
         style={{
           zIndex: 1000,
-          background: scrolled ? "rgba(255,255,255,0.96)" : "#ffffff",
-          borderBottom: "1px solid rgba(14,26,43,0.08)",
-          backdropFilter: scrolled ? "blur(8px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(8px)" : "none",
-          transition: "background 200ms ease, backdrop-filter 200ms ease",
+          background: scrolled ? "rgba(255,255,255,0.92)" : "#ffffff",
+          borderBottom: scrolled ? "1px solid rgba(14,26,43,0.06)" : "1px solid rgba(14,26,43,0.08)",
+          backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
+          transition: "background 360ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 360ms cubic-bezier(0.22, 1, 0.36, 1)",
+          boxShadow: scrolled ? "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" : "none",
         }}
       >
         <div
@@ -199,7 +313,14 @@ export default function MarketingLayout({
           {/* Logo */}
           <Link
             href="/"
-            style={{ display: "flex", alignItems: "center", flexShrink: 0 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexShrink: 0,
+              transition: "opacity 200ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.8"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
           >
             <Image
               src={logoImg}
@@ -222,11 +343,13 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
+                    className="header-nav-link"
                     style={{
                       fontSize: 14,
                       fontWeight: 500,
                       color: "rgba(14,26,43,0.65)",
-                      transition: "color 160ms ease",
+                      transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
+                      paddingBottom: 2,
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
@@ -238,14 +361,15 @@ export default function MarketingLayout({
                 {/* More dropdown */}
                 <div
                   style={{ position: "relative" }}
-                  onMouseEnter={() => setMoreOpen(true)}
-                  onMouseLeave={() => setMoreOpen(false)}
+                  onMouseEnter={() => moreDropdown.open()}
+                  onMouseLeave={() => moreDropdown.close()}
                 >
                   <button
+                    className="header-nav-link"
                     style={{
                       fontSize: 14,
                       fontWeight: 500,
-                      color: moreOpen ? "#0E1A2B" : "rgba(14,26,43,0.65)",
+                      color: moreDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.65)",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -253,22 +377,23 @@ export default function MarketingLayout({
                       alignItems: "center",
                       gap: 4,
                       padding: 0,
-                      transition: "color 160ms ease",
+                      paddingBottom: 2,
+                      transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                     }}
                   >
                     {t.nav.more}
                     <svg
                       width="10" height="6" viewBox="0 0 10 6" fill="none"
                       style={{
-                        transition: "transform 200ms ease",
-                        transform: moreOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+                        transform: moreDropdown.visible ? "rotate(180deg)" : "rotate(0deg)",
                       }}
                     >
                       <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </button>
 
-                  {moreOpen && (
+                  {moreDropdown.visible && (
                     <div
                       style={{
                         position: "absolute",
@@ -280,35 +405,30 @@ export default function MarketingLayout({
                       }}
                     >
                       <div
+                        className="dropdown-panel"
+                        data-state={moreDropdown.state}
                         style={{
                           background: "#ffffff",
-                          borderRadius: 12,
+                          borderRadius: 14,
                           border: "1px solid rgba(14,26,43,0.08)",
-                          boxShadow: "0 12px 40px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
-                          padding: "8px 0",
-                          minWidth: 200,
+                          boxShadow: "0 16px 48px rgba(14,26,43,0.12), 0 4px 12px rgba(14,26,43,0.06)",
+                          padding: "6px 0",
+                          minWidth: 210,
+                          overflow: "hidden",
                         }}
                       >
-                        {MORE_LINKS.map((link) => (
+                        {MORE_LINKS.map((link, i) => (
                           <Link
                             key={link.label}
                             href={link.href}
-                            onClick={() => setMoreOpen(false)}
+                            className="dropdown-item"
+                            onClick={() => moreDropdown.close()}
                             style={{
                               display: "block",
-                              padding: "10px 20px",
+                              padding: "11px 20px",
                               fontSize: 14,
                               fontWeight: 500,
                               color: "rgba(14,26,43,0.70)",
-                              transition: "background 120ms ease, color 120ms ease",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.background = "rgba(14,26,43,0.03)";
-                              e.currentTarget.style.color = "#0E1A2B";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.background = "transparent";
-                              e.currentTarget.style.color = "rgba(14,26,43,0.70)";
                             }}
                           >
                             {link.label}
@@ -324,11 +444,13 @@ export default function MarketingLayout({
                 <LanguageSelector mobile={false} />
                 <Link
                   href="/sign-in"
+                  className="header-nav-link"
                   style={{
                     fontSize: 14,
                     fontWeight: 500,
                     color: "rgba(14,26,43,0.65)",
-                    transition: "color 160ms ease",
+                    transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    paddingBottom: 2,
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
@@ -348,19 +470,26 @@ export default function MarketingLayout({
                     fontSize: 13,
                     letterSpacing: "-0.01em",
                     border: "1px solid rgba(75,63,174,0.90)",
-                    boxShadow: "0 4px 12px rgba(75,63,174,0.18)",
-                    transition: "background 180ms ease, transform 180ms ease",
+                    boxShadow: "0 4px 12px rgba(75,63,174,0.18), 0 1px 3px rgba(75,63,174,0.10)",
+                    transition: "background 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = "#3D33A0";
-                    e.currentTarget.style.transform = "translateY(-1px)";
+                    e.currentTarget.style.transform = "translateY(-1.5px)";
+                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(75,63,174,0.28), 0 2px 6px rgba(75,63,174,0.12)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = "#4B3FAE";
                     e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(75,63,174,0.18), 0 1px 3px rgba(75,63,174,0.10)";
                   }}
                   onMouseDown={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.transform = "translateY(0.5px)";
+                    e.currentTarget.style.boxShadow = "0 2px 6px rgba(75,63,174,0.14)";
+                  }}
+                  onMouseUp={(e) => {
+                    e.currentTarget.style.transform = "translateY(-1.5px)";
+                    e.currentTarget.style.boxShadow = "0 6px 20px rgba(75,63,174,0.28), 0 2px 6px rgba(75,63,174,0.12)";
                   }}
                 >
                   <span className="tick tick-white" />
@@ -399,7 +528,7 @@ export default function MarketingLayout({
                   height: 1.5,
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
-                  transition: "transform 200ms ease, opacity 200ms ease",
+                  transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
                   transform: menuOpen ? "rotate(45deg) translateY(4.5px)" : "none",
                 }}
               />
@@ -411,8 +540,9 @@ export default function MarketingLayout({
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
                   marginTop: 5,
-                  transition: "opacity 200ms ease",
+                  transition: "opacity 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                   opacity: menuOpen ? 0 : 1,
+                  transform: menuOpen ? "scaleX(0)" : "scaleX(1)",
                 }}
               />
               <span
@@ -423,7 +553,7 @@ export default function MarketingLayout({
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
                   marginTop: 5,
-                  transition: "transform 200ms ease, opacity 200ms ease",
+                  transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
                   transform: menuOpen ? "rotate(-45deg) translateY(-4.5px)" : "none",
                 }}
               />
@@ -434,6 +564,7 @@ export default function MarketingLayout({
         {/* Mobile menu panel — full screen overlay */}
         {mobile && menuOpen && (
           <div
+            className="mobile-overlay"
             style={{
               position: "fixed",
               top: 56,
@@ -441,8 +572,8 @@ export default function MarketingLayout({
               right: 0,
               bottom: 0,
               background: "rgba(255,255,255,0.98)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
+              backdropFilter: "blur(24px) saturate(180%)",
+              WebkitBackdropFilter: "blur(24px) saturate(180%)",
               zIndex: 999,
               padding: "32px 28px",
               display: "flex",
@@ -452,10 +583,11 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, ...MORE_LINKS, { href: "/sign-in", label: "Sign In" }].map((link) => (
+              {[...NAV_LINKS, ...MORE_LINKS, { href: "/sign-in", label: t.nav.signIn }].map((link, i) => (
                 <Link
                   key={link.label}
                   href={link.href}
+                  className="mobile-nav-item"
                   onClick={() => setMenuOpen(false)}
                   style={{
                     fontSize: 17,
@@ -465,13 +597,17 @@ export default function MarketingLayout({
                     borderBottom: "1px solid rgba(14,26,43,0.06)",
                     display: "flex",
                     alignItems: "center",
+                    animationDelay: `${i * 40}ms`,
+                    transition: "color 200ms ease, padding-left 200ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
+                  onTouchStart={(e) => { e.currentTarget.style.paddingLeft = "8px"; e.currentTarget.style.color = "#4B3FAE"; }}
+                  onTouchEnd={(e) => { e.currentTarget.style.paddingLeft = "0px"; e.currentTarget.style.color = "#0E1A2B"; }}
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
-            <div style={{ marginTop: 28 }}>
+            <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
               <Link
                 href="/pricing"
                 onClick={() => setMenuOpen(false)}
@@ -492,6 +628,7 @@ export default function MarketingLayout({
                   boxShadow: "0 6px 14px rgba(75,63,174,0.20)",
                   position: "relative",
                   overflow: "hidden",
+                  transition: "transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1)",
                 }}
               >
                 <span className="tick tick-white" />
