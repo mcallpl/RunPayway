@@ -13,6 +13,8 @@ import {
   computePeerPositionMarker,
   selectCurrentEvolutionStage,
   generatePageInsights,
+  computeIncomeContinuityEstimate,
+  computeRiskScenario,
 } from "./engine/mappings";
 import { getSectorData, filterActionPlan } from "./engine/sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./engine/percentile";
@@ -100,6 +102,10 @@ export async function executeClientEngine(submission: {
   // Peer percentile (sector-aware)
   const peerPercentile = computePeerPercentile(scoringResult.final_score, sectorData.peer_band_distribution);
   const peerPercentileLabel = formatPercentileLabel(peerPercentile);
+
+  // Income continuity + risk scenario
+  const continuityEstimate = computeIncomeContinuityEstimate(validatedInputs, validatedProfile);
+  const riskScenario = computeRiskScenario(validatedInputs, scoringResult.final_score, validatedProfile);
 
   // Trajectory
   const trajectory = computeTrajectoryProjection(
@@ -238,6 +244,17 @@ export async function executeClientEngine(submission: {
     projected_structure_score: trajectory.projected_structure_score,
     projected_stability_score: trajectory.projected_stability_score,
     trajectory_constraint_key: trajectory.constraint_key,
+
+    // Income continuity estimate
+    income_continuity_pct: continuityEstimate.income_continuity_pct,
+    income_continuity_months: continuityEstimate.income_continuity_months,
+    income_continuity_text: continuityEstimate.income_continuity_text,
+
+    // Risk scenario
+    risk_scenario_score: riskScenario.risk_scenario_score,
+    risk_scenario_band: riskScenario.risk_scenario_band,
+    risk_scenario_drop: riskScenario.risk_scenario_drop,
+    risk_scenario_text: riskScenario.risk_scenario_text,
 
     // Registry
     registry_visibility: "private",

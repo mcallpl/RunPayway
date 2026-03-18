@@ -291,6 +291,125 @@ export function selectCurrentEvolutionStage(
 }
 
 // ============================================================
+// INCOME CONTINUITY ESTIMATE
+// ============================================================
+
+export interface IncomeContinuityEstimate {
+  income_continuity_pct: number;
+  income_continuity_months: number;
+  income_continuity_text: string;
+}
+
+export function computeIncomeContinuityEstimate(
+  inputs: DiagnosticInput,
+  profile: ProfileContext
+): IncomeContinuityEstimate {
+  // Persistent income percentage (what continues without active work)
+  const persistentPct = inputs.income_continuity_without_active_labor;
+
+  // Recurring revenue contributes semi-persistent continuity
+  const recurringContribution = Math.floor(inputs.recurring_income_proportion * 0.5);
+
+  // Forward visibility extends the duration
+  const visibilityMonths = Math.floor(inputs.forward_revenue_visibility / 25) * 3; // 0→0, 25→3, 50→6, 75→9, 100→12
+
+  // Total continuity percentage
+  const totalPct = Math.min(100, persistentPct + recurringContribution);
+
+  // Estimated months of meaningful continuity
+  // Base: persistent income sustains indefinitely, recurring sustains for contract duration
+  let months: number;
+  if (totalPct >= 80) months = 12;
+  else if (totalPct >= 60) months = Math.max(6, visibilityMonths);
+  else if (totalPct >= 40) months = Math.max(3, Math.floor(visibilityMonths * 0.7));
+  else if (totalPct >= 20) months = Math.max(1, Math.floor(visibilityMonths * 0.4));
+  else months = 0;
+
+  // Adjust for asset-based models
+  const assetModels = ["Asset-Based", "Investment / Dividend Income", "Real Estate Rental Income", "Licensing / Royalty Income"];
+  if (assetModels.includes(profile.primary_income_model)) {
+    months = Math.min(12, months + 3);
+  }
+
+  const name = profile.assessment_title || "this income system";
+  let text: string;
+  if (totalPct >= 75) {
+    text = `If active work stopped today, approximately ${totalPct}% of ${name}'s income would continue for an estimated ${months}+ months. This reflects strong structural persistence with meaningful recurring and asset-derived revenue.`;
+  } else if (totalPct >= 50) {
+    text = `If active work stopped today, approximately ${totalPct}% of ${name}'s income would continue for an estimated ${months} months. Semi-persistent arrangements and recurring revenue provide moderate continuity, though a significant portion still depends on active effort.`;
+  } else if (totalPct >= 25) {
+    text = `If active work stopped today, approximately ${totalPct}% of ${name}'s income would continue for an estimated ${months} month${months === 1 ? "" : "s"}. The majority of income requires ongoing active work to sustain.`;
+  } else {
+    text = `If active work stopped today, most of ${name}'s income would cease within weeks. Approximately ${totalPct}% may continue briefly through existing commitments, but the income system is primarily labor-dependent.`;
+  }
+
+  return {
+    income_continuity_pct: totalPct,
+    income_continuity_months: months,
+    income_continuity_text: text,
+  };
+}
+
+// ============================================================
+// RISK SCENARIO ANALYSIS
+// ============================================================
+
+export interface RiskScenarioResult {
+  risk_scenario_score: number;
+  risk_scenario_band: string;
+  risk_scenario_drop: number;
+  risk_scenario_text: string;
+}
+
+function assignBandFromScore(score: number): string {
+  if (score >= 80) return "High Stability";
+  if (score >= 60) return "Established Stability";
+  if (score >= 40) return "Developing Stability";
+  return "Limited Stability";
+}
+
+export function computeRiskScenario(
+  inputs: DiagnosticInput,
+  finalScore: number,
+  profile: ProfileContext
+): RiskScenarioResult {
+  // Simulate losing the largest income source
+  // The concentration score tells us how dependent on one source
+  // Low concentration (high score) = losing one source has less impact
+  // High concentration (low score) = losing one source is devastating
+
+  const concentrationRaw = inputs.income_concentration; // 0=high concentration, 100=well diversified
+  const sourceCount = inputs.number_of_income_sources; // 0=1 source, 100=many
+
+  // Impact: inverse of diversification — more concentrated = bigger drop
+  const impactPct = Math.max(5, Math.floor((100 - concentrationRaw) * 0.45));
+  const sourceDrop = Math.max(3, Math.floor((100 - sourceCount) * 0.2));
+  const totalDrop = Math.min(40, impactPct + sourceDrop);
+
+  const scenarioScore = Math.max(0, finalScore - totalDrop);
+  const scenarioBand = assignBandFromScore(scenarioScore);
+
+  const name = profile.assessment_title || "this income system";
+  const bandChanged = scenarioBand !== assignBandFromScore(finalScore);
+
+  let text: string;
+  if (totalDrop <= 8) {
+    text = `If ${name}'s largest income source were lost, the score would decline by approximately ${totalDrop} points to ${scenarioScore}. The diversified income structure provides meaningful resilience against single-source disruption.`;
+  } else if (totalDrop <= 18) {
+    text = `If ${name}'s largest income source were lost, the score would decline by approximately ${totalDrop} points to ${scenarioScore}. ${bandChanged ? `This would shift the classification from ${assignBandFromScore(finalScore)} to ${scenarioBand}. ` : ""}Moderate source concentration creates meaningful exposure to single-client risk.`;
+  } else {
+    text = `If ${name}'s largest income source were lost, the score would decline significantly — by approximately ${totalDrop} points to ${scenarioScore}${bandChanged ? `, moving from ${assignBandFromScore(finalScore)} to ${scenarioBand}` : ""}. High concentration on a single source creates substantial structural vulnerability.`;
+  }
+
+  return {
+    risk_scenario_score: scenarioScore,
+    risk_scenario_band: scenarioBand,
+    risk_scenario_drop: totalDrop,
+    risk_scenario_text: text,
+  };
+}
+
+// ============================================================
 // PAGE KEY INSIGHT TEXTS
 // ============================================================
 

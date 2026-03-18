@@ -18,6 +18,8 @@ import {
   computePeerPositionMarker,
   selectCurrentEvolutionStage,
   generatePageInsights,
+  computeIncomeContinuityEstimate,
+  computeRiskScenario,
 } from "./mappings";
 import { getSectorData, filterActionPlan } from "./sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./percentile";
@@ -129,7 +131,13 @@ export async function executeIncomeStabilityEngine(
   const peerPercentile = computePeerPercentile(scoringResult.final_score, sectorData.peer_band_distribution);
   const peerPercentileLabel = formatPercentileLabel(peerPercentile);
 
-  // Step 8b: Stability trajectory projection
+  // Step 8b: Income continuity estimate
+  const continuityEstimate = computeIncomeContinuityEstimate(validatedInputs, validatedProfile);
+
+  // Step 8c: Risk scenario analysis
+  const riskScenario = computeRiskScenario(validatedInputs, scoringResult.final_score, validatedProfile);
+
+  // Step 8d: Stability trajectory projection
   const trajectory = computeTrajectoryProjection(
     validatedInputs,
     interpretation.primary_constraint_key
@@ -300,6 +308,17 @@ export async function executeIncomeStabilityEngine(
     trajectory_constraint_key: trajectory.constraint_key,
     trajectory_current_value: trajectory.current_value,
     trajectory_projected_value: trajectory.projected_value,
+
+    // Income continuity estimate
+    income_continuity_pct: continuityEstimate.income_continuity_pct,
+    income_continuity_months: continuityEstimate.income_continuity_months,
+    income_continuity_text: continuityEstimate.income_continuity_text,
+
+    // Risk scenario
+    risk_scenario_score: riskScenario.risk_scenario_score,
+    risk_scenario_band: riskScenario.risk_scenario_band,
+    risk_scenario_drop: riskScenario.risk_scenario_drop,
+    risk_scenario_text: riskScenario.risk_scenario_text,
 
     // Registry fields
     registry_status: DEFAULT_REGISTRY_STATUS,

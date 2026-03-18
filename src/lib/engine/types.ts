@@ -215,6 +215,17 @@ export interface StructuralAssessmentRecord {
   trajectory_current_value: number;
   trajectory_projected_value: number;
 
+  // Income continuity estimate
+  income_continuity_pct: number;      // % of income that continues without active work
+  income_continuity_months: number;   // estimated months of continuity
+  income_continuity_text: string;     // plain-language description
+
+  // Risk scenario
+  risk_scenario_score: number;        // score if largest client/source removed
+  risk_scenario_band: string;         // band after loss
+  risk_scenario_drop: number;         // point drop
+  risk_scenario_text: string;         // narrative
+
   // Registry fields
   registry_status: "Active" | "Superseded" | "Revoked";
   registry_visibility: "private" | "public";

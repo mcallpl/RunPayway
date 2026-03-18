@@ -151,6 +151,15 @@ export async function POST(request: NextRequest) {
       projected_structure_score: record.projected_structure_score,
       projected_stability_score: record.projected_stability_score,
       trajectory_constraint_key: record.trajectory_constraint_key,
+      // Income continuity estimate
+      income_continuity_pct: record.income_continuity_pct,
+      income_continuity_months: record.income_continuity_months,
+      income_continuity_text: record.income_continuity_text,
+      // Risk scenario
+      risk_scenario_score: record.risk_scenario_score,
+      risk_scenario_band: record.risk_scenario_band,
+      risk_scenario_drop: record.risk_scenario_drop,
+      risk_scenario_text: record.risk_scenario_text,
       // Registry
       registry_visibility: record.registry_visibility,
     });

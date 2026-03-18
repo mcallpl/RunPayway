@@ -68,6 +68,15 @@ interface AssessmentRecord {
   projected_final_score: number;
   projected_stability_band: string;
   registry_visibility: string;
+  // Income continuity estimate
+  income_continuity_pct: number;
+  income_continuity_months: number;
+  income_continuity_text: string;
+  // Risk scenario
+  risk_scenario_score: number;
+  risk_scenario_band: string;
+  risk_scenario_drop: number;
+  risk_scenario_text: string;
 }
 
 // ============================================================
@@ -793,6 +802,28 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Income Continuity Estimate */}
+        {record.income_continuity_text && (
+          <div aria-label="Income continuity estimate" style={{
+            borderRadius: 8,
+            backgroundColor: B.sand,
+            padding: "12px 16px",
+            marginBottom: R.sectionGap,
+          }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
+              <span style={{ fontSize: 24, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</span>
+              <span style={{ ...T.small, color: B.muted }}>income continues without active work</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+              <span style={{ fontSize: 18, fontWeight: 600, color: B.teal }}>{record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}</span>
+              <span style={{ ...T.caption, color: B.muted }}>estimated continuity</span>
+            </div>
+            <p style={{ ...T.caption, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+              {record.income_continuity_text}
+            </p>
+          </div>
+        )}
+
         {/* Spectrum bar */}
         <div style={{ marginBottom: R.sectionGap }} role="img" aria-label={`Score spectrum showing ${record.final_score} out of 100, classified as ${record.stability_band}`}>
           <div style={{ position: "relative", marginBottom: R.itemGap }}>
@@ -1092,8 +1123,41 @@ export default function ReviewPage() {
           </p>
         )}
 
+        {/* Risk Scenario */}
+        {record.risk_scenario_text && (
+          <div aria-label="Risk scenario analysis" style={{
+            marginTop: R.paraMb,
+            borderRadius: 8,
+            backgroundColor: "rgba(14,26,43,0.02)",
+            border: "1px solid rgba(14,26,43,0.06)",
+            padding: "12px 16px",
+          }}>
+            <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Risk Scenario — Largest Source Lost</div>
+            <div style={{ display: "flex", gap: 24, marginBottom: 8 }}>
+              <div>
+                <span style={{ ...T.caption, color: B.light }}>Current</span>
+                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", color: B.light }}>&rarr;</div>
+              <div>
+                <span style={{ ...T.caption, color: B.light }}>After loss</span>
+                <div style={{ fontSize: 18, fontWeight: 700, color: record.risk_scenario_drop > 15 ? "#DC2626" : B.muted }}>{record.risk_scenario_score}</div>
+              </div>
+              <div>
+                <span style={{ ...T.caption, color: B.light }}>Drop</span>
+                <div style={{ fontSize: 18, fontWeight: 700, color: record.risk_scenario_drop > 15 ? "#DC2626" : B.muted }}>-{record.risk_scenario_drop}</div>
+              </div>
+            </div>
+            <p style={{ ...T.caption, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+              {record.risk_scenario_text}
+            </p>
+          </div>
+        )}
+
+        <SectionDivider />
+
         {/* Drivers — with detailed explanations */}
-        <div style={{ marginTop: R.sectionGap }}>
+        <div style={{ marginTop: 0 }}>
           <Label>{rt.driversSupporting} {possessive}</Label>
           <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
             {[
@@ -1240,64 +1304,85 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* ==================== PAGE 5 — Governance & Official Record ==================== */}
-      <ReportPage record={record} pageLabel="Page 5 — Governance & Record">
-        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
-          {rt.governanceRecord}
-        </h2>
-        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_5_key_insight_text || rt.governanceIntro}
-        </p>
-
-        {/* Methodology */}
-        <Label>{rt.methodologyLabel}</Label>
-        <p style={{ ...T.caption, color: B.muted }}>
-          {rt.methodologyText}
-        </p>
-
-        <SectionDivider />
-
-        {/* Disclosure */}
-        <Label>{rt.disclosure}</Label>
-        <p style={{ ...T.caption, color: B.light }}>
-          {rt.disclosureText}
-        </p>
-
-        <SectionDivider />
-
-        {/* Official Record */}
-        <Label>{rt.officialRecord}</Label>
-        <dl style={{ ...T.small, display: "flex", flexDirection: "column", gap: R.itemGap, marginTop: R.paraMb }}>
-          {[
-            [rt.recordId, record.record_id],
-            [rt.modelLabel, record.model_version || "RP-1.0 | Version 1.0"],
-            [rt.date, record.issued_timestamp_utc || record.assessment_date_utc],
-            [rt.score, `${record.final_score} — ${record.stability_band}`],
-            [rt.authCode, record.authorization_code],
-            [rt.registry, record.registry_visibility === "public" ? rt.publiclyListed : rt.privateRecord],
-          ].map(([l, v]) => (
-            <div key={l} style={{ display: "flex" }}>
-              <dt style={{ width: 80, flexShrink: 0, color: B.light }}>{l}</dt>
-              <dd style={{ ...T.caption, fontFamily: "monospace", wordBreak: "break-all", color: B.navy }}>{v}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {/* Verification with QR code */}
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 20, marginTop: R.sectionGap }}>
-          <div style={{ flex: 1 }}>
-            <p style={{ ...T.caption, color: B.muted }}>
-              {rt.verifyAt} <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span>.
-            </p>
-            <p style={{ ...T.caption, color: B.light, marginTop: 4 }}>
-              Scan the QR code to verify this assessment record instantly.
-            </p>
+      {/* ==================== PAGE 5 — Score Summary & Official Record ==================== */}
+      <ReportPage record={record} pageLabel="Page 5 — Summary & Record">
+        {/* Score Summary Card — the shareable snapshot */}
+        <div style={{
+          borderRadius: 8,
+          border: `1px solid ${B.sandDk}`,
+          padding: "20px 24px",
+          marginBottom: R.sectionGap,
+          background: `linear-gradient(135deg, rgba(14,26,43,0.01) 0%, rgba(31,109,122,0.02) 100%)`,
+        }}>
+          <div style={{ ...T.label, color: B.teal, marginBottom: 12 }}>ASSESSMENT SUMMARY</div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 12 }}>
+            <span style={{ fontSize: 36, fontWeight: 700, color: B.navy, lineHeight: 1 }}>{record.final_score}</span>
+            <span style={{ ...T.band, color: B.teal }}>{record.stability_band}</span>
           </div>
-          {/* QR code rendered via canvas */}
-          <div aria-label="QR code linking to score verification page">
-            <QRCodeImage recordId={record.record_id} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 20px" }}>
+            {[
+              ["Subject", record.assessment_title || "—"],
+              ["Industry", record.industry_sector],
+              ["Peer Ranking", `${record.peer_stability_percentile_label} percentile`],
+              ["Constraint", record.primary_constraint_label],
+              ["Continuity", `${record.income_continuity_pct}% for ${record.income_continuity_months}mo`],
+              ["Risk Exposure", `-${record.risk_scenario_drop} pts if largest source lost`],
+            ].map(([l, v]) => (
+              <div key={l}>
+                <div style={{ ...T.caption, color: B.light }}>{l}</div>
+                <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
+              </div>
+            ))}
           </div>
         </div>
+
+        <SectionDivider />
+
+        {/* Official Record + QR */}
+        <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+          <div style={{ flex: 1 }}>
+            <Label>{rt.officialRecord}</Label>
+            <dl style={{ ...T.small, display: "flex", flexDirection: "column", gap: R.itemGap }}>
+              {[
+                [rt.recordId, record.record_id],
+                [rt.modelLabel, record.model_version || "RP-1.0 | Version 1.0"],
+                [rt.date, record.issued_timestamp_utc || record.assessment_date_utc],
+                [rt.score, `${record.final_score} — ${record.stability_band}`],
+                [rt.authCode, record.authorization_code],
+                [rt.registry, record.registry_visibility === "public" ? rt.publiclyListed : rt.privateRecord],
+              ].map(([l, v]) => (
+                <div key={l} style={{ display: "flex" }}>
+                  <dt style={{ width: 72, flexShrink: 0, color: B.light }}>{l}</dt>
+                  <dd style={{ ...T.caption, fontFamily: "monospace", wordBreak: "break-all", color: B.navy }}>{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          {/* QR code */}
+          <div style={{ flexShrink: 0, textAlign: "center" }} aria-label="QR code linking to score verification page">
+            <QRCodeImage recordId={record.record_id} />
+            <div style={{ ...T.caption, color: B.light, marginTop: 4 }}>Scan to verify</div>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Condensed governance */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <div>
+            <Label>{rt.methodologyLabel}</Label>
+            <p style={{ ...T.caption, color: B.muted, margin: 0 }}>{rt.methodologyText}</p>
+          </div>
+          <div>
+            <Label>{rt.disclosure}</Label>
+            <p style={{ ...T.caption, color: B.light, margin: 0 }}>{rt.disclosureText}</p>
+          </div>
+        </div>
+
+        {/* Verification link */}
+        <p style={{ ...T.caption, color: B.muted, marginTop: R.sectionGap }}>
+          {rt.verifyAt} <span style={{ fontWeight: 500, color: B.navy }}>RunPayway™.com/verify</span>
+        </p>
 
         {/* Model reference */}
         <div style={{ textAlign: "center", marginTop: R.footerMt, paddingTop: R.paraMb, borderTop: `1px solid ${B.sandDk}` }}>
