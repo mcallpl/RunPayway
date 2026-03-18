@@ -912,13 +912,13 @@ export default function SampleReportPage() {
         <div className="mx-auto" style={{ maxWidth: 860, paddingLeft: mobile ? 24 : 40, paddingRight: mobile ? 24 : 40 }}>
           <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
-              Beyond the Score
+              {t.sampleReport.beyondTag}
             </div>
             <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Every Report Also Includes
+              {t.sampleReport.beyondTitle}
             </h2>
             <p style={{ fontSize: mobile ? 14 : 16, color: B.muted, lineHeight: 1.75, maxWidth: 560, margin: "0 auto" }}>
-              Actionable tools designed for advisors, clients, and decision-makers — not just a score.
+              {t.sampleReport.beyondDesc}
             </p>
           </div>
 
@@ -926,20 +926,20 @@ export default function SampleReportPage() {
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 20 }}>
             {/* Risk Scenario */}
             <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Risk Scenario</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>{t.sampleReport.beyondRiskTitle}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
                 <span style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{SAMPLE.score}</span>
                 <span style={{ fontSize: 14, color: B.light }}>&rarr;</span>
                 <span style={{ fontSize: 28, fontWeight: 700, color: "#DC2626" }}>{SAMPLE.riskScenarioScore}</span>
               </div>
               <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
-                Shows what happens if your largest income source is lost. Quantifies concentration risk.
+                {t.sampleReport.beyondRiskDesc}
               </p>
             </div>
 
             {/* Advisor Discussion Guide */}
             <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Advisor Discussion Guide</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>{t.sampleReport.beyondAdvisorTitle}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
                 {SAMPLE.advisorTalkingPoints.slice(0, 2).map((tp, i) => (
                   <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
@@ -949,13 +949,13 @@ export default function SampleReportPage() {
                 ))}
               </div>
               <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
-                Structured talking points, client questions, and red flags for the advisor-client meeting.
+                {t.sampleReport.beyondAdvisorDesc}
               </p>
             </div>
 
             {/* Service Recommendations */}
             <div style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "24px 20px", background: "#FFFFFF" }}>
-              <div style={{ fontSize: 11, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>Service Recommendations</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 12 }}>{t.sampleReport.beyondRecsTitle}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
                 {SAMPLE.productRecs.map((rec, i) => (
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
@@ -965,7 +965,7 @@ export default function SampleReportPage() {
                 ))}
               </div>
               <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6 }}>
-                Product and service categories ranked by urgency based on the structural assessment.
+                {t.sampleReport.beyondRecsDesc}
               </p>
             </div>
           </div>
@@ -973,9 +973,9 @@ export default function SampleReportPage() {
           {/* Additional features row */}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 20, marginTop: 20 }}>
             {[
-              { icon: "📊", title: "Structural Radar Chart", desc: "SVG visualization of all 6 factors showing the shape of your income structure at a glance." },
-              { icon: "📋", title: "Client Action Summary", desc: "One-page tearsheet with score, top 3 actions, and QR verification — designed to share." },
-              { icon: "🔐", title: "QR-Verified Record", desc: "Every report includes a QR code linking to instant verification of the official assessment record." },
+              { icon: "📊", title: t.sampleReport.beyondRadarTitle, desc: t.sampleReport.beyondRadarDesc },
+              { icon: "📋", title: t.sampleReport.beyondTearsheetTitle, desc: t.sampleReport.beyondTearsheetDesc },
+              { icon: "🔐", title: t.sampleReport.beyondQrTitle, desc: t.sampleReport.beyondQrDesc },
             ].map((feat) => (
               <div key={feat.title} style={{ borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: "20px", display: "flex", gap: 14, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 24, flexShrink: 0 }}>{feat.icon}</span>

@@ -298,6 +298,22 @@ export interface Translations {
     fullReportLabel: string;
     fullReportDesc: string;
     fullReportCta: string;
+    // Beyond the Score section
+    beyondTag: string;
+    beyondTitle: string;
+    beyondDesc: string;
+    beyondRiskTitle: string;
+    beyondRiskDesc: string;
+    beyondAdvisorTitle: string;
+    beyondAdvisorDesc: string;
+    beyondRecsTitle: string;
+    beyondRecsDesc: string;
+    beyondRadarTitle: string;
+    beyondRadarDesc: string;
+    beyondTearsheetTitle: string;
+    beyondTearsheetDesc: string;
+    beyondQrTitle: string;
+    beyondQrDesc: string;
     closingSubtitle: string;
     poweredBy: string;
   };
