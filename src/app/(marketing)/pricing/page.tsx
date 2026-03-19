@@ -229,15 +229,24 @@ export default function PricingPage() {
     annual: "https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01",
   };
 
+  // Clear overlay if user hits browser back button
+  useEffect(() => {
+    const onPopState = () => setTransition(null);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   const handleSelect = (_title: string, price: string) => {
     const key = price === "$99" ? "annual" : "single";
     const label = key === "annual"
       ? "3 assessments over 12 months"
       : "Your full Income Stability Report";
+    // Push a history entry so back button dismisses the overlay
+    window.history.pushState({ overlay: true }, "");
     setTransition({ key, label });
     setTimeout(() => {
       window.location.href = STRIPE_LINKS[key];
-    }, 800);
+    }, 2300);
   };
 
   return (
@@ -295,7 +304,7 @@ export default function PricingPage() {
               <div style={{
                 height: "100%", borderRadius: 1,
                 background: "linear-gradient(90deg, #4B3FAE, #1F6D7A)",
-                animation: "progressSlide 800ms ease forwards",
+                animation: "progressSlide 2300ms ease forwards",
               }} />
             </div>
           </div>
