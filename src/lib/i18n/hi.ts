@@ -215,7 +215,7 @@ export const hi: Translations = {
     yourScore: "आपका स्कोर",
     distanceTop: "शीर्ष 20% से अंतर",
     points: "अंक",
-    driversSupporting: "क्या काम कर रहा है",
+    driversSupporting: "संरचनात्मक संदर्भ",
     primaryConstraint: "सबसे बड़ी कमजोरी",
     projectedScore: "बदलाव किए जाने पर अनुमानित स्कोर",
     current: "वर्तमान:",

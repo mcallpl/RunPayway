@@ -215,7 +215,7 @@ export const en: Translations = {
     yourScore: "Your Score",
     distanceTop: "Gap to Top 20%",
     points: "points",
-    driversSupporting: "What\u2019s Working",
+    driversSupporting: "Structural Context",
     primaryConstraint: "Biggest Weakness",
     projectedScore: "Projected Score If Changes Are Made",
     current: "Current:",

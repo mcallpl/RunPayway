@@ -952,6 +952,26 @@ export default function ReviewPage() {
           {record.page_1_key_insight_text}
         </p>
 
+        {/* Quick Scan */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
+          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div style={{ ...T.micro, color: B.light }}>SCORE</div>
+            <div style={{ ...T.body, fontWeight: 700, color: B.navy }}>{record.final_score} — {record.stability_band}</div>
+          </div>
+          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div style={{ ...T.micro, color: B.light }}>CONTINUITY</div>
+            <div style={{ ...T.body, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}% for {record.income_continuity_months}mo</div>
+          </div>
+          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div style={{ ...T.micro, color: B.light }}>BIGGEST RISK</div>
+            <div style={{ ...T.body, fontWeight: 600, color: record.risk_scenario_drop > 15 ? "#DC2626" : B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)} if largest source lost</div>
+          </div>
+          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
+            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
+          </div>
+        </div>
+
         {/* Score presentation */}
         <div style={{ marginBottom: R.sectionGap }}>
           <Label>{rt.scoreLabel}</Label>
@@ -1054,6 +1074,15 @@ export default function ReviewPage() {
           <div style={{ marginBottom: R.sectionGap }}>
             <p style={{ ...T.body, color: B.muted }}>
               <span style={{ fontWeight: 500, color: B.navy }}>{record.peer_stability_percentile_label} percentile</span>{" "}{rt.percentileWithin} {record.industry_sector}
+            </p>
+            <p style={{ ...T.caption, color: B.muted, marginTop: 4 }}>
+              {record.peer_stability_percentile >= 75
+                ? `This income structure ranks above most comparable ${record.industry_sector} profiles on income durability and predictability.`
+                : record.peer_stability_percentile >= 50
+                ? `This income structure ranks near the middle of comparable ${record.industry_sector} profiles.`
+                : record.peer_stability_percentile >= 25
+                ? `This income structure ranks below most comparable ${record.industry_sector} profiles on income durability and predictability.`
+                : `This income structure ranks in the bottom quarter of comparable ${record.industry_sector} profiles. Most peers show stronger structural characteristics.`}
             </p>
             <p style={{ ...T.small, color: B.muted, marginTop: 6 }}>
               {percentileExplanation(record, rt)}
@@ -1361,10 +1390,10 @@ export default function ReviewPage() {
               </div>
               <div style={{ display: "flex", alignItems: "center", color: B.light }}>&rarr;</div>
               <div>
-                <span style={{ ...T.caption, color: B.light }}>After loss</span>
+                <span style={{ ...T.caption, color: B.light }}>Post-Loss</span>
                 <div style={{ fontSize: 18, fontWeight: 700, color: record.risk_scenario_drop > 15 ? "#DC2626" : B.muted }}>{Math.max(0, record.risk_scenario_score)}</div>
                 {record.risk_scenario_score < 0 && (
-                  <div style={{ ...T.micro, color: B.light, marginTop: 2 }}>floor applied</div>
+                  <div style={{ ...T.micro, color: B.light, marginTop: 2 }}>capped at 0</div>
                 )}
               </div>
               <div>
@@ -1488,12 +1517,19 @@ export default function ReviewPage() {
                 {rt.actionPlanDesc} {subject} in {record.industry_sector}, targeting: {record.primary_constraint_label}
               </p>
               <ol style={{ ...T.small, color: B.navy, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: R.itemGap }}>
-                {actionPlan.map((action, i) => (
-                  <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                    <span style={{ ...T.small, fontWeight: 600, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
-                    <span style={{ ...T.small, color: B.navy }}>{action}</span>
-                  </li>
-                ))}
+                {actionPlan.map((action, i) => {
+                  const impact = i === 0 ? "High impact" : i === 1 ? "Medium-high impact" : "Medium impact";
+                  const impactColor = i === 0 ? B.teal : i === 1 ? B.purple : B.light;
+                  return (
+                    <li key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
+                      <div style={{ flex: 1 }}>
+                        <span style={{ ...T.small, color: B.navy }}>{action}</span>
+                        <div style={{ ...T.micro, color: impactColor, fontWeight: 600, marginTop: 2 }}>{impact}</div>
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
               <p style={{ ...T.caption, color: B.light, marginTop: R.paraMb, fontStyle: "italic" }}>
                 {rt.actionPlanDisclaimer} {record.industry_sector}. {record.primary_constraint_label}.
@@ -1735,19 +1771,7 @@ export default function ReviewPage() {
                 backgroundColor: rec.urgency === "High" ? "rgba(31,109,122,0.03)" : "#ffffff",
                 padding: "14px 16px",
               }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{rec.category}</div>
-                  <span style={{
-                    ...T.micro,
-                    padding: "2px 8px",
-                    borderRadius: 4,
-                    backgroundColor: B.sand,
-                    color: B.muted,
-                    border: "1px solid rgba(14,26,43,0.08)",
-                  }}>
-                    {rec.urgency === "High" ? "Strongly relevant" : rec.urgency === "Medium" ? "Relevant" : "May apply"}
-                  </span>
-                </div>
+                <div style={{ ...T.body, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{rec.category}</div>
                 <p style={{ ...T.caption, color: B.muted, margin: 0, lineHeight: 1.55 }}>
                   {rec.rationale}
                 </p>
@@ -1757,12 +1781,8 @@ export default function ReviewPage() {
 
           <SectionDivider />
 
-          <div style={{ ...T.caption, color: B.light, fontStyle: "italic", lineHeight: 1.55 }}>
-            IMPORTANT: The categories listed above are structural observations only. RunPayway does not provide
-            financial, insurance, investment, tax, or legal advice and is not a licensed advisory firm. No fiduciary
-            or advisory relationship is created by this report. All decisions regarding specific products or services
-            should be made in consultation with appropriately licensed professionals based on the individual&apos;s
-            complete financial situation.
+          <div style={{ ...T.caption, color: B.light, lineHeight: 1.55 }}>
+            These areas are identified from structural patterns in the assessment data. RunPayway does not provide financial, insurance, investment, tax, or legal advice. Consult a licensed professional for guidance specific to your situation.
           </div>
         </ReportPage>
       )}
@@ -1791,12 +1811,12 @@ export default function ReviewPage() {
         <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px", marginBottom: 16 }}>
           <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>
             {record.final_score >= 80
-              ? "This income structure demonstrates strong resilience with well-diversified, recurring revenue characteristics."
+              ? `Strong structural resilience. Income is well-diversified with ${record.income_continuity_pct}% continuing without active work. ${record.peer_stability_percentile_label} percentile in ${record.industry_sector}.`
               : record.final_score >= 60
-              ? `This income has a solid foundation. The primary area limiting the score is ${record.primary_constraint_label}.`
+              ? `Solid foundation with room to improve. ${record.income_continuity_pct}% of income continues without work. The primary area limiting the score is ${record.primary_constraint_label}. ${record.peer_stability_percentile_label} percentile in ${record.industry_sector}.`
               : record.final_score >= 40
-              ? `This income depends heavily on active effort. Only ${record.income_continuity_pct}% would continue without work.`
-              : `This income is highly dependent on continuous labor with limited diversification or persistence.`}
+              ? `Developing stability. Only ${record.income_continuity_pct}% of income continues without active effort. Losing the largest source would drop the score to ${Math.max(0, record.risk_scenario_score)}. Primary focus: ${record.primary_constraint_label}.`
+              : `Limited structural stability. ${record.income_continuity_pct}% of income continues without work. The income structure is highly dependent on continuous active labor. Primary focus: ${record.primary_constraint_label}.`}
           </p>
         </div>
 
@@ -1837,10 +1857,13 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Primary focus */}
+        {/* Primary focus + improvement estimate */}
         <div style={{ borderRadius: 6, backgroundColor: "rgba(75,63,174,0.04)", border: "1px solid rgba(75,63,174,0.10)", padding: "10px 14px", marginBottom: 16 }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Primary Focus Area</div>
-          <div style={{ ...T.small, color: B.navy }}>{record.primary_constraint_label}</div>
+          <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: record.improvement_estimate_text ? 4 : 0 }}>{record.primary_constraint_label}</div>
+          {record.improvement_estimate_text && (
+            <div style={{ ...T.micro, color: B.muted, lineHeight: 1.5 }}>{record.improvement_estimate_text}</div>
+          )}
         </div>
 
         {/* Divider */}

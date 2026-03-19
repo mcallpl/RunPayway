@@ -215,7 +215,7 @@ export const pt: Translations = {
     yourScore: "Sua Pontuação",
     distanceTop: "Distância dos 20% Superiores",
     points: "pontos",
-    driversSupporting: "O Que Está Funcionando",
+    driversSupporting: "Contexto Estrutural",
     primaryConstraint: "Maior Fraqueza",
     projectedScore: "Pontuação Projetada Se Mudanças Forem Feitas",
     current: "Atual:",
