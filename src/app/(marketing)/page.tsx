@@ -1709,17 +1709,27 @@ function HeroSection() {
       className="relative overflow-hidden"
       style={{ background: "#ffffff" }}
     >
-      {/* Faint radial glow — barely visible warmth */}
+      {/* Subtle gradient glow — purple top-right, teal bottom-left */}
       <div
         className="absolute pointer-events-none"
         style={{
-          width: 900,
-          height: 900,
+          width: 1000,
+          height: 1000,
           borderRadius: "50%",
-          top: "50%",
-          right: "-5%",
-          transform: "translateY(-50%)",
-          background: "radial-gradient(circle, rgba(75,63,174,0.03) 0%, transparent 65%)",
+          top: "-20%",
+          right: "-10%",
+          background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, rgba(75,63,174,0.02) 40%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 800,
+          height: 800,
+          borderRadius: "50%",
+          bottom: "-15%",
+          left: "-8%",
+          background: "radial-gradient(circle, rgba(31,109,122,0.05) 0%, rgba(31,109,122,0.015) 40%, transparent 70%)",
         }}
       />
 
