@@ -482,17 +482,23 @@ function ScoreTrend({ currentScore, records }: { currentScore: number; records: 
   const sorted = [...records].sort((a, b) => a.assessment_date_utc.localeCompare(b.assessment_date_utc));
   const prev = sorted[sorted.length - 2];
   const diff = currentScore - prev.final_score;
-  const arrow = diff > 0 ? "\u2191" : diff < 0 ? "\u2193" : "\u2192";
   const color = diff > 0 ? B.teal : diff < 0 ? "#DC2626" : B.muted;
+  const prevDate = prev.assessment_date_utc.split("T")[0];
 
   return (
     <div aria-label={`Score ${diff > 0 ? "increased" : diff < 0 ? "decreased" : "unchanged"} by ${Math.abs(diff)} points`} style={{
-      display: "inline-flex", alignItems: "center", gap: 6,
-      padding: "4px 10px", borderRadius: 6, backgroundColor: `${color}10`,
-      marginLeft: 12,
+      display: "flex", alignItems: "center", gap: 12,
+      padding: "8px 14px", borderRadius: 8, backgroundColor: `${color}08`,
+      border: `1px solid ${color}20`,
+      marginTop: 8,
     }}>
-      <span style={{ fontSize: 14, fontWeight: 700, color }}>{arrow} {diff > 0 ? "+" : ""}{diff}</span>
-      <span style={{ ...T.caption, color: B.muted }}>vs prior</span>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+        <span style={{ fontSize: 16, fontWeight: 600, color: B.muted }}>{prev.final_score}</span>
+        <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: B.navy }}>{currentScore}</span>
+      </div>
+      <span style={{ fontSize: 15, fontWeight: 700, color }}>{diff > 0 ? "+" : ""}{diff} pts</span>
+      <span style={{ ...T.caption, color: B.muted }}>since {prevDate}</span>
     </div>
   );
 }
@@ -704,6 +710,10 @@ export default function ReviewPage() {
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [advisorEmail, setAdvisorEmail] = useState("");
+  const [advisorSending, setAdvisorSending] = useState(false);
+  const [advisorSent, setAdvisorSent] = useState(false);
   const monitoringTracked = useRef(false);
   const emailSent = useRef(false);
 
@@ -1848,22 +1858,100 @@ export default function ReviewPage() {
         </div>
       </ReportPage>
 
-      {/* Download + Email Status */}
+      {/* Download + Actions */}
       <div className="download-section no-print" style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease" }}
-          onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
-          onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
-          {downloading ? rt.generatingPdf : rt.downloadReport}
-        </button>
+        {/* Primary actions */}
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease", flex: 1, minWidth: 180 }}
+            onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
+            onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
+            {downloading ? rt.generatingPdf : rt.downloadReport}
+          </button>
+
+          {/* Copy verification link */}
+          <button
+            onClick={() => {
+              const url = `https://runpayway.com/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+              navigator.clipboard.writeText(url).then(() => {
+                setLinkCopied(true);
+                setTimeout(() => setLinkCopied(false), 3000);
+              });
+            }}
+            style={{ padding: "10px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.teal : B.navy, borderRadius: 6, border: `1px solid ${linkCopied ? B.teal : B.sandDk}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
+            {linkCopied ? "Link Copied" : "Copy Verification Link"}
+          </button>
+
+          {/* Add to Calendar */}
+          <button
+            onClick={() => {
+              const nextDate = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
+              nextDate.setMonth(nextDate.getMonth() + (record.final_score >= 60 ? 6 : 3));
+              const dateStr = nextDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+              const endDate = new Date(nextDate.getTime() + 30 * 60000);
+              const endStr = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+              const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("RunPayway™ Income Stability Reassessment")}&dates=${dateStr}/${endStr}&details=${encodeURIComponent(`Time to reassess your Income Stability Score™.\n\nPrevious score: ${record.final_score} (${record.stability_band})\nPrimary focus: ${record.primary_constraint_label}\n\nTake your assessment at https://runpayway.com/pricing`)}`;
+              window.open(url, "_blank");
+            }}
+            style={{ padding: "10px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 6, border: `1px solid ${B.sandDk}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
+            Add Reassessment to Calendar
+          </button>
+        </div>
 
         {downloadError && (
           <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
             <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>PDF download failed: {downloadError}. Try refreshing the page.</p>
           </div>
         )}
+
+        {/* Send to Advisor */}
+        <div style={{ padding: "14px 16px", borderRadius: 8, border: `1px solid ${B.sandDk}`, backgroundColor: B.sand }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Send Advisor Summary</div>
+          <p style={{ fontSize: 12, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
+            Send the Advisor Reference and Client Summary pages to your financial advisor, planner, or consultant.
+          </p>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              type="email"
+              placeholder="Advisor's email address"
+              value={advisorEmail}
+              onChange={(e) => setAdvisorEmail(e.target.value)}
+              style={{ flex: 1, padding: "8px 12px", fontSize: 13, borderRadius: 6, border: `1px solid ${B.sandDk}`, outline: "none", color: B.navy }}
+            />
+            <button
+              disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
+              onClick={async () => {
+                setAdvisorSending(true);
+                try {
+                  const res = await fetch("/api/v1/send-report", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      recipientEmail: advisorEmail.trim(),
+                      assessmentTitle: record.assessment_title,
+                      finalScore: record.final_score,
+                      stabilityBand: record.stability_band,
+                      recordId: record.record_id,
+                      modelVersion: record.model_version || "RP-1.0",
+                      issuedTimestamp: record.issued_timestamp_utc || record.assessment_date_utc,
+                      industrySector: record.industry_sector,
+                      classification: record.classification,
+                      primaryConstraintLabel: record.primary_constraint_label,
+                      bandInterpretationText: record.band_interpretation_text,
+                      peerPercentileLabel: record.peer_stability_percentile_label,
+                    }),
+                  });
+                  if (res.ok) { setAdvisorSent(true); }
+                } catch { /* silent */ }
+                finally { setAdvisorSending(false); }
+              }}
+              style={{ padding: "8px 16px", fontSize: 13, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.teal : B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap" }}>
+              {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
+            </button>
+          </div>
+        </div>
 
         {/* Email delivery status */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
