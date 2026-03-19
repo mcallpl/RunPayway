@@ -228,20 +228,17 @@ export default function PricingPage() {
   const processAnim = useInView();
   const ctaAnim = useInView();
 
+  const STRIPE_LINKS: Record<string, string> = {
+    single: "https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00",
+    annual: "https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01",
+  };
+
   const handleSelect = (title: string, price: string) => {
     setTransition({ title, price });
-    // Set session data so diagnostic portal payment gate allows entry
-    sessionStorage.setItem("rp_purchase_session", JSON.stringify({
-      status: "paid",
-      plan: title,
-      price,
-      timestamp: new Date().toISOString(),
-    }));
     setTimeout(() => {
-      const match = window.location.pathname.match(/^(\/RunPayway)/);
-      const basePath = match ? match[1] : "";
-      window.location.href = `${basePath}/diagnostic-portal/`;
-    }, 3000);
+      const key = price === "$99" ? "annual" : "single";
+      window.location.href = STRIPE_LINKS[key];
+    }, 1500);
   };
 
   return (
@@ -423,7 +420,7 @@ export default function PricingPage() {
               mobile={mobile}
               visible={cardsAnim.visible}
               delay={140}
-              disabled
+              onSelect={handleSelect}
             />
           </div>
 
@@ -763,20 +760,29 @@ export default function PricingPage() {
               {t.pricing.singleCta2}
             </button>
             <button
-              disabled
+              onClick={() => handleSelect("Annual Monitoring", "$99")}
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 height: 52,
                 paddingLeft: 28,
                 paddingRight: 28,
                 borderRadius: 14,
-                background: "rgba(255,255,255,0.25)",
-                color: "rgba(255,255,255,0.5)",
+                background: "rgba(255,255,255,0.12)",
+                color: "#FFFFFF",
                 fontSize: 15,
                 letterSpacing: "-0.01em",
-                border: "1px solid rgba(255,255,255,0.12)",
-                cursor: "not-allowed",
+                border: "1px solid rgba(255,255,255,0.18)",
+                cursor: "pointer",
+                transition: "background 180ms ease, transform 180ms ease",
                 width: mobile ? "100%" : "auto",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.18)";
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                e.currentTarget.style.transform = "translateY(0)";
               }}
             >
               {t.pricing.annualCta2}
