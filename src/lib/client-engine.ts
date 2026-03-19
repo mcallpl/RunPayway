@@ -20,7 +20,7 @@ import {
 } from "./engine/mappings";
 import { getSectorData, filterActionPlan } from "./engine/sectors";
 import { computePeerPercentile, formatPercentileLabel } from "./engine/percentile";
-import { computeTrajectoryProjection } from "./engine/trajectory";
+import { computeTrajectoryProjection, generateImprovementEstimateText } from "./engine/trajectory";
 import {
   MODEL_VERSION_FULL,
   MANIFEST_ID,
@@ -260,6 +260,9 @@ export async function executeClientEngine(submission: {
     projected_structure_score: trajectory.projected_structure_score,
     projected_stability_score: trajectory.projected_stability_score,
     trajectory_constraint_key: trajectory.constraint_key,
+    trajectory_current_value: trajectory.current_value,
+    trajectory_projected_value: trajectory.projected_value,
+    improvement_estimate_text: generateImprovementEstimateText(scoringResult.final_score, trajectory, interpretation.primary_constraint_label),
 
     // Income continuity estimate
     income_continuity_pct: continuityEstimate.income_continuity_pct,

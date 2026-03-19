@@ -123,6 +123,7 @@ interface AssessmentRecord {
   peer_stability_percentile_label: string;
   projected_final_score: number;
   projected_stability_band: string;
+  improvement_estimate_text: string;
   registry_visibility: string;
   // Income continuity estimate
   income_continuity_pct: number;
@@ -1447,7 +1448,7 @@ export default function ReviewPage() {
           {rt.improvementPath}
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_6_key_insight_text}
+          {record.page_4_key_insight_text || record.page_6_key_insight_text}
         </p>
 
         {/* Structural Priority */}
@@ -1457,6 +1458,16 @@ export default function ReviewPage() {
             {record.structural_priority_text && (
               <div style={{ ...T.caption, color: B.muted }}>{record.structural_priority_text}</div>
             )}
+          </div>
+        )}
+
+        {/* Quantified Improvement Estimate */}
+        {record.improvement_estimate_text && (
+          <div style={{ marginBottom: R.sectionGap, borderRadius: 8, backgroundColor: "rgba(31,109,122,0.05)", border: `1px solid rgba(31,109,122,0.15)`, padding: "12px 16px" }}>
+            <div style={{ ...T.caption, fontWeight: 700, color: B.teal, marginBottom: 4 }}>Score Improvement Estimate</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.6 }}>
+              {record.improvement_estimate_text}
+            </p>
           </div>
         )}
 

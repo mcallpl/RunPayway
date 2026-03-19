@@ -453,6 +453,26 @@ export function generateAdvisorDiscussionGuide(
     talking_points.push("Income systems at this structural stage tend to show the most measurable change from even modest shifts in how revenue is structured.");
   }
 
+  // Pattern-specific talking points — based on actual structural profile, not just score tier
+  if (inputs.income_concentration <= 25 && inputs.income_continuity_without_active_labor >= 50) {
+    talking_points.push(`This profile shows a concentrated but partially persistent income structure. While some income continues without active work (${continuityPct}%), the heavy dependence on a small number of sources means one loss could significantly reduce both the score and the persistent income base.`);
+  }
+  if (inputs.recurring_income_proportion <= 25 && inputs.number_of_income_sources >= 75) {
+    talking_points.push("The income is spread across multiple sources — a structural strength — but very little of it recurs automatically. Each month effectively starts from zero. The priority is converting existing relationships into recurring arrangements.");
+  }
+  if (inputs.income_continuity_without_active_labor >= 75 && inputs.earnings_variability <= 25) {
+    talking_points.push("Strong income persistence coexists with high month-to-month variability. The passive income base is solid but cash flow remains unpredictable. This may indicate seasonal patterns or lumpy payment schedules rather than structural weakness.");
+  }
+  if (inputs.forward_revenue_visibility >= 75 && inputs.income_concentration <= 25) {
+    talking_points.push("Forward visibility is strong — the client can see revenue ahead — but it depends heavily on a small number of sources. If the largest committed source cancels, both visibility and score drop sharply.");
+  }
+  if (inputs.recurring_income_proportion >= 75 && inputs.income_continuity_without_active_labor <= 25) {
+    talking_points.push("Recurring revenue exists in name but stops when the client stops working — likely retainer relationships that require ongoing deliverables. True passive income (rent, royalties, licensing) is minimal. The recurring structure is valuable but not yet self-sustaining.");
+  }
+  if (finalScore < 40 && inputs.number_of_income_sources >= 50) {
+    talking_points.push(`Despite limited overall stability, this profile shows some diversification across income sources. This is a foundation to build on — the priority is making some of those sources more persistent or recurring.`);
+  }
+
   // Exploration questions — for the client's own reflection
   if (inputs.income_continuity_without_active_labor <= 25) {
     client_questions.push("If you couldn't work for 90 days, what percentage of your current income would continue arriving?");
@@ -507,9 +527,9 @@ export function generateAdvisorDiscussionGuide(
   next_steps.push("The Client Summary page provides a condensed reference of the key structural findings.");
 
   return {
-    talking_points: talking_points.slice(0, 4),
-    client_questions: client_questions.slice(0, 4),
-    red_flags: red_flags.slice(0, 3),
+    talking_points: talking_points.slice(0, 5),
+    client_questions: client_questions.slice(0, 5),
+    red_flags: red_flags.slice(0, 4),
     next_steps: next_steps.slice(0, 4),
   };
 }

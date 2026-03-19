@@ -215,6 +215,7 @@ export interface StructuralAssessmentRecord {
   trajectory_constraint_key: string;
   trajectory_current_value: number;
   trajectory_projected_value: number;
+  improvement_estimate_text: string;
 
   // Income continuity estimate
   income_continuity_pct: number;      // % of income that continues without active work
