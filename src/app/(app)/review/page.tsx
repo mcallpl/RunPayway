@@ -1178,19 +1178,22 @@ export default function ReviewPage() {
               { label: "Spread", value: 100 - ({ "Very High": 100, "High": 80, "Moderate": 55, "Low": 30, "Very Low": 10 }[record.exposure_concentration_label] || 50) },
             ]} />
           </div>
-          {/* Data grid */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: R.itemGap }}>
+          {/* Explained indicators */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
             {[
-              [rt.incomeThatContinues, record.income_persistence_label],
-              [rt.numberOfSources, record.income_source_diversity_label],
-              [rt.incomeScheduled, record.forward_revenue_visibility_label],
-              [rt.monthlyVariability, record.income_variability_label],
-              [rt.dependencePersonalWork, record.active_labor_dependence_label],
-              [rt.dependenceOneSource, record.exposure_concentration_label],
-            ].map(([l, v]) => (
-              <div key={l} style={{ display: "flex", justifyContent: "space-between", borderRadius: 6, backgroundColor: B.sand, padding: "7px 12px" }}>
-                <span style={{ ...T.caption, color: B.muted }}>{l}</span>
-                <span style={{ ...T.caption, fontWeight: 500, color: B.navy }}>{v}</span>
+              [rt.incomeThatContinues, record.income_persistence_label, "How much income keeps arriving without active selling or billing"],
+              [rt.numberOfSources, record.income_source_diversity_label, "How many separate income sources contribute to total revenue"],
+              [rt.incomeScheduled, record.forward_revenue_visibility_label, "How far ahead you can see income that is already committed"],
+              [rt.monthlyVariability, record.income_variability_label, "How much your monthly income swings up and down"],
+              [rt.dependencePersonalWork, record.active_labor_dependence_label, "How much income depends on you personally showing up to work"],
+              [rt.dependenceOneSource, record.exposure_concentration_label, "How much income is concentrated in your single largest source"],
+            ].map(([l, v, explanation]) => (
+              <div key={l} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "7px 12px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ ...T.caption, color: B.navy, fontWeight: 500 }}>{l}</span>
+                  <span style={{ ...T.caption, fontWeight: 600, color: v === "Very Low" || v === "Low" ? "#DC2626" : v === "Very High" || v === "High" ? B.teal : B.navy }}>{v}</span>
+                </div>
+                <div style={{ ...T.micro, color: B.muted, marginTop: 1, lineHeight: 1.4 }}>{explanation}</div>
               </div>
             ))}
           </div>
