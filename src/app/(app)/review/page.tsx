@@ -859,12 +859,12 @@ export default function ReviewPage() {
           {/* One-line interpretation */}
           <p style={{ ...T.small, color: B.muted, maxWidth: 420, lineHeight: 1.55, marginBottom: 24 }}>
             {record.final_score >= 80
-              ? `${subject} demonstrates high structural income stability with strong diversification and persistence characteristics.`
+              ? `${possessive} income is well-diversified across multiple sources with strong recurring characteristics. This is a top-tier structural profile.`
               : record.final_score >= 60
-              ? `${subject} has established meaningful stability, though specific structural areas limit the score from reaching top-tier classification.`
+              ? `${possessive} income has a solid foundation, but ${record.primary_constraint_label} is limiting the score from reaching the top tier.`
               : record.final_score >= 40
-              ? `${subject} shows developing stability patterns. The income structure relies heavily on active effort with limited persistence.`
-              : `${subject} operates with limited structural stability. Income is primarily dependent on continuous active labor.`}
+              ? `${possessive} income depends heavily on active effort. Only ${record.income_continuity_pct}% would continue without work. ${record.primary_constraint_label} is the primary area to address.`
+              : `${possessive} income is highly dependent on continuous work with limited diversification. ${record.primary_constraint_label} is the most critical gap.`}
           </p>
 
           {/* Quick Facts */}
@@ -982,11 +982,11 @@ export default function ReviewPage() {
           }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
               <span style={{ fontSize: 24, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</span>
-              <span style={{ ...T.small, color: B.muted }}>income continues without active work</span>
+              <span style={{ ...T.small, color: B.muted }}>of income keeps coming in without you working</span>
             </div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 18, fontWeight: 600, color: B.teal }}>{record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}</span>
-              <span style={{ ...T.caption, color: B.muted }}>estimated continuity</span>
+              <span style={{ ...T.caption, color: B.muted }}>is how long your income would last without you</span>
             </div>
             <p style={{ ...T.caption, color: B.muted, margin: 0, lineHeight: 1.5 }}>
               {record.income_continuity_text}
@@ -1203,7 +1203,7 @@ export default function ReviewPage() {
         {record.labor_asset_position_label && (
           <>
             <SectionDivider />
-            <Label>Labor-Asset Position — {subject}</Label>
+            <Label>How Income Is Earned — {subject}</Label>
             <div style={{ marginBottom: R.paraMb }}>
               {/* Spectrum bar */}
               <div style={{ position: "relative", height: 8, borderRadius: 99, background: `linear-gradient(90deg, ${B.muted} 0%, ${B.teal} 50%, ${B.navy} 100%)`, marginBottom: 6 }}>
@@ -1217,9 +1217,9 @@ export default function ReviewPage() {
                 }} />
               </div>
               <div style={{ ...T.caption, display: "flex", justifyContent: "space-between", color: B.light }}>
-                <span>Labor-Dependent</span>
+                <span>You work for every dollar</span>
                 <span style={{ fontWeight: 500, color: B.navy }}>{record.labor_asset_position_label}</span>
-                <span>Asset-Driven</span>
+                <span>Income works for you</span>
               </div>
             </div>
             {record.labor_asset_framework_text && (
@@ -1579,8 +1579,8 @@ export default function ReviewPage() {
           Structural observations for reference in advisor-client conversations. This is not financial advice — consult a licensed professional for specific guidance.
         </p>
 
-        {/* Structural Context */}
-        <Label>Structural Context</Label>
+        {/* Key Points for Discussion */}
+        <Label>Key Points About This Income Profile</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {advisorGuide.talking_points.map((tp, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
@@ -1593,7 +1593,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Exploration Questions */}
-        <Label>Exploration Questions</Label>
+        <Label>Questions to Ask in the Meeting</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {advisorGuide.client_questions.map((q, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
@@ -1607,7 +1607,7 @@ export default function ReviewPage() {
         {advisorGuide.red_flags.length > 0 && (
           <>
             <SectionDivider />
-            <Label>Notable Structural Observations</Label>
+            <Label>Warning Signs to Watch</Label>
             <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {advisorGuide.red_flags.map((rf, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.10)", padding: "8px 12px" }}>
@@ -1622,7 +1622,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Possible Follow-Up Topics */}
-        <Label>Possible Follow-Up Topics</Label>
+        <Label>Recommended Next Steps</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
           {advisorGuide.next_steps.map((ns, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
