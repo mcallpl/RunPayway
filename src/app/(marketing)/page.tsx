@@ -80,45 +80,45 @@ const B = {
    Every value is deliberate. Nothing is arbitrary.
    ──────────────────────────────────────────────────────────────────── */
 const S = {
-  /* Section vertical rhythm */
-  sectionY:     { desktop: 140, mobile: 80 },   /* primary section padding */
+  /* Section vertical rhythm — consistent everywhere */
+  sectionY:     { desktop: 160, mobile: 88 },   /* primary section padding */
   sectionYsm:   { desktop: 120, mobile: 72 },   /* secondary (lighter sections) */
   transitionY:  { desktop: 72, mobile: 48 },     /* pillar transitions */
   disclaimerY:  { desktop: 64, mobile: 48 },     /* compressed institutional */
 
   /* Container */
-  maxW:         1100,                             /* content max-width */
-  padX:         { desktop: 40, mobile: 24 },     /* horizontal gutter */
+  maxW:         1060,                             /* content max-width — slightly tighter */
+  padX:         { desktop: 48, mobile: 24 },     /* horizontal gutter — more air on desktop */
 
   /* Typography rhythm */
-  h1mb:         24,    /* hero heading → subtext */
-  h2mb:         20,    /* section heading → subtext */
-  subtextMb:    48,    /* subtext → content block */
-  paraMb:       20,    /* between body paragraphs */
+  h1mb:         28,    /* hero heading → subtext */
+  h2mb:         24,    /* section heading → subtext */
+  subtextMb:    56,    /* subtext → content block — more breathing room */
+  paraMb:       24,    /* between body paragraphs */
   labelMb:      16,    /* eyebrow label → heading */
 
   /* Component spacing */
-  cardPad:      { desktop: 32, mobile: 24 },
+  cardPad:      { desktop: 36, mobile: 24 },
   cardRadius:   16,
   panelRadius:  20,
-  gridGap:      20,
+  gridGap:      24,
   gridGapSm:    16,
 
   /* CTA buttons */
-  ctaH:         52,    /* primary CTA height */
-  ctaHsm:       44,    /* secondary CTA height */
-  ctaPadX:      28,    /* CTA horizontal padding */
-  ctaRadius:    12,    /* CTA border radius */
+  ctaH:         56,    /* primary CTA height — taller, more premium */
+  ctaHsm:       46,    /* secondary CTA height */
+  ctaPadX:      32,    /* CTA horizontal padding — more generous */
+  ctaRadius:    14,    /* CTA border radius — slightly more rounded */
 
   /* Line heights */
-  lhHeading:    1.1,
-  lhBody:       1.7,
+  lhHeading:    1.08,  /* tighter heading rhythm */
+  lhBody:       1.75,  /* slightly more generous body */
   lhDense:      1.5,
 
   /* Letter spacing */
-  lsHeading:    "-0.02em",
-  lsHero:       "-0.03em",
-  lsLabel:      "0.12em",
+  lsHeading:    "-0.025em",
+  lsHero:       "-0.035em",  /* stronger tightening for hero */
+  lsLabel:      "0.14em",    /* wider label tracking */
 };
 
 // INDUSTRY_EXAMPLES moved inside LandingPage to access translations
@@ -842,8 +842,8 @@ function WhyIncomeStabilityMatters() {
       className="relative"
       style={{
         backgroundColor: "#0E1A2B",
-        paddingTop: mobile ? S.sectionY.mobile + 20 : S.sectionY.desktop + 32,
-        paddingBottom: mobile ? S.sectionY.mobile + 20 : S.sectionY.desktop + 32,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         position: "relative",
         overflow: "hidden",
       }}
@@ -968,7 +968,7 @@ function WhyIncomeStabilityMatters() {
 
         {/* Title */}
         <h2
-          className="text-[28px] md:text-[34px]"
+          className="text-[30px] md:text-[40px]"
           style={{
             color: "#F4F1EA",
             fontWeight: 600,
@@ -1478,7 +1478,7 @@ function ScoringFactors() {
         <div
           className="text-center"
           style={{
-            marginBottom: mobile ? 40 : 56,
+            marginBottom: S.subtextMb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(20px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
@@ -1491,7 +1491,7 @@ function ScoringFactors() {
             {t.home.factorsTag}
           </div>
           <h2
-            className="text-[34px] md:text-[48px] font-semibold"
+            className="text-[34px] md:text-[48px] font-bold"
             style={{ color: B.navy, letterSpacing: S.lsHeading, marginBottom: S.h2mb, lineHeight: S.lhHeading }}
           >
             {t.home.factorsTitle}
@@ -1549,7 +1549,7 @@ function HowItWorks() {
     >
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         {/* Header */}
-        <div className="text-center" style={{ marginBottom: mobile ? S.subtextMb : S.subtextMb + 8 }}>
+        <div className="text-center" style={{ marginBottom: S.subtextMb }}>
           <div
             className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4"
             style={{
@@ -1562,7 +1562,7 @@ function HowItWorks() {
             {t.home.processTag}
           </div>
           <h2
-            className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight"
+            className="text-[26px] sm:text-[34px] md:text-[40px] font-bold leading-tight"
             style={{
               color: B.navy,
               marginBottom: S.h2mb,
@@ -1727,7 +1727,7 @@ function HeroSection() {
         className="relative mx-auto"
         style={{ maxWidth: 1200, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}
       >
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 80 }}>
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center", gap: mobile ? 24 : 64 }}>
           {/* Left — Copy + CTA */}
           <div className="flex-1 lg:max-w-[560px]" style={{ textAlign: "center" }}>
             {/* Eyebrow */}
@@ -2134,11 +2134,11 @@ export default function LandingPage() {
 
         <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", position: "relative", zIndex: 1, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
           {/* Header */}
-          <div className="text-center" style={{ marginBottom: mobile ? S.subtextMb : S.subtextMb + 8 }}>
+          <div className="text-center" style={{ marginBottom: S.subtextMb }}>
             <div className="text-[10px] font-semibold uppercase tracking-[0.2em] mb-4" style={{ color: B.light }}>
               {t.classScale.frameworkTag}
             </div>
-            <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
+            <h2 className="text-[26px] sm:text-[34px] md:text-[40px] font-bold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
               {t.classScale.title}
             </h2>
             <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, maxWidth: 600 }}>
@@ -2290,9 +2290,9 @@ export default function LandingPage() {
       </div>{/* ← end continuous canvas */}
 
       {/* ============ INDUSTRY PATTERNS — Real-World Context ============ */}
-      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
+      <section aria-label="Stability Patterns by Industry" style={{ background: "linear-gradient(180deg, #F4F1EA 0%, #FAFAF8 8%, #ffffff 20%, #ffffff 100%)", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", textAlign: "center", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        <h2 className="text-[24px] sm:text-[30px] md:text-[34px] font-semibold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
+        <h2 className="text-[26px] sm:text-[34px] md:text-[40px] font-bold leading-tight" style={{ color: B.navy, marginBottom: S.h2mb }}>
           {t.industryPatterns.title}
         </h2>
         <p className="text-base leading-relaxed mx-auto" style={{ color: B.muted, marginBottom: 12, maxWidth: 640 }}>
@@ -2392,11 +2392,11 @@ export default function LandingPage() {
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
 
       {/* ============ SECONDARY CTA — for post-FAQ visitors ============ */}
-      <section style={{ textAlign: "center", paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, background: B.sand }}>
+      <section style={{ textAlign: "center", paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop, background: B.sand }}>
         <Link
           href="/pricing"
-          className="text-[14px] font-semibold"
-          style={{ color: B.purple, textDecoration: "underline", textUnderlineOffset: 3 }}
+          className="text-[15px] font-semibold"
+          style={{ color: B.purple, textDecoration: "underline", textUnderlineOffset: 4, letterSpacing: "-0.01em" }}
         >
           {t.nav.getMyScoreFull} →
         </Link>
