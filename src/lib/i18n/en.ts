@@ -182,7 +182,7 @@ export const en: Translations = {
     sector: "Sector:",
     keyFactors: "Key Structural Factors",
     positiveFactors: "Positive Factors",
-    noPositive: "No strong positive factors identified",
+    noPositive: "Current structural strengths are still emerging",
     structuralRisks: "Structural Risks",
     noRisks: "No significant structural risks identified",
     structuralAnalysis: "Structural Analysis",
