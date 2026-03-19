@@ -301,6 +301,7 @@ export async function executeIncomeStabilityEngine(
     ),
     sector_avg_score: sectorData.avg_score,
     sector_top_20_threshold: sectorData.top_20_threshold,
+    peer_band_distribution_payload: JSON.stringify(sectorData.peer_band_distribution),
     constraint_guidance_payload: JSON.stringify(sectorData.constraint_guidance),
     structural_improvement_path_text: sectorData.improvement_guidance,
     action_plan_payload: JSON.stringify(

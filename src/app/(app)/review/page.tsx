@@ -115,6 +115,7 @@ interface AssessmentRecord {
   sector_mechanisms_payload: string;
   sector_avg_score: number;
   sector_top_20_threshold: number;
+  peer_band_distribution_payload: string;
   constraint_guidance_payload: string;
   structural_improvement_path_text: string;
   action_plan_payload: string;
@@ -797,6 +798,7 @@ export default function ReviewPage() {
   const sectorMechanisms: string[] = safeJsonParse(record.sector_mechanisms_payload, []);
   const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = safeJsonParse(record.advisor_discussion_guide_payload, { talking_points: [], client_questions: [], red_flags: [], next_steps: [] });
   const productRecs: { category: string; rationale: string; urgency: string }[] = safeJsonParse(record.product_recommendations_payload, []);
+  const peerBands: { limited: number; developing: number; established: number; high: number } = safeJsonParse(record.peer_band_distribution_payload, { limited: 25, developing: 35, established: 28, high: 12 });
   const RISK_EXPOSURE = getRiskExposure(rt);
   const riskData = RISK_EXPOSURE[record.primary_constraint_label] || RISK_EXPOSURE["Forward Revenue Visibility"];
   const subject = subjectName(record);
@@ -1082,7 +1084,7 @@ export default function ReviewPage() {
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.positive.map((f) => (
                 <li key={f} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ width: 4, height: 4, borderRadius: 99, flexShrink: 0, backgroundColor: B.teal }} />
+                  <span style={{ ...T.caption, color: B.teal, flexShrink: 0 }}>—</span>
                   {f}
                 </li>
               ))}
@@ -1098,7 +1100,7 @@ export default function ReviewPage() {
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap }}>
               {keyFactors.risks.map((f) => (
                 <li key={f} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ width: 4, height: 4, borderRadius: 99, flexShrink: 0, backgroundColor: B.light }} />
+                  <span style={{ ...T.caption, color: B.light, flexShrink: 0 }}>—</span>
                   {f}
                 </li>
               ))}
@@ -1289,6 +1291,45 @@ export default function ReviewPage() {
           </p>
         )}
 
+        {/* Peer Band Distribution — where you stand in your industry */}
+        <div style={{ marginTop: R.paraMb }}>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Where You Stand in {record.industry_sector}</div>
+          <div style={{ display: "flex", height: 28, borderRadius: 6, overflow: "hidden", marginBottom: 6 }}>
+            {[
+              { label: "Limited", pct: peerBands.limited, color: "#DC2626", range: "0–39" },
+              { label: "Developing", pct: peerBands.developing, color: B.muted, range: "40–59" },
+              { label: "Established", pct: peerBands.established, color: B.teal, range: "60–79" },
+              { label: "High", pct: peerBands.high, color: B.navy, range: "80–100" },
+            ].map((band) => {
+              const isActive = band.label + " Stability" === record.stability_band;
+              return (
+                <div key={band.label} style={{
+                  width: `${band.pct}%`,
+                  backgroundColor: band.color,
+                  opacity: isActive ? 1 : 0.25,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  position: "relative",
+                }}>
+                  {isActive && <span style={{ ...T.micro, color: "#ffffff", fontWeight: 700 }}>YOU</span>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display: "flex" }}>
+            {[
+              { label: "Limited", pct: peerBands.limited },
+              { label: "Developing", pct: peerBands.developing },
+              { label: "Established", pct: peerBands.established },
+              { label: "High", pct: peerBands.high },
+            ].map((band) => (
+              <div key={band.label} style={{ width: `${band.pct}%`, textAlign: "center" }}>
+                <div style={{ ...T.micro, color: B.muted }}>{band.label}</div>
+                <div style={{ ...T.micro, color: B.light }}>{band.pct}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Risk Scenario */}
         {record.risk_scenario_text && (
           <div aria-label="Risk scenario analysis" style={{
@@ -1350,17 +1391,23 @@ export default function ReviewPage() {
         <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
           {record.primary_constraint_text || riskData.mechanism}
         </p>
-        {/* Constraint-specific guidance */}
+        {/* Industry-specific constraint insight */}
         {(() => {
           const guidanceRaw = safeJsonParse(record.constraint_guidance_payload, {});
-          const guidance: string[] = Array.isArray(guidanceRaw) ? guidanceRaw : Object.values(guidanceRaw);
-          if (guidance.length === 0) return null;
+          const guidanceAll: string[] = Array.isArray(guidanceRaw) ? guidanceRaw : Object.values(guidanceRaw);
+          // Show the guidance specific to the primary constraint (first item) prominently
+          const primaryGuidance = Array.isArray(guidanceRaw)
+            ? guidanceRaw[0]
+            : (guidanceRaw as Record<string, string>)[record.primary_constraint_key] || guidanceAll[0];
+          if (!primaryGuidance) return null;
           return (
-            <div style={{ marginTop: R.paraMb, borderRadius: 6, backgroundColor: "rgba(31,109,122,0.04)", border: `1px solid rgba(31,109,122,0.12)`, padding: "10px 12px" }}>
-              <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Guidance</div>
-              <ul style={{ ...T.caption, color: B.muted, margin: 0, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 2 }}>
-                {guidance.map((g, i) => <li key={i}>{g}</li>)}
-              </ul>
+            <div style={{ marginTop: R.paraMb, borderRadius: 8, backgroundColor: "rgba(31,109,122,0.05)", border: `1px solid rgba(31,109,122,0.15)`, padding: "14px 16px" }}>
+              <div style={{ ...T.caption, fontWeight: 700, color: B.teal, marginBottom: 2 }}>
+                What This Means in {record.industry_sector}
+              </div>
+              <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.6 }}>
+                {primaryGuidance}
+              </p>
             </div>
           );
         })()}
@@ -1412,9 +1459,9 @@ export default function ReviewPage() {
           if (actionPlan.length === 0) return null;
           return (
             <div style={{ marginTop: R.sectionGap }}>
-              <Label>{rt.actionPlan} — {subject}</Label>
+              <Label>{rt.actionPlan} — Based on {record.industry_sector} Profiles</Label>
               <p style={{ ...T.caption, color: B.muted, marginBottom: R.paraMb }}>
-                {rt.actionPlanDesc} {subject}: {record.primary_constraint_label}
+                {rt.actionPlanDesc} {subject} in {record.industry_sector}, targeting: {record.primary_constraint_label}
               </p>
               <ol style={{ ...T.small, color: B.navy, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: R.itemGap }}>
                 {actionPlan.map((action, i) => (
@@ -1468,8 +1515,8 @@ export default function ReviewPage() {
             <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>
               {rt.stabilityMechanisms}
             </div>
-            <ul style={{ ...T.caption, color: B.muted, margin: 0, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 4 }}>
-              {sectorMechanisms.map((m) => <li key={m} style={{ lineHeight: 1.5 }}>{m}</li>)}
+            <ul style={{ ...T.caption, color: B.muted, margin: 0, paddingLeft: 0, listStyleType: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+              {sectorMechanisms.map((m, i) => <li key={m} style={{ lineHeight: 1.5, display: "flex", gap: 6 }}><span style={{ color: B.teal, flexShrink: 0 }}>{i + 1}.</span>{m}</li>)}
             </ul>
           </div>
         </div>
@@ -1574,21 +1621,21 @@ export default function ReviewPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: R.sectionGap }}>
           <div style={{ borderRadius: 6, backgroundColor: "rgba(31,109,122,0.04)", padding: "10px 12px" }}>
             <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>What the Score Measures</div>
-            <ul style={{ ...T.micro, color: B.muted, margin: 0, paddingLeft: 12, lineHeight: 1.6 }}>
-              <li>How income is structured</li>
-              <li>Diversification across sources</li>
-              <li>Dependence on active labor</li>
-              <li>Resilience to disruption</li>
-            </ul>
+            <div style={{ ...T.micro, color: B.muted, lineHeight: 1.7 }}>
+              — How income is structured<br />
+              — Diversification across sources<br />
+              — Dependence on active labor<br />
+              — Resilience to disruption
+            </div>
           </div>
           <div style={{ borderRadius: 6, backgroundColor: "rgba(14,26,43,0.02)", padding: "10px 12px" }}>
             <div style={{ ...T.caption, fontWeight: 600, color: B.light, marginBottom: 4 }}>What It Does Not Measure</div>
-            <ul style={{ ...T.micro, color: B.muted, margin: 0, paddingLeft: 12, lineHeight: 1.6 }}>
-              <li>Total income or net worth</li>
-              <li>Creditworthiness or debt</li>
-              <li>Investment performance</li>
-              <li>Future financial outcomes</li>
-            </ul>
+            <div style={{ ...T.micro, color: B.muted, lineHeight: 1.7 }}>
+              — Total income or net worth<br />
+              — Creditworthiness or debt<br />
+              — Investment performance<br />
+              — Future financial outcomes
+            </div>
           </div>
         </div>
 
@@ -1752,17 +1799,17 @@ export default function ReviewPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
           <div>
             <div style={{ ...T.label, color: B.teal, marginBottom: 6 }}>STRENGTHS</div>
-            <ul style={{ ...T.caption, color: B.navy, margin: 0, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 3 }}>
-              {keyFactors.positive.map((f) => <li key={f}>{f}</li>)}
-              {keyFactors.positive.length === 0 && <li style={{ color: B.light }}>Still emerging</li>}
-            </ul>
+            <div style={{ ...T.caption, color: B.navy, display: "flex", flexDirection: "column", gap: 3 }}>
+              {keyFactors.positive.map((f) => <div key={f} style={{ display: "flex", gap: 6 }}><span style={{ color: B.teal, flexShrink: 0 }}>—</span>{f}</div>)}
+              {keyFactors.positive.length === 0 && <div style={{ color: B.light }}>Still emerging</div>}
+            </div>
           </div>
           <div>
             <div style={{ ...T.label, color: B.muted, marginBottom: 6 }}>RISKS</div>
-            <ul style={{ ...T.caption, color: B.navy, margin: 0, paddingLeft: 14, display: "flex", flexDirection: "column", gap: 3 }}>
-              {keyFactors.risks.map((f) => <li key={f}>{f}</li>)}
-              {keyFactors.risks.length === 0 && <li style={{ color: B.light }}>None identified</li>}
-            </ul>
+            <div style={{ ...T.caption, color: B.navy, display: "flex", flexDirection: "column", gap: 3 }}>
+              {keyFactors.risks.map((f) => <div key={f} style={{ display: "flex", gap: 6 }}><span style={{ color: B.light, flexShrink: 0 }}>—</span>{f}</div>)}
+              {keyFactors.risks.length === 0 && <div style={{ color: B.light }}>None identified</div>}
+            </div>
           </div>
         </div>
 

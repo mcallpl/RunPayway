@@ -195,6 +195,7 @@ export interface StructuralAssessmentRecord {
   sector_mechanisms_payload: string;
   sector_avg_score: number;
   sector_top_20_threshold: number;
+  peer_band_distribution_payload: string;
   constraint_guidance_payload: string;
   structural_improvement_path_text: string;
   action_plan_payload: string;
