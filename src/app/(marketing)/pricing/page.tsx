@@ -216,6 +216,7 @@ function PricingCard({
 export default function PricingPage() {
   const mobile = useMobile();
   const { t } = useLanguage();
+  const [transition, setTransition] = useState<{ key: string; label: string } | null>(null);
   const heroAnim = useInView();
   const cardsAnim = useInView();
   const monitorAnim = useInView();
@@ -230,11 +231,91 @@ export default function PricingPage() {
 
   const handleSelect = (_title: string, price: string) => {
     const key = price === "$99" ? "annual" : "single";
-    window.location.href = STRIPE_LINKS[key];
+    const label = key === "annual"
+      ? "3 assessments over 12 months"
+      : "Your full Income Stability Report";
+    setTransition({ key, label });
+    setTimeout(() => {
+      window.location.href = STRIPE_LINKS[key];
+    }, 800);
   };
 
   return (
     <div style={{ background: "#FFFFFF" }}>
+      {/* Pre-checkout reinforcement overlay */}
+      {transition && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 9999,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: B.navy,
+          animation: "overlayIn 350ms ease forwards",
+        }}>
+          <div style={{
+            textAlign: "center", maxWidth: 380, padding: "0 24px",
+            animation: "contentUp 400ms ease 100ms both",
+          }}>
+            {/* Lock icon */}
+            <div style={{
+              width: 52, height: 52, borderRadius: "50%",
+              background: "rgba(75,63,174,0.15)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 24px",
+            }}>
+              <svg width="22" height="24" viewBox="0 0 22 24" fill="none">
+                <rect x="2" y="10" width="18" height="12" rx="3" stroke="#ffffff" strokeWidth="2" />
+                <path d="M6 10V7a5 5 0 0 1 10 0v3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="11" cy="16" r="1.5" fill="#ffffff" />
+              </svg>
+            </div>
+
+            {/* Heading */}
+            <div style={{
+              fontSize: 13, fontWeight: 600, letterSpacing: "0.1em",
+              textTransform: "uppercase", color: "rgba(255,255,255,0.45)",
+              marginBottom: 14,
+            }}>
+              Securing your assessment
+            </div>
+
+            {/* Reinforcement line */}
+            <div style={{
+              fontSize: mobile ? 16 : 18, fontWeight: 500, color: "rgba(255,255,255,0.75)",
+              lineHeight: 1.6,
+              marginBottom: 24,
+            }}>
+              Instant access to {transition.label} after checkout
+            </div>
+
+            {/* Subtle progress bar */}
+            <div style={{
+              height: 2, borderRadius: 1,
+              background: "rgba(255,255,255,0.08)",
+              overflow: "hidden", maxWidth: 200, margin: "0 auto",
+            }}>
+              <div style={{
+                height: "100%", borderRadius: 1,
+                background: "linear-gradient(90deg, #4B3FAE, #1F6D7A)",
+                animation: "progressSlide 800ms ease forwards",
+              }} />
+            </div>
+          </div>
+
+          <style>{`
+            @keyframes overlayIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes contentUp {
+              from { opacity: 0; transform: translateY(12px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes progressSlide {
+              from { width: 0%; }
+              to { width: 100%; }
+            }
+          `}</style>
+        </div>
+      )}
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
