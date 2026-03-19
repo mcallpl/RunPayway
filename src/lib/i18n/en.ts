@@ -53,9 +53,9 @@ export const en: Translations = {
   // ── Homepage ──
   home: {
     heroTag: "Income Stability Score™",
-    heroTitle: "Your income has a stability score. Do you know what it is?",
+    heroTitle: "The standard for measuring how stable your income really is.",
     heroSubtitle: "",
-    heroBody: "RunPayway\u2122 shows you how much of your income is protected, how dependent you are on a single source, and how long your earnings last without you. Takes under two minutes.",
+    heroBody: "One score. Full assessment. Clear path forward.",
     heroAudience: "Built for anyone whose income isn\u2019t guaranteed.",
     heroCompletion: "Average completion: 1 min 47 sec — Instant results",
     heroScoreLabel: "Your Income Stability Score™",
