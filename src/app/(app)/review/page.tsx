@@ -453,14 +453,17 @@ function RadarChart({ factors }: { factors: { label: string; value: number }[] }
 }
 
 // ── QR Code component (uses qrcode package) ──
-function QRCodeImage({ recordId }: { recordId: string }) {
+function QRCodeImage({ recordId, authCode }: { recordId: string; authCode?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const url = authCode
+      ? `https://runpayway.com/verify?id=${recordId}&auth=${authCode}`
+      : `https://runpayway.com/verify?id=${recordId}`;
     import("qrcode").then((QRCode) => {
-      QRCode.toCanvas(canvas, `https://runpayway.com/verify?id=${recordId}`, {
+      QRCode.toCanvas(canvas, url, {
         width: 72,
         margin: 0,
         color: { dark: "#0E1A2B", light: "#FFFFFF" },
@@ -468,7 +471,7 @@ function QRCodeImage({ recordId }: { recordId: string }) {
     }).catch(() => {
       // QR code library not available — leave canvas empty
     });
-  }, [recordId]);
+  }, [recordId, authCode]);
 
   return <canvas ref={canvasRef} width={72} height={72} style={{ width: 72, height: 72, borderRadius: 4 }} />;
 }
@@ -1578,7 +1581,7 @@ export default function ReviewPage() {
           </div>
           {/* QR code */}
           <div style={{ flexShrink: 0, textAlign: "center" }} aria-label="QR code linking to score verification page">
-            <QRCodeImage recordId={record.record_id} />
+            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
             <div style={{ ...T.caption, color: B.light, marginTop: 4 }}>Scan to verify</div>
           </div>
         </div>
@@ -1840,7 +1843,7 @@ export default function ReviewPage() {
             </div>
           </div>
           <div aria-label="QR code for verification">
-            <QRCodeImage recordId={record.record_id} />
+            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
           </div>
         </div>
       </ReportPage>

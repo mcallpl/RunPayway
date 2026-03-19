@@ -94,6 +94,7 @@ export default function VerifyPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [btnHovered, setBtnHovered] = useState(false);
+  const [autoVerified, setAutoVerified] = useState(false);
 
   const isValid =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
@@ -144,6 +145,39 @@ export default function VerifyPage() {
       setLoading(false);
     }
   };
+
+  // Auto-fill and auto-verify from QR code URL params
+  useEffect(() => {
+    if (autoVerified) return;
+    const params = new URLSearchParams(window.location.search);
+    const urlId = params.get("id");
+    const urlAuth = params.get("auth");
+    if (urlId && urlAuth) {
+      setRecordId(urlId);
+      setAuthCode(urlAuth);
+      setAutoVerified(true);
+      // Auto-verify after state is set
+      setTimeout(() => {
+        const idValid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(urlId.trim());
+        const authValid = /^[a-f0-9]{64}$/.test(urlAuth.trim().toLowerCase());
+        if (idValid && authValid) {
+          setLoading(true);
+          try {
+            const stored: Array<{ record_id: string; authorization_code: string; model_version: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
+            const match = stored.find((r) => r.record_id === urlId.trim() && r.authorization_code === urlAuth.trim().toLowerCase());
+            if (match) {
+              setResult({ valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway™-issued Income Stability Assessment." });
+            } else {
+              setResult({ valid_record: false });
+            }
+          } catch { setError("Verification failed"); }
+          finally { setLoading(false); }
+        }
+      }, 100);
+    } else if (urlId) {
+      setRecordId(urlId);
+    }
+  }, [autoVerified]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div style={{ background: "#FFFFFF" }}>
