@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
@@ -217,10 +215,7 @@ function PricingCard({
 
 export default function PricingPage() {
   const mobile = useMobile();
-  const router = useRouter();
   const { t } = useLanguage();
-  const [transition, setTransition] = useState<{ title: string; price: string } | null>(null);
-
   const heroAnim = useInView();
   const cardsAnim = useInView();
   const monitorAnim = useInView();
@@ -233,51 +228,13 @@ export default function PricingPage() {
     annual: "https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01",
   };
 
-  const handleSelect = (title: string, price: string) => {
-    setTransition({ title, price });
-    setTimeout(() => {
-      const key = price === "$99" ? "annual" : "single";
-      window.location.href = STRIPE_LINKS[key];
-    }, 1500);
+  const handleSelect = (_title: string, price: string) => {
+    const key = price === "$99" ? "annual" : "single";
+    window.location.href = STRIPE_LINKS[key];
   };
 
   return (
     <div style={{ background: "#FFFFFF" }}>
-      {/* Purchase transition overlay */}
-      {transition && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 9999,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: B.navy,
-          animation: "fadeIn 400ms ease forwards",
-        }}>
-          <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
-            <div style={{
-              width: 48, height: 48, borderRadius: "50%",
-              border: "3px solid rgba(255,255,255,0.15)",
-              borderTopColor: "#ffffff",
-              margin: "0 auto 28px",
-              animation: "spin 0.8s linear infinite",
-            }} />
-            <div style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.45)", marginBottom: 16 }}>
-              {t.pricing.transitionPreparing}
-            </div>
-            <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#ffffff", marginBottom: 8 }}>
-              {transition.title}
-            </div>
-            <div style={{ fontSize: 16, color: "rgba(255,255,255,0.5)", marginBottom: 32 }}>
-              {transition.price}
-            </div>
-            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", lineHeight: 1.6 }}>
-              {t.pricing.transitionSetting}
-            </div>
-          </div>
-          <style>{`
-            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-            @keyframes spin { to { transform: rotate(360deg); } }
-          `}</style>
-        </div>
-      )}
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
