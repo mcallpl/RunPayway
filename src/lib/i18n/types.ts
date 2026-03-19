@@ -533,6 +533,20 @@ export interface Translations {
     poweredBy: string;
     transitionPreparing: string;
     transitionSetting: string;
+    // Trust signals
+    singleNoAccount: string;
+    dataPrivacy: string;
+    securityBadge: string;
+    encryptionBadge: string;
+    guaranteeBadge: string;
+    sampleReportLink: string;
+    faqTitle: string;
+    faq1Q: string;
+    faq1A: string;
+    faq2Q: string;
+    faq2A: string;
+    faq3Q: string;
+    faq3A: string;
   };
 
   // ── About page ──

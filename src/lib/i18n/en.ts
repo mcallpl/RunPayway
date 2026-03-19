@@ -530,7 +530,21 @@ export const en: Translations = {
     methodology3: "Reports include income continuity estimates, risk scenarios, industry benchmarks, and related service categories calibrated to 19 industry sectors.",
     poweredBy: "Powered by Structural Stability Model RP-1.0",
     transitionPreparing: "Preparing Your Assessment",
-    transitionSetting: "Setting up your Income Stability Assessment™...",
+    transitionSetting: "Setting up your Income Stability Assessment\u2122...",
+    // Trust signals
+    singleNoAccount: "No account required \u2014 get your report instantly",
+    dataPrivacy: "Your data is never shared or sold. Assessment inputs are used only to generate your report.",
+    securityBadge: "Secured by Stripe",
+    encryptionBadge: "256-bit SSL",
+    guaranteeBadge: "Satisfaction Guarantee",
+    sampleReportLink: "See a sample report",
+    faqTitle: "Common Questions",
+    faq1Q: "What do I get?",
+    faq1A: "A comprehensive diagnostic report with your Income Stability Score\u2122, income continuity estimate, risk scenarios, industry benchmarks, 90-day action plan, and QR-verified official record. Delivered on screen and emailed automatically.",
+    faq2Q: "How long does it take?",
+    faq2A: "Under two minutes. Six structural questions, instant scoring, and your full report is delivered immediately after completion.",
+    faq3Q: "Is my data secure?",
+    faq3A: "All payments are processed by Stripe with 256-bit SSL encryption. Your assessment inputs are used only to generate your report and are never shared with third parties.",
   },
 
   // ── About page ──

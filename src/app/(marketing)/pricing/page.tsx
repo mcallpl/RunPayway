@@ -72,6 +72,7 @@ function PricingCard({
   price,
   perUnit,
   description,
+  subtitle,
   ctaLabel,
   ctaHref,
   mobile,
@@ -85,6 +86,7 @@ function PricingCard({
   price: string;
   perUnit?: string;
   description: string;
+  subtitle?: string;
   ctaLabel: string;
   ctaHref: string;
   mobile: boolean;
@@ -159,9 +161,18 @@ function PricingCard({
         </div>
       )}
 
-      <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.7, marginBottom: 28, flex: 1 }}>
+      <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.7, marginBottom: subtitle ? 12 : 28, flex: subtitle ? undefined : 1 }}>
         {description}
       </p>
+
+      {subtitle && (
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28, flex: 1 }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+            <path d="M7 0.5C3.41 0.5 0.5 3.41 0.5 7C0.5 10.59 3.41 13.5 7 13.5C10.59 13.5 13.5 10.59 13.5 7C13.5 3.41 10.59 0.5 7 0.5ZM5.75 10.25L2.5 7L3.4075 6.0925L5.75 8.4275L10.5925 3.585L11.5 4.5L5.75 10.25Z" fill={B.teal} />
+          </svg>
+          <span style={{ fontSize: 13, fontWeight: 500, color: B.teal }}>{subtitle}</span>
+        </div>
+      )}
 
       <div style={{ fontSize: 12, color: B.light, marginBottom: 16 }}>
         Instant access after selection
@@ -222,6 +233,7 @@ export default function PricingPage() {
   const monitorAnim = useInView();
   const includesAnim = useInView();
   const processAnim = useInView();
+  const faqAnim = useInView();
   const ctaAnim = useInView();
 
   const STRIPE_LINKS: Record<string, string> = {
@@ -449,6 +461,7 @@ export default function PricingPage() {
               title={t.pricing.singleTitle}
               price={t.pricing.singlePrice}
               description={t.pricing.singleDesc}
+              subtitle={t.pricing.singleNoAccount}
               ctaLabel={t.pricing.singleCta}
               ctaHref="/diagnostic"
               mobile={mobile}
@@ -478,6 +491,89 @@ export default function PricingPage() {
             </p>
             <p style={{ fontSize: 13, color: B.light, marginTop: 8, lineHeight: 1.6 }}>
               {t.pricing.trustLine2}
+            </p>
+          </div>
+
+          {/* Security trust badges */}
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: mobile ? 12 : 20,
+            marginTop: 32,
+          }}>
+            {[
+              {
+                label: t.pricing.securityBadge,
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="1" y="7" width="14" height="8" rx="2" stroke={B.purple} strokeWidth="1.5" />
+                    <path d="M4.5 7V4.5a3.5 3.5 0 0 1 7 0V7" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                ),
+              },
+              {
+                label: t.pricing.encryptionBadge,
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1L2 4v4c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V4L8 1z" stroke={B.teal} strokeWidth="1.5" strokeLinejoin="round" />
+                    <path d="M5.5 8L7 9.5L10.5 6" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ),
+              },
+              {
+                label: t.pricing.guaranteeBadge,
+                icon: (
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6.5" stroke={B.navy} strokeWidth="1.5" />
+                    <path d="M5.5 8L7 9.5L10.5 6" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ),
+              },
+            ].map((badge) => (
+              <div
+                key={badge.label}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "8px 16px",
+                  borderRadius: 100,
+                  background: "#FFFFFF",
+                  border: "1px solid rgba(14,26,43,0.08)",
+                }}
+              >
+                {badge.icon}
+                <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>{badge.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Sample report + data privacy */}
+          <div style={{ textAlign: "center", marginTop: 24 }}>
+            <a
+              href="/sample-report"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 13,
+                fontWeight: 600,
+                color: B.purple,
+                textDecoration: "none",
+                transition: "opacity 180ms ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <rect x="2" y="1" width="10" height="12" rx="1.5" stroke={B.purple} strokeWidth="1.3" />
+                <path d="M5 5h4M5 7.5h4M5 10h2" stroke={B.purple} strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+              {t.pricing.sampleReportLink}
+            </a>
+            <p style={{ fontSize: 12, color: B.light, marginTop: 12, lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
+              {t.pricing.dataPrivacy}
             </p>
           </div>
         </div>
@@ -703,6 +799,57 @@ export default function PricingPage() {
                   {item.after}
                   {item.bold2 && <strong style={{ color: B.navy }}>{item.bold2}</strong>}
                   {item.after2}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/*  FAQ                                                         */}
+      {/* ============================================================ */}
+      <section
+        style={{
+          paddingTop: mobile ? 56 : 80,
+          paddingBottom: mobile ? 56 : 80,
+          background: B.sand,
+        }}
+      >
+        <div
+          ref={faqAnim.ref}
+          className="mx-auto"
+          style={{
+            maxWidth: 680,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
+            opacity: faqAnim.visible ? 1 : 0,
+            transform: faqAnim.visible ? "translateY(0)" : "translateY(24px)",
+            transition: "opacity 700ms ease, transform 700ms ease",
+          }}
+        >
+          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
+            {t.pricing.faqTitle}
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            {[
+              { q: t.pricing.faq1Q, a: t.pricing.faq1A },
+              { q: t.pricing.faq2Q, a: t.pricing.faq2A },
+              { q: t.pricing.faq3Q, a: t.pricing.faq3A },
+            ].map((faq, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: "20px 0",
+                  borderBottom: i < 2 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                }}
+              >
+                <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 8 }}>
+                  {faq.q}
+                </div>
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, margin: 0 }}>
+                  {faq.a}
                 </p>
               </div>
             ))}
