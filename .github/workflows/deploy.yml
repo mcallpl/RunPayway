@@ -3,7 +3,7 @@ name: Build & Deploy to GoDaddy
 on:
   push:
     branches: [main]
-  workflow_dispatch: # Allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,26 +19,17 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: |
-          node -v
-          npm -v
-          npm install --no-audit --no-fund
-          echo "Dependencies installed successfully"
+        run: npm install --no-audit --no-fund
 
       - name: Move server-only files aside for static export
         run: |
           mv src/app/api src/app/_api_dev
           mv src/middleware.ts src/_middleware_dev.ts
-          echo "Server files moved aside"
 
       - name: Build static export
         env:
           STATIC_EXPORT: 'true'
-        run: |
-          echo "Starting static build..."
-          npx next build 2>&1 || { echo "BUILD FAILED"; exit 1; }
-          echo "Build completed successfully"
-          ls -la out/ || echo "No out/ directory"
+        run: npx next build
 
       - name: Restore server-only files
         if: always()
