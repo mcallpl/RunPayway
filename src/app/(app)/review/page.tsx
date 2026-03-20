@@ -501,6 +501,12 @@ export default function ReviewPage() {
       }
     } catch { /* ignore */ }
 
+    // Clean up localStorage session data now that the report is delivered
+    try {
+      localStorage.removeItem("rp_purchase_session");
+      localStorage.removeItem("rp_profile");
+    } catch { /* ignore */ }
+
     if (!monitoringTracked.current) {
       monitoringTracked.current = true;
       try {

@@ -178,7 +178,14 @@ export default function InitializationPage() {
     window.scrollTo(0, 0);
 
     async function verifyAccess() {
-      const session = sessionStorage.getItem("rp_purchase_session");
+      let session = sessionStorage.getItem("rp_purchase_session");
+      if (!session) {
+        const stored = localStorage.getItem("rp_purchase_session");
+        if (stored) {
+          sessionStorage.setItem("rp_purchase_session", stored);
+          session = stored;
+        }
+      }
       if (!session) { router.push("/pricing"); return; }
 
       try {
@@ -243,6 +250,7 @@ export default function InitializationPage() {
 
   const handleBegin = () => {
     sessionStorage.setItem("rp_profile", JSON.stringify(form));
+    localStorage.setItem("rp_profile", JSON.stringify(form));
     router.push("/diagnostic");
   };
 

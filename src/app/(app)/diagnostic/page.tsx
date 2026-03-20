@@ -195,8 +195,15 @@ export default function DiagnosticPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Payment gate
-    const session = sessionStorage.getItem("rp_purchase_session");
+    // Payment gate — check sessionStorage first, fall back to localStorage
+    let session = sessionStorage.getItem("rp_purchase_session");
+    if (!session) {
+      const stored = localStorage.getItem("rp_purchase_session");
+      if (stored) {
+        sessionStorage.setItem("rp_purchase_session", stored);
+        session = stored;
+      }
+    }
     if (!session) {
       router.push("/pricing");
       return;
@@ -211,7 +218,14 @@ export default function DiagnosticPage() {
       router.push("/pricing");
       return;
     }
-    const profile = sessionStorage.getItem("rp_profile");
+    let profile = sessionStorage.getItem("rp_profile");
+    if (!profile) {
+      const storedProfile = localStorage.getItem("rp_profile");
+      if (storedProfile) {
+        sessionStorage.setItem("rp_profile", storedProfile);
+        profile = storedProfile;
+      }
+    }
     if (!profile) {
       router.push("/diagnostic-portal");
       return;

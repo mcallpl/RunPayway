@@ -60,10 +60,12 @@ function CheckoutSuccessContent() {
           session.token_expires_at = data.expires_at;
         }
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         setReady(true);
       })
       .catch(() => {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         setReady(true);
       });
   }, [plan, stripeSessionId, customerEmail]);
