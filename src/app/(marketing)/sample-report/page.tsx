@@ -84,10 +84,10 @@ const SAMPLE = {
   activeIncome: 65,
   semiPersistent: 25,
   persistent: 10,
-  constraint: "Income Persistence",
-  constraintMechanism: "Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.",
-  constraintImpact: "Systems dependent on active labor face higher score volatility if conditions change.",
-  improvementText: "Income systems that include recurring service agreements alongside project-based work tend to exhibit higher persistence scores. Structures with intellectual property or productized offerings often demonstrate asset-based revenue characteristics.",
+  constraint: "Income Without Working",
+  constraintMechanism: "Most income requires you to actively work to earn it. When you stop working, income stops too.",
+  constraintImpact: "When most of your income depends on active work, any interruption has a bigger impact on your finances.",
+  improvementText: "Adding recurring service agreements alongside project work builds income that keeps coming. Products, licensing, or retainer arrangements create income that does not require you to start over each month.",
   indicators: [
     ["Income Without Working", "Moderate"],
     ["Number of Income Sources", "Multiple"],
@@ -97,7 +97,7 @@ const SAMPLE = {
     ["Biggest Source Risk", "Low"],
   ] as [string, string][],
   positiveFactors: ["Multiple income sources", "Some recurring revenue", "Forward commitments present"],
-  risks: ["High active labor dependence", "Limited persistent income"],
+  risks: ["Most income requires active work", "Very little built-in income"],
   drivers: ["Client Diversification", "Recurring Engagements", "Service Expansion"],
   evolutionSteps: ["Project-Based", "Recurring Services", "Managed Services", "Asset-Based"],
   currentStage: "Project-Based → Recurring Services",
@@ -113,20 +113,20 @@ const SAMPLE = {
   // New features
   continuityPct: 38,
   continuityMonths: 4,
-  continuityText: "If active work stopped today, approximately 38% of Jordan Ellis's income would continue for an estimated 4 months. The majority of income requires ongoing active work to sustain.",
+  continuityText: "If Jordan Ellis stopped working today, about 38% of income would keep coming for roughly 4 months. Most of the income still requires active work to earn.",
   riskScenarioDrop: 22,
   riskScenarioScore: 56,
   riskScenarioBand: "Developing Stability",
-  riskScenarioText: "If Jordan Ellis's largest income source were lost, the score would decline significantly — by approximately 22 points to 56, moving from Established Stability to Developing Stability.",
+  riskScenarioText: "Stress test: if Jordan Ellis's biggest income source disappeared, the score would drop 22 points to 56, moving from Established to Developing Stability. This is not a prediction — it shows how dependent the score is on one source.",
   productRecs: [
-    { category: "Income Protection Planning", urgency: "High", rationale: "Income is moderately dependent on active work. A licensed insurance professional can assess whether protection coverage is appropriate for this structural profile." },
-    { category: "Revenue Structure Analysis", urgency: "High", rationale: "Most income comes from one-time transactions. Income systems that include retainer-based arrangements tend to exhibit more predictable revenue patterns." },
-    { category: "Diversification Review", urgency: "Medium", rationale: "Revenue is concentrated across a limited number of sources. A qualified business advisor can evaluate strategies for broadening the revenue base." },
+    { category: "Income Protection Planning", urgency: "High", rationale: "Most income depends on active work. A licensed insurance professional can help assess whether you have the right protection in place." },
+    { category: "Revenue Structure Analysis", urgency: "High", rationale: "Most income comes from one-time projects. Adding retainer or subscription arrangements creates more predictable revenue." },
+    { category: "Diversification Review", urgency: "Medium", rationale: "Revenue is concentrated in a few sources. A business advisor can help evaluate strategies to broaden where your money comes from." },
   ],
   advisorTalkingPoints: [
-    "The client has built meaningful stability (78/100), though specific structural characteristics — particularly Income Persistence — distinguish this profile from top-tier systems.",
-    "Approximately 38% of income would continue without active work. This reflects the current balance between active and persistent revenue.",
-    "The structural observations in this report identify areas where the income system differs most from higher-scoring profiles.",
+    "The client has built solid stability (78/100). The main thing separating this profile from the top tier is the amount of income that continues without active work.",
+    "About 38% of income would keep flowing if work stopped. This shows the current balance between active and built-in revenue.",
+    "This report identifies the specific areas where the income setup differs most from higher-scoring profiles.",
   ],
   advisorQuestions: [
     "If you couldn't work for 90 days, what percentage of your current income would continue arriving?",
@@ -760,7 +760,7 @@ export default function SampleReportPage() {
                 </div>
                 <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
-                <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
+                <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Main Area to Improve</div>
                 <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
                 <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
               </div>
@@ -845,7 +845,7 @@ export default function SampleReportPage() {
               <div style={{ height: 3, borderRadius: 6, background: B.gradient, marginBottom: 16 }} />
 
               {/* Primary Constraint */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Primary Structural Constraint</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Main Area to Improve</div>
               <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
               <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 6 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
               <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>At this structural level, a 90-day work stoppage would affect a significant portion of total income.</div>
@@ -874,7 +874,7 @@ export default function SampleReportPage() {
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
               {/* Official Record */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Official Classification Record</div>
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Report Details</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <div style={{ fontSize: 10, color: B.muted }}>Record ID: a7e2f1b3-94c1-4d8e-b2f6-...</div>
                 <div style={{ fontSize: 10, color: B.muted }}>Model: RP-1.0 | Score: 78 — Established Stability</div>
