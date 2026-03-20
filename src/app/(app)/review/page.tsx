@@ -139,13 +139,14 @@ interface AssessmentRecord {
 const B = {
   navy: "#0E1A2B",
   ink: "#111827",
-  ivory: "#F7F4EE",
+  sand: "#F7F6F3",
   bone: "#F2EEE7",
   white: "#FFFFFF",
   stone: "#D9D2C6",
   taupe: "#A89F92",
   muted: "#6B7280",
-  bronze: "#8C6A3B",
+  purple: "#4B3FAE",
+  teal: "#1F6D7A",
 };
 
 // ============================================================
@@ -238,7 +239,7 @@ function MetricCard({ label, value, explanation }: { label: string; value: React
 
 function DiagnosisBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.bronze}`, borderRadius: 2, padding: "20px 24px" }}>
+    <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "20px 24px" }}>
       {children}
     </div>
   );
@@ -249,7 +250,7 @@ function ReportPage({ children, noPad }: { record: AssessmentRecord; children: R
     <div className="report-page" style={{
       width: PDF.captureW,
       maxWidth: "100%",
-      backgroundColor: B.ivory,
+      backgroundColor: B.sand,
       border: "none",
       borderRadius: 0,
       padding: noPad ? 0 : R.pagePad,
@@ -597,10 +598,10 @@ export default function ReviewPage() {
     const isLow = /low|very low/i.test(label);
     if (inverted) {
       if (isHigh) return { display: "High", color: "#DC2626" };
-      if (isLow) return { display: "Low", color: B.bronze };
+      if (isLow) return { display: "Low", color: B.purple };
       return { display: "Moderate", color: B.navy };
     }
-    if (isHigh) return { display: "High", color: B.bronze };
+    if (isHigh) return { display: "High", color: B.purple };
     if (isLow) return { display: "Low", color: "#DC2626" };
     return { display: "Moderate", color: B.navy };
   }
@@ -625,7 +626,7 @@ export default function ReviewPage() {
 
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 6px" }}>
-            Current structure is {record.final_score < 40 ? "below" : record.final_score < 60 ? "approaching" : record.final_score < 80 ? "within" : "above"} durable range.
+            Current structure is not yet durable.
           </p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540 }}>
             {record.band_interpretation_text}
@@ -635,7 +636,7 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 12, marginTop: 24, marginBottom: 24 }}>
           <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of current income that would continue for a limited period if active work stopped today." />
           <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source were removed, the modeled score would fall to this level." />
-          <MetricCard label="Primary Structural Constraint" value={record.primary_constraint_label} explanation={record.primary_constraint_text || "The factor most limiting the current score."} />
+          <MetricCard label="Primary Constraint" value={record.primary_constraint_label} explanation={record.primary_constraint_text || "The factor most limiting the current score."} />
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
@@ -660,7 +661,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Structural Breakdown</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page isolates the main conditions affecting the current score. The issue is not whether income exists. The issue is how dependable that income is if work slows, a source disappears, or future revenue is not already secured.
+          This page shows the main factors driving the current score. The question is not whether income exists. The question is how dependable it remains if work slows, a source weakens, or future revenue is not already secured.
         </p>
 
         <div style={{ display: "flex", gap: 20 }}>
@@ -670,10 +671,10 @@ export default function ReviewPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
               {[
                 { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How much income continues for a period of time without ongoing active work." },
-                { label: "Committed-Ahead Income", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already visible through contracts, retainers, or forward-secured arrangements." },
+                { label: "Income Secured Ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already secured through contracts, retainers, advance bookings, milestone billing, subscriptions, or similar arrangements." },
                 { label: "Source Diversification", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "How many independent income sources exist and how much the structure depends on one or two of them." },
-                { label: "Labor Dependence", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much of the current income requires continued personal effort to remain active." },
-                { label: "Concentration Risk", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How exposed the structure is to the loss of the largest income source." },
+                { label: "Dependence on Your Active Work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much of the current income depends on your continued personal effort." },
+                { label: "Dependence on One Source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How exposed the income structure is to the loss or weakening of the largest source." },
               ].map((s) => (
                 <div key={s.label}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
@@ -700,7 +701,7 @@ export default function ReviewPage() {
                 { code: "R-01", title: "Work-Led Structure", text: "Most income still depends on direct personal delivery." },
               ].map((rc) => (
                 <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 8 }}>
-                  <div style={{ ...T.micro, color: B.bronze }}>{rc.code} | {rc.title}</div>
+                  <div style={{ ...T.micro, color: B.purple }}>{rc.code} | {rc.title}</div>
                   <div style={{ ...T.meta, color: B.muted, marginTop: 2 }}>{rc.text}</div>
                 </div>
               ))}
@@ -727,7 +728,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary diagnosis:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            {record.structural_priority_text || "The profile is functional, but structurally thin. The score is being held down less by earnings level and more by limited forward-secured revenue and elevated dependence on active labor."}
+            {record.structural_priority_text || "The profile is working, but not yet strong. The score is being held down less by earnings level and more by too little income secured ahead and too much dependence on active work."}
           </p>
         </DiagnosisBlock>
 
@@ -740,7 +741,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Risk Exposure</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows where the structure is most vulnerable under strain. The goal is not to predict the future. The goal is to identify which part of the current income profile is least resilient if pressure is introduced.
+          This page shows where the income structure is most vulnerable under strain. The goal is not to predict the future. The goal is to identify which part of the current income profile is least resilient when pressure is introduced.
         </p>
 
         {/* Two large cards */}
@@ -762,7 +763,7 @@ export default function ReviewPage() {
               Estimated: {record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              Based on the current structure, only a limited portion of income appears able to continue for a short period if active work stops.
+              Based on the current structure, only a limited portion of income appears likely to continue for a short period if active work stops.
             </p>
           </div>
         </div>
@@ -772,13 +773,13 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
           <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
-          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.bronze, borderRadius: 1 }} />
+          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 24 }}>
           {[
             { label: "Active Income", pct: record.active_income_level, color: B.navy, desc: "Income that depends on direct personal effort" },
             { label: "Recurring Income", pct: record.semi_persistent_income_level, color: B.taupe, desc: "Income that repeats for a period of time" },
-            { label: "Built-In Income", pct: record.persistent_income_level, color: B.bronze, desc: "Income that continues with limited ongoing effort" },
+            { label: "Built-In Income", pct: record.persistent_income_level, color: B.teal, desc: "Income that continues with limited ongoing effort" },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
@@ -793,8 +794,8 @@ export default function ReviewPage() {
         {/* Three interpretation cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
-            { title: "What fails first", copy: "The first weakness is not income itself. The first weakness is visibility and durability. Too little revenue is already secured ahead, and too much depends on continued work execution." },
-            { title: "Hidden vulnerability", copy: "A profile can produce meaningful income and still remain structurally fragile. The current profile shows signs of that condition: functioning income with limited shock resistance." },
+            { title: "What weakens first", copy: "The first weakness is not income itself. It is the lack of enough income secured ahead and able to hold through interruption." },
+            { title: "Hidden vulnerability", copy: "A profile can produce meaningful income and still remain fragile underneath. The current profile shows signs of that condition: functioning income with limited shock resistance." },
             { title: "Present-state interpretation", copy: "This profile remains capable of producing income, but it does not yet demonstrate a strong ability to hold stability when active effort is disrupted or a major source weakens." },
           ].map((card) => (
             <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
@@ -807,7 +808,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary risk conclusion:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            The present structure is more sensitive to interruption than a stronger profile in the same framework range.
+            The present structure is still too sensitive to interruption.
           </p>
         </DiagnosisBlock>
 
@@ -820,7 +821,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Upgrade Path</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
-          The fastest way to improve this score is not to chase more activity. It is to improve the structure underneath the activity. A stronger profile usually shows more revenue secured ahead, less dependence on one source, and more income that continues without daily personal output.
+          The fastest way to improve this score is not to do more. It is to strengthen the structure underneath what you already do. A stronger profile usually shows more income secured ahead, less dependence on one source, and more income that continues without daily personal effort.
         </p>
 
         {/* Band cards */}
@@ -828,18 +829,18 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT BAND</div>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>The structure is operational, but {record.final_score < 40 ? "below durable range" : record.final_score < 60 ? "approaching durable range" : record.final_score < 80 ? "within durable range" : "above durable range"}.</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>The structure is functioning, but not yet durable.</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>NEXT TARGET BAND</div>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 40 ? "Developing Stability | 40+" : record.final_score < 60 ? "Established Stability | 60+" : record.final_score < 80 ? "High Stability | 80+" : "Maintain Current"}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 80 ? "The next meaningful target with clearer forward revenue visibility, lower source concentration, and improved continuity." : "The priority is maintaining and protecting this position."}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 80 ? "The next meaningful target with more income secured ahead, lower dependence on one source, and stronger continuity." : "The priority is maintaining and protecting this position."}</p>
           </div>
         </div>
 
         {/* What the next state looks like */}
-        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.bronze}`, borderRadius: 2, padding: "16px 20px", marginBottom: 20 }}>
-          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What the next stronger state generally looks like in this framework</div>
+        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 20 }}>
+          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What the next stronger state usually looks like</div>
           {[
             "More income is already committed before the month begins",
             "No single source carries outsized structural weight",
@@ -854,13 +855,13 @@ export default function ReviewPage() {
         {/* Action cards */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
           {[
-            { rank: "Priority 1", title: "Increase Committed-Ahead Income", copy: "Create more revenue that is already visible before the month begins through retainers, multi-month agreements, milestone billing, advance bookings, pre-sold packages, or recurring contracts." },
-            { rank: "Priority 2", title: "Reduce Largest-Source Dependence", copy: "Add or strengthen secondary dependable revenue streams so the structure is less exposed to one dominant source." },
+            { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more revenue that is already visible before the month begins through retainers, multi-month agreements, milestone billing, advance bookings, pre-sold packages, or recurring contracts." },
+            { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Add or strengthen secondary dependable revenue streams so the structure is less exposed to one dominant source." },
             { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Move at least part of active income into a recurring or semi-recurring structure wherever the business model allows." },
-            { rank: "Priority 4", title: "Extend the Continuity Window", copy: "Build more income that can continue for a period of time even when daily production slows or pauses." },
+            { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily production slows or pauses." },
           ].map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <div style={{ ...T.micro, color: B.bronze, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
+              <div style={{ ...T.micro, color: B.purple, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 3 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
@@ -872,7 +873,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Fastest structural lever:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            {record.primary_constraint_label} remains the clearest and fastest upgrade path in this profile.
+            Securing more income ahead remains the clearest and fastest way to strengthen this profile.
           </p>
         </DiagnosisBlock>
 
@@ -888,7 +889,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>Current conclusion:</p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
-            This profile does not require more explanation. It requires stronger structure. The present score reflects an income profile that works, but does not yet hold enough forward-secured strength to sit in a more durable range.
+            This profile does not need more explanation. It needs stronger structure. The present score reflects an income profile that works, but does not yet hold enough income secured ahead to sit in a more durable range.
           </p>
         </DiagnosisBlock>
 
@@ -904,17 +905,17 @@ export default function ReviewPage() {
               "Re-measure only after structural changes are actually in place",
             ].map((item, i) => (
               <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
-                <span style={{ color: B.bronze, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
+                <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
               </div>
             ))}
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What not to focus on yet</div>
             {[
-              "Cosmetic increases in activity without stronger structure",
+              "Doing more work without strengthening the structure underneath it",
               "High-output months that do not improve durability",
               "Temporary spikes that disappear when work stops",
-              "Vanity metrics that do not improve continuity or visibility",
+              "Metrics that do not improve continuity or income secured ahead",
             ].map((item) => (
               <div key={item} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: B.stone }}>—</span>{item}
@@ -945,7 +946,7 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT DATE</div>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{reassessDate}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Reassessment should follow actual structural improvement, not temporary earnings fluctuation.</p>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Reassessment should follow real structural improvement, not a temporary earnings spike.</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
@@ -976,7 +977,7 @@ export default function ReviewPage() {
             onClick={handleDownload}
             disabled={downloading}
             style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease, transform 180ms ease", flex: 1, minWidth: 180, boxShadow: "0 4px 12px rgba(14,26,43,0.15)" }}
-            onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.bronze)}
+            onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
             onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
             {downloading ? "Generating PDF…" : "Download Report"}
           </button>
@@ -989,7 +990,7 @@ export default function ReviewPage() {
                 setTimeout(() => setLinkCopied(false), 3000);
               });
             }}
-            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.bronze : B.navy, borderRadius: 12, border: `1px solid ${linkCopied ? B.bronze : B.stone}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
+            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.purple : B.navy, borderRadius: 12, border: `1px solid ${linkCopied ? B.purple : B.stone}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
             {linkCopied ? "Link Copied" : "Copy Verification Link"}
           </button>
 
@@ -1055,7 +1056,7 @@ export default function ReviewPage() {
                 } catch { /* silent */ }
                 finally { setAdvisorSending(false); }
               }}
-              style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.bronze : B.bronze, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(75,63,174,0.20)" }}>
+              style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.purple : B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(75,63,174,0.20)" }}>
               {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
             </button>
           </div>
@@ -1071,8 +1072,8 @@ export default function ReviewPage() {
           )}
           {emailStatus === "sent" && (
             <>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.bronze }} />
-              <span style={{ fontSize: 13, color: B.bronze, fontWeight: 500 }}>Report sent to your email</span>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.purple }} />
+              <span style={{ fontSize: 13, color: B.purple, fontWeight: 500 }}>Report sent to your email</span>
             </>
           )}
           {emailStatus === "error" && (
