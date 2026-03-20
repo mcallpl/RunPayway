@@ -80,7 +80,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
   const brandTeal = "#1F6D7A";
   const muted = "#6B7280";
   const light = "#9CA3AF";
-  const sand = "#F4F1EA";
+  const sand = "#F7F6F3";
 
   return `
 <!DOCTYPE html>
@@ -99,12 +99,12 @@ function buildReportEmailHtml(data: ReportEmailData): string {
 
           <!-- Header gradient bar -->
           <tr>
-            <td style="background:linear-gradient(135deg,${brandNavy} 0%,${brandPurple} 50%,${brandTeal} 100%); height:4px; border-radius:8px 8px 0 0;">&nbsp;</td>
+            <td style="background:linear-gradient(135deg,${brandNavy} 0%,${brandPurple} 50%,${brandTeal} 100%); height:4px; border-radius:12px 12px 0 0;">&nbsp;</td>
           </tr>
 
           <!-- Main card -->
           <tr>
-            <td style="background-color:#ffffff; padding:40px 36px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 8px 8px;">
+            <td style="background-color:#ffffff; padding:40px 36px; border:1px solid #e5e7eb; border-top:none; border-radius:0 0 12px 12px;">
 
               <!-- Logo -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
@@ -179,7 +179,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                       Your complete 5-page diagnostic report includes structural analysis, industry benchmarks,
                       improvement path, and 90-day action plan. Sign in to view and download the PDF.
                     </p>
-                    <a href="https://runpayway.com/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:6px;">View Full Report</a>
+                    <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
                   </td>
                 </tr>
               </table>
