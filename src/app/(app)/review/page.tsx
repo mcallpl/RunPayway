@@ -31,7 +31,7 @@ class ReportErrorBoundary extends Component<
           <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 24 }}>{this.state.error}</p>
           <button
             onClick={() => window.location.reload()}
-            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#fff", backgroundColor: "#0E1A2B", border: "none", borderRadius: 6, cursor: "pointer" }}
+            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#fff", backgroundColor: "#0E1A2B", border: "none", borderRadius: 10, cursor: "pointer" }}
           >
             Refresh Page
           </button>
@@ -140,8 +140,8 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#EDE9E0",
+  sand: "#F7F6F3",
+  sandDk: "#EDECEA",
   muted: "#6B7280",
   light: "#9CA3AF",
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
@@ -244,13 +244,13 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       minHeight: PDF.previewH,
       backgroundColor: "#ffffff",
       border: "1px solid #E5E7EB",
-      borderRadius: 6,
+      borderRadius: 10,
       padding: R.pagePad,
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
       overflow: "visible",
-      boxShadow: "0 2px 16px rgba(14,26,43,0.06), 0 1px 4px rgba(14,26,43,0.04)",
+      boxShadow: "0 8px 32px rgba(14,26,43,0.08), 0 2px 8px rgba(14,26,43,0.04)",
     }}>
       <ReportHeader record={record} />
       <div style={{ flex: 1 }}>{children}</div>
@@ -623,17 +623,17 @@ export default function ReviewPage() {
           {/* Key facts */}
           <div style={{ ...T.label, color: B.light, marginBottom: R.labelMb }}>KEY FACTS</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", marginBottom: R.sectionGap }}>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
+            <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
               <div style={{ ...T.micro, color: B.muted }}>would persist if active work stopped</div>
             </div>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
+            <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
               <div style={{ ...T.micro, color: B.muted }}>if the largest source ends</div>
             </div>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
+            <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Primary Constraint</div>
               <div style={{ ...T.small, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
             </div>
@@ -676,19 +676,19 @@ export default function ReviewPage() {
 
         {/* Top summary boxes */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
-          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>CURRENT PROFILE</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.stability_band}</div>
           </div>
-          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
           </div>
-          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>STRUCTURAL PRIORITY</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.structural_priority_label}</div>
           </div>
-          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>LABOR-ASSET POSITION</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.labor_asset_position_label}</div>
           </div>
@@ -700,7 +700,7 @@ export default function ReviewPage() {
         </p>
 
         {/* Continuity block */}
-        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
             <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</span>
             <span style={{ ...T.small, color: B.muted }}>of current income continues without active work</span>
@@ -768,7 +768,7 @@ export default function ReviewPage() {
               { label: record.driver_2_label, text: record.driver_2_text },
               { label: record.driver_3_label, text: record.driver_3_text },
             ].map((d) => (
-              <div key={d.label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+              <div key={d.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
                 <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{d.label}</div>
                 <div style={{ ...T.caption, color: B.muted }}>{d.text}</div>
               </div>
@@ -778,7 +778,7 @@ export default function ReviewPage() {
 
         {/* Structural priority */}
         <div style={{
-          borderRadius: 8,
+          borderRadius: 12,
           background: "linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(31,109,122,0.04) 100%)",
           border: "1px solid rgba(31,109,122,0.10)",
           padding: "12px 16px",
@@ -809,7 +809,7 @@ export default function ReviewPage() {
             ["Operating Structure", record.operating_structure],
             ["Income Model", record.primary_income_model],
           ].map(([label, value]) => (
-            <div key={label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div key={label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
               <div style={{ ...T.micro, color: B.light }}>{label.toUpperCase()}</div>
               <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{value}</div>
             </div>
@@ -852,7 +852,7 @@ export default function ReviewPage() {
             { label: "Dependence on personal work", level: indicatorLevel(record.active_labor_dependence_label, true), text: "Share of income that requires ongoing personal effort." },
             { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), text: "Concentration of income in the largest single source." },
           ].map((item) => (
-            <div key={item.label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div key={item.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
                 <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{item.label}</span>
                 <span style={{ ...T.caption, fontWeight: 600, color: item.level.color }}>{item.level.display}</span>
@@ -863,7 +863,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Structural insight */}
-        <div style={{ borderRadius: 6, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
+        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
             The indicators above drive the overall score. Improving any factor rated Low or Moderate will move the score higher.
           </p>
@@ -884,7 +884,7 @@ export default function ReviewPage() {
 
         {/* Benchmark block */}
         <Label>BENCHMARK</Label>
-        <div style={{ borderRadius: 8, overflow: "hidden", border: `1px solid ${B.sandDk}`, marginBottom: R.sectionGap }}>
+        <div style={{ borderRadius: 12, overflow: "hidden", border: `1px solid ${B.sandDk}`, marginBottom: R.sectionGap }}>
           {[
             ["Your Score", String(record.final_score)],
             [`${record.industry_sector} Average`, String(record.sector_avg_score || 48)],
@@ -902,7 +902,7 @@ export default function ReviewPage() {
 
         {/* Largest Source Loss Scenario */}
         <div style={{
-          borderRadius: 8,
+          borderRadius: 12,
           backgroundColor: "rgba(14,26,43,0.02)",
           border: "1px solid rgba(14,26,43,0.06)",
           padding: "14px 16px",
@@ -921,7 +921,7 @@ export default function ReviewPage() {
 
         {/* Main focus area */}
         <div style={{
-          borderRadius: 8,
+          borderRadius: 12,
           backgroundColor: "rgba(75,63,174,0.04)",
           border: "1px solid rgba(75,63,174,0.10)",
           padding: "14px 16px",
@@ -973,7 +973,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Projected range */}
-        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Improvement Estimate</div>
           <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
             {record.final_score} → {record.projected_final_score || record.final_score + 11} ({record.projected_stability_band || record.stability_band})
@@ -984,7 +984,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Bottom line */}
-        <div style={{ borderRadius: 6, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
+        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
             Actions are tailored to the {record.industry_sector} sector based on common structural patterns for this constraint profile.
           </p>
@@ -1017,7 +1017,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Key findings */}
-        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
           <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>KEY FINDINGS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
@@ -1035,7 +1035,7 @@ export default function ReviewPage() {
 
         {/* Next step */}
         <div style={{
-          borderRadius: 6,
+          borderRadius: 10,
           backgroundColor: "rgba(75,63,174,0.04)",
           border: "1px solid rgba(75,63,174,0.10)",
           padding: "10px 14px",
@@ -1056,7 +1056,7 @@ export default function ReviewPage() {
               <Label>ADVISOR DISCUSSION GUIDE</Label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {advisorGuide.slice(0, 3).map((item, i) => (
-                  <div key={i} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+                  <div key={i} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
                     <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.topic}</div>
                     <div style={{ ...T.caption, color: B.muted, fontStyle: "italic" }}>{item.question}</div>
                   </div>
@@ -1074,7 +1074,7 @@ export default function ReviewPage() {
                   const isCurrent = i === record.current_evolution_stage_position;
                   return (
                     <div key={i} style={{
-                      flex: 1, borderRadius: 6, padding: "8px 10px",
+                      flex: 1, borderRadius: 10, padding: "8px 10px",
                       backgroundColor: isCurrent ? "rgba(75,63,174,0.06)" : B.sand,
                       border: isCurrent ? `1.5px solid ${B.purple}` : "1.5px solid transparent",
                     }}>
@@ -1145,7 +1145,7 @@ export default function ReviewPage() {
           <button
             onClick={handleDownload}
             disabled={downloading}
-            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease", flex: 1, minWidth: 180 }}
+            style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease, transform 180ms ease", flex: 1, minWidth: 180, boxShadow: "0 4px 12px rgba(14,26,43,0.15)" }}
             onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
             onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
             {downloading ? "Generating PDF…" : "Download Report"}
@@ -1159,7 +1159,7 @@ export default function ReviewPage() {
                 setTimeout(() => setLinkCopied(false), 3000);
               });
             }}
-            style={{ padding: "10px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.teal : B.navy, borderRadius: 6, border: `1px solid ${linkCopied ? B.teal : B.sandDk}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
+            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.teal : B.navy, borderRadius: 12, border: `1px solid ${linkCopied ? B.teal : B.sandDk}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
             {linkCopied ? "Link Copied" : "Copy Verification Link"}
           </button>
 
@@ -1173,19 +1173,19 @@ export default function ReviewPage() {
               const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("RunPayway™ Income Stability Reassessment")}&dates=${dateStr}/${endStr}&details=${encodeURIComponent(`Time to reassess your Income Stability Score™.\n\nPrevious score: ${record.final_score} (${record.stability_band})\nPrimary focus: ${record.primary_constraint_label}\n\nTake your assessment at https://runpayway.com/pricing`)}`;
               window.open(url, "_blank");
             }}
-            style={{ padding: "10px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 6, border: `1px solid ${B.sandDk}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
+            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 12, border: `1px solid ${B.sandDk}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
             Add Reassessment to Calendar
           </button>
         </div>
 
         {downloadError && (
-          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
+          <div style={{ padding: "10px 16px", borderRadius: 10, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
             <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>PDF download failed: {downloadError}. Try refreshing the page.</p>
           </div>
         )}
 
         {/* Share Report Summary */}
-        <div style={{ padding: "14px 16px", borderRadius: 8, border: `1px solid ${B.sandDk}`, backgroundColor: B.sand }}>
+        <div style={{ padding: "14px 16px", borderRadius: 12, border: `1px solid ${B.sandDk}`, backgroundColor: B.sand }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Share Report Summary</div>
           <p style={{ fontSize: 12, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
             Send the report summary and verification link to an advisor, planner, consultant, or reviewer.
@@ -1196,7 +1196,7 @@ export default function ReviewPage() {
               placeholder="Recipient's email address"
               value={advisorEmail}
               onChange={(e) => setAdvisorEmail(e.target.value)}
-              style={{ flex: 1, padding: "8px 12px", fontSize: 13, borderRadius: 6, border: `1px solid ${B.sandDk}`, outline: "none", color: B.navy }}
+              style={{ flex: 1, padding: "10px 14px", fontSize: 13, borderRadius: 12, border: `1px solid ${B.sandDk}`, outline: "none", color: B.navy }}
             />
             <button
               disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
@@ -1225,7 +1225,7 @@ export default function ReviewPage() {
                 } catch { /* silent */ }
                 finally { setAdvisorSending(false); }
               }}
-              style={{ padding: "8px 16px", fontSize: 13, fontWeight: 500, color: "#ffffff", borderRadius: 6, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.teal : B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap" }}>
+              style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.teal : B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(75,63,174,0.20)" }}>
               {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
             </button>
           </div>
