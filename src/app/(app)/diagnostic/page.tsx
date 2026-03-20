@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { executeClientEngineV2, convertV1InputsToV2, convertV1ProfileToV2 } from "@/lib/client-engine-v2";
-import { adaptV2ToV1 } from "@/lib/v2-to-v1-adapter";
+// Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
+const loadV2Engine = () => import("@/lib/client-engine-v2");
+const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -312,6 +313,10 @@ export default function DiagnosticPage() {
     for (let i = 0; i < 6; i++) {
       inputs[FIELD_MAP[i]] = ANSWER_MAP[answers[i]!];
     }
+
+    // Load v2 engine modules dynamically
+    const { convertV1InputsToV2, convertV1ProfileToV2, executeClientEngineV2 } = await loadV2Engine();
+    const { adaptV2ToV1 } = await loadAdapter();
 
     // Build v2 raw inputs (answer choices A-E)
     const rawInputsV2 = convertV1InputsToV2(inputs);
