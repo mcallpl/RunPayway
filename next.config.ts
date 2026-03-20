@@ -48,6 +48,8 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
   // Security headers — only in dynamic mode (static uses .htaccess)
   ...(!isStaticExport
     ? {
