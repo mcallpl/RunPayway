@@ -342,7 +342,7 @@ async function downloadPDF(record: AssessmentRecord) {
     title: `Income Stability Assessment — ${record.assessment_title || "Report"}`,
     author: "RunPayway",
     subject: "Income Stability Score Report",
-    keywords: "income stability, assessment, RunPayway, structural analysis",
+    keywords: "income stability, assessment, RunPayway, income analysis",
     creator: `RunPayway Model ${record.model_version || "RP-1.0"}`,
   });
 
@@ -946,7 +946,7 @@ export default function ReviewPage() {
           {record.peer_benchmark_text || `Your current structure is ${record.final_score < (record.sector_avg_score || 48) ? "below" : "above"} the ${record.industry_sector} sector average.`}
         </p>
 
-        {/* Largest Source Loss Scenario */}
+        {/* If your biggest income source disappeared */}
         <div style={{
           borderRadius: 12,
           backgroundColor: "rgba(14,26,43,0.02)",

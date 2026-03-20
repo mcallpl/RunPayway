@@ -278,7 +278,7 @@ export default function InitializationPage() {
   const stepDescriptions = [
     "This information appears on your report and helps us deliver your results.",
     "This helps us benchmark your score against similar professionals in your field.",
-    "These details provide context for your structural analysis.",
+    "These details provide context for your income analysis.",
   ];
 
   const progressLabels = [

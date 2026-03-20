@@ -658,15 +658,15 @@ export function generatePageInsights(
       : band === "Established Stability"
         ? `structurally stronger than most income systems in the ${industrySector} sector, with meaningful recurring or persistent revenue`
         : band === "Developing Stability"
-          ? `in a transitional phase typical of many ${industrySector} professionals building toward more persistent income structures`
-          : `in the early stages of structural development, which is common in the ${industrySector} sector where income often begins as highly active and transaction-driven`;
+          ? `in a transitional phase typical of many ${industrySector} professionals building toward more recurring income`
+          : `in the early stages of development, which is common in the ${industrySector} sector where income often starts as highly active and transaction-driven`;
 
   return {
-    page_1: `This income system scores ${finalScore} under Model RP-1.0, placing it ${bandContext}. The score reflects the structural composition of income — not total earnings or financial health — and measures how well this system would sustain itself if active work were reduced.`,
-    page_2: `Classified as ${laborAssetLabel} on the labor-asset spectrum, this income system in the ${industrySector} sector derives its revenue from a specific mix of active work, semi-persistent arrangements, and ongoing income. The structural indicators below reveal where stability is strong and where it depends on continued personal effort.`,
-    page_3: `The income map shows how revenue is distributed across active, semi-persistent, and persistent categories — a pattern shaped by the typical structures available in the ${industrySector} sector. Combined with the structural indicators, this reveals the operational reality behind the score.`,
-    page_4: `Within the ${industrySector} peer group, this income system falls in the ${band} band. The benchmark comparison below shows how this score compares to the sector average and the threshold for the top 20% of ${industrySector} income systems.`,
-    page_5: `The primary structural characteristic is ${constraintLabel}, which is a common factor in the ${industrySector} sector. This is the area where the income profile most differs from higher-scoring systems: ${priorityLabel.charAt(0).toLowerCase() + priorityLabel.slice(1)}.`,
-    page_6: `The improvement path below outlines how income systems in the ${industrySector} sector typically evolve from active, labor-dependent revenue toward more structured and recurring models. Each stage represents a structural shift, not just an increase in earnings.`,
+    page_1: `This income scores ${finalScore} under Model RP-1.0, placing it ${bandContext}. The score reflects how income is built — not total earnings or financial health — and measures how well it would hold up if active work were reduced.`,
+    page_2: `Classified as ${laborAssetLabel} on the labor-asset spectrum, this income in the ${industrySector} sector derives its revenue from a specific mix of active work, recurring arrangements, and ongoing income. The indicators below reveal where stability is strong and where it depends on continued personal effort.`,
+    page_3: `The income map shows how revenue is distributed across active, recurring, and built-in categories — a pattern shaped by the typical structures available in the ${industrySector} sector. Combined with the key indicators, this reveals the operational reality behind the score.`,
+    page_4: `Within the ${industrySector} peer group, this income falls in the ${band} band. The benchmark comparison below shows how this score compares to the sector average and the threshold for the top 20% of ${industrySector} income profiles.`,
+    page_5: `The primary income characteristic is ${constraintLabel}, which is a common factor in the ${industrySector} sector. This is the area where the income profile most differs from higher-scoring systems: ${priorityLabel.charAt(0).toLowerCase() + priorityLabel.slice(1)}.`,
+    page_6: `The improvement path below outlines how income in the ${industrySector} sector typically evolves from active, work-dependent revenue toward more recurring and built-in models. Each stage represents a shift in how income flows, not just an increase in earnings.`,
   };
 }

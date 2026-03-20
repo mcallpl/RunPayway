@@ -156,7 +156,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                     <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Peer Ranking</p>
                     <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0 0 16px;">${data.peerPercentileLabel} percentile in ${data.industrySector}</p>
 
-                    <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Primary Constraint</p>
+                    <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Main Area to Improve</p>
                     <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0 0 16px;">${data.primaryConstraintLabel}</p>
 
                     <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Issued</p>
