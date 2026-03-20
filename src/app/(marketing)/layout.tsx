@@ -258,12 +258,12 @@ export default function MarketingLayout({
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
+    { href: "/sample-report", label: t.nav.sampleReport },
+    { href: "/methodology", label: t.nav.methodology },
     { href: "/pricing", label: t.nav.pricing },
   ];
 
   const MORE_LINKS = [
-    { href: "/sample-report", label: t.nav.sampleReport },
-    { href: "/methodology", label: t.nav.methodology },
     { href: "/verify", label: t.nav.verifyAScore },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
