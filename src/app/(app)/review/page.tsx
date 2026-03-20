@@ -201,7 +201,7 @@ function ReportHeader({ record }: { record: AssessmentRecord }) {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/runpayway-logo-full.png" alt="RunPayway" style={{ height: 18, width: "auto" }} />
+            <img src="/RunPayway/runpayway-logo-full.png" alt="RunPayway" style={{ height: 18, width: "auto" }} />
             <span style={{ ...T.caption, color: B.light }}>Income Stability Assessment · Model RP-1.0</span>
           </div>
           <div style={{ ...T.caption, color: B.light, textAlign: "right" }}>
