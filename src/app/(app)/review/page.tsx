@@ -1216,10 +1216,11 @@ export default function ReviewPage() {
                   return (
                     <div key={i} style={{
                       flex: 1, borderRadius: 10, padding: "8px 10px", textAlign: "center",
-                      backgroundColor: isCurrent ? "rgba(75,63,174,0.06)" : B.sand,
+                      backgroundColor: isCurrent ? B.purple : B.sand,
                       border: isCurrent ? `1.5px solid ${B.purple}` : "1.5px solid transparent",
+                      boxShadow: isCurrent ? "0 4px 12px rgba(75,63,174,0.25)" : "none",
                     }}>
-                      <div style={{ ...T.micro, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? B.purple : B.light }}>{step}</div>
+                      <div style={{ ...T.micro, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? "#ffffff" : B.light }}>{step}</div>
                     </div>
                   );
                 })}
