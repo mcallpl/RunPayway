@@ -117,11 +117,25 @@ export default function VerifyPage() {
         issued_timestamp_utc: string;
       }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
 
-      const match = stored.find(
+      // Check localStorage records
+      let match = stored.find(
         (r) =>
           r.record_id === recordId.trim() &&
           r.authorization_code === authCode.trim().toLowerCase()
       );
+
+      // Also check sessionStorage for the current assessment
+      if (!match) {
+        try {
+          const sessionRecord = sessionStorage.getItem("rp_record");
+          if (sessionRecord) {
+            const sr = JSON.parse(sessionRecord);
+            if (sr.record_id === recordId.trim() && sr.authorization_code === authCode.trim().toLowerCase()) {
+              match = sr;
+            }
+          }
+        } catch { /* ignore */ }
+      }
 
       if (match) {
         setResult({
@@ -134,7 +148,7 @@ export default function VerifyPage() {
           issued_timestamp: match.issued_timestamp_utc,
           verified_at: new Date().toISOString(),
           verification_statement:
-            "This record matches a RunPayway™-issued Income Stability Assessment.",
+            "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
         });
       } else {
         setResult({ valid_record: false });
@@ -164,9 +178,15 @@ export default function VerifyPage() {
           setLoading(true);
           try {
             const stored: Array<{ record_id: string; authorization_code: string; model_version: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
-            const match = stored.find((r) => r.record_id === urlId.trim() && r.authorization_code === urlAuth.trim().toLowerCase());
+            let match = stored.find((r) => r.record_id === urlId.trim() && r.authorization_code === urlAuth.trim().toLowerCase());
+            if (!match) {
+              try {
+                const sr = JSON.parse(sessionStorage.getItem("rp_record") || "null");
+                if (sr && sr.record_id === urlId.trim() && sr.authorization_code === urlAuth.trim().toLowerCase()) match = sr;
+              } catch { /* ignore */ }
+            }
             if (match) {
-              setResult({ valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway™-issued Income Stability Assessment." });
+              setResult({ valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." });
             } else {
               setResult({ valid_record: false });
             }
