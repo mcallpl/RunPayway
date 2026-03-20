@@ -19,22 +19,32 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: |
+          node -v
+          npm -v
+          npm install --no-audit --no-fund
+          echo "Dependencies installed successfully"
 
       - name: Move server-only files aside for static export
         run: |
           mv src/app/api src/app/_api_dev
           mv src/middleware.ts src/_middleware_dev.ts
+          echo "Server files moved aside"
 
       - name: Build static export
         env:
           STATIC_EXPORT: 'true'
-        run: npx next build
+        run: |
+          echo "Starting static build..."
+          npx next build 2>&1 || { echo "BUILD FAILED"; exit 1; }
+          echo "Build completed successfully"
+          ls -la out/ || echo "No out/ directory"
 
       - name: Restore server-only files
+        if: always()
         run: |
-          mv src/app/_api_dev src/app/api
-          mv src/_middleware_dev.ts src/middleware.ts
+          if [ -d src/app/_api_dev ]; then mv src/app/_api_dev src/app/api; fi
+          if [ -f src/_middleware_dev.ts ]; then mv src/_middleware_dev.ts src/middleware.ts; fi
 
       - name: Deploy frontend to GoDaddy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
