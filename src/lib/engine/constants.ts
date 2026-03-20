@@ -82,7 +82,7 @@ export const FIELD_LABELS: Record<CanonicalKey, string> = {
 };
 
 // Record and verification constants
-export const VERIFICATION_URL = "RunPayway.com/verify";
+export const VERIFICATION_URL = "peoplestar.com/RunPayway/verify";
 export const DEFAULT_REGISTRY_STATUS = "Active" as const;
 export const DEFAULT_VERIFICATION_STATUS = "valid" as const;
 

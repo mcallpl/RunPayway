@@ -190,7 +190,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                   <td>
                     <p style="font-size:10px; color:${light}; margin:0;">
                       Record ID: ${shortId}… &nbsp;|&nbsp; Model: ${data.modelVersion} &nbsp;|&nbsp;
-                      Verify at <span style="font-weight:500; color:${brandNavy};">RunPayway.com/verify</span>
+                      Verify at <span style="font-weight:500; color:${brandNavy};">peoplestar.com/RunPayway/verify</span>
                     </p>
                   </td>
                 </tr>

@@ -266,8 +266,8 @@ function QRCodeImage({ recordId, authCode }: { recordId: string; authCode?: stri
     const canvas = canvasRef.current;
     if (!canvas) return;
     const url = authCode
-      ? `https://runpayway.com/verify?id=${recordId}&auth=${authCode}`
-      : `https://runpayway.com/verify?id=${recordId}`;
+      ? `https://peoplestar.com/RunPayway/verify?id=${recordId}&auth=${authCode}`
+      : `https://peoplestar.com/RunPayway/verify?id=${recordId}`;
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
         width: 72,
@@ -669,7 +669,7 @@ export default function ReviewPage() {
           <SectionDivider />
 
           <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>
-            Verify at RunPayway.com/verify
+            Verify at peoplestar.com/RunPayway/verify
           </div>
 
           <p style={{ ...T.caption, color: B.light, maxWidth: 480, lineHeight: 1.5, fontStyle: "italic", margin: 0 }}>
@@ -1271,7 +1271,7 @@ export default function ReviewPage() {
           </div>
           <div style={{ flexShrink: 0, textAlign: "center" }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
-            <div style={{ ...T.caption, color: B.light, marginTop: 4 }}>Verify at RunPayway.com/verify</div>
+            <div style={{ ...T.caption, color: B.light, marginTop: 4 }}>Verify at peoplestar.com/RunPayway/verify</div>
           </div>
         </div>
 
@@ -1299,7 +1299,7 @@ export default function ReviewPage() {
 
           <button
             onClick={() => {
-              const url = `https://runpayway.com/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+              const url = `https://peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
               navigator.clipboard.writeText(url).then(() => {
                 setLinkCopied(true);
                 setTimeout(() => setLinkCopied(false), 3000);
