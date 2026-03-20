@@ -253,8 +253,6 @@ export default function PricingPage() {
     const label = key === "annual"
       ? "3 assessments over 12 months"
       : "Your full Income Stability Report";
-    // Push a history entry so back button dismisses the overlay
-    window.history.pushState({ overlay: true }, "");
     setTransition({ key, label });
     setTimeout(() => {
       window.location.href = STRIPE_LINKS[key];
