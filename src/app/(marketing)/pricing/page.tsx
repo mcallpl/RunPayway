@@ -237,8 +237,8 @@ export default function PricingPage() {
   const ctaAnim = useInView();
 
   const STRIPE_LINKS: Record<string, string> = {
-    single: "https://buy.stripe.com/bJecMX20wd726Bsgrn2Nq00",
-    annual: "https://buy.stripe.com/5kQ00b20w7MI3pg2Ax2Nq01",
+    single: "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02",
+    annual: "https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03",
   };
 
   // Clear overlay if user hits browser back button
