@@ -560,6 +560,9 @@ export default function ReviewPage() {
     return d.toISOString().split("T")[0];
   })();
   const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
+  const constraintGuidance: string[] = safeJsonParse(record.constraint_guidance_payload, []);
+  const evolutionSteps: { label: string; description: string }[] = safeJsonParse(record.evolution_path_steps_payload, []);
+  const advisorGuide: { topic: string; question: string }[] = safeJsonParse(record.advisor_discussion_guide_payload, []);
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -673,19 +676,19 @@ export default function ReviewPage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
           <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>CURRENT PROFILE</div>
-            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>Limited stability</div>
-          </div>
-          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
-            <div style={{ ...T.micro, color: B.light }}>MAIN RISK</div>
-            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>Income depends too much on active work</div>
+            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.stability_band}</div>
           </div>
           <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
           </div>
           <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
-            <div style={{ ...T.micro, color: B.light }}>MAIN OPPORTUNITY</div>
-            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>Add income that continues each month</div>
+            <div style={{ ...T.micro, color: B.light }}>STRUCTURAL PRIORITY</div>
+            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.structural_priority_label}</div>
+          </div>
+          <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
+            <div style={{ ...T.micro, color: B.light }}>LABOR-ASSET POSITION</div>
+            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.labor_asset_position_label}</div>
           </div>
         </div>
 
@@ -754,50 +757,33 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Strengths / Weaknesses — two column */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.sectionGap, marginBottom: R.sectionGap }}>
-          <div>
-            <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>WHAT HELPS</div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
-              {[
-                "Income comes from more than one source",
-                "Some persistent income already exists",
-                "A clear path to improvement is visible",
-              ].map((item) => (
-                <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <span style={{ ...T.caption, color: B.teal, flexShrink: 0 }}>—</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>WHAT LIMITS STABILITY</div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
-              {[
-                "Too little income continues automatically",
-                "Too little income is committed in advance",
-                "Monthly income fluctuates significantly",
-              ].map((item) => (
-                <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <span style={{ ...T.caption, color: B.light, flexShrink: 0 }}>—</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+        {/* Score drivers */}
+        <div style={{ marginBottom: R.sectionGap }}>
+          <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>TOP SCORE DRIVERS</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {[
+              { label: record.driver_1_label, text: record.driver_1_text },
+              { label: record.driver_2_label, text: record.driver_2_text },
+              { label: record.driver_3_label, text: record.driver_3_text },
+            ].map((d) => (
+              <div key={d.label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+                <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{d.label}</div>
+                <div style={{ ...T.caption, color: B.muted }}>{d.text}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Business implications */}
+        {/* Structural priority */}
         <div style={{
           borderRadius: 8,
           background: "linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(31,109,122,0.04) 100%)",
           border: "1px solid rgba(31,109,122,0.10)",
           padding: "12px 16px",
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Business Implications</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Structural Priority</div>
           <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
-            This structure is more exposed to disruption than a more stable income model. When too much income depends on continued effort, interruptions hurt more and planning becomes harder.
+            {record.structural_priority_text}
           </p>
         </div>
       </ReportPage>
@@ -811,8 +797,22 @@ export default function ReviewPage() {
           How Your Income Is Built
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          This page shows where the income is coming from and why the score is still limited.
+          {record.page_3_key_insight_text || "This page shows the structural composition of income and how each factor contributes to the overall score."}
         </p>
+
+        {/* Profile context */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
+          {[
+            ["Classification", record.classification],
+            ["Operating Structure", record.operating_structure],
+            ["Income Model", record.primary_income_model],
+          ].map(([label, value]) => (
+            <div key={label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+              <div style={{ ...T.micro, color: B.light }}>{label.toUpperCase()}</div>
+              <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{value}</div>
+            </div>
+          ))}
+        </div>
 
         {/* Income mix — three bars */}
         <Label>INCOME MIX</Label>
@@ -834,7 +834,7 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.small, color: B.muted, marginBottom: R.sectionGap }}>
-          Most of the current income still comes from active work rather than income that continues on its own.
+          {record.labor_asset_framework_text}
         </p>
 
         <SectionDivider />
@@ -877,7 +877,7 @@ export default function ReviewPage() {
           What Improves the Score
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          This page shows where the current structure stands and what changes would help most.
+          {record.page_4_key_insight_text || "This page shows where the current structure stands and what changes would help most."}
         </p>
 
         {/* Benchmark block */}
@@ -895,7 +895,7 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.caption, color: B.muted, marginBottom: R.sectionGap }}>
-          Your current structure is below both the sector average and the top stability range.
+          {record.peer_benchmark_text || `Your current structure is ${record.final_score < (record.sector_avg_score || 48) ? "below" : "above"} the ${record.industry_sector} sector average.`}
         </p>
 
         {/* Largest Source Loss Scenario */}
@@ -937,13 +937,13 @@ export default function ReviewPage() {
         {/* Most important score levers */}
         <Label>SCORE IMPROVEMENT LEVERS</Label>
         <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
-          {[
+          {(constraintGuidance.length > 0 ? constraintGuidance : [
             "Increase recurring or retainer-based revenue",
             "Increase revenue already committed before the month begins",
             "Reduce dependence on the largest single source",
             "Increase income that continues without active delivery",
-          ].map((item) => (
-            <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
+          ]).slice(0, 4).map((item, i) => (
+            <li key={i} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
               <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{item}
             </li>
           ))}
@@ -972,16 +972,13 @@ export default function ReviewPage() {
 
         {/* Projected range */}
         <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Projected Range</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Improvement Estimate</div>
           <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
-            {record.final_score}–{record.projected_final_score ? Math.min(100, record.projected_final_score + 7) : record.final_score + 11}
+            {record.final_score} → {record.projected_final_score || record.final_score + 11} ({record.projected_stability_band || record.stability_band})
           </div>
-          <div style={{ ...T.caption, color: B.muted, lineHeight: 1.6 }}>
-            This assumes:<br />
-            — one recurring revenue layer is added<br />
-            — more income is committed in advance<br />
-            — concentration risk improves modestly
-          </div>
+          <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+            {record.improvement_estimate_text || "Projected score if the primary constraint is addressed through the actions listed above."}
+          </p>
         </div>
 
         {/* Bottom line */}
@@ -1049,7 +1046,51 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <SectionDivider />
+        {/* Advisor discussion guide */}
+        {advisorGuide.length > 0 && (
+          <>
+            <div style={{ marginBottom: R.sectionGap }}>
+              <Label>ADVISOR DISCUSSION GUIDE</Label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {advisorGuide.slice(0, 3).map((item, i) => (
+                  <div key={i} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
+                    <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.topic}</div>
+                    <div style={{ ...T.caption, color: B.muted, fontStyle: "italic" }}>{item.question}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <SectionDivider />
+          </>
+        )}
+
+        {/* Evolution path */}
+        {evolutionSteps.length > 0 && record.evolution_path_title && (
+          <>
+            <div style={{ marginBottom: R.sectionGap }}>
+              <Label>{record.evolution_path_title.toUpperCase()}</Label>
+              <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
+                {evolutionSteps.map((step, i) => {
+                  const isCurrent = i === record.current_evolution_stage_position;
+                  return (
+                    <div key={i} style={{
+                      flex: 1, borderRadius: 6, padding: "8px 10px",
+                      backgroundColor: isCurrent ? "rgba(75,63,174,0.06)" : B.sand,
+                      border: isCurrent ? `1.5px solid ${B.purple}` : "1.5px solid transparent",
+                    }}>
+                      <div style={{ ...T.micro, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? B.purple : B.light, marginBottom: 2 }}>{step.label}</div>
+                      <div style={{ ...T.caption, color: isCurrent ? B.navy : B.muted }}>{step.description}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ ...T.caption, color: B.muted }}>
+                Current stage: <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
+              </div>
+            </div>
+            <SectionDivider />
+          </>
+        )}
 
         {/* Reassessment */}
         <div style={{ marginBottom: R.sectionGap }}>
