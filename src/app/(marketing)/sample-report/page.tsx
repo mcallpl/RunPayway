@@ -534,7 +534,7 @@ export default function SampleReportPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Page 2 — Structural Analysis                                */}
+      {/*  Page 2 — Income Breakdown                                */}
       {/* ============================================================ */}
       <section
         style={{
@@ -847,20 +847,20 @@ export default function SampleReportPage() {
               {/* Primary Constraint */}
               <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Main Area to Improve</div>
               <div style={{ fontSize: 14, color: B.navy, fontWeight: 600, marginBottom: 4 }}>Income Persistence</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 6 }}>Most income requires ongoing active effort to generate. When active work pauses, income pauses with it.</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>At this structural level, a 90-day work stoppage would affect a significant portion of total income.</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 6 }}>Most income requires you to actively work to earn it. When you stop working, income stops too.</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 16 }}>A 90-day work stoppage would affect a significant portion of total income.</div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
-              {/* Structural Observations */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Structural Observations</div>
-              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 12 }}>Income systems that include recurring service agreements alongside project work tend to exhibit higher persistence scores.</div>
+              {/* Key Observations */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Key Observations</div>
+              <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.7, marginBottom: 12 }}>Adding recurring service agreements alongside project work tends to build income that keeps coming.</div>
 
-              {/* Structural Pathways */}
-              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Structural Pathways</div>
+              {/* Improvement Pathways */}
+              <div style={{ fontSize: 10, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: B.light, marginBottom: 6 }}>Improvement Pathways</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 14 }}>
-                <div style={{ fontSize: 11, color: B.navy }}>1. Structures that include monthly retainer arrangements tend to show increased recurring revenue.</div>
-                <div style={{ fontSize: 11, color: B.navy }}>2. Income systems with productized subscription offerings tend to exhibit more predictable patterns.</div>
-                <div style={{ fontSize: 11, color: B.navy }}>3. Profiles with 90-day forward pipeline visibility tend to demonstrate stronger revenue predictability.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>1. Adding monthly retainer arrangements tends to increase recurring revenue.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>2. Productized subscription offerings tend to create more predictable income patterns.</div>
+                <div style={{ fontSize: 11, color: B.navy }}>3. Building 90-day forward pipeline visibility tends to strengthen revenue predictability.</div>
               </div>
               <div style={{ height: 1, background: "rgba(14,26,43,0.08)", marginBottom: 14 }} />
 
