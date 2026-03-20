@@ -614,7 +614,7 @@ export default function ReviewPage() {
 
           {/* One-sentence meaning */}
           <p style={{ ...T.body, color: B.muted, maxWidth: 480, lineHeight: 1.6, marginBottom: 28 }}>
-            Your current income is still heavily dependent on active work. Too little income continues or stays committed before the month begins.
+            {record.band_interpretation_text}
           </p>
 
           {/* Key facts */}
@@ -623,7 +623,7 @@ export default function ReviewPage() {
             <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
-              <div style={{ ...T.micro, color: B.muted }}>continues without active work</div>
+              <div style={{ ...T.micro, color: B.muted }}>would persist if active work stopped</div>
             </div>
             <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
@@ -631,7 +631,7 @@ export default function ReviewPage() {
               <div style={{ ...T.micro, color: B.muted }}>if the largest source ends</div>
             </div>
             <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
-              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Main Weakness</div>
+              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Primary Constraint</div>
               <div style={{ ...T.small, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
             </div>
           </div>
@@ -650,9 +650,13 @@ export default function ReviewPage() {
             ))}
           </div>
 
-          <div style={{ ...T.micro, color: B.light }}>
+          <div style={{ ...T.micro, color: B.light, marginBottom: 12 }}>
             Verify at RunPayway.com/verify
           </div>
+
+          <p style={{ ...T.caption, color: B.light, maxWidth: 480, lineHeight: 1.5, fontStyle: "italic", margin: 0 }}>
+            Based on self-reported data. This report measures structural income stability under Model RP-1.0. It is not financial, legal, tax, insurance, or investment advice.
+          </p>
         </div>
       </ReportPage>
 
@@ -676,8 +680,8 @@ export default function ReviewPage() {
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>Income depends too much on active work</div>
           </div>
           <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
-            <div style={{ ...T.micro, color: B.light }}>MAIN WEAKNESS</div>
-            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>Too little recurring or pre-committed revenue</div>
+            <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
+            <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
           </div>
           <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 14px" }}>
             <div style={{ ...T.micro, color: B.light }}>MAIN OPPORTUNITY</div>
@@ -687,7 +691,7 @@ export default function ReviewPage() {
 
         {/* Meaning paragraph */}
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          This score means the current income structure is not yet durable. Most income still depends on ongoing work, and too little revenue is already in place before the month begins.
+          {record.band_interpretation_text}
         </p>
 
         {/* Continuity block */}
@@ -753,12 +757,12 @@ export default function ReviewPage() {
         {/* Strengths / Weaknesses — two column */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.sectionGap, marginBottom: R.sectionGap }}>
           <div>
-            <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>WHAT IS HELPING</div>
+            <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>WHAT HELPS</div>
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
               {[
                 "Income comes from more than one source",
-                "Some income continues without active work",
-                "A clear improvement path exists",
+                "Some persistent income already exists",
+                "A clear path to improvement is visible",
               ].map((item) => (
                 <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
                   <span style={{ ...T.caption, color: B.teal, flexShrink: 0 }}>—</span>
@@ -768,12 +772,12 @@ export default function ReviewPage() {
             </ul>
           </div>
           <div>
-            <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>WHAT IS HOLDING THE SCORE DOWN</div>
+            <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>WHAT LIMITS STABILITY</div>
             <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
               {[
                 "Too little income continues automatically",
-                "Too little income is already scheduled",
-                "Monthly income is inconsistent",
+                "Too little income is committed in advance",
+                "Monthly income fluctuates significantly",
               ].map((item) => (
                 <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
                   <span style={{ ...T.caption, color: B.light, flexShrink: 0 }}>—</span>
@@ -839,12 +843,12 @@ export default function ReviewPage() {
         <Label>KEY INDICATORS</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: R.sectionGap }}>
           {[
-            { label: "Income that continues", level: indicatorLevel(record.income_persistence_label, false), text: "Too little income keeps coming in without active work." },
-            { label: "Income sources", level: indicatorLevel(record.income_source_diversity_label, false), text: "There is more than one source, which helps." },
-            { label: "Income already scheduled", level: indicatorLevel(record.forward_revenue_visibility_label, false), text: "Too little future revenue is committed before the month begins." },
-            { label: "Monthly consistency", level: indicatorLevel(record.income_variability_label, true), text: "Income changes too much from month to month." },
-            { label: "Dependence on personal work", level: indicatorLevel(record.active_labor_dependence_label, true), text: "A large share of income depends on showing up and producing work." },
-            { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), text: "Too much income is tied to the largest single source." },
+            { label: "Income that continues", level: indicatorLevel(record.income_persistence_label, false), text: "Share of income that persists without active work." },
+            { label: "Income sources", level: indicatorLevel(record.income_source_diversity_label, false), text: "Number and diversity of distinct income sources." },
+            { label: "Income already scheduled", level: indicatorLevel(record.forward_revenue_visibility_label, false), text: "Revenue committed or contracted before the month begins." },
+            { label: "Monthly consistency", level: indicatorLevel(record.income_variability_label, true), text: "How much income fluctuates from month to month." },
+            { label: "Dependence on personal work", level: indicatorLevel(record.active_labor_dependence_label, true), text: "Share of income that requires ongoing personal effort." },
+            { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), text: "Concentration of income in the largest single source." },
           ].map((item) => (
             <div key={item.label} style={{ borderRadius: 6, backgroundColor: B.sand, padding: "8px 12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
@@ -856,42 +860,10 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* What helps / What limits */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: R.sectionGap, marginBottom: R.sectionGap }}>
-          <div>
-            <div style={{ ...T.label, color: B.teal, marginBottom: R.labelMb }}>WHAT HELPS</div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
-              {[
-                "More than one income source is present",
-                "Some persistent income already exists",
-              ].map((item) => (
-                <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>WHAT LIMITS STABILITY</div>
-            <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none" }}>
-              {[
-                "Too little income continues automatically",
-                "Too little income is committed in advance",
-                "Too much income depends on active work",
-                "Losing one major source would be damaging",
-              ].map((item) => (
-                <li key={item} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
-                  <span style={{ color: B.light, flexShrink: 0 }}>—</span>{item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom line */}
+        {/* Structural insight */}
         <div style={{ borderRadius: 6, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
-            The score is limited mainly because too little income remains in place without restarting each month.
+            The indicators above drive the overall score. Improving any factor rated Low or Moderate will move the score higher.
           </p>
         </div>
       </ReportPage>
@@ -941,7 +913,7 @@ export default function ReviewPage() {
             <span style={{ fontSize: 22, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: "6px 0 0" }}>
-            If the largest income source ended, the score would fall to {Math.max(0, record.risk_scenario_score)} under the current model.
+            Structural simulation: if the largest income source were removed, the score would fall to {Math.max(0, record.risk_scenario_score)}. This is not a prediction of whether this event will occur.
           </p>
         </div>
 
@@ -953,17 +925,17 @@ export default function ReviewPage() {
           padding: "14px 16px",
           marginBottom: R.sectionGap,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>Main Focus Area</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>Primary Constraint</div>
           <div style={{ ...T.body, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            The fastest way to improve this score is to add income that renews, stays scheduled, or continues without starting over each month.
+            Improving this single area would have the largest impact on the overall score.
           </p>
         </div>
 
         <SectionDivider />
 
         {/* Most important score levers */}
-        <Label>MOST IMPORTANT SCORE LEVERS</Label>
+        <Label>SCORE IMPROVEMENT LEVERS</Label>
         <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
           {[
             "Increase recurring or retainer-based revenue",
@@ -980,7 +952,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* 90-day actions */}
-        <Label>90-DAY ACTIONS</Label>
+        <Label>90-DAY ACTIONS — {record.industry_sector.toUpperCase()}</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {[
             { action: actionPlan[0] || "Convert one-time work into monthly retainers", impact: "High impact" },
@@ -1015,7 +987,7 @@ export default function ReviewPage() {
         {/* Bottom line */}
         <div style={{ borderRadius: 6, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
-            The score is most likely to improve when more income continues each month without restarting from zero.
+            Actions are tailored to the {record.industry_sector} sector based on common structural patterns for this constraint profile.
           </p>
         </div>
       </ReportPage>
@@ -1045,57 +1017,24 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Meaning banner */}
-        <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 16px", marginBottom: 16 }}>
-          <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.6 }}>
-            This income structure has limited stability. Only a modest share of income continues without active work, and the biggest improvement is adding recurring or pre-committed revenue.
-          </p>
-        </div>
-
-        {/* Summary cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
-          <div style={{ borderRadius: 6, border: `1px solid ${B.sandDk}`, padding: "10px 12px", textAlign: "center" }}>
-            <div style={{ ...T.micro, color: B.light, marginBottom: 2 }}>CONTINUITY</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
-            <div style={{ ...T.micro, color: B.muted }}>for {record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}</div>
-          </div>
-          <div style={{ borderRadius: 6, border: `1px solid ${B.sandDk}`, padding: "10px 12px", textAlign: "center" }}>
-            <div style={{ ...T.micro, color: B.light, marginBottom: 2 }}>LARGEST SOURCE LOSS</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
-          </div>
-          <div style={{ borderRadius: 6, border: `1px solid ${B.sandDk}`, padding: "10px 12px", textAlign: "center" }}>
-            <div style={{ ...T.micro, color: B.light, marginBottom: 2 }}>PERCENTILE</div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.peer_stability_percentile_label}</div>
-            <div style={{ ...T.micro, color: B.muted }}>in {record.industry_sector}</div>
+        {/* Key findings */}
+        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: 16 }}>
+          <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>KEY FINDINGS</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {[
+              `Income continuity: ${record.income_continuity_pct}% continues without active work for ${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`,
+              `Largest source loss scenario: score drops from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}`,
+              `Industry position: ${record.peer_stability_percentile_label} percentile in ${record.industry_sector}`,
+              `Primary constraint: ${record.primary_constraint_label}`,
+            ].map((f) => (
+              <div key={f} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{f}
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Strengths / Constraints */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-          <div>
-            <div style={{ ...T.label, color: B.teal, marginBottom: 6 }}>CURRENT STRENGTHS</div>
-            <div style={{ ...T.caption, color: B.navy, display: "flex", flexDirection: "column", gap: 4 }}>
-              {[
-                "Income comes from more than one source",
-                "Some persistent income already exists",
-                "A clear path to improvement is visible",
-              ].map((f) => <div key={f} style={{ display: "flex", gap: 6 }}><span style={{ color: B.teal, flexShrink: 0 }}>—</span>{f}</div>)}
-            </div>
-          </div>
-          <div>
-            <div style={{ ...T.label, color: B.muted, marginBottom: 6 }}>TOP CONSTRAINTS</div>
-            <div style={{ ...T.caption, color: B.navy, display: "flex", flexDirection: "column", gap: 4 }}>
-              {[
-                "Too little income continues automatically",
-                "Too little income is already scheduled",
-                "Monthly income is inconsistent",
-                "Too much income depends on active work",
-              ].map((f) => <div key={f} style={{ display: "flex", gap: 6 }}><span style={{ color: B.light, flexShrink: 0 }}>—</span>{f}</div>)}
-            </div>
-          </div>
-        </div>
-
-        {/* Main focus area */}
+        {/* Next step */}
         <div style={{
           borderRadius: 6,
           backgroundColor: "rgba(75,63,174,0.04)",
@@ -1103,10 +1042,10 @@ export default function ReviewPage() {
           padding: "10px 14px",
           marginBottom: 16,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Main Focus Area</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Primary Constraint</div>
           <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            If more income begins to renew, remain scheduled, or continue without active work, the score can move meaningfully higher.
+            Improving this area would have the largest impact on the overall score. See Page 4 for specific actions.
           </p>
         </div>
 
@@ -1119,7 +1058,7 @@ export default function ReviewPage() {
             Recommended reassessment date: <strong>{reassessDate}</strong>
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            Reassess after adding retainers, renewal-based revenue, or meaningful changes in source concentration.
+            A 90-day window allows time for structural changes to take effect. Reassess after adding retainers, renewal-based revenue, or meaningful changes in source concentration.
           </p>
         </div>
 
@@ -1151,7 +1090,7 @@ export default function ReviewPage() {
 
         {/* Disclosure */}
         <div style={{ ...T.caption, color: B.light, lineHeight: 1.55 }}>
-          This report measures structural income stability under Model RP-1.0. It is not financial, legal, tax, insurance, or investment advice. It does not measure net worth, creditworthiness, or future financial performance.
+          Based on self-reported data — results are only as accurate as the information provided. This report measures structural income stability under Model RP-1.0. It is not financial, legal, tax, insurance, or investment advice. It does not measure net worth, creditworthiness, or future financial performance. Risk scenarios are structural simulations, not predictions of future events.
         </div>
       </ReportPage>
 
