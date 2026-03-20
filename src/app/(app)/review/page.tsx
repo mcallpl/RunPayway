@@ -599,11 +599,11 @@ export default function ReviewPage() {
           PAGE 1 — YOUR SCORE
           ================================================================ */}
       <ReportPage record={record}>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "16px 0" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
 
           {/* Prepared for */}
           <div style={{ ...T.label, color: B.light, marginBottom: 4 }}>PREPARED FOR</div>
-          <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 28 }}>
+          <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: R.sectionGap }}>
             {record.assessment_title || "Assessment Subject"}
           </div>
 
@@ -611,49 +611,51 @@ export default function ReviewPage() {
           <div style={{ fontSize: 64, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 8 }}>
             {record.final_score}
           </div>
-          <div style={{ fontSize: 18, fontWeight: 600, color: B.teal, marginBottom: 16 }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: B.teal, marginBottom: R.sectionGap }}>
             {record.stability_band}
           </div>
 
           {/* One-sentence meaning */}
-          <p style={{ ...T.body, color: B.muted, maxWidth: 480, lineHeight: 1.6, marginBottom: 28 }}>
+          <p style={{ ...T.body, color: B.muted, maxWidth: 480, lineHeight: 1.6, marginBottom: R.sectionGap }}>
             {record.band_interpretation_text}
           </p>
 
           {/* Key facts */}
-          <div style={{ ...T.label, color: B.light, marginBottom: 10 }}>KEY FACTS</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, maxWidth: 520, width: "100%", marginBottom: 28 }}>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
+          <div style={{ ...T.label, color: B.light, marginBottom: R.labelMb }}>KEY FACTS</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", marginBottom: R.sectionGap }}>
+            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
               <div style={{ ...T.micro, color: B.muted }}>would persist if active work stopped</div>
             </div>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
+            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
               <div style={{ ...T.micro, color: B.muted }}>if the largest source ends</div>
             </div>
-            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "12px 14px", textAlign: "center" }}>
+            <div style={{ borderRadius: 6, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Primary Constraint</div>
               <div style={{ ...T.small, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
             </div>
           </div>
 
           {/* Bottom meta */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, maxWidth: 440, marginBottom: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, width: "100%", marginBottom: R.sectionGap }}>
             {[
               ["Industry", record.industry_sector],
               ["Issued", issuedDate],
               ["Record ID", record.record_id.slice(0, 8) + "…"],
             ].map(([label, value]) => (
-              <div key={label}>
+              <div key={label} style={{ textAlign: "center" }}>
                 <div style={{ ...T.caption, color: B.light, marginBottom: 2 }}>{label}</div>
                 <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{value}</div>
               </div>
             ))}
           </div>
 
-          <div style={{ ...T.micro, color: B.light, marginBottom: 12 }}>
+          <SectionDivider />
+
+          <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>
             Verify at RunPayway.com/verify
           </div>
 
@@ -707,7 +709,7 @@ export default function ReviewPage() {
             Estimated continuity: {record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            If active work stopped today, only a limited share of income would continue.
+            {record.income_continuity_text || "If active work stopped today, only a limited share of income would continue."}
           </p>
         </div>
 
@@ -751,7 +753,7 @@ export default function ReviewPage() {
             {record.peer_stability_percentile_label} percentile in {record.industry_sector}
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            This structure ranks below most comparable {record.industry_sector} profiles on income durability and predictability.
+            Compared to other {record.industry_sector} professionals assessed under Model RP-1.0.
           </p>
         </div>
 
@@ -999,7 +1001,7 @@ export default function ReviewPage() {
         </h2>
 
         {/* Assessment title + score */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: R.sectionGap }}>
           <div>
             <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>
               {record.assessment_title || "Income Stability Assessment"}
@@ -1015,7 +1017,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Key findings */}
-        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: 16 }}>
+        <div style={{ borderRadius: 8, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
           <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>KEY FINDINGS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
@@ -1037,19 +1039,20 @@ export default function ReviewPage() {
           backgroundColor: "rgba(75,63,174,0.04)",
           border: "1px solid rgba(75,63,174,0.10)",
           padding: "10px 14px",
-          marginBottom: 16,
+          marginBottom: R.sectionGap,
         }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Primary Constraint</div>
           <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            Improving this area would have the largest impact on the overall score. See Page 4 for specific actions.
+            Improving this area would have the largest impact on the overall score.
           </p>
         </div>
 
+        <SectionDivider />
+
         {/* Advisor discussion guide */}
         {advisorGuide.length > 0 && (
-          <>
-            <div style={{ marginBottom: R.sectionGap }}>
+          <div style={{ marginBottom: R.sectionGap }}>
               <Label>ADVISOR DISCUSSION GUIDE</Label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {advisorGuide.slice(0, 3).map((item, i) => (
@@ -1060,13 +1063,10 @@ export default function ReviewPage() {
                 ))}
               </div>
             </div>
-            <SectionDivider />
-          </>
         )}
 
         {/* Evolution path */}
         {evolutionSteps.length > 0 && record.evolution_path_title && (
-          <>
             <div style={{ marginBottom: R.sectionGap }}>
               <Label>{record.evolution_path_title.toUpperCase()}</Label>
               <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
@@ -1088,9 +1088,9 @@ export default function ReviewPage() {
                 Current stage: <strong style={{ color: B.navy }}>{record.current_evolution_stage_label}</strong>
               </div>
             </div>
-            <SectionDivider />
-          </>
         )}
+
+        <SectionDivider />
 
         {/* Reassessment */}
         <div style={{ marginBottom: R.sectionGap }}>
