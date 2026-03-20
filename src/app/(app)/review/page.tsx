@@ -980,16 +980,63 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* Projected range */}
-        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Improvement Estimate</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
-            {record.final_score} → {record.projected_final_score || record.final_score + 11} ({record.projected_stability_band || record.stability_band})
-          </div>
-          <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
-            {record.improvement_estimate_text || "Projected score if the primary constraint is addressed through the actions listed above."}
-          </p>
-        </div>
+        {/* Tier-aware outlook */}
+        {(() => {
+          const score = record.final_score;
+          if (score >= 80) {
+            // HIGH STABILITY — maintain and protect
+            return (
+              <div style={{ borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.12)`, padding: "14px 16px", marginBottom: R.sectionGap }}>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 6 }}>Maintain &amp; Protect</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                  Score: {score} — {record.stability_band}
+                </div>
+                <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                  This income structure is in the top stability tier. The priority is protecting what&apos;s already working: maintain source diversification, preserve recurring revenue layers, and monitor for concentration risk. Reassess in 90 days to confirm structural durability.
+                </p>
+              </div>
+            );
+          } else if (score >= 60) {
+            // ESTABLISHED — optimize to reach High
+            return (
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Optimization Target</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                  {score} → 80+ (High Stability)
+                </div>
+                <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                  The foundation is strong. Reaching High Stability (80+) requires fine-tuning: deepening existing recurring revenue, reducing remaining concentration risk, and increasing the share of income that continues without active work.
+                </p>
+              </div>
+            );
+          } else if (score >= 40) {
+            // DEVELOPING — build toward Established
+            return (
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Next Band Target</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                  {score} → 60+ (Established Stability)
+                </div>
+                <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                  The income system has early structural elements in place. Reaching Established Stability (60+) requires adding at least one reliable recurring revenue source, reducing dependence on the single largest income stream, and increasing the share of income committed in advance.
+                </p>
+              </div>
+            );
+          } else {
+            // LIMITED — foundational changes to reach Developing
+            return (
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Foundational Target</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                  {score} → 40+ (Developing Stability)
+                </div>
+                <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                  This score reflects an income system that relies almost entirely on active work. Reaching Developing Stability (40+) requires foundational changes: converting any portion of income to a recurring or retainer model, adding a second independent income source, and securing even modest forward revenue commitments. These structural shifts typically produce the largest score improvements.
+                </p>
+              </div>
+            );
+          }
+        })()}
 
         {/* Bottom line */}
         <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
