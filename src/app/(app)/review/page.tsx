@@ -670,9 +670,12 @@ export default function ReviewPage() {
           PAGE 2 — WHAT THIS SCORE MEANS
           ================================================================ */}
       <ReportPage record={record}>
-        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: R.sectionGap }}>
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           What This Score Means
         </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          {record.page_2_key_insight_text || "A breakdown of your current stability profile, where you stand relative to peers, and what is driving the score."}
+        </p>
 
         {/* Top summary boxes */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
@@ -738,7 +741,7 @@ export default function ReviewPage() {
             ].map((b) => {
               const isActive = b.label + " Stability" === record.stability_band;
               return (
-                <div key={b.label} style={{ textAlign: "center", padding: "4px 2px 3px", borderRadius: 4, border: isActive ? `1.5px solid ${B.navy}` : "1.5px solid transparent", backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent" }}>
+                <div key={b.label} style={{ textAlign: "center", padding: "4px 2px 3px", borderRadius: 10, border: isActive ? `1.5px solid ${B.navy}` : "1.5px solid transparent", backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent" }}>
                   <div style={{ ...T.micro, fontWeight: isActive ? 700 : T.micro.fontWeight, color: isActive ? B.navy : B.light }}>{b.label}</div>
                   <div style={{ fontSize: 8, fontWeight: isActive ? 600 : 400, color: isActive ? B.navy : B.light }}>{b.range}</div>
                 </div>
@@ -919,7 +922,7 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        {/* Main focus area */}
+        {/* Primary constraint */}
         <div style={{
           borderRadius: 12,
           backgroundColor: "rgba(75,63,174,0.04)",
@@ -936,7 +939,7 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Most important score levers */}
+        {/* Score improvement levers */}
         <Label>SCORE IMPROVEMENT LEVERS</Label>
         <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
           {(constraintGuidance.length > 0 ? constraintGuidance : [
@@ -996,9 +999,12 @@ export default function ReviewPage() {
           PAGE 5 — YOUR SUMMARY
           ================================================================ */}
       <ReportPage record={record}>
-        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: R.sectionGap }}>
+        <h2 style={{ ...T.pageTitle, color: B.navy, marginBottom: 4 }}>
           Your Summary
         </h2>
+        <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
+          {record.page_5_key_insight_text || "Consolidated findings, next steps, and your official assessment record."}
+        </p>
 
         {/* Assessment title + score */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: R.sectionGap }}>
