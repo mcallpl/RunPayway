@@ -5,9 +5,9 @@ node_modules/
 .next/
 out/
 
-# Data storage (immutable records)
-data/
-.data/
+# Data storage (immutable records — top-level only)
+/data/
+/.data/
 
 # Package lock — tracked for CI reproducibility
 
