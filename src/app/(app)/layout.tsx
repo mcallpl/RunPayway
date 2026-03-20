@@ -39,7 +39,7 @@ export default function AppLayout({
             />
           </Link>
           <div style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.04em" }}>
-            Model RP-1.0
+            Model RP-2.0
           </div>
         </div>
       </header>
@@ -66,7 +66,7 @@ export default function AppLayout({
             RunPayway™ Income Stability Assessment
           </span>
           <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-            Structural Stability Model RP-1.0
+            Structural Stability Model RP-2.0
           </span>
         </div>
       </footer>

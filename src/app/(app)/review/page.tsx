@@ -202,7 +202,7 @@ function ReportHeader() {
       <div style={{ ...T.overline, color: B.navy, fontWeight: 600, fontSize: 11 }}>RUNPAYWAY™</div>
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
-        <div style={{ ...T.meta, color: B.taupe }}>Model RP-1.0</div>
+        <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0</div>
       </div>
     </div>
   );

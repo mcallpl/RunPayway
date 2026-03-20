@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { executeClientEngine } from "@/lib/client-engine";
+import { executeClientEngineV2, convertV1InputsToV2, convertV1ProfileToV2 } from "@/lib/client-engine-v2";
+import { adaptV2ToV1 } from "@/lib/v2-to-v1-adapter";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -312,17 +313,22 @@ export default function DiagnosticPage() {
       inputs[FIELD_MAP[i]] = ANSWER_MAP[answers[i]!];
     }
 
+    // Build v2 raw inputs (answer choices A-E)
+    const rawInputsV2 = convertV1InputsToV2(inputs);
+    const profileV2 = convertV1ProfileToV2(profile);
+
     setSubmitting(true);
     setError(null);
 
     try {
-      // Try server-side scoring first (persisted + verified)
-      // Falls back to client engine for static deployments
       let record;
       try {
-        // Include payment token for server-side auth
+        // Try v2 server-side scoring first
         const purchaseSession = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
-        const payloadBody: Record<string, unknown> = { profile, inputs };
+        const payloadBody: Record<string, unknown> = {
+          raw_inputs: rawInputsV2,
+          profile: profileV2,
+        };
         if (purchaseSession.payment_token) {
           payloadBody._payment_token = purchaseSession.payment_token;
           payloadBody._payment_payload = {
@@ -332,32 +338,32 @@ export default function DiagnosticPage() {
             expires_at: purchaseSession.token_expires_at,
           };
         }
-        const res = await fetch("/api/v1/score", {
+        const res = await fetch("/api/v2/score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payloadBody),
         });
         if (res.ok) {
-          record = await res.json();
+          record = adaptV2ToV1(await res.json());
         } else {
           throw new Error("Server unavailable");
         }
       } catch {
-        // Client-side fallback
-        record = await executeClientEngine({ profile, inputs });
+        // Client-side v2 fallback
+        const v2Result = await executeClientEngineV2({ profile, inputs });
+        record = adaptV2ToV1(v2Result);
       }
       sessionStorage.setItem("rp_record", JSON.stringify(record));
 
-      // Persist record for Verify a Score lookup
+      // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
+      const adapted = record as Record<string, unknown>;
       stored.push({
-        record_id: record.record_id,
-        authorization_code: record.authorization_code,
-        model_version: record.model_version,
-        final_score: record.final_score,
-        stability_band: record.stability_band,
-        assessment_date_utc: record.assessment_date_utc,
-        issued_timestamp_utc: record.issued_timestamp_utc,
+        record_id: adapted.record_id,
+        model_version: adapted.model_version ?? "RP-2.0",
+        final_score: adapted.final_score,
+        stability_band: adapted.stability_band,
+        assessment_date_utc: adapted.assessment_date_utc,
       });
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
