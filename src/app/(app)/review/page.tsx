@@ -936,7 +936,7 @@ export default function ReviewPage() {
             [`${record.industry_sector} Average`, String(record.sector_avg_score || 48)],
             [`Top 20% in ${record.industry_sector}`, `${record.sector_top_20_threshold || 65}+`],
           ].map(([label, value], i) => (
-            <div key={label} style={{ ...T.small, display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: i % 2 === 0 ? B.sand : "white", padding: "8px 14px" }}>
+            <div key={label} style={{ ...T.small, display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: i % 2 === 0 ? B.sand : "white", padding: "6px 12px" }}>
               <span style={{ color: B.muted }}>{label}</span>
               <span style={{ fontWeight: 600, color: i === 0 ? B.purple : B.navy }}>{value}</span>
             </div>
@@ -954,13 +954,13 @@ export default function ReviewPage() {
           padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 8 }}>If Your Biggest Income Source Disappeared</div>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-            <span style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score}</span>
-            <span style={{ ...T.body, color: B.light }}>→</span>
-            <span style={{ fontSize: 18, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 4 }}>If Your Biggest Income Source Disappeared</div>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontSize: 16, fontWeight: 700, color: B.navy }}>{record.final_score}</span>
+            <span style={{ ...T.small, color: B.light }}>→</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
           </div>
-          <p style={{ ...T.caption, color: B.muted, margin: "6px 0 0" }}>
+          <p style={{ ...T.caption, color: B.muted, margin: "4px 0 0" }}>
             This is a stress test — not a prediction. If your biggest income source went away, your score would drop to {Math.max(0, record.risk_scenario_score)}.
           </p>
         </div>
@@ -989,29 +989,7 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Score improvement levers */}
-        <Label>{({
-          limited: "MUST-DO CHANGES",
-          developing: "HOW TO REACH THE NEXT LEVEL",
-          established: "HOW TO REACH THE TOP TIER",
-          high: "HOW TO STAY ON TOP",
-        }[tier])}</Label>
-        <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
-          {(constraintGuidance.length > 0 ? constraintGuidance : [
-            "Increase recurring or retainer-based revenue",
-            "Increase revenue already committed before the month begins",
-            "Reduce dependence on the largest single source",
-            "Increase income that continues without active delivery",
-          ]).slice(0, 4).map((item, i) => (
-            <li key={i} style={{ ...T.small, color: B.navy, display: "flex", alignItems: "flex-start", gap: 8 }}>
-              <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{item}
-            </li>
-          ))}
-        </ul>
-
-        <SectionDivider />
-
-        {/* 90-day actions */}
+        {/* Action plan */}
         <Label>{({
           limited: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 60 DAYS`,
           developing: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
@@ -1100,7 +1078,7 @@ export default function ReviewPage() {
                   {score} → 40+ (Developing Stability)
                 </div>
                 <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
-                  This score reflects an income system that relies almost entirely on active work. Reaching Developing Stability (40+) requires foundational changes: converting any portion of income to a recurring or retainer model, adding a second independent income source, and securing even modest forward revenue commitments. These structural shifts typically produce the largest score improvements.
+                  Reaching Developing Stability (40+) requires converting some income to a recurring or retainer model, adding a second income source, and securing forward revenue commitments. These changes typically produce the largest score improvements.
                 </p>
               </div>
             );
