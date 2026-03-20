@@ -245,6 +245,16 @@ function DiagnosisBlock({ children }: { children: React.ReactNode }) {
   );
 }
 
+function SimpleTermsBox({ title, copy, takeaway }: { title: string; copy: string; takeaway: string }) {
+  return (
+    <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginTop: 16, marginBottom: 16 }}>
+      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{title}</div>
+      <p style={{ ...T.body, color: B.navy, margin: "0 0 10px", maxWidth: 520, lineHeight: 1.55 }}>{copy}</p>
+      <p style={{ ...T.small, color: B.muted, margin: 0, fontStyle: "italic" }}>{takeaway}</p>
+    </div>
+  );
+}
+
 function ReportPage({ children, noPad }: { record: AssessmentRecord; children: React.ReactNode; noPad?: boolean }) {
   return (
     <div className="report-page" style={{
@@ -633,7 +643,13 @@ export default function ReviewPage() {
           </p>
         </DiagnosisBlock>
 
-        <div style={{ display: "flex", gap: 12, marginTop: 24, marginBottom: 24 }}>
+        <SimpleTermsBox
+          title="What this means in simple terms"
+          copy="Your income is working, but it is not yet strongly protected. Too much of it still depends on you continuing to work, and not enough of it is already lined up ahead of time."
+          takeaway="Simple takeaway: Your income is not weak, but it is not yet well protected."
+        />
+
+        <div style={{ display: "flex", gap: 12, marginTop: 8, marginBottom: 24 }}>
           <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of current income that would continue for a limited period if active work stopped today." />
           <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source were removed, the modeled score would fall to this level." />
           <MetricCard label="Primary Constraint" value={record.primary_constraint_label} explanation={record.primary_constraint_text || "The factor most limiting the current score."} />
@@ -725,6 +741,28 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Simple definitions */}
+        <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginBottom: 16 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>SIMPLE DEFINITIONS</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {[
+              ["Income secured ahead", "money already lined up before the month begins"],
+              ["Continuity", "how long income keeps coming in if you stop working"],
+              ["Dependence on one source", "how much you rely on one main source of income"],
+              ["Recurring income", "income that repeats"],
+              ["Built-in income", "income that can continue with less day-to-day work"],
+            ].map(([term, def]) => (
+              <div key={term} style={{ ...T.small, color: B.navy }}>
+                <span style={{ fontWeight: 500 }}>{term}</span>
+                <span style={{ color: B.muted }}> = {def}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...T.small, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>
+            Simple takeaway: The biggest issue is too little income lined up ahead and too much dependence on your active work.
+          </p>
+        </div>
+
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary diagnosis:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
@@ -791,6 +829,12 @@ export default function ReviewPage() {
           ))}
         </div>
 
+        <SimpleTermsBox
+          title="What this means in simple terms"
+          copy="This page shows what could weaken first if something changes. If work slows down or a major source weakens, this income setup may lose strength faster than a stronger setup would."
+          takeaway="Simple takeaway: If something important changes, this income structure could weaken faster than it should."
+        />
+
         {/* Three interpretation cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
@@ -852,6 +896,12 @@ export default function ReviewPage() {
           ))}
         </div>
 
+        <SimpleTermsBox
+          title="What this means in simple terms"
+          copy="The fastest way to improve this score is not just to work more. It is to have more income already lined up, reduce dependence on one source, and build more income that continues over time."
+          takeaway="Simple takeaway: The fastest improvement comes from securing more income ahead and relying less on one source."
+        />
+
         {/* Action cards */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
           {[
@@ -892,6 +942,12 @@ export default function ReviewPage() {
             This profile does not need more explanation. It needs stronger structure. The present score reflects an income profile that works, but does not yet hold enough income secured ahead to sit in a more durable range.
           </p>
         </DiagnosisBlock>
+
+        <SimpleTermsBox
+          title="What this means in simple terms"
+          copy="This report is saying that your income setup needs to become stronger, not just busier. The goal is to make your income hold up better even when work slows down or something changes."
+          takeaway="Simple takeaway: Do not just work harder. Strengthen the structure underneath your income."
+        />
 
         {/* Two columns: What to do / What not to */}
         <div style={{ display: "flex", gap: 24, marginTop: 24, marginBottom: 24 }}>
