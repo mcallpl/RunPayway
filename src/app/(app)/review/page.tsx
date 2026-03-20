@@ -558,10 +558,14 @@ export default function ReviewPage() {
   if (!record) return null;
 
   // ── Derived values ──
+  const score = record.final_score;
+  const tier: "limited" | "developing" | "established" | "high" =
+    score >= 80 ? "high" : score >= 60 ? "established" : score >= 40 ? "developing" : "limited";
+
   const issuedDate = (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0];
   const reassessDate = (() => {
     const d = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
-    d.setMonth(d.getMonth() + 3);
+    d.setMonth(d.getMonth() + (tier === "limited" ? 2 : tier === "high" ? 6 : 3));
     return d.toISOString().split("T")[0];
   })();
   const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
@@ -631,12 +635,16 @@ export default function ReviewPage() {
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
-              <div style={{ ...T.micro, color: B.muted }}>would persist if active work stopped</div>
+              <div style={{ ...T.micro, color: B.muted }}>
+                {tier === "high" ? "continues reliably without active work" : tier === "established" ? "would continue without active work" : "would persist if active work stopped"}
+              </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
               <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
-              <div style={{ ...T.micro, color: B.muted }}>if the largest source ends</div>
+              <div style={{ ...T.micro, color: B.muted }}>
+                {tier === "high" ? "resilience if largest source ends" : tier === "limited" ? "if the largest source ends" : "risk if the largest source ends"}
+              </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Primary Constraint</div>
@@ -679,7 +687,12 @@ export default function ReviewPage() {
           What This Score Means
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_2_key_insight_text || "A breakdown of your current stability profile, where you stand relative to peers, and what is driving the score."}
+          {record.page_2_key_insight_text || ({
+            limited: "Your income structure currently depends heavily on active work. This breakdown shows what that means for stability and where the biggest opportunities are.",
+            developing: "Your income has early structural elements in place. This breakdown shows what is contributing to stability and what needs to grow.",
+            established: "Your income structure is moderately diversified. This breakdown shows what is working well and where to optimize further.",
+            high: "Your income structure is highly resilient. This breakdown shows what is protecting your stability and what to monitor.",
+          }[tier])}
         </p>
 
         {/* Top summary boxes */}
@@ -717,7 +730,12 @@ export default function ReviewPage() {
             Estimated continuity: {record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            {record.income_continuity_text || "If active work stopped today, only a limited share of income would continue."}
+            {record.income_continuity_text || ({
+              limited: "If active work stopped today, very little income would continue. This is the most important area to address.",
+              developing: "If active work stopped today, a modest share of income would continue. Growing this share is key to reaching the next band.",
+              established: "If active work stopped today, a meaningful share of income would continue. Expanding this further strengthens the foundation.",
+              high: "If active work stopped today, the majority of income would continue. This reflects strong structural resilience.",
+            }[tier])}
           </p>
         </div>
 
@@ -761,7 +779,12 @@ export default function ReviewPage() {
             {record.peer_stability_percentile_label} percentile in {record.industry_sector}
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            Compared to other {record.industry_sector} professionals assessed under Model RP-1.0.
+            {({
+              limited: `Significant development opportunity relative to other ${record.industry_sector} professionals.`,
+              developing: `Below the median for ${record.industry_sector} — clear path to improvement.`,
+              established: `Competitive position among ${record.industry_sector} professionals.`,
+              high: `Top tier among ${record.industry_sector} professionals — exceptional structural strength.`,
+            }[tier])}
           </p>
         </div>
 
@@ -807,7 +830,12 @@ export default function ReviewPage() {
           How Your Income Is Built
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_3_key_insight_text || "This page shows the structural composition of income and how each factor contributes to the overall score."}
+          {record.page_3_key_insight_text || ({
+            limited: "This page shows why the income structure currently relies heavily on active work and which indicators need the most attention.",
+            developing: "This page shows the structural composition emerging in your income model and which indicators are driving growth.",
+            established: "This page shows how your diversified income composition contributes to stability and where further gains are available.",
+            high: "This page shows the resilient structural composition protecting your income and which indicators to monitor.",
+          }[tier])}
         </p>
 
         {/* Profile context */}
@@ -873,7 +901,12 @@ export default function ReviewPage() {
         {/* Structural insight */}
         <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
-            The indicators above drive the overall score. Improving any factor rated Low or Moderate will move the score higher.
+            {({
+              limited: "Most indicators above need attention. Improving any of them will produce significant score gains.",
+              developing: "The indicators above are key leverage points. Improving any factor rated Low will move the score meaningfully higher.",
+              established: "Most indicators are healthy. Focusing on any remaining Low or Moderate factors will push toward High Stability.",
+              high: "These indicators reflect your structural strengths. Monitor any Moderate factors to maintain this position.",
+            }[tier])}
           </p>
         </div>
       </ReportPage>
@@ -887,7 +920,12 @@ export default function ReviewPage() {
           What Improves the Score
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_4_key_insight_text || "This page shows where the current structure stands and what changes would help most."}
+          {record.page_4_key_insight_text || ({
+            limited: "Your income structure requires foundational changes. This page outlines what will produce the largest improvements.",
+            developing: "Your income structure has started to build stability. This page shows what will accelerate progress to the next band.",
+            established: "Your income structure is solid. This page shows fine-tuning opportunities to reach the top tier.",
+            high: "Your income structure is strong. This page outlines how to maintain and protect your position.",
+          }[tier])}
         </p>
 
         {/* Benchmark block */}
@@ -935,17 +973,29 @@ export default function ReviewPage() {
           padding: "14px 16px",
           marginBottom: R.sectionGap,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>Primary Constraint</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>
+            {tier === "high" ? "Area to Monitor" : "Primary Constraint"}
+          </div>
           <div style={{ ...T.body, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            Improving this single area would have the largest impact on the overall score.
+            {({
+              limited: "Addressing this single area will produce the largest score improvement and is the highest-priority structural change.",
+              developing: "Improving this area would have the largest impact on moving to the next stability band.",
+              established: "Strengthening this area is the most direct path to reaching High Stability.",
+              high: "This is the area most likely to affect your score if conditions change. Monitor it to maintain your position.",
+            }[tier])}
           </p>
         </div>
 
         <SectionDivider />
 
         {/* Score improvement levers */}
-        <Label>SCORE IMPROVEMENT LEVERS</Label>
+        <Label>{({
+          limited: "FOUNDATIONAL PRIORITIES",
+          developing: "KEY IMPROVEMENT LEVERS",
+          established: "OPTIMIZATION LEVERS",
+          high: "STABILITY MAINTENANCE",
+        }[tier])}</Label>
         <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
           {(constraintGuidance.length > 0 ? constraintGuidance : [
             "Increase recurring or retainer-based revenue",
@@ -962,22 +1012,41 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* 90-day actions */}
-        <Label>90-DAY ACTIONS — {record.industry_sector.toUpperCase()}</Label>
+        <Label>{({
+          limited: `FOUNDATIONAL ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 60 DAYS`,
+          developing: `BUILD ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+          established: `OPTIMIZATION ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+          high: `MAINTENANCE ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+        }[tier])}</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
-          {[
-            { action: actionPlan[0] || "Convert one-time work into monthly retainers", impact: "High impact" },
-            { action: actionPlan[1] || "Add support, maintenance, or renewal-based revenue", impact: "High impact" },
-            { action: actionPlan[2] || "Increase prepaid or pre-scheduled work", impact: "Medium-high impact" },
-            { action: actionPlan[3] || "Reduce dependence on the largest single source", impact: "Medium impact" },
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-              <span style={{ ...T.small, fontWeight: 600, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
-              <div style={{ flex: 1 }}>
-                <span style={{ ...T.small, color: B.navy }}>{item.action}</span>
-                <div style={{ ...T.micro, color: i < 2 ? B.teal : i === 2 ? B.purple : B.light, fontWeight: 600, marginTop: 2 }}>{item.impact}</div>
+          {(() => {
+            const impactLabels = {
+              limited: ["Critical", "Critical", "High impact", "High impact"],
+              developing: ["High impact", "High impact", "Medium-high impact", "Medium impact"],
+              established: ["Medium-high impact", "Medium impact", "Medium impact", "Moderate impact"],
+              high: ["Maintenance", "Maintenance", "Monitor", "Monitor"],
+            }[tier];
+            const impactColors = {
+              limited: [B.teal, B.teal, B.teal, B.teal],
+              developing: [B.teal, B.teal, B.purple, B.light],
+              established: [B.purple, B.navy, B.navy, B.light],
+              high: [B.teal, B.teal, B.light, B.light],
+            }[tier];
+            const fallbacks = tier === "high"
+              ? ["Protect existing source diversification", "Maintain recurring revenue layers", "Monitor concentration risk quarterly", "Review forward revenue commitments"]
+              : tier === "established"
+              ? ["Expand existing recurring revenue streams", "Optimize income source balance", "Increase advance revenue commitments", "Strengthen income persistence"]
+              : ["Convert one-time work into monthly retainers", "Add support, maintenance, or renewal-based revenue", "Increase prepaid or pre-scheduled work", "Reduce dependence on the largest single source"];
+            return [0, 1, 2, 3].map((i) => (
+              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ ...T.small, fontWeight: 600, color: B.teal, flexShrink: 0, minWidth: 18 }}>{i + 1}.</span>
+                <div style={{ flex: 1 }}>
+                  <span style={{ ...T.small, color: B.navy }}>{actionPlan[i] || fallbacks[i]}</span>
+                  <div style={{ ...T.micro, color: impactColors[i], fontWeight: 600, marginTop: 2 }}>{impactLabels[i]}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ));
+          })()}
         </div>
 
         {/* Tier-aware outlook */}
@@ -1055,7 +1124,12 @@ export default function ReviewPage() {
           Your Summary
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
-          {record.page_5_key_insight_text || "Consolidated findings, next steps, and your official assessment record."}
+          {record.page_5_key_insight_text || ({
+            limited: "Here is what your assessment reveals about structural vulnerabilities and what to address first.",
+            developing: "Here is your current structural position and the clearest path forward.",
+            established: "Here is your structural position and where refinement will have the most impact.",
+            high: "Here is your assessment summary and how to maintain this level of stability.",
+          }[tier])}
         </p>
 
         {/* Assessment title + score */}
@@ -1165,7 +1239,12 @@ export default function ReviewPage() {
             Recommended reassessment date: <strong>{reassessDate}</strong>
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            A 90-day window allows time for structural changes to take effect. Reassess after adding retainers, renewal-based revenue, or meaningful changes in source concentration.
+            {({
+              limited: "Reassess in 60 days after implementing foundational changes like converting to retainers or adding a second income source. Foundational shifts typically produce the fastest score improvements.",
+              developing: "A 90-day window allows time for structural changes to take effect. Reassess after adding or expanding retainers, recurring revenue, or forward commitments.",
+              established: "A 90-day review tracks optimization progress. Reassess after refining revenue sources, increasing persistence, or expanding forward commitments.",
+              high: "Review in 6 months to confirm structural durability. Reassess sooner only if a major income source changes or concentration risk shifts significantly.",
+            }[tier])}
           </p>
         </div>
 
@@ -1232,7 +1311,7 @@ export default function ReviewPage() {
           <button
             onClick={() => {
               const nextDate = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
-              nextDate.setMonth(nextDate.getMonth() + 3);
+              nextDate.setMonth(nextDate.getMonth() + (record.final_score < 40 ? 2 : record.final_score >= 80 ? 6 : 3));
               const dateStr = nextDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
               const endDate = new Date(nextDate.getTime() + 30 * 60000);
               const endStr = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
