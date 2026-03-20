@@ -152,6 +152,15 @@ export default function InitializationPage() {
     recipient_email: "", // populated from Stripe checkout, not user input
   });
 
+  // Warn before leaving mid-setup
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
+
   // Pre-fill email from Stripe checkout session
   useEffect(() => {
     const purchaseRaw = sessionStorage.getItem("rp_purchase_session");

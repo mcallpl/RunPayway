@@ -182,6 +182,17 @@ export default function DiagnosticPage() {
   const [showReview, setShowReview] = useState(false);
   const [elapsed, setElapsed] = useState(0);
 
+  // Warn before leaving mid-diagnostic
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!showLoading && !showReview) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [showLoading, showReview]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     // Payment gate
