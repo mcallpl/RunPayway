@@ -151,14 +151,14 @@ const B = {
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
 const R = {
-  pagePad: 40,
-  headerMb: 20,
-  sectionGap: 18,
-  labelMb: 8,
-  paraMb: 10,
-  itemGap: 7,
-  dividerMy: 16,
-  footerMt: 18,
+  pagePad: 32,
+  headerMb: 14,
+  sectionGap: 12,
+  labelMb: 6,
+  paraMb: 8,
+  itemGap: 5,
+  dividerMy: 10,
+  footerMt: 12,
 };
 
 const T = {
@@ -612,15 +612,15 @@ export default function ReviewPage() {
 
           {/* Prepared for */}
           <div style={{ ...T.label, color: B.light, marginBottom: 4 }}>PREPARED FOR</div>
-          <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: R.sectionGap }}>
+          <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: R.sectionGap }}>
             {record.assessment_title || "Assessment Subject"}
           </div>
 
           {/* Score */}
-          <div style={{ fontSize: 64, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 8 }}>
+          <div style={{ fontSize: 56, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 6 }}>
             {record.final_score}
           </div>
-          <div style={{ fontSize: 18, fontWeight: 600, color: B.teal, marginBottom: R.sectionGap }}>
+          <div style={{ fontSize: 16, fontWeight: 600, color: B.teal, marginBottom: R.sectionGap }}>
             {record.stability_band}
           </div>
 
@@ -634,14 +634,14 @@ export default function ReviewPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", marginBottom: R.sectionGap }}>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
               <div style={{ ...T.micro, color: B.muted }}>
                 {tier === "high" ? "continues reliably without active work" : tier === "established" ? "would continue without active work" : "would persist if active work stopped"}
               </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
               <div style={{ ...T.micro, color: B.muted }}>
                 {tier === "high" ? "resilience if largest source ends" : tier === "limited" ? "if the largest source ends" : "risk if the largest source ends"}
               </div>
@@ -697,19 +697,19 @@ export default function ReviewPage() {
 
         {/* Top summary boxes */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
-          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
             <div style={{ ...T.micro, color: B.light }}>CURRENT PROFILE</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.stability_band}</div>
           </div>
-          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
             <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
           </div>
-          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
             <div style={{ ...T.micro, color: B.light }}>STRUCTURAL PRIORITY</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.structural_priority_label}</div>
           </div>
-          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 14px" }}>
+          <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
             <div style={{ ...T.micro, color: B.light }}>LABOR-ASSET POSITION</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.labor_asset_position_label}</div>
           </div>
@@ -721,9 +721,9 @@ export default function ReviewPage() {
         </p>
 
         {/* Continuity block */}
-        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</span>
+        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 3 }}>
+            <span style={{ fontSize: 20, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</span>
             <span style={{ ...T.small, color: B.muted }}>of current income continues without active work</span>
           </div>
           <div style={{ ...T.small, color: B.muted, marginBottom: 6 }}>
@@ -799,7 +799,7 @@ export default function ReviewPage() {
               { label: record.driver_2_label, text: record.driver_2_text },
               { label: record.driver_3_label, text: record.driver_3_text },
             ].map((d) => (
-              <div key={d.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+              <div key={d.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
                 <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{d.label}</div>
                 <div style={{ ...T.caption, color: B.muted }}>{d.text}</div>
               </div>
@@ -845,7 +845,7 @@ export default function ReviewPage() {
             ["Operating Structure", record.operating_structure],
             ["Income Model", record.primary_income_model],
           ].map(([label, value]) => (
-            <div key={label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div key={label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
               <div style={{ ...T.micro, color: B.light }}>{label.toUpperCase()}</div>
               <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{value}</div>
             </div>
@@ -879,7 +879,7 @@ export default function ReviewPage() {
 
         {/* Key indicators */}
         <Label>KEY INDICATORS</Label>
-        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: R.sectionGap }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: R.sectionGap }}>
           {[
             { label: "Income that continues", level: indicatorLevel(record.income_persistence_label, false), text: "Share of income that persists without active work." },
             { label: "Income sources", level: indicatorLevel(record.income_source_diversity_label, false), text: "Number and diversity of distinct income sources." },
@@ -888,7 +888,7 @@ export default function ReviewPage() {
             { label: "Dependence on personal work", level: indicatorLevel(record.active_labor_dependence_label, true), text: "Share of income that requires ongoing personal effort." },
             { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), text: "Concentration of income in the largest single source." },
           ].map((item) => (
-            <div key={item.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+            <div key={item.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
                 <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{item.label}</span>
                 <span style={{ ...T.caption, fontWeight: 600, color: item.level.color }}>{item.level.display}</span>
@@ -899,7 +899,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Structural insight */}
-        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
+        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "8px 12px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
             {({
               limited: "Most indicators above need attention. Improving any of them will produce significant score gains.",
@@ -951,14 +951,14 @@ export default function ReviewPage() {
           borderRadius: 12,
           backgroundColor: "rgba(14,26,43,0.02)",
           border: "1px solid rgba(14,26,43,0.06)",
-          padding: "14px 16px",
+          padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Largest Source Loss Scenario</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-            <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{record.final_score}</span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score}</span>
             <span style={{ ...T.body, color: B.light }}>→</span>
-            <span style={{ fontSize: 22, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
+            <span style={{ fontSize: 18, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: "6px 0 0" }}>
             Structural simulation: if the largest income source were removed, the score would fall to {Math.max(0, record.risk_scenario_score)}. This is not a prediction of whether this event will occur.
@@ -970,7 +970,7 @@ export default function ReviewPage() {
           borderRadius: 12,
           backgroundColor: "rgba(75,63,174,0.04)",
           border: "1px solid rgba(75,63,174,0.10)",
-          padding: "14px 16px",
+          padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>
@@ -1055,9 +1055,9 @@ export default function ReviewPage() {
           if (score >= 80) {
             // HIGH STABILITY — maintain and protect
             return (
-              <div style={{ borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.12)`, padding: "14px 16px", marginBottom: R.sectionGap }}>
+              <div style={{ borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.12)`, padding: "8px 12px", marginBottom: R.sectionGap }}>
                 <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 6 }}>Maintain &amp; Protect</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   Score: {score} — {record.stability_band}
                 </div>
                 <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
@@ -1068,9 +1068,9 @@ export default function ReviewPage() {
           } else if (score >= 60) {
             // ESTABLISHED — optimize to reach High
             return (
-              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
                 <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Optimization Target</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 80+ (High Stability)
                 </div>
                 <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
@@ -1081,9 +1081,9 @@ export default function ReviewPage() {
           } else if (score >= 40) {
             // DEVELOPING — build toward Established
             return (
-              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
                 <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Next Band Target</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 60+ (Established Stability)
                 </div>
                 <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
@@ -1094,9 +1094,9 @@ export default function ReviewPage() {
           } else {
             // LIMITED — foundational changes to reach Developing
             return (
-              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+              <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
                 <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Foundational Target</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy, marginBottom: 6 }}>
+                <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 40+ (Developing Stability)
                 </div>
                 <p style={{ ...T.caption, color: B.muted, lineHeight: 1.6, margin: 0 }}>
@@ -1108,7 +1108,7 @@ export default function ReviewPage() {
         })()}
 
         {/* Bottom line */}
-        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "10px 14px" }}>
+        <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "8px 12px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
             Actions are tailored to the {record.industry_sector} sector based on common structural patterns for this constraint profile.
           </p>
@@ -1135,7 +1135,7 @@ export default function ReviewPage() {
         {/* Assessment title + score */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: R.sectionGap }}>
           <div>
-            <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>
+            <div style={{ fontSize: 15, fontWeight: 700, color: B.navy }}>
               {record.assessment_title || "Income Stability Assessment"}
             </div>
             <div style={{ ...T.caption, color: B.light, marginTop: 2 }}>
@@ -1143,13 +1143,13 @@ export default function ReviewPage() {
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 36, fontWeight: 700, color: B.navy, lineHeight: 1 }}>{record.final_score}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: B.navy, lineHeight: 1 }}>{record.final_score}</div>
             <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginTop: 4 }}>{record.stability_band}</div>
           </div>
         </div>
 
         {/* Key findings */}
-        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "14px 16px", marginBottom: R.sectionGap }}>
+        <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
           <div style={{ ...T.micro, color: B.light, marginBottom: 8 }}>KEY FINDINGS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
@@ -1170,7 +1170,7 @@ export default function ReviewPage() {
           borderRadius: 10,
           backgroundColor: "rgba(75,63,174,0.04)",
           border: "1px solid rgba(75,63,174,0.10)",
-          padding: "10px 14px",
+          padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Primary Constraint</div>
@@ -1188,15 +1188,15 @@ export default function ReviewPage() {
               <Label>ADVISOR DISCUSSION GUIDE</Label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {advisorGuide.talking_points.slice(0, 2).map((point, i) => (
-                  <div key={i} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+                  <div key={i} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
                     <div style={{ ...T.caption, color: B.muted }}>{point}</div>
                   </div>
                 ))}
                 {advisorGuide.client_questions.length > 0 && (
-                  <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+                  <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
                     <div style={{ ...T.micro, color: B.light, marginBottom: 4 }}>QUESTIONS TO DISCUSS</div>
                     {advisorGuide.client_questions.slice(0, 2).map((q, i) => (
-                      <div key={i} style={{ ...T.caption, color: B.navy, display: "flex", gap: 6, marginBottom: 2 }}>
+                      <div key={i} style={{ ...T.caption, color: B.navy, display: "flex", gap: 4, marginBottom: 2 }}>
                         <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{q}
                       </div>
                     ))}
@@ -1330,7 +1330,7 @@ export default function ReviewPage() {
         )}
 
         {/* Share Report Summary */}
-        <div style={{ padding: "14px 16px", borderRadius: 12, border: `1px solid ${B.sandDk}`, backgroundColor: B.sand }}>
+        <div style={{ padding: "8px 12px", borderRadius: 12, border: `1px solid ${B.sandDk}`, backgroundColor: B.sand }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Share Report Summary</div>
           <p style={{ fontSize: 12, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
             Send the report summary and verification link to an advisor, planner, consultant, or reviewer.
@@ -1341,7 +1341,7 @@ export default function ReviewPage() {
               placeholder="Recipient's email address"
               value={advisorEmail}
               onChange={(e) => setAdvisorEmail(e.target.value)}
-              style={{ flex: 1, padding: "10px 14px", fontSize: 13, borderRadius: 12, border: `1px solid ${B.sandDk}`, outline: "none", color: B.navy }}
+              style={{ flex: 1, padding: "8px 12px", fontSize: 13, borderRadius: 12, border: `1px solid ${B.sandDk}`, outline: "none", color: B.navy }}
             />
             <button
               disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
