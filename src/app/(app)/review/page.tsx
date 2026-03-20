@@ -151,14 +151,14 @@ const B = {
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
 const R = {
-  pagePad: 32,
-  headerMb: 14,
-  sectionGap: 12,
+  pagePad: 36,
+  headerMb: 16,
+  sectionGap: 14,
   labelMb: 6,
   paraMb: 8,
-  itemGap: 5,
-  dividerMy: 10,
-  footerMt: 12,
+  itemGap: 6,
+  dividerMy: 12,
+  footerMt: 14,
 };
 
 const T = {
@@ -630,24 +630,24 @@ export default function ReviewPage() {
           </p>
 
           {/* Key facts */}
-          <div style={{ ...T.label, color: B.light, marginBottom: R.labelMb }}>KEY FACTS</div>
+          <div style={{ ...T.label, color: B.light, marginBottom: R.labelMb }}>AT A GLANCE</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", marginBottom: R.sectionGap }}>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Income Continuity</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.income_continuity_pct}%</div>
               <div style={{ ...T.micro, color: B.muted }}>
-                {tier === "high" ? "continues reliably without active work" : tier === "established" ? "would continue without active work" : "would persist if active work stopped"}
+                {tier === "high" ? "keeps flowing without you working" : tier === "established" ? "would continue if you stopped working" : "would continue if you stopped working"}
               </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
               <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
               <div style={{ ...T.micro, color: B.muted }}>
-                {tier === "high" ? "resilience if largest source ends" : tier === "limited" ? "if the largest source ends" : "risk if the largest source ends"}
+                {tier === "high" ? "if your biggest source disappeared" : "if your biggest source disappeared"}
               </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
-              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Primary Constraint</div>
+              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Main Area to Improve</div>
               <div style={{ ...T.small, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
             </div>
           </div>
@@ -688,29 +688,29 @@ export default function ReviewPage() {
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_2_key_insight_text || ({
-            limited: "Your income structure currently depends heavily on active work. This breakdown shows what that means for stability and where the biggest opportunities are.",
-            developing: "Your income has early structural elements in place. This breakdown shows what is contributing to stability and what needs to grow.",
-            established: "Your income structure is moderately diversified. This breakdown shows what is working well and where to optimize further.",
-            high: "Your income structure is highly resilient. This breakdown shows what is protecting your stability and what to monitor.",
+            limited: "Right now, most of your income depends on you working. Here is what that means and where you can make changes.",
+            developing: "Your income is starting to build some repeating sources. Here is what is helping and what still needs to grow.",
+            established: "Your income comes from several different sources. Here is what is working well and where to fine-tune.",
+            high: "Your income is strong and can handle disruptions. Here is what is protecting you and what to keep an eye on.",
           }[tier])}
         </p>
 
         {/* Top summary boxes */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: R.sectionGap }}>
           <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
-            <div style={{ ...T.micro, color: B.light }}>CURRENT PROFILE</div>
+            <div style={{ ...T.micro, color: B.light }}>WHERE YOU ARE</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.stability_band}</div>
           </div>
           <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
-            <div style={{ ...T.micro, color: B.light }}>PRIMARY CONSTRAINT</div>
+            <div style={{ ...T.micro, color: B.light }}>MAIN AREA TO IMPROVE</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.primary_constraint_label}</div>
           </div>
           <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
-            <div style={{ ...T.micro, color: B.light }}>STRUCTURAL PRIORITY</div>
+            <div style={{ ...T.micro, color: B.light }}>TOP PRIORITY</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.structural_priority_label}</div>
           </div>
           <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
-            <div style={{ ...T.micro, color: B.light }}>LABOR-ASSET POSITION</div>
+            <div style={{ ...T.micro, color: B.light }}>INCOME TYPE</div>
             <div style={{ ...T.body, fontWeight: 600, color: B.navy }}>{record.labor_asset_position_label}</div>
           </div>
         </div>
@@ -731,10 +731,10 @@ export default function ReviewPage() {
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
             {record.income_continuity_text || ({
-              limited: "If active work stopped today, very little income would continue. This is the most important area to address.",
-              developing: "If active work stopped today, a modest share of income would continue. Growing this share is key to reaching the next band.",
-              established: "If active work stopped today, a meaningful share of income would continue. Expanding this further strengthens the foundation.",
-              high: "If active work stopped today, the majority of income would continue. This reflects strong structural resilience.",
+              limited: "If you stopped working today, almost no income would keep coming in. This is the biggest issue to fix.",
+              developing: "If you stopped working today, some income would still arrive. Growing this is the fastest way to raise your score.",
+              established: "If you stopped working today, a solid portion of income would keep coming. Grow it more to reach the top tier.",
+              high: "If you stopped working today, most of your income would keep flowing. You are in great shape.",
             }[tier])}
           </p>
         </div>
@@ -780,10 +780,10 @@ export default function ReviewPage() {
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
             {({
-              limited: `Significant development opportunity relative to other ${record.industry_sector} professionals.`,
-              developing: `Below the median for ${record.industry_sector} — clear path to improvement.`,
-              established: `Competitive position among ${record.industry_sector} professionals.`,
-              high: `Top tier among ${record.industry_sector} professionals — exceptional structural strength.`,
+              limited: `Below average for ${record.industry_sector} — plenty of room to improve.`,
+              developing: `Below the ${record.industry_sector} average — with clear ways to move up.`,
+              established: `Above average for ${record.industry_sector} professionals.`,
+              high: `Top tier for ${record.industry_sector} professionals — excellent position.`,
             }[tier])}
           </p>
         </div>
@@ -792,7 +792,7 @@ export default function ReviewPage() {
 
         {/* Score drivers */}
         <div style={{ marginBottom: R.sectionGap }}>
-          <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>TOP SCORE DRIVERS</div>
+          <div style={{ ...T.label, color: B.muted, marginBottom: R.labelMb }}>WHAT IS DRIVING YOUR SCORE</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
               { label: record.driver_1_label, text: record.driver_1_text },
@@ -814,7 +814,7 @@ export default function ReviewPage() {
           border: "1px solid rgba(31,109,122,0.10)",
           padding: "12px 16px",
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Structural Priority</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 4 }}>Most Important Change</div>
           <p style={{ ...T.small, color: B.navy, lineHeight: 1.55, margin: 0 }}>
             {record.structural_priority_text}
           </p>
@@ -831,10 +831,10 @@ export default function ReviewPage() {
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_3_key_insight_text || ({
-            limited: "This page shows why the income structure currently relies heavily on active work and which indicators need the most attention.",
-            developing: "This page shows the structural composition emerging in your income model and which indicators are driving growth.",
-            established: "This page shows how your diversified income composition contributes to stability and where further gains are available.",
-            high: "This page shows the resilient structural composition protecting your income and which indicators to monitor.",
+            limited: "This page breaks down where your money comes from and shows which areas are hurting your score the most.",
+            developing: "This page shows how your income is split across different types and which areas are driving growth.",
+            established: "This page shows how your diversified income contributes to stability and where further gains are available.",
+            high: "This page shows the strong income mix protecting your score and which areas to monitor.",
           }[tier])}
         </p>
 
@@ -857,8 +857,8 @@ export default function ReviewPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: R.paraMb, marginBottom: R.paraMb }}>
           {[
             { label: "Active Income", value: record.active_income_level, color: B.muted, desc: "Income that depends on ongoing personal work" },
-            { label: "Semi-Persistent Income", value: record.semi_persistent_income_level, color: B.teal, desc: "Income that may continue for a period, but is not fully durable" },
-            { label: "Persistent Income", value: record.persistent_income_level, color: B.navy, desc: "Income that continues with less ongoing effort" },
+            { label: "Recurring Income", value: record.semi_persistent_income_level, color: B.teal, desc: "Income that repeats for a while but may not last indefinitely" },
+            { label: "Built-In Income", value: record.persistent_income_level, color: B.navy, desc: "Income that keeps coming with little or no ongoing work" },
           ].map((bar) => (
             <div key={bar.label}>
               <div style={{ ...T.small, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
@@ -881,12 +881,12 @@ export default function ReviewPage() {
         <Label>KEY INDICATORS</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: R.sectionGap }}>
           {[
-            { label: "Income that continues", level: indicatorLevel(record.income_persistence_label, false), text: "Share of income that persists without active work." },
-            { label: "Income sources", level: indicatorLevel(record.income_source_diversity_label, false), text: "Number and diversity of distinct income sources." },
-            { label: "Income already scheduled", level: indicatorLevel(record.forward_revenue_visibility_label, false), text: "Revenue committed or contracted before the month begins." },
-            { label: "Monthly consistency", level: indicatorLevel(record.income_variability_label, true), text: "How much income fluctuates from month to month." },
-            { label: "Dependence on personal work", level: indicatorLevel(record.active_labor_dependence_label, true), text: "Share of income that requires ongoing personal effort." },
-            { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), text: "Concentration of income in the largest single source." },
+            { label: "Income without working", level: indicatorLevel(record.income_persistence_label, false), text: "How much income continues if you stop working." },
+            { label: "Number of income sources", level: indicatorLevel(record.income_source_diversity_label, false), text: "How many different ways you earn money." },
+            { label: "Income already locked in", level: indicatorLevel(record.forward_revenue_visibility_label, false), text: "Money you know is coming before the month starts." },
+            { label: "Month-to-month stability", level: indicatorLevel(record.income_variability_label, true), text: "Whether your income stays steady or jumps around." },
+            { label: "Work required to earn", level: indicatorLevel(record.active_labor_dependence_label, true), text: "How much of your income requires you to personally do the work." },
+            { label: "Biggest source risk", level: indicatorLevel(record.exposure_concentration_label, true), text: "How much of your income comes from one single source." },
           ].map((item) => (
             <div key={item.label} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "6px 10px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
@@ -902,10 +902,10 @@ export default function ReviewPage() {
         <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "8px 12px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
             {({
-              limited: "Most indicators above need attention. Improving any of them will produce significant score gains.",
-              developing: "The indicators above are key leverage points. Improving any factor rated Low will move the score meaningfully higher.",
-              established: "Most indicators are healthy. Focusing on any remaining Low or Moderate factors will push toward High Stability.",
-              high: "These indicators reflect your structural strengths. Monitor any Moderate factors to maintain this position.",
+              limited: "All the indicators marked Low are holding back your score. Fixing any one of them will help significantly.",
+              developing: "The Low-rated indicators are your biggest opportunities. Improving any one will push your score up noticeably.",
+              established: "Most indicators are in good shape. Improving any remaining Low or Moderate ones will get you to the top tier.",
+              high: "These show what is working well. Watch any Moderate ratings to make sure they do not slip.",
             }[tier])}
           </p>
         </div>
@@ -921,10 +921,10 @@ export default function ReviewPage() {
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_4_key_insight_text || ({
-            limited: "Your income structure requires foundational changes. This page outlines what will produce the largest improvements.",
-            developing: "Your income structure has started to build stability. This page shows what will accelerate progress to the next band.",
-            established: "Your income structure is solid. This page shows fine-tuning opportunities to reach the top tier.",
-            high: "Your income structure is strong. This page outlines how to maintain and protect your position.",
+            limited: "To improve your score, you need to make some real changes to how your income works. Here is what will help the most.",
+            developing: "Your income is starting to build stability. Here is what will speed up your progress.",
+            established: "Your income is solid. Here are fine-tuning opportunities to reach the top tier.",
+            high: "Your income is strong. Here is how to keep it that way.",
           }[tier])}
         </p>
 
@@ -954,14 +954,14 @@ export default function ReviewPage() {
           padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Largest Source Loss Scenario</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 8 }}>If Your Biggest Income Source Disappeared</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
             <span style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score}</span>
             <span style={{ ...T.body, color: B.light }}>→</span>
             <span style={{ fontSize: 18, fontWeight: 700, color: "#DC2626" }}>{Math.max(0, record.risk_scenario_score)}</span>
           </div>
           <p style={{ ...T.caption, color: B.muted, margin: "6px 0 0" }}>
-            Structural simulation: if the largest income source were removed, the score would fall to {Math.max(0, record.risk_scenario_score)}. This is not a prediction of whether this event will occur.
+            This is a stress test — not a prediction. If your biggest income source went away, your score would drop to {Math.max(0, record.risk_scenario_score)}.
           </p>
         </div>
 
@@ -974,15 +974,15 @@ export default function ReviewPage() {
           marginBottom: R.sectionGap,
         }}>
           <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 4 }}>
-            {tier === "high" ? "Area to Monitor" : "Primary Constraint"}
+            {tier === "high" ? "Area to Watch" : "Main Area to Improve"}
           </div>
-          <div style={{ ...T.body, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{record.primary_constraint_label}</div>
+          <div style={{ ...T.body, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
             {({
-              limited: "Addressing this single area will produce the largest score improvement and is the highest-priority structural change.",
-              developing: "Improving this area would have the largest impact on moving to the next stability band.",
-              established: "Strengthening this area is the most direct path to reaching High Stability.",
-              high: "This is the area most likely to affect your score if conditions change. Monitor it to maintain your position.",
+              limited: "Fixing this one thing will have the biggest impact on your score.",
+              developing: "Improving this area is the fastest way to reach the next level.",
+              established: "Strengthening this area is the most direct path to the top tier.",
+              high: "This is the area most likely to affect your score if things change. Keep an eye on it.",
             }[tier])}
           </p>
         </div>
@@ -991,10 +991,10 @@ export default function ReviewPage() {
 
         {/* Score improvement levers */}
         <Label>{({
-          limited: "FOUNDATIONAL PRIORITIES",
-          developing: "KEY IMPROVEMENT LEVERS",
-          established: "OPTIMIZATION LEVERS",
-          high: "STABILITY MAINTENANCE",
+          limited: "MUST-DO CHANGES",
+          developing: "HOW TO REACH THE NEXT LEVEL",
+          established: "HOW TO REACH THE TOP TIER",
+          high: "HOW TO STAY ON TOP",
         }[tier])}</Label>
         <ul style={{ display: "flex", flexDirection: "column", gap: R.itemGap, margin: 0, padding: 0, listStyle: "none", marginBottom: R.sectionGap }}>
           {(constraintGuidance.length > 0 ? constraintGuidance : [
@@ -1013,10 +1013,10 @@ export default function ReviewPage() {
 
         {/* 90-day actions */}
         <Label>{({
-          limited: `FOUNDATIONAL ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 60 DAYS`,
-          developing: `BUILD ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
-          established: `OPTIMIZATION ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
-          high: `MAINTENANCE ACTIONS — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+          limited: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 60 DAYS`,
+          developing: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+          established: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
+          high: `ACTION PLAN — ${record.industry_sector.toUpperCase()} — NEXT 90 DAYS`,
         }[tier])}</Label>
         <div style={{ display: "flex", flexDirection: "column", gap: R.itemGap, marginBottom: R.sectionGap }}>
           {(() => {
@@ -1056,7 +1056,7 @@ export default function ReviewPage() {
             // HIGH STABILITY — maintain and protect
             return (
               <div style={{ borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.12)`, padding: "8px 12px", marginBottom: R.sectionGap }}>
-                <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 6 }}>Maintain &amp; Protect</div>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.teal, marginBottom: 6 }}>Keep It Strong</div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   Score: {score} — {record.stability_band}
                 </div>
@@ -1069,7 +1069,7 @@ export default function ReviewPage() {
             // ESTABLISHED — optimize to reach High
             return (
               <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
-                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Optimization Target</div>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Path to the Top Tier</div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 80+ (High Stability)
                 </div>
@@ -1082,7 +1082,7 @@ export default function ReviewPage() {
             // DEVELOPING — build toward Established
             return (
               <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
-                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Next Band Target</div>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 6 }}>Your Next Target</div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 60+ (Established Stability)
                 </div>
@@ -1095,7 +1095,7 @@ export default function ReviewPage() {
             // LIMITED — foundational changes to reach Developing
             return (
               <div style={{ borderRadius: 12, backgroundColor: B.sand, padding: "8px 12px", marginBottom: R.sectionGap }}>
-                <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Foundational Target</div>
+                <div style={{ ...T.caption, fontWeight: 600, color: B.navy, marginBottom: 6 }}>Your First Target</div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
                   {score} → 40+ (Developing Stability)
                 </div>
@@ -1110,7 +1110,7 @@ export default function ReviewPage() {
         {/* Bottom line */}
         <div style={{ borderRadius: 10, backgroundColor: "rgba(14,26,43,0.03)", padding: "8px 12px" }}>
           <p style={{ ...T.small, fontWeight: 500, color: B.navy, margin: 0 }}>
-            Actions are tailored to the {record.industry_sector} sector based on common structural patterns for this constraint profile.
+            These actions are customized for {record.industry_sector} professionals based on what works best for your situation.
           </p>
         </div>
       </ReportPage>
@@ -1125,10 +1125,10 @@ export default function ReviewPage() {
         </h2>
         <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap }}>
           {record.page_5_key_insight_text || ({
-            limited: "Here is what your assessment reveals about structural vulnerabilities and what to address first.",
-            developing: "Here is your current structural position and the clearest path forward.",
-            established: "Here is your structural position and where refinement will have the most impact.",
-            high: "Here is your assessment summary and how to maintain this level of stability.",
+            limited: "Here is what your assessment found and what to focus on first.",
+            developing: "Here is where you stand and the clearest path forward.",
+            established: "Here is your position and where fine-tuning will have the most impact.",
+            high: "Here is your summary and how to keep your score strong.",
           }[tier])}
         </p>
 
@@ -1173,10 +1173,10 @@ export default function ReviewPage() {
           padding: "8px 12px",
           marginBottom: R.sectionGap,
         }}>
-          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Primary Constraint</div>
+          <div style={{ ...T.caption, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Main Area to Improve</div>
           <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{record.primary_constraint_label}</div>
           <p style={{ ...T.caption, color: B.muted, margin: 0 }}>
-            Improving this area would have the largest impact on the overall score.
+            {tier === "high" ? "Watch this area to protect your score." : "Fixing this will have the biggest impact on your score."}
           </p>
         </div>
 
@@ -1254,7 +1254,7 @@ export default function ReviewPage() {
         {/* Official record */}
         <div style={{ display: "flex", gap: 20, alignItems: "flex-start", marginBottom: R.sectionGap }}>
           <div style={{ flex: 1 }}>
-            <Label>OFFICIAL RECORD</Label>
+            <Label>REPORT DETAILS</Label>
             <dl style={{ ...T.caption, display: "flex", flexDirection: "column", gap: 4, margin: 0 }}>
               {[
                 ["Record ID", record.record_id],
