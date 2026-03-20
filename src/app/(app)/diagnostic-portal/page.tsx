@@ -152,13 +152,21 @@ export default function InitializationPage() {
     recipient_email: "", // populated from Stripe checkout, not user input
   });
 
-  // Warn before leaving mid-setup
+  // Lock user in — prevent back button and tab close
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
     };
+    const onPopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    window.history.pushState(null, "", window.location.href);
     window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      window.removeEventListener("popstate", onPopState);
+    };
   }, []);
 
   // Pre-fill email from Stripe checkout session
@@ -287,7 +295,12 @@ export default function InitializationPage() {
     form.classification !== "" && form.operating_structure !== "";
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: "#F7F6F3",
+      overflowY: "auto",
+    }}>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 24 }}>
       {/* Header */}
       <div>
         <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>
@@ -621,6 +634,7 @@ export default function InitializationPage() {
           Average completion: 1 min 47 sec — starts after Begin Assessment
         </p>
       </div>
+    </div>
     </div>
   );
 }

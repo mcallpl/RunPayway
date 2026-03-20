@@ -182,15 +182,23 @@ export default function DiagnosticPage() {
   const [showReview, setShowReview] = useState(false);
   const [elapsed, setElapsed] = useState(0);
 
-  // Warn before leaving mid-diagnostic
+  // Lock user in — prevent back button and tab close
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
       if (!showLoading && !showReview) {
         e.preventDefault();
       }
     };
+    const onPopState = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+    window.history.pushState(null, "", window.location.href);
     window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      window.removeEventListener("popstate", onPopState);
+    };
   }, [showLoading, showReview]);
 
   useEffect(() => {
@@ -370,12 +378,13 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          minHeight: "70vh",
+          minHeight: "100vh",
         }}
       >
         <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
@@ -473,6 +482,7 @@ export default function DiagnosticPage() {
           `}</style>
         </div>
       </div>
+      </div>
     );
   }
 
@@ -481,7 +491,8 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReview) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
@@ -575,6 +586,7 @@ export default function DiagnosticPage() {
           </div>
         )}
       </div>
+      </div>
     );
   }
 
@@ -582,7 +594,12 @@ export default function DiagnosticPage() {
   /*  Diagnostic instrument                                           */
   /* ================================================================ */
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: "#F7F6F3",
+      overflowY: "auto",
+    }}>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
       {/* Top bar — factor label + progress */}
       <div style={{ marginBottom: 32 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
@@ -841,6 +858,7 @@ export default function DiagnosticPage() {
           {error}
         </div>
       )}
+    </div>
     </div>
   );
 }
