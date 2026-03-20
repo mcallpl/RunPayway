@@ -29,7 +29,22 @@ jobs:
       - name: Build static export
         env:
           STATIC_EXPORT: 'true'
-        run: npx next build
+        run: npx next build > build-output.txt 2>&1 || true
+
+      - name: Show build output
+        if: always()
+        run: cat build-output.txt
+
+      - name: Check build success
+        run: |
+          if [ ! -d out ]; then
+            echo "ERROR: out/ directory not created — build failed"
+            echo "=== LAST 50 LINES OF BUILD OUTPUT ==="
+            tail -50 build-output.txt
+            exit 1
+          fi
+          echo "Build succeeded — out/ directory exists"
+          ls out/
 
       - name: Restore server-only files
         if: always()
