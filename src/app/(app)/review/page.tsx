@@ -241,7 +241,6 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
     <div className="report-page" style={{
       width: PDF.captureW,
       maxWidth: "100%",
-      minHeight: PDF.previewH,
       backgroundColor: "#ffffff",
       border: "1px solid #E5E7EB",
       borderRadius: 10,
@@ -253,7 +252,7 @@ function ReportPage({ record, children }: { record: AssessmentRecord; children: 
       boxShadow: "0 8px 32px rgba(14,26,43,0.08), 0 2px 8px rgba(14,26,43,0.04)",
     }}>
       <ReportHeader record={record} />
-      <div style={{ flex: 1 }}>{children}</div>
+      <div>{children}</div>
       <ConfidentialityFooter record={record} />
     </div>
   );
@@ -561,8 +560,8 @@ export default function ReviewPage() {
   })();
   const actionPlan: string[] = safeJsonParse(record.action_plan_payload, []);
   const constraintGuidance: string[] = safeJsonParse(record.constraint_guidance_payload, []);
-  const evolutionSteps: { label: string; description: string }[] = safeJsonParse(record.evolution_path_steps_payload, []);
-  const advisorGuide: { topic: string; question: string }[] = safeJsonParse(record.advisor_discussion_guide_payload, []);
+  const evolutionSteps: string[] = safeJsonParse(record.evolution_path_steps_payload, []);
+  const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = safeJsonParse(record.advisor_discussion_guide_payload, { talking_points: [], client_questions: [], red_flags: [], next_steps: [] });
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -1057,16 +1056,25 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Advisor discussion guide */}
-        {advisorGuide.length > 0 && (
+        {advisorGuide.talking_points.length > 0 && (
           <div style={{ marginBottom: R.sectionGap }}>
               <Label>ADVISOR DISCUSSION GUIDE</Label>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {advisorGuide.slice(0, 3).map((item, i) => (
+                {advisorGuide.talking_points.slice(0, 2).map((point, i) => (
                   <div key={i} style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
-                    <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.topic}</div>
-                    <div style={{ ...T.caption, color: B.muted, fontStyle: "italic" }}>{item.question}</div>
+                    <div style={{ ...T.caption, color: B.muted }}>{point}</div>
                   </div>
                 ))}
+                {advisorGuide.client_questions.length > 0 && (
+                  <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "8px 12px" }}>
+                    <div style={{ ...T.micro, color: B.light, marginBottom: 4 }}>QUESTIONS TO DISCUSS</div>
+                    {advisorGuide.client_questions.slice(0, 2).map((q, i) => (
+                      <div key={i} style={{ ...T.caption, color: B.navy, display: "flex", gap: 6, marginBottom: 2 }}>
+                        <span style={{ color: B.teal, flexShrink: 0 }}>—</span>{q}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
         )}
@@ -1080,12 +1088,11 @@ export default function ReviewPage() {
                   const isCurrent = i === record.current_evolution_stage_position;
                   return (
                     <div key={i} style={{
-                      flex: 1, borderRadius: 10, padding: "8px 10px",
+                      flex: 1, borderRadius: 10, padding: "8px 10px", textAlign: "center",
                       backgroundColor: isCurrent ? "rgba(75,63,174,0.06)" : B.sand,
                       border: isCurrent ? `1.5px solid ${B.purple}` : "1.5px solid transparent",
                     }}>
-                      <div style={{ ...T.micro, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? B.purple : B.light, marginBottom: 2 }}>{step.label}</div>
-                      <div style={{ ...T.caption, color: isCurrent ? B.navy : B.muted }}>{step.description}</div>
+                      <div style={{ ...T.micro, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? B.purple : B.light }}>{step}</div>
                     </div>
                   );
                 })}
