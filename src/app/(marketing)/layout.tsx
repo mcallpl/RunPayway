@@ -119,9 +119,9 @@ function useAnimatedDropdown(delay = 120) {
 
 const LANGUAGES = [
   { code: "en" as LangCode, label: "English", flag: "🇺🇸" },
-  { code: "es" as LangCode, label: "Español", flag: "🇪🇸" },
-  { code: "pt" as LangCode, label: "Português", flag: "🇧🇷" },
-  { code: "hi" as LangCode, label: "हिन्दी", flag: "🇮🇳" },
+  { code: "es" as LangCode, label: "Español — Q3 2026", flag: "🇪🇸", disabled: true },
+  { code: "pt" as LangCode, label: "Português — Q4 2026", flag: "🇧🇷", disabled: true },
+  { code: "hi" as LangCode, label: "हिन्दी — Q4 2026", flag: "🇮🇳", disabled: true },
 ];
 
 function LanguageSelector({ mobile }: { mobile: boolean }) {
@@ -131,6 +131,8 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
   const current = LANGUAGES.find((l) => l.code === lang)!;
 
   const handleSelect = (code: LangCode) => {
+    const language = LANGUAGES.find((l) => l.code === code);
+    if (language && (language as { disabled?: boolean }).disabled) return;
     setLang(code);
     dropdown.close();
   };
@@ -196,11 +198,14 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
               overflow: "hidden",
             }}
           >
-            {LANGUAGES.map((l, i) => (
+            {LANGUAGES.map((l, i) => {
+              const isDisabled = (l as { disabled?: boolean }).disabled;
+              return (
               <button
                 key={l.code}
                 className="dropdown-item"
                 onClick={() => handleSelect(l.code)}
+                disabled={isDisabled}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -209,23 +214,25 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
                   padding: "10px 16px",
                   border: "none",
                   background: l.code === lang ? "rgba(75,63,174,0.06)" : "transparent",
-                  cursor: "pointer",
+                  cursor: isDisabled ? "default" : "pointer",
                   fontSize: 13,
                   fontWeight: l.code === lang ? 600 : 500,
-                  color: l.code === lang ? "#4B3FAE" : "rgba(14,26,43,0.70)",
+                  color: isDisabled ? "rgba(14,26,43,0.30)" : l.code === lang ? "#4B3FAE" : "rgba(14,26,43,0.70)",
                   textAlign: "left",
                   animationDelay: `${i * 30}ms`,
+                  opacity: isDisabled ? 0.7 : 1,
                 }}
               >
                 <span role="img" aria-hidden="true" style={{ fontSize: 16, transition: "transform 200ms ease" }}>{l.flag}</span>
                 <span>{l.label}</span>
-                {l.code === lang && (
+                {l.code === lang && !isDisabled && (
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ marginLeft: "auto" }}>
                     <path d="M3 7.5L5.5 10L11 4" stroke="#4B3FAE" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </button>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -840,7 +847,7 @@ export default function MarketingLayout({
 
           {/* Language availability */}
           <div style={{ fontSize: 11, color: "rgba(14,26,43,0.40)", textAlign: "center", marginBottom: 12 }}>
-            Available in: English • Español • Português • हिन्दी
+            Available in: English • <span style={{ opacity: 0.6 }}>Español (Q3 2026)</span> • <span style={{ opacity: 0.6 }}>Português (Q4 2026)</span> • <span style={{ opacity: 0.6 }}>हिन्दी (Q4 2026)</span>
           </div>
 
           {/* Legal strip */}
