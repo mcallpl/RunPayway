@@ -153,13 +153,13 @@ const B = {
 // ============================================================
 const R = {
   pagePad: 52,
-  headerMb: 16,
-  sectionGap: 16,
+  headerMb: 20,
+  sectionGap: 20,
   labelMb: 8,
-  paraMb: 8,
-  itemGap: 8,
-  dividerMy: 16,
-  footerMt: 16,
+  paraMb: 10,
+  itemGap: 10,
+  dividerMy: 20,
+  footerMt: 20,
 };
 
 const T = {
@@ -228,10 +228,10 @@ function PageFooter({ section, page }: { section: string; page: number }) {
 
 function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{value}</div>
-      <div style={{ ...T.small, color: B.muted }}>{explanation}</div>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
+      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{value}</div>
+      <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
     </div>
   );
 }
@@ -667,7 +667,7 @@ export default function ReviewPage() {
           {/* Left: Sub-score modules */}
           <div style={{ flex: 2 }}>
             <Overline>SUB-SCORE FACTORS</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
               {[
                 { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How much income continues for a period of time without ongoing active work." },
                 { label: "Committed-Ahead Income", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already visible through contracts, retainers, or forward-secured arrangements." },
@@ -690,9 +690,9 @@ export default function ReviewPage() {
           </div>
 
           {/* Right: Reason Codes */}
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
             <Overline>REASON CODES</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 { code: "R-12", title: "Low Forward-Secured Income", text: "Too little future income is already committed ahead." },
                 { code: "R-07", title: "High Source Dependence", text: "The profile is too exposed to the loss of the largest source." },
@@ -709,15 +709,15 @@ export default function ReviewPage() {
         </div>
 
         {/* Bottom cards */}
-        <div style={{ display: "flex", gap: 12, marginTop: 16, marginBottom: 12 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHAT IS SUPPORTING THE SCORE</div>
+        <div style={{ display: "flex", gap: 14, marginTop: 20, marginBottom: 16 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS SUPPORTING THE SCORE</div>
             {["Income exists across more than one stream", "Month-to-month consistency is not fully unstable", "Some income persistence is already present", "The structure is not starting from zero"].map((b) => (
               <div key={b} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 3 }}><span style={{ color: B.taupe }}>—</span>{b}</div>
             ))}
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHAT IS SUPPRESSING THE SCORE</div>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS SUPPRESSING THE SCORE</div>
             {["Too little income is secured before the month begins", "Too much income depends on ongoing active work", "The largest source carries too much weight", "Continuity beyond a short period remains weak"].map((b) => (
               <div key={b} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 3 }}><span style={{ color: B.taupe }}>—</span>{b}</div>
             ))}
@@ -769,12 +769,12 @@ export default function ReviewPage() {
 
         {/* Income Structure Mix */}
         <Overline>INCOME STRUCTURE MIX</Overline>
-        <div style={{ display: "flex", height: 14, borderRadius: 2, overflow: "hidden", marginBottom: 8, marginTop: 4 }}>
-          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy }} />
-          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe }} />
-          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.bronze }} />
+        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
+          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
+          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
+          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.bronze, borderRadius: 1 }} />
         </div>
-        <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 24, marginBottom: 24 }}>
           {[
             { label: "Active Income", pct: record.active_income_level, color: B.navy, desc: "Income that depends on direct personal effort" },
             { label: "Recurring Income", pct: record.semi_persistent_income_level, color: B.taupe, desc: "Income that repeats for a period of time" },
@@ -791,14 +791,14 @@ export default function ReviewPage() {
         </div>
 
         {/* Three interpretation cards */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
             { title: "What fails first", copy: "The first weakness is not income itself. The first weakness is visibility and durability. Too little revenue is already secured ahead, and too much depends on continued work execution." },
             { title: "Hidden vulnerability", copy: "A profile can produce meaningful income and still remain structurally fragile. The current profile shows signs of that condition: functioning income with limited shock resistance." },
             { title: "Present-state interpretation", copy: "This profile remains capable of producing income, but it does not yet demonstrate a strong ability to hold stability when active effort is disrupted or a major source weakens." },
           ].map((card) => (
-            <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
-              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{card.title}</div>
+            <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{card.title}</div>
               <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{card.copy}</p>
             </div>
           ))}
@@ -883,17 +883,17 @@ export default function ReviewPage() {
       {/* ---- PAGE 5 — DECISION SUMMARY ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Decision Summary</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Decision Summary</h1>
 
         <DiagnosisBlock>
-          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 6px" }}>Current conclusion:</p>
-          <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540 }}>
+          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>Current conclusion:</p>
+          <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
             This profile does not require more explanation. It requires stronger structure. The present score reflects an income profile that works, but does not yet hold enough forward-secured strength to sit in a more durable range.
           </p>
         </DiagnosisBlock>
 
         {/* Two columns: What to do / What not to */}
-        <div style={{ display: "flex", gap: 16, marginTop: 20, marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 24, marginTop: 24, marginBottom: 24 }}>
           <div style={{ flex: 1 }}>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do now</div>
             {[
@@ -933,21 +933,21 @@ export default function ReviewPage() {
             "Improve visibility into next month's income before the month begins.",
             "Reassess once the structural changes are active, not merely planned.",
           ].map((row, i) => (
-            <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-              <div style={{ width: 14, height: 14, borderRadius: "50%", border: `1.5px solid ${B.stone}`, flexShrink: 0, marginTop: 1 }} />
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
+              <div style={{ width: 14, height: 14, borderRadius: "50%", border: `1.5px solid ${B.stone}`, flexShrink: 0, marginTop: 2 }} />
               <span style={{ ...T.small, color: B.ink }}>{row}</span>
             </div>
           ))}
         </div>
 
         {/* Bottom cards */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>RECOMMENDED REASSESSMENT DATE</div>
-            <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 4 }}>{reassessDate}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0 }}>Reassessment should follow actual structural improvement, not temporary earnings fluctuation.</p>
+        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT DATE</div>
+            <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{reassessDate}</div>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Reassessment should follow actual structural improvement, not temporary earnings fluctuation.</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
