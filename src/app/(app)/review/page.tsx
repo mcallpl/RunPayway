@@ -640,7 +640,7 @@ export default function ReviewPage() {
               </div>
             </div>
             <div style={{ borderRadius: 10, backgroundColor: B.sand, padding: "10px 12px", textAlign: "center" }}>
-              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>Largest Source Loss</div>
+              <div style={{ ...T.caption, color: B.light, marginBottom: 4 }}>If Biggest Source Goes</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</div>
               <div style={{ ...T.micro, color: B.muted }}>
                 {tier === "high" ? "if your biggest source disappeared" : "if your biggest source disappeared"}
