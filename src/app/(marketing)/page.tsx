@@ -1546,7 +1546,12 @@ function PricingSection() {
               background: "#FFFFFF",
               borderRadius: 20,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+              border: "1px solid rgba(255,255,255,0.15)",
+              boxShadow: "0 16px 48px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
+              transition: "transform 300ms ease, box-shadow 300ms ease",
             }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 24px 64px rgba(0,0,0,0.25), 0 8px 20px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 16px 48px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)"; }}
           >
             <div
               style={{
@@ -1595,10 +1600,13 @@ function PricingSection() {
               background: "#FFFFFF",
               borderRadius: 20,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(75,63,174,0.15)",
-              boxShadow: "inset 0 0 0 1px rgba(75,63,174,0.05)",
+              border: "1px solid rgba(75,63,174,0.20)",
+              boxShadow: "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)",
               position: "relative",
+              transition: "transform 300ms ease, box-shadow 300ms ease",
             }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 28px 72px rgba(75,63,174,0.22), 0 12px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.08)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)"; }}
           >
             {/* RECOMMENDED badge */}
             <div
