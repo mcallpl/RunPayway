@@ -26,6 +26,8 @@ import {
   mergeStrongerPatterns,
   applyScenarioEmphasis,
 } from "./engines/override-merge";
+import { FAMILY_BENCHMARK_CONTEXT } from "./data/benchmark-context";
+import { getOutcomeManifest } from "./engines/outcome-integrity";
 
 /**
  * Execute the full outcome layer pipeline.
@@ -54,13 +56,22 @@ export function executeOutcomeLayer(
     coreRecord.fragility.fragility_class,
   );
 
+  // Resolve family benchmark context
+  const familyBenchmark = FAMILY_BENCHMARK_CONTEXT[family.family_id];
+
   // Start with family defaults
   let strongerPatterns = family.stronger_structure_signals;
   let actions = family.default_action_priorities;
   let avoidActions = family.default_avoid_priorities;
   let triggers = family.reassessment_trigger_templates;
   let explanations = family.explanation_translation_map;
-  let benchmarkContext: { framing_text: string; peer_group_label: string } | null = null;
+  let benchmarkContext: OutcomeLayerResult["benchmark_context_layer"] = {
+    framing_text: familyBenchmark.framing_text,
+    peer_group_label: familyBenchmark.peer_group_label,
+    typical_score_range: familyBenchmark.typical_score_range,
+    common_strengths: familyBenchmark.common_strengths,
+    common_weaknesses: familyBenchmark.common_weaknesses,
+  };
   let industryProfile: { industry_id: string; industry_label: string } | null = null;
 
   // ── Layer 3: Industry Refinement ──────────────────────
@@ -114,8 +125,13 @@ export function executeOutcomeLayer(
       );
     }
 
-    // Benchmark framing
-    benchmarkContext = industry.benchmark_framing;
+    // Benchmark framing from industry
+    benchmarkContext = {
+      ...industry.benchmark_framing,
+      typical_score_range: familyBenchmark.typical_score_range,
+      common_strengths: familyBenchmark.common_strengths,
+      common_weaknesses: familyBenchmark.common_weaknesses,
+    };
   }
 
   // ── Assemble Result ───────────────────────────────────
@@ -142,6 +158,7 @@ export function executeOutcomeLayer(
     reassessment_trigger_set: triggers,
     explanation_translation_layer: explanations,
     benchmark_context_layer: benchmarkContext,
+    outcome_manifest: getOutcomeManifest(),
   };
 }
 

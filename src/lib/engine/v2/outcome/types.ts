@@ -203,5 +203,15 @@ export interface OutcomeLayerResult {
   benchmark_context_layer: {
     framing_text: string;
     peer_group_label: string;
+    typical_score_range: { low: number; mid: number; high: number };
+    common_strengths: string[];
+    common_weaknesses: string[];
   } | null;
+  outcome_manifest: {
+    outcome_layer_version: string;
+    family_registry_version: string;
+    scenario_registry_version: string;
+    industry_registry_version: string;
+    benchmark_registry_version: string;
+  };
 }

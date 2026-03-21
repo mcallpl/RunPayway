@@ -11,6 +11,7 @@ import { normalizeIntakeSignals } from "../src/lib/engine/v2/outcome/engines/int
 import { resolveFamilyProfile } from "../src/lib/engine/v2/outcome/engines/family-resolution";
 import { selectScenarios } from "../src/lib/engine/v2/outcome/engines/scenario-selection";
 import { mergeActions, mergeTriggers, mergeExplanations, mergeStrongerPatterns, applyScenarioEmphasis } from "../src/lib/engine/v2/outcome/engines/override-merge";
+import { FAMILY_BENCHMARK_CONTEXT } from "../src/lib/engine/v2/outcome/data/benchmark-context";
 import type { RawDiagnosticInput, ProfileContext } from "../src/lib/engine/v2/types";
 import type { RawIntakeFields, IncomeModelFamilyId, ActionItem, SelectedScenario } from "../src/lib/engine/v2/outcome/types";
 
@@ -490,7 +491,9 @@ describe("Outcome Layer with Industry Refinement", () => {
 
     const ol = result.outcome_layer!;
     expect(ol.industry_refinement_profile).toBeNull();
-    expect(ol.benchmark_context_layer).toBeNull();
+    // Benchmark context still comes from family even without industry
+    expect(ol.benchmark_context_layer).not.toBeNull();
+    expect(ol.benchmark_context_layer!.peer_group_label).toBeTruthy();
     // Family defaults should still be present
     expect(ol.ranked_action_map.length).toBeGreaterThan(0);
   });
@@ -527,5 +530,85 @@ describe("Outcome Layer with Industry Refinement", () => {
       expect(ol.ranked_action_map.length).toBeGreaterThan(0);
       expect(ol.reassessment_trigger_set.length).toBeGreaterThan(0);
     }
+  });
+});
+
+// ─── PHASE 3: BENCHMARK CONTEXT ─────────────────────────
+
+describe("Benchmark Context Layer", () => {
+  it("all 12 families have benchmark context entries", () => {
+    const families: IncomeModelFamilyId[] = [
+      "employment_led", "commission_led", "contract_project_led",
+      "retainer_subscription_led", "practice_led", "agency_led",
+      "product_led", "creator_audience_led", "referral_affiliate_led",
+      "asset_rental_led", "investment_led", "hybrid_multi",
+    ];
+    for (const fam of families) {
+      const ctx = FAMILY_BENCHMARK_CONTEXT[fam];
+      expect(ctx).toBeDefined();
+      expect(ctx.cluster_key).toBeTruthy();
+      expect(ctx.peer_group_label).toBeTruthy();
+      expect(ctx.framing_text).toBeTruthy();
+      expect(ctx.typical_score_range.low).toBeLessThan(ctx.typical_score_range.mid);
+      expect(ctx.typical_score_range.mid).toBeLessThan(ctx.typical_score_range.high);
+      expect(ctx.common_strengths.length).toBeGreaterThan(0);
+      expect(ctx.common_weaknesses.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("benchmark context is always populated in outcome layer", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: PROFILE_COMMISSION,
+    });
+    const ol = result.outcome_layer!;
+    expect(ol.benchmark_context_layer).not.toBeNull();
+    expect(ol.benchmark_context_layer!.typical_score_range).toBeDefined();
+    expect(ol.benchmark_context_layer!.common_strengths.length).toBeGreaterThan(0);
+    expect(ol.benchmark_context_layer!.common_weaknesses.length).toBeGreaterThan(0);
+  });
+
+  it("industry profile overrides benchmark framing text", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: { ...PROFILE_COMMISSION, industry_sector: "real_estate" as const },
+    });
+    const ol = result.outcome_layer!;
+    expect(ol.benchmark_context_layer!.peer_group_label).toBe("Real Estate");
+    // But family benchmark data (score ranges, strengths/weaknesses) is preserved
+    expect(ol.benchmark_context_layer!.typical_score_range).toBeDefined();
+  });
+
+  it("family benchmark used when no industry profile exists", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: { ...PROFILE_COMMISSION, industry_sector: "agriculture" as const },
+    });
+    const ol = result.outcome_layer!;
+    expect(ol.benchmark_context_layer!.peer_group_label).toBe("Commission Earners");
+  });
+});
+
+// ─── PHASE 3: OUTCOME MANIFEST ──────────────────────────
+
+describe("Outcome Layer Manifest", () => {
+  it("outcome manifest is always present", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: PROFILE_COMMISSION,
+    });
+    const ol = result.outcome_layer!;
+    expect(ol.outcome_manifest).toBeDefined();
+    expect(ol.outcome_manifest.outcome_layer_version).toBe("OL-1.0");
+    expect(ol.outcome_manifest.family_registry_version).toBe("FR-1.0");
+    expect(ol.outcome_manifest.scenario_registry_version).toBe("SR-1.0");
+    expect(ol.outcome_manifest.industry_registry_version).toBe("IR-1.0");
+    expect(ol.outcome_manifest.benchmark_registry_version).toBe("BR-1.0");
+  });
+
+  it("outcome manifest is stable across invocations", () => {
+    const r1 = executeAssessment({ rawInputs: MID_INPUTS, profile: PROFILE_COMMISSION });
+    const r2 = executeAssessment({ rawInputs: MID_INPUTS, profile: PROFILE_RETAINER });
+    expect(r1.outcome_layer!.outcome_manifest).toEqual(r2.outcome_layer!.outcome_manifest);
   });
 });
