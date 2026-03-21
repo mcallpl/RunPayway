@@ -1437,7 +1437,7 @@ function ClassificationScale() {
   const tiers = [
     { range: "0\u201329", label: "Limited", desc: "Your income structure is fragile and depends heavily on active work.", color: "#DC2626", sliderPos: 15, sampleScore: 20 },
     { range: "30\u201349", label: "Developing", desc: "Some support exists, but the structure is still exposed.", color: "#F59E0B", sliderPos: 40, sampleScore: 40 },
-    { range: "50\u201374", label: "Established", desc: "Your income shows meaningful stability and better protection.", color: B.teal, sliderPos: 62, sampleScore: 62 },
+    { range: "50\u201374", label: "Established", desc: "Your income reflects meaningful stability and stronger protection.", color: B.teal, sliderPos: 62, sampleScore: 62 },
     { range: "75\u2013100", label: "High", desc: "Your income structure is durable and less dependent on constant effort.", color: B.navy, sliderPos: 88, sampleScore: 88 },
   ];
 
@@ -1630,7 +1630,7 @@ function ByIncomeType() {
               marginBottom: S.h2mb,
             }}
           >
-            Stability looks different across income models
+            Stability differs across income models
           </h2>
           <p
             className="text-[16px] md:text-[18px]"
