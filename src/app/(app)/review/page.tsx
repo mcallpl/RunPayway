@@ -134,6 +134,20 @@ interface AssessmentRecord {
   advisor_discussion_guide_payload: string;
   product_recommendations_payload: string;
   _v2?: {
+    scores?: { overall_score: number; structure_score: number; stability_score: number; quality_adjustment: number };
+    fragility?: { fragility_score: number; fragility_class: string; primary_failure_mode: string; secondary_failure_modes: string[]; deductions: { trigger: string; points: number; condition_met: boolean }[] };
+    confidence?: { confidence_score: number; confidence_level: string; deductions: { reason: string; points: number }[] };
+    quality?: { quality_score: number; durability_grade: string; adjustments: { factor: string; delta: number; reason: string }[] };
+    sensitivity?: { tests: { factor: string; delta_description: string; original_score: number; projected_score: number; lift: number; rank: number }[]; highest_lift_factor: string; bottleneck_factor: string; low_return_factor: string };
+    interactions?: { effects: { code: string; type: string; points: number; trigger_condition: string; factors_involved: string[] }[]; total_penalty: number; total_bonus: number; net_adjustment: number };
+    constraints?: { root_constraint: string; primary_constraint: string; secondary_constraint: string; dependent_constraint: string | null; hidden_unlock: string | null };
+    scenarios?: { scenario_id: string; label: string; description: string; original_score: number; scenario_score: number; score_drop: number; original_band: string; scenario_band: string; band_shift: boolean; narrative: string }[];
+    score_lift_projection?: { lift_scenarios: { scenario_id: string; label: string; change_description: string; original_score: number; projected_score: number; lift: number; projected_band: string; band_shift: boolean }[]; combined_top_two: { label: string; change_description: string; projected_score: number; lift: number; projected_band: string; band_shift: boolean }; highest_single_lift: { label: string; lift: number; projected_score: number } };
+    recommended_actions?: { action_id: string; priority: number; label: string; description: string; category: string; expected_impact: string; blocked_until?: string; sequencing_note?: string }[];
+    avoid_actions?: { action_id: string; label: string; reason: string }[];
+    reassessment_triggers?: { trigger_id: string; condition: string; threshold: string; current_value: string; description: string }[];
+    benchmarks?: { peer_percentile: number; cluster_average_score: number; top_20_threshold: number; peer_band_distribution: { limited: number; developing: number; established: number; high: number }; outlier_dimensions: { factor: string; user_value: number; peer_average: number; direction: string; magnitude: string }[] };
+    indicators?: { key: string; label: string; raw_value: number; normalized_value: number; level: string }[];
     outcome_layer?: {
       income_model_family: { family_id: string; family_label: string };
       industry_refinement_profile: { industry_id: string; industry_label: string } | null;
@@ -145,7 +159,6 @@ interface AssessmentRecord {
       explanation_translation_layer: Record<string, string>;
       benchmark_context_layer: { framing_text: string; peer_group_label: string; typical_score_range: { low: number; mid: number; high: number }; common_strengths: string[]; common_weaknesses: string[] } | null;
     };
-    [key: string]: unknown;
   };
 }
 
@@ -736,8 +749,23 @@ export default function ReviewPage() {
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
 
+  // ── V2 engine data ──
+  const v2 = record._v2;
+  const v2Fragility = v2?.fragility ?? null;
+  const v2Confidence = v2?.confidence ?? null;
+  const v2Quality = v2?.quality ?? null;
+  const v2Sensitivity = v2?.sensitivity ?? null;
+  const v2Interactions = v2?.interactions ?? null;
+  const v2Constraints = v2?.constraints ?? null;
+  const v2Scenarios = v2?.scenarios ?? null;
+  const v2Lift = v2?.score_lift_projection ?? null;
+  const v2AvoidActions = v2?.avoid_actions ?? null;
+  const v2Triggers = v2?.reassessment_triggers ?? null;
+  const v2Benchmarks = v2?.benchmarks ?? null;
+  const v2Scores = v2?.scores ?? null;
+
   // ── Outcome layer (industry-specific data) ──
-  const ol = record._v2?.outcome_layer;
+  const ol = v2?.outcome_layer;
   const olActions = ol?.ranked_action_map ?? null;
   const olAvoid = ol?.avoid_actions ?? null;
   const olExplanations = ol?.explanation_translation_layer ?? null;
@@ -746,6 +774,30 @@ export default function ReviewPage() {
   const olScenarios = ol?.selected_scenarios ?? null;
   const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
+  const olBenchmark = ol?.benchmark_context_layer ?? null;
+
+  // ── Consumer-friendly label maps ──
+  const failureModeLabel: Record<string, string> = {
+    concentration_collapse: "Too much weight on a single source",
+    labor_interruption: "Income stops when active work stops",
+    visibility_gap: "Not enough income is secured ahead",
+    durability_thinness: "Recurring income is fragile or cancelable",
+  };
+  const constraintLabel: Record<string, string> = {
+    weak_forward_visibility: "Too little income secured ahead",
+    high_labor_dependence: "Too much dependence on active work",
+    high_concentration: "Too much dependence on one source",
+    low_persistence: "Not enough recurring income",
+    high_variability: "Too much earnings variability",
+    weak_durability: "Income quality is too fragile",
+    shallow_continuity: "Continuity window is too short",
+  };
+  const fragilityClassLabel: Record<string, string> = {
+    brittle: "Brittle", thin: "Thin", uneven: "Uneven", supported: "Supported", resilient: "Resilient",
+  };
+  const confidenceColor: Record<string, string> = {
+    high: B.teal, moderate: B.bandEstablished, guarded: B.bandDeveloping, low: B.bandLimited,
+  };
 
   // ── Continuity display ──
   const continuityDisplay = record.income_continuity_months < 0.5
@@ -881,10 +933,33 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
           <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue for a short period if active work stopped today." />
-          <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
-          <MetricCard label="Main Constraint" value="Too Little Income Secured Ahead" explanation="Not enough of your upcoming income is already committed before the month begins." />
+          <MetricCard label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
+          <MetricCard label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
+          {v2Fragility && (
+            <MetricCard label="Structural Resilience" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
+          )}
+        </div>
+
+        {/* Confidence + Durability inline */}
+        <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
+          {v2Confidence && (
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 7, height: 7, borderRadius: "50%", backgroundColor: confidenceColor[v2Confidence.confidence_level] ?? B.muted }} />
+              <span style={{ ...T.small, color: B.muted }}>Assessment confidence: <span style={{ fontWeight: 600, color: B.navy }}>{v2Confidence.confidence_level.charAt(0).toUpperCase() + v2Confidence.confidence_level.slice(1)}</span></span>
+            </div>
+          )}
+          {v2Quality && (
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ ...T.small, color: B.muted }}>Income durability: <span style={{ fontWeight: 600, color: B.navy }}>{v2Quality.durability_grade.charAt(0).toUpperCase() + v2Quality.durability_grade.slice(1).replace(/_/g, " ")}</span></span>
+            </div>
+          )}
+          {v2Scores && (
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ ...T.small, color: B.muted }}>Structure: <span style={{ fontWeight: 500 }}>{v2Scores.structure_score}/60</span> · Stability: <span style={{ fontWeight: 500 }}>{v2Scores.stability_score}/40</span></span>
+            </div>
+          )}
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
@@ -944,17 +1019,30 @@ export default function ReviewPage() {
 
           {/* Right: Reason Codes */}
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
-            <Overline>KEY FINDINGS</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
+            <Overline>WHAT IS LIMITING YOUR SCORE</Overline>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {v2Constraints ? [
+                { tag: "PRIMARY", key: v2Constraints.root_constraint },
+                { tag: "SECONDARY", key: v2Constraints.primary_constraint },
+                { tag: "CONTRIBUTING", key: v2Constraints.secondary_constraint },
+                ...(v2Constraints.dependent_constraint ? [{ tag: "DEPENDENT", key: v2Constraints.dependent_constraint }] : []),
+                ...(v2Constraints.hidden_unlock ? [{ tag: "UNLOCK", key: v2Constraints.hidden_unlock }] : []),
+              ].filter((c, i, arr) => arr.findIndex(x => x.key === c.key) === i).map((c) => (
+                <div key={c.key} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
+                  <div style={{ ...T.micro, color: c.tag === "UNLOCK" ? B.teal : B.purple }}>{c.tag}</div>
+                  <div style={{ ...T.small, color: B.navy, fontWeight: 500, marginTop: 1 }}>{constraintLabel[c.key] ?? c.key}</div>
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 1 }}>{olExplanations?.[c.key.replace("weak_forward_visibility", "low_forward_secured").replace("high_concentration", "high_concentration").replace("high_labor_dependence", "high_labor_dependence")] ?? ""}</div>
+                </div>
+              )) : [
                 { code: "R-12", title: "Low Forward-Secured Income", text: olExplanations?.low_forward_secured || "Not enough future income is already lined up before the month begins." },
                 { code: "R-07", title: "High Source Dependence", text: olExplanations?.high_concentration || "The structure depends too much on the largest income source." },
                 { code: "R-03", title: "Short Continuity Window", text: olExplanations?.short_continuity || "Income does not continue long enough without active work." },
                 { code: "R-01", title: "Work-Led Structure", text: olExplanations?.high_labor_dependence || "Too much income still depends on your direct effort." },
               ].map((rc) => (
-                <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 8 }}>
-                  <div style={{ ...T.micro, color: B.purple }}>{rc.code} | {rc.title}</div>
-                  <div style={{ ...T.meta, color: B.muted, marginTop: 2 }}>{rc.text}</div>
+                <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
+                  <div style={{ ...T.micro, color: B.purple }}>{rc.code}</div>
+                  <div style={{ ...T.small, color: B.navy, fontWeight: 500, marginTop: 1 }}>{rc.title}</div>
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 1 }}>{rc.text}</div>
                 </div>
               ))}
             </div>
@@ -977,7 +1065,40 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Simple definitions */}
+        {/* Interaction effects */}
+        {v2Interactions && v2Interactions.effects.length > 0 && (
+          <div style={{ display: "flex", gap: 14, marginBottom: 16 }}>
+            {v2Interactions.effects.filter(e => e.type === "penalty").length > 0 && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>SCORE PENALTIES</div>
+                {v2Interactions.effects.filter(e => e.type === "penalty").slice(0, 4).map((e) => (
+                  <div key={e.code} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                    <span>{e.trigger_condition}</span>
+                    <span style={{ color: B.bandLimited, fontWeight: 600, flexShrink: 0, marginLeft: 8 }}>{e.points}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {v2Interactions.effects.filter(e => e.type === "bonus").length > 0 && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>SCORE BONUSES</div>
+                {v2Interactions.effects.filter(e => e.type === "bonus").slice(0, 4).map((e) => (
+                  <div key={e.code} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                    <span>{e.trigger_condition}</span>
+                    <span style={{ color: B.teal, fontWeight: 600, flexShrink: 0, marginLeft: 8 }}>+{e.points}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+        {v2Interactions && v2Interactions.net_adjustment !== 0 && (
+          <div style={{ ...T.small, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
+            Net interaction effect: <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment > 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</span> applied to your score
+          </div>
+        )}
+
+        {/* Key terms */}
         <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>KEY TERMS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
@@ -998,6 +1119,21 @@ export default function ReviewPage() {
             {copy.p2_bottom}
           </p>
         </div>
+
+        {/* Sensitivity ranking */}
+        {v2Sensitivity && v2Sensitivity.tests.length > 0 && (
+          <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 16 }}>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 10 }}>Which changes help most</div>
+            {v2Sensitivity.tests.slice(0, 5).map((t, i) => (
+              <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
+                <span style={{ ...T.small, color: B.navy, flex: 1 }}>{t.delta_description}</span>
+                <span style={{ ...T.small, fontWeight: 600, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift} pts</span>
+                {t.factor === v2Sensitivity.highest_lift_factor && <span style={{ ...T.meta, color: B.teal, fontWeight: 600, border: `1px solid ${B.teal}`, borderRadius: 3, padding: "1px 6px", fontSize: 9 }}>BEST</span>}
+              </div>
+            ))}
+          </div>
+        )}
 
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>What would help most:</p>
@@ -1047,6 +1183,26 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* All structural stress scenarios */}
+        {v2Scenarios && v2Scenarios.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>STRESS TEST SCENARIOS</div>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 6).map((s) => (
+                <div key={s.scenario_id} style={{ flex: "1 1 calc(33.33% - 7px)", minWidth: 180, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.taupe}`, borderRadius: 2, padding: "12px 14px" }}>
+                  <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.muted, marginBottom: 3 }}>{s.band_shift ? "BAND DROP" : s.score_drop > 10 ? "SIGNIFICANT" : "MODERATE"}</div>
+                  <div style={{ ...T.small, color: B.navy, fontWeight: 600, marginBottom: 3 }}>{s.label}</div>
+                  <div style={{ ...T.meta, color: B.muted, marginBottom: 4 }}>{s.description}</div>
+                  <div style={{ ...T.micro, color: B.navy }}>
+                    {s.original_score} → {s.scenario_score} <span style={{ color: B.bandLimited }}>(-{s.score_drop})</span>
+                    {s.band_shift && <span style={{ color: B.bandLimited, marginLeft: 4 }}>→ {s.scenario_band}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Industry-specific risk scenarios */}
         {olScenarios && olScenarios.length > 0 && (
           <div style={{ marginBottom: 20 }}>
@@ -1087,9 +1243,52 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
-        <p style={{ ...T.meta, color: B.taupe, margin: "0 0 20px", fontStyle: "italic" }}>
+        <p style={{ ...T.meta, color: B.taupe, margin: "0 0 16px", fontStyle: "italic" }}>
           This is a model-based estimate of how the income is currently structured. It is not a direct accounting statement.
         </p>
+
+        {/* Peer comparison */}
+        {v2Benchmarks && (
+          <div style={{ marginBottom: 16 }}>
+            {/* Peer band distribution */}
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHERE YOUR PEERS LAND</div>
+            <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
+              {[
+                { pct: v2Benchmarks.peer_band_distribution.limited, color: B.bandLimited, t: "limited" },
+                { pct: v2Benchmarks.peer_band_distribution.developing, color: B.bandDeveloping, t: "developing" },
+                { pct: v2Benchmarks.peer_band_distribution.established, color: B.bandEstablished, t: "established" },
+                { pct: v2Benchmarks.peer_band_distribution.high, color: B.bandHigh, t: "high" },
+              ].map((seg, i) => (
+                <div key={i} style={{ width: `${seg.pct}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: tier === seg.t ? 1 : 0.3 }} />
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 2, marginBottom: 12 }}>
+              {[
+                { pct: v2Benchmarks.peer_band_distribution.limited, label: "Limited", color: B.bandLimited },
+                { pct: v2Benchmarks.peer_band_distribution.developing, label: "Developing", color: B.bandDeveloping },
+                { pct: v2Benchmarks.peer_band_distribution.established, label: "Established", color: B.bandEstablished },
+                { pct: v2Benchmarks.peer_band_distribution.high, label: "High", color: B.bandHigh },
+              ].map((seg) => (
+                <div key={seg.label} style={{ flex: 1, ...T.meta, color: B.muted }}><span style={{ color: seg.color, fontWeight: 600 }}>{seg.pct}%</span> {seg.label}</div>
+              ))}
+            </div>
+
+            {/* Outlier dimensions */}
+            {v2Benchmarks.outlier_dimensions.length > 0 && (
+              <div style={{ backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 18px", marginBottom: 12 }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHERE YOU DIFFER FROM PEERS</div>
+                {v2Benchmarks.outlier_dimensions.slice(0, 5).map((d) => (
+                  <div key={d.factor} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                    <span>{d.factor}</span>
+                    <span style={{ fontWeight: 600, color: d.direction === "above" ? B.teal : B.bandLimited }}>
+                      {d.magnitude === "significant" ? "▲▲" : "▲"} {d.direction} peers
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <SimpleTermsBox
           title="What this means"
@@ -1145,6 +1344,37 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Projected score improvements */}
+        {v2Lift && v2Lift.lift_scenarios.length > 0 && (
+          <>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>PROJECTED SCORE IMPROVEMENTS</div>
+            <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+              {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => (
+                <div key={s.scenario_id} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "14px 16px" }}>
+                  <div style={{ ...T.micro, color: B.purple, marginBottom: 4 }}>OPTION {i + 1}</div>
+                  <div style={{ ...T.small, color: B.navy, fontWeight: 600, marginBottom: 4 }}>{s.label}</div>
+                  <div style={{ ...T.meta, color: B.muted, marginBottom: 6 }}>{s.change_description}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>
+                    {s.original_score} → <span style={{ color: B.teal }}>{s.projected_score}</span> <span style={{ ...T.small, color: B.teal }}>+{s.lift}</span>
+                  </div>
+                  {s.band_shift && <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginTop: 2 }}>Reaches {s.projected_band}</div>}
+                </div>
+              ))}
+            </div>
+            {/* Combined top two */}
+            {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
+              <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "14px 20px", marginBottom: 20 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Combined improvement</div>
+                <div style={{ ...T.small, color: B.muted, marginBottom: 6 }}>{v2Lift.combined_top_two.change_description}</div>
+                <div style={{ fontSize: 18, fontWeight: 600, color: B.navy }}>
+                  Score would reach <span style={{ color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> <span style={{ ...T.small, color: B.teal }}>+{v2Lift.combined_top_two.lift} points</span>
+                </div>
+                {v2Lift.combined_top_two.band_shift && <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginTop: 2 }}>Reaches {v2Lift.combined_top_two.projected_band}</div>}
+              </div>
+            )}
+          </>
+        )}
+
         {/* What the next state looks like */}
         <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 20 }}>
           <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What a stronger structure usually looks like</div>
@@ -1199,6 +1429,25 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
+
+        {/* Avoid actions */}
+        {(v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0) ? (
+          <div style={{ backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px", marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHAT NOT TO DO</div>
+            {(v2AvoidActions ?? []).map((a) => (
+              <div key={a.action_id} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 4 }}>
+                <span style={{ color: B.bandLimited }}>✕</span>
+                <span><span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</span>
+              </div>
+            ))}
+            {(olAvoid ?? []).map((text) => (
+              <div key={text} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 4 }}>
+                <span style={{ color: B.bandLimited }}>✕</span>
+                <span>{text}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
 
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>{copy.p4_fastest.split(":")[0]}:</p>
@@ -1265,6 +1514,44 @@ export default function ReviewPage() {
         </div>
 
         {/* Checklist */}
+        {/* Benchmark context */}
+        {(v2Benchmarks || olBenchmark) && (
+          <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
+            <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW YOU COMPARE</div>
+              {v2Benchmarks && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                  <div style={{ ...T.small, color: B.ink }}>Peer average: <span style={{ fontWeight: 600 }}>{v2Benchmarks.cluster_average_score}</span></div>
+                  <div style={{ ...T.small, color: B.ink }}>Top 20% threshold: <span style={{ fontWeight: 600 }}>{v2Benchmarks.top_20_threshold}</span></div>
+                  <div style={{ ...T.small, color: B.ink }}>Your percentile: <span style={{ fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || `${v2Benchmarks.peer_percentile}th`}</span></div>
+                </div>
+              )}
+              {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
+            </div>
+            {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>TYPICAL PATTERNS IN YOUR PEER GROUP</div>
+                {olBenchmark.common_strengths?.length > 0 && (
+                  <>
+                    <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 2 }}>Common strengths:</div>
+                    {olBenchmark.common_strengths.slice(0, 3).map((s) => (
+                      <div key={s} style={{ ...T.meta, color: B.muted, marginBottom: 2 }}>— {s}</div>
+                    ))}
+                  </>
+                )}
+                {olBenchmark.common_weaknesses?.length > 0 && (
+                  <>
+                    <div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 500, marginTop: 6, marginBottom: 2 }}>Common gaps:</div>
+                    {olBenchmark.common_weaknesses.slice(0, 3).map((w) => (
+                      <div key={w} style={{ ...T.meta, color: B.muted, marginBottom: 2 }}>— {w}</div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <Overline>90-DAY STRUCTURAL CHECKLIST</Overline>
         <div style={{ display: "flex", flexDirection: "column", marginBottom: 20 }}>
           {[
@@ -1284,10 +1571,23 @@ export default function ReviewPage() {
         {/* Bottom cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT</div>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHEN TO REASSESS</div>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{copy.p5_reassess}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{copy.p5_reassess}</p>
+            {/* Specific trigger conditions */}
+            {(v2Triggers && v2Triggers.length > 0) || (olTriggers && olTriggers.length > 0) ? (
+              <>
+                <div style={{ height: 1, backgroundColor: B.stone, margin: "8px 0" }} />
+                <div style={{ ...T.meta, color: B.muted, fontWeight: 500, marginBottom: 4 }}>Reassess when:</div>
+                {(v2Triggers ?? []).slice(0, 3).map((t) => (
+                  <div key={t.trigger_id} style={{ ...T.meta, color: B.ink, marginBottom: 3 }}>• {t.description}</div>
+                ))}
+                {(olTriggers ?? []).slice(0, 2).map((t) => (
+                  <div key={t.trigger_id} style={{ ...T.meta, color: B.ink, marginBottom: 3 }}>• {t.display_text}</div>
+                ))}
+              </>
+            ) : null}
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
