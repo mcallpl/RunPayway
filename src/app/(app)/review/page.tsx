@@ -166,20 +166,20 @@ interface AssessmentRecord {
 // BRAND — Refined Institutional Design System
 // ============================================================
 const B = {
-  navy: "#0F172A",
-  ink: "#1E293B",
-  sand: "#FFFFFF",        // CHANGED: white background
-  bone: "#F8FAFC",        // CHANGED: very subtle card bg
+  navy: "#0E1A2B",
+  ink: "#0E1A2B",
+  sand: "#FFFFFF",
+  bone: "#F8F6F1",
   white: "#FFFFFF",
-  stone: "#E8E8E8",       // CHANGED: softer border
-  taupe: "#94A3B8",
-  muted: "#64748B",
+  stone: "rgba(14,26,43,0.12)",
+  taupe: "rgba(14,26,43,0.42)",
+  muted: "rgba(14,26,43,0.58)",
   purple: "#4B3FAE",
-  teal: "#0F766E",
-  bandLimited: "#DC2626",
-  bandDeveloping: "#D97706",
-  bandEstablished: "#2563EB",
-  bandHigh: "#16A34A",
+  teal: "#1F6D7A",
+  bandLimited: "#9B2C2C",
+  bandDeveloping: "#92640A",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1F6D7A",
 };
 
 // ============================================================
@@ -187,26 +187,26 @@ const B = {
 // ============================================================
 const R = {
   pagePad: 48,
-  headerMb: 20,
-  sectionGap: 24,
-  labelMb: 10,
-  paraMb: 14,
-  itemGap: 12,
-  dividerMy: 20,
-  footerMt: 20,
+  headerMb: 24,
+  sectionGap: 28,
+  labelMb: 12,
+  paraMb: 16,
+  itemGap: 14,
+  dividerMy: 24,
+  footerMt: 24,
 };
 
 const T = {
-  score: { fontSize: 90, fontWeight: 600, lineHeight: 1 },
-  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.25, color: "#0E1A2B" },
-  classification: { fontSize: 18, fontWeight: 500, lineHeight: 1.3 },
-  overline: { fontSize: 11, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.35 },
-  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },
-  body: { fontSize: 13, fontWeight: 400, lineHeight: 1.6 },
-  small: { fontSize: 12, fontWeight: 400, lineHeight: 1.55 },
-  meta: { fontSize: 11, fontWeight: 400, lineHeight: 1.5 },
-  micro: { fontSize: 10.5, fontWeight: 500, lineHeight: 1.3 },
+  score: { fontSize: 80, fontWeight: 600, lineHeight: 1 },
+  pageTitle: { fontSize: 26, fontWeight: 600, lineHeight: 1.25, color: "#0E1A2B" },
+  classification: { fontSize: 17, fontWeight: 500, lineHeight: 1.3 },
+  overline: { fontSize: 10.5, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4 },
+  cardHeading: { fontSize: 14, fontWeight: 600, lineHeight: 1.4 },
+  body: { fontSize: 12.5, fontWeight: 400, lineHeight: 1.65 },
+  small: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.55 },
+  meta: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
+  micro: { fontSize: 10, fontWeight: 500, lineHeight: 1.3 },
 };
 
 // ── PDF page dimensions ──
@@ -231,7 +231,7 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 12, borderBottom: `1px solid ${B.stone}` }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
       <Image src={logoImg} alt="RunPayway" width={120} height={14} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
@@ -242,16 +242,16 @@ function ReportHeader() {
 }
 
 function Overline({ children }: { children: React.ReactNode }) {
-  return <div style={{ ...T.overline, color: B.taupe, marginBottom: R.labelMb }}>{children}</div>;
+  return <div style={{ ...T.overline, color: B.teal, marginBottom: R.labelMb }}>{children}</div>;
 }
 
 function SectionDivider() {
-  return <div style={{ height: 1, backgroundColor: B.stone, marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
+  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function PageFooter({ section, page }: { section: string; page: number }) {
   return (
-    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
+    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page}</span>
         <span style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · runpayway.com/methodology</span>
@@ -260,11 +260,11 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   );
 }
 
-function MetricCard({ label, value, explanation, accent }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
+function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderLeft: accent ? `3px solid ${accent}` : `1px solid ${B.stone}`, borderRadius: 4, padding: "18px 20px" }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{label}</div>
-      <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{value}</div>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "20px 22px" }}>
+      <div style={{ ...T.overline, color: B.teal, marginBottom: 10 }}>{label}</div>
+      <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 10, lineHeight: 1.3 }}>{value}</div>
       <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
     </div>
   );
@@ -272,7 +272,7 @@ function MetricCard({ label, value, explanation, accent }: { label: string; valu
 
 function DiagnosisBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px" }}>
+    <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "18px 22px" }}>
       {children}
     </div>
   );
@@ -303,8 +303,8 @@ function ReportPage({ children, noPad }: { record: AssessmentRecord; children: R
       overflow: "visible",
       position: "relative",
     }}>
-      {/* Top accent bar */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
+      {/* Top accent line */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
       {children}
     </div>
   );
@@ -650,12 +650,12 @@ export default function ReviewPage() {
   const copy = {
     // Page 1
     p1_headline: tier === "limited"
-      ? `You scored ${score} out of 100. Your income is coming in, but the way it is set up makes it easy to disrupt. Most of it depends on you actively working, and very little is secured ahead of time.`
+      ? `${name} scored ${score} out of 100. That means the income is active, but not yet strongly protected. If work slows down or a major income source changes, stability could drop quickly.`
       : tier === "developing"
-        ? `You scored ${score} out of 100. Your income is active, but the setup is not yet well protected. If work slows down or a major source changes, your stability could drop quickly.`
+        ? `${name} scored ${score} out of 100. That means the income is active, but not yet strongly protected. If work slows down or a major income source changes, stability could drop quickly.`
         : tier === "established"
-          ? `You scored ${score} out of 100. Your income structure has real stability. The main opportunity now is to lock in more income ahead of time and reduce how much depends on any single source.`
-          : `You scored ${score} out of 100. Your income structure is strong and durable, with good forward visibility and healthy diversification across sources.`,
+          ? `${name} scored ${score} out of 100. The income structure has real stability. The main opportunity now is to lock in more income ahead of time and reduce how much depends on any single source.`
+          : `${name} scored ${score} out of 100. The income structure is strong and durable, with good forward visibility and healthy diversification across sources.`,
 
     // Page 2
     p2_intro: `This page shows the main reasons behind the score. The question is not whether income exists today. The question is whether the structure can hold up when something changes.`,
@@ -831,19 +831,17 @@ export default function ReviewPage() {
         <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {v2Constraints
-              ? `The #1 thing holding your score back: ${constraintLabel[v2Constraints.root_constraint] ?? "not enough income is secured ahead of time"}.`
-              : "The #1 thing holding your score back: not enough income is secured ahead of time."}
-            {v2Sensitivity?.tests?.[0]?.lift ? ` If you fixed this, your score could go up by ${v2Sensitivity.tests[0].lift} points.` : ""}
+              ? `The main thing holding ${name} back right now: ${constraintLabel[v2Constraints.root_constraint] ?? "not enough recurring or committed income"}.`
+              : `The main thing holding ${name} back right now: not enough recurring or committed income.`}
+            {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
 
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
-          <MetricCard accent={B.teal} label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue if active work stopped today." />
-          <MetricCard accent={B.bandLimited} label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest source disappeared, your score would fall to this level." />
-          <MetricCard accent={B.purple} label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
-          {v2Fragility && (
-            <MetricCard accent={bandColor} label="How Resilient" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
-          )}
+          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`Only a small portion of ${name} would likely keep coming in if active work stopped today.`} />
+          <MetricCard label="BIGGEST SOURCE STRESS TEST" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
+          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
+          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong" : tier === "established" ? "Moderate" : "Needs strengthening"} explanation="The structure has some support, but not enough protection yet against disruption." />
         </div>
 
 
