@@ -300,11 +300,9 @@ export default function MarketingLayout({
         className="sticky top-0"
         style={{
           zIndex: 1000,
-          background: scrolled ? "rgba(255,255,255,0.92)" : "#ffffff",
+          background: scrolled ? "rgba(255,255,255,0.97)" : "#ffffff",
           borderBottom: scrolled ? "1px solid rgba(14,26,43,0.06)" : "1px solid rgba(14,26,43,0.08)",
-          backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-          transition: "background 360ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms cubic-bezier(0.22, 1, 0.36, 1), backdrop-filter 360ms cubic-bezier(0.22, 1, 0.36, 1)",
+          transition: "background 360ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms cubic-bezier(0.22, 1, 0.36, 1)",
           boxShadow: scrolled ? "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" : "none",
         }}
       >

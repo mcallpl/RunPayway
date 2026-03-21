@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
@@ -152,98 +152,34 @@ function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: b
 
 
 /* ================================================================== */
-/* FLOATING PARTICLES — Canvas-based background animation              */
+/* STATIC PARTICLES — lightweight CSS-only dots (no canvas/rAF)        */
 /* ================================================================== */
 function FloatingParticles() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Array<{ x: number; y: number; vx: number; vy: number; r: number; o: number }>>([]);
-  const rafRef = useRef<number>(0);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
-      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-    };
-    resize();
-
-    const count = 35;
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-    particlesRef.current = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.3,
-      r: 1 + Math.random() * 1.5,
-      o: 0.08 + Math.random() * 0.17,
-    }));
-
-    const animate = () => {
-      const cw = canvas.offsetWidth;
-      const ch = canvas.offsetHeight;
-      ctx.clearRect(0, 0, cw, ch);
-
-      const dpr = window.devicePixelRatio || 1;
-      for (let i = 0; i < particlesRef.current.length; i++) {
-        const p = particlesRef.current[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < -10) p.x = cw + 10;
-        if (p.x > cw + 10) p.x = -10;
-        if (p.y < -10) p.y = ch + 10;
-        if (p.y > ch + 10) p.y = -10;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.o})`;
-        ctx.fill();
-
-        // Draw connections between nearby particles
-        for (let j = i + 1; j < particlesRef.current.length; j++) {
-          const q = particlesRef.current[j];
-          const dx = p.x - q.x;
-          const dy = p.y - q.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x * dpr, p.y * dpr);
-            ctx.lineTo(q.x * dpr, q.y * dpr);
-            ctx.strokeStyle = `rgba(255,255,255,${0.04 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.5 * dpr;
-            ctx.stroke();
-          }
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-    window.addEventListener("resize", resize);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
+  const dots = useMemo(() =>
+    Array.from({ length: 18 }, (_, i) => ({
+      left: `${5 + Math.round((i * 47 + 13) % 90)}%`,
+      top: `${5 + Math.round((i * 31 + 7) % 90)}%`,
+      r: 1 + (i % 3) * 0.7,
+      o: 0.06 + (i % 4) * 0.04,
+    })), []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-      }}
-    />
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      {dots.map((d, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            left: d.left,
+            top: d.top,
+            width: d.r * 2,
+            height: d.r * 2,
+            borderRadius: "50%",
+            backgroundColor: `rgba(255,255,255,${d.o})`,
+          }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -335,7 +271,7 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
             style={{
               fontSize: mobile ? 52 : 64, fontWeight: 700, color: "#F4F1EA",
               lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
-              animation: visible ? "scorePulse 3s ease-in-out infinite 2s" : "none",
+              animation: "none",
             }}
           >
             {animatedScore}
@@ -418,7 +354,7 @@ input[type="range"]::-webkit-slider-thumb {
         style={{
           background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%)",
           backgroundSize: "200% 100%",
-          animation: "shimmer 8s ease-in-out infinite",
+          animation: "shimmer 8s ease-in-out 1",
         }}
       />
 
@@ -847,11 +783,11 @@ function WhatYourReportSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   const pages = [
-    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Score, band, classification scale, key insight, resilience grade, confidence level, and income continuity estimate.", color: B.purple },
-    { num: "02", title: "Why This Score", question: "What is driving the result?", desc: "Five structural drivers with levels, constraint hierarchy showing what limits the score most, sensitivity ranking of which changes help most, and interaction effects.", color: B.teal },
-    { num: "03", title: "What Could Go Wrong", question: "Where is the structure exposed?", desc: "Largest source stress test, continuity window, structural stress scenarios with severity ratings, income structure mix breakdown, and peer comparison with outlier dimensions.", color: B.navy },
-    { num: "04", title: "How to Improve", question: "What would strengthen it?", desc: "Projected score improvements with point estimates, industry-tailored priority actions with reasoning, and a clear list of what not to focus on yet.", color: B.purple },
-    { num: "05", title: "What to Do Next", question: "What are the next steps?", desc: "Numbered action list, 90-day structural checklist, specific reassessment trigger conditions, peer benchmarks with common patterns, and verification details.", color: B.teal },
+    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "You will know exactly where your income stands — your score, your band, and the single most important thing to address.", color: B.purple },
+    { num: "02", title: "Why This Score", question: "What is behind the result?", desc: "You will see what is driving your score up and what is holding it back — ranked by impact, not guesswork.", color: B.teal },
+    { num: "03", title: "What Could Go Wrong", question: "What is most exposed?", desc: "You will see what would happen if your largest source disappeared — and how your structure compares to peers in your industry.", color: B.navy },
+    { num: "04", title: "How to Improve", question: "What would raise the score?", desc: "You will see exactly which change would raise your score the most — with projected point gains and actions tailored to your industry.", color: B.purple },
+    { num: "05", title: "What to Do Next", question: "What is the plan?", desc: "You will have a clear plan — what to do first, what not to focus on yet, and when to reassess.", color: B.teal },
   ];
 
   return (
@@ -881,7 +817,7 @@ function WhatYourReportSection() {
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          What your report includes
+          What you will learn
         </h2>
 
         <p
@@ -897,7 +833,7 @@ function WhatYourReportSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          A 5-page structural diagnostic that shows your score, explains what drives it, identifies where the structure is exposed, and shows what to strengthen next.
+          Five pages. Five questions answered. One clear path forward.
         </p>
 
         {/* Tab navigation */}
