@@ -227,8 +227,8 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   return (
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ ...T.meta, color: B.taupe }}>{section}</span>
-        <span style={{ ...T.meta, color: B.taupe }}>Page {page}</span>
+        <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page}</span>
+        <span style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · runpayway.com/methodology</span>
       </div>
     </div>
   );
@@ -636,8 +636,8 @@ export default function ReviewPage() {
       {/* ---- PAGE 1 — EXECUTIVE DIAGNOSTIC ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <Overline>PRESENT-STATE ASSESSMENT</Overline>
-        <h1 style={{ ...T.pageTitle, marginBottom: 28 }}>Executive Diagnostic</h1>
+        <Overline>YOUR INCOME STABILITY REPORT</Overline>
+        <h1 style={{ ...T.pageTitle, marginBottom: 28 }}>Your Score</h1>
 
         <div style={{ marginBottom: 24 }}>
           <div style={{ ...T.score, color: B.navy }}>{record.final_score}</div>
@@ -645,21 +645,26 @@ export default function ReviewPage() {
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
+          {record.peer_stability_percentile_label && (
+            <div style={{ ...T.small, color: B.muted, marginTop: 6 }}>
+              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals
+            </div>
+          )}
         </div>
 
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 6px" }}>
-            Your income structure is working, but it is not yet well protected.
+            Your income is working, but it is not yet well protected.
           </p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540 }}>
-            Your score of {record.final_score} places you in {record.stability_band}. The main issue is not low income. The main issue is that too much of your income still depends on ongoing work, and not enough is already secured ahead.
+            You scored {record.final_score} out of 100. Too much of your income still depends on ongoing work, and not enough is already lined up ahead of time. That makes it easier to disrupt than it needs to be.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
-          title="What this means in simple terms"
-          copy="Your income is producing, but it is still easy to disrupt. If work slows or a key source weakens, this structure does not yet have enough built-in protection to hold up well."
-          takeaway="Simple takeaway: Your income works, but it is still too exposed."
+          title="What this means"
+          copy="Your income is real, but if work slows or a key source weakens, there is not enough built-in protection to keep things stable."
+          takeaway="Bottom line: Your income works, but it is still too exposed."
         />
 
         {/* Classification Scale */}
@@ -709,22 +714,22 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
 
-        <PageFooter section="Executive Diagnostic" page={1} />
+        <PageFooter section="Your Score" page={1} />
       </ReportPage>
 
 
       {/* ---- PAGE 2 — STRUCTURAL BREAKDOWN ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Structural Breakdown</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Why This Score</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows the main reasons behind your score. The key question is not whether income exists today. The key question is how well it holds up if work slows, a source weakens, or future income is not already lined up.
+          This page breaks down the main reasons behind your score. The question is not whether you earn income. The question is how well that income holds up when something changes.
         </p>
 
         <div style={{ display: "flex", gap: 20 }}>
           {/* Left: Sub-score modules */}
           <div style={{ flex: 2 }}>
-            <Overline>MAIN SCORE DRIVERS</Overline>
+            <Overline>WHAT DRIVES YOUR SCORE</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
               {[
                 { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How long income can keep coming in if you stop working for a period of time." },
@@ -749,7 +754,7 @@ export default function ReviewPage() {
 
           {/* Right: Reason Codes */}
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
-            <Overline>REASON CODES</Overline>
+            <Overline>KEY FINDINGS</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 { code: "R-12", title: "Low Forward-Secured Income", text: "Not enough future income is already lined up before the month begins." },
@@ -784,7 +789,7 @@ export default function ReviewPage() {
 
         {/* Simple definitions */}
         <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>SIMPLE DEFINITIONS</div>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>KEY TERMS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
             {[
               ["Income secured ahead", "money already lined up before the month begins"],
@@ -800,27 +805,27 @@ export default function ReviewPage() {
             ))}
           </div>
           <p style={{ ...T.small, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>
-            Simple takeaway: The biggest weaknesses are too little income secured ahead and too much reliance on ongoing work.
+            Bottom line: Not enough income is lined up ahead, and too much depends on ongoing work.
           </p>
         </div>
 
         <DiagnosisBlock>
-          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary diagnosis:</p>
+          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>What would help most:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
             {`The fastest improvement would come from securing more income ahead. An increase of 15 percentage points in income secured ahead is projected to raise the score from ${record.final_score} to ${Math.min(100, record.final_score + 5)}.`}
           </p>
         </DiagnosisBlock>
 
-        <PageFooter section="Structural Breakdown" page={2} />
+        <PageFooter section="Why This Score" page={2} />
       </ReportPage>
 
 
       {/* ---- PAGE 3 — RISK EXPOSURE ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Risk Exposure</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows where your income structure is most exposed if something changes. It does not predict the future. It shows which part of the current setup is least likely to hold up under pressure.
+          This page shows where your income is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.
         </p>
 
         {/* Two large cards */}
@@ -871,17 +876,17 @@ export default function ReviewPage() {
         </div>
 
         <SimpleTermsBox
-          title="What this means in simple terms"
-          copy="This page shows what is most likely to weaken first if pressure hits the structure. If work slows or a major source weakens, this setup may lose stability faster than a stronger one would."
-          takeaway="Simple takeaway: This structure is still too easy to disrupt."
+          title="What this means"
+          copy="If work slows or a major source weakens, your income may drop faster than it should. A stronger setup would hold up better."
+          takeaway="Bottom line: Your income is still too easy to disrupt."
         />
 
         {/* Three interpretation cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
-            { title: "What weakens first", copy: "The first weakness is not income today. It is the lack of enough income already secured ahead to carry the structure through disruption." },
-            { title: "Hidden vulnerability", copy: "Income can be productive and still be fragile underneath. This profile shows that pattern: income is working, but it does not yet absorb disruption well." },
-            { title: "Present-state interpretation", copy: "This profile can produce income, but it does not yet hold stability well when work is interrupted or a major source weakens." },
+            { title: "What weakens first", copy: "Not your current income — but the lack of income already lined up to carry you through a disruption." },
+            { title: "The hidden risk", copy: "You can earn well and still be fragile. Your income is productive, but it does not yet absorb disruption well." },
+            { title: "Where you stand now", copy: "You can produce income, but if work stops or a major source weakens, stability drops quickly." },
           ].map((card) => (
             <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
               <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{card.title}</div>
@@ -891,22 +896,22 @@ export default function ReviewPage() {
         </div>
 
         <DiagnosisBlock>
-          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary risk conclusion:</p>
+          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>The key risk:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            The current structure still loses strength too easily when something changes.
+            Your income still loses strength too easily when something changes.
           </p>
         </DiagnosisBlock>
 
-        <PageFooter section="Risk Exposure" page={3} />
+        <PageFooter section="What Could Go Wrong" page={3} />
       </ReportPage>
 
 
       {/* ---- PAGE 4 — UPGRADE PATH ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Upgrade Path</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How to Improve</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
-          The fastest way to improve this score is not to work more. It is to strengthen the structure underneath the work you already do. A stronger profile usually has more income secured ahead, less dependence on one source, and more income that continues without daily effort.
+          The fastest way to raise your score is not to work more. It is to change how your income is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.
         </p>
 
         {/* Band cards */}
@@ -938,9 +943,9 @@ export default function ReviewPage() {
         </div>
 
         <SimpleTermsBox
-          title="What this means in simple terms"
-          copy="The fastest way to improve this score is to secure more income ahead, depend less on one source, and build more income that keeps going over time."
-          takeaway="Simple takeaway: The clearest next move is to secure more income ahead and reduce concentration."
+          title="What this means"
+          copy="Line up more income before the month starts. Depend less on your biggest source. Build more income that keeps going even when you are not working."
+          takeaway="Bottom line: Secure more income ahead and reduce how much depends on one source."
         />
 
         {/* Action cards */}
@@ -962,32 +967,32 @@ export default function ReviewPage() {
         </div>
 
         <DiagnosisBlock>
-          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Fastest structural lever:</p>
+          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Your fastest improvement:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            Securing more income ahead is still the fastest and clearest way to strengthen this profile.
+            Lining up more income ahead of time is the single clearest way to raise your score.
           </p>
         </DiagnosisBlock>
 
-        <PageFooter section="Upgrade Path" page={4} />
+        <PageFooter section="How to Improve" page={4} />
       </ReportPage>
 
 
       {/* ---- PAGE 5 — DECISION SUMMARY ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Decision Summary</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
 
         <DiagnosisBlock>
-          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>Current conclusion:</p>
+          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>The main takeaway:</p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
-            This profile does not need more activity first. It needs stronger structure. The income is working, but not enough of it is secured ahead to make the structure durable.
+            You do not need to earn more first. You need to change how your income is set up. The income is there, but not enough of it is lined up ahead to keep things stable when something changes.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
-          title="What this means in simple terms"
-          copy="This report is saying that the structure needs to become stronger, not just busier. The goal is to help income hold up better when work slows or something changes."
-          takeaway="Simple takeaway: Do not focus only on output. Strengthen the structure that supports the income."
+          title="What this means"
+          copy="Working harder will not fix this. The goal is to set up your income so it holds up better — even when work slows or something changes."
+          takeaway="Bottom line: Strengthen the setup, not just the output."
         />
 
         {/* Two columns: What to do / What not to */}
@@ -1060,7 +1065,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.
         </p>
 
-        <PageFooter section="Decision Summary" page={5} />
+        <PageFooter section="What to Do Next" page={5} />
       </ReportPage>
 
 
