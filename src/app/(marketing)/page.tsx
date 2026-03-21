@@ -103,22 +103,22 @@ const S = {
   disclaimerY:  { desktop: 24, mobile: 16 },
   maxW:         1060,
   padX:         { desktop: 48, mobile: 24 },
-  h1mb:         28,
-  h2mb:         24,
-  subtextMb:    56,
-  paraMb:       24,
-  labelMb:      16,
+  h1mb:         32,
+  h2mb:         20,
+  subtextMb:    40,
+  paraMb:       20,
+  labelMb:      14,
   cardPad:      { desktop: 36, mobile: 24 },
   cardRadius:   16,
   panelRadius:  20,
   gridGap:      24,
   gridGapSm:    16,
   ctaH:         56,
-  ctaHsm:       46,
+  ctaHsm:       48,
   ctaPadX:      32,
   ctaRadius:    14,
   lhHeading:    1.08,
-  lhBody:       1.75,
+  lhBody:       1.65,
   lhDense:      1.5,
   lsHeading:    "-0.025em",
   lsHero:       "-0.035em",
@@ -397,12 +397,12 @@ function HeroSection() {
             <h1
               className="font-semibold"
               style={{
-                fontSize: mobile ? 32 : 48,
+                fontSize: mobile ? 34 : 56,
                 color: "#F4F1EA",
                 lineHeight: S.lhHeading,
                 letterSpacing: S.lsHero,
                 marginBottom: S.h1mb,
-                maxWidth: mobile ? undefined : 540,
+                maxWidth: mobile ? undefined : 560,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(12px)",
                 transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
@@ -560,7 +560,7 @@ function TheGapSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -682,7 +682,7 @@ function WhoItsForSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -802,7 +802,7 @@ function WhatYourReportSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -973,7 +973,7 @@ function SampleResultSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1021,7 +1021,7 @@ function SampleResultSection() {
               {/* Overline */}
               <div
                 style={{
-                  fontSize: 10, fontWeight: 600, textTransform: "uppercase",
+                  fontSize: 11, fontWeight: 600, textTransform: "uppercase",
                   letterSpacing: S.lsLabel, color: B.light, marginBottom: 16,
                 }}
               >
@@ -1065,7 +1065,7 @@ function SampleResultSection() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Continuity
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
@@ -1073,7 +1073,7 @@ function SampleResultSection() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Stress Test
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
@@ -1081,7 +1081,7 @@ function SampleResultSection() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     How Resilient
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
@@ -1089,7 +1089,7 @@ function SampleResultSection() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Confidence
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
@@ -1114,11 +1114,11 @@ function SampleResultSection() {
               {/* Constraint + Improvement in a row */}
               <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
                   <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Forward visibility could be stronger</p>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 4, fontWeight: 600 }}>Best Improvement</div>
+                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 4, fontWeight: 600 }}>Best Improvement</div>
                   <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Extend committed income further ahead</p>
                 </div>
               </div>
@@ -1181,7 +1181,7 @@ function HowItWorksSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1346,7 +1346,7 @@ function WhatItMeasuresSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1572,21 +1572,22 @@ function PricingSection() {
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
-                height: S.ctaHsm,
+                height: S.ctaH,
                 borderRadius: S.ctaRadius,
-                backgroundColor: B.purple,
+                backgroundColor: B.navy,
                 color: "#FFFFFF",
                 fontSize: 15,
                 textDecoration: "none",
                 transition: "background-color 180ms ease, transform 180ms ease",
+                boxShadow: "0 4px 12px rgba(14,26,43,0.20)",
               }}
               onMouseEnter={(e) => {
                 if (!canHover()) return;
-                e.currentTarget.style.backgroundColor = "#5B4FC4";
+                e.currentTarget.style.backgroundColor = "#1E293B";
                 e.currentTarget.style.transform = "translateY(-1px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = B.purple;
+                e.currentTarget.style.backgroundColor = B.navy;
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
@@ -1643,22 +1644,23 @@ function PricingSection() {
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
-                height: S.ctaHsm,
+                height: S.ctaH,
                 borderRadius: S.ctaRadius,
-                backgroundColor: B.purple,
+                background: B.gradient,
                 color: "#FFFFFF",
                 fontSize: 15,
                 textDecoration: "none",
-                transition: "background-color 180ms ease, transform 180ms ease",
+                transition: "transform 180ms ease, box-shadow 180ms ease",
+                boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
               }}
               onMouseEnter={(e) => {
                 if (!canHover()) return;
-                e.currentTarget.style.backgroundColor = "#5B4FC4";
                 e.currentTarget.style.transform = "translateY(-1px)";
+                e.currentTarget.style.boxShadow = "0 12px 32px rgba(75,63,174,0.40)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = B.purple;
                 e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)";
               }}
             >
               Get Annual Monitoring
@@ -1744,7 +1746,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1880,7 +1882,7 @@ function ClassificationSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2027,7 +2029,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 40,
+            fontSize: mobile ? 32 : 48,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
