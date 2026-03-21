@@ -488,7 +488,7 @@ input[type="range"]::-webkit-slider-thumb {
                 fontFamily: DISPLAY_FONT,
               }}
             >
-              <RevealText text="The fixed standard for measuring income structure stability." visible={visible} baseDelay={200} />
+              <RevealText text="How protected is your income, really?" visible={visible} baseDelay={200} />
             </h1>
 
             <p
@@ -1733,6 +1733,31 @@ function PricingSection() {
         >
           See how stable your income structure is, where it is exposed, and what would strengthen it.
         </p>
+
+        {/* Proof line */}
+        <div
+          className="text-center"
+          style={{
+            marginBottom: mobile ? 32 : 40,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 600ms ease-out 200ms",
+          }}
+        >
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "8px 20px",
+            borderRadius: 100,
+            backgroundColor: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal }} />
+            <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.60)", letterSpacing: "0.01em" }}>
+              Professionals across 19 industries
+            </span>
+          </div>
+        </div>
 
         {/* Pricing cards */}
         <div
