@@ -129,7 +129,7 @@ export function adaptV2ToV1(r: AssessmentRecord): Record<string, unknown> {
     issued_timestamp_utc: r.created_at,
 
     // Profile
-    assessment_title: r.profile_context.industry_sector.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) + " Assessment",
+    assessment_title: r.profile_context.industry_sector.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) + " Income Profile",
     classification: r.profile_context.profile_class,
     operating_structure: r.profile_context.operating_structure,
     primary_income_model: r.profile_context.primary_income_model,

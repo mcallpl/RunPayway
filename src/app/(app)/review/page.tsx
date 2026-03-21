@@ -187,14 +187,14 @@ const B = {
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
 const R = {
-  pagePad: 52,
-  headerMb: 20,
-  sectionGap: 20,
-  labelMb: 8,
+  pagePad: 44,
+  headerMb: 16,
+  sectionGap: 16,
+  labelMb: 7,
   paraMb: 10,
-  itemGap: 10,
-  dividerMy: 20,
-  footerMt: 20,
+  itemGap: 8,
+  dividerMy: 16,
+  footerMt: 16,
 };
 
 const T = {
@@ -263,17 +263,17 @@ function PageFooter({ section, page }: { section: string; page: number }) {
 
 function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{label}</div>
-      <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{value}</div>
-      <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+      <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{value}</div>
+      <div style={{ ...T.small, color: B.muted, lineHeight: 1.5 }}>{explanation}</div>
     </div>
   );
 }
 
 function DiagnosisBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "20px 24px" }}>
+    <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px" }}>
       {children}
     </div>
   );
@@ -281,9 +281,9 @@ function DiagnosisBlock({ children }: { children: React.ReactNode }) {
 
 function SimpleTermsBox({ title, copy, takeaway }: { title: string; copy: string; takeaway: string }) {
   return (
-    <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginTop: 16, marginBottom: 16 }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{title}</div>
-      <p style={{ ...T.body, color: B.navy, margin: "0 0 10px", maxWidth: 520, lineHeight: 1.55 }}>{copy}</p>
+    <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "14px 18px", marginTop: 12, marginBottom: 12 }}>
+      <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{title}</div>
+      <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", maxWidth: 520, lineHeight: 1.55 }}>{copy}</p>
       <p style={{ ...T.small, color: B.muted, margin: 0, fontStyle: "italic" }}>{takeaway}</p>
     </div>
   );
@@ -632,7 +632,7 @@ export default function ReviewPage() {
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
 
-  const name = record.assessment_title || "This income structure";
+  const name = record.assessment_title || "This income profile";
   const issuedDate = (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0];
   const reassessDate = (() => {
     const d = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
@@ -938,7 +938,7 @@ export default function ReviewPage() {
           <MetricCard label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
           <MetricCard label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
           {v2Fragility && (
-            <MetricCard label="Structural Resilience" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
+            <MetricCard label="How Resilient" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
           )}
         </div>
 
@@ -1098,28 +1098,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Key terms */}
-        <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>KEY TERMS</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-            {[
-              ["Income secured ahead", "money already lined up before the month begins"],
-              ["Continuity", "how long income keeps coming in if you stop working"],
-              ["Dependence on one source", "how much you rely on one main source of income"],
-              ["Recurring income", "income that repeats"],
-              ["Built-in income", "income that can continue with less day-to-day work"],
-            ].map(([term, def]) => (
-              <div key={term} style={{ ...T.small, color: B.navy }}>
-                <span style={{ fontWeight: 500 }}>{term}</span>
-                <span style={{ color: B.muted }}> = {def}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{ ...T.small, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>
-            {copy.p2_bottom}
-          </p>
-        </div>
-
         {/* Sensitivity ranking */}
         {v2Sensitivity && v2Sensitivity.tests.length > 0 && (
           <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 16 }}>
@@ -1188,8 +1166,8 @@ export default function ReviewPage() {
           <div style={{ marginBottom: 20 }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>STRESS TEST SCENARIOS</div>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 6).map((s) => (
-                <div key={s.scenario_id} style={{ flex: "1 1 calc(33.33% - 7px)", minWidth: 180, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.taupe}`, borderRadius: 2, padding: "12px 14px" }}>
+              {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 4).map((s) => (
+                <div key={s.scenario_id} style={{ flex: "1 1 calc(50% - 5px)", minWidth: 200, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.taupe}`, borderRadius: 2, padding: "12px 14px" }}>
                   <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.muted, marginBottom: 3 }}>{s.band_shift ? "BAND DROP" : s.score_drop > 10 ? "SIGNIFICANT" : "MODERATE"}</div>
                   <div style={{ ...T.small, color: B.navy, fontWeight: 600, marginBottom: 3 }}>{s.label}</div>
                   <div style={{ ...T.meta, color: B.muted, marginBottom: 4 }}>{s.description}</div>
@@ -1290,22 +1268,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <SimpleTermsBox
-          title="What this means"
-          copy={copy.p3_simple}
-          takeaway={copy.p3_bottom}
-        />
-
-        {/* Three interpretation cards */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
-          {copy.p3_cards.map((card) => (
-            <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{card.title}</div>
-              <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{card.copy}</p>
-            </div>
-          ))}
-        </div>
-
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>The key risk:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
@@ -1391,12 +1353,6 @@ export default function ReviewPage() {
             <div key={b} style={{ ...T.body, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}><span style={{ color: B.stone }}>—</span>{b}</div>
           ))}
         </div>
-
-        <SimpleTermsBox
-          title="What this means"
-          copy={copy.p4_simple}
-          takeaway={copy.p4_bottom}
-        />
 
         {/* Action cards — uses outcome layer when available */}
         {olActions && olActions.length > 0 && (
