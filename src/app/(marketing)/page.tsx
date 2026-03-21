@@ -2365,7 +2365,6 @@ export default function LandingPage() {
       <HeroSection />
       <TheGapSection />
       <WhoItsForSection />
-      <SocialProof />
       <WhatYourReportSection />
       <SampleResultSection />
       <HowItWorksSection />
