@@ -4,11 +4,34 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
+/*  Brand tokens                                                       */
+/* ------------------------------------------------------------------ */
+const B = {
+  navy: "#0E1A2B",
+  purple: "#4B3FAE",
+  teal: "#1F6D7A",
+  sand: "#FAF9F7",
+  sandDk: "#F4F1EA",
+  offWhite: "#FEFDFB",
+  muted: "#4B5563",
+  light: "#9CA3AF",
+  border: "#E6E9EF",
+  gradient:
+    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  bandLimited: "#DC2626",
+  bandDeveloping: "#D97706",
+  bandEstablished: "#2563EB",
+  bandHigh: "#16A34A",
+};
+
+const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+
+/* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
 /* ------------------------------------------------------------------ */
-
 const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+  typeof window !== "undefined" &&
+  window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,50 +70,136 @@ function useMobile(breakpoint = 768) {
   return mobile;
 }
 
+function useAnimatedCounter(target: number, active: boolean, duration = 1500) {
+  const [value, setValue] = useState(0);
+  const animated = useRef(false);
+  useEffect(() => {
+    if (!active || animated.current) return;
+    animated.current = true;
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [active, target, duration]);
+  return value;
+}
+
 /* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
+/*  Shared card wrapper                                                */
 /* ------------------------------------------------------------------ */
+function ReportCard({
+  children,
+  visible,
+  delay = 0,
+  mobile,
+}: {
+  children: React.ReactNode;
+  visible: boolean;
+  delay?: number;
+  mobile: boolean;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => canHover() && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        maxWidth: 700,
+        margin: "0 auto",
+        backgroundColor: "#ffffff",
+        border: "1px solid rgba(14,26,43,0.06)",
+        borderRadius: 16,
+        boxShadow: hovered
+          ? "0 12px 40px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.05)"
+          : "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
+        padding: mobile ? 24 : 32,
+        position: "relative",
+        overflow: "hidden",
+        opacity: visible ? 1 : 0,
+        transform: visible
+          ? hovered
+            ? "translateY(-2px)"
+            : "translateY(0)"
+          : "translateY(20px)",
+        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.4s ease-out ${visible ? 0 : delay}ms, box-shadow 0.3s ease`,
+      }}
+    >
+      {/* Gradient accent bar */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 3,
+          background: `linear-gradient(90deg, ${B.purple}, ${B.teal})`,
+        }}
+      />
+      {children}
+    </div>
+  );
+}
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
-};
+function CardFooter({
+  left,
+  right,
+}: {
+  left: string;
+  right: string;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 28,
+        paddingTop: 16,
+        borderTop: "1px solid rgba(14,26,43,0.06)",
+      }}
+    >
+      <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>
+        {left}
+      </span>
+      <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>
+        {right}
+      </span>
+    </div>
+  );
+}
 
-const S = {
-  sectionY:     { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 120, mobile: 72 },
-  transitionY:  { desktop: 72, mobile: 48 },
-  disclaimerY:  { desktop: 64, mobile: 48 },
-  maxW:         1060,
-  padX:         { desktop: 48, mobile: 24 },
-  h1mb:         28,
-  h2mb:         24,
-  subtextMb:    56,
-  paraMb:       24,
-  labelMb:      16,
-  cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   16,
-  panelRadius:  20,
-  gridGap:      24,
-  gridGapSm:    16,
-  ctaH:         56,
-  ctaHsm:       46,
-  ctaPadX:      32,
-  ctaRadius:    14,
-  lhHeading:    1.08,
-  lhBody:       1.75,
-  lhDense:      1.5,
-  lsHeading:    "-0.025em",
-  lsHero:       "-0.035em",
-  lsLabel:      "0.14em",
-};
-
+function SectionLabel({ label }: { label: string }) {
+  const { ref, visible } = useInView();
+  return (
+    <div
+      ref={ref}
+      style={{
+        textAlign: "center",
+        padding: "48px 0 32px",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(8px)",
+        transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+      }}
+    >
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: B.teal,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
 /* ================================================================== */
 /* HERO                                                                */
@@ -104,43 +213,83 @@ function Hero() {
       ref={ref}
       aria-label="Sample Report Hero"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: 160,
+        paddingBottom: 100,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "50%",
+          width: 800,
+          height: 800,
+          transform: "translate(-50%, -50%)",
+          background:
+            "radial-gradient(circle, rgba(75,63,174,0.25) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          maxWidth: 800,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? 24 : 48,
+          paddingRight: mobile ? 24 : 48,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
           <div
-            className="text-[11px] uppercase"
-            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
-          >
-            Model RP-2.0
-          </div>
-          <h1
-            className="text-[36px] md:text-[52px]"
             style={{
-              color: B.navy,
+              fontSize: 11,
               fontWeight: 700,
-              letterSpacing: S.lsHero,
-              lineHeight: S.lhHeading,
-              marginBottom: S.h1mb,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(250,249,247,0.50)",
+              marginBottom: 24,
             }}
           >
-            Sample Report
+            SAMPLE REPORT
+          </div>
+          <h1
+            className="text-[32px] md:text-[44px]"
+            style={{
+              color: "#FAF9F7",
+              fontWeight: 700,
+              letterSpacing: "-0.035em",
+              lineHeight: 1.08,
+              marginBottom: 24,
+            }}
+          >
+            See what your report looks like.
           </h1>
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: "rgba(250,249,247,0.70)",
+              lineHeight: 1.75,
+              maxWidth: 560,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
           >
-            This is a demonstration assessment for a consulting professional. Every RunPayway report follows this exact structure, generated deterministically by Model RP-2.0.
+            This is a sample Income Stability Score&trade; report for a
+            consulting professional. Your report will be personalized to your
+            income structure, industry, and profile.
           </p>
         </div>
       </div>
@@ -148,560 +297,1590 @@ function Hero() {
   );
 }
 
-
 /* ================================================================== */
-/* PAGE 1: SCORE OVERVIEW                                              */
+/* PAGE 1: YOUR SCORE                                                  */
 /* ================================================================== */
-function ScoreOverview() {
+function Page1Score() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-  const [animScore, setAnimScore] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const score = useAnimatedCounter(78, visible, 1500);
 
-  useEffect(() => {
-    if (!visible || hasAnimated) return;
-    setHasAnimated(true);
-    const target = 78;
-    const duration = 1000;
-    const start = performance.now();
-    const animate = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setAnimScore(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    requestAnimationFrame(animate);
-  }, [visible, hasAnimated]);
+  const bandSegments = [
+    { range: "0-29", label: "Limited", color: B.bandLimited },
+    { range: "30-49", label: "Developing", color: B.bandDeveloping },
+    { range: "50-74", label: "Established", color: B.bandEstablished },
+    { range: "75-100", label: "High", color: B.bandHigh, active: true },
+  ];
 
-  return (
-    <section
-      ref={ref}
-      aria-label="Score Overview"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        {/* Section label */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 16 }}>
-            Report Page 1 of 5
-          </div>
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Your Income Stability Score
-          </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            A single number that captures the structural durability of your income.
-          </p>
-        </div>
-
-        {/* Score card */}
-        <div
-          style={{
-            maxWidth: 640,
-            margin: "0 auto",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out 100ms, transform 0.6s ease-out 100ms",
-          }}
-        >
-          <div style={{
-            backgroundColor: "#ffffff",
-            border: "1px solid rgba(14,26,43,0.08)",
-            borderRadius: S.panelRadius,
-            padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-            boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)",
-            position: "relative",
-            overflow: "hidden",
-          }}>
-            {/* Top accent */}
-            <div style={{ position: "absolute", top: 0, left: 20, right: 20, height: 3, borderRadius: "0 0 3px 3px", background: B.gradient }} />
-
-            {/* Score */}
-            <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 10, marginTop: 8 }}>
-              Income Stability Score&#8482;
-            </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
-              <span className="text-[48px] md:text-[56px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>{animScore}</span>
-              <span className="text-[16px] md:text-[18px]" style={{ fontWeight: 600, color: B.teal }}>Established Stability</span>
-            </div>
-            <div className="text-[13px]" style={{ color: B.muted, marginBottom: 28 }}>
-              <span style={{ fontWeight: 600, color: B.navy }}>72nd percentile</span> among Professional Services
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 24 }} />
-
-            {/* Key metrics grid */}
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 24 }}>
-              {/* Income Continuity */}
-              <div>
-                <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-                  Income Continuity
-                </div>
-                <div className="text-[28px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 4 }}>38%</div>
-                <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.5 }}>
-                  of income continues without active work
-                </p>
-              </div>
-
-              {/* Stress Test */}
-              <div>
-                <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-                  Stress Test
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                  <span className="text-[28px]" style={{ fontWeight: 700, color: B.navy }}>78</span>
-                  <span className="text-[16px]" style={{ color: B.light }}>&rarr;</span>
-                  <span className="text-[28px]" style={{ fontWeight: 700, color: "#DC2626" }}>56</span>
-                </div>
-                <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.5 }}>
-                  score under largest-source removal
-                </p>
-              </div>
-
-              {/* How Resilient */}
-              <div>
-                <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-                  How Resilient
-                </div>
-                <div className="text-[20px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 4 }}>Supported</div>
-                <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.5 }}>
-                  income has structural backing
-                </p>
-              </div>
-
-              {/* Confidence */}
-              <div>
-                <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-                  Confidence
-                </div>
-                <div className="text-[20px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 4 }}>High</div>
-                <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.60)", lineHeight: 1.5 }}>
-                  all six inputs provided
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* CLASSIFICATION SCALE                                                */
-/* ================================================================== */
-function ClassificationBands() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const bands = [
-    { range: "0\u201329", label: "Limited", color: "#DC2626", desc: "Income structure is fragile and depends heavily on active work." },
-    { range: "30\u201349", label: "Developing", color: "#F59E0B", desc: "Some structural support exists, but exposure remains significant." },
-    { range: "50\u201374", label: "Established", color: B.teal, desc: "Meaningful stability with better structural protection.", active: true },
-    { range: "75\u2013100", label: "High", color: B.navy, desc: "Durable income structure, less dependent on constant effort." },
+  const metrics = [
+    {
+      label: "Continuity",
+      value: "38%",
+      accent: B.teal,
+    },
+    {
+      label: "Stress Test",
+      value: "78 → 56",
+      accent: B.bandLimited,
+    },
+    {
+      label: "Main Constraint",
+      value: "Too little income secured ahead",
+      accent: B.purple,
+      small: true,
+    },
+    {
+      label: "How Resilient",
+      value: "Supported",
+      accent: B.bandHigh,
+    },
   ];
 
   return (
     <section
       ref={ref}
-      aria-label="Classification Bands"
+      aria-label="Page 1 — Your Score"
       style={{
         backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingTop: mobile ? 48 : 0,
+        paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? 16 : 24,
+        paddingRight: mobile ? 16 : 24,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <SectionLabel label="PAGE 1 — WHERE DO I STAND?" />
+      <ReportCard visible={visible} mobile={mobile} delay={100}>
+        {/* Header */}
         <div
           style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 24,
+            marginTop: 8,
+            flexWrap: "wrap",
+            gap: 8,
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Classification Scale
-          </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Every score maps to a fixed stability band. This sample scores 78 — Established Stability.
+          <span
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: B.navy,
+              letterSpacing: "0.06em",
+            }}
+          >
+            RUNPAYWAY&trade;
+          </span>
+          <span style={{ fontSize: 11, color: B.light }}>
+            Income Stability Score&trade; &middot; Model RP-2.0
+          </span>
+        </div>
+
+        {/* Overline + title */}
+        <div
+          style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: B.teal,
+            marginBottom: 8,
+          }}
+        >
+          YOUR INCOME STABILITY REPORT
+        </div>
+        <h2
+          style={{
+            fontSize: 22,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 20,
+          }}
+        >
+          Your Score
+        </h2>
+
+        {/* Score + band */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 16,
+            marginBottom: 8,
+          }}
+        >
+          <span
+            className="text-[48px] md:text-[64px]"
+            style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}
+          >
+            {score}
+          </span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              backgroundColor: "rgba(22,163,74,0.08)",
+              color: B.bandHigh,
+              fontWeight: 600,
+              fontSize: 14,
+              padding: "4px 14px",
+              borderRadius: 100,
+            }}
+          >
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: B.bandHigh,
+              }}
+            />
+            High Stability
+          </span>
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            color: B.muted,
+            marginBottom: 28,
+          }}
+        >
+          <span style={{ fontWeight: 600, color: B.navy }}>
+            72nd percentile
+          </span>{" "}
+          among Professional Services
+        </div>
+
+        {/* Classification scale bar */}
+        <div style={{ marginBottom: 8 }}>
+          <div
+            style={{
+              display: "flex",
+              borderRadius: 6,
+              overflow: "hidden",
+              height: 10,
+            }}
+          >
+            {bandSegments.map((seg) => (
+              <div
+                key={seg.label}
+                style={{
+                  flex: seg.label === "High" ? 26 : seg.label === "Limited" ? 30 : seg.label === "Developing" ? 20 : 25,
+                  backgroundColor: seg.color,
+                  opacity: seg.active ? 1 : 0.25,
+                }}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 6,
+            }}
+          >
+            {bandSegments.map((seg) => (
+              <span
+                key={seg.label}
+                style={{
+                  fontSize: 10,
+                  color: seg.active ? seg.color : B.light,
+                  fontWeight: seg.active ? 700 : 500,
+                }}
+              >
+                {seg.range} {seg.label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div
+          style={{
+            height: 1,
+            background: "rgba(14,26,43,0.06)",
+            margin: "24px 0",
+          }}
+        />
+
+        {/* Key insight */}
+        <div
+          style={{
+            borderLeft: `3px solid ${B.purple}`,
+            padding: "14px 18px",
+            backgroundColor: "rgba(75,63,174,0.04)",
+            borderRadius: "0 8px 8px 0",
+            marginBottom: 24,
+          }}
+        >
+          <p
+            style={{
+              fontSize: 14,
+              color: B.navy,
+              lineHeight: 1.6,
+              margin: 0,
+              fontWeight: 500,
+            }}
+          >
+            The biggest structural weak point is limited forward visibility.
+            Improving forward secured income could add 8 points.
           </p>
         </div>
 
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          {bands.map((band, i) => (
+        {/* 4 metric cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr 1fr",
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          {metrics.map((m) => (
             <div
-              key={band.label}
+              key={m.label}
+              style={{
+                borderLeft: `3px solid ${m.accent}`,
+                padding: "12px 14px",
+                backgroundColor: B.sand,
+                borderRadius: "0 8px 8px 0",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: B.light,
+                  marginBottom: 6,
+                }}
+              >
+                {m.label}
+              </div>
+              <div
+                style={{
+                  fontSize: m.small ? 12 : 16,
+                  fontWeight: 700,
+                  color: B.navy,
+                  lineHeight: 1.3,
+                }}
+              >
+                {m.value}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Metadata row */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: mobile ? 8 : 16,
+            fontSize: 12,
+            color: B.muted,
+          }}
+        >
+          <span>
+            Confidence: <strong style={{ color: B.navy }}>High</strong>
+          </span>
+          <span style={{ color: B.light }}>&middot;</span>
+          <span>
+            Durability: <strong style={{ color: B.navy }}>Durable</strong>
+          </span>
+          <span style={{ color: B.light }}>&middot;</span>
+          <span>
+            Structure: <strong style={{ color: B.navy }}>42/60</strong>
+          </span>
+          <span style={{ color: B.light }}>&middot;</span>
+          <span>
+            Stability: <strong style={{ color: B.navy }}>29/40</strong>
+          </span>
+        </div>
+
+        <CardFooter
+          left="Your Score · Page 1"
+          right="Model RP-2.0 · runpayway.com/methodology"
+        />
+      </ReportCard>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/* PAGE 2: WHY THIS SCORE                                              */
+/* ================================================================== */
+function Page2WhyThisScore() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const drivers = [
+    { label: "Continuity", level: "Moderate", pct: 45, color: B.bandDeveloping },
+    { label: "Income Secured Ahead", level: "Low", pct: 18, color: B.bandLimited },
+    { label: "Source Diversification", level: "Moderate", pct: 50, color: B.bandDeveloping },
+    { label: "Dependence on Work", level: "High", pct: 75, color: B.bandLimited },
+    { label: "Dependence on One Source", level: "Moderate", pct: 50, color: B.bandDeveloping },
+  ];
+
+  const constraints = [
+    { rank: "PRIMARY", text: "Too little income secured ahead" },
+    { rank: "SECONDARY", text: "Too much dependence on active work" },
+    { rank: "CONTRIBUTING", text: "Income does not continue long enough" },
+  ];
+
+  const improvements = [
+    { change: "+15 forward secured %", pts: "+8 pts", best: true },
+    { change: "\u221215 labor dependence %", pts: "+5 pts", best: false },
+    { change: "+15 income persistence %", pts: "+3 pts", best: false },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Page 2 — Why This Score"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? 48 : 0,
+        paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? 16 : 24,
+        paddingRight: mobile ? 16 : 24,
+      }}
+    >
+      <SectionLabel label="PAGE 2 — WHAT DRIVES THIS SCORE?" />
+      <ReportCard visible={visible} mobile={mobile} delay={100}>
+        <h2
+          style={{
+            fontSize: 22,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 24,
+            marginTop: 8,
+          }}
+        >
+          Why This Score
+        </h2>
+
+        {/* Split layout */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1.4fr 1fr",
+            gap: mobile ? 28 : 32,
+            marginBottom: 28,
+          }}
+        >
+          {/* LEFT: drivers */}
+          <div>
+            {drivers.map((d, i) => (
+              <div
+                key={d.label}
+                style={{ marginBottom: i < drivers.length - 1 ? 18 : 0 }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    marginBottom: 6,
+                  }}
+                >
+                  <span
+                    style={{ fontSize: 13, fontWeight: 600, color: B.navy }}
+                  >
+                    {d.label}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: d.color,
+                    }}
+                  >
+                    {d.level}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    height: 7,
+                    borderRadius: 4,
+                    backgroundColor: "rgba(14,26,43,0.06)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      borderRadius: 4,
+                      backgroundColor: d.color,
+                      width: visible ? `${d.pct}%` : "0%",
+                      transition: `width 0.8s ease-out ${200 + i * 100}ms`,
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* RIGHT: Constraint Hierarchy */}
+          <div
+            style={{
+              backgroundColor: B.sand,
+              borderRadius: 12,
+              padding: mobile ? 16 : 20,
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: B.teal,
+                marginBottom: 16,
+              }}
+            >
+              CONSTRAINT HIERARCHY
+            </div>
+            {constraints.map((c, i) => (
+              <div
+                key={c.rank}
+                style={{
+                  marginBottom: i < constraints.length - 1 ? 14 : 0,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: "0.1em",
+                    color:
+                      c.rank === "PRIMARY"
+                        ? B.bandLimited
+                        : c.rank === "SECONDARY"
+                          ? B.bandDeveloping
+                          : B.light,
+                    marginBottom: 3,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {c.rank}
+                </div>
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: B.navy,
+                    fontWeight: 500,
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {c.text}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div
+          style={{
+            height: 1,
+            background: "rgba(14,26,43,0.06)",
+            margin: "4px 0 24px",
+          }}
+        />
+
+        {/* Which changes help most */}
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 14,
+          }}
+        >
+          Which changes help most
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr",
+            gap: 10,
+          }}
+        >
+          {improvements.map((imp, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "10px 14px",
+                backgroundColor: B.sand,
+                borderRadius: 8,
+                border: imp.best
+                  ? `1px solid rgba(22,163,74,0.2)`
+                  : "1px solid rgba(14,26,43,0.06)",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: B.light,
+                  flexShrink: 0,
+                }}
+              >
+                {i + 1}.
+              </span>
+              <div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: B.navy,
+                    fontWeight: 500,
+                    marginBottom: 2,
+                  }}
+                >
+                  {imp.change}
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: B.bandHigh,
+                    }}
+                  >
+                    {imp.pts}
+                  </span>
+                  {imp.best && (
+                    <span
+                      style={{
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        color: "#ffffff",
+                        backgroundColor: B.bandHigh,
+                        padding: "2px 6px",
+                        borderRadius: 4,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      BEST
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <CardFooter
+          left="Why This Score · Page 2"
+          right="Model RP-2.0 · runpayway.com/methodology"
+        />
+      </ReportCard>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/* PAGE 3: WHAT COULD GO WRONG                                         */
+/* ================================================================== */
+function Page3WhatCouldGoWrong() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const scenarios = [
+    {
+      severity: "SIGNIFICANT",
+      title: "Largest Source Removed",
+      from: 78,
+      to: 56,
+      diff: -22,
+      bandDrop: null,
+    },
+    {
+      severity: "BAND DROP",
+      title: "Active Labor Interrupted",
+      from: 78,
+      to: 34,
+      diff: -44,
+      bandDrop: "Limited Stability",
+    },
+    {
+      severity: "MODERATE",
+      title: "Forward Commitments Delayed",
+      from: 78,
+      to: 65,
+      diff: -13,
+      bandDrop: null,
+    },
+  ];
+
+  const structureMix = [
+    { label: "Active", pct: 62, color: B.navy },
+    { label: "Recurring", pct: 25, color: B.teal },
+    { label: "Built-In", pct: 13, color: B.purple },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Page 3 — What Could Go Wrong"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? 48 : 0,
+        paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? 16 : 24,
+        paddingRight: mobile ? 16 : 24,
+      }}
+    >
+      <SectionLabel label="PAGE 3 — HOW VULNERABLE IS MY INCOME?" />
+      <ReportCard visible={visible} mobile={mobile} delay={100}>
+        <h2
+          style={{
+            fontSize: 22,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 24,
+            marginTop: 8,
+          }}
+        >
+          What Could Go Wrong
+        </h2>
+
+        {/* Two summary cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          <div
+            style={{
+              padding: "18px 20px",
+              backgroundColor: B.sand,
+              borderRadius: 12,
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.light,
+                marginBottom: 10,
+              }}
+            >
+              STRESS TEST
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "center",
+                gap: 8,
+              }}
+            >
+              <span
+                style={{ fontSize: 32, fontWeight: 700, color: B.navy }}
+              >
+                78
+              </span>
+              <span style={{ fontSize: 18, color: B.light }}>&rarr;</span>
+              <span
+                style={{
+                  fontSize: 32,
+                  fontWeight: 700,
+                  color: B.bandLimited,
+                }}
+              >
+                56
+              </span>
+            </div>
+          </div>
+          <div
+            style={{
+              padding: "18px 20px",
+              backgroundColor: B.sand,
+              borderRadius: 12,
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.light,
+                marginBottom: 10,
+              }}
+            >
+              CONTINUITY WINDOW
+            </div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: B.navy }}>
+              4{" "}
+              <span style={{ fontSize: 16, fontWeight: 500, color: B.muted }}>
+                months
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Scenario rows */}
+        <div style={{ marginBottom: 24 }}>
+          {scenarios.map((s, i) => (
+            <div
+              key={s.title}
               style={{
                 display: "flex",
                 alignItems: mobile ? "flex-start" : "center",
                 flexDirection: mobile ? "column" : "row",
-                gap: mobile ? 8 : 24,
-                padding: mobile ? "20px 16px" : "20px 28px",
-                marginBottom: i < bands.length - 1 ? 2 : 0,
-                borderRadius: S.cardRadius,
-                backgroundColor: band.active ? "rgba(31,109,122,0.06)" : "transparent",
-                border: band.active ? `1px solid rgba(31,109,122,0.15)` : "1px solid transparent",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
+                gap: mobile ? 6 : 16,
+                padding: "14px 16px",
+                backgroundColor: i % 2 === 0 ? B.sand : "transparent",
+                borderRadius: 8,
+                marginBottom: 4,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: mobile ? "auto" : 180 }}>
-                <div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: band.color, flexShrink: 0 }} />
-                <span className="text-[14px]" style={{ fontWeight: 700, color: B.navy, minWidth: 90 }}>{band.range}</span>
-                <span className="text-[14px]" style={{ fontWeight: 600, color: band.color }}>{band.label}</span>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color:
+                    s.severity === "BAND DROP"
+                      ? B.bandLimited
+                      : s.severity === "SIGNIFICANT"
+                        ? B.bandDeveloping
+                        : B.muted,
+                  minWidth: mobile ? "auto" : 90,
+                  flexShrink: 0,
+                }}
+              >
+                {s.severity}
+              </span>
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: B.navy,
+                  flex: 1,
+                }}
+              >
+                {s.title}
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  flexShrink: 0,
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>
+                  {s.from}
+                </span>
+                <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: B.bandLimited,
+                  }}
+                >
+                  {s.to}
+                </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    color: B.bandLimited,
+                    fontWeight: 600,
+                  }}
+                >
+                  ({s.diff})
+                </span>
+                {s.bandDrop && (
+                  <span
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: "#ffffff",
+                      backgroundColor: B.bandLimited,
+                      padding: "2px 8px",
+                      borderRadius: 4,
+                      marginLeft: 4,
+                    }}
+                  >
+                    {s.bandDrop}
+                  </span>
+                )}
               </div>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.5, margin: 0 }}>
-                {band.desc}
-              </p>
-              {band.active && (
-                <span className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: "0.08em", flexShrink: 0, marginLeft: mobile ? 0 : "auto" }}>
-                  This score
+            </div>
+          ))}
+        </div>
+
+        {/* Income Structure Mix */}
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 10,
+          }}
+        >
+          Income Structure Mix
+        </div>
+        <div
+          style={{
+            display: "flex",
+            borderRadius: 6,
+            overflow: "hidden",
+            height: 10,
+            marginBottom: 8,
+          }}
+        >
+          {structureMix.map((s) => (
+            <div
+              key={s.label}
+              style={{
+                flex: s.pct,
+                backgroundColor: s.color,
+              }}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            flexWrap: "wrap",
+            marginBottom: 24,
+          }}
+        >
+          {structureMix.map((s) => (
+            <div
+              key={s.label}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                fontSize: 11,
+                color: B.muted,
+              }}
+            >
+              <span
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: 2,
+                  backgroundColor: s.color,
+                  flexShrink: 0,
+                }}
+              />
+              {s.label} {s.pct}%
+            </div>
+          ))}
+        </div>
+
+        {/* Peer comparison bar */}
+        <div
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 10,
+          }}
+        >
+          Peer Comparison — Professional Services
+        </div>
+        <div
+          style={{
+            display: "flex",
+            borderRadius: 6,
+            overflow: "hidden",
+            height: 10,
+            marginBottom: 8,
+          }}
+        >
+          <div
+            style={{ flex: 12, backgroundColor: B.bandLimited, opacity: 0.6 }}
+          />
+          <div
+            style={{
+              flex: 22,
+              backgroundColor: B.bandDeveloping,
+              opacity: 0.6,
+            }}
+          />
+          <div
+            style={{
+              flex: 38,
+              backgroundColor: B.bandEstablished,
+              opacity: 0.6,
+            }}
+          />
+          <div style={{ flex: 28, backgroundColor: B.bandHigh, opacity: 0.8 }} />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: 10,
+            color: B.light,
+          }}
+        >
+          <span>Limited (12%)</span>
+          <span>Developing (22%)</span>
+          <span>Established (38%)</span>
+          <span>High (28%)</span>
+        </div>
+
+        <CardFooter
+          left="What Could Go Wrong · Page 3"
+          right="Model RP-2.0 · runpayway.com/methodology"
+        />
+      </ReportCard>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/* PAGE 4: HOW TO IMPROVE                                              */
+/* ================================================================== */
+function Page4HowToImprove() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const projections = [
+    {
+      option: "Option 1",
+      title: "Extend Forward Visibility",
+      from: 78,
+      to: 86,
+      diff: "+8",
+      note: "Reaches High Stability",
+    },
+    {
+      option: "Option 2",
+      title: "Reduce Labor Dependence",
+      from: 78,
+      to: 83,
+      diff: "+5",
+      note: null,
+    },
+    {
+      option: "Option 3",
+      title: "Increase Persistent Revenue",
+      from: 78,
+      to: 81,
+      diff: "+3",
+      note: null,
+    },
+  ];
+
+  const priorities = [
+    {
+      rank: 1,
+      title: "Extend forward commitments",
+      desc: "Create more income already committed before the month begins.",
+    },
+    {
+      rank: 2,
+      title: "Reduce dependence on active work",
+      desc: "Build income that continues without daily effort.",
+    },
+    {
+      rank: 3,
+      title: "Strengthen recurring base",
+      desc: "Convert one-time work into repeating revenue.",
+    },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Page 4 — How to Improve"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? 48 : 0,
+        paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? 16 : 24,
+        paddingRight: mobile ? 16 : 24,
+      }}
+    >
+      <SectionLabel label="PAGE 4 — WHAT CAN I DO ABOUT IT?" />
+      <ReportCard visible={visible} mobile={mobile} delay={100}>
+        <h2
+          style={{
+            fontSize: 22,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 24,
+            marginTop: 8,
+          }}
+        >
+          How to Improve
+        </h2>
+
+        {/* Current band */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 16,
+            padding: "14px 18px",
+            borderLeft: `3px solid ${B.bandHigh}`,
+            backgroundColor: "rgba(22,163,74,0.04)",
+            borderRadius: "0 8px 8px 0",
+            marginBottom: 24,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: B.bandHigh,
+            }}
+          >
+            High Stability
+          </span>
+          <span
+            style={{
+              fontSize: 22,
+              fontWeight: 700,
+              color: B.navy,
+              marginLeft: "auto",
+            }}
+          >
+            78
+          </span>
+        </div>
+
+        {/* Projected improvements */}
+        <div style={{ marginBottom: 24 }}>
+          {projections.map((p, i) => (
+            <div
+              key={p.option}
+              style={{
+                display: "flex",
+                alignItems: mobile ? "flex-start" : "center",
+                flexDirection: mobile ? "column" : "row",
+                gap: mobile ? 6 : 16,
+                padding: "12px 16px",
+                backgroundColor: i % 2 === 0 ? B.sand : "transparent",
+                borderRadius: 8,
+                marginBottom: 4,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: B.light,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  minWidth: mobile ? "auto" : 60,
+                  flexShrink: 0,
+                }}
+              >
+                {p.option}
+              </span>
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: B.navy,
+                  flex: 1,
+                }}
+              >
+                {p.title}
+              </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  flexShrink: 0,
+                }}
+              >
+                <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>
+                  {p.from}
+                </span>
+                <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
+                <span
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: B.bandHigh,
+                  }}
+                >
+                  {p.to}
+                </span>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: B.bandHigh,
+                  }}
+                >
+                  ({p.diff})
+                </span>
+              </div>
+              {p.note && (
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 600,
+                    color: B.bandHigh,
+                    backgroundColor: "rgba(22,163,74,0.08)",
+                    padding: "2px 8px",
+                    borderRadius: 4,
+                    flexShrink: 0,
+                  }}
+                >
+                  {p.note}
                 </span>
               )}
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
 
-
-/* ================================================================== */
-/* PAGE 2: WHY THIS SCORE                                              */
-/* ================================================================== */
-function WhyThisScore() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const drivers = [
-    { label: "Income Source Count", value: 72, desc: "3 active sources detected" },
-    { label: "Source Diversification", value: 58, desc: "Moderate concentration in primary source" },
-    { label: "Income Predictability", value: 85, desc: "Strong recurring revenue patterns" },
-    { label: "Forward Commitment", value: 64, desc: "4 months of contracted income ahead" },
-    { label: "Continuity Ratio", value: 38, desc: "38% continues without active work" },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      aria-label="Why This Score"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        {/* Combined */}
         <div
           style={{
             textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            padding: "16px 20px",
+            backgroundColor: "rgba(75,63,174,0.04)",
+            borderRadius: 10,
+            marginBottom: 28,
+            border: `1px solid rgba(75,63,174,0.08)`,
           }}
         >
-          <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 16 }}>
-            Report Page 2 of 5
-          </div>
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Why This Score
-          </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Five structural drivers determine the overall score. Each is measured independently and contributes to the final result.
-          </p>
+          <span style={{ fontSize: 13, color: B.muted }}>
+            Combined:{" "}
+          </span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: B.navy }}>
+            Score would reach{" "}
+          </span>
+          <span style={{ fontSize: 20, fontWeight: 700, color: B.purple }}>
+            91
+          </span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.bandHigh }}>
+            {" "}
+            (+13 points)
+          </span>
         </div>
 
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          {drivers.map((d, i) => (
-            <div
-              key={d.label}
-              style={{
-                marginBottom: i < drivers.length - 1 ? 20 : 0,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                <span className="text-[14px]" style={{ fontWeight: 600, color: B.navy }}>{d.label}</span>
-                <span className="text-[14px]" style={{ fontWeight: 700, color: B.teal }}>{d.value}/100</span>
-              </div>
-              {/* Bar */}
-              <div style={{ height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.06)", marginBottom: 6, overflow: "hidden" }}>
-                <div style={{
-                  height: "100%",
-                  borderRadius: 4,
-                  background: B.gradient,
-                  width: visible ? `${d.value}%` : "0%",
-                  transition: `width 0.8s ease-out ${200 + i * 100}ms`,
-                }} />
-              </div>
-              <p className="text-[12px]" style={{ color: B.muted, margin: 0, lineHeight: 1.5 }}>{d.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* PAGE 3: WHAT COULD GO WRONG                                         */
-/* ================================================================== */
-function WhatCouldGoWrong() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const scenarios = [
-    { title: "Largest Source Removed", drop: "78 \u2192 56", band: "Established \u2192 Established", severity: "Moderate", desc: "Removing the single largest income source causes a 22-point drop but the score remains in the Established band." },
-    { title: "Two Sources Lost", drop: "78 \u2192 41", band: "Established \u2192 Developing", severity: "High", desc: "Losing two income sources pushes the score into Developing territory, exposing structural fragility." },
-    { title: "All Variable Income Stops", drop: "78 \u2192 48", band: "Established \u2192 Developing", severity: "High", desc: "If all variable and project-based income ceased, only recurring commitments would sustain the score." },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      aria-label="Stress Scenarios"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        {/* Divider */}
         <div
           style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            height: 1,
+            background: "rgba(14,26,43,0.06)",
+            marginBottom: 24,
           }}
-        >
-          <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 16 }}>
-            Report Page 3 of 5
-          </div>
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            What Could Go Wrong
-          </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Stress scenarios show how the score would change under adverse conditions. These are deterministic projections, not predictions.
-          </p>
-        </div>
+        />
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: S.gridGap, maxWidth: 880, margin: "0 auto" }}>
-          {scenarios.map((s, i) => (
+        {/* 3 priority actions */}
+        <div style={{ marginBottom: 24 }}>
+          {priorities.map((p, i) => (
             <div
-              key={s.title}
-              style={{
-                backgroundColor: B.sand,
-                borderRadius: S.panelRadius,
-                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-                border: "1px solid rgba(14,26,43,0.06)",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(16px)",
-                transition: `opacity 0.6s ease-out ${i * 100}ms, transform 0.6s ease-out ${i * 100}ms`,
-              }}
-            >
-              <div className="text-[11px] uppercase" style={{ color: s.severity === "High" ? "#DC2626" : "#F59E0B", fontWeight: 700, letterSpacing: "0.08em", marginBottom: 12 }}>
-                {s.severity} Impact
-              </div>
-              <h3 className="text-[16px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 12 }}>{s.title}</h3>
-              <div className="text-[22px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 4 }}>{s.drop}</div>
-              <div className="text-[12px]" style={{ color: B.teal, fontWeight: 600, marginBottom: 16 }}>{s.band}</div>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* PAGE 4: HOW TO IMPROVE                                              */
-/* ================================================================== */
-function HowToImprove() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const improvements = [
-    { rank: "01", title: "Extend Forward Commitments", impact: "+6 to +10 pts", desc: "Increase the share of income committed before the month begins. Longer contract windows and retainer agreements directly lift the Forward Commitment driver." },
-    { rank: "02", title: "Add a Recurring Revenue Source", impact: "+4 to +7 pts", desc: "Introduce at least one additional source with predictable monthly or quarterly deposits. This strengthens both diversification and continuity." },
-    { rank: "03", title: "Reduce Largest-Source Concentration", impact: "+3 to +5 pts", desc: "Shift income distribution so no single source exceeds 50% of total. This reduces stress-test exposure and improves structural resilience." },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      aria-label="Improvement Paths"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 16 }}>
-            Report Page 4 of 5
-          </div>
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            How to Improve
-          </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Ranked improvement opportunities tailored to this income profile. Each path shows the estimated score impact.
-          </p>
-        </div>
-
-        <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          {improvements.map((item, i) => (
-            <div
-              key={item.rank}
+              key={p.rank}
               style={{
                 display: "flex",
-                gap: mobile ? 16 : 28,
+                gap: 14,
                 alignItems: "flex-start",
-                marginBottom: i < improvements.length - 1 ? 36 : 0,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 100}ms, transform 0.5s ease-out ${i * 100}ms`,
+                marginBottom: i < priorities.length - 1 ? 18 : 0,
               }}
             >
               <div
-                className="text-[28px]"
                 style={{
-                  fontWeight: 800,
-                  color: "rgba(75,63,174,0.15)",
-                  lineHeight: 1,
+                  width: 26,
+                  height: 26,
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(75,63,174,0.08)",
+                  color: B.purple,
+                  fontSize: 12,
+                  fontWeight: 700,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   flexShrink: 0,
-                  minWidth: 40,
-                  paddingTop: 2,
+                  marginTop: 1,
                 }}
               >
-                {item.rank}
+                {p.rank}
               </div>
               <div>
-                <h3 className="text-[16px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 6 }}>{item.title}</h3>
-                <div className="text-[13px]" style={{ color: B.teal, fontWeight: 600, marginBottom: 10 }}>{item.impact}</div>
-                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{item.desc}</p>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: B.navy,
+                    marginBottom: 3,
+                  }}
+                >
+                  {p.title}
+                </div>
+                <div
+                  style={{ fontSize: 13, color: B.muted, lineHeight: 1.5 }}
+                >
+                  {p.desc}
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
+
+        {/* Tailored note */}
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: 11,
+            color: B.light,
+            fontWeight: 500,
+            letterSpacing: "0.04em",
+          }}
+        >
+          Tailored for Professional Services &middot; Retainer /
+          Subscription-Led
+        </div>
+
+        <CardFooter
+          left="How to Improve · Page 4"
+          right="Model RP-2.0 · runpayway.com/methodology"
+        />
+      </ReportCard>
     </section>
   );
 }
 
-
 /* ================================================================== */
-/* PAGE 5 PREVIEW: FULL REPORT SUMMARY                                 */
+/* PAGE 5: WHAT TO DO NEXT                                             */
 /* ================================================================== */
-function FullReportPreview() {
+function Page5WhatToDoNext() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const sections = [
-    { page: "Page 1", title: "Score & Classification", items: ["Overall score and stability band", "Percentile ranking within industry", "Income continuity estimate", "Confidence level"] },
-    { page: "Page 2", title: "Why This Score", items: ["Five structural drivers with individual scores", "Contribution bars for each dimension", "Strengths and weaknesses identified"] },
-    { page: "Page 3", title: "What Could Go Wrong", items: ["Multiple stress scenarios modeled", "Band migration analysis", "Sensitivity to income disruption"] },
-    { page: "Page 4", title: "How to Improve", items: ["Ranked improvement opportunities", "Estimated point impact per action", "Tailored to your income structure"] },
-    { page: "Page 5", title: "Model Verification", items: ["SHA-256 assessment hash", "Model version and timestamp", "Reassessment triggers", "Industry-tailored actions"] },
+  const doList = [
+    "Extend at least one client engagement into a forward commitment.",
+    "Diversify income so no single source exceeds 40% of total.",
+    "Introduce a recurring revenue component that pays monthly.",
+  ];
+
+  const avoidList = [
+    "Taking on more project work without structural terms.",
+    "Relying on a single client for majority of income.",
+    "Deferring changes until income disruption occurs.",
+  ];
+
+  const checklist = [
+    "Create one forward-committed revenue arrangement",
+    "Reduce dependence on the single largest source",
+    "Add one recurring income component",
   ];
 
   return (
     <section
       ref={ref}
-      aria-label="Full Report Preview"
+      aria-label="Page 5 — What to Do Next"
       style={{
         backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingTop: mobile ? 48 : 0,
+        paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? 16 : 24,
+        paddingRight: mobile ? 16 : 24,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        <div
+      <SectionLabel label="PAGE 5 — WHERE DO I GO FROM HERE?" />
+      <ReportCard visible={visible} mobile={mobile} delay={100}>
+        <h2
           style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            fontSize: 22,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 20,
+            marginTop: 8,
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Every Report Contains 5 Pages
-          </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            A complete structural assessment of your income — not a summary, but a full analysis generated by Model RP-2.0.
+          What to Do Next
+        </h2>
+
+        {/* Main takeaway */}
+        <div
+          style={{
+            borderLeft: `3px solid ${B.teal}`,
+            padding: "14px 18px",
+            backgroundColor: "rgba(31,109,122,0.04)",
+            borderRadius: "0 8px 8px 0",
+            marginBottom: 24,
+          }}
+        >
+          <p
+            style={{
+              fontSize: 14,
+              color: B.navy,
+              lineHeight: 1.6,
+              margin: 0,
+              fontWeight: 500,
+            }}
+          >
+            Your income scores in the High Stability band, but forward visibility
+            is the clear structural gap. Addressing it first creates the largest
+            improvement per effort.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, maxWidth: 800, margin: "0 auto" }}>
-          {sections.map((s, i) => (
+        {/* Do / Avoid side by side */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: 16,
+            marginBottom: 28,
+          }}
+        >
+          {/* Do */}
+          <div
+            style={{
+              padding: "16px 18px",
+              backgroundColor: "rgba(22,163,74,0.04)",
+              borderRadius: 10,
+              border: "1px solid rgba(22,163,74,0.08)",
+            }}
+          >
             <div
-              key={s.page}
               style={{
-                backgroundColor: B.sand,
-                borderRadius: S.cardRadius,
-                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-                border: "1px solid rgba(14,26,43,0.06)",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
-                ...(i === sections.length - 1 && !mobile ? { gridColumn: "1 / -1", maxWidth: 380, justifySelf: "center", width: "100%" } : {}),
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.bandHigh,
+                marginBottom: 12,
               }}
             >
-              <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: "0.12em", marginBottom: 10 }}>
-                {s.page}
+              DO
+            </div>
+            {doList.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  marginBottom: i < doList.length - 1 ? 10 : 0,
+                  fontSize: 13,
+                  color: B.navy,
+                  lineHeight: 1.5,
+                }}
+              >
+                <span style={{ fontWeight: 700, color: B.bandHigh, flexShrink: 0 }}>
+                  {i + 1}.
+                </span>
+                <span>{item}</span>
               </div>
-              <h3 className="text-[16px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 14 }}>{s.title}</h3>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {s.items.map((item) => (
-                  <li key={item} className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, paddingLeft: 14, position: "relative", marginBottom: 4 }}>
-                    <span style={{ position: "absolute", left: 0, color: B.teal }}>&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            ))}
+          </div>
+
+          {/* Avoid */}
+          <div
+            style={{
+              padding: "16px 18px",
+              backgroundColor: "rgba(220,38,38,0.03)",
+              borderRadius: 10,
+              border: "1px solid rgba(220,38,38,0.08)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.bandLimited,
+                marginBottom: 12,
+              }}
+            >
+              AVOID
+            </div>
+            {avoidList.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  marginBottom: i < avoidList.length - 1 ? 10 : 0,
+                  fontSize: 13,
+                  color: B.navy,
+                  lineHeight: 1.5,
+                }}
+              >
+                <span style={{ fontWeight: 600, color: B.bandLimited, flexShrink: 0 }}>
+                  &mdash;
+                </span>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 90-Day Checklist */}
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: B.navy,
+            marginBottom: 14,
+          }}
+        >
+          90-Day Checklist
+        </div>
+        <div
+          style={{
+            padding: "16px 18px",
+            backgroundColor: B.sand,
+            borderRadius: 10,
+            marginBottom: 24,
+          }}
+        >
+          {checklist.map((item, i) => (
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: i < checklist.length - 1 ? 12 : 0,
+              }}
+            >
+              <div
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: "50%",
+                  border: `2px solid ${B.border}`,
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ fontSize: 13, color: B.navy, lineHeight: 1.4 }}>
+                {item}
+              </span>
             </div>
           ))}
         </div>
-      </div>
+
+        {/* Reassessment card */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          <div
+            style={{
+              padding: "16px 18px",
+              backgroundColor: "rgba(75,63,174,0.04)",
+              borderRadius: 10,
+              border: "1px solid rgba(75,63,174,0.08)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.purple,
+                marginBottom: 8,
+              }}
+            >
+              REASSESSMENT
+            </div>
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 700,
+                color: B.navy,
+                marginBottom: 10,
+              }}
+            >
+              Reassess in 92 days
+            </div>
+            <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}>
+              <div style={{ marginBottom: 4 }}>
+                &bull; If a major income source changes by &gt;20%
+              </div>
+              <div>&bull; If a new recurring source is added</div>
+            </div>
+          </div>
+
+          {/* Verification card */}
+          <div
+            style={{
+              padding: "16px 18px",
+              backgroundColor: B.sand,
+              borderRadius: 10,
+              border: "1px solid rgba(14,26,43,0.06)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: B.light,
+                marginBottom: 8,
+              }}
+            >
+              VERIFICATION
+            </div>
+            <div
+              style={{
+                fontSize: 12,
+                color: B.muted,
+                lineHeight: 1.7,
+              }}
+            >
+              <div>
+                Record ID:{" "}
+                <span style={{ fontWeight: 600, color: B.navy }}>
+                  RPW-2026-SAMPLE
+                </span>
+              </div>
+              <div>
+                Model:{" "}
+                <span style={{ fontWeight: 600, color: B.navy }}>RP-2.0</span>
+              </div>
+              <div>
+                Verify:{" "}
+                <span style={{ fontWeight: 600, color: B.teal }}>
+                  runpayway.com/verify
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <CardFooter
+          left="What to Do Next · Page 5"
+          right="Model RP-2.0 · runpayway.com/methodology"
+        />
+      </ReportCard>
     </section>
   );
 }
-
 
 /* ================================================================== */
 /* CTA                                                                 */
@@ -716,97 +1895,117 @@ function CtaSection() {
       ref={ref}
       aria-label="Call to Action"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: mobile ? 88 : 120,
+        paddingBottom: mobile ? 88 : 120,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "40%",
+          left: "50%",
+          width: 700,
+          height: 700,
+          transform: "translate(-50%, -50%)",
+          background:
+            "radial-gradient(circle, rgba(75,63,174,0.30) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          maxWidth: 640,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? 24 : 48,
+          paddingRight: mobile ? 24 : 48,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Get Your Own Score
+          <h2
+            className="text-[28px] md:text-[40px]"
+            style={{
+              color: "#FAF9F7",
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.1,
+              marginBottom: 20,
+            }}
+          >
+            Get your own Income Stability Score&trade;
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 480, marginLeft: "auto", marginRight: "auto", marginBottom: 40 }}>
-            See how your income structure compares. Takes under two minutes, no bank connection required.
+          <p
+            style={{
+              fontSize: 16,
+              color: "rgba(250,249,247,0.70)",
+              lineHeight: 1.7,
+              marginBottom: 36,
+              maxWidth: 440,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Under two minutes. Full structural diagnosis. Instant delivery.
           </p>
-          <Link
-            href="/pricing"
+          <a
+            href={STRIPE_SINGLE}
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              height: mobile ? S.ctaHsm : S.ctaH,
-              paddingLeft: S.ctaPadX,
-              paddingRight: S.ctaPadX,
-              borderRadius: S.ctaRadius,
-              background: hovered ? B.purple : B.gradient,
-              color: "#ffffff",
+              height: mobile ? 48 : 56,
+              paddingLeft: 36,
+              paddingRight: 36,
+              borderRadius: 14,
+              backgroundColor: "#FAF9F7",
+              color: B.navy,
               fontSize: 15,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: "0.01em",
               textDecoration: "none",
-              boxShadow: hovered ? "0 8px 24px rgba(75,63,174,0.25)" : "0 4px 16px rgba(14,26,43,0.12)",
-              transition: "background 260ms ease, box-shadow 260ms ease",
+              boxShadow: hovered
+                ? "0 8px 28px rgba(0,0,0,0.20)"
+                : "0 4px 16px rgba(0,0,0,0.12)",
+              transform: hovered ? "translateY(-1px)" : "translateY(0)",
+              transition:
+                "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            View Pricing
-          </Link>
+            Get My Score &mdash; $39
+          </a>
+          <div
+            style={{
+              marginTop: 20,
+              fontSize: 12,
+              color: "rgba(250,249,247,0.40)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Model RP-2.0 &middot; No bank connection &middot; Private by
+            default
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-
-/* ================================================================== */
-/* MODEL BADGE                                                         */
-/* ================================================================== */
-function ModelBadge() {
-  const mobile = useMobile();
-
-  return (
-    <section
-      aria-label="Model Badge"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "10px 20px",
-            borderRadius: 100,
-            backgroundColor: B.sand,
-            border: "1px solid rgba(14,26,43,0.06)",
-          }}
-        >
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
-          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
-            Model RP-2.0
-          </span>
-        </div>
-        <p className="text-[12px]" style={{ color: B.light, marginTop: 16, lineHeight: 1.5 }}>
-          This sample report is for demonstration purposes only. Actual assessments are generated from individual input data and may produce different results.
-        </p>
-      </div>
-    </section>
-  );
-}
-
 
 /* ================================================================== */
 /* MAIN EXPORT                                                         */
@@ -815,14 +2014,12 @@ export default function SampleReportPage() {
   return (
     <div>
       <Hero />
-      <ScoreOverview />
-      <ClassificationBands />
-      <WhyThisScore />
-      <WhatCouldGoWrong />
-      <HowToImprove />
-      <FullReportPreview />
+      <Page1Score />
+      <Page2WhyThisScore />
+      <Page3WhatCouldGoWrong />
+      <Page4HowToImprove />
+      <Page5WhatToDoNext />
       <CtaSection />
-      <ModelBadge />
     </div>
   );
 }
