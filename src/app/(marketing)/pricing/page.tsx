@@ -55,40 +55,34 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
+  sand: "#FAF9F7",
+  sandDk: "#F4F1EA",
+  offWhite: "#FEFDFB",
+  muted: "#4B5563",
   light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  border: "#E6E9EF",
+  gradient:
+    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  cream: "#FAF9F7",
 };
 
 const S = {
-  sectionY:     { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 120, mobile: 72 },
-  transitionY:  { desktop: 72, mobile: 48 },
-  disclaimerY:  { desktop: 64, mobile: 48 },
-  maxW:         1060,
-  padX:         { desktop: 48, mobile: 24 },
-  h1mb:         28,
-  h2mb:         24,
-  subtextMb:    56,
-  paraMb:       24,
-  labelMb:      16,
-  cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   16,
-  panelRadius:  20,
-  gridGap:      24,
-  gridGapSm:    16,
-  ctaH:         56,
-  ctaHsm:       46,
-  ctaPadX:      32,
-  ctaRadius:    14,
-  lhHeading:    1.08,
-  lhBody:       1.75,
-  lhDense:      1.5,
-  lsHeading:    "-0.025em",
-  lsHero:       "-0.035em",
-  lsLabel:      "0.14em",
+  sectionY: { desktop: 160, mobile: 88 },
+  sectionYsm: { desktop: 120, mobile: 72 },
+  maxW: 1060,
+  padX: { desktop: 48, mobile: 24 },
+  h1mb: 28,
+  h2mb: 24,
+  subtextMb: 56,
+  cardRadius: 20,
+  ctaH: 56,
+  ctaHsm: 50,
+  ctaRadius: 14,
+  lhHeading: 1.08,
+  lhBody: 1.75,
+  lsHeading: "-0.025em",
+  lsHero: "-0.035em",
+  lsLabel: "0.14em",
 };
 
 /* ------------------------------------------------------------------ */
@@ -102,7 +96,88 @@ const STRIPE = {
 
 
 /* ================================================================== */
-/* HERO                                                                */
+/* FLOATING PARTICLES                                                  */
+/* ================================================================== */
+function FloatingParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const particlesRef = useRef<
+    Array<{ x: number; y: number; vx: number; vy: number; r: number; o: number }>
+  >([]);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+    };
+    resize();
+
+    const count = 20;
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    particlesRef.current = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.25,
+      r: 1 + Math.random() * 1.5,
+      o: 0.06 + Math.random() * 0.14,
+    }));
+
+    const animate = () => {
+      const cw = canvas.offsetWidth;
+      const ch = canvas.offsetHeight;
+      ctx.clearRect(0, 0, cw, ch);
+
+      for (const p of particlesRef.current) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -10) p.x = cw + 10;
+        if (p.x > cw + 10) p.x = -10;
+        if (p.y < -10) p.y = ch + 10;
+        if (p.y > ch + 10) p.y = -10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${p.o})`;
+        ctx.fill();
+      }
+
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    rafRef.current = requestAnimationFrame(animate);
+    window.addEventListener("resize", resize);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
+
+
+/* ================================================================== */
+/* 1. HERO — Dark gradient, commanding                                 */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
@@ -113,43 +188,89 @@ function Hero() {
       ref={ref}
       aria-label="Pricing Hero"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        position: "relative",
+        background: B.gradient,
+        paddingTop: mobile ? 120 : 180,
+        paddingBottom: mobile ? 80 : 120,
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "40%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: mobile ? 400 : 700,
+          height: mobile ? 400 : 700,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(75,63,174,0.25) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <FloatingParticles />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
           <div
-            className="text-[11px] uppercase"
-            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
-          >
-            Model RP-2.0
-          </div>
-          <h1
-            className="text-[36px] md:text-[52px]"
             style={{
-              color: B.navy,
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: "uppercase" as const,
+              letterSpacing: S.lsLabel,
+              color: B.teal,
+              marginBottom: 24,
+            }}
+          >
+            Income Stability Score&trade;
+          </div>
+
+          <h1
+            style={{
+              fontSize: mobile ? 32 : 48,
               fontWeight: 700,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
+              color: B.cream,
               marginBottom: S.h1mb,
             }}
           >
-            Measure the structure<br />behind your income
+            Know exactly where your income stands.
           </h1>
+
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}
+            style={{
+              fontSize: 17,
+              lineHeight: S.lhBody,
+              color: "rgba(250,249,247,0.75)",
+              maxWidth: 560,
+              marginLeft: "auto",
+              marginRight: "auto",
+              margin: "0 auto",
+            }}
           >
-            A deterministic structural assessment — no AI, no credit pull, no bank connection. Just a score backed by fixed rules.
+            A fixed structural assessment that shows your score, reveals what is
+            exposed, and identifies what would strengthen it next.
           </p>
         </div>
       </div>
@@ -159,133 +280,331 @@ function Hero() {
 
 
 /* ================================================================== */
-/* PRICING CARDS                                                       */
+/* 2. PRICING CARDS — The centerpiece                                  */
 /* ================================================================== */
+function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
+  const [hovered, setHovered] = useState(false);
+
+  const features = [
+    "Full 5-page diagnostic report",
+    "Score, drivers, stress scenarios, actions",
+    "Industry-tailored recommendations",
+    "Instant digital delivery",
+  ];
+
+  return (
+    <div
+      onMouseEnter={() => canHover() && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        background: "#FFFFFF",
+        borderRadius: S.cardRadius,
+        border: "1px solid rgba(14,26,43,0.06)",
+        padding: mobile ? "32px 28px" : "40px",
+        boxShadow: hovered
+          ? "0 12px 32px rgba(14,26,43,0.08)"
+          : "0 4px 16px rgba(14,26,43,0.04)",
+        transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
+        opacity: visible ? 1 : 0,
+        transform: visible
+          ? hovered
+            ? "translateY(-4px)"
+            : "translateY(0)"
+          : "translateY(28px)",
+        transitionDelay: `${delay}ms`,
+        display: "flex",
+        flexDirection: "column" as const,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          textTransform: "uppercase" as const,
+          letterSpacing: "0.10em",
+          color: B.teal,
+          marginBottom: 20,
+        }}
+      >
+        Single Assessment
+      </div>
+
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+        <span style={{ fontSize: 52, fontWeight: 700, color: B.navy, lineHeight: 1 }}>
+          $39
+        </span>
+        <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
+      </div>
+
+      <div
+        style={{
+          height: 1,
+          background: "rgba(14,26,43,0.06)",
+          margin: "24px 0",
+        }}
+      />
+
+      <div style={{ flex: 1, marginBottom: 32 }}>
+        {features.map((f) => (
+          <div
+            key={f}
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "flex-start",
+              marginBottom: 14,
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                backgroundColor: B.teal,
+                flexShrink: 0,
+                marginTop: 7,
+              }}
+            />
+            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
+              {f}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <a
+        href={STRIPE.single}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: S.ctaH,
+          borderRadius: S.ctaRadius,
+          background: B.navy,
+          color: "#ffffff",
+          fontSize: 15,
+          fontWeight: 600,
+          textDecoration: "none",
+          letterSpacing: "0.01em",
+          transition: "background 200ms ease",
+          ...(hovered ? { background: "#162236" } : {}),
+        }}
+      >
+        Get My Score
+      </a>
+
+      <p
+        style={{
+          fontSize: 12,
+          color: B.light,
+          textAlign: "center",
+          marginTop: 14,
+          marginBottom: 0,
+        }}
+      >
+        Under 2 minutes &middot; No bank connection
+      </p>
+    </div>
+  );
+}
+
+function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
+  const [hovered, setHovered] = useState(false);
+
+  const features = [
+    "Everything in Single Assessment",
+    "Three full assessments over 12 months",
+    "Track structural changes over time",
+    "See which improvements moved the score",
+    "Includes all Model RP-2.0 updates",
+  ];
+
+  return (
+    <div
+      onMouseEnter={() => canHover() && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        background: "#FFFFFF",
+        borderRadius: S.cardRadius,
+        border: "1px solid rgba(75,63,174,0.15)",
+        padding: mobile ? "32px 28px" : "40px",
+        boxShadow: hovered
+          ? "0 20px 48px rgba(75,63,174,0.14), 0 4px 12px rgba(14,26,43,0.04), inset 0 0 0 1px rgba(75,63,174,0.04)"
+          : "0 8px 32px rgba(75,63,174,0.10), 0 2px 8px rgba(14,26,43,0.04), inset 0 0 0 1px rgba(75,63,174,0.04)",
+        transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
+        opacity: visible ? 1 : 0,
+        transform: visible
+          ? hovered
+            ? "translateY(-4px)"
+            : "translateY(0)"
+          : "translateY(28px)",
+        transitionDelay: `${delay}ms`,
+        display: "flex",
+        flexDirection: "column" as const,
+      }}
+    >
+      {/* Recommended badge */}
+      <div
+        style={{
+          position: "absolute",
+          top: -14,
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "6px 20px",
+          borderRadius: 100,
+          background: B.purple,
+          color: "#FFFFFF",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase" as const,
+          whiteSpace: "nowrap" as const,
+        }}
+      >
+        Recommended
+      </div>
+
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          textTransform: "uppercase" as const,
+          letterSpacing: "0.10em",
+          color: B.teal,
+          marginBottom: 20,
+        }}
+      >
+        Annual Monitoring
+      </div>
+
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+        <span style={{ fontSize: 52, fontWeight: 700, color: B.navy, lineHeight: 1 }}>
+          $99
+        </span>
+        <span style={{ fontSize: 14, color: B.muted }}>
+          per year &middot; 3 assessments
+        </span>
+      </div>
+
+      <div style={{ fontSize: 13, color: B.purple, fontWeight: 500, marginTop: 8 }}>
+        Save $18 vs. three single assessments
+      </div>
+
+      <div
+        style={{
+          height: 1,
+          background: "rgba(14,26,43,0.06)",
+          margin: "24px 0",
+        }}
+      />
+
+      <div style={{ flex: 1, marginBottom: 32 }}>
+        {features.map((f) => (
+          <div
+            key={f}
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "flex-start",
+              marginBottom: 14,
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                backgroundColor: B.teal,
+                flexShrink: 0,
+                marginTop: 7,
+              }}
+            />
+            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
+              {f}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <a
+        href={STRIPE.annual}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: S.ctaH,
+          borderRadius: S.ctaRadius,
+          background: "linear-gradient(135deg, #4B3FAE 0%, #3A2F8E 100%)",
+          color: "#ffffff",
+          fontSize: 15,
+          fontWeight: 600,
+          textDecoration: "none",
+          letterSpacing: "0.01em",
+          boxShadow: hovered
+            ? "0 12px 28px rgba(75,63,174,0.30)"
+            : "0 4px 16px rgba(75,63,174,0.20)",
+          transition: "box-shadow 260ms ease, transform 200ms ease",
+          transform: hovered ? "translateY(-1px)" : "translateY(0)",
+        }}
+      >
+        Get Annual Monitoring
+      </a>
+
+      <p
+        style={{
+          fontSize: 12,
+          color: B.light,
+          textAlign: "center",
+          marginTop: 14,
+          marginBottom: 0,
+        }}
+      >
+        Under 2 minutes &middot; No bank connection
+      </p>
+    </div>
+  );
+}
+
 function PricingCards() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-
-  const plans = [
-    {
-      title: "Single Assessment",
-      price: "$39",
-      perUnit: "one-time",
-      desc: "A complete 5-page income stability assessment generated by Model RP-2.0. Answer six questions, receive your full report.",
-      href: STRIPE.single,
-      recommended: false,
-    },
-    {
-      title: "Annual Monitoring",
-      price: "$99",
-      perUnit: "per year",
-      desc: "Unlimited reassessments for 12 months. Track how structural changes affect your score over time. Includes every Model RP-2.0 update.",
-      href: STRIPE.annual,
-      recommended: true,
-    },
-  ];
 
   return (
     <section
       ref={ref}
       aria-label="Pricing Plans"
       style={{
-        backgroundColor: B.sand,
+        backgroundColor: "#FFFFFF",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 32, maxWidth: 780, margin: "0 auto" }}>
-          {plans.map((plan, i) => {
-            const [hovered, setHovered] = useState(false);
-            return (
-              <div
-                key={plan.title}
-                onMouseEnter={() => canHover() && setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                style={{
-                  position: "relative",
-                  background: "#FFFFFF",
-                  borderRadius: S.panelRadius,
-                  border: `1px solid ${plan.recommended ? "rgba(75,63,174,0.25)" : "rgba(14,26,43,0.06)"}`,
-                  padding: mobile ? "32px 28px" : "40px 36px",
-                  boxShadow: hovered
-                    ? plan.recommended
-                      ? "0 20px 48px rgba(75,63,174,0.14)"
-                      : "0 12px 32px rgba(14,26,43,0.08)"
-                    : plan.recommended
-                      ? "0 8px 24px rgba(75,63,174,0.08)"
-                      : "0 2px 8px rgba(14,26,43,0.04)",
-                  transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(28px)",
-                  transitionDelay: `${i * 120}ms`,
-                  display: "flex",
-                  flexDirection: "column" as const,
-                }}
-              >
-                {/* Recommended badge */}
-                {plan.recommended && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: -14,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      padding: "5px 18px",
-                      borderRadius: 100,
-                      background: B.purple,
-                      color: "#FFFFFF",
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase" as const,
-                      whiteSpace: "nowrap" as const,
-                    }}
-                  >
-                    Recommended
-                  </div>
-                )}
-
-                <h3 className="text-[14px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: "0.08em", marginBottom: 16 }}>
-                  {plan.title}
-                </h3>
-
-                <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
-                  <span className="text-[44px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>{plan.price}</span>
-                  <span className="text-[14px]" style={{ color: B.muted }}>{plan.perUnit}</span>
-                </div>
-
-                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 32, flex: 1 }}>
-                  {plan.desc}
-                </p>
-
-                <a
-                  href={plan.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: mobile ? S.ctaHsm : S.ctaH,
-                    borderRadius: S.ctaRadius,
-                    background: plan.recommended ? B.gradient : "transparent",
-                    color: plan.recommended ? "#ffffff" : B.navy,
-                    border: plan.recommended ? "none" : `1.5px solid ${B.navy}`,
-                    fontSize: 15,
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    letterSpacing: "0.01em",
-                    transition: "box-shadow 260ms ease",
-                    boxShadow: hovered && plan.recommended ? "0 8px 24px rgba(75,63,174,0.25)" : "none",
-                  }}
-                >
-                  Get Started
-                </a>
-              </div>
-            );
-          })}
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: 32,
+            maxWidth: 780,
+            margin: "0 auto",
+          }}
+        >
+          <SingleCard visible={visible} mobile={mobile} delay={0} />
+          <AnnualCard visible={visible} mobile={mobile} delay={120} />
         </div>
       </div>
     </section>
@@ -294,36 +613,64 @@ function PricingCards() {
 
 
 /* ================================================================== */
-/* WHAT EVERY ASSESSMENT INCLUDES                                      */
+/* 3. WHAT'S INCLUDED — Clean inventory                                */
 /* ================================================================== */
-function WhatIncludes() {
+function WhatsIncluded() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   const items = [
-    { title: "Income Stability Score", desc: "A single 0\u2013100 score reflecting your income\u2019s structural durability." },
-    { title: "Classification Band", desc: "Limited, Developing, Established, or High \u2014 fixed thresholds under Model RP-2.0." },
-    { title: "Structural Breakdown", desc: "Five scored dimensions showing exactly where strength and fragility live." },
-    { title: "Stress Scenarios", desc: "Deterministic projections of how your score changes under adverse conditions." },
-    { title: "Sensitivity Analysis", desc: "Which inputs have the most leverage on your score." },
-    { title: "Improvement Projections", desc: "Ranked actions with estimated point impact, tailored to your profile." },
-    { title: "Industry-Tailored Actions", desc: "Recommendations calibrated to your income model family." },
-    { title: "Reassessment Triggers", desc: "Specific conditions under which you should reassess." },
-    { title: "Peer Benchmarking", desc: "Percentile ranking within your industry cohort." },
-    { title: "Verification", desc: "SHA-256 hash and model version stamp for every assessment." },
+    {
+      num: "01",
+      title: "Your Score",
+      desc: "Score, band, classification, resilience grade, key insight, and confidence level.",
+      accent: B.purple,
+    },
+    {
+      num: "02",
+      title: "Why This Score",
+      desc: "Five structural drivers, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      accent: B.teal,
+    },
+    {
+      num: "03",
+      title: "What Could Go Wrong",
+      desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.",
+      accent: B.purple,
+    },
+    {
+      num: "04",
+      title: "How to Improve",
+      desc: "Projected improvements, industry-tailored actions, and what not to do.",
+      accent: B.teal,
+    },
+    {
+      num: "05",
+      title: "What to Do Next",
+      desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.",
+      accent: B.purple,
+    },
   ];
 
   return (
     <section
       ref={ref}
-      aria-label="What Every Assessment Includes"
+      aria-label="What Every Assessment Delivers"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -333,34 +680,106 @@ function WhatIncludes() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            What every assessment includes
+          <h2
+            style={{
+              fontSize: mobile ? 28 : 40,
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              lineHeight: S.lhHeading,
+              marginBottom: 12,
+            }}
+          >
+            What every assessment delivers
           </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Both plans deliver the same comprehensive 5-page report. Nothing is hidden behind a paywall.
+          <p
+            style={{
+              fontSize: 16,
+              color: B.muted,
+              lineHeight: S.lhBody,
+              maxWidth: 560,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Both plans include the same 5-page report. Nothing is withheld.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, maxWidth: 800, margin: "0 auto" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto" }}>
           {items.map((item, i) => (
             <div
-              key={item.title}
+              key={item.num}
               style={{
                 display: "flex",
-                gap: 14,
+                gap: mobile ? 16 : 24,
                 alignItems: "flex-start",
+                paddingLeft: 20,
+                borderLeft: `3px solid ${item.accent}`,
+                marginBottom: i < items.length - 1 ? 32 : 0,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: `opacity 0.5s ease-out ${i * 50}ms, transform 0.5s ease-out ${i * 50}ms`,
+                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
               }}
             >
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
+              <span
+                style={{
+                  fontSize: mobile ? 28 : 36,
+                  fontWeight: 700,
+                  color: "rgba(14,26,43,0.06)",
+                  lineHeight: 1,
+                  flexShrink: 0,
+                  minWidth: mobile ? 36 : 44,
+                }}
+              >
+                {item.num}
+              </span>
               <div>
-                <span className="text-[14px]" style={{ fontWeight: 600, color: B.navy }}>{item.title}</span>
-                <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: "4px 0 0" }}>{item.desc}</p>
+                <div
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: B.navy,
+                    marginBottom: 4,
+                  }}
+                >
+                  {item.title}
+                </div>
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: B.muted,
+                    lineHeight: 1.65,
+                    margin: 0,
+                  }}
+                >
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
+        </div>
+
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 48,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 0.5s ease-out 400ms",
+          }}
+        >
+          <Link
+            href="/sample-report"
+            style={{
+              fontSize: 14,
+              fontWeight: 600,
+              color: B.purple,
+              textDecoration: "none",
+              letterSpacing: "0.01em",
+            }}
+          >
+            View the sample report &rarr;
+          </Link>
         </div>
       </div>
     </section>
@@ -369,7 +788,7 @@ function WhatIncludes() {
 
 
 /* ================================================================== */
-/* TRUST STRIP                                                         */
+/* 4. TRUST STRIP — Elegant badges                                     */
 /* ================================================================== */
 function TrustStrip() {
   const { ref, visible } = useInView();
@@ -387,12 +806,20 @@ function TrustStrip() {
       ref={ref}
       aria-label="Trust Badges"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
-        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        backgroundColor: "#FFFFFF",
+        paddingTop: mobile ? 48 : 80,
+        paddingBottom: mobile ? 48 : 80,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             display: "flex",
@@ -413,12 +840,28 @@ function TrustStrip() {
                 gap: 8,
                 padding: "10px 20px",
                 borderRadius: 100,
-                backgroundColor: "#ffffff",
-                border: "1px solid rgba(14,26,43,0.06)",
+                backgroundColor: B.sand,
+                border: `1px solid ${B.border}`,
               }}
             >
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: B.gradient }} />
-              <span className="text-[13px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.02em" }}>{badge}</span>
+              <div
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: B.gradient,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 13,
+                  color: B.navy,
+                  fontWeight: 600,
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {badge}
+              </span>
             </div>
           ))}
         </div>
@@ -429,7 +872,7 @@ function TrustStrip() {
 
 
 /* ================================================================== */
-/* FAQ                                                                 */
+/* 5. FAQ — Clean accordion                                            */
 /* ================================================================== */
 function Faq() {
   const { ref, visible } = useInView();
@@ -439,15 +882,19 @@ function Faq() {
   const faqs = [
     {
       q: "What is the difference between Single and Annual?",
-      a: "The Single Assessment is a one-time report. Annual Monitoring gives you unlimited reassessments for 12 months, so you can track how changes to your income structure affect your score over time. Both use the same Model RP-2.0 engine and produce the same comprehensive 5-page report.",
+      a: "Single is a one-time assessment. Annual gives you three assessments over 12 months to track structural changes. Both use Model RP-2.0 and produce the same 5-page report.",
     },
     {
       q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway never connects to your bank, pulls your credit, or accesses any financial accounts. You answer six structured questions about your income, and the model generates your assessment from those inputs alone.",
+      a: "No. RunPayway never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
     },
     {
-      q: "Can I share my report with a lender or employer?",
-      a: "Yes. Every assessment includes a SHA-256 verification hash and model version stamp. Recipients can confirm the report was generated by Model RP-2.0 and has not been altered. The report is yours — share it however you choose.",
+      q: "How long does it take?",
+      a: "Most people complete the assessment in under two minutes. Your report is delivered instantly.",
+    },
+    {
+      q: "Can I share the report?",
+      a: "Yes. Every report includes a verification stamp with model version and record ID. Share it however you choose.",
     },
   ];
 
@@ -456,12 +903,20 @@ function Faq() {
       ref={ref}
       aria-label="Frequently Asked Questions"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -471,8 +926,15 @@ function Faq() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading }}>
-            Common Questions
+          <h2
+            style={{
+              fontSize: mobile ? 28 : 36,
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+            }}
+          >
+            Common questions
           </h2>
         </div>
 
@@ -481,7 +943,7 @@ function Faq() {
             <div
               key={i}
               style={{
-                borderBottom: i < faqs.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                borderTop: "1px solid rgba(14,26,43,0.06)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
                 transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
@@ -501,11 +963,44 @@ function Faq() {
                   textAlign: "left",
                 }}
               >
-                <span className="text-[15px]" style={{ fontWeight: 600, color: B.navy, paddingRight: 16 }}>{faq.q}</span>
-                <span className="text-[20px]" style={{ color: B.light, flexShrink: 0, transition: "transform 200ms ease", transform: openIdx === i ? "rotate(45deg)" : "rotate(0)" }}>+</span>
+                <span
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: B.navy,
+                    paddingRight: 16,
+                  }}
+                >
+                  {faq.q}
+                </span>
+                <span
+                  style={{
+                    fontSize: 20,
+                    color: B.light,
+                    flexShrink: 0,
+                    transition: "transform 200ms ease",
+                    transform: openIdx === i ? "rotate(45deg)" : "rotate(0)",
+                  }}
+                >
+                  +
+                </span>
               </button>
-              <div style={{ maxHeight: openIdx === i ? 300 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
-                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, paddingBottom: 24, margin: 0 }}>
+              <div
+                style={{
+                  maxHeight: openIdx === i ? 300 : 0,
+                  overflow: "hidden",
+                  transition: "max-height 300ms ease",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 14,
+                    color: B.muted,
+                    lineHeight: S.lhBody,
+                    paddingBottom: 24,
+                    margin: 0,
+                  }}
+                >
                   {faq.a}
                 </p>
               </div>
@@ -519,9 +1014,9 @@ function Faq() {
 
 
 /* ================================================================== */
-/* CTA SECTION                                                         */
+/* 6. FINAL CTA — Dark gradient, final push                            */
 /* ================================================================== */
-function CtaSection() {
+function FinalCta() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
   const [hovered, setHovered] = useState(false);
@@ -531,12 +1026,40 @@ function CtaSection() {
       ref={ref}
       aria-label="Final CTA"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        position: "relative",
+        background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 50%, #4B3FAE 100%)",
+        paddingTop: mobile ? 100 : 160,
+        paddingBottom: mobile ? 100 : 160,
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Centered radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: mobile ? 350 : 600,
+          height: mobile ? 350 : 600,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -545,12 +1068,33 @@ function CtaSection() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Ready to measure your income stability?
+          <h2
+            style={{
+              fontSize: mobile ? 28 : 40,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              lineHeight: S.lhHeading,
+              color: B.cream,
+              marginBottom: S.h2mb,
+            }}
+          >
+            See where your income stands.
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 480, marginLeft: "auto", marginRight: "auto", marginBottom: 40 }}>
-            Under two minutes. No bank access. No credit pull. Just a structural score backed by Model RP-2.0.
+
+          <p
+            style={{
+              fontSize: 16,
+              color: "rgba(250,249,247,0.70)",
+              lineHeight: S.lhBody,
+              maxWidth: 480,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginBottom: 40,
+            }}
+          >
+            Under two minutes. Full structural diagnosis. Instant delivery.
           </p>
+
           <a
             href={STRIPE.single}
             target="_blank"
@@ -562,59 +1106,35 @@ function CtaSection() {
               alignItems: "center",
               justifyContent: "center",
               height: mobile ? S.ctaHsm : S.ctaH,
-              paddingLeft: S.ctaPadX,
-              paddingRight: S.ctaPadX,
+              paddingLeft: 36,
+              paddingRight: 36,
               borderRadius: S.ctaRadius,
-              background: hovered ? B.purple : B.gradient,
-              color: "#ffffff",
+              background: B.cream,
+              color: B.navy,
               fontSize: 15,
               fontWeight: 600,
-              letterSpacing: "0.01em",
               textDecoration: "none",
-              boxShadow: hovered ? "0 8px 24px rgba(75,63,174,0.25)" : "0 4px 16px rgba(14,26,43,0.12)",
-              transition: "background 260ms ease, box-shadow 260ms ease",
+              letterSpacing: "0.01em",
+              boxShadow: hovered
+                ? "0 8px 24px rgba(0,0,0,0.20)"
+                : "0 4px 16px rgba(0,0,0,0.12)",
+              transition: "box-shadow 260ms ease, transform 200ms ease",
+              transform: hovered ? "translateY(-2px)" : "translateY(0)",
             }}
           >
-            Get My Score
+            Get My Income Stability Score&trade;
           </a>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-
-/* ================================================================== */
-/* MODEL BADGE                                                         */
-/* ================================================================== */
-function ModelBadge() {
-  const mobile = useMobile();
-
-  return (
-    <section
-      aria-label="Model Badge"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "10px 20px",
-            borderRadius: 100,
-            backgroundColor: B.sand,
-            border: "1px solid rgba(14,26,43,0.06)",
-          }}
-        >
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
-          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
-            Model RP-2.0
-          </span>
+          <p
+            style={{
+              fontSize: 12,
+              color: "rgba(250,249,247,0.40)",
+              marginTop: 24,
+              marginBottom: 0,
+            }}
+          >
+            Model RP-2.0 &middot; No bank connection &middot; Private by default
+          </p>
         </div>
       </div>
     </section>
@@ -630,11 +1150,10 @@ export default function PricingPage() {
     <div>
       <Hero />
       <PricingCards />
-      <WhatIncludes />
+      <WhatsIncluded />
       <TrustStrip />
       <Faq />
-      <CtaSection />
-      <ModelBadge />
+      <FinalCta />
     </div>
   );
 }
