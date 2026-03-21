@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
@@ -151,37 +151,6 @@ function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: b
 }
 
 
-/* ================================================================== */
-/* STATIC PARTICLES — lightweight CSS-only dots (no canvas/rAF)        */
-/* ================================================================== */
-function FloatingParticles() {
-  const dots = useMemo(() =>
-    Array.from({ length: 18 }, (_, i) => ({
-      left: `${5 + Math.round((i * 47 + 13) % 90)}%`,
-      top: `${5 + Math.round((i * 31 + 7) % 90)}%`,
-      r: 1 + (i % 3) * 0.7,
-      o: 0.06 + (i % 4) * 0.04,
-    })), []);
-
-  return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-      {dots.map((d, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            left: d.left,
-            top: d.top,
-            width: d.r * 2,
-            height: d.r * 2,
-            borderRadius: "50%",
-            backgroundColor: `rgba(255,255,255,${d.o})`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 
 /* ================================================================== */
@@ -358,7 +327,6 @@ input[type="range"]::-webkit-slider-thumb {
         }}
       />
 
-      <FloatingParticles />
 
       {/* Ambient glows */}
       <div
