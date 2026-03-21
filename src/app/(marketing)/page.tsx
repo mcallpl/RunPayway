@@ -127,7 +127,7 @@ const S = {
 
 const spaciousY = { desktop: 200, mobile: 100 };
 
-const DISPLAY_FONT = "'Instrument Serif', Georgia, serif";
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: boolean; baseDelay?: number }) {
   return (
@@ -387,7 +387,7 @@ function HeroSection() {
       className="relative overflow-hidden"
       style={{ background: B.gradient }}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px;
@@ -476,12 +476,12 @@ input[type="range"]::-webkit-slider-thumb {
             </div>
 
             <h1
-              className="font-semibold"
               style={{
                 fontSize: mobile ? 34 : 56,
+                fontWeight: 400,
                 color: "#F4F1EA",
                 lineHeight: S.lhHeading,
-                letterSpacing: S.lsHero,
+                letterSpacing: "-0.015em",
                 marginBottom: S.h1mb,
                 maxWidth: mobile ? undefined : 560,
                 fontFamily: DISPLAY_FONT,
@@ -643,7 +643,7 @@ function TheGapSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -766,7 +766,7 @@ function WhoItsForSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -887,7 +887,7 @@ function WhatYourReportSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1062,7 +1062,7 @@ function SampleResultSection() {
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1300,7 +1300,7 @@ function HowItWorksSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1466,7 +1466,7 @@ function WhatItMeasuresSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1619,7 +1619,7 @@ function PricingSection() {
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1868,7 +1868,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -2005,7 +2005,7 @@ function ClassificationSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -2153,7 +2153,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT,
+            fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
