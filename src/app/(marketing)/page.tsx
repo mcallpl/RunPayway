@@ -242,7 +242,7 @@ function HeroSection() {
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
               }}
             >
-              RunPayway&#8482; measures how stable or fragile your income structure is. It evaluates recurring or continuing income, concentration, forward visibility, income variability, and dependence on active work &#8212; then converts that into a fixed 0&#8211;100 score under Model RP-2.0.
+              RunPayway&#8482; measures how stable or fragile your income structure is. It evaluates recurring or continuing income, concentration, forward visibility, variability, and dependence on active work, then converts the result into a fixed 0&#8211;100 score under Model RP-2.0.
             </p>
 
             <p
@@ -646,7 +646,7 @@ function FastComparison() {
                 className="text-[11px] uppercase"
                 style={{ color: "rgba(244,241,234,0.40)", fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
               >
-                What Exists
+                Credit Score
               </div>
               <div
                 className="text-[20px] md:text-[22px]"
@@ -665,7 +665,7 @@ function FastComparison() {
                 className="text-[11px] uppercase"
                 style={{ color: B.teal, fontWeight: 500, letterSpacing: S.lsLabel, marginBottom: 14 }}
               >
-                What&#39;s Missing
+                Income Stability Score&#8482;
               </div>
               <div
                 className="text-[20px] md:text-[22px]"
@@ -853,7 +853,7 @@ function WhatYouReceive() {
         { title: "Executive Diagnostic", desc: "Your overall score, stability band, and top-level result." },
         { title: "Why the Score Is Not Higher", desc: "The main factors holding the score down." },
         { title: "Structural Breakdown", desc: "Recurring income, concentration, forward visibility, variability, continuity, and labor dependence." },
-        { title: "Primary Structural Constraint", desc: "The core weakness affecting the structure most." },
+        { title: "Main Structural Constraint", desc: "The core weakness affecting the structure most." },
       ],
     },
     {
@@ -866,7 +866,7 @@ function WhatYouReceive() {
     {
       label: "Improvement Path",
       items: [
-        { title: "Top Score-Lift Opportunity", desc: "The structural move most likely to improve the score fastest." },
+        { title: "Best Improvement Opportunity", desc: "The structural move most likely to improve the score fastest." },
         { title: "Reassessment Triggers", desc: "What should change before a retake is meaningful." },
       ],
     },
@@ -909,7 +909,7 @@ function WhatYouReceive() {
             className="text-[16px] md:text-[18px] mx-auto"
             style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, maxWidth: 640 }}
           >
-            RunPayway&#8482; does more than assign a score. It explains the structure behind it and shows what to improve next.
+            RunPayway&#8482; does more than assign a score. It shows why the score is what it is and what to strengthen next.
           </p>
         </div>
 
@@ -966,7 +966,7 @@ function WhatYouReceive() {
               className="text-[16px] md:text-[17px] font-semibold"
               style={{ color: B.navy, lineHeight: 1.3, marginBottom: 6 }}
             >
-              Verification &amp; Model Integrity
+              Verification &amp; Authenticity
             </div>
             <p
               className="text-[14px] md:text-[15px]"
@@ -1359,9 +1359,9 @@ function SampleOutput() {
             {/* Divider */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
-            {/* Primary Structural Constraint */}
+            {/* Main Structural Constraint */}
             <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-              Primary Structural Constraint
+              Main Structural Constraint
             </div>
             <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
               Forward visibility is weaker than the current score suggests.
@@ -1372,7 +1372,7 @@ function SampleOutput() {
 
             {/* Top Score-Lift */}
             <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-              Top Score-Lift Opportunity
+              Best Improvement Opportunity
             </div>
             <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
               Increase committed income ahead before the month begins.
@@ -1569,11 +1569,11 @@ function ByIncomeType() {
   const mobile = useMobile();
 
   const types = [
-    "Project-based businesses often struggle with continuity and forward visibility.",
-    "Commission-based income often struggles with concentration and earnings variability.",
-    "Private practice income often struggles with interruption sensitivity.",
-    "Agency income often struggles with dependence on a small number of major clients.",
-    "Creator and hybrid income often struggles with platform dependence and uneven continuity.",
+    "Project-based: weak point is usually continuity and forward visibility.",
+    "Commission-based: weak point is usually concentration and earnings variability.",
+    "Private practice: weak point is usually interruption sensitivity.",
+    "Agency: weak point is usually dependence on a small number of major clients.",
+    "Creator and hybrid: weak point is usually platform dependence and uneven continuity.",
   ];
 
   return (
@@ -1823,7 +1823,7 @@ function PricingCta() {
               margin: `0 auto ${S.subtextMb}px auto`,
             }}
           >
-            See how stable your income structure is, where it is exposed, and what would strengthen it next.
+            See how stable your income structure is, where it is exposed, and what would strengthen it.
           </p>
 
           {/* CTA Button */}
