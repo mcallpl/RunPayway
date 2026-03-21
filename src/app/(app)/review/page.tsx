@@ -166,48 +166,47 @@ interface AssessmentRecord {
 // BRAND — Refined Institutional Design System
 // ============================================================
 const B = {
-  navy: "#0F172A",      // Slate 900 — cooler, more modern anchor
-  ink: "#1E293B",       // Slate 800 — secondary text
-  sand: "#F8FAFC",      // Slate 50 — clean cool background
-  bone: "#F1F5F9",      // Slate 100 — card backgrounds
+  navy: "#0F172A",
+  ink: "#1E293B",
+  sand: "#FFFFFF",        // CHANGED: white background
+  bone: "#F8FAFC",        // CHANGED: very subtle card bg
   white: "#FFFFFF",
-  stone: "#E2E8F0",     // Slate 200 — borders
-  taupe: "#94A3B8",     // Slate 400 — labels and metadata
-  muted: "#64748B",     // Slate 500 — body text
-  purple: "#4B3FAE",    // Brand accent — kept
-  teal: "#0F766E",      // Teal 700 — positive/support signal
-  // Band colors
-  bandLimited: "#DC2626",    // Red 600
-  bandDeveloping: "#D97706", // Amber 600
-  bandEstablished: "#2563EB",// Blue 600
-  bandHigh: "#16A34A",       // Green 600
+  stone: "#E8E8E8",       // CHANGED: softer border
+  taupe: "#94A3B8",
+  muted: "#64748B",
+  purple: "#4B3FAE",
+  teal: "#0F766E",
+  bandLimited: "#DC2626",
+  bandDeveloping: "#D97706",
+  bandEstablished: "#2563EB",
+  bandHigh: "#16A34A",
 };
 
 // ============================================================
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
 const R = {
-  pagePad: 44,
-  headerMb: 16,
-  sectionGap: 16,
-  labelMb: 7,
-  paraMb: 10,
-  itemGap: 8,
-  dividerMy: 16,
-  footerMt: 16,
+  pagePad: 48,
+  headerMb: 20,
+  sectionGap: 24,
+  labelMb: 10,
+  paraMb: 14,
+  itemGap: 12,
+  dividerMy: 20,
+  footerMt: 20,
 };
 
 const T = {
   score: { fontSize: 90, fontWeight: 600, lineHeight: 1 },
-  pageTitle: { fontSize: 27, fontWeight: 600, lineHeight: 1.2, color: "#0E1A2B" },
-  classification: { fontSize: 19, fontWeight: 500, lineHeight: 1.3 },
-  overline: { fontSize: 10.5, fontWeight: 500, lineHeight: 1.3, letterSpacing: "0.14em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 12.5, fontWeight: 600, lineHeight: 1.3 },
-  cardHeading: { fontSize: 14, fontWeight: 600, lineHeight: 1.3 },
-  body: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.52 },
-  small: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.45 },
-  meta: { fontSize: 10, fontWeight: 400, lineHeight: 1.4 },
-  micro: { fontSize: 9.5, fontWeight: 500, lineHeight: 1.3 },
+  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.25, color: "#0E1A2B" },
+  classification: { fontSize: 18, fontWeight: 500, lineHeight: 1.3 },
+  overline: { fontSize: 11, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.35 },
+  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },
+  body: { fontSize: 13, fontWeight: 400, lineHeight: 1.6 },
+  small: { fontSize: 12, fontWeight: 400, lineHeight: 1.55 },
+  meta: { fontSize: 11, fontWeight: 400, lineHeight: 1.5 },
+  micro: { fontSize: 10.5, fontWeight: 500, lineHeight: 1.3 },
 };
 
 // ── PDF page dimensions ──
@@ -263,10 +262,10 @@ function PageFooter({ section, page }: { section: string; page: number }) {
 
 function MetricCard({ label, value, explanation, accent }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderLeft: accent ? `3px solid ${accent}` : `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{value}</div>
-      <div style={{ ...T.small, color: B.muted, lineHeight: 1.5 }}>{explanation}</div>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderLeft: accent ? `3px solid ${accent}` : `1px solid ${B.stone}`, borderRadius: 4, padding: "18px 20px" }}>
+      <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>{label}</div>
+      <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{value}</div>
+      <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
     </div>
   );
 }
@@ -897,12 +896,12 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
 
         {/* Single most important insight — one line the customer remembers */}
-        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 2, padding: "12px 16px", marginBottom: 16 }}>
+        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
           <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>
             {v2Constraints
               ? `The biggest structural weak point is ${constraintLabel[v2Constraints.root_constraint] ?? "limited forward visibility"}.`
@@ -911,7 +910,7 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
           <MetricCard accent={B.teal} label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue if active work stopped today." />
           <MetricCard accent={B.bandLimited} label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest source disappeared, your score would fall to this level." />
           <MetricCard accent={B.purple} label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
@@ -960,16 +959,16 @@ export default function ReviewPage() {
       {/* ---- PAGE 2 — Why did I get this score? ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Why This Score</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          {copy.p2_intro}
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Why You Got This Score</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+          Your score is based on five factors that determine how well your income holds up when something changes. Below, you can see where you are strong and where there is room to improve.
         </p>
 
         <div style={{ display: "flex", gap: 20 }}>
           {/* Left: 5 driver bars */}
           <div style={{ flex: 2 }}>
             <Overline>WHAT DRIVES YOUR SCORE</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, marginBottom: 24 }}>
               {[
                 { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How long income can keep coming in if you stop working for a period of time." },
                 { label: "Income Secured Ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already committed before the next month begins." },
@@ -985,7 +984,7 @@ export default function ReviewPage() {
                   <div style={{ height: 6, borderRadius: 3, backgroundColor: B.stone, marginBottom: 4 }}>
                     <div style={{ height: "100%", borderRadius: 3, width: `${s.pct}%`, backgroundColor: B.navy }} />
                   </div>
-                  <div style={{ ...T.meta, color: B.muted }}>{s.desc}</div>
+                  <div style={{ ...T.small, color: B.muted, marginTop: 2 }}>{s.desc}</div>
                 </div>
               ))}
             </div>
@@ -993,12 +992,12 @@ export default function ReviewPage() {
 
           {/* Right: Constraint hierarchy */}
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
-            <Overline>CONSTRAINT HIERARCHY</Overline>
+            <Overline>WHAT IS HOLDING YOUR SCORE BACK</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {v2Constraints ? [
-                { tag: "PRIMARY", key: v2Constraints.root_constraint },
-                { tag: "SECONDARY", key: v2Constraints.primary_constraint },
-                { tag: "CONTRIBUTING", key: v2Constraints.secondary_constraint },
+                { tag: "MAIN ISSUE", key: v2Constraints.root_constraint },
+                { tag: "SECOND ISSUE", key: v2Constraints.primary_constraint },
+                { tag: "ALSO AFFECTING", key: v2Constraints.secondary_constraint },
               ].filter((c, i, arr) => arr.findIndex(x => x.key === c.key) === i).map((c) => (
                 <div key={c.key} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
                   <div style={{ ...T.micro, color: B.purple }}>{c.tag}</div>
@@ -1006,9 +1005,9 @@ export default function ReviewPage() {
                   <div style={{ ...T.meta, color: B.muted, marginTop: 1 }}>{olExplanations?.[c.key.replace("weak_forward_visibility", "low_forward_secured").replace("high_concentration", "high_concentration").replace("high_labor_dependence", "high_labor_dependence")] ?? ""}</div>
                 </div>
               )) : [
-                { code: "PRIMARY", title: "Low Forward-Secured Income", text: olExplanations?.low_forward_secured || "Not enough future income is already lined up before the month begins." },
-                { code: "SECONDARY", title: "High Source Dependence", text: olExplanations?.high_concentration || "The structure depends too much on the largest income source." },
-                { code: "CONTRIBUTING", title: "Short Continuity Window", text: olExplanations?.short_continuity || "Income does not continue long enough without active work." },
+                { code: "MAIN ISSUE", title: "Low Forward-Secured Income", text: olExplanations?.low_forward_secured || "Not enough future income is already lined up before the month begins." },
+                { code: "SECOND ISSUE", title: "High Source Dependence", text: olExplanations?.high_concentration || "The structure depends too much on the largest income source." },
+                { code: "ALSO AFFECTING", title: "Short Continuity Window", text: olExplanations?.short_continuity || "Income does not continue long enough without active work." },
               ].map((rc) => (
                 <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
                   <div style={{ ...T.micro, color: B.purple }}>{rc.code}</div>
@@ -1020,16 +1019,19 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Sensitivity ranking */}
+        {/* Fastest ways to raise your score */}
         {v2Sensitivity && v2Sensitivity.tests.length > 0 && (
-          <div style={{ marginTop: 16, marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 10 }}>Which changes help most</div>
+          <div style={{ marginTop: 24, marginBottom: 20 }}>
+            <Overline>FASTEST WAYS TO RAISE YOUR SCORE</Overline>
+            <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 520 }}>
+              These are the specific changes that would have the biggest impact on your score, ranked from most effective to least.
+            </p>
             {v2Sensitivity.tests.slice(0, 4).map((t, i) => (
-              <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
-                <span style={{ ...T.small, color: B.navy, flex: 1 }}>{t.delta_description}</span>
-                <span style={{ ...T.small, fontWeight: 600, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift} pts</span>
-                {t.factor === v2Sensitivity.highest_lift_factor && <span style={{ ...T.meta, color: B.teal, fontWeight: 600, border: `1px solid ${B.teal}`, borderRadius: 3, padding: "1px 6px", fontSize: 9 }}>BEST</span>}
+              <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", marginBottom: 8, backgroundColor: i === 0 ? "rgba(15,118,110,0.04)" : "transparent", borderRadius: 6, border: i === 0 ? "1px solid rgba(15,118,110,0.12)" : "1px solid transparent" }}>
+                <span style={{ fontSize: 18, fontWeight: 600, color: i === 0 ? B.teal : B.taupe, minWidth: 24 }}>{i + 1}</span>
+                <span style={{ ...T.body, color: B.navy, flex: 1 }}>{t.delta_description}</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift}</span>
+                <span style={{ ...T.small, color: B.muted }}>points</span>
               </div>
             ))}
           </div>
@@ -1049,13 +1051,13 @@ export default function ReviewPage() {
       {/* ---- PAGE 3 — Where is the structure exposed? ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          {copy.p3_intro}
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+          This page does not predict the future. It shows what would happen to your score if specific things changed — like losing your biggest client or if work slowed down.
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
           <div style={{ flex: 3, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>LARGEST SOURCE STRESS TEST</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
@@ -1064,7 +1066,7 @@ export default function ReviewPage() {
               <span style={{ fontSize: 28, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              This is a stress test, not a prediction. It shows that the current structure would weaken meaningfully if the largest income source were lost.
+              If your biggest source of income disappeared tomorrow, this is what your score would drop to. The bigger the drop, the more you depend on that one source.
             </p>
           </div>
           <div style={{ flex: 2, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
@@ -1073,7 +1075,7 @@ export default function ReviewPage() {
               Estimated: {continuityDisplay}
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {copy.p3_continuity_body}
+              How long your income would keep coming in if you completely stopped working today. Longer is better.
             </p>
           </div>
         </div>
@@ -1083,8 +1085,8 @@ export default function ReviewPage() {
           <div style={{ marginBottom: 20 }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>STRUCTURAL STRESS SCENARIOS</div>
             {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => (
-              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "BAND DROP" : s.score_drop > 10 ? "SIGNIFICANT" : "MODERATE"}</div>
+              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
+                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : s.score_drop > 10 ? "HIGH" : "MEDIUM"}</div>
                 <div style={{ flex: 1 }}>
                   <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{s.label}</span>
                   <span style={{ ...T.meta, color: B.muted, marginLeft: 8 }}>{s.description}</span>
@@ -1104,7 +1106,7 @@ export default function ReviewPage() {
               INDUSTRY SCENARIOS{olIndustryLabel ? ` · ${olIndustryLabel.toUpperCase()}` : ""}
             </div>
             {olScenarios.slice(0, 2).map((s) => (
-              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
+              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
                 <div style={{ ...T.micro, color: s.severity === "critical" ? B.bandLimited : s.severity === "high" ? B.bandDeveloping : B.muted, minWidth: 60, paddingTop: 1 }}>{s.severity.toUpperCase()}</div>
                 <div style={{ flex: 1 }}>
                   <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{s.label}</span>
@@ -1124,9 +1126,9 @@ export default function ReviewPage() {
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           {[
-            { label: "Active Income", pct: record.active_income_level, color: B.ink },
-            { label: "Recurring Income", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "Built-In Income", pct: record.persistent_income_level, color: B.teal },
+            { label: "Earned by working", pct: record.active_income_level, color: B.ink },
+            { label: "Comes back regularly", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Continues on its own", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -1189,7 +1191,7 @@ export default function ReviewPage() {
       {/* ---- PAGE 4 — What would improve it? ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How to Improve</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How to Raise Your Score</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           {copy.p4_intro}
         </p>
@@ -1211,7 +1213,7 @@ export default function ReviewPage() {
         {/* Top 3 projected improvements — compact */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>PROJECTED IMPROVEMENTS</div>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IF YOU MADE THESE CHANGES</div>
             {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => (
               <div key={s.scenario_id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
                 <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
@@ -1332,7 +1334,7 @@ export default function ReviewPage() {
         </div>
 
         {/* 90-Day Checklist */}
-        <Overline>90-DAY STRUCTURAL CHECKLIST</Overline>
+        <Overline>YOUR 90-DAY ACTION PLAN</Overline>
         <div style={{ display: "flex", flexDirection: "column", marginBottom: 20 }}>
           {[
             "Create one offer, agreement, or revenue stream that secures income ahead for more than one month.",
