@@ -335,7 +335,7 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
         >
           <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: B.teal }} />
           <span style={{ fontSize: 14, fontWeight: 600, color: B.teal, letterSpacing: "-0.01em" }}>
-            Established Stability
+            High Stability
           </span>
         </div>
         <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", fontWeight: 500 }}>
@@ -1075,7 +1075,7 @@ function SampleResultSection() {
                 backgroundColor: "rgba(31,109,122,0.08)",
               }}>
                 <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: B.teal }} />
-                <span className="text-[14px]" style={{ fontWeight: 600, color: B.teal }}>Established Stability</span>
+                <span className="text-[14px]" style={{ fontWeight: 600, color: B.teal }}>High Stability</span>
               </div>
             </div>
             <div className="text-[12px]" style={{ color: B.muted, marginBottom: 24 }}>
@@ -1523,7 +1523,7 @@ function ClassificationSection() {
   const bands = [
     { range: "0\u201329", label: "Limited Stability", desc: "Income structure is fragile and depends heavily on active work.", color: "#DC2626", width: 29 },
     { range: "30\u201349", label: "Developing Stability", desc: "Some support exists, but the structure is still exposed.", color: "#F59E0B", width: 20 },
-    { range: "50\u201374", label: "Established Stability", desc: "Income reflects meaningful stability and stronger protection.", color: B.teal, width: 25 },
+    { range: "50\u201374", label: "High Stability", desc: "Income reflects meaningful stability and stronger protection.", color: B.teal, width: 25 },
     { range: "75\u2013100", label: "High Stability", desc: "Income structure is durable and less dependent on constant effort.", color: B.navy, width: 26 },
   ];
 
