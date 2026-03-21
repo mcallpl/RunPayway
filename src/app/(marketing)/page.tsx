@@ -350,8 +350,8 @@ input[type="range"]::-webkit-slider-thumb {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? 112 : 240,
-          paddingBottom: mobile ? 88 : 200,
+          paddingTop: mobile ? 100 : 160,
+          paddingBottom: mobile ? 80 : 140,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         }}
@@ -400,7 +400,7 @@ input[type="range"]::-webkit-slider-thumb {
               style={{
                 color: "rgba(244,241,234,0.75)",
                 lineHeight: S.lhBody,
-                marginBottom: 12,
+                marginBottom: 28,
                 maxWidth: mobile ? undefined : 480,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
@@ -454,12 +454,6 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
 
-              <p
-                className="text-[13px] md:text-[14px]"
-                style={{ color: "rgba(244,241,234,0.50)", marginTop: 14, letterSpacing: "0.01em", textAlign: mobile ? "center" : "left" }}
-              >
-                Under 2 minutes &#183; Instant report &#183; No bank connection required
-              </p>
             </div>
           </div>
 
@@ -468,12 +462,23 @@ input[type="range"]::-webkit-slider-thumb {
             style={{
               flexShrink: 0,
               display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
               justifyContent: "center",
               marginTop: mobile ? 56 : 0,
               opacity: visible ? 1 : 0,
               transition: "opacity 800ms ease-out 400ms",
             }}
           >
+            <div
+              style={{
+                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)",
+                marginBottom: 16, textAlign: "center",
+              }}
+            >
+              Sample Score
+            </div>
             <AnimatedScoreRing visible={visible} mobile={mobile} />
           </div>
         </div>
