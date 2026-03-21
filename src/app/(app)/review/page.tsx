@@ -576,7 +576,7 @@ export default function ReviewPage() {
   // ── Derived values ──
   const score = record.final_score;
   const tier: "limited" | "developing" | "established" | "high" =
-    score >= 80 ? "high" : score >= 60 ? "established" : score >= 40 ? "developing" : "limited";
+    score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
 
   const issuedDate = (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0];
   const reassessDate = (() => {
@@ -636,23 +636,23 @@ export default function ReviewPage() {
 
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 6px" }}>
-            Current structure is not yet durable.
+            Your income structure is working, but it is not yet well protected.
           </p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540 }}>
-            {record.band_interpretation_text}
+            Your score of {record.final_score} places you in {record.stability_band}. The main issue is not low income. The main issue is that too much of your income still depends on ongoing work, and not enough is already secured ahead.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
           title="What this means in simple terms"
-          copy="Your income is working, but it is not yet strongly protected. Too much of it still depends on you continuing to work, and not enough of it is already lined up ahead of time."
-          takeaway="Simple takeaway: Your income is not weak, but it is not yet well protected."
+          copy="Your income is producing, but it is still easy to disrupt. If work slows or a key source weakens, this structure does not yet have enough built-in protection to hold up well."
+          takeaway="Simple takeaway: Your income works, but it is still too exposed."
         />
 
         <div style={{ display: "flex", gap: 12, marginTop: 8, marginBottom: 24 }}>
-          <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of current income that would continue for a limited period if active work stopped today." />
-          <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source were removed, the modeled score would fall to this level." />
-          <MetricCard label="Primary Constraint" value={record.primary_constraint_label} explanation={record.primary_constraint_text || "The factor most limiting the current score."} />
+          <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue for a short period if active work stopped today." />
+          <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
+          <MetricCard label="Primary Constraint" value="Too Little Income Secured Ahead" explanation="Not enough of your upcoming income is already committed before the month begins. That leaves the structure more exposed when work slows or a source weakens." />
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
@@ -677,20 +677,20 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Structural Breakdown</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows the main factors driving the current score. The question is not whether income exists. The question is how dependable it remains if work slows, a source weakens, or future revenue is not already secured.
+          This page shows the main reasons behind your score. The key question is not whether income exists today. The key question is how well it holds up if work slows, a source weakens, or future income is not already lined up.
         </p>
 
         <div style={{ display: "flex", gap: 20 }}>
           {/* Left: Sub-score modules */}
           <div style={{ flex: 2 }}>
-            <Overline>SUB-SCORE FACTORS</Overline>
+            <Overline>MAIN SCORE DRIVERS</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
               {[
-                { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How much income continues for a period of time without ongoing active work." },
-                { label: "Income Secured Ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already secured through contracts, retainers, advance bookings, milestone billing, subscriptions, or similar arrangements." },
-                { label: "Source Diversification", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "How many independent income sources exist and how much the structure depends on one or two of them." },
-                { label: "Dependence on Your Active Work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much of the current income depends on your continued personal effort." },
-                { label: "Dependence on One Source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How exposed the income structure is to the loss or weakening of the largest source." },
+                { label: "Continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How long income can keep coming in if you stop working for a period of time." },
+                { label: "Income Secured Ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already committed before the next month begins." },
+                { label: "Source Diversification", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "How many meaningful income sources support the structure and how much it depends on one of them." },
+                { label: "Dependence on Your Active Work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much income still depends on you continuing to work directly." },
+                { label: "Dependence on One Source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How much damage would be done if your largest income source weakened or disappeared." },
               ].map((s) => (
                 <div key={s.label}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
@@ -711,10 +711,10 @@ export default function ReviewPage() {
             <Overline>REASON CODES</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
-                { code: "R-12", title: "Low Forward-Secured Income", text: "Too little future income is already committed ahead." },
-                { code: "R-07", title: "High Source Dependence", text: "The profile is too exposed to the loss of the largest source." },
-                { code: "R-03", title: "Short Continuity Window", text: "Income persistence without active work remains limited." },
-                { code: "R-01", title: "Work-Led Structure", text: "Most income still depends on direct personal delivery." },
+                { code: "R-12", title: "Low Forward-Secured Income", text: "Not enough future income is already lined up before the month begins." },
+                { code: "R-07", title: "High Source Dependence", text: "The structure depends too much on the largest income source." },
+                { code: "R-03", title: "Short Continuity Window", text: "Income does not continue long enough without active work." },
+                { code: "R-01", title: "Work-Led Structure", text: "Too much income still depends on your direct effort." },
               ].map((rc) => (
                 <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 8 }}>
                   <div style={{ ...T.micro, color: B.purple }}>{rc.code} | {rc.title}</div>
@@ -728,13 +728,13 @@ export default function ReviewPage() {
         {/* Bottom cards */}
         <div style={{ display: "flex", gap: 14, marginTop: 20, marginBottom: 16 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS SUPPORTING THE SCORE</div>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS HELPING THE SCORE</div>
             {["Income exists across more than one stream", "Month-to-month consistency is not fully unstable", "Some income persistence is already present", "The structure is not starting from zero"].map((b) => (
               <div key={b} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 3 }}><span style={{ color: B.taupe }}>—</span>{b}</div>
             ))}
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS SUPPRESSING THE SCORE</div>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT IS HOLDING THE SCORE DOWN</div>
             {["Too little income is secured before the month begins", "Too much income depends on ongoing active work", "The largest source carries too much weight", "Continuity beyond a short period remains weak"].map((b) => (
               <div key={b} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 3 }}><span style={{ color: B.taupe }}>—</span>{b}</div>
             ))}
@@ -759,14 +759,14 @@ export default function ReviewPage() {
             ))}
           </div>
           <p style={{ ...T.small, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>
-            Simple takeaway: The biggest issue is too little income lined up ahead and too much dependence on your active work.
+            Simple takeaway: The biggest weaknesses are too little income secured ahead and too much reliance on ongoing work.
           </p>
         </div>
 
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary diagnosis:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            {record.structural_priority_text || "The profile is working, but not yet strong. The score is being held down less by earnings level and more by too little income secured ahead and too much dependence on active work."}
+            {`The fastest improvement would come from securing more income ahead. An increase of 15 percentage points in income secured ahead is projected to raise the score from ${record.final_score} to ${Math.min(100, record.final_score + 5)}.`}
           </p>
         </DiagnosisBlock>
 
@@ -779,7 +779,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Risk Exposure</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows where the income structure is most vulnerable under strain. The goal is not to predict the future. The goal is to identify which part of the current income profile is least resilient when pressure is introduced.
+          This page shows where your income structure is most exposed if something changes. It does not predict the future. It shows which part of the current setup is least likely to hold up under pressure.
         </p>
 
         {/* Two large cards */}
@@ -792,7 +792,7 @@ export default function ReviewPage() {
               <span style={{ fontSize: 28, fontWeight: 600, color: "#8B2020" }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              This is a structural stress test, not a prediction. It indicates that the current score is {record.risk_scenario_drop >= 20 ? "highly" : "moderately"} exposed to the loss of the single largest income source.
+              This is a stress test, not a prediction. It shows that the current structure would weaken meaningfully if the largest income source were lost.
             </p>
           </div>
           <div style={{ flex: 2, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
@@ -801,7 +801,7 @@ export default function ReviewPage() {
               Estimated: {record.income_continuity_months} month{record.income_continuity_months !== 1 ? "s" : ""}
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              Based on the current structure, only a limited portion of income appears likely to continue for a short period if active work stops.
+              Based on the current structure, only a limited share of income appears likely to continue if active work stops.
             </p>
           </div>
         </div>
@@ -831,16 +831,16 @@ export default function ReviewPage() {
 
         <SimpleTermsBox
           title="What this means in simple terms"
-          copy="This page shows what could weaken first if something changes. If work slows down or a major source weakens, this income setup may lose strength faster than a stronger setup would."
-          takeaway="Simple takeaway: If something important changes, this income structure could weaken faster than it should."
+          copy="This page shows what is most likely to weaken first if pressure hits the structure. If work slows or a major source weakens, this setup may lose stability faster than a stronger one would."
+          takeaway="Simple takeaway: This structure is still too easy to disrupt."
         />
 
         {/* Three interpretation cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
-            { title: "What weakens first", copy: "The first weakness is not income itself. It is the lack of enough income secured ahead and able to hold through interruption." },
-            { title: "Hidden vulnerability", copy: "A profile can produce meaningful income and still remain fragile underneath. The current profile shows signs of that condition: functioning income with limited shock resistance." },
-            { title: "Present-state interpretation", copy: "This profile remains capable of producing income, but it does not yet demonstrate a strong ability to hold stability when active effort is disrupted or a major source weakens." },
+            { title: "What weakens first", copy: "The first weakness is not income today. It is the lack of enough income already secured ahead to carry the structure through disruption." },
+            { title: "Hidden vulnerability", copy: "Income can be productive and still be fragile underneath. This profile shows that pattern: income is working, but it does not yet absorb disruption well." },
+            { title: "Present-state interpretation", copy: "This profile can produce income, but it does not yet hold stability well when work is interrupted or a major source weakens." },
           ].map((card) => (
             <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
               <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{card.title}</div>
@@ -852,7 +852,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Primary risk conclusion:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            The present structure is still too sensitive to interruption.
+            The current structure still loses strength too easily when something changes.
           </p>
         </DiagnosisBlock>
 
@@ -865,7 +865,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Upgrade Path</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
-          The fastest way to improve this score is not to do more. It is to strengthen the structure underneath what you already do. A stronger profile usually shows more income secured ahead, less dependence on one source, and more income that continues without daily personal effort.
+          The fastest way to improve this score is not to work more. It is to strengthen the structure underneath the work you already do. A stronger profile usually has more income secured ahead, less dependence on one source, and more income that continues without daily effort.
         </p>
 
         {/* Band cards */}
@@ -873,18 +873,18 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT BAND</div>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>The structure is functioning, but not yet durable.</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>The structure works, but it is not yet strong enough to absorb disruption well.</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>NEXT TARGET BAND</div>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 40 ? "Developing Stability | 40+" : record.final_score < 60 ? "Established Stability | 60+" : record.final_score < 80 ? "High Stability | 80+" : "Maintain Current"}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 80 ? "The next meaningful target with more income secured ahead, lower dependence on one source, and stronger continuity." : "The priority is maintaining and protecting this position."}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 80 ? "The next target is a structure with more income secured ahead, less source dependence, and stronger continuity." : "The priority is maintaining and protecting this position."}</p>
           </div>
         </div>
 
         {/* What the next state looks like */}
         <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 20 }}>
-          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What the next stronger state usually looks like</div>
+          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What a stronger structure usually looks like</div>
           {[
             "More income is already committed before the month begins",
             "No single source carries outsized structural weight",
@@ -898,17 +898,17 @@ export default function ReviewPage() {
 
         <SimpleTermsBox
           title="What this means in simple terms"
-          copy="The fastest way to improve this score is not just to work more. It is to have more income already lined up, reduce dependence on one source, and build more income that continues over time."
-          takeaway="Simple takeaway: The fastest improvement comes from securing more income ahead and relying less on one source."
+          copy="The fastest way to improve this score is to secure more income ahead, depend less on one source, and build more income that keeps going over time."
+          takeaway="Simple takeaway: The clearest next move is to secure more income ahead and reduce concentration."
         />
 
         {/* Action cards */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
           {[
-            { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more revenue that is already visible before the month begins through retainers, multi-month agreements, milestone billing, advance bookings, pre-sold packages, or recurring contracts." },
-            { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Add or strengthen secondary dependable revenue streams so the structure is less exposed to one dominant source." },
-            { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Move at least part of active income into a recurring or semi-recurring structure wherever the business model allows." },
-            { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily production slows or pauses." },
+            { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, pre-sold packages, or recurring contracts." },
+            { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Reduce how much the structure depends on the largest source by strengthening one or more dependable secondary sources." },
+            { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Shift part of one-time work into income that repeats or renews where the business model allows." },
+            { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily work slows or stops." },
           ].map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
               <div style={{ ...T.micro, color: B.purple, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
@@ -923,7 +923,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Fastest structural lever:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            Securing more income ahead remains the clearest and fastest way to strengthen this profile.
+            Securing more income ahead is still the fastest and clearest way to strengthen this profile.
           </p>
         </DiagnosisBlock>
 
@@ -939,26 +939,26 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>Current conclusion:</p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
-            This profile does not need more explanation. It needs stronger structure. The present score reflects an income profile that works, but does not yet hold enough income secured ahead to sit in a more durable range.
+            This profile does not need more activity first. It needs stronger structure. The income is working, but not enough of it is secured ahead to make the structure durable.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
           title="What this means in simple terms"
-          copy="This report is saying that your income setup needs to become stronger, not just busier. The goal is to make your income hold up better even when work slows down or something changes."
-          takeaway="Simple takeaway: Do not just work harder. Strengthen the structure underneath your income."
+          copy="This report is saying that the structure needs to become stronger, not just busier. The goal is to help income hold up better when work slows or something changes."
+          takeaway="Simple takeaway: Do not focus only on output. Strengthen the structure that supports the income."
         />
 
         {/* Two columns: What to do / What not to */}
         <div style={{ display: "flex", gap: 24, marginTop: 24, marginBottom: 24 }}>
           <div style={{ flex: 1 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do now</div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do next</div>
             {[
-              "Establish one multi-month or forward-committed revenue arrangement",
-              "Reduce reliance on the largest single source",
-              "Convert at least one active-work stream into repeatable revenue",
+              "Secure at least one multi-month or forward-committed revenue arrangement",
+              "Reduce dependence on the single largest source",
+              "Convert part of active-work income into repeatable income",
               "Build a longer continuity window before reassessment",
-              "Re-measure only after structural changes are actually in place",
+              "Reassess only after real structural change is in place",
             ].map((item, i) => (
               <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
@@ -966,10 +966,10 @@ export default function ReviewPage() {
             ))}
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What not to focus on yet</div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What not to prioritize yet</div>
             {[
-              "Doing more work without strengthening the structure underneath it",
-              "High-output months that do not improve durability",
+              "Working more without improving the structure underneath it",
+              "Short bursts of output that do not improve durability",
               "Temporary spikes that disappear when work stops",
               "Metrics that do not improve continuity or income secured ahead",
             ].map((item) => (
@@ -981,14 +981,14 @@ export default function ReviewPage() {
         </div>
 
         {/* Checklist */}
-        <Overline>{tier === "limited" ? "60" : tier === "high" ? "180" : "90"}-DAY IMPLEMENTATION CHECKLIST</Overline>
+        <Overline>90-DAY STRUCTURAL CHECKLIST</Overline>
         <div style={{ display: "flex", flexDirection: "column", marginBottom: 20 }}>
           {[
-            "Create one offer, agreement, or revenue structure that secures income ahead for more than one month.",
-            "Identify the largest current source and reduce structural dependence on it.",
-            "Add one recurring, retained, or repeatable revenue component.",
+            "Create one offer, agreement, or revenue stream that secures income ahead for more than one month.",
+            "Identify the largest source and reduce how much the structure depends on it.",
+            "Add one recurring, retained, or repeatable income component.",
             "Improve visibility into next month's income before the month begins.",
-            "Reassess once the structural changes are active, not merely planned.",
+            "Reassess only after the structural changes are active, not just planned.",
           ].map((row, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ width: 14, height: 14, borderRadius: "50%", border: `1.5px solid ${B.stone}`, flexShrink: 0, marginTop: 2 }} />
@@ -1002,14 +1002,14 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT DATE</div>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{reassessDate}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Reassessment should follow real structural improvement, not a temporary earnings spike.</p>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake the assessment after real structural improvement, not after a short-term earnings spike.</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
               <div>Registry Status: Private Record</div>
-              <div>Model: {record.model_version || "RP-1.0"} | Version 1.0</div>
+              <div>Model: {record.model_version || "RP-2.0"}</div>
               <div>Verification: peoplestar.com/RunPayway/verify</div>
             </div>
           </div>
