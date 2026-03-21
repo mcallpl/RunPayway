@@ -440,32 +440,42 @@ function ReportCovers() {
     {
       num: "01",
       title: "Your Score",
-      desc: "Where do you stand? Score, band, classification scale, key insight, resilience grade, and confidence level.",
+      question: "Where do I stand?",
+      desc: "Score, band, classification scale, key insight, resilience grade, and confidence level.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>,
       accent: B.purple,
     },
     {
       num: "02",
       title: "Why This Score",
-      desc: "What is driving the result? Five structural drivers, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      question: "What is driving the result?",
+      desc: "Five structural drivers, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>,
       accent: B.teal,
     },
     {
       num: "03",
       title: "What Could Go Wrong",
-      desc: "Where is the structure exposed? Stress test, continuity window, structural scenarios, income mix, and peer comparison.",
-      accent: B.purple,
+      question: "Where is the structure exposed?",
+      desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandLimited} strokeWidth="1.5" strokeLinecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>,
+      accent: B.bandLimited,
     },
     {
       num: "04",
       title: "How to Improve",
-      desc: "What would strengthen it? Projected score improvements, industry-tailored actions, and what not to do.",
-      accent: B.teal,
+      question: "What would strengthen it?",
+      desc: "Projected score improvements, industry-tailored actions, and what not to do.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandHigh} strokeWidth="1.5" strokeLinecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>,
+      accent: B.bandHigh,
     },
     {
       num: "05",
       title: "What to Do Next",
-      desc: "What are the next steps? Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.",
-      accent: B.purple,
+      question: "What are the next steps?",
+      desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
+      accent: B.navy,
     },
   ];
 
@@ -524,24 +534,71 @@ function ReportCovers() {
           </p>
         </div>
 
-        {/* Stacked document cards */}
+        {/* Flowchart layout — vertical line with connected nodes */}
         <div
           style={{
-            maxWidth: 700,
+            maxWidth: 640,
             margin: "0 auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: 16,
+            position: "relative",
           }}
         >
+          {/* Vertical connecting line */}
+          {!mobile && (
+            <div style={{
+              position: "absolute",
+              left: 27,
+              top: 40,
+              bottom: 40,
+              width: 2,
+              background: `linear-gradient(180deg, ${B.purple}, ${B.teal}, ${B.bandLimited}, ${B.bandHigh}, ${B.navy})`,
+              opacity: visible ? 0.2 : 0,
+              transition: "opacity 1s ease-out 300ms",
+            }} />
+          )}
+
           {pages.map((page, i) => (
-            <ReportCard
+            <div
               key={page.num}
-              page={page}
-              index={i}
-              visible={visible}
-              mobile={mobile}
-            />
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: mobile ? 16 : 24,
+                marginBottom: i < pages.length - 1 ? (mobile ? 24 : 32) : 0,
+                paddingLeft: mobile ? 0 : 0,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(12px)",
+                transition: `opacity 0.5s ease-out ${i * 100}ms, transform 0.5s ease-out ${i * 100}ms`,
+              }}
+            >
+              {/* Node circle with icon */}
+              <div style={{
+                width: 56,
+                height: 56,
+                borderRadius: "50%",
+                backgroundColor: "#ffffff",
+                border: `2px solid ${page.accent}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                position: "relative",
+                zIndex: 2,
+                boxShadow: `0 0 0 4px ${B.sand}, 0 2px 8px rgba(14,26,43,0.06)`,
+              }}>
+                {page.icon}
+              </div>
+
+              {/* Content */}
+              <div style={{ flex: 1, paddingTop: 4 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: page.accent, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
+                  <span style={{ fontSize: 13, color: B.light }}>—</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
+                </div>
+                <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 700, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{page.title}</h3>
+                <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.desc}</p>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -573,101 +630,7 @@ function ReportCovers() {
   );
 }
 
-function ReportCard({
-  page,
-  index,
-  visible,
-  mobile,
-}: {
-  page: { num: string; title: string; desc: string; accent: string };
-  index: number;
-  visible: boolean;
-  mobile: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "flex",
-        alignItems: "stretch",
-        backgroundColor: B.sand,
-        borderRadius: S.cardRadius,
-        border: "1px solid rgba(14,26,43,0.06)",
-        boxShadow: hovered
-          ? "0 6px 20px rgba(14,26,43,0.07)"
-          : "0 1px 4px rgba(14,26,43,0.03)",
-        overflow: "hidden",
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-2px)"
-            : "translateY(0)"
-          : "translateY(12px)",
-        transition: `opacity 0.5s ease-out ${index * 80}ms, transform 0.35s ease-out ${index * 80}ms, box-shadow 0.3s ease`,
-      }}
-    >
-      {/* Left accent border */}
-      <div
-        style={{
-          width: 4,
-          flexShrink: 0,
-          backgroundColor: page.accent,
-          borderRadius: "16px 0 0 16px",
-        }}
-      />
-
-      <div
-        style={{
-          flex: 1,
-          padding: mobile ? "20px 20px 20px 20px" : "28px 32px 28px 28px",
-          position: "relative",
-        }}
-      >
-        {/* Large faded number */}
-        <div
-          style={{
-            position: "absolute",
-            top: mobile ? 12 : 16,
-            right: mobile ? 16 : 24,
-            fontSize: mobile ? 44 : 56,
-            fontWeight: 800,
-            color: "rgba(14,26,43,0.04)",
-            lineHeight: 1,
-            pointerEvents: "none",
-          }}
-        >
-          {page.num}
-        </div>
-
-        <h3
-          style={{
-            fontSize: mobile ? 16 : 18,
-            fontWeight: 700,
-            color: B.navy,
-            letterSpacing: S.lsHeading,
-            marginBottom: 8,
-          }}
-        >
-          {page.title}
-        </h3>
-        <p
-          style={{
-            fontSize: 14,
-            color: B.muted,
-            lineHeight: S.lhBody,
-            margin: 0,
-            maxWidth: 540,
-          }}
-        >
-          {page.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
+/* ReportCard removed — replaced by flowchart layout inline */
 
 /* ================================================================== */
 /* 4. CLASSIFICATION SCALE — Sand background                           */
@@ -878,39 +841,45 @@ function SixDimensions() {
   const dimensions = [
     {
       num: "01",
-      title: "Recurring or Continuing Income",
+      title: "Recurring Income",
       desc: "How much income continues from existing sources without new acquisition.",
-      accent: B.teal,
+      color: B.teal,
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>,
     },
     {
       num: "02",
-      title: "Income Concentration",
+      title: "Concentration",
       desc: "How much depends on your single largest source.",
-      accent: B.purple,
+      color: B.purple,
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     },
     {
       num: "03",
       title: "Source Diversity",
       desc: "How many meaningful income sources support the structure.",
-      accent: B.teal,
+      color: B.teal,
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>,
     },
     {
       num: "04",
       title: "Forward Visibility",
       desc: "How far ahead income is already committed or scheduled.",
-      accent: B.purple,
+      color: B.purple,
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><circle cx="12" cy="12" r="10"/></svg>,
     },
     {
       num: "05",
-      title: "Income Variability",
+      title: "Variability",
       desc: "How sharply income moves between strong and weak months.",
-      accent: B.teal,
+      color: "#D97706",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
     },
     {
       num: "06",
-      title: "Continuity Without Active Work",
+      title: "Continuity",
       desc: "How much income would continue if active work stopped for 90 days.",
-      accent: B.purple,
+      color: B.navy,
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>,
     },
   ];
 
@@ -969,24 +938,44 @@ function SixDimensions() {
           </p>
         </div>
 
-        {/* 2x3 grid */}
+        {/* 3-column icon grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: S.gridGap,
-            maxWidth: 800,
+            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
+            gap: mobile ? 24 : 32,
+            maxWidth: 900,
             margin: "0 auto",
           }}
         >
           {dimensions.map((dim, i) => (
-            <DimensionCard
+            <div
               key={dim.num}
-              dim={dim}
-              index={i}
-              visible={visible}
-              mobile={mobile}
-            />
+              style={{
+                textAlign: "center",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(16px)",
+                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
+              }}
+            >
+              {/* Circular icon badge */}
+              <div style={{
+                width: 64,
+                height: 64,
+                borderRadius: "50%",
+                backgroundColor: `${dim.color}10`,
+                border: `1.5px solid ${dim.color}30`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+              }}>
+                {dim.icon}
+              </div>
+              <div style={{ fontSize: 10, fontWeight: 700, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{dim.title}</h3>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, margin: 0, maxWidth: 240, marginLeft: "auto", marginRight: "auto" }}>{dim.desc}</p>
+            </div>
           ))}
         </div>
 
@@ -1008,102 +997,7 @@ function SixDimensions() {
   );
 }
 
-function DimensionCard({
-  dim,
-  index,
-  visible,
-  mobile,
-}: {
-  dim: { num: string; title: string; desc: string; accent: string };
-  index: number;
-  visible: boolean;
-  mobile: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "flex",
-        alignItems: "stretch",
-        backgroundColor: B.sand,
-        borderRadius: S.cardRadius,
-        border: "1px solid rgba(14,26,43,0.06)",
-        boxShadow: hovered
-          ? "0 6px 20px rgba(14,26,43,0.07)"
-          : "0 1px 4px rgba(14,26,43,0.03)",
-        overflow: "hidden",
-        position: "relative",
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-2px)"
-            : "translateY(0)"
-          : "translateY(12px)",
-        transition: `opacity 0.5s ease-out ${index * 80}ms, transform 0.35s ease-out ${index * 80}ms, box-shadow 0.3s ease`,
-      }}
-    >
-      {/* Left accent bar */}
-      <div
-        style={{
-          width: 4,
-          flexShrink: 0,
-          backgroundColor: dim.accent,
-          borderRadius: "16px 0 0 16px",
-        }}
-      />
-
-      <div
-        style={{
-          flex: 1,
-          padding: mobile ? "20px 20px 20px 20px" : "24px 28px 24px 24px",
-          position: "relative",
-        }}
-      >
-        {/* Large faded number top-right */}
-        <div
-          style={{
-            position: "absolute",
-            top: mobile ? 10 : 12,
-            right: mobile ? 14 : 20,
-            fontSize: mobile ? 40 : 48,
-            fontWeight: 800,
-            color: "rgba(14,26,43,0.04)",
-            lineHeight: 1,
-            pointerEvents: "none",
-          }}
-        >
-          {dim.num}
-        </div>
-
-        <h3
-          style={{
-            fontSize: 16,
-            fontWeight: 700,
-            color: B.navy,
-            letterSpacing: S.lsHeading,
-            marginBottom: 8,
-          }}
-        >
-          {dim.title}
-        </h3>
-        <p
-          style={{
-            fontSize: 14,
-            color: B.muted,
-            lineHeight: S.lhBody,
-            margin: 0,
-            maxWidth: 300,
-          }}
-        >
-          {dim.desc}
-        </p>
-      </div>
-    </div>
-  );
-}
+/* DimensionCard removed — replaced by circular icon grid inline */
 
 /* ================================================================== */
 /* 6. CTA — Dark gradient                                              */
