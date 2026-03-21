@@ -40,6 +40,8 @@ import { computeReassessmentTriggers } from "./engines/17-reassessment-triggers"
 import { computeBenchmarks } from "./engines/18-benchmarking";
 import { computeIntegrity, getModelManifest } from "./engines/20-integrity-manifest";
 import { REASON_CODES } from "./reason-codes";
+import { executeOutcomeLayer } from "./outcome/index";
+import type { RawIntakeFields } from "./outcome/types";
 
 /**
  * Compute the overall score from canonical inputs + extended inputs.
@@ -65,6 +67,7 @@ export interface ExecuteAssessmentOptions {
   rawInputs: unknown;
   profile: unknown;
   extendedInputs?: unknown;
+  intakeFields?: unknown;
   priorAssessment?: {
     assessment_id: string;
     overall_score: number;
@@ -254,7 +257,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
   reason_codes.push(REASON_CODES["IGT-001"]);
 
   // ── Assemble Record ───────────────────────────────────
-  return {
+  const record: AssessmentRecord = {
     assessment_id: assessmentId,
     created_at: new Date().toISOString(),
     model_manifest: getModelManifest(),
@@ -290,6 +293,14 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     reason_codes,
     integrity,
   };
+
+  // ── 22. Outcome Layer (OL-1.0) ──────────────────────
+  record.outcome_layer = executeOutcomeLayer(
+    record,
+    (opts.intakeFields as RawIntakeFields) ?? null,
+  );
+
+  return record;
 }
 
 // Re-export types and utilities

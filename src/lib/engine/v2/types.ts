@@ -513,4 +513,7 @@ export interface AssessmentRecord {
 
   reason_codes: ReasonCode[];
   integrity: IntegrityResult;
+
+  // Outcome Layer (OL-1.0) — Layer 2 + Layer 3 enrichment
+  outcome_layer?: import("./outcome/types").OutcomeLayerResult;
 }
