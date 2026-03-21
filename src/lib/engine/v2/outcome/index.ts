@@ -11,50 +11,116 @@ import type {
   RawIntakeFields,
   IntakeSignals,
   OutcomeLayerResult,
-  IncomeModelFamilyId,
 } from "./types";
 import type { AssessmentRecord } from "../types";
 
 import { normalizeIntakeSignals } from "./engines/intake-signals";
 import { resolveFamilyProfile } from "./engines/family-resolution";
 import { selectScenarios } from "./engines/scenario-selection";
+import { INDUSTRY_PROFILES } from "./data/industry-profiles";
+import { resolveIndustryProfileId } from "./data/industry-sector-map";
+import {
+  mergeActions,
+  mergeTriggers,
+  mergeExplanations,
+  mergeStrongerPatterns,
+  applyScenarioEmphasis,
+} from "./engines/override-merge";
 
 /**
  * Execute the full outcome layer pipeline.
- *
- * @param coreRecord - The Layer 1 assessment record (read-only)
- * @param rawIntakeFields - Optional new intake fields (4 fields)
- * @returns OutcomeLayerResult - Additional deterministic outcome fields
+ * Layer 2 (family) + Layer 3 (industry) merged deterministically.
  */
 export function executeOutcomeLayer(
   coreRecord: AssessmentRecord,
   rawIntakeFields?: RawIntakeFields | null,
 ): OutcomeLayerResult {
-  // 1. Normalize intake signals
+  // ── Layer 2: Family Resolution ────────────────────────
+
   const signals: IntakeSignals = normalizeIntakeSignals(rawIntakeFields);
 
-  // 2. Resolve family
   const familyResult = resolveFamilyProfile(
     coreRecord.profile_context.primary_income_model,
   );
   const family = familyResult.profile;
 
-  // 3. Resolve industry
   const industrySector = coreRecord.profile_context.industry_sector;
 
-  // 4. Select scenarios (top 4)
-  const selectedScenarios = selectScenarios(
+  // Select base scenarios from family + industry
+  let selectedScenarios = selectScenarios(
     family.family_id,
     industrySector,
     signals,
     coreRecord.fragility.fragility_class,
   );
 
-  // 5. Stronger structure patterns (family defaults for now — Phase 2 adds industry overrides)
-  const strongerPatterns = family.stronger_structure_signals.slice(0, 5);
+  // Start with family defaults
+  let strongerPatterns = family.stronger_structure_signals;
+  let actions = family.default_action_priorities;
+  let avoidActions = family.default_avoid_priorities;
+  let triggers = family.reassessment_trigger_templates;
+  let explanations = family.explanation_translation_map;
+  let benchmarkContext: { framing_text: string; peer_group_label: string } | null = null;
+  let industryProfile: { industry_id: string; industry_label: string } | null = null;
 
-  // 6. Action map (family defaults for now — Phase 2 adds industry re-ranking)
-  const rankedActions = family.default_action_priorities.map((a, i) => ({
+  // ── Layer 3: Industry Refinement ──────────────────────
+
+  const industryProfileId = resolveIndustryProfileId(industrySector);
+  const industry = industryProfileId ? (INDUSTRY_PROFILES[industryProfileId] ?? null) : null;
+
+  if (industry) {
+    industryProfile = {
+      industry_id: industry.industry_id,
+      industry_label: industry.industry_label,
+    };
+
+    // Apply scenario emphasis
+    if (industry.scenario_emphasis.length > 0) {
+      selectedScenarios = applyScenarioEmphasis(
+        selectedScenarios,
+        industry.scenario_emphasis,
+      );
+    }
+
+    // Merge stronger-structure patterns
+    if (industry.stronger_structure_overrides.length > 0) {
+      strongerPatterns = mergeStrongerPatterns(
+        family.stronger_structure_signals,
+        industry.stronger_structure_overrides,
+      );
+    }
+
+    // Merge actions (industry overrides take priority positions)
+    if (industry.action_priority_overrides.length > 0) {
+      actions = mergeActions(
+        family.default_action_priorities,
+        industry.action_priority_overrides,
+      );
+    }
+
+    // Merge triggers (additive)
+    if (industry.reassessment_trigger_overrides.length > 0) {
+      triggers = mergeTriggers(
+        family.reassessment_trigger_templates,
+        industry.reassessment_trigger_overrides,
+      );
+    }
+
+    // Merge explanations (industry replaces family for matching keys)
+    if (Object.keys(industry.explanation_language_overrides).length > 0) {
+      explanations = mergeExplanations(
+        family.explanation_translation_map,
+        industry.explanation_language_overrides,
+      );
+    }
+
+    // Benchmark framing
+    benchmarkContext = industry.benchmark_framing;
+  }
+
+  // ── Assemble Result ───────────────────────────────────
+
+  const rankedActions = actions.map((a, i) => ({
     rank: i + 1,
     action_id: a.action_id,
     label: a.label,
@@ -63,26 +129,14 @@ export function executeOutcomeLayer(
     expected_effect: a.expected_effect ?? "",
   }));
 
-  // 7. Avoid actions
-  const avoidActions = family.default_avoid_priorities;
-
-  // 8. Reassessment triggers (family defaults for now)
-  const triggers = family.reassessment_trigger_templates;
-
-  // 9. Explanation translations (family defaults for now)
-  const explanations = family.explanation_translation_map;
-
-  // 10. Benchmark context (Phase 2 adds industry framing)
-  const benchmarkContext = null;
-
   return {
     income_model_family: {
       family_id: family.family_id,
       family_label: family.family_label,
     },
-    industry_refinement_profile: null, // Phase 2
+    industry_refinement_profile: industryProfile,
     selected_scenarios: selectedScenarios,
-    stronger_structure_patterns: strongerPatterns,
+    stronger_structure_patterns: strongerPatterns.slice(0, 5),
     ranked_action_map: rankedActions,
     avoid_actions: avoidActions,
     reassessment_trigger_set: triggers,

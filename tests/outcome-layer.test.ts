@@ -6,11 +6,13 @@ import { describe, it, expect } from "vitest";
 import { executeAssessment } from "../src/lib/engine/v2/index";
 import { resolveFamily } from "../src/lib/engine/v2/outcome/data/income-model-families";
 import { FAMILY_PROFILES } from "../src/lib/engine/v2/outcome/data/family-profiles";
+import { INDUSTRY_PROFILES } from "../src/lib/engine/v2/outcome/data/industry-profiles";
 import { normalizeIntakeSignals } from "../src/lib/engine/v2/outcome/engines/intake-signals";
 import { resolveFamilyProfile } from "../src/lib/engine/v2/outcome/engines/family-resolution";
 import { selectScenarios } from "../src/lib/engine/v2/outcome/engines/scenario-selection";
+import { mergeActions, mergeTriggers, mergeExplanations, mergeStrongerPatterns, applyScenarioEmphasis } from "../src/lib/engine/v2/outcome/engines/override-merge";
 import type { RawDiagnosticInput, ProfileContext } from "../src/lib/engine/v2/types";
-import type { RawIntakeFields, IncomeModelFamilyId } from "../src/lib/engine/v2/outcome/types";
+import type { RawIntakeFields, IncomeModelFamilyId, ActionItem, SelectedScenario } from "../src/lib/engine/v2/outcome/types";
 
 // ─── FIXTURES ───────────────────────────────────────────
 
@@ -317,6 +319,213 @@ describe("Outcome Layer Integration", () => {
         expect(action.label).toBeTruthy();
         expect(action.description).toBeTruthy();
       }
+    }
+  });
+});
+
+// ─── PHASE 2: INDUSTRY PROFILES ─────────────────────────
+
+describe("Industry Profiles", () => {
+  it("all 8 priority industries have complete profiles", () => {
+    const required = [
+      "real_estate", "consulting_professional_services", "agency_client_services",
+      "private_practice_coaching", "creator_media", "ecommerce_product",
+      "investing_asset", "sales_brokerage",
+    ];
+
+    for (const id of required) {
+      const profile = INDUSTRY_PROFILES[id];
+      expect(profile).toBeDefined();
+      expect(profile.industry_label).toBeTruthy();
+      expect(profile.applicable_income_models.length).toBeGreaterThan(0);
+      expect(profile.scenario_emphasis.length).toBeGreaterThan(0);
+      expect(profile.stronger_structure_overrides.length).toBeGreaterThan(0);
+      expect(profile.action_priority_overrides.length).toBeGreaterThan(0);
+      expect(profile.reassessment_trigger_overrides.length).toBeGreaterThan(0);
+      expect(Object.keys(profile.explanation_language_overrides).length).toBeGreaterThan(0);
+      expect(profile.benchmark_framing.framing_text).toBeTruthy();
+      expect(profile.benchmark_framing.peer_group_label).toBeTruthy();
+    }
+  });
+});
+
+// ─── PHASE 2: OVERRIDE MERGE ENGINE ─────────────────────
+
+describe("Override Merge Engine", () => {
+  const familyActions: ActionItem[] = [
+    { action_id: "FAM-01", label: "Family Action 1", description: "Desc 1" },
+    { action_id: "FAM-02", label: "Family Action 2", description: "Desc 2" },
+    { action_id: "FAM-03", label: "Family Action 3", description: "Desc 3" },
+  ];
+  const industryActions: ActionItem[] = [
+    { action_id: "IND-01", label: "Industry Action 1", description: "Desc I1" },
+    { action_id: "IND-02", label: "Industry Action 2", description: "Desc I2" },
+  ];
+
+  it("mergeActions puts industry actions first", () => {
+    const merged = mergeActions(familyActions, industryActions, 4);
+    expect(merged[0].action_id).toBe("IND-01");
+    expect(merged[1].action_id).toBe("IND-02");
+    expect(merged[2].action_id).toBe("FAM-01");
+    expect(merged.length).toBe(4);
+  });
+
+  it("mergeActions respects max limit", () => {
+    const merged = mergeActions(familyActions, industryActions, 3);
+    expect(merged.length).toBe(3);
+  });
+
+  it("mergeActions returns family defaults when no industry overrides", () => {
+    const merged = mergeActions(familyActions, [], 4);
+    expect(merged[0].action_id).toBe("FAM-01");
+  });
+
+  it("mergeTriggers adds industry triggers without removing family ones", () => {
+    const familyTriggers = [
+      { trigger_id: "RT-F1", condition: "cond1", display_text: "text1" },
+    ];
+    const industryTriggers = [
+      { trigger_id: "RT-I1", condition: "cond2", display_text: "text2" },
+    ];
+    const merged = mergeTriggers(familyTriggers, industryTriggers);
+    expect(merged.length).toBe(2);
+    expect(merged.map(t => t.trigger_id)).toContain("RT-F1");
+    expect(merged.map(t => t.trigger_id)).toContain("RT-I1");
+  });
+
+  it("mergeTriggers deduplicates by trigger_id", () => {
+    const familyTriggers = [
+      { trigger_id: "RT-01", condition: "cond1", display_text: "family text" },
+    ];
+    const industryTriggers = [
+      { trigger_id: "RT-01", condition: "cond1", display_text: "industry text" },
+    ];
+    const merged = mergeTriggers(familyTriggers, industryTriggers);
+    expect(merged.length).toBe(1);
+    expect(merged[0].display_text).toBe("family text"); // family wins
+  });
+
+  it("mergeExplanations replaces family text with industry text", () => {
+    const family = { low_forward_secured: "family text", high_concentration: "family conc" };
+    const industry = { low_forward_secured: "industry text" };
+    const merged = mergeExplanations(family, industry);
+    expect(merged.low_forward_secured).toBe("industry text");
+    expect(merged.high_concentration).toBe("family conc");
+  });
+
+  it("mergeStrongerPatterns puts industry patterns first", () => {
+    const family = ["Family pattern 1", "Family pattern 2", "Family pattern 3"];
+    const industry = ["Industry pattern 1", "Industry pattern 2"];
+    const merged = mergeStrongerPatterns(family, industry, 4);
+    expect(merged[0]).toBe("Industry pattern 1");
+    expect(merged[1]).toBe("Industry pattern 2");
+    expect(merged.length).toBe(4);
+  });
+
+  it("applyScenarioEmphasis moves emphasized scenarios to top", () => {
+    const scenarios: SelectedScenario[] = [
+      { scenario_id: "RS-A", label: "A", description: "a", severity: "moderate", why_it_matters: "a" },
+      { scenario_id: "RS-B", label: "B", description: "b", severity: "high", why_it_matters: "b" },
+      { scenario_id: "RS-C", label: "C", description: "c", severity: "critical", why_it_matters: "c" },
+    ];
+    const result = applyScenarioEmphasis(scenarios, ["RS-C", "RS-B"]);
+    expect(result[0].scenario_id).toBe("RS-C");
+    expect(result[1].scenario_id).toBe("RS-B");
+    expect(result[2].scenario_id).toBe("RS-A");
+  });
+});
+
+// ─── PHASE 2: FULL INTEGRATION WITH INDUSTRY ────────────
+
+describe("Outcome Layer with Industry Refinement", () => {
+  it("applies real_estate industry overrides for commission profile", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: {
+        ...PROFILE_COMMISSION,
+        industry_sector: "real_estate",
+      },
+      intakeFields: {
+        primary_revenue_pattern: "commission_event",
+        primary_weakness_pattern: "pipeline_slows",
+        forward_security_method: "not_secured",
+      },
+    });
+
+    const ol = result.outcome_layer!;
+    expect(ol.industry_refinement_profile).not.toBeNull();
+    expect(ol.industry_refinement_profile!.industry_id).toBe("real_estate");
+    expect(ol.benchmark_context_layer).not.toBeNull();
+    expect(ol.benchmark_context_layer!.peer_group_label).toBe("Real Estate");
+
+    // Industry explanation overrides should be applied
+    expect(ol.explanation_translation_layer.low_forward_secured).toContain("pipeline");
+  });
+
+  it("applies consulting industry overrides for retainer profile", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: {
+        ...PROFILE_RETAINER,
+        industry_sector: "consulting_professional_services",
+      },
+    });
+
+    const ol = result.outcome_layer!;
+    expect(ol.industry_refinement_profile).not.toBeNull();
+    expect(ol.industry_refinement_profile!.industry_id).toBe("consulting_professional_services");
+
+    // Actions should be industry-overridden
+    expect(ol.ranked_action_map[0].action_id).toContain("PS");
+  });
+
+  it("returns null industry profile for industries without overrides", () => {
+    const result = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: {
+        ...PROFILE_COMMISSION,
+        industry_sector: "agriculture",
+      },
+    });
+
+    const ol = result.outcome_layer!;
+    expect(ol.industry_refinement_profile).toBeNull();
+    expect(ol.benchmark_context_layer).toBeNull();
+    // Family defaults should still be present
+    expect(ol.ranked_action_map.length).toBeGreaterThan(0);
+  });
+
+  it("industry overrides do not affect core score", () => {
+    const withIndustry = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: { ...PROFILE_COMMISSION, industry_sector: "real_estate" },
+    });
+    const withoutIndustry = executeAssessment({
+      rawInputs: MID_INPUTS,
+      profile: { ...PROFILE_COMMISSION, industry_sector: "agriculture" },
+    });
+
+    expect(withIndustry.scores.overall_score).toBe(withoutIndustry.scores.overall_score);
+    expect(withIndustry.integrity.input_hash).toBe(withoutIndustry.integrity.input_hash);
+  });
+
+  it("all mapped industry sectors produce valid outcome layers", () => {
+    const industries = [
+      "real_estate", "consulting_professional_services", "sales_brokerage",
+      "healthcare", "media_entertainment", "retail_ecommerce",
+      "finance_banking", "legal_services",
+    ];
+
+    for (const ind of industries) {
+      const result = executeAssessment({
+        rawInputs: MID_INPUTS,
+        profile: { ...PROFILE_COMMISSION, industry_sector: ind as ProfileContext["industry_sector"] },
+      });
+      const ol = result.outcome_layer!;
+      expect(ol.industry_refinement_profile).not.toBeNull();
+      expect(ol.stronger_structure_patterns.length).toBeGreaterThan(0);
+      expect(ol.ranked_action_map.length).toBeGreaterThan(0);
+      expect(ol.reassessment_trigger_set.length).toBeGreaterThan(0);
     }
   });
 });
