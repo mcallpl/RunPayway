@@ -99,6 +99,7 @@ const S = {
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 
 /* ================================================================== */
@@ -120,6 +121,7 @@ function Hero() {
         paddingBottom: mobile ? 72 : 100,
       }}
     >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       {/* Radial glow */}
       <div
         style={{
@@ -172,7 +174,8 @@ function Hero() {
             className="text-[36px] md:text-[44px]"
             style={{
               color: "#FAF9F7",
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: S.h1mb,
@@ -241,7 +244,8 @@ function Purpose() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: S.h2mb,
             }}
@@ -357,7 +361,8 @@ function SixDimensions() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: 12,
             }}
@@ -515,7 +520,8 @@ function ScoringFramework() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: S.h2mb,
               textAlign: "center",
@@ -679,7 +685,8 @@ function InteractionEffects() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: S.h2mb,
             }}
@@ -834,7 +841,8 @@ function ClassificationBands() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: 12,
             }}
@@ -1002,7 +1010,8 @@ function IndustryContext() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: S.h2mb,
             }}
@@ -1113,7 +1122,8 @@ function Integrity() {
             className="text-[28px] md:text-[36px]"
             style={{
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               marginBottom: S.h2mb,
               textAlign: "center",
@@ -1332,7 +1342,8 @@ function CtaSection() {
             className="text-[32px] md:text-[40px]"
             style={{
               color: "#FAF9F7",
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: 20,

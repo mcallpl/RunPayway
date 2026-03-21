@@ -94,6 +94,8 @@ const STRIPE = {
   annual: "https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03",
 };
 
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+
 
 /* ================================================================== */
 /* FLOATING PARTICLES                                                  */
@@ -195,6 +197,7 @@ function Hero() {
         overflow: "hidden",
       }}
     >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       {/* Radial glow */}
       <div
         style={{
@@ -248,7 +251,8 @@ function Hero() {
           <h1
             style={{
               fontSize: mobile ? 32 : 48,
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               color: B.cream,
@@ -684,7 +688,8 @@ function WhatsIncluded() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 12,
@@ -930,7 +935,8 @@ function Faq() {
             style={{
               fontSize: mobile ? 28 : 36,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
             }}
           >
@@ -1071,7 +1077,8 @@ function FinalCta() {
           <h2
             style={{
               fontSize: mobile ? 28 : 40,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               color: B.cream,

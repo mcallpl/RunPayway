@@ -99,6 +99,7 @@ const S = {
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 /* ================================================================== */
 /* 1. HERO — Dark gradient                                             */
@@ -119,6 +120,7 @@ function Hero() {
         paddingBottom: mobile ? 72 : 100,
       }}
     >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       {/* Radial glow */}
       <div
         style={{
@@ -169,7 +171,8 @@ function Hero() {
             style={{
               fontSize: mobile ? 32 : 44,
               color: "#FAF9F7",
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: S.h1mb,
@@ -264,7 +267,8 @@ function ThreeSteps() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 0,
@@ -512,7 +516,8 @@ function ReportCovers() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 12,
@@ -703,7 +708,8 @@ function ClassificationScale() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 12,
@@ -916,7 +922,8 @@ function SixDimensions() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: B.navy,
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 12,
@@ -1057,7 +1064,8 @@ function CtaSection() {
             style={{
               fontSize: mobile ? 28 : 40,
               color: "#FAF9F7",
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: S.h2mb,

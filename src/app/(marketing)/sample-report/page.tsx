@@ -24,6 +24,8 @@ const B = {
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+const FONT_IMPORT = `@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`;
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -268,6 +270,7 @@ function Hero() {
         paddingBottom: 100,
       }}
     >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       <div
         style={{
           position: "absolute",
@@ -316,7 +319,8 @@ function Hero() {
             className="text-[32px] md:text-[44px]"
             style={{
               color: "#FAF9F7",
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: "-0.035em",
               lineHeight: 1.08,
               marginBottom: 24,
@@ -428,7 +432,8 @@ function Page1Score() {
         <h2
           style={{
             fontSize: 22,
-            fontWeight: 700,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
             color: B.navy,
             marginBottom: 20,
           }}
@@ -693,7 +698,8 @@ function Page2WhyThisScore() {
         <h2
           style={{
             fontSize: 22,
-            fontWeight: 700,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
             color: B.navy,
             marginBottom: 24,
             marginTop: 8,
@@ -986,7 +992,8 @@ function Page3WhatCouldGoWrong() {
         <h2
           style={{
             fontSize: 22,
-            fontWeight: 700,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
             color: B.navy,
             marginBottom: 24,
             marginTop: 8,
@@ -1314,7 +1321,8 @@ function Page4HowToImprove() {
         <h2
           style={{
             fontSize: 22,
-            fontWeight: 700,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
             color: B.navy,
             marginBottom: 24,
             marginTop: 8,
@@ -1630,7 +1638,8 @@ function Page5WhatToDoNext() {
         <h2
           style={{
             fontSize: 22,
-            fontWeight: 700,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
             color: B.navy,
             marginBottom: 24,
             marginTop: 8,
@@ -1975,7 +1984,8 @@ function CtaSection() {
             className="text-[28px] md:text-[40px]"
             style={{
               color: "#FAF9F7",
-              fontWeight: 700,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: "-0.03em",
               lineHeight: 1.1,
               marginBottom: 20,
