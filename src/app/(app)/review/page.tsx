@@ -261,9 +261,9 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   );
 }
 
-function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string }) {
+function MetricCard({ label, value, explanation, accent }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderLeft: accent ? `3px solid ${accent}` : `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
       <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{label}</div>
       <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6 }}>{value}</div>
       <div style={{ ...T.small, color: B.muted, lineHeight: 1.5 }}>{explanation}</div>
@@ -302,7 +302,10 @@ function ReportPage({ children, noPad }: { record: AssessmentRecord; children: R
       display: "flex",
       flexDirection: "column",
       overflow: "visible",
+      position: "relative",
     }}>
+      {/* Top accent bar */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
       {children}
     </div>
   );
@@ -894,16 +897,26 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
 
+        {/* Single most important insight — one line the customer remembers */}
+        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 2, padding: "12px 16px", marginBottom: 16 }}>
+          <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>
+            {v2Constraints
+              ? `The biggest structural weak point is ${constraintLabel[v2Constraints.root_constraint] ?? "limited forward visibility"}.`
+              : "The biggest structural weak point is too little income secured ahead."}
+            {v2Sensitivity?.tests?.[0]?.lift ? ` Improving ${v2Sensitivity.tests[0].delta_description.toLowerCase()} could add ${v2Sensitivity.tests[0].lift} points.` : ""}
+          </p>
+        </div>
+
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
-          <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue for a short period if active work stopped today." />
-          <MetricCard label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
-          <MetricCard label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
+          <MetricCard accent={B.teal} label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue if active work stopped today." />
+          <MetricCard accent={B.bandLimited} label="Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest source disappeared, your score would fall to this level." />
+          <MetricCard accent={B.purple} label="Main Constraint" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Too Little Income Secured Ahead") : "Too Little Income Secured Ahead"} explanation="The single biggest factor holding the score back." />
           {v2Fragility && (
-            <MetricCard label="How Resilient" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
+            <MetricCard accent={bandColor} label="How Resilient" value={fragilityClassLabel[v2Fragility.fragility_class] ?? v2Fragility.fragility_class} explanation={failureModeLabel[v2Fragility.primary_failure_mode] ?? "How well the structure absorbs disruption."} />
           )}
         </div>
 
