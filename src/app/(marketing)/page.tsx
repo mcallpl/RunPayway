@@ -692,14 +692,26 @@ function TheGapSection() {
           {/* RIGHT — Income Stability Score */}
           <div
             style={{
-              background: "#FFFFFF",
+              backgroundColor: "#FFFFFF",
               borderRadius: S.cardRadius,
-              border: "1px solid rgba(75,63,174,0.12)",
-              borderTop: `3px solid ${B.purple}`,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              boxShadow: "0 8px 32px rgba(75,63,174,0.08)",
+              border: "1px solid rgba(75,63,174,0.18)",
+              boxShadow: "0 4px 24px rgba(75,63,174,0.10), 0 0 0 1px rgba(75,63,174,0.05)",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
+            {/* Animated subtle glow */}
+            <div style={{
+              position: "absolute",
+              top: -40,
+              right: -40,
+              width: 120,
+              height: 120,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }} />
             <div
               style={{
                 fontSize: 11, fontWeight: 600, textTransform: "uppercase",
@@ -745,8 +757,6 @@ function WhoItsForSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const industries = "Real Estate \u00B7 Finance \u00B7 Insurance \u00B7 Technology \u00B7 Healthcare \u00B7 Legal \u00B7 Consulting \u00B7 Sales \u00B7 Media \u00B7 Construction \u00B7 Retail \u00B7 Hospitality \u00B7 Transportation \u00B7 Manufacturing \u00B7 Education \u00B7 Nonprofit \u00B7 Agriculture \u00B7 Energy";
-
   return (
     <section
       ref={ref}
@@ -757,8 +767,19 @@ function WhoItsForSection() {
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Subtle texture */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 0.03,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        backgroundSize: "128px 128px",
+        pointerEvents: "none",
+      }} />
       <div className="mx-auto" style={{ maxWidth: S.maxW }}>
         <h2
           className="font-semibold text-center"
@@ -793,61 +814,7 @@ function WhoItsForSection() {
           RunPayway is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
         </p>
 
-        {/* Industry marquee */}
-        <div
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 800ms ease-out 300ms",
-          }}
-        >
-          {/* Left fade */}
-          <div
-            style={{
-              position: "absolute", left: 0, top: 0, bottom: 0, width: 80,
-              background: `linear-gradient(to right, ${B.sand}, transparent)`,
-              zIndex: 1, pointerEvents: "none",
-            }}
-          />
-          {/* Right fade */}
-          <div
-            style={{
-              position: "absolute", right: 0, top: 0, bottom: 0, width: 80,
-              background: `linear-gradient(to left, ${B.sand}, transparent)`,
-              zIndex: 1, pointerEvents: "none",
-            }}
-          />
-
-          <div style={{ display: "flex", animation: "marquee 40s linear infinite", width: "max-content" }}>
-            <span
-              style={{
-                fontSize: 13, textTransform: "uppercase", letterSpacing: "0.12em",
-                color: "rgba(14,26,43,0.25)", fontWeight: 500, whiteSpace: "nowrap",
-                paddingRight: 48,
-              }}
-            >
-              {industries}
-            </span>
-            <span
-              style={{
-                fontSize: 13, textTransform: "uppercase", letterSpacing: "0.12em",
-                color: "rgba(14,26,43,0.25)", fontWeight: 500, whiteSpace: "nowrap",
-                paddingRight: 48,
-              }}
-            >
-              {industries}
-            </span>
-          </div>
-        </div>
       </div>
-
-      <style>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-      `}</style>
     </section>
   );
 }
@@ -859,13 +826,14 @@ function WhoItsForSection() {
 function WhatYourReportSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const [activeTab, setActiveTab] = useState(0);
 
-  const cards = [
-    { num: "01", title: "Your Score", desc: "Score, band, classification scale, key insight, resilience grade, confidence, and continuity.", color: B.purple },
-    { num: "02", title: "Why This Score", desc: "Five structural drivers with levels, constraint hierarchy, sensitivity ranking, and interaction effects.", color: B.teal },
-    { num: "03", title: "What Could Go Wrong", desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.", color: B.navy },
-    { num: "04", title: "How to Improve", desc: "Projected score improvements, industry-tailored actions, and what not to do.", color: B.purple },
-    { num: "05", title: "What to Do Next", desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.", color: B.teal },
+  const pages = [
+    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Score, band, classification scale, key insight, resilience grade, confidence level, and income continuity estimate.", color: B.purple },
+    { num: "02", title: "Why This Score", question: "What is driving the result?", desc: "Five structural drivers with levels, constraint hierarchy showing what limits the score most, sensitivity ranking of which changes help most, and interaction effects.", color: B.teal },
+    { num: "03", title: "What Could Go Wrong", question: "Where is the structure exposed?", desc: "Largest source stress test, continuity window, structural stress scenarios with severity ratings, income structure mix breakdown, and peer comparison with outlier dimensions.", color: B.navy },
+    { num: "04", title: "How to Improve", question: "What would strengthen it?", desc: "Projected score improvements with point estimates, industry-tailored priority actions with reasoning, and a clear list of what not to focus on yet.", color: B.purple },
+    { num: "05", title: "What to Do Next", question: "What are the next steps?", desc: "Numbered action list, 90-day structural checklist, specific reassessment trigger conditions, peer benchmarks with common patterns, and verification details.", color: B.teal },
   ];
 
   return (
@@ -914,61 +882,100 @@ function WhatYourReportSection() {
           A 5-page structural diagnostic that shows your score, explains what drives it, identifies where the structure is exposed, and shows what to strengthen next.
         </p>
 
-        {/* Stacked document cards */}
+        {/* Tab navigation */}
         <div
           style={{
-            maxWidth: 620,
-            margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
           }}
         >
-          {cards.map((card, i) => (
-            <div
-              key={card.num}
-              style={{
-                position: "relative",
-                zIndex: i + 1,
-                marginBottom: i < cards.length - 1 ? -8 : 0,
-                background: "#FFFFFF",
-                borderRadius: 12,
-                borderLeft: `3px solid ${card.color}`,
-                border: "1px solid rgba(14,26,43,0.06)",
-                borderLeftWidth: 3,
-                borderLeftStyle: "solid",
-                borderLeftColor: card.color,
-                boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-                padding: mobile ? "20px 20px" : "24px 28px",
-                display: "flex",
-                gap: 16,
-                alignItems: "flex-start",
-                transition: "transform 200ms ease",
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 2px 8px rgba(14,26,43,0.04)";
-              }}
-            >
-              <span style={{ fontSize: 24, fontWeight: 700, color: "#E2E0DB", lineHeight: 1, flexShrink: 0, minWidth: 32 }}>
-                {card.num}
+          <div style={{
+            display: "flex",
+            gap: 0,
+            maxWidth: 700,
+            margin: "0 auto 32px",
+            borderBottom: `2px solid ${B.border}`,
+          }}>
+            {pages.map((page, i) => (
+              <button
+                key={page.num}
+                onClick={() => setActiveTab(i)}
+                style={{
+                  flex: 1,
+                  padding: "14px 8px",
+                  background: "none",
+                  border: "none",
+                  borderBottom: activeTab === i ? `2px solid ${B.purple}` : "2px solid transparent",
+                  marginBottom: -2,
+                  cursor: "pointer",
+                  transition: "all 200ms ease",
+                  color: activeTab === i ? B.navy : B.light,
+                  fontSize: 13,
+                  fontWeight: activeTab === i ? 700 : 500,
+                  letterSpacing: "0.01em",
+                }}
+              >
+                {page.num}. {page.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Tab content — preview card */}
+          <div style={{
+            maxWidth: 700,
+            margin: "0 auto",
+            backgroundColor: "#ffffff",
+            borderRadius: 16,
+            border: "1px solid rgba(14,26,43,0.06)",
+            boxShadow: "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
+            padding: mobile ? 24 : 36,
+            position: "relative",
+            overflow: "hidden",
+            minHeight: 200,
+          }}>
+            {/* Top accent bar */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${pages[activeTab].color}, ${B.teal})` }} />
+
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>
+              <span style={{
+                fontSize: 48,
+                fontWeight: 800,
+                color: "rgba(14,26,43,0.05)",
+                lineHeight: 1,
+                flexShrink: 0,
+              }}>
+                {pages[activeTab].num}
               </span>
-              <div>
-                <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>
-                  {card.title}
-                </div>
-                <p style={{ fontSize: 15, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
-                  {card.desc}
+              <div style={{ flex: 1 }}>
+                <h3 style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: B.navy,
+                  marginBottom: 8,
+                  letterSpacing: "-0.02em",
+                }}>
+                  {pages[activeTab].title}
+                </h3>
+                <p style={{
+                  fontSize: 14,
+                  color: B.muted,
+                  lineHeight: 1.7,
+                  marginBottom: 16,
+                }}>
+                  {pages[activeTab].question}
+                </p>
+                <p style={{
+                  fontSize: 15,
+                  color: "rgba(14,26,43,0.70)",
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}>
+                  {pages[activeTab].desc}
                 </p>
               </div>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Sample report link */}
@@ -1291,8 +1298,19 @@ function HowItWorksSection() {
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Subtle texture */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 0.03,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        backgroundSize: "128px 128px",
+        pointerEvents: "none",
+      }} />
       <div className="mx-auto" style={{ maxWidth: S.maxW }}>
         <h2
           className="font-semibold text-center"
@@ -1859,8 +1877,19 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Subtle texture */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 0.03,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        backgroundSize: "128px 128px",
+        pointerEvents: "none",
+      }} />
       <div className="mx-auto" style={{ maxWidth: 720 }}>
         <h2
           className="font-semibold text-center"
