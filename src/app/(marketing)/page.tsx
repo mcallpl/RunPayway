@@ -693,87 +693,161 @@ function FourFactorsSection() {
 
 
 /* ================================================================== */
-/* SECTION 3: WHO IT'S FOR — "The Recognition"                         */
+/* SECTION 3: INCOME PATTERNS — "The Recognition"                      */
 /* ================================================================== */
-function WhoItsForSection() {
+function IncomePatterns() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+
+  const patterns = [
+    {
+      label: "Recurring contracts",
+      examples: "Retainers, subscriptions, recurring client work",
+      bars: [85, 80, 82, 78, 84, 80],
+    },
+    {
+      label: "Project-based",
+      examples: "Milestone payments, seasonal cycles, variable invoicing",
+      bars: [30, 90, 20, 75, 45, 85],
+    },
+    {
+      label: "Portfolio income",
+      examples: "Royalties, licensing, rental income, dividends",
+      bars: [60, 62, 58, 65, 60, 63],
+    },
+    {
+      label: "Blended streams",
+      examples: "Multiple sources across different patterns",
+      bars: [50, 70, 40, 80, 55, 72],
+    },
+  ];
 
   return (
     <section
       ref={ref}
-      aria-label="Who it is for"
+      aria-label="Income Patterns"
       style={{
-        background: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        background: "#FFFFFF",
+        paddingTop: mobile ? 80 : 120,
+        paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      {/* Subtle texture */}
-      <div style={{
-        position: "absolute",
-        inset: 0,
-        opacity: 0.03,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        backgroundSize: "128px 128px",
-        pointerEvents: "none",
-      }} />
       <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        <h2
-          className="font-semibold text-center"
+        {/* Header — left-aligned for editorial feel */}
+        <div
           style={{
-            fontSize: mobile ? 32 : 48,
-            color: B.navy,
-            lineHeight: S.lhHeading,
-            letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT, fontWeight: 400,
-            marginBottom: S.h2mb,
+            display: mobile ? "block" : "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            marginBottom: mobile ? 56 : 72,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          Built for income that does not fit simple scoring
-        </h2>
-
-        <p
-          className="text-center mx-auto"
-          style={{
-            fontSize: mobile ? 16 : 18,
-            color: B.muted,
-            lineHeight: S.lhBody,
-            maxWidth: 640,
-            marginBottom: mobile ? 48 : 64,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease-out 150ms, transform 600ms ease-out 150ms",
-          }}
-        >
-          RunPayway&#8482; is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
-        </p>
-
-        {/* Proof metric */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 10,
-            marginBottom: mobile ? 48 : 64,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease-out 300ms",
-          }}
-        >
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
-          <span style={{ fontSize: 14, fontWeight: 600, color: B.navy, letterSpacing: "0.01em" }}>
-            Professionals across 19 industries
-          </span>
+          <div style={{ maxWidth: 560 }}>
+            <div
+              style={{
+                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
+              }}
+            >
+              Income patterns
+            </div>
+            <h2
+              style={{
+                fontSize: mobile ? 32 : 48,
+                color: B.navy,
+                lineHeight: S.lhHeading,
+                letterSpacing: S.lsHeading,
+                fontFamily: DISPLAY_FONT, fontWeight: 400,
+              }}
+            >
+              Your income has structure. We read it.
+            </h2>
+          </div>
+          <p
+            style={{
+              fontSize: 16, color: "rgba(14,26,43,0.50)", lineHeight: 1.6,
+              maxWidth: 360,
+              marginTop: mobile ? 20 : 0,
+            }}
+          >
+            RunPayway&#8482; recognizes how your income actually behaves&#8202;&#8212;&#8202;not just what it totals.
+          </p>
         </div>
 
+        {/* Pattern cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: mobile ? 16 : 20,
+          }}
+        >
+          {patterns.map((p, i) => (
+            <div
+              key={p.label}
+              style={{
+                background: B.sand,
+                borderRadius: 16,
+                border: "1px solid rgba(14,26,43,0.05)",
+                padding: mobile ? "32px 28px" : "40px 36px",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 600ms ease-out ${200 + i * 100}ms, transform 600ms ease-out ${200 + i * 100}ms, border-color 300ms ease, box-shadow 300ms ease`,
+              }}
+              onMouseEnter={(e) => {
+                if (!canHover()) return;
+                e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)";
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(14,26,43,0.05)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              {/* Mini rhythm visualization */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  gap: 3,
+                  height: 32,
+                  marginBottom: 24,
+                }}
+              >
+                {p.bars.map((h, j) => (
+                  <div
+                    key={j}
+                    style={{
+                      width: 4,
+                      borderRadius: 2,
+                      backgroundColor: j % 2 === 0 ? B.teal : B.purple,
+                      opacity: 0.25,
+                      height: visible ? `${h}%` : "0%",
+                      transition: `height 800ms cubic-bezier(0.22, 1, 0.36, 1) ${400 + i * 100 + j * 80}ms`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              <div
+                style={{
+                  fontSize: 18, fontWeight: 600, color: B.navy,
+                  letterSpacing: "-0.01em", marginBottom: 8,
+                }}
+              >
+                {p.label}
+              </div>
+              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.50)", lineHeight: 1.6 }}>
+                {p.examples}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -2430,7 +2504,7 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
       <HeroSection />
       <FourFactorsSection />
-      <WhoItsForSection />
+      <IncomePatterns />
       <WhatYourReportSection />
       <SampleResultSection />
       <HowItWorksSection />
