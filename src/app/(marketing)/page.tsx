@@ -132,17 +132,18 @@ const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: boolean; baseDelay?: number }) {
   return (
     <span>
-      {text.split("").map((char, i) => (
+      {text.split(" ").map((word, i) => (
         <span
           key={i}
           style={{
             display: "inline-block",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: `opacity 300ms ease-out ${baseDelay + i * 25}ms, transform 300ms ease-out ${baseDelay + i * 25}ms`,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: `opacity 350ms ease-out ${baseDelay + i * 60}ms, transform 350ms ease-out ${baseDelay + i * 60}ms`,
+            marginRight: "0.28em",
           }}
         >
-          {char === " " ? "\u00A0" : char}
+          {word}
         </span>
       ))}
     </span>
