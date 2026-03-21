@@ -779,11 +779,11 @@ function WhatYourReportSection() {
   const mobile = useMobile();
 
   const cards = [
-    { num: "01", title: "Your Score", desc: "Overall score, stability band, resilience profile, and confidence level.", color: B.purple },
-    { num: "02", title: "Why You Scored There", desc: "The main drivers, the primary constraint, and what is helping or holding the score down.", color: B.teal },
-    { num: "03", title: "Where the Structure Is Exposed", desc: "Stress scenarios, income mix, and the areas most vulnerable to disruption.", color: B.navy },
-    { num: "04", title: "How to Improve", desc: "Projected improvements, prioritized next moves tailored to your industry.", color: B.purple },
-    { num: "05", title: "What to Do Next", desc: "90-day checklist, reassessment triggers, and benchmark context.", color: B.teal },
+    { num: "01", title: "Your Score", desc: "Score, band, classification scale, key insight, resilience grade, confidence, and continuity.", color: B.purple },
+    { num: "02", title: "Why This Score", desc: "Five structural drivers with levels, constraint hierarchy, sensitivity ranking, and interaction effects.", color: B.teal },
+    { num: "03", title: "What Could Go Wrong", desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.", color: B.navy },
+    { num: "04", title: "How to Improve", desc: "Projected score improvements, industry-tailored actions, and what not to do.", color: B.purple },
+    { num: "05", title: "What to Do Next", desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.", color: B.teal },
   ];
 
   return (
@@ -898,7 +898,7 @@ function WhatYourReportSection() {
           }}
         >
           <Link
-            href="/sample"
+            href="/sample-report"
             style={{
               fontSize: 15, color: B.purple, fontWeight: 500,
               textDecoration: "underline", textUnderlineOffset: 4,
@@ -1099,37 +1099,36 @@ function SampleResultSection() {
               </div>
 
               {/* Divider */}
-              <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
+              <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
 
-              {/* Main Constraint */}
-              <div style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.light, marginBottom: 6, fontWeight: 600 }}>
-                  Main Constraint
-                </div>
-                <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: S.lhDense }}>
-                  Forward visibility could be stronger
-                </p>
-              </div>
-
-              {/* Divider */}
-              <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
-
-              {/* Best Improvement */}
-              <div style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
-                  Best Improvement
-                </div>
-                <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: S.lhDense }}>
-                  Extend committed income further ahead
+              {/* Key insight — matches the report's key insight line */}
+              <div style={{ backgroundColor: "#F8FAFC", borderLeft: `3px solid ${B.purple}`, borderRadius: 2, padding: "10px 14px", marginBottom: 16 }}>
+                <p style={{ fontSize: 13, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.5 }}>
+                  The biggest structural weak point is limited forward visibility. Improving forward secured income could add 8 points.
                 </p>
               </div>
 
               {/* Divider */}
               <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
 
+              {/* Constraint + Improvement in a row */}
+              <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
+                  <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Forward visibility could be stronger</p>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 4, fontWeight: 600 }}>Best Improvement</div>
+                  <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Extend committed income further ahead</p>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 12 }} />
+
               {/* Verification */}
-              <div style={{ fontSize: 13, color: B.light, textAlign: "center" }}>
-                Model RP-2.0 &#183; Verified
+              <div style={{ fontSize: 12, color: B.light, textAlign: "center" }}>
+                Model RP-2.0 &#183; Verified &#183; runpayway.com/verify
               </div>
             </div>
           </div>
@@ -1145,7 +1144,7 @@ function SampleResultSection() {
             transition: "opacity 600ms ease-out 500ms",
           }}
         >
-          Every report includes score breakdown, structural risks, stress scenarios, improvement paths, and reassessment triggers.
+          Every report includes your score, structural drivers, constraint hierarchy, stress scenarios, projected improvements, industry-tailored actions, and reassessment triggers.
         </p>
       </div>
     </section>
@@ -1988,7 +1987,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What is included in the report?",
-      a: "A 5-page diagnostic including your score, structural breakdown, stress scenarios, projected improvements, industry-tailored actions, reassessment triggers, and peer benchmarks.",
+      a: "A 5-page report covering your score and classification, structural drivers and constraint hierarchy, stress scenarios and peer comparison, projected improvements with industry-tailored actions, and a 90-day action checklist with reassessment triggers.",
     },
     {
       q: "Can I retake the assessment?",
