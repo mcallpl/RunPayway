@@ -814,6 +814,24 @@ function WhoItsForSection() {
           RunPayway is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
         </p>
 
+        {/* Proof metric */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
+            marginBottom: mobile ? 48 : 64,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 600ms ease-out 300ms",
+          }}
+        >
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
+          <span style={{ fontSize: 14, fontWeight: 600, color: B.navy, letterSpacing: "0.01em" }}>
+            Professionals across 19 industries
+          </span>
+        </div>
+
       </div>
     </section>
   );
@@ -1077,8 +1095,24 @@ function SampleResultSection() {
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          A sample result
+          This is what clarity looks like.
         </h2>
+
+        <p
+          className="text-center mx-auto"
+          style={{
+            fontSize: mobile ? 16 : 18,
+            color: "rgba(244,241,234,0.60)",
+            lineHeight: S.lhBody,
+            maxWidth: 520,
+            marginBottom: mobile ? 40 : 56,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
+          }}
+        >
+          A real score. A real diagnosis. A real path forward. This sample shows a consulting professional scoring 78 out of 100. Yours will be built from your answers.
+        </p>
 
         {/* Premium showcase card */}
         <div
@@ -1257,18 +1291,54 @@ function SampleResultSection() {
           </div>
         </div>
 
-        {/* Below card text */}
-        <p
-          className="text-center mx-auto"
+        {/* Emotional CTA */}
+        <div
+          className="text-center"
           style={{
-            fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: S.lhBody,
-            maxWidth: 560, marginTop: 32,
+            marginTop: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transition: "opacity 600ms ease-out 500ms",
           }}
         >
-          Every report includes your score, structural drivers, constraint hierarchy, stress scenarios, projected improvements, industry-tailored actions, and reassessment triggers.
-        </p>
+          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.70)", marginBottom: 20, fontFamily: DISPLAY_FONT, fontWeight: 400 }}>
+            What would your number be?
+          </p>
+          <a
+            href="https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: S.ctaH,
+              paddingLeft: S.ctaPadX + 8,
+              paddingRight: S.ctaPadX + 8,
+              borderRadius: S.ctaRadius,
+              background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+              color: B.navy,
+              fontSize: 15,
+              fontWeight: 600,
+              textDecoration: "none",
+              border: "1px solid rgba(244,241,234,0.92)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25)",
+              transition: "transform 180ms ease, box-shadow 180ms ease",
+              letterSpacing: "-0.01em",
+            }}
+            onMouseEnter={(e) => {
+              if (!canHover()) return;
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 40px rgba(0,0,0,0.30)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25)";
+            }}
+          >
+            Find out — $39
+          </a>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginTop: 12 }}>
+            Under 2 minutes · Instant report · No bank connection
+          </p>
+        </div>
       </div>
     </section>
   );
