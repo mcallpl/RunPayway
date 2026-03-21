@@ -127,6 +127,28 @@ const S = {
 
 const spaciousY = { desktop: 200, mobile: 100 };
 
+const DISPLAY_FONT = "'Instrument Serif', Georgia, serif";
+
+function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: boolean; baseDelay?: number }) {
+  return (
+    <span>
+      {text.split("").map((char, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: `opacity 300ms ease-out ${baseDelay + i * 25}ms, transform 300ms ease-out ${baseDelay + i * 25}ms`,
+          }}
+        >
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 
 /* ================================================================== */
 /* FLOATING PARTICLES — Canvas-based background animation              */
@@ -166,7 +188,9 @@ function FloatingParticles() {
       const ch = canvas.offsetHeight;
       ctx.clearRect(0, 0, cw, ch);
 
-      for (const p of particlesRef.current) {
+      const dpr = window.devicePixelRatio || 1;
+      for (let i = 0; i < particlesRef.current.length; i++) {
+        const p = particlesRef.current[i];
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < -10) p.x = cw + 10;
@@ -178,6 +202,22 @@ function FloatingParticles() {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255,255,255,${p.o})`;
         ctx.fill();
+
+        // Draw connections between nearby particles
+        for (let j = i + 1; j < particlesRef.current.length; j++) {
+          const q = particlesRef.current[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x * dpr, p.y * dpr);
+            ctx.lineTo(q.x * dpr, q.y * dpr);
+            ctx.strokeStyle = `rgba(255,255,255,${0.04 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5 * dpr;
+            ctx.stroke();
+          }
+        }
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -236,6 +276,13 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
           viewBox="0 0 160 160"
           style={{ transform: "rotate(-90deg)" }}
         >
+          {/* Outer atmospheric ring */}
+          <circle
+            cx="80" cy="80" r={radius + 12}
+            fill="none"
+            stroke="rgba(255,255,255,0.04)"
+            strokeWidth={1}
+          />
           <circle
             cx="80" cy="80" r={radius}
             fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth}
@@ -248,6 +295,21 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
             strokeDashoffset={visible ? targetOffset : circumference}
             style={{ transition: `stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)` }}
           />
+          {/* Glow dot at arc end */}
+          {visible && (
+            <circle
+              cx="80"
+              cy={80 - radius}
+              fill="rgba(31,109,122,0.6)"
+              r={4}
+              style={{
+                transform: `rotate(${(score / 100) * 360}deg)`,
+                transformOrigin: "80px 80px",
+                transition: "transform 2s cubic-bezier(0.22, 1, 0.36, 1)",
+                filter: "blur(2px)",
+              }}
+            />
+          )}
           <defs>
             <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor={B.teal} />
@@ -262,10 +324,17 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           }}
         >
+          <style>{`
+            @keyframes scorePulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.85; }
+            }
+          `}</style>
           <span
             style={{
               fontSize: mobile ? 52 : 64, fontWeight: 700, color: "#F4F1EA",
               lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
+              animation: visible ? "scorePulse 3s ease-in-out infinite 2s" : "none",
             }}
           >
             {animatedScore}
@@ -318,6 +387,18 @@ function HeroSection() {
       className="relative overflow-hidden"
       style={{ background: B.gradient }}
     >
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid rgba(75,63,174,0.5);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+`}</style>
       {/* Gradient mesh */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -403,12 +484,10 @@ function HeroSection() {
                 letterSpacing: S.lsHero,
                 marginBottom: S.h1mb,
                 maxWidth: mobile ? undefined : 560,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
+                fontFamily: DISPLAY_FONT,
               }}
             >
-              The fixed standard for measuring income structure stability.
+              <RevealText text="The fixed standard for measuring income structure stability." visible={visible} baseDelay={200} />
             </h1>
 
             <p
@@ -564,6 +643,7 @@ function TheGapSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -686,6 +766,7 @@ function WhoItsForSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -806,6 +887,7 @@ function WhatYourReportSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -925,6 +1007,9 @@ function SampleResultSection() {
 
   const sampleScore = useAnimatedCounter(78, visible, 1500);
   const continuityVal = useAnimatedCounter(38, visible, 1500);
+  const [demoScore, setDemoScore] = useState(78);
+  const demoBand = demoScore >= 75 ? "High Stability" : demoScore >= 50 ? "Established Stability" : demoScore >= 30 ? "Developing Stability" : "Limited Stability";
+  const demoBandColor = demoScore >= 75 ? "#16A34A" : demoScore >= 50 ? "#2563EB" : demoScore >= 30 ? "#D97706" : "#DC2626";
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!canHover() || mobile) return;
@@ -977,6 +1062,7 @@ function SampleResultSection() {
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1134,6 +1220,35 @@ function SampleResultSection() {
           </div>
         </div>
 
+        {/* Interactive demo */}
+        <div style={{ maxWidth: 480, margin: "40px auto 0", textAlign: "center" }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 16 }}>
+            Drag to explore different scores
+          </p>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={demoScore}
+            onChange={(e) => setDemoScore(Number(e.target.value))}
+            style={{
+              width: "100%",
+              height: 6,
+              appearance: "none",
+              background: `linear-gradient(90deg, #DC2626 0%, #DC2626 29%, #D97706 29%, #D97706 49%, #2563EB 49%, #2563EB 74%, #16A34A 74%, #16A34A 100%)`,
+              borderRadius: 3,
+              outline: "none",
+              cursor: "pointer",
+            }}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 32, fontWeight: 700, color: "#F4F1EA" }}>{demoScore}</div>
+              <div style={{ fontSize: 13, color: demoBandColor, fontWeight: 600, marginTop: 4 }}>{demoBand}</div>
+            </div>
+          </div>
+        </div>
+
         {/* Below card text */}
         <p
           className="text-center mx-auto"
@@ -1185,6 +1300,7 @@ function HowItWorksSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1350,6 +1466,7 @@ function WhatItMeasuresSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1502,6 +1619,7 @@ function PricingSection() {
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1750,6 +1868,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1886,6 +2005,7 @@ function ClassificationSection() {
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: S.h2mb,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -2033,6 +2153,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
+            fontFamily: DISPLAY_FONT,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -2168,6 +2289,70 @@ function DisclaimerSection() {
 
 
 /* ================================================================== */
+/* SOCIAL PROOF STRIP                                                   */
+/* ================================================================== */
+function SocialProof() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? 48 : 64,
+        paddingBottom: mobile ? 48 : 64,
+        borderTop: `1px solid ${B.border}`,
+        borderBottom: `1px solid ${B.border}`,
+      }}
+    >
+      <div style={{
+        maxWidth: S.maxW,
+        marginLeft: "auto",
+        marginRight: "auto",
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        textAlign: "center",
+        opacity: visible ? 1 : 0,
+        transition: "opacity 600ms ease-out",
+      }}>
+        <p style={{
+          fontSize: 15,
+          fontWeight: 500,
+          color: B.muted,
+          letterSpacing: "0.01em",
+          marginBottom: 20,
+        }}>
+          Built for professionals across 19 industries
+        </p>
+        <div style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: mobile ? 16 : 28,
+        }}>
+          {["Real Estate", "Finance", "Healthcare", "Consulting", "Technology", "Legal", "Agency", "Creator"].map((industry) => (
+            <span
+              key={industry}
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "rgba(14,26,43,0.25)",
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+              }}
+            >
+              {industry}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* MAIN EXPORT                                                         */
 /* ================================================================== */
 export default function LandingPage() {
@@ -2179,6 +2364,7 @@ export default function LandingPage() {
       <HeroSection />
       <TheGapSection />
       <WhoItsForSection />
+      <SocialProof />
       <WhatYourReportSection />
       <SampleResultSection />
       <HowItWorksSection />
