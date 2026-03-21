@@ -478,36 +478,6 @@ input[type="range"]::-webkit-slider-thumb {
           </div>
         </div>
 
-        {/* Proof strip */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: mobile ? 12 : 24,
-            marginTop: mobile ? 48 : 72,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease-out 600ms",
-          }}
-        >
-          {["Same answers, same score", "No AI in scoring", "No bank connection", "Private by default"].map((item, i) => (
-            <span
-              key={item}
-              className="text-[11px] md:text-[12px]"
-              style={{
-                color: "rgba(244,241,234,0.40)",
-                fontWeight: 500,
-                letterSpacing: "0.02em",
-                display: "flex",
-                alignItems: "center",
-                gap: 0,
-              }}
-            >
-              {i > 0 && <span style={{ color: "rgba(244,241,234,0.20)", marginRight: 0 }}>&#183;</span>}
-              {item}
-            </span>
-          ))}
-        </div>
       </div>
 
       <style>{`
