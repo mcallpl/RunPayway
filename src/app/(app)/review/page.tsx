@@ -136,19 +136,24 @@ interface AssessmentRecord {
 }
 
 // ============================================================
-// BRAND — Luxury Enterprise Design System
+// BRAND — Refined Institutional Design System
 // ============================================================
 const B = {
-  navy: "#0E1A2B",
-  ink: "#111827",
-  sand: "#F7F6F3",
-  bone: "#F2EEE7",
+  navy: "#0F172A",      // Slate 900 — cooler, more modern anchor
+  ink: "#1E293B",       // Slate 800 — secondary text
+  sand: "#F8FAFC",      // Slate 50 — clean cool background
+  bone: "#F1F5F9",      // Slate 100 — card backgrounds
   white: "#FFFFFF",
-  stone: "#D9D2C6",
-  taupe: "#A89F92",
-  muted: "#6B7280",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
+  stone: "#E2E8F0",     // Slate 200 — borders
+  taupe: "#94A3B8",     // Slate 400 — labels and metadata
+  muted: "#64748B",     // Slate 500 — body text
+  purple: "#4B3FAE",    // Brand accent — kept
+  teal: "#0F766E",      // Teal 700 — positive/support signal
+  // Band colors
+  bandLimited: "#DC2626",    // Red 600
+  bandDeveloping: "#D97706", // Amber 600
+  bandEstablished: "#2563EB",// Blue 600
+  bandHigh: "#16A34A",       // Green 600
 };
 
 // ============================================================
@@ -604,18 +609,21 @@ export default function ReviewPage() {
     }
   };
 
+  // ── Band color helper ──
+  const bandColor = tier === "high" ? B.bandHigh : tier === "established" ? B.bandEstablished : tier === "developing" ? B.bandDeveloping : B.bandLimited;
+
   // ── Indicator helpers ──
   function indicatorLevel(label: string, inverted: boolean): { display: string; color: string } {
     const isHigh = /high|very high/i.test(label);
     const isLow = /low|very low/i.test(label);
     if (inverted) {
-      if (isHigh) return { display: "High", color: "#DC2626" };
-      if (isLow) return { display: "Low", color: B.purple };
-      return { display: "Moderate", color: B.navy };
+      if (isHigh) return { display: "High", color: B.bandLimited };
+      if (isLow) return { display: "Low", color: B.teal };
+      return { display: "Moderate", color: B.ink };
     }
-    if (isHigh) return { display: "High", color: B.purple };
-    if (isLow) return { display: "Low", color: "#DC2626" };
-    return { display: "Moderate", color: B.navy };
+    if (isHigh) return { display: "High", color: B.teal };
+    if (isLow) return { display: "Low", color: B.bandLimited };
+    return { display: "Moderate", color: B.ink };
   }
 
   return (
@@ -633,7 +641,10 @@ export default function ReviewPage() {
 
         <div style={{ marginBottom: 24 }}>
           <div style={{ ...T.score, color: B.navy }}>{record.final_score}</div>
-          <div style={{ ...T.classification, color: B.taupe, marginTop: 6 }}>{record.stability_band}</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
+            <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
+          </div>
         </div>
 
         <DiagnosisBlock>
@@ -651,10 +662,38 @@ export default function ReviewPage() {
           takeaway="Simple takeaway: Your income works, but it is still too exposed."
         />
 
-        <div style={{ display: "flex", gap: 12, marginTop: 8, marginBottom: 24 }}>
+        {/* Classification Scale */}
+        <div style={{ marginTop: 8, marginBottom: 20 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>INCOME STABILITY CLASSIFICATION SCALE</div>
+          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
+            {[
+              { w: 30, color: B.bandLimited },
+              { w: 20, color: B.bandDeveloping },
+              { w: 25, color: B.bandEstablished },
+              { w: 25, color: B.bandHigh },
+            ].map((seg, i) => (
+              <div key={i} style={{ width: `${seg.w}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: (tier === "limited" && i === 0) || (tier === "developing" && i === 1) || (tier === "established" && i === 2) || (tier === "high" && i === 3) ? 1 : 0.25 }} />
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: 2 }}>
+            {[
+              { range: "0–29", label: "Limited Stability", color: B.bandLimited, tier: "limited" as const },
+              { range: "30–49", label: "Developing Stability", color: B.bandDeveloping, tier: "developing" as const },
+              { range: "50–74", label: "Established Stability", color: B.bandEstablished, tier: "established" as const },
+              { range: "75–100", label: "High Stability", color: B.bandHigh, tier: "high" as const },
+            ].map((band) => (
+              <div key={band.range} style={{ flex: 1, opacity: tier === band.tier ? 1 : 0.5 }}>
+                <div style={{ ...T.micro, color: band.color, fontWeight: tier === band.tier ? 700 : 500 }}>{band.range}</div>
+                <div style={{ ...T.meta, color: tier === band.tier ? B.navy : B.taupe, fontWeight: tier === band.tier ? 600 : 400 }}>{band.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
           <MetricCard label="Income Continuity" value={`${record.income_continuity_pct}%`} explanation="Portion of income likely to continue for a short period if active work stopped today." />
           <MetricCard label="Largest Source Stress Test" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If your largest income source disappeared, your score would likely fall to this level." />
-          <MetricCard label="Primary Constraint" value="Too Little Income Secured Ahead" explanation="Not enough of your upcoming income is already committed before the month begins. That leaves the structure more exposed when work slows or a source weakens." />
+          <MetricCard label="Main Constraint" value="Too Little Income Secured Ahead" explanation="Not enough of your upcoming income is already committed before the month begins." />
         </div>
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
@@ -791,7 +830,7 @@ export default function ReviewPage() {
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
               <span style={{ fontSize: 16, color: B.taupe }}>→</span>
-              <span style={{ fontSize: 28, fontWeight: 600, color: "#8B2020" }}>{Math.max(0, record.risk_scenario_score)}</span>
+              <span style={{ fontSize: 28, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
               This is a stress test, not a prediction. It shows that the current structure would weaken meaningfully if the largest income source were lost.
@@ -817,8 +856,8 @@ export default function ReviewPage() {
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 24 }}>
           {[
-            { label: "Active Income", pct: record.active_income_level, color: B.navy, desc: "Income that depends on direct personal effort" },
-            { label: "Recurring Income", pct: record.semi_persistent_income_level, color: B.taupe, desc: "Income that repeats for a period of time" },
+            { label: "Active Income", pct: record.active_income_level, color: B.ink, desc: "Income that depends on direct personal effort" },
+            { label: "Recurring Income", pct: record.semi_persistent_income_level, color: B.bandEstablished, desc: "Income that repeats for a period of time" },
             { label: "Built-In Income", pct: record.persistent_income_level, color: B.teal, desc: "Income that continues with limited ongoing effort" },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
@@ -872,15 +911,15 @@ export default function ReviewPage() {
 
         {/* Band cards */}
         <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
+          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${bandColor}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT BAND</div>
-            <div style={{ ...T.cardHeading, color: B.navy }}>{record.stability_band} | {record.final_score}</div>
+            <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
             <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>The structure works, but it is not yet strong enough to absorb disruption well.</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 20px" }}>
+          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>NEXT TARGET BAND</div>
-            <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 40 ? "Developing Stability | 40+" : record.final_score < 60 ? "Established Stability | 60+" : record.final_score < 80 ? "High Stability | 80+" : "Maintain Current"}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 80 ? "The next target is a structure with more income secured ahead, less source dependence, and stronger continuity." : "The priority is maintaining and protecting this position."}</p>
+            <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 75 ? "The next target is a structure with more income secured ahead, less source dependence, and stronger continuity." : "The priority is maintaining and protecting this position."}</p>
           </div>
         </div>
 
