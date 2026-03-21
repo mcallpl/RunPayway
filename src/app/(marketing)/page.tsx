@@ -377,7 +377,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 500ms ease-out, transform 500ms ease-out",
               }}
             >
-              Income Stability Score&#8482;
+              Measure what matters
             </div>
 
             <h1
