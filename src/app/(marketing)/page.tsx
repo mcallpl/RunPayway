@@ -698,27 +698,72 @@ function FourFactorsSection() {
 function IncomePatterns() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const [expanded, setExpanded] = useState<number | null>(null);
 
   const patterns = [
     {
       label: "Recurring contracts",
       examples: "Retainers, subscriptions, recurring client work",
+      score: 78,
+      band: "High Stability",
+      bandColor: "#16A34A",
+      continuity: "68%",
+      constraint: "Source concentration",
+      stressScore: 52,
       bars: [85, 80, 82, 78, 84, 80],
+      drivers: [
+        { label: "Continuity", pct: 72, color: "#0F766E" },
+        { label: "Income Secured Ahead", pct: 68, color: "#0F766E" },
+        { label: "Source Diversification", pct: 45, color: "#D97706" },
+      ],
     },
     {
       label: "Project-based",
       examples: "Milestone payments, seasonal cycles, variable invoicing",
+      score: 41,
+      band: "Developing Stability",
+      bandColor: "#D97706",
+      continuity: "22%",
+      constraint: "Low forward visibility",
+      stressScore: 18,
       bars: [30, 90, 20, 75, 45, 85],
+      drivers: [
+        { label: "Continuity", pct: 30, color: "#DC2626" },
+        { label: "Income Secured Ahead", pct: 25, color: "#DC2626" },
+        { label: "Source Diversification", pct: 55, color: "#0F766E" },
+      ],
     },
     {
       label: "Portfolio income",
       examples: "Royalties, licensing, rental income, dividends",
+      score: 82,
+      band: "High Stability",
+      bandColor: "#16A34A",
+      continuity: "85%",
+      constraint: "Earnings variability",
+      stressScore: 64,
       bars: [60, 62, 58, 65, 60, 63],
+      drivers: [
+        { label: "Continuity", pct: 88, color: "#0F766E" },
+        { label: "Income Secured Ahead", pct: 70, color: "#0F766E" },
+        { label: "Source Diversification", pct: 62, color: "#0F766E" },
+      ],
     },
     {
       label: "Blended streams",
       examples: "Multiple sources across different patterns",
+      score: 63,
+      band: "Established Stability",
+      bandColor: "#2563EB",
+      continuity: "48%",
+      constraint: "Labor dependence",
+      stressScore: 41,
       bars: [50, 70, 40, 80, 55, 72],
+      drivers: [
+        { label: "Continuity", pct: 52, color: "#D97706" },
+        { label: "Income Secured Ahead", pct: 48, color: "#D97706" },
+        { label: "Source Diversification", pct: 75, color: "#0F766E" },
+      ],
     },
   ];
 
@@ -735,7 +780,7 @@ function IncomePatterns() {
       }}
     >
       <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        {/* Header — left-aligned for editorial feel */}
+        {/* Header */}
         <div
           style={{
             display: mobile ? "block" : "flex",
@@ -775,7 +820,7 @@ function IncomePatterns() {
               marginTop: mobile ? 20 : 0,
             }}
           >
-            RunPayway&#8482; recognizes how your income actually behaves&#8202;&#8212;&#8202;not just what it totals.
+            RunPayway&#8482; recognizes how your income actually behaves&#8202;&#8212;&#8202;not just what it totals. Tap a pattern to preview the report.
           </p>
         </div>
 
@@ -787,66 +832,171 @@ function IncomePatterns() {
             gap: mobile ? 16 : 20,
           }}
         >
-          {patterns.map((p, i) => (
-            <div
-              key={p.label}
-              style={{
-                background: B.sand,
-                borderRadius: 16,
-                border: "1px solid rgba(14,26,43,0.05)",
-                padding: mobile ? "32px 28px" : "40px 36px",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 600ms ease-out ${200 + i * 100}ms, transform 600ms ease-out ${200 + i * 100}ms, border-color 300ms ease, box-shadow 300ms ease`,
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)";
-                e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.06)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(14,26,43,0.05)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              {/* Mini rhythm visualization */}
+          {patterns.map((p, i) => {
+            const isOpen = expanded === i;
+            return (
               <div
+                key={p.label}
+                onClick={() => setExpanded(isOpen ? null : i)}
                 style={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  gap: 3,
-                  height: 32,
-                  marginBottom: 24,
+                  background: B.sand,
+                  borderRadius: 16,
+                  border: isOpen ? "1px solid rgba(75,63,174,0.18)" : "1px solid rgba(14,26,43,0.05)",
+                  padding: mobile ? "32px 28px" : "40px 36px",
+                  cursor: "pointer",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity 600ms ease-out ${200 + i * 100}ms, transform 600ms ease-out ${200 + i * 100}ms, border-color 300ms ease, box-shadow 300ms ease`,
+                  boxShadow: isOpen ? "0 8px 40px rgba(75,63,174,0.10)" : "none",
                 }}
               >
-                {p.bars.map((h, j) => (
-                  <div
-                    key={j}
-                    style={{
-                      width: 4,
-                      borderRadius: 2,
-                      backgroundColor: j % 2 === 0 ? B.teal : B.purple,
-                      opacity: 0.25,
-                      height: visible ? `${h}%` : "0%",
-                      transition: `height 800ms cubic-bezier(0.22, 1, 0.36, 1) ${400 + i * 100 + j * 80}ms`,
-                    }}
-                  />
-                ))}
-              </div>
+                {/* Rhythm bars + label */}
+                <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 32, marginBottom: 24 }}>
+                  {p.bars.map((h, j) => (
+                    <div
+                      key={j}
+                      style={{
+                        width: 4, borderRadius: 2,
+                        backgroundColor: j % 2 === 0 ? B.teal : B.purple,
+                        opacity: 0.25,
+                        height: visible ? `${h}%` : "0%",
+                        transition: `height 800ms cubic-bezier(0.22, 1, 0.36, 1) ${400 + i * 100 + j * 80}ms`,
+                      }}
+                    />
+                  ))}
+                </div>
 
-              <div
-                style={{
-                  fontSize: 18, fontWeight: 600, color: B.navy,
-                  letterSpacing: "-0.01em", marginBottom: 8,
-                }}
-              >
-                {p.label}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>
+                    {p.label}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11, color: "rgba(14,26,43,0.35)", fontWeight: 500,
+                      transition: "transform 300ms ease",
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    }}
+                  >
+                    &#9660;
+                  </div>
+                </div>
+                <p style={{ fontSize: 15, color: "rgba(14,26,43,0.50)", lineHeight: 1.6, marginBottom: isOpen ? 28 : 0 }}>
+                  {p.examples}
+                </p>
+
+                {/* Report preview — mirrors actual report Page 1 structure */}
+                <div
+                  style={{
+                    maxHeight: isOpen ? 600 : 0,
+                    opacity: isOpen ? 1 : 0,
+                    overflow: "hidden",
+                    transition: "max-height 500ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease",
+                  }}
+                >
+                  {/* Mini report surface */}
+                  <div
+                    style={{
+                      background: "#F8FAFC",
+                      borderRadius: 8,
+                      border: "1px solid #E2E8F0",
+                      padding: mobile ? 20 : 28,
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* Top accent bar — matches real report */}
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
+
+                    {/* Header */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, paddingBottom: 10, borderBottom: "1px solid #E2E8F0" }}>
+                      <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8" }}>
+                        Sample Report
+                      </span>
+                      <span style={{ fontSize: 10, color: "#94A3B8" }}>Income Stability Score&#8482;</span>
+                    </div>
+
+                    {/* Score + band */}
+                    <div style={{ marginBottom: 20 }}>
+                      <div style={{ fontSize: 48, fontWeight: 600, color: "#0F172A", lineHeight: 1 }}>{p.score}</div>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: p.bandColor }} />
+                        <span style={{ fontSize: 14, fontWeight: 500, color: p.bandColor }}>{p.band}</span>
+                      </div>
+                    </div>
+
+                    {/* Classification scale — matches report */}
+                    <div style={{ marginBottom: 20 }}>
+                      <div style={{ display: "flex", gap: 2, height: 6, marginBottom: 8 }}>
+                        {[
+                          { w: 30, color: "#DC2626", tier: "Limited" },
+                          { w: 20, color: "#D97706", tier: "Developing" },
+                          { w: 25, color: "#2563EB", tier: "Established" },
+                          { w: 25, color: "#16A34A", tier: "High" },
+                        ].map((seg, si) => (
+                          <div key={si} style={{
+                            width: `${seg.w}%`, backgroundColor: seg.color,
+                            borderRadius: si === 0 ? "3px 0 0 3px" : si === 3 ? "0 3px 3px 0" : 0,
+                            opacity: p.bandColor === seg.color ? 1 : 0.2,
+                          }} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Metric cards — matches report MetricCard layout */}
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
+                      <div style={{ background: "#FFFFFF", border: "1px solid #E2E8F0", borderLeft: "3px solid #0F766E", borderRadius: 2, padding: "10px 12px" }}>
+                        <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 4 }}>Continuity</div>
+                        <div style={{ fontSize: 16, fontWeight: 600, color: "#0F172A" }}>{p.continuity}</div>
+                      </div>
+                      <div style={{ background: "#FFFFFF", border: "1px solid #E2E8F0", borderLeft: "3px solid #DC2626", borderRadius: 2, padding: "10px 12px" }}>
+                        <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 4 }}>Stress Test</div>
+                        <div style={{ fontSize: 16, fontWeight: 600, color: "#0F172A" }}>{p.score} <span style={{ color: "#94A3B8", fontWeight: 400 }}>&#8594;</span> {p.stressScore}</div>
+                      </div>
+                      <div style={{ background: "#FFFFFF", border: "1px solid #E2E8F0", borderLeft: "3px solid #4B3FAE", borderRadius: 2, padding: "10px 12px" }}>
+                        <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 4 }}>Constraint</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "#0F172A" }}>{p.constraint}</div>
+                      </div>
+                    </div>
+
+                    {/* Driver bars — matches report Page 2 */}
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 10 }}>Score Drivers</div>
+                      {p.drivers.map((d) => (
+                        <div key={d.label} style={{ marginBottom: 10 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                            <span style={{ fontSize: 11, fontWeight: 500, color: "#0F172A" }}>{d.label}</span>
+                            <span style={{ fontSize: 11, fontWeight: 600, color: d.color }}>{d.pct}%</span>
+                          </div>
+                          <div style={{ height: 4, backgroundColor: "#E2E8F0", borderRadius: 2 }}>
+                            <div style={{
+                              height: "100%", borderRadius: 2, backgroundColor: d.color,
+                              width: isOpen ? `${d.pct}%` : "0%",
+                              transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1) 200ms",
+                            }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* CTA */}
+                    <Link
+                      href="/pricing"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        display: "block", textAlign: "center",
+                        fontSize: 13, fontWeight: 600, color: B.purple,
+                        letterSpacing: "-0.01em",
+                        padding: "10px 0",
+                        borderTop: "1px solid #E2E8F0",
+                      }}
+                    >
+                      Get your full report &#8594;
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.50)", lineHeight: 1.6 }}>
-                {p.examples}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
