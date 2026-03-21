@@ -445,39 +445,39 @@ function ReportCovers() {
       num: "01",
       title: "Your Score",
       question: "Where do I stand?",
-      desc: "Score, band, classification scale, key insight, resilience grade, and confidence level.",
+      desc: "You will know exactly where your income stands — your score, your band, and the single most important thing to address.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>,
       accent: B.purple,
     },
     {
       num: "02",
       title: "Why This Score",
-      question: "What is driving the result?",
-      desc: "Five structural drivers, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      question: "What is behind the result?",
+      desc: "You will see what is driving your score up and what is holding it back — ranked by impact, not guesswork.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>,
       accent: B.teal,
     },
     {
       num: "03",
       title: "What Could Go Wrong",
-      question: "Where is the structure exposed?",
-      desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.",
+      question: "What is most exposed?",
+      desc: "You will see what would happen if your largest source disappeared — and how your structure compares to peers in your industry.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandLimited} strokeWidth="1.5" strokeLinecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>,
       accent: B.bandLimited,
     },
     {
       num: "04",
       title: "How to Improve",
-      question: "What would strengthen it?",
-      desc: "Projected score improvements, industry-tailored actions, and what not to do.",
+      question: "What would raise the score?",
+      desc: "You will see exactly which change would raise your score the most — with projected point gains and actions tailored to your industry.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandHigh} strokeWidth="1.5" strokeLinecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>,
       accent: B.bandHigh,
     },
     {
       num: "05",
       title: "What to Do Next",
-      question: "What are the next steps?",
-      desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.",
+      question: "What is the plan?",
+      desc: "You will have a clear plan — what to do first, what not to focus on yet, and when to reassess.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
       accent: B.navy,
     },
@@ -523,7 +523,7 @@ function ReportCovers() {
               marginBottom: 12,
             }}
           >
-            What your report covers
+            What you will learn
           </h2>
           <p
             style={{
@@ -535,7 +535,7 @@ function ReportCovers() {
               marginRight: "auto",
             }}
           >
-            Each page answers one question about your income structure.
+            Five pages. Five questions answered. One clear path forward.
           </p>
         </div>
 
