@@ -497,16 +497,59 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* ================================================================== */
-/* SECTION 2: THE GAP — "The Revelation"                               */
+/* SECTION 2: FOUR FACTORS — "What We Measure"                         */
 /* ================================================================== */
-function TheGapSection() {
+function FourFactorsSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+
+  const factors = [
+    {
+      label: "Recurrence",
+      description: "How much of your income repeats on a predictable cycle.",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M14 4v20M8 8l6-4 6 4M8 20l6 4 6-4" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      ),
+    },
+    {
+      label: "Concentration",
+      description: "How many independent sources your income depends on.",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="3" stroke={B.teal} strokeWidth="1.5" />
+          <circle cx="14" cy="14" r="8" stroke={B.teal} strokeWidth="1.5" opacity="0.4" />
+          <circle cx="14" cy="14" r="12" stroke={B.teal} strokeWidth="1.5" opacity="0.2" />
+        </svg>
+      ),
+    },
+    {
+      label: "Visibility",
+      description: "How far ahead your income is contractually secured.",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M4 20L10 14L16 18L24 8" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="24" cy="8" r="2" fill={B.teal} />
+        </svg>
+      ),
+    },
+    {
+      label: "Passivity",
+      description: "How much continues without your active involvement.",
+      icon: (
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="12" width="20" height="12" rx="2" stroke={B.teal} strokeWidth="1.5" />
+          <path d="M10 12V8a4 4 0 1 1 8 0v4" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      ),
+    },
+  ];
 
   return (
     <section
       ref={ref}
-      aria-label="The Gap"
+      aria-label="What RunPayway Measures"
       style={{
         background: "#FFFFFF",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
@@ -516,112 +559,88 @@ function TheGapSection() {
       }}
     >
       <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        <h2
-          className="font-semibold text-center"
+        {/* Section header */}
+        <div
           style={{
-            fontSize: mobile ? 32 : 48,
-            color: B.navy,
-            lineHeight: S.lhHeading,
-            letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT, fontWeight: 400,
-            marginBottom: mobile ? 40 : 56,
+            textAlign: "center",
+            marginBottom: mobile ? 48 : 64,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          What most scores miss
-        </h2>
+          <div
+            style={{
+              fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+              letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
+            }}
+          >
+            Four dimensions of stability
+          </div>
+          <h2
+            style={{
+              fontSize: mobile ? 32 : 48,
+              color: B.navy,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              fontFamily: DISPLAY_FONT, fontWeight: 400,
+              marginBottom: 20,
+            }}
+          >
+            What RunPayway measures
+          </h2>
+          <p style={{ fontSize: 17, color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
+            Every score is built from four structural factors. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
+          </p>
+        </div>
 
-        {/* Two comparison cards */}
+        {/* Four factor cards */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: S.gridGap,
-            marginBottom: mobile ? 40 : 56,
+            gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)",
+            gap: mobile ? 16 : 24,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out 150ms, transform 600ms ease-out 150ms",
+            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
           }}
         >
-          {/* LEFT — Credit Score */}
-          <div
-            style={{
-              background: "#F8F7F4",
-              borderRadius: S.cardRadius,
-              border: "1px solid rgba(14,26,43,0.06)",
-              borderTop: "3px solid #E2E0DB",
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-            }}
-          >
+          {factors.map((f, i) => (
             <div
+              key={f.label}
               style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-                letterSpacing: S.lsLabel, color: B.light, marginBottom: 16,
+                background: "#FAFAFA",
+                borderRadius: S.cardRadius,
+                border: "1px solid rgba(14,26,43,0.06)",
+                padding: mobile ? "28px 24px" : "36px 28px",
+                transition: "border-color 250ms ease, box-shadow 250ms ease",
+              }}
+              onMouseEnter={(e) => {
+                if (!canHover()) return;
+                e.currentTarget.style.borderColor = "rgba(31,109,122,0.20)";
+                e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
+                e.currentTarget.style.boxShadow = "none";
               }}
             >
-              Credit Score
+              <div style={{ marginBottom: 20 }}>
+                {f.icon}
+              </div>
+              <div
+                style={{
+                  fontSize: 15, fontWeight: 600, color: B.navy,
+                  letterSpacing: "-0.01em", marginBottom: 8,
+                }}
+              >
+                {f.label}
+              </div>
+              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.6 }}>
+                {f.description}
+              </p>
             </div>
-            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody }}>
-              Measures how reliably you repay debt.
-            </p>
-          </div>
-
-          {/* RIGHT — Income Stability Score */}
-          <div
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(75,63,174,0.18)",
-              boxShadow: "0 4px 24px rgba(75,63,174,0.10), 0 0 0 1px rgba(75,63,174,0.05)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {/* Animated subtle glow */}
-            <div style={{
-              position: "absolute",
-              top: -40,
-              right: -40,
-              width: 120,
-              height: 120,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }} />
-            <div
-              style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-                letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
-              }}
-            >
-              Income Stability Score&#8482;
-            </div>
-            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.75)", lineHeight: S.lhBody, fontWeight: 500 }}>
-              Measures how stable your income structure is.
-            </p>
-          </div>
-        </div>
-
-        {/* Below cards text */}
-        <div
-          style={{
-            textAlign: "center",
-            maxWidth: 680,
-            margin: "0 auto",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms",
-          }}
-        >
-          <p style={{ fontSize: 17, color: "rgba(14,26,43,0.65)", lineHeight: S.lhBody, marginBottom: 20 }}>
-            A credit score does not show whether your income could survive the loss of a major source, how much is already lined up ahead, or how much would continue if active work stopped.
-          </p>
-          <p style={{ fontSize: 19, color: B.navy, fontWeight: 600 }}>
-            RunPayway measures that gap.
-          </p>
+          ))}
         </div>
       </div>
     </section>
@@ -2366,7 +2385,7 @@ export default function LandingPage() {
   return (
     <div className="overflow-x-hidden">
       <HeroSection />
-      <TheGapSection />
+      <FourFactorsSection />
       <WhoItsForSection />
       <WhatYourReportSection />
       <SampleResultSection />
