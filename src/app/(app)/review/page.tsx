@@ -485,8 +485,11 @@ export default function ReviewPage() {
   const [advisorEmail, setAdvisorEmail] = useState("");
   const [advisorSending, setAdvisorSending] = useState(false);
   const [advisorSent, setAdvisorSent] = useState(false);
+  const [animatedScore, setAnimatedScore] = useState(0);
+  const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
   const monitoringTracked = useRef(false);
   const emailSent = useRef(false);
+  const scoreAnimated = useRef(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -578,6 +581,23 @@ export default function ReviewPage() {
     }
   }, [router]);
 
+  // ── Score count-up animation ──
+  useEffect(() => {
+    if (!record || scoreAnimated.current) return;
+    scoreAnimated.current = true;
+    const target = record.final_score;
+    const duration = 1500;
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setAnimatedScore(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [record]);
+
   if (!record) return null;
 
   // ── Derived values ──
@@ -596,6 +616,13 @@ export default function ReviewPage() {
   const constraintGuidance: string[] = safeJsonParse(record.constraint_guidance_payload, []);
   const evolutionSteps: string[] = safeJsonParse(record.evolution_path_steps_payload, []);
   const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = safeJsonParse(record.advisor_discussion_guide_payload, { talking_points: [], client_questions: [], red_flags: [], next_steps: [] });
+
+  // ── Page navigation ──
+  const pageTitles = ["Your Score", "Why This Score", "What Could Go Wrong", "How to Improve", "What to Do Next"];
+  const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
+
+  // ── Reassessment countdown ──
+  const reassessDaysLeft = Math.max(0, Math.ceil((new Date(reassessDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
   const handleDownload = async () => {
     setDownloading(true);
@@ -631,17 +658,38 @@ export default function ReviewPage() {
     <ReportErrorBoundary>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
 
-      {/* ================================================================
-          PAGE 1 — EXECUTIVE DIAGNOSTIC
-          ================================================================ */}
-      {/* ---- PAGE 1 — EXECUTIVE DIAGNOSTIC ---- */}
+      {/* ── Progress Stepper ── */}
+      <div className="no-print" style={{ width: "100%", display: "flex", gap: 4, marginBottom: -16 }}>
+        {pageTitles.map((title, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              const pages = document.querySelectorAll(".report-page");
+              pages[i]?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            style={{
+              flex: 1, padding: "10px 0", fontSize: 11, fontWeight: 500,
+              color: B.muted, backgroundColor: B.bone, border: `1px solid ${B.stone}`,
+              borderRadius: i === 0 ? "6px 0 0 6px" : i === 4 ? "0 6px 6px 0" : 0,
+              cursor: "pointer", transition: "all 150ms ease",
+              letterSpacing: "0.01em",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = B.white; e.currentTarget.style.color = B.navy; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.bone; e.currentTarget.style.color = B.muted; }}
+          >
+            {i + 1}. {title}
+          </button>
+        ))}
+      </div>
+
+      {/* ---- PAGE 1 ---- */}
       <ReportPage record={record}>
         <ReportHeader />
         <Overline>YOUR INCOME STABILITY REPORT</Overline>
         <h1 style={{ ...T.pageTitle, marginBottom: 28 }}>Your Score</h1>
 
         <div style={{ marginBottom: 24 }}>
-          <div style={{ ...T.score, color: B.navy }}>{record.final_score}</div>
+          <div style={{ ...T.score, color: B.navy }}>{animatedScore}</div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
@@ -719,10 +767,14 @@ export default function ReviewPage() {
       </ReportPage>
 
 
-      {/* ---- PAGE 2 — STRUCTURAL BREAKDOWN ---- */}
+      {/* ---- PAGE 2 ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Why This Score</h1>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Why This Score</h1>
+          <button className="no-print" onClick={() => toggleSection(2)} style={{ fontSize: 11, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 4, padding: "4px 10px", cursor: "pointer", flexShrink: 0 }}>{collapsed[2] ? "Show details" : "Hide details"}</button>
+        </div>
+        <div style={{ overflow: "hidden", maxHeight: collapsed[2] ? 0 : 9999, transition: "max-height 400ms ease", opacity: collapsed[2] ? 0 : 1 }}>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
           This page breaks down the main reasons behind the score for {name}. The question is not whether income exists. The question is how well it holds up when something changes.
         </p>
@@ -817,6 +869,7 @@ export default function ReviewPage() {
           </p>
         </DiagnosisBlock>
 
+        </div>{/* end collapsible */}
         <PageFooter section="Why This Score" page={2} />
       </ReportPage>
 
@@ -824,7 +877,11 @@ export default function ReviewPage() {
       {/* ---- PAGE 3 — RISK EXPOSURE ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
+          <button className="no-print" onClick={() => toggleSection(3)} style={{ fontSize: 11, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 4, padding: "4px 10px", cursor: "pointer", flexShrink: 0 }}>{collapsed[3] ? "Show details" : "Hide details"}</button>
+        </div>
+        <div style={{ overflow: "hidden", maxHeight: collapsed[3] ? 0 : 9999, transition: "max-height 400ms ease", opacity: collapsed[3] ? 0 : 1 }}>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
           This page shows where {name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.
         </p>
@@ -903,6 +960,7 @@ export default function ReviewPage() {
           </p>
         </DiagnosisBlock>
 
+        </div>{/* end collapsible */}
         <PageFooter section="What Could Go Wrong" page={3} />
       </ReportPage>
 
@@ -910,7 +968,11 @@ export default function ReviewPage() {
       {/* ---- PAGE 4 — UPGRADE PATH ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How to Improve</h1>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How to Improve</h1>
+          <button className="no-print" onClick={() => toggleSection(4)} style={{ fontSize: 11, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 4, padding: "4px 10px", cursor: "pointer", flexShrink: 0 }}>{collapsed[4] ? "Show details" : "Hide details"}</button>
+        </div>
+        <div style={{ overflow: "hidden", maxHeight: collapsed[4] ? 0 : 9999, transition: "max-height 400ms ease", opacity: collapsed[4] ? 0 : 1 }}>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           The fastest way to raise this score is not to work more. It is to change how {name} is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.
         </p>
@@ -974,6 +1036,7 @@ export default function ReviewPage() {
           </p>
         </DiagnosisBlock>
 
+        </div>{/* end collapsible */}
         <PageFooter section="How to Improve" page={4} />
       </ReportPage>
 
@@ -981,8 +1044,11 @@ export default function ReviewPage() {
       {/* ---- PAGE 5 — DECISION SUMMARY ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
-
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
+          <button className="no-print" onClick={() => toggleSection(5)} style={{ fontSize: 11, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 4, padding: "4px 10px", cursor: "pointer", flexShrink: 0 }}>{collapsed[5] ? "Show details" : "Hide details"}</button>
+        </div>
+        <div style={{ overflow: "hidden", maxHeight: collapsed[5] ? 0 : 9999, transition: "max-height 400ms ease", opacity: collapsed[5] ? 0 : 1 }}>
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>The main takeaway for {name}:</p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
@@ -1047,9 +1113,10 @@ export default function ReviewPage() {
         {/* Bottom cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT DATE</div>
-            <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{reassessDate}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake the assessment after real structural improvement, not after a short-term earnings spike.</p>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>RECOMMENDED REASSESSMENT</div>
+            <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake after real structural improvement, not after a short-term earnings spike.</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
@@ -1066,6 +1133,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.
         </p>
 
+        </div>{/* end collapsible */}
         <PageFooter section="What to Do Next" page={5} />
       </ReportPage>
 
@@ -1110,6 +1178,40 @@ export default function ReviewPage() {
             style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 12, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
             Add Reassessment to Calendar
           </button>
+        </div>
+
+        {/* Share Result Card */}
+        <div style={{ padding: "20px 24px", borderRadius: 12, border: `1px solid ${B.stone}`, backgroundColor: B.white }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 500, color: B.taupe, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>INCOME STABILITY SCORE™</div>
+              <div style={{ fontSize: 36, fontWeight: 600, color: B.navy, lineHeight: 1 }}>{record.final_score}</div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
+                <span style={{ fontSize: 14, fontWeight: 500, color: bandColor }}>{record.stability_band}</span>
+              </div>
+              <div style={{ fontSize: 12, color: B.muted, marginTop: 8 }}>{name}</div>
+              <div style={{ fontSize: 11, color: B.taupe, marginTop: 2 }}>Assessed {issuedDate} · Model RP-2.0</div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <Image src={logoImg} alt="RunPayway" width={90} height={11} style={{ height: "auto", marginBottom: 8 }} />
+              <div style={{ fontSize: 10, color: B.taupe }}>runpayway.com/verify</div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+            <button
+              onClick={() => {
+                const text = `${name} — Income Stability Score™: ${record.final_score} (${record.stability_band}). Assessed under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}`;
+                navigator.clipboard.writeText(text).then(() => {
+                  setLinkCopied(true);
+                  setTimeout(() => setLinkCopied(false), 3000);
+                });
+              }}
+              style={{ padding: "8px 14px", fontSize: 12, fontWeight: 500, color: B.navy, borderRadius: 8, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease" }}
+            >
+              Copy Result Summary
+            </button>
+          </div>
         </div>
 
         {downloadError && (
@@ -1217,6 +1319,7 @@ export default function ReviewPage() {
             page-break-after: auto;
           }
           body { background: white !important; }
+          [style*="max-height: 0"] { max-height: 9999px !important; opacity: 1 !important; }
         }
         @media (prefers-color-scheme: dark) {
           .report-page {
