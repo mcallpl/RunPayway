@@ -67,11 +67,13 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
+  sand: "#FAF9F7",
+  sandDk: "#F4F1EA",
+  offWhite: "#FEFDFB",
+  muted: "#4B5563",
   light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  border: "#E6E9EF",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
 /* ────────────────────────────────────────────────────────────────────
@@ -120,6 +122,9 @@ const S = {
   lsLabel:      "0.14em",
 };
 
+/* Spacious section padding for Hero, Sample Result, Pricing */
+const spaciousY = { desktop: 200, mobile: 100 };
+
 
 /* ================================================================== */
 /* SECTION 1: HERO                                                     */
@@ -157,8 +162,8 @@ function HeroSection() {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? S.sectionY.mobile + 24 : S.sectionY.desktop + 40,
-          paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+          paddingTop: mobile ? spaciousY.mobile + 24 : spaciousY.desktop + 40,
+          paddingBottom: mobile ? spaciousY.mobile : spaciousY.desktop,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
           textAlign: "center",
@@ -188,7 +193,7 @@ function HeroSection() {
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHero,
             marginBottom: S.h1mb,
-            maxWidth: mobile ? undefined : 640,
+            maxWidth: mobile ? undefined : 700,
             marginLeft: "auto",
             marginRight: "auto",
             opacity: visible ? 1 : 0,
@@ -196,7 +201,7 @@ function HeroSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          How stable is your income, really?
+          The fixed standard for measuring income structure stability.
         </h1>
 
         {/* Body */}
@@ -206,7 +211,7 @@ function HeroSection() {
             color: "rgba(244,241,234,0.75)",
             lineHeight: S.lhBody,
             marginBottom: S.paraMb,
-            maxWidth: mobile ? undefined : 580,
+            maxWidth: mobile ? undefined : 620,
             marginLeft: "auto",
             marginRight: "auto",
             opacity: visible ? 1 : 0,
@@ -214,7 +219,7 @@ function HeroSection() {
             transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
           }}
         >
-          RunPayway measures the structural stability of your income &#8212; how much is recurring, how concentrated it is, how far ahead it is secured, and how much continues without active work. The result is a fixed 0&#8211;100 score under Model RP-2.0.
+          RunPayway&#8482; measures the structure behind your income &#8212; how much repeats, how concentrated it is, how far ahead it is secured, and how much continues without active work.
         </p>
 
         {/* Subline */}
@@ -327,16 +332,16 @@ function HeroSection() {
 
 
 /* ================================================================== */
-/* SECTION 2: THE GAP                                                  */
+/* SECTION 2: COMPARISON                                               */
 /* ================================================================== */
-function TheGapSection() {
+function ComparisonSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   return (
     <section
       ref={ref}
-      aria-label="The Gap"
+      aria-label="Comparison"
       style={{
         backgroundColor: "#ffffff",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
@@ -383,7 +388,7 @@ function TheGapSection() {
               backgroundColor: B.sand,
               borderRadius: S.cardRadius,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
+              border: `1px solid ${B.border}`,
             }}
           >
             <div
@@ -403,7 +408,7 @@ function TheGapSection() {
               backgroundColor: "#ffffff",
               borderRadius: S.cardRadius,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: `1px solid rgba(75,63,174,0.15)`,
+              border: "1px solid rgba(75,63,174,0.15)",
               boxShadow: "0 4px 16px rgba(75,63,174,0.06)",
             }}
           >
@@ -451,26 +456,81 @@ function TheGapSection() {
 
 
 /* ================================================================== */
-/* SECTION 3: WHAT YOU GET                                             */
+/* SECTION 3: WHO IT IS FOR                                            */
 /* ================================================================== */
-function WhatYouGetSection() {
+function WhoItIsForSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Who It Is For"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div
+          style={{
+            maxWidth: 680,
+            marginLeft: "auto",
+            marginRight: "auto",
+            textAlign: "center",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 520ms ease-out, transform 520ms ease-out",
+          }}
+        >
+          <h2
+            className="text-[30px] md:text-[40px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
+          >
+            Built for income that does not fit simple scoring
+          </h2>
+
+          <p
+            className="text-[16px] md:text-[18px]"
+            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody }}
+          >
+            RunPayway is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 4: WHAT YOUR REPORT INCLUDES                                */
+/* ================================================================== */
+function WhatYourReportIncludesSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   const pages = [
-    { title: "Your Score", desc: "Overall score, stability band, classification, resilience grade, and confidence level." },
-    { title: "Why This Score", desc: "Structural drivers, constraint hierarchy, interaction effects, and sensitivity ranking." },
-    { title: "What Could Go Wrong", desc: "Stress scenarios, income mix breakdown, and peer comparison." },
-    { title: "How to Improve", desc: "Projected improvements, prioritized actions tailored to your industry, and what not to do." },
+    { title: "Your Score", desc: "Overall score, stability band, resilience profile, and confidence level." },
+    { title: "Why You Scored There", desc: "The main drivers, the primary constraint, and what is helping or holding the score down." },
+    { title: "Where the Structure Is Exposed", desc: "Stress scenarios, income mix, and the areas most vulnerable to disruption." },
+    { title: "How to Improve", desc: "Projected improvements, prioritized next moves tailored to your industry." },
     { title: "What to Do Next", desc: "90-day checklist, reassessment triggers, and benchmark context." },
   ];
 
   return (
     <section
       ref={ref}
-      aria-label="What You Get"
+      aria-label="What Your Report Includes"
       style={{
-        backgroundColor: B.sand,
+        backgroundColor: "#ffffff",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
@@ -502,7 +562,7 @@ function WhatYouGetSection() {
             className="text-[16px] md:text-[18px] mx-auto"
             style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, maxWidth: 640 }}
           >
-            A 5-page structural diagnostic that shows your score, explains what drives it, identifies what is most exposed, and recommends what to strengthen next.
+            A 5-page structural diagnostic that shows your score, explains what drives it, identifies where the structure is exposed, and shows what to strengthen next.
           </p>
         </div>
 
@@ -583,7 +643,7 @@ function WhatYouGetSection() {
 
 
 /* ================================================================== */
-/* SECTION 4: SAMPLE RESULT                                            */
+/* SECTION 5: SAMPLE RESULT                                            */
 /* ================================================================== */
 function SampleResultSection() {
   const { ref, visible } = useInView();
@@ -594,9 +654,9 @@ function SampleResultSection() {
       ref={ref}
       aria-label="Sample Result"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: "rgba(14,26,43,0.025)",
+        paddingTop: mobile ? spaciousY.mobile : spaciousY.desktop,
+        paddingBottom: mobile ? spaciousY.mobile : spaciousY.desktop,
       }}
     >
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
@@ -732,7 +792,7 @@ function SampleResultSection() {
 
 
 /* ================================================================== */
-/* SECTION 5: HOW IT WORKS                                             */
+/* SECTION 6: HOW IT WORKS                                             */
 /* ================================================================== */
 function HowItWorksSection() {
   const { ref, visible } = useInViewBidi(0.15);
@@ -740,7 +800,7 @@ function HowItWorksSection() {
 
   const steps = [
     { num: "1", title: "Answer six questions", desc: "About how your income is structured today." },
-    { num: "2", title: "The model runs", desc: "Model RP-2.0 calculates your score from 20 deterministic engines. No AI. Same answers always produce the same result." },
+    { num: "2", title: "The model runs", desc: "Model RP-2.0 calculates your score from fixed scoring rules. No AI. Same answers always produce the same result." },
     { num: "3", title: "Get your full report", desc: "Score, structural breakdown, stress scenarios, improvement paths, and reassessment triggers. Delivered instantly." },
   ];
 
@@ -839,6 +899,14 @@ function HowItWorksSection() {
             );
           })}
         </div>
+
+        {/* Footer */}
+        <p
+          className="text-[13px] md:text-[14px]"
+          style={{ color: B.light, textAlign: "center", marginTop: 32, letterSpacing: "0.02em", fontWeight: 500 }}
+        >
+          Powered by Model RP-2.0
+        </p>
       </div>
     </section>
   );
@@ -846,9 +914,135 @@ function HowItWorksSection() {
 
 
 /* ================================================================== */
-/* SECTION 6: WHO IT'S FOR                                             */
+/* SECTION 7: WHAT IT MEASURES                                         */
 /* ================================================================== */
-function WhoItsForSection() {
+function WhatItMeasuresSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const dimensions = [
+    { title: "Recurring or Continuing Income", desc: "How much income continues from existing sources without needing new acquisition." },
+    { title: "Income Concentration", desc: "How much depends on your single largest source." },
+    { title: "Source Diversity", desc: "How many meaningful income sources support the structure." },
+    { title: "Forward Visibility", desc: "How far ahead income is already committed or scheduled." },
+    { title: "Income Variability", desc: "How sharply income moves between strong and weak months." },
+    { title: "Continuity Without Active Work", desc: "How much income would continue if active work stopped for 90 days." },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="What It Measures"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        {/* Header */}
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: S.subtextMb,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 520ms ease-out, transform 520ms ease-out",
+          }}
+        >
+          <h2
+            className="text-[30px] md:text-[40px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
+          >
+            What the model measures
+          </h2>
+          <p
+            className="text-[16px] md:text-[18px] mx-auto"
+            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, maxWidth: 640 }}
+          >
+            Your score is built from six structural dimensions. Together, they show how stable your income is and how well it holds up under pressure.
+          </p>
+        </div>
+
+        {/* 6 items in 2-column grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: S.gridGap,
+            maxWidth: 860,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 520ms ease-out 100ms, transform 520ms ease-out 100ms",
+          }}
+        >
+          {dimensions.map((dim, i) => (
+            <div
+              key={dim.title}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: mobile ? 16 : 20,
+                padding: mobile ? "16px 0" : "20px 0",
+                borderBottom: "1px solid rgba(14,26,43,0.06)",
+              }}
+            >
+              <div
+                style={{
+                  flexShrink: 0,
+                  width: 32,
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: B.light,
+                  letterSpacing: "-0.02em",
+                  fontVariantNumeric: "tabular-nums",
+                  paddingTop: 2,
+                }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  className="text-[15px] md:text-[16px] font-semibold"
+                  style={{ color: B.navy, lineHeight: 1.3, marginBottom: 6 }}
+                >
+                  {dim.title}
+                </div>
+                <p
+                  className="text-[14px] md:text-[15px]"
+                  style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.6 }}
+                >
+                  {dim.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <p
+          className="text-[13px] md:text-[14px]"
+          style={{ color: B.light, textAlign: "center", marginTop: 32, letterSpacing: "0.02em", fontWeight: 500 }}
+        >
+          Official Scoring Framework &#183; Model RP-2.0
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 8: BY INCOME TYPE                                           */
+/* ================================================================== */
+function ByIncomeTypeSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
@@ -863,11 +1057,11 @@ function WhoItsForSection() {
   return (
     <section
       ref={ref}
-      aria-label="Who It Is For"
+      aria-label="By Income Type"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
       }}
     >
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
@@ -892,14 +1086,14 @@ function WhoItsForSection() {
               marginBottom: S.h2mb,
             }}
           >
-            Built for income that does not fit simple scoring
+            Stability differs across income models
           </h2>
 
           <p
             className="text-[16px] md:text-[18px]"
-            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, marginBottom: S.subtextMb }}
+            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, marginBottom: 32 }}
           >
-            RunPayway is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone with income that depends on clients, contracts, or active effort.
+            The model stays fixed. The weak point changes by income type.
           </p>
 
           {/* Income type weak points */}
@@ -922,12 +1116,114 @@ function WhoItsForSection() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          <p
-            className="text-[15px] md:text-[16px]"
-            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, marginTop: 32, fontWeight: 500 }}
+
+/* ================================================================== */
+/* SECTION 9: CLASSIFICATION                                           */
+/* ================================================================== */
+function ClassificationSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const bands = [
+    { range: "0\u201329", label: "Limited Stability", desc: "Income structure is fragile and depends heavily on active work.", color: "#DC2626", width: "29%" },
+    { range: "30\u201349", label: "Developing Stability", desc: "Some support exists, but the structure is still exposed.", color: "#F59E0B", width: "20%" },
+    { range: "50\u201374", label: "Established Stability", desc: "Income reflects meaningful stability and stronger protection.", color: B.teal, width: "25%" },
+    { range: "75\u2013100", label: "High Stability", desc: "Income structure is durable and less dependent on constant effort.", color: B.navy, width: "26%" },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Classification"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        {/* Header */}
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: S.subtextMb,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 520ms ease-out, transform 520ms ease-out",
+          }}
+        >
+          <h2
+            className="text-[30px] md:text-[40px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
           >
-            The model stays fixed. The weak point changes by income type.
+            Income Stability Classification Scale
+          </h2>
+          <p
+            className="text-[16px] md:text-[18px] mx-auto"
+            style={{ color: "rgba(14,26,43,0.70)", lineHeight: S.lhBody, maxWidth: 600 }}
+          >
+            Every score maps to a fixed stability band under Model RP-2.0.
+          </p>
+        </div>
+
+        {/* Color bar */}
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 520ms ease-out 100ms, transform 520ms ease-out 100ms",
+          }}
+        >
+          <div style={{ display: "flex", borderRadius: 8, overflow: "hidden", height: 12, marginBottom: 32 }}>
+            {bands.map((band) => (
+              <div key={band.range} style={{ width: band.width, backgroundColor: band.color }} />
+            ))}
+          </div>
+
+          {/* Band descriptions */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr 1fr",
+              gap: mobile ? 20 : S.gridGap,
+            }}
+          >
+            {bands.map((band) => (
+              <div key={band.range}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                  <span style={{ width: 10, height: 10, borderRadius: 999, backgroundColor: band.color, flexShrink: 0 }} />
+                  <span className="text-[14px] font-semibold" style={{ color: B.navy }}>{band.range}</span>
+                </div>
+                <div className="text-[13px] font-semibold" style={{ color: B.navy, marginBottom: 4 }}>
+                  {band.label}
+                </div>
+                <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.5 }}>
+                  {band.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <p
+            className="text-[13px] md:text-[14px]"
+            style={{ color: B.light, textAlign: "center", marginTop: 32, letterSpacing: "0.02em", fontWeight: 500 }}
+          >
+            Band thresholds are fixed under Model RP-2.0.
           </p>
         </div>
       </div>
@@ -937,7 +1233,7 @@ function WhoItsForSection() {
 
 
 /* ================================================================== */
-/* SECTION 7: PRICING                                                  */
+/* SECTION 10: PRICING                                                 */
 /* ================================================================== */
 function PricingSection() {
   const { ref, visible } = useInView();
@@ -962,8 +1258,8 @@ function PricingSection() {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-          paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+          paddingTop: mobile ? spaciousY.mobile : spaciousY.desktop,
+          paddingBottom: mobile ? spaciousY.mobile : spaciousY.desktop,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
           textAlign: "center",
@@ -1149,17 +1445,40 @@ function PricingSection() {
 
 
 /* ================================================================== */
-/* SECTION 8: TRUST                                                    */
+/* SECTION 11: TRUST / GOVERNANCE                                      */
 /* ================================================================== */
-function TrustSection() {
+function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; setTrustOpen: (v: number | null) => void }) {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const bandColors = [
-    { range: "0-29", label: "Limited", color: "#DC2626", width: "29%" },
-    { range: "30-49", label: "Developing", color: "#F59E0B", width: "20%" },
-    { range: "50-74", label: "Established", color: B.teal, width: "25%" },
-    { range: "75-100", label: "High", color: B.navy, width: "26%" },
+  const panels = [
+    {
+      title: "Consistency",
+      items: [
+        "Fixed scoring framework under Model RP-2.0",
+        "The same answers produce the same result",
+        "AI does not determine assessment results",
+        "Framework changes create a new model version",
+      ],
+    },
+    {
+      title: "Transparency",
+      items: [
+        "Defined measurement categories",
+        "Published stability bands",
+        "Sample report available for review",
+        "Clear report sections and outputs",
+      ],
+    },
+    {
+      title: "Verification",
+      items: [
+        "Unique record ID on each report",
+        "Verification support included",
+        "Model version shown on every assessment",
+        "Report authenticity can be checked online",
+      ],
+    },
   ];
 
   return (
@@ -1191,102 +1510,83 @@ function TrustSection() {
           Model governance
         </h2>
 
-        {/* Three items */}
+        {/* Accordion panels */}
         <div
+          className="mx-auto"
           style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
-            gap: S.gridGap,
-            maxWidth: 960,
-            margin: "0 auto",
+            maxWidth: 720,
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 520ms ease-out 100ms, transform 520ms ease-out 100ms",
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 0.5s ease-out 80ms, transform 0.5s ease-out 80ms",
           }}
         >
-          {/* Classification Scale */}
-          <div
-            style={{
-              backgroundColor: "#ffffff",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
-            }}
-          >
-            <div
-              className="text-[11px] uppercase font-semibold"
-              style={{ color: B.teal, letterSpacing: S.lsLabel, marginBottom: 16 }}
-            >
-              Classification Scale
-            </div>
-
-            {/* Horizontal color bar */}
-            <div style={{ display: "flex", borderRadius: 6, overflow: "hidden", height: 10, marginBottom: 16 }}>
-              {bandColors.map((band) => (
-                <div key={band.range} style={{ width: band.width, backgroundColor: band.color }} />
-              ))}
-            </div>
-
-            {/* Band labels */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {bandColors.map((band) => (
-                <div key={band.range} className="text-[12px]" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: 999, backgroundColor: band.color, flexShrink: 0 }} />
-                  <span style={{ color: B.navy, fontWeight: 600 }}>{band.range}</span>
-                  <span style={{ color: B.muted }}>{band.label}</span>
+          {panels.map((panel, i) => {
+            const isOpen = trustOpen === i;
+            return (
+              <div
+                key={panel.title}
+                style={{
+                  borderTop: "1px solid rgba(14,26,43,0.08)",
+                  borderBottom: i === panels.length - 1 ? "1px solid rgba(14,26,43,0.08)" : "none",
+                  backgroundColor: isOpen ? "rgba(75,63,174,0.03)" : "transparent",
+                  transition: "background-color 180ms ease",
+                }}
+              >
+                <button
+                  onClick={() => setTrustOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between text-left group"
+                  style={{ padding: "26px 0", gap: 24 }}
+                  aria-expanded={isOpen}
+                >
+                  <span
+                    className="text-[17px] md:text-[20px] transition-colors duration-[180ms]"
+                    style={{
+                      color: isOpen ? B.navy : "rgba(14,26,43,0.80)",
+                      fontWeight: 500,
+                      lineHeight: 1.45,
+                      letterSpacing: "-0.01em",
+                    }}
+                  >
+                    {panel.title}
+                  </span>
+                  <svg
+                    width="16" height="16" viewBox="0 0 16 16" fill="none"
+                    className="shrink-0 transition-colors duration-[180ms]"
+                    stroke="rgba(14,26,43,0.40)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  >
+                    {!isOpen && <line x1="8" y1="2" x2="8" y2="14" />}
+                    <line x1="2" y1="8" x2="14" y2="8" />
+                  </svg>
+                </button>
+                <div
+                  className="overflow-hidden transition-all duration-[220ms] ease-in-out"
+                  style={{ maxHeight: isOpen ? 300 : 0, opacity: isOpen ? 1 : 0 }}
+                >
+                  <ul style={{ paddingTop: 4, paddingBottom: 24, paddingLeft: 0, listStyle: "none" }}>
+                    {panel.items.map((item) => (
+                      <li
+                        key={item}
+                        className="text-[15px] md:text-[16px]"
+                        style={{
+                          color: "rgba(14,26,43,0.65)",
+                          lineHeight: 1.75,
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: 12,
+                          padding: "6px 0",
+                        }}
+                      >
+                        <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: B.teal, marginTop: 9, flexShrink: 0 }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Model Integrity */}
-          <div
-            style={{
-              backgroundColor: "#ffffff",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
-            }}
-          >
-            <div
-              className="text-[11px] uppercase font-semibold"
-              style={{ color: B.teal, letterSpacing: S.lsLabel, marginBottom: 16 }}
-            >
-              Model Integrity
-            </div>
-            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.65)", lineHeight: 1.7, marginBottom: 12 }}>
-              The same answers produce the same score every time. Scoring, scenarios, and classifications are generated from fixed rules.
-            </p>
-            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.65)", lineHeight: 1.7, marginBottom: 12 }}>
-              No AI determines the result. If the framework changes, it becomes a new version.
-            </p>
-            <p className="text-[14px] font-semibold" style={{ color: B.navy }}>
-              Current: Model RP-2.0
-            </p>
-          </div>
-
-          {/* Verification */}
-          <div
-            style={{
-              backgroundColor: "#ffffff",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
-            }}
-          >
-            <div
-              className="text-[11px] uppercase font-semibold"
-              style={{ color: B.teal, letterSpacing: S.lsLabel, marginBottom: 16 }}
-            >
-              Verification
-            </div>
-            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.65)", lineHeight: 1.7, marginBottom: 12 }}>
-              Every assessment includes a unique record ID, SHA-256 integrity hash, and verification link.
-            </p>
-            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.65)", lineHeight: 1.7 }}>
-              Reports can be authenticated at runpayway.com/verify.
-            </p>
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1295,7 +1595,7 @@ function TrustSection() {
 
 
 /* ================================================================== */
-/* SECTION 9: FAQ                                                      */
+/* SECTION 12: FAQ                                                     */
 /* ================================================================== */
 function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
   const { ref, visible } = useInView();
@@ -1445,7 +1745,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
 
 /* ================================================================== */
-/* SECTION 10: DISCLAIMER                                              */
+/* SECTION 13: DISCLAIMER                                              */
 /* ================================================================== */
 function DisclaimerSection() {
   const { ref, visible } = useInView();
@@ -1529,6 +1829,7 @@ function DisclaimerSection() {
 /* ================================================================== */
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [trustOpen, setTrustOpen] = useState<number | null>(null);
 
   return (
     <div className="overflow-x-hidden">
@@ -1536,31 +1837,40 @@ export default function LandingPage() {
       {/* ============ SECTION 1: HERO ============ */}
       <HeroSection />
 
-      {/* ============ SECTION 2: THE GAP ============ */}
-      <TheGapSection />
+      {/* ============ SECTION 2: COMPARISON ============ */}
+      <ComparisonSection />
 
-      {/* ============ SECTION 3: WHAT YOU GET ============ */}
-      <WhatYouGetSection />
+      {/* ============ SECTION 3: WHO IT IS FOR ============ */}
+      <WhoItIsForSection />
 
-      {/* ============ SECTION 4: SAMPLE RESULT ============ */}
+      {/* ============ SECTION 4: WHAT YOUR REPORT INCLUDES ============ */}
+      <WhatYourReportIncludesSection />
+
+      {/* ============ SECTION 5: SAMPLE RESULT ============ */}
       <SampleResultSection />
 
-      {/* ============ SECTION 5: HOW IT WORKS ============ */}
+      {/* ============ SECTION 6: HOW IT WORKS ============ */}
       <HowItWorksSection />
 
-      {/* ============ SECTION 6: WHO IT'S FOR ============ */}
-      <WhoItsForSection />
+      {/* ============ SECTION 7: WHAT IT MEASURES ============ */}
+      <WhatItMeasuresSection />
 
-      {/* ============ SECTION 7: PRICING ============ */}
+      {/* ============ SECTION 8: BY INCOME TYPE ============ */}
+      <ByIncomeTypeSection />
+
+      {/* ============ SECTION 9: CLASSIFICATION ============ */}
+      <ClassificationSection />
+
+      {/* ============ SECTION 10: PRICING ============ */}
       <PricingSection />
 
-      {/* ============ SECTION 8: TRUST ============ */}
-      <TrustSection />
+      {/* ============ SECTION 11: TRUST / GOVERNANCE ============ */}
+      <TrustSection trustOpen={trustOpen} setTrustOpen={setTrustOpen} />
 
-      {/* ============ SECTION 9: FAQ ============ */}
+      {/* ============ SECTION 12: FAQ ============ */}
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
 
-      {/* ============ SECTION 10: DISCLAIMER ============ */}
+      {/* ============ SECTION 13: DISCLAIMER ============ */}
       <DisclaimerSection />
     </div>
   );
