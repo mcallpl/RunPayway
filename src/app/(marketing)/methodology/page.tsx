@@ -55,45 +55,54 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
+  sand: "#FAF9F7",
+  sandDk: "#F4F1EA",
+  offWhite: "#FEFDFB",
+  muted: "#4B5563",
   light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  border: "#E6E9EF",
+  gradient:
+    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  bandLimited: "#DC2626",
+  bandDeveloping: "#D97706",
+  bandEstablished: "#2563EB",
+  bandHigh: "#16A34A",
 };
 
 const S = {
-  sectionY:     { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 120, mobile: 72 },
-  transitionY:  { desktop: 72, mobile: 48 },
-  disclaimerY:  { desktop: 64, mobile: 48 },
-  maxW:         1060,
-  padX:         { desktop: 48, mobile: 24 },
-  h1mb:         28,
-  h2mb:         24,
-  subtextMb:    56,
-  paraMb:       24,
-  labelMb:      16,
-  cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   16,
-  panelRadius:  20,
-  gridGap:      24,
-  gridGapSm:    16,
-  ctaH:         56,
-  ctaHsm:       46,
-  ctaPadX:      32,
-  ctaRadius:    14,
-  lhHeading:    1.08,
-  lhBody:       1.75,
-  lhDense:      1.5,
-  lsHeading:    "-0.025em",
-  lsHero:       "-0.035em",
-  lsLabel:      "0.14em",
+  sectionY: { desktop: 160, mobile: 88 },
+  sectionYsm: { desktop: 120, mobile: 72 },
+  transitionY: { desktop: 72, mobile: 48 },
+  disclaimerY: { desktop: 24, mobile: 16 },
+  maxW: 1060,
+  padX: { desktop: 48, mobile: 24 },
+  h1mb: 28,
+  h2mb: 24,
+  subtextMb: 56,
+  paraMb: 24,
+  labelMb: 16,
+  cardPad: { desktop: 36, mobile: 24 },
+  cardRadius: 16,
+  panelRadius: 20,
+  gridGap: 24,
+  gridGapSm: 16,
+  ctaH: 56,
+  ctaHsm: 46,
+  ctaPadX: 32,
+  ctaRadius: 14,
+  lhHeading: 1.08,
+  lhBody: 1.75,
+  lhDense: 1.5,
+  lsHeading: "-0.025em",
+  lsHero: "-0.035em",
+  lsLabel: "0.14em",
 };
+
+const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
 
 
 /* ================================================================== */
-/* HERO                                                                */
+/* 1. HERO — Dark gradient                                             */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
@@ -104,43 +113,86 @@ function Hero() {
       ref={ref}
       aria-label="Methodology Hero"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: mobile ? 120 : 160,
+        paddingBottom: mobile ? 72 : 100,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "50%",
+          width: 800,
+          height: 800,
+          transform: "translate(-50%, -50%)",
+          background:
+            "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
+            maxWidth: 720,
+            marginLeft: "auto",
+            marginRight: "auto",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
           <div
             className="text-[11px] uppercase"
-            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
+            style={{
+              color: "rgba(255,255,255,0.50)",
+              fontWeight: 700,
+              letterSpacing: S.lsLabel,
+              marginBottom: 20,
+            }}
           >
-            Model RP-2.0
+            Methodology
           </div>
           <h1
-            className="text-[36px] md:text-[52px]"
+            className="text-[36px] md:text-[44px]"
             style={{
-              color: B.navy,
+              color: "#FAF9F7",
               fontWeight: 700,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: S.h1mb,
             }}
           >
-            Methodology
+            How the score is built.
           </h1>
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: "rgba(250,249,247,0.70)",
+              lineHeight: S.lhBody,
+              maxWidth: 620,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
           >
-            A complete description of how the Income Stability Score is constructed, from canonical inputs through scoring framework to classification and verification.
+            The Income Stability Score&trade; is a deterministic structural
+            assessment. Every rule is fixed, every result is reproducible, and no
+            AI determines the outcome.
           </p>
         </div>
       </div>
@@ -150,7 +202,7 @@ function Hero() {
 
 
 /* ================================================================== */
-/* PURPOSE OF THE MODEL                                                */
+/* 2. PURPOSE — White background                                       */
 /* ================================================================== */
 function Purpose() {
   const { ref, visible } = useInView();
@@ -161,29 +213,64 @@ function Purpose() {
       ref={ref}
       aria-label="Purpose"
       style={{
-        backgroundColor: B.sand,
+        backgroundColor: "#ffffff",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: 680,
             margin: "0 auto",
+            textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
+          >
             Purpose of the model
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Model RP-2.0 exists to answer a single question: how structurally durable is this income? It does not predict future earnings, estimate creditworthiness, or assess investment potential. It measures the architecture of how someone earns today.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: S.paraMb,
+            }}
+          >
+            The Income Stability Score measures how structurally stable your
+            income is — not how much you earn, but how well your income holds up
+            when something changes.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            The model is designed for income structures that traditional metrics struggle to evaluate — freelance, contract, gig, multi-source, and variable income. It produces a score from 0 to 100 using entirely deterministic rules. The same inputs always produce the same output.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: 0,
+            }}
+          >
+            It answers six questions: How much income repeats? How concentrated
+            is it? How far ahead is it secured? How variable is it? How many
+            sources support it? How much continues without active work?
           </p>
         </div>
       </div>
@@ -193,32 +280,70 @@ function Purpose() {
 
 
 /* ================================================================== */
-/* SIX CANONICAL INPUTS                                                */
+/* 3. SIX DIMENSIONS — Sand background                                 */
 /* ================================================================== */
-function CanonicalInputs() {
+function SixDimensions() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const inputs = [
-    { num: "01", title: "Number of Income Sources", desc: "Total count of distinct income streams. Each source must represent a separate origin of payment — not separate invoices from the same client." },
-    { num: "02", title: "Largest Source Concentration", desc: "The percentage of total income derived from the single largest source. Measures concentration risk and single-point-of-failure exposure." },
-    { num: "03", title: "Income Predictability", desc: "How consistent and regular income patterns are across months. Measures whether income arrives on a reliable schedule or is sporadic." },
-    { num: "04", title: "Forward Commitment Horizon", desc: "How far ahead income is contractually committed before the earning period begins. Longer horizons indicate stronger forward visibility." },
-    { num: "05", title: "Passive or Recurring Share", desc: "The percentage of total income that continues without active work — recurring revenue, subscriptions, royalties, or contractual retainers." },
-    { num: "06", title: "Industry or Income Category", desc: "The broad category of work or income model. Used for peer benchmarking and industry-specific refinement of stress scenarios." },
+  const dimensions = [
+    {
+      num: "01",
+      title: "Recurring or Continuing Income",
+      desc: "How much income continues from existing sources without new acquisition.",
+      accent: B.teal,
+    },
+    {
+      num: "02",
+      title: "Income Concentration",
+      desc: "How much depends on your single largest source.",
+      accent: B.purple,
+    },
+    {
+      num: "03",
+      title: "Source Diversity",
+      desc: "How many meaningful income sources support the structure.",
+      accent: B.teal,
+    },
+    {
+      num: "04",
+      title: "Forward Visibility",
+      desc: "How far ahead income is already committed or scheduled.",
+      accent: B.purple,
+    },
+    {
+      num: "05",
+      title: "Income Variability",
+      desc: "How sharply income moves between strong and weak months.",
+      accent: B.teal,
+    },
+    {
+      num: "06",
+      title: "Continuity Without Active Work",
+      desc: "How much income would continue if active work stopped for 90 days.",
+      accent: B.purple,
+    },
   ];
 
   return (
     <section
       ref={ref}
-      aria-label="Six Canonical Inputs"
+      aria-label="Six Dimensions"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -228,48 +353,109 @@ function CanonicalInputs() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Six canonical inputs
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: 12,
+            }}
+          >
+            What the model measures
           </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Every assessment begins with exactly six inputs. No more, no less. These are the only data points the model accepts.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              maxWidth: 560,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Your score is built from six structural dimensions.
           </p>
         </div>
 
-        <div style={{ maxWidth: 740, margin: "0 auto" }}>
-          {inputs.map((input, i) => (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: S.gridGap,
+            maxWidth: 880,
+            margin: "0 auto",
+          }}
+        >
+          {dimensions.map((dim, i) => (
             <div
-              key={input.num}
+              key={dim.num}
               style={{
-                display: "flex",
-                gap: mobile ? 16 : 28,
-                alignItems: "flex-start",
-                marginBottom: i < inputs.length - 1 ? 36 : 0,
+                backgroundColor: "#ffffff",
+                borderRadius: S.cardRadius,
+                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+                borderLeft: `4px solid ${dim.accent}`,
+                border: `1px solid rgba(14,26,43,0.06)`,
+                borderLeftWidth: 4,
+                borderLeftColor: dim.accent,
                 opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
+                transform: visible ? "translateY(0)" : "translateY(14px)",
+                transition: `opacity 0.5s ease-out ${i * 70}ms, transform 0.5s ease-out ${i * 70}ms`,
               }}
             >
               <div
-                className="text-[28px]"
                 style={{
-                  fontWeight: 800,
-                  color: "rgba(75,63,174,0.15)",
-                  lineHeight: 1,
-                  flexShrink: 0,
-                  minWidth: 40,
-                  paddingTop: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  marginBottom: 12,
                 }}
               >
-                {input.num}
+                <span
+                  className="text-[12px]"
+                  style={{
+                    color: dim.accent,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    opacity: 0.6,
+                  }}
+                >
+                  {dim.num}
+                </span>
+                <h3
+                  className="text-[15px]"
+                  style={{ fontWeight: 700, color: B.navy, margin: 0 }}
+                >
+                  {dim.title}
+                </h3>
               </div>
-              <div>
-                <h3 className="text-[15px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 8 }}>{input.title}</h3>
-                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{input.desc}</p>
-              </div>
+              <p
+                className="text-[14px]"
+                style={{
+                  color: B.muted,
+                  lineHeight: S.lhBody,
+                  margin: 0,
+                }}
+              >
+                {dim.desc}
+              </p>
             </div>
           ))}
         </div>
+
+        <p
+          className="text-[13px]"
+          style={{
+            color: B.light,
+            textAlign: "center",
+            marginTop: 40,
+            letterSpacing: "0.02em",
+            opacity: visible ? 1 : 0,
+            transition: "opacity 0.5s ease-out 500ms",
+          }}
+        >
+          These six dimensions are fixed under Model RP-2.0.
+        </p>
       </div>
     </section>
   );
@@ -277,23 +463,45 @@ function CanonicalInputs() {
 
 
 /* ================================================================== */
-/* SCORING FRAMEWORK                                                   */
+/* 4. SCORING FRAMEWORK — White background                             */
 /* ================================================================== */
 function ScoringFramework() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const [hovered, setHovered] = useState<number | null>(null);
+
+  const blocks = [
+    {
+      label: "Structure Block",
+      color: B.teal,
+      desc: "Evaluates the composition of your income \u2014 recurring revenue, source diversity, forward visibility, and concentration resilience.",
+    },
+    {
+      label: "Stability Block",
+      color: B.purple,
+      desc: "Evaluates the durability of your income \u2014 dependence on active work, earnings variability, and continuity under interruption.",
+    },
+  ];
 
   return (
     <section
       ref={ref}
       aria-label="Scoring Framework"
       style={{
-        backgroundColor: B.sand,
+        backgroundColor: "#ffffff",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             maxWidth: 720,
@@ -303,53 +511,251 @@ function ScoringFramework() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Scoring framework
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+              textAlign: "center",
+            }}
+          >
+            How the score is calculated
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 40 }}>
-            The final score is composed of two weighted blocks that together sum to 100 maximum points.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: 48,
+              textAlign: "center",
+            }}
+          >
+            Each dimension is scored individually and combined into a single
+            0&ndash;100 result. The model evaluates two structural blocks:
+          </p>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: S.gridGap,
+            maxWidth: 780,
+            margin: "0 auto 48px",
+          }}
+        >
+          {blocks.map((block, i) => (
+            <div
+              key={block.label}
+              onMouseEnter={() => canHover() && setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                backgroundColor: B.sand,
+                borderRadius: S.cardRadius,
+                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+                border: `1px solid ${hovered === i ? block.color : "rgba(14,26,43,0.06)"}`,
+                transition: "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
+                transform: hovered === i ? "translateY(-2px)" : "translateY(0)",
+                boxShadow: hovered === i ? "0 8px 24px rgba(14,26,43,0.06)" : "none",
+                opacity: visible ? 1 : 0,
+                animationDelay: `${i * 100}ms`,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginBottom: 16,
+                }}
+              >
+                <div
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    backgroundColor: block.color,
+                    flexShrink: 0,
+                  }}
+                />
+                <div
+                  className="text-[11px] uppercase"
+                  style={{
+                    color: block.color,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  {block.label}
+                </div>
+              </div>
+              <p
+                className="text-[14px]"
+                style={{
+                  color: B.muted,
+                  lineHeight: S.lhBody,
+                  margin: 0,
+                }}
+              >
+                {block.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p
+          className="text-[15px] md:text-[16px]"
+          style={{
+            color: B.muted,
+            lineHeight: S.lhBody,
+            textAlign: "center",
+            maxWidth: 620,
+            marginLeft: "auto",
+            marginRight: "auto",
+            opacity: visible ? 1 : 0,
+            transition: "opacity 0.5s ease-out 300ms",
+          }}
+        >
+          The two blocks combine into your final score. The same inputs always
+          produce the same result.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* 5. INTERACTION EFFECTS — Sand background                            */
+/* ================================================================== */
+function InteractionEffects() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const examples = [
+    {
+      type: "Penalty",
+      color: B.bandLimited,
+      desc: "High concentration combined with weak forward visibility triggers a penalty.",
+    },
+    {
+      type: "Bonus",
+      color: B.bandHigh,
+      desc: "Strong persistent income combined with low labor dependence produces a bonus.",
+    },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Interaction Effects"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
+          >
+            Interaction effects
+          </h2>
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: 40,
+            }}
+          >
+            Certain combinations of structural characteristics produce additional
+            scoring adjustments. These are fixed rules — not learned patterns —
+            and they apply automatically when specific conditions are met.
           </p>
 
-          {/* Blocks */}
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, marginBottom: 40 }}>
-            <div style={{
-              backgroundColor: "#ffffff",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
-            }}>
-              <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: "0.08em", marginBottom: 12 }}>
-                Structure Block
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              marginBottom: 40,
+            }}
+          >
+            {examples.map((ex, i) => (
+              <div
+                key={ex.type}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 16,
+                  backgroundColor: "#ffffff",
+                  borderRadius: S.cardRadius,
+                  padding: mobile ? "20px" : "24px 28px",
+                  border: "1px solid rgba(14,26,43,0.06)",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(10px)",
+                  transition: `opacity 0.5s ease-out ${200 + i * 100}ms, transform 0.5s ease-out ${200 + i * 100}ms`,
+                }}
+              >
+                <div
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    backgroundColor: ex.color,
+                    flexShrink: 0,
+                    marginTop: 7,
+                  }}
+                />
+                <p
+                  className="text-[14px] md:text-[15px]"
+                  style={{
+                    color: B.muted,
+                    lineHeight: S.lhBody,
+                    margin: 0,
+                  }}
+                >
+                  {ex.desc}
+                </p>
               </div>
-              <div className="text-[36px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 12 }}>60 pts</div>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>
-                Measures the architecture of income sources: count, diversification, and predictability patterns. This block captures how income is organized.
-              </p>
-            </div>
-            <div style={{
-              backgroundColor: "#ffffff",
-              borderRadius: S.cardRadius,
-              padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-              border: "1px solid rgba(14,26,43,0.06)",
-            }}>
-              <div className="text-[11px] uppercase" style={{ color: B.purple, fontWeight: 700, letterSpacing: "0.08em", marginBottom: 12 }}>
-                Stability Block
-              </div>
-              <div className="text-[36px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 12 }}>40 pts</div>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>
-                Measures behavioral durability: forward commitment, continuity ratio, and resilience under stress. This block captures how income holds up.
-              </p>
-            </div>
+            ))}
           </div>
 
-          <h3 className="text-[18px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 16 }}>
-            Interaction effects
-          </h3>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            After raw block scores are computed, the model applies interaction effects — cross-dimensional patterns that modify the total. These include penalties for structural contradictions (e.g., high source count but extreme concentration) and bonuses for reinforcing patterns (e.g., high predictability combined with strong forward commitment).
-          </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            Interaction effects are fixed rules, not learned weights. They are documented in the model manifest and versioned alongside all other scoring parameters.
+          <p
+            className="text-[13px]"
+            style={{
+              color: B.light,
+              letterSpacing: "0.02em",
+            }}
+          >
+            All interaction rules are versioned and documented in the model
+            manifest.
           </p>
         </div>
       </div>
@@ -359,17 +765,41 @@ function ScoringFramework() {
 
 
 /* ================================================================== */
-/* CLASSIFICATION BANDS                                                */
+/* 6. CLASSIFICATION BANDS — White background                          */
 /* ================================================================== */
 function ClassificationBands() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited Stability", color: "#DC2626", desc: "Income structure is fragile and depends heavily on active work." },
-    { range: "30\u201349", label: "Developing Stability", color: "#D97706", desc: "Some support exists, but the structure is still exposed." },
-    { range: "50\u201374", label: "Established Stability", color: "#2563EB", desc: "Income reflects meaningful stability and stronger protection." },
-    { range: "75\u2013100", label: "High Stability", color: "#16A34A", desc: "Income structure is durable and less dependent on constant effort." },
+    {
+      range: "0\u201329",
+      label: "Limited Stability",
+      color: B.bandLimited,
+      desc: "Income structure is fragile and depends heavily on active work.",
+      width: "30%",
+    },
+    {
+      range: "30\u201349",
+      label: "Developing Stability",
+      color: B.bandDeveloping,
+      desc: "Some support exists, but the structure is still exposed.",
+      width: "20%",
+    },
+    {
+      range: "50\u201374",
+      label: "Established Stability",
+      color: B.bandEstablished,
+      desc: "Income reflects meaningful stability and stronger protection.",
+      width: "25%",
+    },
+    {
+      range: "75\u2013100",
+      label: "High Stability",
+      color: B.bandHigh,
+      desc: "Income structure is durable and less dependent on constant effort.",
+      width: "25%",
+    },
   ];
 
   return (
@@ -382,7 +812,15 @@ function ClassificationBands() {
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             textAlign: "center",
@@ -392,43 +830,131 @@ function ClassificationBands() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Classification bands
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: 12,
+            }}
+          >
+            Income Stability Classification Scale
           </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            Every score maps to exactly one stability band. Band thresholds are fixed under Model RP-2.0 and do not change.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              maxWidth: 560,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Every score maps to a fixed stability band.
           </p>
         </div>
 
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          {bands.map((band, i) => (
-            <div
-              key={band.label}
-              style={{
-                display: "flex",
-                alignItems: mobile ? "flex-start" : "center",
-                flexDirection: mobile ? "column" : "row",
-                gap: mobile ? 10 : 24,
-                padding: mobile ? "20px 16px" : "24px 28px",
-                marginBottom: i < bands.length - 1 ? 2 : 0,
-                borderRadius: S.cardRadius,
-                backgroundColor: B.sand,
-                border: "1px solid rgba(14,26,43,0.04)",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: mobile ? "auto" : 180, flexShrink: 0 }}>
-                <div style={{ width: 12, height: 12, borderRadius: "50%", backgroundColor: band.color, flexShrink: 0 }} />
-                <span className="text-[14px]" style={{ fontWeight: 700, color: B.navy, minWidth: 64 }}>{band.range}</span>
-                <span className="text-[14px]" style={{ fontWeight: 600, color: band.color }}>{band.label}</span>
+        <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          {/* Animated horizontal bar */}
+          <div
+            style={{
+              display: "flex",
+              borderRadius: 8,
+              overflow: "hidden",
+              height: mobile ? 12 : 16,
+              marginBottom: 48,
+            }}
+          >
+            {bands.map((band, i) => (
+              <div
+                key={band.label}
+                style={{
+                  width: band.width,
+                  backgroundColor: band.color,
+                  transform: visible ? "scaleX(1)" : "scaleX(0)",
+                  transformOrigin: "left center",
+                  transition: `transform 0.6s cubic-bezier(0.22,1,0.36,1) ${300 + i * 150}ms`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* 4-column grid */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)",
+              gap: mobile ? 20 : S.gridGap,
+            }}
+          >
+            {bands.map((band, i) => (
+              <div
+                key={band.label}
+                style={{
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(14px)",
+                  transition: `opacity 0.5s ease-out ${400 + i * 100}ms, transform 0.5s ease-out ${400 + i * 100}ms`,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    marginBottom: 8,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      backgroundColor: band.color,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span
+                    className="text-[13px]"
+                    style={{ fontWeight: 700, color: B.navy }}
+                  >
+                    {band.range}
+                  </span>
+                </div>
+                <h3
+                  className="text-[14px]"
+                  style={{
+                    fontWeight: 600,
+                    color: band.color,
+                    marginBottom: 6,
+                    marginTop: 0,
+                  }}
+                >
+                  {band.label}
+                </h3>
+                <p
+                  className="text-[13px]"
+                  style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}
+                >
+                  {band.desc}
+                </p>
               </div>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>
-                {band.desc}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <p
+            className="text-[13px]"
+            style={{
+              color: B.light,
+              textAlign: "center",
+              marginTop: 40,
+              letterSpacing: "0.02em",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 0.5s ease-out 800ms",
+            }}
+          >
+            Band thresholds are fixed under Model RP-2.0.
+          </p>
         </div>
       </div>
     </section>
@@ -437,51 +963,75 @@ function ClassificationBands() {
 
 
 /* ================================================================== */
-/* OUTCOME LAYER                                                       */
+/* 7. INDUSTRY CONTEXT — Sand background                               */
 /* ================================================================== */
-function OutcomeLayer() {
+function IndustryContext() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   return (
     <section
       ref={ref}
-      aria-label="Outcome Layer"
+      aria-label="Industry Context"
       style={{
         backgroundColor: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: 680,
             margin: "0 auto",
+            textAlign: "center",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Outcome layer
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+            }}
+          >
+            Industry and income model context
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Beyond the raw score and classification, the model generates an outcome layer that provides context and actionable intelligence.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: S.paraMb,
+            }}
+          >
+            The core score is fixed regardless of industry. However, the report
+            includes additional context tailored to your income model and industry
+            — including relevant risk scenarios, improvement priorities, and peer
+            benchmarking.
           </p>
-
-          <h3 className="text-[16px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 10 }}>
-            Income model families
-          </h3>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 28 }}>
-            Each assessment is mapped to an income model family based on the combination of inputs. These families — such as "single-source freelance," "diversified consulting," or "hybrid employment" — determine which stress scenarios, improvement paths, and peer benchmarks are most relevant.
-          </p>
-
-          <h3 className="text-[16px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 10 }}>
-            Industry refinement
-          </h3>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            The sixth input — industry or income category — is used to calibrate peer benchmarking and to apply industry-specific context to recommendations. A score of 65 means different things in professional services versus creative freelancing, and the outcome layer reflects this through tailored actions and percentile placement.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: 0,
+            }}
+          >
+            This context layer enriches the interpretation without altering the
+            score itself.
           </p>
         </div>
       </div>
@@ -491,23 +1041,65 @@ function OutcomeLayer() {
 
 
 /* ================================================================== */
-/* INTEGRITY                                                           */
+/* 8. INTEGRITY AND VERIFICATION — White background                    */
 /* ================================================================== */
 function Integrity() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const [open, setOpen] = useState<number | null>(null);
+
+  const panels = [
+    {
+      title: "Consistency",
+      dotColor: B.teal,
+      items: [
+        "The same answers produce the same score",
+        "Fixed scoring rules under Model RP-2.0",
+        "AI does not determine assessment results",
+        "Framework changes create a new model version",
+      ],
+    },
+    {
+      title: "Verification",
+      dotColor: B.purple,
+      items: [
+        "Unique record ID on each report",
+        "Integrity hash for tamper detection",
+        "Model version recorded on every assessment",
+        "Reports can be verified at runpayway.com/verify",
+      ],
+    },
+    {
+      title: "Non-predictive nature",
+      dotColor: B.navy,
+      items: [
+        "The score reflects income structure at the time of assessment",
+        "It is not a prediction of future financial outcomes",
+        "It is not financial advice, credit underwriting, or investment guidance",
+        "Reassessment is recommended after meaningful structural change",
+      ],
+    },
+  ];
 
   return (
     <section
       ref={ref}
-      aria-label="Integrity"
+      aria-label="Assessment Integrity"
       style={{
         backgroundColor: "#ffffff",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        }}
+      >
         <div
           style={{
             maxWidth: 720,
@@ -517,18 +1109,161 @@ function Integrity() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Integrity and verification
+          <h2
+            className="text-[28px] md:text-[36px]"
+            style={{
+              color: B.navy,
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              marginBottom: S.h2mb,
+              textAlign: "center",
+            }}
+          >
+            Assessment integrity
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Every assessment is hashed using SHA-256 and stamped with the model version that produced it. This creates a verifiable chain: the inputs, the scoring rules, and the output are all cryptographically linked.
+          <p
+            className="text-[15px] md:text-[17px]"
+            style={{
+              color: B.muted,
+              lineHeight: S.lhBody,
+              marginBottom: 48,
+              textAlign: "center",
+            }}
+          >
+            Every assessment is stamped with a unique record identifier and a
+            verification hash. The model version is recorded on every report.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Model manifests are versioned and immutable. When any rule, weight, threshold, or classification boundary changes, the model version increments. Model RP-2.0 assessments can only be compared to other Model RP-2.0 assessments. Cross-version comparison is explicitly not supported.
-          </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            This architecture ensures that assessments are auditable, reproducible, and tamper-evident. Recipients of a report can verify its authenticity without needing to trust the individual or RunPayway itself.
-          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {panels.map((panel, i) => {
+              const isOpen = open === i;
+              return (
+                <div
+                  key={panel.title}
+                  style={{
+                    backgroundColor: B.sand,
+                    borderRadius: S.cardRadius,
+                    border: `1px solid ${isOpen ? B.border : "rgba(14,26,43,0.06)"}`,
+                    overflow: "hidden",
+                    transition: "border-color 0.25s ease",
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "translateY(0)" : "translateY(10px)",
+                    animationDelay: `${i * 80}ms`,
+                  }}
+                >
+                  <button
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    aria-expanded={isOpen}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: mobile ? "18px 20px" : "22px 28px",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 10,
+                          height: 10,
+                          borderRadius: "50%",
+                          backgroundColor: panel.dotColor,
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span
+                        className="text-[15px]"
+                        style={{ fontWeight: 600, color: B.navy }}
+                      >
+                        {panel.title}
+                      </span>
+                    </div>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      style={{
+                        flexShrink: 0,
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.25s ease",
+                      }}
+                    >
+                      <path
+                        d="M4.5 6.75L9 11.25L13.5 6.75"
+                        stroke={B.light}
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  <div
+                    style={{
+                      maxHeight: isOpen ? 300 : 0,
+                      opacity: isOpen ? 1 : 0,
+                      overflow: "hidden",
+                      transition: "max-height 0.35s ease, opacity 0.3s ease",
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: mobile
+                          ? "0 20px 20px 42px"
+                          : "0 28px 24px 50px",
+                      }}
+                    >
+                      {panel.items.map((item, j) => (
+                        <div
+                          key={j}
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: 10,
+                            marginBottom:
+                              j < panel.items.length - 1 ? 10 : 0,
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: 4,
+                              height: 4,
+                              borderRadius: "50%",
+                              backgroundColor: B.light,
+                              flexShrink: 0,
+                              marginTop: 8,
+                            }}
+                          />
+                          <p
+                            className="text-[14px]"
+                            style={{
+                              color: B.muted,
+                              lineHeight: 1.6,
+                              margin: 0,
+                            }}
+                          >
+                            {item}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
@@ -537,90 +1272,125 @@ function Integrity() {
 
 
 /* ================================================================== */
-/* NON-PREDICTIVE DISCLAIMER                                           */
+/* 9. CTA — Dark gradient                                              */
 /* ================================================================== */
-function NonPredictive() {
+function CtaSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
+  const [hovered, setHovered] = useState(false);
 
   return (
     <section
       ref={ref}
-      aria-label="Non-Predictive Disclaimer"
+      aria-label="Call to Action"
       style={{
-        backgroundColor: B.sand,
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      {/* Radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-20%",
+          left: "50%",
+          width: 600,
+          height: 600,
+          transform: "translateX(-50%)",
+          background:
+            "radial-gradient(circle, rgba(31,109,122,0.15) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div
           style={{
-            maxWidth: 720,
-            margin: "0 auto",
-            padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-            backgroundColor: "#ffffff",
-            borderRadius: S.panelRadius,
-            border: "1px solid rgba(14,26,43,0.08)",
+            textAlign: "center",
+            maxWidth: 600,
+            marginLeft: "auto",
+            marginRight: "auto",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <div className="text-[11px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 16 }}>
-            Important Distinction
-          </div>
-          <h3 className="text-[18px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 16 }}>
-            The Income Stability Score is not predictive
-          </h3>
-          <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Model RP-2.0 measures the structural properties of income as they exist at the time of assessment. It does not predict future earnings, estimate probability of income loss, or forecast financial outcomes.
+          <h2
+            className="text-[32px] md:text-[40px]"
+            style={{
+              color: "#FAF9F7",
+              fontWeight: 700,
+              letterSpacing: S.lsHero,
+              lineHeight: S.lhHeading,
+              marginBottom: 20,
+            }}
+          >
+            See where your income stands.
+          </h2>
+          <p
+            className="text-[15px] md:text-[16px]"
+            style={{
+              color: "rgba(250,249,247,0.70)",
+              lineHeight: S.lhBody,
+              marginBottom: 40,
+            }}
+          >
+            Under two minutes. Full structural diagnosis. Instant delivery.
           </p>
-          <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            Stress scenarios show how the score would change under hypothetical conditions — they are structural projections, not probabilistic forecasts. The score reflects current architecture, not future performance.
+
+          <Link
+            href={STRIPE_SINGLE}
+            onMouseEnter={() => canHover() && setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: mobile ? S.ctaHsm : S.ctaH,
+              paddingLeft: S.ctaPadX,
+              paddingRight: S.ctaPadX,
+              borderRadius: S.ctaRadius,
+              backgroundColor: "#FAF9F7",
+              color: B.navy,
+              fontSize: mobile ? 14 : 15,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+              transition:
+                "transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease",
+              transform: hovered ? "translateY(-2px)" : "translateY(0)",
+              boxShadow: hovered
+                ? "0 8px 32px rgba(0,0,0,0.25)"
+                : "0 2px 8px rgba(0,0,0,0.12)",
+            }}
+          >
+            Get My Income Stability Score&trade; &mdash; $39
+          </Link>
+
+          <p
+            className="text-[12px]"
+            style={{
+              color: "rgba(250,249,247,0.40)",
+              marginTop: 24,
+              letterSpacing: "0.02em",
+            }}
+          >
+            Model RP-2.0 &middot; Private by default
           </p>
         </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* MODEL VERSION BADGE                                                 */
-/* ================================================================== */
-function ModelBadge() {
-  const mobile = useMobile();
-
-  return (
-    <section
-      aria-label="Model Badge"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-      }}
-    >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "10px 20px",
-            borderRadius: 100,
-            backgroundColor: B.sand,
-            border: "1px solid rgba(14,26,43,0.06)",
-          }}
-        >
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
-          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
-            Model RP-2.0
-          </span>
-        </div>
-        <p className="text-[12px]" style={{ color: B.light, marginTop: 16, lineHeight: 1.5, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
-          This document describes Model RP-2.0, the current production version of the Income Stability Score. All methodology details are version-locked.
-        </p>
       </div>
     </section>
   );
@@ -635,13 +1405,13 @@ export default function MethodologyPage() {
     <div>
       <Hero />
       <Purpose />
-      <CanonicalInputs />
+      <SixDimensions />
       <ScoringFramework />
+      <InteractionEffects />
       <ClassificationBands />
-      <OutcomeLayer />
+      <IndustryContext />
       <Integrity />
-      <NonPredictive />
-      <ModelBadge />
+      <CtaSection />
     </div>
   );
 }
