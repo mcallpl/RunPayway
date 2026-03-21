@@ -506,43 +506,31 @@ function FourFactorsSection() {
   const factors = [
     {
       label: "Recurrence",
+      value: "74%",
       description: "How much of your income repeats on a predictable cycle.",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M14 4v20M8 8l6-4 6 4M8 20l6 4 6-4" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
+      accent: B.teal,
+      gradient: "linear-gradient(135deg, rgba(31,109,122,0.08) 0%, rgba(31,109,122,0.02) 100%)",
     },
     {
       label: "Concentration",
+      value: "3:1",
       description: "How many independent sources your income depends on.",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <circle cx="14" cy="14" r="3" stroke={B.teal} strokeWidth="1.5" />
-          <circle cx="14" cy="14" r="8" stroke={B.teal} strokeWidth="1.5" opacity="0.4" />
-          <circle cx="14" cy="14" r="12" stroke={B.teal} strokeWidth="1.5" opacity="0.2" />
-        </svg>
-      ),
+      accent: B.purple,
+      gradient: "linear-gradient(135deg, rgba(75,63,174,0.08) 0%, rgba(75,63,174,0.02) 100%)",
     },
     {
       label: "Visibility",
+      value: "9mo",
       description: "How far ahead your income is contractually secured.",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <path d="M4 20L10 14L16 18L24 8" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="24" cy="8" r="2" fill={B.teal} />
-        </svg>
-      ),
+      accent: B.teal,
+      gradient: "linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)",
     },
     {
       label: "Passivity",
+      value: "41%",
       description: "How much continues without your active involvement.",
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="4" y="12" width="20" height="12" rx="2" stroke={B.teal} strokeWidth="1.5" />
-          <path d="M10 12V8a4 4 0 1 1 8 0v4" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      ),
+      accent: B.purple,
+      gradient: "linear-gradient(135deg, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.04) 100%)",
     },
   ];
 
@@ -550,20 +538,39 @@ function FourFactorsSection() {
     <section
       ref={ref}
       aria-label="What RunPayway Measures"
+      className="relative overflow-hidden"
       style={{
-        background: "#FFFFFF",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        background: B.navy,
+        paddingTop: mobile ? 80 : 120,
+        paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
+      {/* Ambient glows */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 600, height: 600, borderRadius: "50%",
+          top: "-20%", left: "-10%",
+          background: "radial-gradient(circle, rgba(31,109,122,0.12) 0%, transparent 65%)",
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: 500, height: 500, borderRadius: "50%",
+          bottom: "-15%", right: "-5%",
+          background: "radial-gradient(circle, rgba(75,63,174,0.10) 0%, transparent 60%)",
+        }}
+      />
+
+      <div className="relative mx-auto" style={{ maxWidth: S.maxW }}>
         {/* Section header */}
         <div
           style={{
             textAlign: "center",
-            marginBottom: mobile ? 48 : 64,
+            marginBottom: mobile ? 56 : 80,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
@@ -580,65 +587,102 @@ function FourFactorsSection() {
           <h2
             style={{
               fontSize: mobile ? 32 : 48,
-              color: B.navy,
+              color: "#F4F1EA",
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
               fontFamily: DISPLAY_FONT, fontWeight: 400,
               marginBottom: 20,
             }}
           >
-            What RunPayway measures
+            What RunPayway&#8482; measures
           </h2>
-          <p style={{ fontSize: 17, color: "rgba(14,26,43,0.55)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
             Every score is built from four structural factors. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
           </p>
         </div>
 
-        {/* Four factor cards */}
+        {/* Four factor cards — 2x2 grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)",
-            gap: mobile ? 16 : 24,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: mobile ? 16 : 20,
           }}
         >
           {factors.map((f, i) => (
             <div
               key={f.label}
               style={{
-                background: "#FAFAFA",
-                borderRadius: S.cardRadius,
-                border: "1px solid rgba(14,26,43,0.06)",
-                padding: mobile ? "28px 24px" : "36px 28px",
-                transition: "border-color 250ms ease, box-shadow 250ms ease",
+                background: "rgba(244,241,234,0.04)",
+                borderRadius: 16,
+                border: "1px solid rgba(244,241,234,0.08)",
+                padding: mobile ? "32px 28px" : "44px 40px",
+                position: "relative",
+                overflow: "hidden",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 600ms ease-out ${200 + i * 100}ms, transform 600ms ease-out ${200 + i * 100}ms, border-color 300ms ease, background 300ms ease`,
               }}
               onMouseEnter={(e) => {
                 if (!canHover()) return;
-                e.currentTarget.style.borderColor = "rgba(31,109,122,0.20)";
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)";
+                e.currentTarget.style.borderColor = `${f.accent}40`;
+                e.currentTarget.style.background = "rgba(244,241,234,0.06)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
-                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.borderColor = "rgba(244,241,234,0.08)";
+                e.currentTarget.style.background = "rgba(244,241,234,0.04)";
               }}
             >
-              <div style={{ marginBottom: 20 }}>
-                {f.icon}
-              </div>
+              {/* Background gradient wash */}
               <div
+                className="absolute pointer-events-none"
                 style={{
-                  fontSize: 15, fontWeight: 600, color: B.navy,
-                  letterSpacing: "-0.01em", marginBottom: 8,
+                  inset: 0,
+                  background: f.gradient,
+                  opacity: 0.5,
                 }}
-              >
-                {f.label}
+              />
+
+              {/* Content */}
+              <div style={{ position: "relative" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                        letterSpacing: "0.08em", color: f.accent, marginBottom: 12,
+                      }}
+                    >
+                      {f.label}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: mobile ? 36 : 44,
+                        fontWeight: 300,
+                        color: "#F4F1EA",
+                        letterSpacing: "-0.03em",
+                        lineHeight: 1,
+                        fontVariantNumeric: "tabular-nums",
+                      }}
+                    >
+                      {f.value}
+                    </div>
+                  </div>
+
+                  {/* Decorative arc */}
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style={{ opacity: 0.25, flexShrink: 0 }}>
+                    <circle cx="24" cy="24" r="20" stroke={f.accent} strokeWidth="1" strokeDasharray="4 6" />
+                    <circle cx="24" cy="24" r="12" stroke={f.accent} strokeWidth="0.5" />
+                  </svg>
+                </div>
+
+                {/* Thin accent line */}
+                <div style={{ width: 32, height: 1, background: f.accent, opacity: 0.3, marginBottom: 16 }} />
+
+                <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65 }}>
+                  {f.description}
+                </p>
               </div>
-              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.6 }}>
-                {f.description}
-              </p>
             </div>
           ))}
         </div>
@@ -709,7 +753,7 @@ function WhoItsForSection() {
             transition: "opacity 600ms ease-out 150ms, transform 600ms ease-out 150ms",
           }}
         >
-          RunPayway is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
+          RunPayway&#8482; is designed for business owners, self-employed professionals, commission earners, consultants, agency operators, private practitioners, creators, and anyone whose income depends on clients, contracts, or active effort.
         </p>
 
         {/* Proof metric */}
