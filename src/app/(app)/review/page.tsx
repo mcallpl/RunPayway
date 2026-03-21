@@ -650,7 +650,7 @@ export default function ReviewPage() {
   const copy = {
     // Page 1
     p1_headline: tier === "limited"
-      ? `${name} scored ${score} out of 100. That means the income is active, but not yet strongly protected. If work slows down or a major income source changes, stability could drop quickly.`
+      ? `${name} scored ${score} out of 100. That means the income is active, but currently quite vulnerable if conditions change. Most of it depends on ongoing work, and very little is secured ahead of time.`
       : tier === "developing"
         ? `${name} scored ${score} out of 100. That means the income is active, but not yet strongly protected. If work slows down or a major income source changes, stability could drop quickly.`
         : tier === "established"
@@ -778,8 +778,16 @@ export default function ReviewPage() {
 
       {/* ---- PAGE 1 — Where do I stand? ---- */}
       <ReportPage record={record}>
-        <ReportHeader />
-        <Overline>YOUR INCOME STABILITY REPORT</Overline>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div style={{ flex: 1 }}>
+            <ReportHeader />
+            <Overline>YOUR INCOME STABILITY REPORT</Overline>
+          </div>
+          <div style={{ flexShrink: 0, marginLeft: 24, textAlign: "center" }}>
+            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
+            <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan to verify</div>
+          </div>
+        </div>
         <h1 style={{ ...T.pageTitle, marginBottom: 28 }}>Your Score</h1>
 
         <div style={{ marginBottom: 24 }}>
@@ -841,7 +849,7 @@ export default function ReviewPage() {
           <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`Only a small portion of ${name} would likely keep coming in if active work stopped today.`} />
           <MetricCard label="BIGGEST SOURCE STRESS TEST" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
           <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
-          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong" : tier === "established" ? "Moderate" : "Needs strengthening"} explanation="The structure has some support, but not enough protection yet against disruption." />
+          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong" : tier === "established" ? "Moderate" : tier === "developing" ? "Needs strengthening" : "Vulnerable to disruption"} explanation={tier === "limited" ? "The structure is highly exposed. A single change could weaken stability significantly." : "The structure has some support, but not enough protection yet against disruption."} />
         </div>
 
 
@@ -876,11 +884,11 @@ export default function ReviewPage() {
             <Overline>WHAT IS DRIVING YOUR SCORE</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 18, marginBottom: 24 }}>
               {[
-                { label: "How Long Income Would Continue", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "Right now, income would not continue for very long if work stopped." },
-                { label: "Income Already Secured Ahead of Time", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "Some income is already lined up before the next month begins, but not enough yet." },
-                { label: "Number of Meaningful Income Sources", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "There is more than one income source, but the structure still relies too much on a limited number of them." },
-                { label: "How Much Income Depends on Daily Work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "A large share of the income still depends on work that must keep being done directly." },
-                { label: "How Much Depends on One Main Source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "The structure is still too vulnerable to a problem with the single largest source." },
+                { label: "Income continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How long income would keep coming in if you stopped working." },
+                { label: "Income secured ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already committed before the month begins." },
+                { label: "Source diversification", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "How many independent sources support the income." },
+                { label: "Dependence on daily work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much income requires you to keep working directly." },
+                { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How exposed the structure is if the largest source disappears." },
               ].map((s) => (
                 <div key={s.label}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
@@ -932,23 +940,28 @@ export default function ReviewPage() {
             <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 520 }}>
               These changes would likely help {name} the most, ranked from strongest impact to lowest.
             </p>
-            {v2Sensitivity.tests.slice(0, 4).map((t, i) => (
-              <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", marginBottom: 8, backgroundColor: i === 0 ? "rgba(15,118,110,0.04)" : "transparent", borderRadius: 6, border: i === 0 ? "1px solid rgba(15,118,110,0.12)" : "1px solid transparent" }}>
-                <span style={{ fontSize: 18, fontWeight: 600, color: i === 0 ? B.teal : B.taupe, minWidth: 24 }}>{i + 1}</span>
-                <span style={{ ...T.body, color: B.navy, flex: 1 }}>{t.delta_description}</span>
-                <span style={{ fontSize: 15, fontWeight: 700, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift}</span>
-                <span style={{ ...T.small, color: B.muted }}>points</span>
-              </div>
-            ))}
+            {v2Sensitivity.tests.slice(0, 4).map((t, i) => {
+              const plainLabel: Record<string, string> = {
+                labor_dependence: "Reduce dependence on daily work",
+                forward_secured: "Secure more income ahead of time",
+                income_persistence: "Increase income that continues month to month",
+                income_sources: "Add more dependable income sources",
+                largest_source: "Reduce reliance on the single largest source",
+                concentration: "Spread income across more sources",
+                variability: "Reduce month-to-month income swings",
+              };
+              return (
+                <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", marginBottom: 8, backgroundColor: i === 0 ? "rgba(31,109,122,0.04)" : "transparent", borderRadius: 6, border: i === 0 ? "1px solid rgba(31,109,122,0.12)" : "1px solid transparent" }}>
+                  <span style={{ fontSize: 18, fontWeight: 600, color: i === 0 ? B.teal : B.taupe, minWidth: 24 }}>{i + 1}</span>
+                  <span style={{ ...T.body, color: B.navy, flex: 1 }}>{plainLabel[t.factor] ?? t.delta_description}</span>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift}</span>
+                  <span style={{ ...T.small, color: B.muted }}>points</span>
+                </div>
+              );
+            })}
           </div>
         )}
 
-        {/* Interaction effects — single line if present */}
-        {v2Interactions && v2Interactions.effects.length > 0 && v2Interactions.net_adjustment !== 0 && (
-          <p style={{ ...T.small, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-            Score adjusted by <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment > 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</span> due to structural interactions.
-          </p>
-        )}
 
         <PageFooter section="Why This Score" page={2} />
       </ReportPage>
@@ -992,9 +1005,20 @@ export default function ReviewPage() {
             <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
             {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => (
               <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 10 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : s.score_drop > 10 ? "HIGH" : "MEDIUM"}</div>
+                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 5 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW"}</div>
                 <div style={{ flex: 1 }}>
-                  <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{s.label}</span>
+                  <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{(() => {
+                    const scenarioPlain: Record<string, string> = {
+                      active_labor_interrupted: "You cannot work for 90 days",
+                      platform_dependency_shock: "A platform or channel you rely on changes suddenly",
+                      forward_commitments_delayed: "Expected income gets delayed",
+                      client_concentration_loss: "Your largest client leaves",
+                      market_contraction: "Your industry slows down significantly",
+                      regulatory_disruption: "Rules or regulations change in your field",
+                      revenue_model_disruption: "Your main way of earning income stops working",
+                    };
+                    return scenarioPlain[s.scenario_id] ?? s.label;
+                  })()}</span>
                   <span style={{ ...T.meta, color: B.muted, marginLeft: 8 }}>{s.description}</span>
                 </div>
                 <div style={{ ...T.micro, color: B.navy, flexShrink: 0 }}>
@@ -1033,8 +1057,8 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           {[
             { label: "Earned by working", pct: record.active_income_level, color: B.ink },
-            { label: "Comes back regularly", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "Continues on its own", pct: record.persistent_income_level, color: B.teal },
+            { label: "Repeats regularly", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Continues without active work", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -1120,7 +1144,18 @@ export default function ReviewPage() {
             {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => (
               <div key={s.scenario_id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
                 <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
-                <span style={{ ...T.small, color: B.navy, fontWeight: 600, flex: 1 }}>{s.label}</span>
+                <span style={{ ...T.small, color: B.navy, fontWeight: 600, flex: 1 }}>{(() => {
+                  const liftPlain: Record<string, string> = {
+                    reduce_labor_dependence: "Reduce dependence on daily work",
+                    extend_forward_visibility: "Secure more income ahead of time",
+                    reduce_concentration: "Reduce reliance on the largest source",
+                    increase_persistence: "Increase recurring or continuing income",
+                    increase_persistent_revenue: "Increase recurring or continuing income",
+                    add_income_sources: "Add more dependable income sources",
+                    reduce_variability: "Reduce month-to-month income swings",
+                  };
+                  return liftPlain[s.scenario_id] ?? s.label;
+                })()}</span>
                 <span style={{ ...T.small, color: B.navy }}>
                   {s.original_score} → <span style={{ color: B.teal, fontWeight: 600 }}>{s.projected_score}</span>
                   <span style={{ color: B.teal, marginLeft: 4 }}>+{s.lift}</span>
@@ -1131,7 +1166,7 @@ export default function ReviewPage() {
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                Combined: score would reach <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points){v2Lift.combined_top_two.band_shift && <span style={{ color: B.teal }}> — reaches {v2Lift.combined_top_two.projected_band}</span>}
+                Together, these changes could move the score from {record.final_score} to <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span>{v2Lift.combined_top_two.band_shift && <span style={{ color: B.teal }}>, into {v2Lift.combined_top_two.projected_band}</span>}.
               </div>
             )}
           </div>
@@ -1199,7 +1234,7 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
 
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540, lineHeight: 1.6 }}>
-          {name} does not need to get bigger first. It needs to get stronger. The goal is to line up more income ahead of time, rely less on one source, and build more income that continues on its own.
+          The first priority for {name} is not bigger income. It is stronger income. That means more income secured ahead of time, less reliance on one source, and more income that continues without daily effort.
         </p>
 
         {/* Two columns: 5 actions + 4 avoid — side by side */}
