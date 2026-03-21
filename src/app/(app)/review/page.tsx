@@ -650,104 +650,31 @@ export default function ReviewPage() {
   const copy = {
     // Page 1
     p1_headline: tier === "limited"
-      ? `${name} is producing income, but the structure is still highly exposed.`
+      ? `You scored ${score} out of 100. Your income is coming in, but the way it is set up makes it easy to disrupt. Most of it depends on you actively working, and very little is secured ahead of time.`
       : tier === "developing"
-        ? `${name} is producing income, but the setup is not yet well protected.`
+        ? `You scored ${score} out of 100. Your income is active, but the setup is not yet well protected. If work slows down or a major source changes, your stability could drop quickly.`
         : tier === "established"
-          ? `${name} has a working income structure with meaningful stability.`
-          : `${name} has a strong, durable income structure.`,
-    p1_body: tier === "limited"
-      ? `${name} scored ${score} out of 100. This is a low structural stability result. Too much income still depends on ongoing work, and not enough is already secured ahead. That leaves the structure easy to weaken if work slows or a key source changes.`
-      : tier === "developing"
-        ? `${name} scored ${score} out of 100. Too much income still depends on ongoing work, and not enough is already lined up ahead of time. That makes the structure easier to disrupt than it needs to be.`
-        : tier === "established"
-          ? `${name} scored ${score} out of 100. The income structure has meaningful stability, but there is still room to strengthen forward visibility and reduce concentration.`
-          : `${name} scored ${score} out of 100. The income structure is durable, with strong forward visibility and low dependence on any single source.`,
-    p1_simple: tier === "limited"
-      ? `${name} can generate income, but the structure does not yet hold up well under disruption. If work slows or a key source weakens, stability may drop quickly.`
-      : tier === "developing"
-        ? `${name} is generating income, but if work slows or a key source weakens, there is not enough built-in protection to keep things stable.`
-        : tier === "established"
-          ? `${name} has real structural stability. The main opportunity is to extend forward visibility and reduce remaining concentration.`
-          : `${name} has strong structural stability. The focus should be on maintaining and protecting this position.`,
-    p1_bottom: tier === "limited"
-      ? "Bottom line: The income is there, but the structure is still fragile."
-      : tier === "developing"
-        ? `Bottom line: ${name} works, but it is still too exposed.`
-        : tier === "established"
-          ? `Bottom line: ${name} is stable, with room to strengthen further.`
-          : `Bottom line: ${name} is well protected and durable.`,
+          ? `You scored ${score} out of 100. Your income structure has real stability. The main opportunity now is to lock in more income ahead of time and reduce how much depends on any single source.`
+          : `You scored ${score} out of 100. Your income structure is strong and durable, with good forward visibility and healthy diversification across sources.`,
 
     // Page 2
     p2_intro: `This page shows the main reasons behind the score. The question is not whether income exists today. The question is whether the structure can hold up when something changes.`,
-    p2_helping: tier === "limited"
-      ? ["Income is not coming from only one channel", "Month-to-month income is not fully erratic", "A small amount of income persistence is already present", "The structure is weak, but not starting from zero"]
-      : tier === "developing"
-        ? ["Income exists across more than one stream", "Month-to-month consistency is not fully unstable", "Some income persistence is already present", "The structure is not starting from zero"]
-        : ["Meaningful recurring or continuing income is present", "Source diversification provides some protection", "Forward visibility extends beyond the immediate term", "The structure has real resilience"],
-    p2_bottom: tier === "limited"
-      ? "Bottom line: The structure is being held back most by too little income secured ahead and too much dependence on ongoing work."
-      : `Bottom line: ${name} does not have enough income lined up ahead, and too much depends on ongoing work.`,
-    p2_diagnosis: tier === "limited"
-      ? `The clearest next improvement would come from securing more income ahead. A 15-point increase in income secured ahead is projected to raise the score from ${score} to ${Math.min(100, score + 5)}.`
-      : `The fastest improvement would come from securing more income ahead. An increase of 15 percentage points in income secured ahead is projected to raise the score from ${score} to ${Math.min(100, score + 5)}.`,
 
     // Page 3
     p3_intro: tier === "limited"
       ? `This page shows where ${name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`
       : `This page shows where ${name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`,
-    p3_continuity_body: tier === "limited"
-      ? "Based on the current structure, very little income appears likely to continue for long if active work stops."
-      : "Based on the current structure, only a limited share of income appears likely to continue if active work stops.",
-    p3_simple: tier === "limited"
-      ? "If work slows or a major source weakens, this structure may lose stability quickly. A stronger setup would hold up longer and with less disruption."
-      : `If work slows or a major source weakens, ${name} may lose income faster than it should. A stronger setup would hold up better.`,
-    p3_bottom: tier === "limited"
-      ? "Bottom line: This structure is still highly sensitive to disruption."
-      : `Bottom line: ${name} is still too easy to disrupt.`,
-    p3_cards: tier === "limited"
-      ? [
-          { title: "What weakens first", copy: `Not the current income — but the lack of income already secured ahead to carry the structure through disruption.` },
-          { title: "The hidden risk", copy: "Income can be active and still be structurally weak. That is the current pattern here: income is being produced, but the setup does not absorb disruption well." },
-          { title: "Where things stand", copy: "This profile can produce income, but stability drops quickly when work slows or a major source weakens." },
-        ]
-      : [
-          { title: "What weakens first", copy: `Not the current income — but the lack of income already lined up to carry ${name} through a disruption.` },
-          { title: "The hidden risk", copy: `${name} can earn well and still be fragile. Income is productive, but the setup does not yet absorb disruption well.` },
-          { title: "Where things stand", copy: `${name} can produce income, but if work stops or a major source weakens, stability drops quickly.` },
-        ],
-    p3_risk: tier === "limited"
-      ? "The key risk: The structure loses stability too quickly when something changes."
-      : `${name} still loses strength too easily when something changes.`,
 
     // Page 4
     p4_intro: tier === "limited"
       ? `The fastest way to raise this score is not to work more. It is to strengthen how the income is set up: more income secured ahead, less dependence on one source, and more income that continues without daily effort.`
       : `The fastest way to raise this score is not to work more. It is to change how ${name} is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.`,
-    p4_current_band: tier === "limited"
-      ? "The structure is active, but it is still too weak to absorb disruption well."
-      : "The structure works, but it is not yet strong enough to absorb disruption well.",
-    p4_simple: tier === "limited"
-      ? `This profile needs more income secured before the month starts, less dependence on the largest source, and more income that keeps going through a slowdown.`
-      : `${name} needs more income lined up before the month starts, less dependence on the biggest source, and more income that keeps going even during a slowdown.`,
-    p4_bottom: tier === "limited"
-      ? "Bottom line: Secure more income ahead first. Then reduce source concentration."
-      : `Bottom line: Secure more income ahead and reduce how much ${name} depends on one source.`,
-    p4_fastest: tier === "limited"
-      ? "Fastest improvement: Securing more income ahead is the clearest and fastest way to raise this score."
-      : `Fastest improvement for ${name}: Lining up more income ahead of time is the single clearest way to raise this score.`,
 
     // Page 5
     p5_heading: "Main takeaway",
     p5_body: tier === "limited"
       ? "The first need is not more output. It is a stronger structure. Income is being generated, but the setup needs more income secured ahead, less source dependence, and more continuity without daily effort."
       : `${name} does not need to earn more first. The income is there, but the setup needs to change — more income lined up ahead, less reliance on one source, and more income that continues on its own.`,
-    p5_simple: tier === "limited"
-      ? "Working harder alone will not fix this. The goal is to build a structure that holds up better when work slows or something changes."
-      : `Working harder will not fix this. The goal is to set up ${name} so income holds up better — even when work slows or something changes.`,
-    p5_bottom: tier === "limited"
-      ? "Bottom line: Strengthen the structure behind the income, not just the output."
-      : `Bottom line: Strengthen the setup behind ${name}, not just the output.`,
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
 
@@ -870,7 +797,7 @@ export default function ReviewPage() {
 
         {/* Classification Scale */}
         <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>INCOME STABILITY CLASSIFICATION SCALE</div>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>WHERE YOU LAND</div>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
             {[
               { w: 30, color: B.bandLimited },
@@ -902,11 +829,11 @@ export default function ReviewPage() {
 
         {/* Single most important insight — one line the customer remembers */}
         <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
-          <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {v2Constraints
-              ? `The biggest structural weak point is ${constraintLabel[v2Constraints.root_constraint] ?? "limited forward visibility"}.`
-              : "The biggest structural weak point is too little income secured ahead."}
-            {v2Sensitivity?.tests?.[0]?.lift ? ` Improving ${v2Sensitivity.tests[0].delta_description.toLowerCase()} could add ${v2Sensitivity.tests[0].lift} points.` : ""}
+              ? `The #1 thing holding your score back: ${constraintLabel[v2Constraints.root_constraint] ?? "not enough income is secured ahead of time"}.`
+              : "The #1 thing holding your score back: not enough income is secured ahead of time."}
+            {v2Sensitivity?.tests?.[0]?.lift ? ` If you fixed this, your score could go up by ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
 
@@ -919,28 +846,9 @@ export default function ReviewPage() {
           )}
         </div>
 
-        {/* Confidence + Durability + Sub-scores — compact metadata line */}
-        <div style={{ display: "flex", gap: 16, marginBottom: 16, flexWrap: "wrap" }}>
-          {v2Confidence && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div style={{ width: 7, height: 7, borderRadius: "50%", backgroundColor: confidenceColor[v2Confidence.confidence_level] ?? B.muted }} />
-              <span style={{ ...T.small, color: B.muted }}>Confidence: <span style={{ fontWeight: 600, color: B.navy }}>{v2Confidence.confidence_level.charAt(0).toUpperCase() + v2Confidence.confidence_level.slice(1)}</span></span>
-            </div>
-          )}
-          {v2Quality && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ ...T.small, color: B.muted }}>Durability: <span style={{ fontWeight: 600, color: B.navy }}>{v2Quality.durability_grade.charAt(0).toUpperCase() + v2Quality.durability_grade.slice(1).replace(/_/g, " ")}</span></span>
-            </div>
-          )}
-          {v2Scores && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ ...T.small, color: B.muted }}>Structure: <span style={{ fontWeight: 500 }}>{v2Scores.structure_score}/60</span> · Stability: <span style={{ fontWeight: 500 }}>{v2Scores.stability_score}/40</span></span>
-            </div>
-          )}
-        </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-          {[["Industry", record.industry_sector], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20, paddingTop: 16, borderTop: `1px solid ${B.stone}` }}>
+          {[["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
             <div key={l}>
               <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
               <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
@@ -1057,7 +965,7 @@ export default function ReviewPage() {
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
-        <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+        <div style={{ display: "flex", gap: 20, marginBottom: 28 }}>
           <div style={{ flex: 3, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>LARGEST SOURCE STRESS TEST</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
@@ -1180,9 +1088,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <p style={{ ...T.body, color: B.muted, margin: "0 0 16px", fontWeight: 500 }}>
-          {copy.p3_risk}
-        </p>
 
         <PageFooter section="What Could Go Wrong" page={3} />
       </ReportPage>
@@ -1201,7 +1106,7 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${bandColor}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT BAND</div>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{copy.p4_current_band}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{tier === "limited" || tier === "developing" ? "Not yet strong enough to absorb disruption well." : "Stable, with room to strengthen further."}</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 2, padding: "16px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>NEXT TARGET BAND</div>
@@ -1285,9 +1190,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <p style={{ ...T.body, color: B.muted, margin: 0, fontWeight: 500 }}>
-          {copy.p4_fastest}
-        </p>
 
         <PageFooter section="How to Improve" page={4} />
       </ReportPage>
@@ -1357,18 +1259,6 @@ export default function ReviewPage() {
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
             <p style={{ ...T.meta, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{copy.p5_reassess}</p>
-            {(v2Triggers && v2Triggers.length > 0) || (olTriggers && olTriggers.length > 0) ? (
-              <>
-                <div style={{ height: 1, backgroundColor: B.stone, margin: "8px 0" }} />
-                <div style={{ ...T.meta, color: B.muted, fontWeight: 500, marginBottom: 4 }}>Reassess when:</div>
-                {(v2Triggers ?? []).slice(0, 3).map((t) => (
-                  <div key={t.trigger_id} style={{ ...T.meta, color: B.ink, marginBottom: 3 }}>• {t.description}</div>
-                ))}
-                {(olTriggers ?? []).slice(0, 2).map((t) => (
-                  <div key={t.trigger_id} style={{ ...T.meta, color: B.ink, marginBottom: 3 }}>• {t.display_text}</div>
-                ))}
-              </>
-            ) : null}
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
