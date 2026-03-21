@@ -2,22 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useLanguage } from "@/lib/i18n";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
 /* ------------------------------------------------------------------ */
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
-}
+const canHover = () =>
+  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -45,6 +36,17 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return mobile;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
@@ -60,391 +62,439 @@ const B = {
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
 };
 
-/* ------------------------------------------------------------------ */
-/*  Section component                                                  */
-/* ------------------------------------------------------------------ */
+const S = {
+  sectionY:     { desktop: 160, mobile: 88 },
+  sectionYsm:   { desktop: 120, mobile: 72 },
+  transitionY:  { desktop: 72, mobile: 48 },
+  disclaimerY:  { desktop: 64, mobile: 48 },
+  maxW:         1060,
+  padX:         { desktop: 48, mobile: 24 },
+  h1mb:         28,
+  h2mb:         24,
+  subtextMb:    56,
+  paraMb:       24,
+  labelMb:      16,
+  cardPad:      { desktop: 36, mobile: 24 },
+  cardRadius:   16,
+  panelRadius:  20,
+  gridGap:      24,
+  gridGapSm:    16,
+  ctaH:         56,
+  ctaHsm:       46,
+  ctaPadX:      32,
+  ctaRadius:    14,
+  lhHeading:    1.08,
+  lhBody:       1.75,
+  lhDense:      1.5,
+  lsHeading:    "-0.025em",
+  lsHero:       "-0.035em",
+  lsLabel:      "0.14em",
+};
 
-function DocSection({
-  title,
-  children,
-  mobile,
-  visible,
-}: {
-  title: string;
-  children: React.ReactNode;
-  mobile: boolean;
-  visible: boolean;
-}) {
-  return (
-    <div
-      style={{
-        background: "#FFFFFF",
-        borderRadius: 16,
-        border: "1px solid rgba(14,26,43,0.06)",
-        padding: mobile ? "28px 24px" : "36px 36px",
-        boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: "opacity 600ms ease, transform 600ms ease",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: mobile ? 17 : 19,
-          fontWeight: 700,
-          color: B.navy,
-          letterSpacing: "-0.02em",
-          marginBottom: 16,
-          lineHeight: 1.3,
-        }}
-      >
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
 
-/* ------------------------------------------------------------------ */
-/*  Paragraph helper                                                   */
-/* ------------------------------------------------------------------ */
-
-function P({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return (
-    <p
-      style={{
-        fontSize: 15,
-        color: B.muted,
-        lineHeight: 1.75,
-        marginBottom: 12,
-        ...style,
-      }}
-    >
-      {children}
-    </p>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
-
-export default function AboutPage() {
+/* ================================================================== */
+/* HERO                                                                */
+/* ================================================================== */
+function Hero() {
+  const { ref, visible } = useInView();
   const mobile = useMobile();
-  const { t } = useLanguage();
-
-  const heroAnim = useInView();
-  const s1 = useInView();
-  const s2 = useInView();
-  const s3 = useInView();
-  const s4 = useInView();
-  const s5 = useInView();
-  const s6 = useInView();
 
   return (
-    <div style={{ background: B.sand }}>
-      {/* ============================================================ */}
-      {/*  Hero                                                        */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        {/* Grain overlay */}
+    <section
+      ref={ref}
+      aria-label="About Hero"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        <div
-          ref={heroAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
             textAlign: "center",
-            opacity: heroAnim.visible ? 1 : 0,
-            transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
           <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
+            className="text-[11px] uppercase"
+            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {t.about.heroTag}
-            </span>
+            Model RP-2.0
           </div>
-
           <h1
+            className="text-[36px] md:text-[52px]"
             style={{
-              fontSize: mobile ? 30 : 44,
+              color: B.navy,
               fontWeight: 700,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginBottom: 24,
+              letterSpacing: S.lsHero,
+              lineHeight: S.lhHeading,
+              marginBottom: S.h1mb,
             }}
           >
-            {t.about.heroTitle}
+            About RunPayway
           </h1>
-
           <p
-            style={{
-              fontSize: mobile ? 16 : 18,
-              color: "rgba(255,255,255,0.72)",
-              lineHeight: 1.7,
-              maxWidth: 640,
-              margin: "0 auto 16px",
-            }}
+            className="text-[16px] md:text-[18px]"
+            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
-            {t.about.heroDesc1}
-          </p>
-
-          <p
-            style={{
-              fontSize: mobile ? 14 : 16,
-              color: "rgba(255,255,255,0.50)",
-              lineHeight: 1.75,
-              maxWidth: 600,
-              margin: "0 auto 16px",
-            }}
-          >
-            {t.about.heroDesc2}
-          </p>
-
-          <p
-            style={{
-              fontSize: mobile ? 14 : 16,
-              color: "rgba(255,255,255,0.50)",
-              lineHeight: 1.75,
-              maxWidth: 600,
-              margin: "0 auto 16px",
-            }}
-          >
-            {t.about.heroDesc3}
-          </p>
-
-          <p
-            style={{
-              fontSize: mobile ? 14 : 15,
-              color: "rgba(255,255,255,0.40)",
-              lineHeight: 1.75,
-              maxWidth: 600,
-              margin: "0 auto",
-            }}
-          >
-            {t.about.heroDesc4}
+            RunPayway produces the Income Stability Score — a deterministic, structural assessment of how durable your income is. Not a credit score. Not a prediction. A structural measurement.
           </p>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ============================================================ */}
-      {/*  Content sections                                            */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 48 : 72,
-          paddingBottom: mobile ? 64 : 96,
-        }}
-      >
+
+/* ================================================================== */
+/* WHAT IS THE INCOME STABILITY SCORE                                  */
+/* ================================================================== */
+function WhatIsISS() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="What is the Income Stability Score"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
-          className="mx-auto"
           style={{
-            maxWidth: 780,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            display: "flex",
-            flexDirection: "column",
-            gap: mobile ? 20 : 24,
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          {/* The Income Stability Score */}
-          <div ref={s1.ref}>
-            <DocSection title={t.about.s1Title} mobile={mobile} visible={s1.visible}>
-              <P>{t.about.s1P1}</P>
-              <P>{t.about.s1P2}</P>
-              <P>{t.about.s1P3}</P>
-              <P style={{ marginBottom: 0 }}>{t.about.s1P4}</P>
-            </DocSection>
-          </div>
-
-          {/* What the Model Measures */}
-          <div ref={s2.ref}>
-            <DocSection title={t.about.s2Title} mobile={mobile} visible={s2.visible}>
-              <P>{t.about.s2P1}</P>
-              <P>{t.about.s2P2}</P>
-              <P>{t.about.s2P3}</P>
-              <P style={{ marginBottom: 0 }}>{t.about.s2P4}</P>
-            </DocSection>
-          </div>
-
-          {/* Model Governance */}
-          <div ref={s3.ref}>
-            <DocSection title={t.about.s3Title} mobile={mobile} visible={s3.visible}>
-              <P>{t.about.s3P1}</P>
-              <P>{t.about.s3P2}</P>
-              <P>{t.about.s3P3}</P>
-              <P>{t.about.s3P4}</P>
-              <P style={{ marginBottom: 0 }}>{t.about.s3P5}</P>
-            </DocSection>
-          </div>
-
-          {/* Assessment Integrity and Verification */}
-          <div ref={s4.ref}>
-            <DocSection title={t.about.s4Title} mobile={mobile} visible={s4.visible}>
-              <P>{t.about.s4P1}</P>
-              <P>{t.about.s4P2}</P>
-              <P>{t.about.s4P3}</P>
-              <P style={{ marginBottom: 0 }}>
-                {t.about.s4P4pre}{" "}
-                <Link
-                  href="/verify"
-                  style={{
-                    color: B.purple,
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    borderBottom: "1px solid rgba(75,63,174,0.30)",
-                    transition: "border-color 180ms ease",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
-                >
-                  {t.about.s4LinkText}
-                </Link>{" "}
-                {t.about.s4P4post}
-              </P>
-            </DocSection>
-          </div>
-
-          {/* Analytical Scope */}
-          <div ref={s5.ref}>
-            <DocSection title={t.about.s5Title} mobile={mobile} visible={s5.visible}>
-              <P>{t.about.s5P1}</P>
-              <P>{t.about.s5P2}</P>
-              <ul style={{ padding: 0, margin: "0 0 12px", listStyle: "none" }}>
-                {[
-                  t.about.s5List1,
-                  t.about.s5List2,
-                  t.about.s5List3,
-                  t.about.s5List4,
-                  t.about.s5List5,
-                ].map((item) => (
-                  <li
-                    key={item}
-                    style={{
-                      fontSize: 15,
-                      color: B.muted,
-                      lineHeight: 1.75,
-                      paddingLeft: 20,
-                      position: "relative",
-                    }}
-                  >
-                    <span style={{ position: "absolute", left: 0, color: B.purple, fontSize: 11, lineHeight: "26px" }}>●</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <P>{t.about.s5P3}</P>
-              <P style={{ marginBottom: 0 }}>{t.about.s5P4}</P>
-            </DocSection>
-          </div>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            What is the Income Stability Score?
+          </h2>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            The Income Stability Score is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score examines the architecture of how you earn. It looks at how many sources you have, how predictable they are, how much continues without active work, and how far forward your income is committed.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+            The result is a deterministic structural assessment — the same inputs always produce the same score, and every score maps to a fixed classification band under Model RP-2.0.
+          </p>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ============================================================ */}
-      {/*  Closing brand bar                                           */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 56 : 72,
-          paddingBottom: mobile ? 56 : 72,
-        }}
-      >
-        {/* Grain overlay */}
+
+/* ================================================================== */
+/* WHAT THE MODEL MEASURES                                             */
+/* ================================================================== */
+function WhatModelMeasures() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const dimensions = [
+    { title: "Source Count", desc: "How many distinct income sources contribute to total earnings." },
+    { title: "Source Diversification", desc: "How evenly income is distributed across sources, measuring concentration risk." },
+    { title: "Income Predictability", desc: "The regularity and consistency of income patterns over time." },
+    { title: "Forward Commitment", desc: "How much income is contractually committed before the earning period begins." },
+    { title: "Income Continuity", desc: "The share of income that would continue without active work." },
+    { title: "Structural Resilience", desc: "How the income architecture responds to disruption of individual components." },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="What the Model Measures"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        {/* Concentric halos */}
-        {[180, 320, 480].map((size, i) => (
-          <div
-            key={size}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: size,
-              height: size,
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        <div
-          ref={s6.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 600,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
             textAlign: "center",
-            opacity: s6.visible ? 1 : 0,
-            transform: s6.visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            marginBottom: S.subtextMb,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            RunPayway™
-          </div>
-          <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
-            {t.about.closingSubtitle}
-          </div>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
-            {t.about.poweredBy}
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
+            Six dimensions of income structure
+          </h2>
+          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+            The model evaluates income across six independent dimensions. Each contributes to the final score.
           </p>
         </div>
-      </section>
+
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: S.gridGap, maxWidth: 880, margin: "0 auto" }}>
+          {dimensions.map((d, i) => (
+            <div
+              key={d.title}
+              style={{
+                backgroundColor: B.sand,
+                borderRadius: S.cardRadius,
+                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+                border: "1px solid rgba(14,26,43,0.06)",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(12px)",
+                transition: `opacity 0.5s ease-out ${i * 60}ms, transform 0.5s ease-out ${i * 60}ms`,
+              }}
+            >
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient, marginBottom: 16 }} />
+              <h3 className="text-[15px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 10 }}>{d.title}</h3>
+              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* HOW THE SCORE IS CALCULATED                                         */
+/* ================================================================== */
+function HowCalculated() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="How the Score is Calculated"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            How the score is calculated
+          </h2>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Model RP-2.0 is entirely deterministic. There is no machine learning, no AI, no probabilistic modeling, and no human judgment in the scoring process. The same six inputs always produce the same score.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            The model uses 20 deterministic engines that evaluate structural properties of income. Each engine applies fixed rules to the inputs and produces a component score. These components combine into the final 0-100 result through weighted aggregation with interaction effects.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+            Scoring is divided into two blocks: the Structure block (60 points maximum) measures the architecture of income sources, while the Stability block (40 points maximum) measures behavioral durability. Interaction penalties and bonuses adjust the raw total based on cross-dimensional patterns.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* MODEL GOVERNANCE                                                    */
+/* ================================================================== */
+function ModelGovernance() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Model Governance"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            Model governance
+          </h2>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Every version of the scoring model is locked and versioned. The current version is Model RP-2.0. If any rule, weight, threshold, or classification boundary changes, the model increments to a new version number.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            This means a score generated under Model RP-2.0 can always be compared to another score generated under Model RP-2.0. The rules are identical. If the rules ever change, it becomes a new model — and every assessment is stamped with the version that produced it.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+            Every assessment includes a SHA-256 hash that can be used to verify the report was produced by the stated model version and has not been modified after generation. This is how institutional trust works: not through promises, but through verifiable, versioned outputs.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* VERIFICATION                                                        */
+/* ================================================================== */
+function Verification() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Verification"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            Verification
+          </h2>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Every assessment generated by RunPayway is independently verifiable. Each report includes a SHA-256 hash, a model version stamp, and a timestamp. These three elements together prove that the assessment was produced by Model RP-2.0 and has not been altered.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+            This matters for anyone who needs to share their assessment with a lender, employer, insurance provider, or financial advisor. The recipient does not need to trust you or trust RunPayway — they can verify the report themselves.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* WHO BUILT IT                                                        */
+/* ================================================================== */
+function WhoBuiltIt() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Who Built It"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div
+          style={{
+            maxWidth: 720,
+            margin: "0 auto",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            Who built this
+          </h2>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            RunPayway is built and operated by PeopleStar Enterprises, LLC. The Income Stability Score and Model RP-2.0 were developed to fill a gap in how income is evaluated: credit scores measure borrowing, income verification measures the past, but nothing measured the structural durability of how someone earns.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+            The model is designed for anyone whose income does not fit neatly into a W-2 paycheck — freelancers, consultants, contractors, gig workers, small business owners, and anyone with variable or multi-source income. The assessment is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* MODEL BADGE                                                         */
+/* ================================================================== */
+function ModelBadge() {
+  const mobile = useMobile();
+
+  return (
+    <section
+      aria-label="Model Badge"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "10px 20px",
+            borderRadius: 100,
+            backgroundColor: "#ffffff",
+            border: "1px solid rgba(14,26,43,0.06)",
+          }}
+        >
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
+          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
+            Model RP-2.0
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* MAIN EXPORT                                                         */
+/* ================================================================== */
+export default function AboutPage() {
+  return (
+    <div>
+      <Hero />
+      <WhatIsISS />
+      <WhatModelMeasures />
+      <HowCalculated />
+      <ModelGovernance />
+      <Verification />
+      <WhoBuiltIt />
+      <ModelBadge />
     </div>
   );
 }

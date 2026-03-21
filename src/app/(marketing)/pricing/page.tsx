@@ -1,22 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useLanguage } from "@/lib/i18n";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
 /* ------------------------------------------------------------------ */
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
-}
+const canHover = () =>
+  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -44,8 +36,16 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return mobile;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -62,943 +62,579 @@ const B = {
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
 };
 
+const S = {
+  sectionY:     { desktop: 160, mobile: 88 },
+  sectionYsm:   { desktop: 120, mobile: 72 },
+  transitionY:  { desktop: 72, mobile: 48 },
+  disclaimerY:  { desktop: 64, mobile: 48 },
+  maxW:         1060,
+  padX:         { desktop: 48, mobile: 24 },
+  h1mb:         28,
+  h2mb:         24,
+  subtextMb:    56,
+  paraMb:       24,
+  labelMb:      16,
+  cardPad:      { desktop: 36, mobile: 24 },
+  cardRadius:   16,
+  panelRadius:  20,
+  gridGap:      24,
+  gridGapSm:    16,
+  ctaH:         56,
+  ctaHsm:       46,
+  ctaPadX:      32,
+  ctaRadius:    14,
+  lhHeading:    1.08,
+  lhBody:       1.75,
+  lhDense:      1.5,
+  lsHeading:    "-0.025em",
+  lsHero:       "-0.035em",
+  lsLabel:      "0.14em",
+};
+
 /* ------------------------------------------------------------------ */
-/*  Pricing card                                                       */
+/*  Stripe payment links                                               */
 /* ------------------------------------------------------------------ */
 
-function PricingCard({
-  recommended,
-  title,
-  price,
-  perUnit,
-  description,
-  subtitle,
-  ctaLabel,
-  ctaHref,
-  mobile,
-  visible,
-  delay,
-  onSelect,
-  disabled,
-}: {
-  recommended?: boolean;
-  title: string;
-  price: string;
-  perUnit?: string;
-  description: string;
-  subtitle?: string;
-  ctaLabel: string;
-  ctaHref: string;
-  mobile: boolean;
-  visible: boolean;
-  delay: number;
-  onSelect?: (title: string, price: string) => void;
-  disabled?: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
+const STRIPE = {
+  single: "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02",
+  annual: "https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03",
+};
+
+
+/* ================================================================== */
+/* HERO                                                                */
+/* ================================================================== */
+function Hero() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
 
   return (
-    <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <section
+      ref={ref}
+      aria-label="Pricing Hero"
       style={{
-        position: "relative",
-        background: "#FFFFFF",
-        borderRadius: 20,
-        border: `1px solid ${recommended ? "rgba(75,63,174,0.25)" : "rgba(14,26,43,0.06)"}`,
-        padding: mobile ? "32px 28px" : "40px 36px",
-        boxShadow: hovered
-          ? recommended
-            ? "0 20px 48px rgba(75,63,174,0.14)"
-            : "0 12px 32px rgba(14,26,43,0.08)"
-          : recommended
-            ? "0 8px 24px rgba(75,63,174,0.08)"
-            : "0 2px 8px rgba(14,26,43,0.04)",
-        transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(28px)",
-        transitionDelay: `${delay}ms`,
-        display: "flex",
-        flexDirection: "column",
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
       }}
     >
-      {/* Recommended badge */}
-      {recommended && (
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
           style={{
-            position: "absolute",
-            top: -14,
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "5px 18px",
-            borderRadius: 100,
-            background: B.purple,
-            color: "#FFFFFF",
-            fontSize: 11,
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            whiteSpace: "nowrap",
+            textAlign: "center",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          Recommended
+          <div
+            className="text-[11px] uppercase"
+            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
+          >
+            Model RP-2.0
+          </div>
+          <h1
+            className="text-[36px] md:text-[52px]"
+            style={{
+              color: B.navy,
+              fontWeight: 700,
+              letterSpacing: S.lsHero,
+              lineHeight: S.lhHeading,
+              marginBottom: S.h1mb,
+            }}
+          >
+            Measure the structure<br />behind your income
+          </h1>
+          <p
+            className="text-[16px] md:text-[18px]"
+            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}
+          >
+            A deterministic structural assessment — no AI, no credit pull, no bank connection. Just a score backed by fixed rules.
+          </p>
         </div>
-      )}
-
-      <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 700, color: B.navy, marginBottom: 16 }}>
-        {title}
       </div>
-
-      <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-        <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 700, color: B.navy, lineHeight: 1, letterSpacing: "-0.03em" }}>
-          {price}
-        </span>
-      </div>
-
-      {perUnit && (
-        <div style={{ fontSize: 14, fontWeight: 600, color: B.purple, marginBottom: 8 }}>
-          {perUnit}
-        </div>
-      )}
-
-      <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.7, marginBottom: subtitle ? 12 : 28, flex: subtitle ? undefined : 1 }}>
-        {description}
-      </p>
-
-      {subtitle && (
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28, flex: 1 }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-            <path d="M7 0.5C3.41 0.5 0.5 3.41 0.5 7C0.5 10.59 3.41 13.5 7 13.5C10.59 13.5 13.5 10.59 13.5 7C13.5 3.41 10.59 0.5 7 0.5ZM5.75 10.25L2.5 7L3.4075 6.0925L5.75 8.4275L10.5925 3.585L11.5 4.5L5.75 10.25Z" fill={B.teal} />
-          </svg>
-          <span style={{ fontSize: 13, fontWeight: 500, color: B.teal }}>{subtitle}</span>
-        </div>
-      )}
-
-      <div style={{ fontSize: 12, color: B.light, marginBottom: 16 }}>
-        Instant access after selection
-      </div>
-
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          if (!disabled && onSelect) onSelect(title, price);
-        }}
-        disabled={disabled}
-        className={disabled ? "inline-flex items-center justify-center font-semibold" : "cta-tick inline-flex items-center justify-center font-semibold"}
-        style={{
-          width: "100%",
-          height: 52,
-          borderRadius: 12,
-          background: disabled ? B.light : recommended ? B.purple : B.navy,
-          color: "#FFFFFF",
-          fontSize: 15,
-          letterSpacing: "-0.01em",
-          border: "none",
-          cursor: disabled ? "not-allowed" : "pointer",
-          opacity: disabled ? 0.6 : 1,
-          boxShadow: disabled ? "none" : recommended
-            ? "0 6px 16px rgba(75,63,174,0.25)"
-            : "0 4px 12px rgba(14,26,43,0.15)",
-          transition: "background 180ms ease, transform 180ms ease",
-        }}
-        onMouseEnter={(e) => {
-          if (disabled || !canHover()) return;
-          e.currentTarget.style.background = recommended ? "#3D33A0" : "#1a2a40";
-          e.currentTarget.style.transform = "translateY(-1px)";
-        }}
-        onMouseLeave={(e) => {
-          if (disabled) return;
-          e.currentTarget.style.background = recommended ? B.purple : B.navy;
-          e.currentTarget.style.transform = "translateY(0)";
-        }}
-      >
-        {!disabled && <span className="tick tick-white" />}
-        <span className={disabled ? "" : "cta-label"}>{ctaLabel}</span>
-        {!disabled && <span className="cta-arrow cta-arrow-white" />}
-      </button>
-    </div>
+    </section>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
 
-export default function PricingPage() {
+/* ================================================================== */
+/* PRICING CARDS                                                       */
+/* ================================================================== */
+function PricingCards() {
+  const { ref, visible } = useInView();
   const mobile = useMobile();
-  const { t } = useLanguage();
-  const [transition, setTransition] = useState<{ key: string; label: string } | null>(null);
-  const heroAnim = useInView();
-  const cardsAnim = useInView();
-  const monitorAnim = useInView();
-  const includesAnim = useInView();
-  const processAnim = useInView();
-  const faqAnim = useInView();
-  const ctaAnim = useInView();
 
-  const STRIPE_LINKS: Record<string, string> = {
-    single: "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02",
-    annual: "https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03",
-  };
-
-  // Clear overlay if user hits browser back button
-  useEffect(() => {
-    const onPopState = () => setTransition(null);
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  const handleSelect = (_title: string, price: string) => {
-    const key = price === "$99" ? "annual" : "single";
-    const label = key === "annual"
-      ? "3 assessments over 12 months"
-      : "Your full Income Stability Report";
-    setTransition({ key, label });
-    setTimeout(() => {
-      window.location.href = STRIPE_LINKS[key];
-    }, 2300);
-  };
+  const plans = [
+    {
+      title: "Single Assessment",
+      price: "$39",
+      perUnit: "one-time",
+      desc: "A complete 5-page income stability assessment generated by Model RP-2.0. Answer six questions, receive your full report.",
+      href: STRIPE.single,
+      recommended: false,
+    },
+    {
+      title: "Annual Monitoring",
+      price: "$99",
+      perUnit: "per year",
+      desc: "Unlimited reassessments for 12 months. Track how structural changes affect your score over time. Includes every Model RP-2.0 update.",
+      href: STRIPE.annual,
+      recommended: true,
+    },
+  ];
 
   return (
-    <div style={{ background: "#FFFFFF" }}>
-      {/* Pre-checkout reinforcement overlay */}
-      {transition && (
-        <div style={{
-          position: "fixed", inset: 0, zIndex: 9999,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: B.navy,
-          animation: "overlayIn 350ms ease forwards",
-        }}>
-          <div style={{
-            textAlign: "center", maxWidth: 380, padding: "0 24px",
-            animation: "contentUp 400ms ease 100ms both",
-          }}>
-            {/* Lock icon */}
-            <div style={{
-              width: 52, height: 52, borderRadius: "50%",
-              background: "rgba(75,63,174,0.15)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              margin: "0 auto 24px",
-            }}>
-              <svg width="22" height="24" viewBox="0 0 22 24" fill="none">
-                <rect x="2" y="10" width="18" height="12" rx="3" stroke="#ffffff" strokeWidth="2" />
-                <path d="M6 10V7a5 5 0 0 1 10 0v3" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="11" cy="16" r="1.5" fill="#ffffff" />
-              </svg>
-            </div>
+    <section
+      ref={ref}
+      aria-label="Pricing Plans"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 32, maxWidth: 780, margin: "0 auto" }}>
+          {plans.map((plan, i) => {
+            const [hovered, setHovered] = useState(false);
+            return (
+              <div
+                key={plan.title}
+                onMouseEnter={() => canHover() && setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                style={{
+                  position: "relative",
+                  background: "#FFFFFF",
+                  borderRadius: S.panelRadius,
+                  border: `1px solid ${plan.recommended ? "rgba(75,63,174,0.25)" : "rgba(14,26,43,0.06)"}`,
+                  padding: mobile ? "32px 28px" : "40px 36px",
+                  boxShadow: hovered
+                    ? plan.recommended
+                      ? "0 20px 48px rgba(75,63,174,0.14)"
+                      : "0 12px 32px rgba(14,26,43,0.08)"
+                    : plan.recommended
+                      ? "0 8px 24px rgba(75,63,174,0.08)"
+                      : "0 2px 8px rgba(14,26,43,0.04)",
+                  transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? "translateY(0)" : "translateY(28px)",
+                  transitionDelay: `${i * 120}ms`,
+                  display: "flex",
+                  flexDirection: "column" as const,
+                }}
+              >
+                {/* Recommended badge */}
+                {plan.recommended && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: -14,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      padding: "5px 18px",
+                      borderRadius: 100,
+                      background: B.purple,
+                      color: "#FFFFFF",
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase" as const,
+                      whiteSpace: "nowrap" as const,
+                    }}
+                  >
+                    Recommended
+                  </div>
+                )}
 
-            {/* Heading */}
-            <div style={{
-              fontSize: 13, fontWeight: 600, letterSpacing: "0.1em",
-              textTransform: "uppercase", color: "rgba(255,255,255,0.45)",
-              marginBottom: 14,
-            }}>
-              Securing your assessment
-            </div>
+                <h3 className="text-[14px] uppercase" style={{ color: B.teal, fontWeight: 700, letterSpacing: "0.08em", marginBottom: 16 }}>
+                  {plan.title}
+                </h3>
 
-            {/* Reinforcement line */}
-            <div style={{
-              fontSize: mobile ? 16 : 18, fontWeight: 500, color: "rgba(255,255,255,0.75)",
-              lineHeight: 1.6,
-              marginBottom: 24,
-            }}>
-              Instant access to {transition.label} after checkout
-            </div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
+                  <span className="text-[44px]" style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}>{plan.price}</span>
+                  <span className="text-[14px]" style={{ color: B.muted }}>{plan.perUnit}</span>
+                </div>
 
-            {/* Subtle progress bar */}
-            <div style={{
-              height: 2, borderRadius: 1,
-              background: "rgba(255,255,255,0.08)",
-              overflow: "hidden", maxWidth: 200, margin: "0 auto",
-            }}>
-              <div style={{
-                height: "100%", borderRadius: 1,
-                background: "linear-gradient(90deg, #4B3FAE, #1F6D7A)",
-                animation: "progressSlide 2300ms ease forwards",
-              }} />
-            </div>
-          </div>
+                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 32, flex: 1 }}>
+                  {plan.desc}
+                </p>
 
-          <style>{`
-            @keyframes overlayIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes contentUp {
-              from { opacity: 0; transform: translateY(12px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes progressSlide {
-              from { width: 0%; }
-              to { width: 100%; }
-            }
-          `}</style>
+                <a
+                  href={plan.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: mobile ? S.ctaHsm : S.ctaH,
+                    borderRadius: S.ctaRadius,
+                    background: plan.recommended ? B.gradient : "transparent",
+                    color: plan.recommended ? "#ffffff" : B.navy,
+                    border: plan.recommended ? "none" : `1.5px solid ${B.navy}`,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    letterSpacing: "0.01em",
+                    transition: "box-shadow 260ms ease",
+                    boxShadow: hovered && plan.recommended ? "0 8px 24px rgba(75,63,174,0.25)" : "none",
+                  }}
+                >
+                  Get Started
+                </a>
+              </div>
+            );
+          })}
         </div>
-      )}
-      {/* ============================================================ */}
-      {/*  Hero                                                        */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        {/* Grain overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
+      </div>
+    </section>
+  );
+}
 
+
+/* ================================================================== */
+/* WHAT EVERY ASSESSMENT INCLUDES                                      */
+/* ================================================================== */
+function WhatIncludes() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const items = [
+    { title: "Income Stability Score", desc: "A single 0\u2013100 score reflecting your income\u2019s structural durability." },
+    { title: "Classification Band", desc: "Limited, Developing, Established, or High \u2014 fixed thresholds under Model RP-2.0." },
+    { title: "Structural Breakdown", desc: "Five scored dimensions showing exactly where strength and fragility live." },
+    { title: "Stress Scenarios", desc: "Deterministic projections of how your score changes under adverse conditions." },
+    { title: "Sensitivity Analysis", desc: "Which inputs have the most leverage on your score." },
+    { title: "Improvement Projections", desc: "Ranked actions with estimated point impact, tailored to your profile." },
+    { title: "Industry-Tailored Actions", desc: "Recommendations calibrated to your income model family." },
+    { title: "Reassessment Triggers", desc: "Specific conditions under which you should reassess." },
+    { title: "Peer Benchmarking", desc: "Percentile ranking within your industry cohort." },
+    { title: "Verification", desc: "SHA-256 hash and model version stamp for every assessment." },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="What Every Assessment Includes"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
-          ref={heroAnim.ref}
-          className="mx-auto"
           style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
             textAlign: "center",
-            opacity: heroAnim.visible ? 1 : 0,
-            transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            marginBottom: S.subtextMb,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {t.pricing.heroTag}
-            </span>
-          </div>
-
-          <h1
-            style={{
-              fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginBottom: 20,
-            }}
-          >
-            {t.pricing.heroTitle}
-          </h1>
-
-          <p
-            style={{
-              fontSize: mobile ? 15 : 18,
-              color: "rgba(255,255,255,0.65)",
-              lineHeight: 1.7,
-              maxWidth: 560,
-              margin: "0 auto 8px",
-            }}
-          >
-            {t.pricing.heroDesc}
-          </p>
-
-          <p
-            style={{
-              fontSize: 14,
-              color: "rgba(255,255,255,0.40)",
-            }}
-          >
-            {t.pricing.heroModel}
+          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
+            What every assessment includes
+          </h2>
+          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+            Both plans deliver the same comprehensive 5-page report. Nothing is hidden behind a paywall.
           </p>
         </div>
-      </section>
 
-      {/* ============================================================ */}
-      {/*  Pricing cards                                               */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 40 : 56,
-          background: B.sand,
-        }}
-      >
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: S.gridGap, maxWidth: 800, margin: "0 auto" }}>
+          {items.map((item, i) => (
+            <div
+              key={item.title}
+              style={{
+                display: "flex",
+                gap: 14,
+                alignItems: "flex-start",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 0.5s ease-out ${i * 50}ms, transform 0.5s ease-out ${i * 50}ms`,
+              }}
+            >
+              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
+              <div>
+                <span className="text-[14px]" style={{ fontWeight: 600, color: B.navy }}>{item.title}</span>
+                <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: "4px 0 0" }}>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* TRUST STRIP                                                         */
+/* ================================================================== */
+function TrustStrip() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const badges = [
+    "No bank connection",
+    "No credit pull",
+    "Private by default",
+    "Model RP-2.0",
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Trust Badges"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
-          ref={cardsAnim.ref}
-          className="mx-auto"
           style={{
-            maxWidth: 860,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-              gap: mobile ? 32 : 28,
-              alignItems: "start",
-            }}
-          >
-            <PricingCard
-              title={t.pricing.singleTitle}
-              price={t.pricing.singlePrice}
-              description={t.pricing.singleDesc}
-              subtitle={t.pricing.singleNoAccount}
-              ctaLabel={t.pricing.singleCta}
-              ctaHref="/diagnostic"
-              mobile={mobile}
-              visible={cardsAnim.visible}
-              delay={0}
-              onSelect={handleSelect}
-            />
-            <PricingCard
-              recommended
-              title={t.pricing.annualTitle}
-              price={t.pricing.annualPrice}
-              perUnit={t.pricing.annualPer}
-              description={t.pricing.annualDesc}
-              ctaLabel={t.pricing.annualCta}
-              ctaHref="/diagnostic"
-              mobile={mobile}
-              visible={cardsAnim.visible}
-              delay={140}
-              onSelect={handleSelect}
-            />
-          </div>
-
-          {/* Trust line */}
-          <div style={{ textAlign: "center", marginTop: 28, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-            <p style={{ fontSize: 13, color: B.light }}>
-              {t.pricing.trustLine1}
-            </p>
-            <p style={{ fontSize: 13, color: B.light, marginTop: 8, lineHeight: 1.6 }}>
-              {t.pricing.trustLine2}
-            </p>
-          </div>
-
-          {/* Security trust badges */}
-          <div style={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
             gap: mobile ? 12 : 20,
-            marginTop: 32,
-          }}>
-            {[
-              {
-                label: t.pricing.securityBadge,
-                icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <rect x="1" y="7" width="14" height="8" rx="2" stroke={B.purple} strokeWidth="1.5" />
-                    <path d="M4.5 7V4.5a3.5 3.5 0 0 1 7 0V7" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                ),
-              },
-              {
-                label: t.pricing.encryptionBadge,
-                icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 1L2 4v4c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V4L8 1z" stroke={B.teal} strokeWidth="1.5" strokeLinejoin="round" />
-                    <path d="M5.5 8L7 9.5L10.5 6" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ),
-              },
-              {
-                label: t.pricing.guaranteeBadge,
-                icon: (
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <circle cx="8" cy="8" r="6.5" stroke={B.navy} strokeWidth="1.5" />
-                    <path d="M5.5 8L7 9.5L10.5 6" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ),
-              },
-            ].map((badge) => (
-              <div
-                key={badge.label}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "8px 16px",
-                  borderRadius: 100,
-                  background: "#FFFFFF",
-                  border: "1px solid rgba(14,26,43,0.08)",
-                }}
-              >
-                {badge.icon}
-                <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>{badge.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Sample report + data privacy */}
-          <div style={{ textAlign: "center", marginTop: 24 }}>
-            <a
-              href="/sample-report"
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+          }}
+        >
+          {badges.map((badge) => (
+            <div
+              key={badge}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 6,
-                fontSize: 13,
-                fontWeight: 600,
-                color: B.purple,
-                textDecoration: "none",
-                transition: "opacity 180ms ease",
+                gap: 8,
+                padding: "10px 20px",
+                borderRadius: 100,
+                backgroundColor: "#ffffff",
+                border: "1px solid rgba(14,26,43,0.06)",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <rect x="2" y="1" width="10" height="12" rx="1.5" stroke={B.purple} strokeWidth="1.3" />
-                <path d="M5 5h4M5 7.5h4M5 10h2" stroke={B.purple} strokeWidth="1.3" strokeLinecap="round" />
-              </svg>
-              {t.pricing.sampleReportLink}
-            </a>
-            <p style={{ fontSize: 12, color: B.light, marginTop: 12, lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
-              {t.pricing.dataPrivacy}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  Monitoring timeline                                         */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: "#FFFFFF",
-        }}
-      >
-        <div
-          ref={monitorAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 780,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            opacity: monitorAnim.visible ? 1 : 0,
-            transform: monitorAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              {t.pricing.annualPlanTag}
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: B.gradient }} />
+              <span className="text-[13px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.02em" }}>{badge}</span>
             </div>
-            <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              {t.pricing.monitoringTitle}
-            </h2>
-            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.75, marginBottom: 32, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-              {t.pricing.monitoringDesc}
-            </p>
-          </div>
-
-          {/* Timeline */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "1fr" : "1fr auto 1fr auto 1fr",
-              alignItems: "center",
-              gap: mobile ? 24 : 0,
-              padding: mobile ? "32px 24px" : "40px 48px",
-              borderRadius: 20,
-              background: "#FFFFFF",
-              border: "1px solid rgba(14,26,43,0.06)",
-              boxShadow: "0 2px 12px rgba(14,26,43,0.04)",
-            }}
-          >
-            {[
-              { label: `${t.pricing.assessment} 1`, timing: t.pricing.anyTime, icon: "1" },
-              { label: `${t.pricing.assessment} 2`, timing: t.pricing.anyTime, icon: "2" },
-              { label: `${t.pricing.assessment} 3`, timing: t.pricing.anyTime, icon: "3" },
-            ].map((item, i) => (
-              <div key={item.label} style={{ display: "contents" }}>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{
-                    width: 48, height: 48, borderRadius: 14,
-                    background: `linear-gradient(135deg, ${i === 0 ? B.navy : i === 1 ? B.purple : B.teal} 0%, ${i === 0 ? "#1a2a40" : i === 1 ? "#5a4cc0" : "#287d8c"} 100%)`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    margin: "0 auto 12px",
-                    boxShadow: `0 4px 12px ${i === 0 ? "rgba(14,26,43,0.20)" : i === 1 ? "rgba(75,63,174,0.20)" : "rgba(31,109,122,0.20)"}`,
-                  }}>
-                    <span style={{ fontSize: 16, fontWeight: 700, color: "#FFFFFF" }}>{item.icon}</span>
-                  </div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.label}</div>
-                  <div style={{ fontSize: 12, color: B.light }}>{item.timing}</div>
-                </div>
-                {i < 2 && !mobile && (
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "0 16px" }}>
-                    <svg width="40" height="12" viewBox="0 0 40 12" fill="none">
-                      <path d="M0 6h32m0 0l-5-4.5M32 6l-5 4.5" stroke={B.light} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.4" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <p style={{ fontSize: 13, color: B.light, marginTop: 20, textAlign: "center", maxWidth: 480, marginLeft: "auto", marginRight: "auto", lineHeight: 1.6 }}>
-            {t.pricing.monitoringNote}
-          </p>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ============================================================ */}
-      {/*  What every assessment includes                              */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
-        }}
-      >
+
+/* ================================================================== */
+/* FAQ                                                                 */
+/* ================================================================== */
+function Faq() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      q: "What is the difference between Single and Annual?",
+      a: "The Single Assessment is a one-time report. Annual Monitoring gives you unlimited reassessments for 12 months, so you can track how changes to your income structure affect your score over time. Both use the same Model RP-2.0 engine and produce the same comprehensive 5-page report.",
+    },
+    {
+      q: "Do you need access to my bank accounts?",
+      a: "No. RunPayway never connects to your bank, pulls your credit, or accesses any financial accounts. You answer six structured questions about your income, and the model generates your assessment from those inputs alone.",
+    },
+    {
+      q: "Can I share my report with a lender or employer?",
+      a: "Yes. Every assessment includes a SHA-256 verification hash and model version stamp. Recipients can confirm the report was generated by Model RP-2.0 and has not been altered. The report is yours — share it however you choose.",
+    },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Frequently Asked Questions"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
-          ref={includesAnim.ref}
-          className="mx-auto"
           style={{
-            maxWidth: 780,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            opacity: includesAnim.visible ? 1 : 0,
-            transform: includesAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            textAlign: "center",
+            marginBottom: S.subtextMb,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 24, textAlign: "center" }}>
-            {t.pricing.includesTitle}
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading }}>
+            Common Questions
           </h2>
+        </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-              gap: 12,
-              marginBottom: 20,
-            }}
-          >
-            {[
-              t.pricing.includesItem1,
-              t.pricing.includesItem2,
-              t.pricing.includesItem3,
-              t.pricing.includesItem4,
-              t.pricing.includesItem5,
-              t.pricing.includesItem6,
-              t.pricing.includesItem7,
-              t.pricing.includesItem8,
-              t.pricing.includesItem9,
-              t.pricing.includesItem10,
-              t.pricing.includesItem11,
-              t.pricing.includesItem12,
-              t.pricing.includesItem13,
-              t.pricing.includesItem14,
-            ].map((item) => (
-              <div
-                key={item}
+        <div style={{ maxWidth: 680, margin: "0 auto" }}>
+          {faqs.map((faq, i) => (
+            <div
+              key={i}
+              style={{
+                borderBottom: i < faqs.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
+              }}
+            >
+              <button
+                onClick={() => setOpenIdx(openIdx === i ? null : i)}
                 style={{
                   display: "flex",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  gap: 12,
-                  padding: "12px 16px",
-                  borderRadius: 10,
-                  background: "#FFFFFF",
-                  border: "1px solid rgba(14,26,43,0.06)",
+                  width: "100%",
+                  padding: "24px 0",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  textAlign: "left",
                 }}
               >
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: B.teal, flexShrink: 0 }} />
-                <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{item}</span>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ fontSize: 13, color: B.light, textAlign: "center" }}>
-            {t.pricing.includesNote}
-          </p>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  How the process works                                       */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: "#FFFFFF",
-        }}
-      >
-        <div
-          ref={processAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 780,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            opacity: processAnim.visible ? 1 : 0,
-            transform: processAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
-            {t.pricing.processTitle}
-          </h2>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {[
-              { step: t.pricing.processStep1 },
-              { step: t.pricing.processStep2pre, bold: t.pricing.processStep2bold, after: t.pricing.processStep2post },
-              { step: t.pricing.processStep3 },
-              { step: t.pricing.processStep4pre, bold: t.pricing.processStep4bold1, after: t.pricing.processStep4mid, bold2: t.pricing.processStep4bold2, after2: t.pricing.processStep4post },
-            ].map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  gap: 20,
-                  padding: "20px 0",
-                  borderBottom: i < 4 ? "1px solid rgba(14,26,43,0.06)" : "none",
-                }}
-              >
-                <div
-                  style={{
-                    width: 36,
-                    height: 36,
-                    borderRadius: 10,
-                    background: "rgba(75,63,174,0.08)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <span style={{ fontSize: 14, fontWeight: 700, color: B.purple }}>{i + 1}</span>
-                </div>
-                <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, paddingTop: 6 }}>
-                  {item.step}
-                  {item.bold && <strong style={{ color: B.navy }}>{item.bold}</strong>}
-                  {item.after}
-                  {item.bold2 && <strong style={{ color: B.navy }}>{item.bold2}</strong>}
-                  {item.after2}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/*  FAQ                                                         */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
-        }}
-      >
-        <div
-          ref={faqAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 680,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            opacity: faqAnim.visible ? 1 : 0,
-            transform: faqAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
-            {t.pricing.faqTitle}
-          </h2>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {[
-              { q: t.pricing.faq1Q, a: t.pricing.faq1A },
-              { q: t.pricing.faq2Q, a: t.pricing.faq2A },
-              { q: t.pricing.faq3Q, a: t.pricing.faq3A },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "20px 0",
-                  borderBottom: i < 2 ? "1px solid rgba(14,26,43,0.06)" : "none",
-                }}
-              >
-                <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 8 }}>
-                  {faq.q}
-                </div>
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, margin: 0 }}>
+                <span className="text-[15px]" style={{ fontWeight: 600, color: B.navy, paddingRight: 16 }}>{faq.q}</span>
+                <span className="text-[20px]" style={{ color: B.light, flexShrink: 0, transition: "transform 200ms ease", transform: openIdx === i ? "rotate(45deg)" : "rotate(0)" }}>+</span>
+              </button>
+              <div style={{ maxHeight: openIdx === i ? 300 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
+                <p className="text-[14px]" style={{ color: B.muted, lineHeight: S.lhBody, paddingBottom: 24, margin: 0 }}>
                   {faq.a}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ============================================================ */}
-      {/*  Final CTA                                                   */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        {/* Grain overlay */}
+
+/* ================================================================== */
+/* CTA SECTION                                                         */
+/* ================================================================== */
+function CtaSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Final CTA"
+      style={{
+        backgroundColor: B.sand,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        {/* Concentric halos */}
-        {[220, 380, 560].map((size, i) => (
-          <div
-            key={size}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: size,
-              height: size,
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        <div
-          ref={ctaAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 680,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
             textAlign: "center",
-            opacity: ctaAnim.visible ? 1 : 0,
-            transform: ctaAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 style={{ fontSize: mobile ? 26 : 38, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 20 }}>
-            {t.pricing.ctaTitle}
+          <h2 className="text-[28px] md:text-[40px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            Ready to measure your income stability?
           </h2>
-
-          <p style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.60)", lineHeight: 1.75, maxWidth: 520, margin: "0 auto 36px" }}>
-            {t.pricing.ctaDesc}
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 480, marginLeft: "auto", marginRight: "auto", marginBottom: 40 }}>
+            Under two minutes. No bank access. No credit pull. Just a structural score backed by Model RP-2.0.
           </p>
-
-          {/* Two CTA buttons */}
-          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, justifyContent: "center" }}>
-            <button
-              onClick={() => handleSelect("Single Assessment", "$39")}
-              className="inline-flex items-center justify-center font-semibold"
-              style={{
-                height: 52,
-                paddingLeft: 28,
-                paddingRight: 28,
-                borderRadius: 14,
-                background: "rgba(255,255,255,0.12)",
-                color: "#FFFFFF",
-                fontSize: 15,
-                letterSpacing: "-0.01em",
-                border: "1px solid rgba(255,255,255,0.18)",
-                cursor: "pointer",
-                transition: "background 180ms ease, transform 180ms ease",
-                width: mobile ? "100%" : "auto",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.18)";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              {t.pricing.singleCta2}
-            </button>
-            <button
-              onClick={() => handleSelect("Annual Monitoring", "$99")}
-              className="inline-flex items-center justify-center font-semibold"
-              style={{
-                height: 52,
-                paddingLeft: 28,
-                paddingRight: 28,
-                borderRadius: 14,
-                background: "rgba(255,255,255,0.12)",
-                color: "#FFFFFF",
-                fontSize: 15,
-                letterSpacing: "-0.01em",
-                border: "1px solid rgba(255,255,255,0.18)",
-                cursor: "pointer",
-                transition: "background 180ms ease, transform 180ms ease",
-                width: mobile ? "100%" : "auto",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.18)";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              {t.pricing.annualCta2}
-            </button>
-          </div>
-
-          {/* Methodology statement */}
-          <div style={{ marginTop: 48, maxWidth: 520, margin: "48px auto 0" }}>
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.40)", lineHeight: 1.7, marginBottom: 8 }}>
-              {t.pricing.methodology1}
-            </p>
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.28)", lineHeight: 1.7, marginBottom: 8 }}>
-              {t.pricing.methodology2}
-            </p>
-            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", lineHeight: 1.7 }}>
-              {t.pricing.methodology3}
-            </p>
-          </div>
-
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", marginTop: 28, letterSpacing: "0.02em" }}>
-            {t.pricing.poweredBy}
-          </p>
+          <a
+            href={STRIPE.single}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={() => canHover() && setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: mobile ? S.ctaHsm : S.ctaH,
+              paddingLeft: S.ctaPadX,
+              paddingRight: S.ctaPadX,
+              borderRadius: S.ctaRadius,
+              background: hovered ? B.purple : B.gradient,
+              color: "#ffffff",
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.01em",
+              textDecoration: "none",
+              boxShadow: hovered ? "0 8px 24px rgba(75,63,174,0.25)" : "0 4px 16px rgba(14,26,43,0.12)",
+              transition: "background 260ms ease, box-shadow 260ms ease",
+            }}
+          >
+            Get My Score
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* MODEL BADGE                                                         */
+/* ================================================================== */
+function ModelBadge() {
+  const mobile = useMobile();
+
+  return (
+    <section
+      aria-label="Model Badge"
+      style={{
+        backgroundColor: "#ffffff",
+        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "10px 20px",
+            borderRadius: 100,
+            backgroundColor: B.sand,
+            border: "1px solid rgba(14,26,43,0.06)",
+          }}
+        >
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
+          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
+            Model RP-2.0
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* MAIN EXPORT                                                         */
+/* ================================================================== */
+export default function PricingPage() {
+  return (
+    <div>
+      <Hero />
+      <PricingCards />
+      <WhatIncludes />
+      <TrustStrip />
+      <Faq />
+      <CtaSection />
+      <ModelBadge />
     </div>
   );
 }

@@ -1331,7 +1331,7 @@ function SampleOutput() {
 
             {/* Income Continuity */}
             <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-              Income Continuity Estimate
+              Income Continuity
             </div>
             <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 6 }}>
               38% of income continues without active work
@@ -1353,7 +1353,7 @@ function SampleOutput() {
               <span className="text-[24px]" style={{ fontWeight: 700, color: "#DC2626" }}>56</span>
             </div>
             <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.6, marginBottom: 24 }}>
-              If the largest income source were removed, the score would move into a lower band.
+              If the largest income source were removed, the score would drop 22 points.
             </p>
 
             {/* Divider */}
@@ -1361,21 +1361,43 @@ function SampleOutput() {
 
             {/* Main Structural Constraint */}
             <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-              Main Structural Constraint
+              Main Constraint
             </div>
             <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
-              Forward visibility is weaker than the current score suggests.
+              Forward visibility
             </p>
 
             {/* Divider */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
-            {/* Top Score-Lift */}
+            {/* Best Improvement */}
             <div className="text-[10px] uppercase" style={{ color: B.teal, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
-              Best Improvement Opportunity
+              Best Improvement
             </div>
             <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
-              Increase committed income ahead before the month begins.
+              Extend forward commitments
+            </p>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
+
+            {/* How Resilient */}
+            <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
+              How Resilient
+            </div>
+            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
+              Supported
+            </p>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
+
+            {/* Confidence */}
+            <div className="text-[10px] uppercase" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 8 }}>
+              Confidence
+            </div>
+            <p className="text-[14px]" style={{ color: "rgba(14,26,43,0.70)", lineHeight: 1.6, marginBottom: 24 }}>
+              High
             </p>
 
             {/* Divider */}
@@ -1383,10 +1405,10 @@ function SampleOutput() {
 
             {/* Verification */}
             <div className="text-[10px] uppercase" style={{ color: B.light, fontWeight: 600, letterSpacing: "0.12em", marginBottom: 6 }}>
-              Verification Status
+              Verification
             </div>
             <p className="text-[13px]" style={{ color: "rgba(14,26,43,0.55)", lineHeight: 1.5 }}>
-              Authenticated under Model RP-2.0
+              Model RP-2.0
             </p>
           </div>
         </div>
