@@ -407,7 +407,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
               }}
             >
-              RunPayway&#8482; measures the structure behind your income &#8212; how much repeats, how concentrated it is, how far ahead it is secured, and how much continues without active work.
+              RunPayway&#8482; scores your income based on four things: how much of it repeats, how many sources you depend on, how far ahead it&#8217;s locked in, and how much comes in whether you work or not.
             </p>
 
             <div
