@@ -585,6 +585,7 @@ export default function ReviewPage() {
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
 
+  const name = record.assessment_title || "This income structure";
   const issuedDate = (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0];
   const reassessDate = (() => {
     const d = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
@@ -654,17 +655,17 @@ export default function ReviewPage() {
 
         <DiagnosisBlock>
           <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 6px" }}>
-            Your income is working, but it is not yet well protected.
+            {name} is producing income, but the setup is not yet well protected.
           </p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540 }}>
-            You scored {record.final_score} out of 100. Too much of your income still depends on ongoing work, and not enough is already lined up ahead of time. That makes it easier to disrupt than it needs to be.
+            {name} scored {record.final_score} out of 100. Too much income still depends on ongoing work, and not enough is already lined up ahead of time. That makes the structure easier to disrupt than it needs to be.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
           title="What this means"
-          copy="Your income is real, but if work slows or a key source weakens, there is not enough built-in protection to keep things stable."
-          takeaway="Bottom line: Your income works, but it is still too exposed."
+          copy={`${name} is generating income, but if work slows or a key source weakens, there is not enough built-in protection to keep things stable.`}
+          takeaway={`Bottom line: ${name} works, but it is still too exposed.`}
         />
 
         {/* Classification Scale */}
@@ -723,7 +724,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Why This Score</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page breaks down the main reasons behind your score. The question is not whether you earn income. The question is how well that income holds up when something changes.
+          This page breaks down the main reasons behind the score for {name}. The question is not whether income exists. The question is how well it holds up when something changes.
         </p>
 
         <div style={{ display: "flex", gap: 20 }}>
@@ -805,7 +806,7 @@ export default function ReviewPage() {
             ))}
           </div>
           <p style={{ ...T.small, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>
-            Bottom line: Not enough income is lined up ahead, and too much depends on ongoing work.
+            Bottom line: {name} does not have enough income lined up ahead, and too much depends on ongoing work.
           </p>
         </div>
 
@@ -825,7 +826,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 520 }}>
-          This page shows where your income is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.
+          This page shows where {name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.
         </p>
 
         {/* Two large cards */}
@@ -877,16 +878,16 @@ export default function ReviewPage() {
 
         <SimpleTermsBox
           title="What this means"
-          copy="If work slows or a major source weakens, your income may drop faster than it should. A stronger setup would hold up better."
-          takeaway="Bottom line: Your income is still too easy to disrupt."
+          copy={`If work slows or a major source weakens, ${name} may lose income faster than it should. A stronger setup would hold up better.`}
+          takeaway={`Bottom line: ${name} is still too easy to disrupt.`}
         />
 
         {/* Three interpretation cards */}
         <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
           {[
-            { title: "What weakens first", copy: "Not your current income — but the lack of income already lined up to carry you through a disruption." },
-            { title: "The hidden risk", copy: "You can earn well and still be fragile. Your income is productive, but it does not yet absorb disruption well." },
-            { title: "Where you stand now", copy: "You can produce income, but if work stops or a major source weakens, stability drops quickly." },
+            { title: "What weakens first", copy: `Not the current income — but the lack of income already lined up to carry ${name} through a disruption.` },
+            { title: "The hidden risk", copy: `${name} can earn well and still be fragile. Income is productive, but the setup does not yet absorb disruption well.` },
+            { title: "Where things stand", copy: `${name} can produce income, but if work stops or a major source weakens, stability drops quickly.` },
           ].map((card) => (
             <div key={card.title} style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
               <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{card.title}</div>
@@ -898,7 +899,7 @@ export default function ReviewPage() {
         <DiagnosisBlock>
           <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>The key risk:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            Your income still loses strength too easily when something changes.
+            {name} still loses strength too easily when something changes.
           </p>
         </DiagnosisBlock>
 
@@ -911,7 +912,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How to Improve</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
-          The fastest way to raise your score is not to work more. It is to change how your income is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.
+          The fastest way to raise this score is not to work more. It is to change how {name} is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.
         </p>
 
         {/* Band cards */}
@@ -944,8 +945,8 @@ export default function ReviewPage() {
 
         <SimpleTermsBox
           title="What this means"
-          copy="Line up more income before the month starts. Depend less on your biggest source. Build more income that keeps going even when you are not working."
-          takeaway="Bottom line: Secure more income ahead and reduce how much depends on one source."
+          copy={`${name} needs more income lined up before the month starts, less dependence on the biggest source, and more income that keeps going even during a slowdown.`}
+          takeaway={`Bottom line: Secure more income ahead and reduce how much ${name} depends on one source.`}
         />
 
         {/* Action cards */}
@@ -967,9 +968,9 @@ export default function ReviewPage() {
         </div>
 
         <DiagnosisBlock>
-          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Your fastest improvement:</p>
+          <p style={{ ...T.small, color: B.navy, fontWeight: 500, margin: "0 0 4px" }}>Fastest improvement for {name}:</p>
           <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            Lining up more income ahead of time is the single clearest way to raise your score.
+            Lining up more income ahead of time is the single clearest way to raise this score.
           </p>
         </DiagnosisBlock>
 
@@ -983,16 +984,16 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
 
         <DiagnosisBlock>
-          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>The main takeaway:</p>
+          <p style={{ ...T.body, color: B.navy, fontWeight: 500, margin: "0 0 8px" }}>The main takeaway for {name}:</p>
           <p style={{ ...T.body, color: B.muted, margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
-            You do not need to earn more first. You need to change how your income is set up. The income is there, but not enough of it is lined up ahead to keep things stable when something changes.
+            {name} does not need to earn more first. The income is there, but the setup needs to change — more income lined up ahead, less reliance on one source, and more income that continues on its own.
           </p>
         </DiagnosisBlock>
 
         <SimpleTermsBox
           title="What this means"
-          copy="Working harder will not fix this. The goal is to set up your income so it holds up better — even when work slows or something changes."
-          takeaway="Bottom line: Strengthen the setup, not just the output."
+          copy={`Working harder will not fix this. The goal is to set up ${name} so income holds up better — even when work slows or something changes.`}
+          takeaway={`Bottom line: Strengthen the setup behind ${name}, not just the output.`}
         />
 
         {/* Two columns: What to do / What not to */}
