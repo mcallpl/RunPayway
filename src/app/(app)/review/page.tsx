@@ -133,6 +133,20 @@ interface AssessmentRecord {
   risk_scenario_text: string;
   advisor_discussion_guide_payload: string;
   product_recommendations_payload: string;
+  _v2?: {
+    outcome_layer?: {
+      income_model_family: { family_id: string; family_label: string };
+      industry_refinement_profile: { industry_id: string; industry_label: string } | null;
+      selected_scenarios: { scenario_id: string; label: string; description: string; severity: string; why_it_matters: string }[];
+      stronger_structure_patterns: string[];
+      ranked_action_map: { rank: number; action_id: string; label: string; description: string; why_now: string; expected_effect: string }[];
+      avoid_actions: string[];
+      reassessment_trigger_set: { trigger_id: string; condition: string; display_text: string }[];
+      explanation_translation_layer: Record<string, string>;
+      benchmark_context_layer: { framing_text: string; peer_group_label: string; typical_score_range: { low: number; mid: number; high: number }; common_strengths: string[]; common_weaknesses: string[] } | null;
+    };
+    [key: string]: unknown;
+  };
 }
 
 // ============================================================
@@ -722,6 +736,17 @@ export default function ReviewPage() {
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
 
+  // ── Outcome layer (industry-specific data) ──
+  const ol = record._v2?.outcome_layer;
+  const olActions = ol?.ranked_action_map ?? null;
+  const olAvoid = ol?.avoid_actions ?? null;
+  const olExplanations = ol?.explanation_translation_layer ?? null;
+  const olTriggers = ol?.reassessment_trigger_set ?? null;
+  const olStrongerPatterns = ol?.stronger_structure_patterns ?? null;
+  const olScenarios = ol?.selected_scenarios ?? null;
+  const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
+  const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
+
   // ── Continuity display ──
   const continuityDisplay = record.income_continuity_months < 0.5
     ? "Less than 1 week"
@@ -922,10 +947,10 @@ export default function ReviewPage() {
             <Overline>KEY FINDINGS</Overline>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
-                { code: "R-12", title: "Low Forward-Secured Income", text: "Not enough future income is already lined up before the month begins." },
-                { code: "R-07", title: "High Source Dependence", text: "The structure depends too much on the largest income source." },
-                { code: "R-03", title: "Short Continuity Window", text: "Income does not continue long enough without active work." },
-                { code: "R-01", title: "Work-Led Structure", text: "Too much income still depends on your direct effort." },
+                { code: "R-12", title: "Low Forward-Secured Income", text: olExplanations?.low_forward_secured || "Not enough future income is already lined up before the month begins." },
+                { code: "R-07", title: "High Source Dependence", text: olExplanations?.high_concentration || "The structure depends too much on the largest income source." },
+                { code: "R-03", title: "Short Continuity Window", text: olExplanations?.short_continuity || "Income does not continue long enough without active work." },
+                { code: "R-01", title: "Work-Led Structure", text: olExplanations?.high_labor_dependence || "Too much income still depends on your direct effort." },
               ].map((rc) => (
                 <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 8 }}>
                   <div style={{ ...T.micro, color: B.purple }}>{rc.code} | {rc.title}</div>
@@ -1022,6 +1047,24 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Industry-specific risk scenarios */}
+        {olScenarios && olScenarios.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>
+              KEY RISK SCENARIOS{olIndustryLabel ? ` · ${olIndustryLabel.toUpperCase()}` : ""}
+            </div>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {olScenarios.slice(0, 4).map((s) => (
+                <div key={s.scenario_id} style={{ flex: "1 1 calc(50% - 5px)", minWidth: 200, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${s.severity === "critical" ? B.bandLimited : s.severity === "high" ? B.bandDeveloping : B.taupe}`, borderRadius: 2, padding: "14px 16px" }}>
+                  <div style={{ ...T.micro, color: s.severity === "critical" ? B.bandLimited : s.severity === "high" ? B.bandDeveloping : B.muted, marginBottom: 4 }}>{s.severity.toUpperCase()}</div>
+                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{s.label}</div>
+                  <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{s.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Income Structure Mix */}
         <Overline>INCOME STRUCTURE MIX</Overline>
         <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
@@ -1105,13 +1148,16 @@ export default function ReviewPage() {
         {/* What the next state looks like */}
         <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderTop: `2px solid ${B.purple}`, borderRadius: 2, padding: "16px 20px", marginBottom: 20 }}>
           <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What a stronger structure usually looks like</div>
-          {[
-            "More income is already committed before the month begins",
-            "No single source carries outsized structural weight",
-            "A modest recurring layer is present and dependable",
-            "Continuity extends beyond a short interruption window",
-            "The structure relies less exclusively on direct personal output",
-          ].map((b) => (
+          {(olStrongerPatterns && olStrongerPatterns.length > 0
+            ? olStrongerPatterns
+            : [
+                "More income is already committed before the month begins",
+                "No single source carries outsized structural weight",
+                "A modest recurring layer is present and dependable",
+                "Continuity extends beyond a short interruption window",
+                "The structure relies less exclusively on direct personal output",
+              ]
+          ).map((b) => (
             <div key={b} style={{ ...T.body, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}><span style={{ color: B.stone }}>—</span>{b}</div>
           ))}
         </div>
@@ -1122,19 +1168,33 @@ export default function ReviewPage() {
           takeaway={copy.p4_bottom}
         />
 
-        {/* Action cards */}
+        {/* Action cards — uses outcome layer when available */}
+        {olActions && olActions.length > 0 && (
+          <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 8 }}>
+            Tailored for {olIndustryLabel ? `${olIndustryLabel} · ` : ""}{olFamilyLabel ?? "your income model"}
+          </div>
+        )}
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
-          {[
-            { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, pre-sold packages, or recurring contracts." },
-            { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Reduce how much the structure depends on the largest source by strengthening one or more dependable secondary sources." },
-            { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Shift part of one-time work into income that repeats or renews where the business model allows." },
-            { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily work slows or stops." },
-          ].map((action) => (
+          {(olActions && olActions.length > 0
+            ? olActions.slice(0, 4).map((a, i) => ({
+                rank: `Priority ${i + 1}`,
+                title: a.label,
+                copy: a.description,
+                why: a.why_now,
+              }))
+            : [
+                { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, pre-sold packages, or recurring contracts.", why: "" },
+                { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Reduce how much the structure depends on the largest source by strengthening one or more dependable secondary sources.", why: "" },
+                { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Shift part of one-time work into income that repeats or renews where the business model allows.", why: "" },
+                { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily work slows or stops.", why: "" },
+              ]
+          ).map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
               <div style={{ ...T.micro, color: B.purple, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 3 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
+                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontStyle: "italic" }}>{action.why}</p>}
               </div>
             </div>
           ))}

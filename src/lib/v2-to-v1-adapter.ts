@@ -273,6 +273,7 @@ export function adaptV2ToV1(r: AssessmentRecord): Record<string, unknown> {
       reason_codes: r.reason_codes,
       integrity: r.integrity,
       model_manifest: r.model_manifest,
+      outcome_layer: r.outcome_layer,
     },
   };
 }
