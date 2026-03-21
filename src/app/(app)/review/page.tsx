@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import logoImg from "../../../../public/runpayway-logo.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 
 // ============================================================
@@ -198,8 +200,8 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: R.headerMb, paddingBottom: 12, borderBottom: `1px solid ${B.stone}` }}>
-      <div style={{ ...T.overline, color: B.navy, fontWeight: 600, fontSize: 11 }}>RUNPAYWAY™</div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 12, borderBottom: `1px solid ${B.stone}` }}>
+      <Image src={logoImg} alt="RunPayway" width={120} height={14} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
         <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0</div>
