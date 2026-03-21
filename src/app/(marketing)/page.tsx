@@ -400,11 +400,25 @@ input[type="range"]::-webkit-slider-thumb {
               style={{
                 color: "rgba(244,241,234,0.75)",
                 lineHeight: S.lhBody,
-                marginBottom: S.paraMb + 8,
+                marginBottom: 12,
                 maxWidth: mobile ? undefined : 480,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
+              }}
+            >
+              Pay stubs and tax returns don&#8217;t tell the full story. They miss the contracts, recurring clients, and revenue streams that actually keep your income stable.
+            </p>
+            <p
+              className="text-[15px] md:text-[17px]"
+              style={{
+                color: "rgba(244,241,234,0.60)",
+                lineHeight: S.lhBody,
+                marginBottom: S.paraMb + 8,
+                maxWidth: mobile ? undefined : 480,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: "opacity 600ms ease-out 350ms, transform 600ms ease-out 350ms",
               }}
             >
               RunPayway&#8482; scores your income based on four things: how much of it repeats, how many sources you depend on, how far ahead it&#8217;s locked in, and how much comes in whether you work or not.
