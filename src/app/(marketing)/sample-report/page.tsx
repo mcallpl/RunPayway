@@ -353,10 +353,10 @@ function Page1Score() {
   const score = useAnimatedCounter(78, visible, 1500);
 
   const bandSegments = [
-    { range: "0-29", label: "Limited", color: B.bandLimited },
-    { range: "30-49", label: "Developing", color: B.bandDeveloping },
-    { range: "50-74", label: "Established", color: B.bandEstablished },
-    { range: "75-100", label: "High", color: B.bandHigh, active: true },
+    { range: "0\u201329", label: "Limited Stability", color: B.bandLimited },
+    { range: "30\u201349", label: "Developing Stability", color: B.bandDeveloping },
+    { range: "50\u201374", label: "Established Stability", color: B.bandEstablished },
+    { range: "75\u2013100", label: "High Stability", color: B.bandHigh, active: true },
   ];
 
   const metrics = [

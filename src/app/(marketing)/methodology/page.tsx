@@ -366,10 +366,10 @@ function ClassificationBands() {
   const mobile = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited", color: "#DC2626", desc: "Income structure is fragile. Heavy dependence on active work with minimal structural support. High exposure to disruption." },
-    { range: "30\u201349", label: "Developing", color: "#F59E0B", desc: "Some structural elements exist, but the income remains exposed. Moderate resilience with clear improvement paths." },
-    { range: "50\u201374", label: "Established", color: B.teal, desc: "Meaningful stability with structural protection across multiple dimensions. The income can absorb moderate disruption." },
-    { range: "75\u2013100", label: "High", color: B.navy, desc: "Durable income architecture. Strong diversification, forward visibility, and continuity. Less dependent on constant active effort." },
+    { range: "0\u201329", label: "Limited Stability", color: "#DC2626", desc: "Income structure is fragile and depends heavily on active work." },
+    { range: "30\u201349", label: "Developing Stability", color: "#D97706", desc: "Some support exists, but the structure is still exposed." },
+    { range: "50\u201374", label: "Established Stability", color: "#2563EB", desc: "Income reflects meaningful stability and stronger protection." },
+    { range: "75\u2013100", label: "High Stability", color: "#16A34A", desc: "Income structure is durable and less dependent on constant effort." },
   ];
 
   return (

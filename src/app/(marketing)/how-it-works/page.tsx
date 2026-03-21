@@ -679,28 +679,28 @@ function ClassificationScale() {
   const bands = [
     {
       range: "0\u201329",
-      label: "Limited",
+      label: "Limited Stability",
       color: B.bandLimited,
       width: "30%",
       desc: "Income structure is fragile and depends heavily on active work.",
     },
     {
       range: "30\u201349",
-      label: "Developing",
+      label: "Developing Stability",
       color: B.bandDeveloping,
       width: "20%",
       desc: "Some support exists, but the structure is still exposed.",
     },
     {
       range: "50\u201374",
-      label: "Established",
+      label: "Established Stability",
       color: B.bandEstablished,
       width: "25%",
       desc: "Income reflects meaningful stability and stronger protection.",
     },
     {
       range: "75\u2013100",
-      label: "High",
+      label: "High Stability",
       color: B.bandHigh,
       width: "25%",
       desc: "Income structure is durable and less dependent on constant effort.",

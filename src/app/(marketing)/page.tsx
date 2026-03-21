@@ -1852,8 +1852,8 @@ function ClassificationSection() {
   const bands = [
     { range: "0\u201329", label: "Limited Stability", color: "#DC2626", width: "29%", desc: "Income structure is fragile and depends heavily on active work.", delay: 0 },
     { range: "30\u201349", label: "Developing Stability", color: "#D97706", width: "20%", desc: "Some support exists, but the structure is still exposed.", delay: 200 },
-    { range: "50\u201374", label: "Established Stability", color: B.teal, width: "25%", desc: "Income reflects meaningful stability and stronger protection.", delay: 400 },
-    { range: "75\u2013100", label: "High Stability", color: B.navy, width: "26%", desc: "Income structure is durable and less dependent on constant effort.", delay: 600 },
+    { range: "50\u201374", label: "Established Stability", color: "#2563EB", width: "25%", desc: "Income reflects meaningful stability and stronger protection.", delay: 400 },
+    { range: "75\u2013100", label: "High Stability", color: "#16A34A", width: "26%", desc: "Income structure is durable and less dependent on constant effort.", delay: 600 },
   ];
 
   return (
