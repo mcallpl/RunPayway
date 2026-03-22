@@ -968,8 +968,8 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
 
         <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.score, color: B.navy }}>{animatedScore}</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <div style={{ ...T.score, color: B.navy, marginBottom: 10 }}>{animatedScore}</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
