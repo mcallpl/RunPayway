@@ -668,6 +668,79 @@ export default function ReviewPage() {
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
 
+  // ── V2 engine data (must be before band-sensitive copy) ──
+  const v2 = record._v2;
+  const v2Fragility = v2?.fragility ?? null;
+  const v2Confidence = v2?.confidence ?? null;
+  const v2Quality = v2?.quality ?? null;
+  const v2Sensitivity = v2?.sensitivity ?? null;
+  const v2Interactions = v2?.interactions ?? null;
+  const v2Constraints = v2?.constraints ?? null;
+  const v2Scenarios = v2?.scenarios ?? null;
+  const v2Lift = v2?.score_lift_projection ?? null;
+  const v2AvoidActions = v2?.avoid_actions ?? null;
+  const v2Triggers = v2?.reassessment_triggers ?? null;
+  const v2Benchmarks = v2?.benchmarks ?? null;
+  const v2Scores = v2?.scores ?? null;
+
+  // ── Outcome layer ──
+  const ol = v2?.outcome_layer;
+  const olActions = ol?.ranked_action_map ?? null;
+  const olAvoid = ol?.avoid_actions ?? null;
+  const olExplanations = ol?.explanation_translation_layer ?? null;
+  const olTriggers = ol?.reassessment_trigger_set ?? null;
+  const olStrongerPatterns = ol?.stronger_structure_patterns ?? null;
+  const olScenarios = ol?.selected_scenarios ?? null;
+  const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
+  const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
+  const olBenchmark = ol?.benchmark_context_layer ?? null;
+
+  // ── LAYER 2: Dominant constraint ──
+  const dominantConstraintKey = v2Constraints?.root_constraint ?? "weak_forward_visibility";
+  const dominantConstraint: "source_concentration" | "forward_visibility" | "labor_dependence" | "low_continuity" | "few_sources" =
+    dominantConstraintKey === "high_concentration" ? "source_concentration" :
+    dominantConstraintKey === "weak_forward_visibility" ? "forward_visibility" :
+    dominantConstraintKey === "high_labor_dependence" ? "labor_dependence" :
+    dominantConstraintKey === "low_persistence" ? "low_continuity" :
+    dominantConstraintKey === "low_source_diversity" ? "few_sources" :
+    "forward_visibility";
+
+  const dominantConstraintPlain: Record<string, string> = {
+    source_concentration: "too much reliance on one source",
+    forward_visibility: "not enough income secured ahead of time",
+    labor_dependence: "too much of the income still depends on daily work",
+    low_continuity: "too little income would continue if work stopped",
+    few_sources: "the income structure is still too narrow",
+  };
+
+  // ── LAYER 3: Distance to next band ──
+  const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
+  const distanceToNext = nextBandThreshold - score;
+  const bandDistance: "CLOSE" | "MODERATE" | "FAR" | "TOP_BAND" =
+    tier === "high" ? "TOP_BAND" :
+    distanceToNext <= 4 ? "CLOSE" :
+    distanceToNext <= 14 ? "MODERATE" : "FAR";
+
+  // ── LAYER 4: Metric severity ──
+  const continuitySeverity: string =
+    record.income_continuity_months < 1 ? "very short" :
+    record.income_continuity_months < 3 ? "limited" :
+    record.income_continuity_months < 6 ? "moderate" :
+    record.income_continuity_months < 12 ? "meaningful" : "strong";
+
+  const sourceDropSeverity: "collapse" | "severe" | "significant" | "moderate" | "minor" =
+    record.risk_scenario_score <= 0 ? "collapse" :
+    record.risk_scenario_drop > score * 0.6 ? "severe" :
+    record.risk_scenario_drop > score * 0.3 ? "significant" :
+    record.risk_scenario_drop > 5 ? "moderate" : "minor";
+
+  const peerPercentileValue = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? 50);
+  const peerInterpretation: string =
+    peerPercentileValue <= 10 ? "far below benchmark" :
+    peerPercentileValue <= 30 ? "below benchmark" :
+    peerPercentileValue <= 60 ? "around benchmark" :
+    peerPercentileValue <= 85 ? "above benchmark" : "well above benchmark";
+
   // ── Band-sensitive copy blocks ──
   const bandExplainer: Record<string, string> = {
     A1: `${name} is active right now, but the structure is highly vulnerable if conditions change. Very little protection is in place.`,
@@ -807,79 +880,6 @@ export default function ReviewPage() {
     D1: "This score is well above the peer average and within a strong benchmark range.",
     D2: "This score is far above the peer average and within the highest benchmark range.",
   };
-
-  // ── V2 engine data ──
-  const v2 = record._v2;
-  const v2Fragility = v2?.fragility ?? null;
-  const v2Confidence = v2?.confidence ?? null;
-  const v2Quality = v2?.quality ?? null;
-  const v2Sensitivity = v2?.sensitivity ?? null;
-  const v2Interactions = v2?.interactions ?? null;
-  const v2Constraints = v2?.constraints ?? null;
-  const v2Scenarios = v2?.scenarios ?? null;
-  const v2Lift = v2?.score_lift_projection ?? null;
-  const v2AvoidActions = v2?.avoid_actions ?? null;
-  const v2Triggers = v2?.reassessment_triggers ?? null;
-  const v2Benchmarks = v2?.benchmarks ?? null;
-  const v2Scores = v2?.scores ?? null;
-
-  // ── Outcome layer (industry-specific data) ──
-  const ol = v2?.outcome_layer;
-  const olActions = ol?.ranked_action_map ?? null;
-  const olAvoid = ol?.avoid_actions ?? null;
-  const olExplanations = ol?.explanation_translation_layer ?? null;
-  const olTriggers = ol?.reassessment_trigger_set ?? null;
-  const olStrongerPatterns = ol?.stronger_structure_patterns ?? null;
-  const olScenarios = ol?.selected_scenarios ?? null;
-  const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
-  const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
-  const olBenchmark = ol?.benchmark_context_layer ?? null;
-
-  // ── LAYER 2: Dominant constraint ──
-  const dominantConstraintKey = v2Constraints?.root_constraint ?? "weak_forward_visibility";
-  const dominantConstraint: "source_concentration" | "forward_visibility" | "labor_dependence" | "low_continuity" | "few_sources" =
-    dominantConstraintKey === "high_concentration" ? "source_concentration" :
-    dominantConstraintKey === "weak_forward_visibility" ? "forward_visibility" :
-    dominantConstraintKey === "high_labor_dependence" ? "labor_dependence" :
-    dominantConstraintKey === "low_persistence" ? "low_continuity" :
-    dominantConstraintKey === "low_source_diversity" ? "few_sources" :
-    "forward_visibility";
-
-  const dominantConstraintPlain: Record<string, string> = {
-    source_concentration: "too much reliance on one source",
-    forward_visibility: "not enough income secured ahead of time",
-    labor_dependence: "too much of the income still depends on daily work",
-    low_continuity: "too little income would continue if work stopped",
-    few_sources: "the income structure is still too narrow",
-  };
-
-  // ── LAYER 3: Distance to next band ──
-  const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
-  const distanceToNext = nextBandThreshold - score;
-  const bandDistance: "CLOSE" | "MODERATE" | "FAR" | "TOP_BAND" =
-    tier === "high" ? "TOP_BAND" :
-    distanceToNext <= 4 ? "CLOSE" :
-    distanceToNext <= 14 ? "MODERATE" : "FAR";
-
-  // ── LAYER 4: Metric severity ──
-  const continuitySeverity: string =
-    record.income_continuity_months < 1 ? "very short" :
-    record.income_continuity_months < 3 ? "limited" :
-    record.income_continuity_months < 6 ? "moderate" :
-    record.income_continuity_months < 12 ? "meaningful" : "strong";
-
-  const sourceDropSeverity: "collapse" | "severe" | "significant" | "moderate" | "minor" =
-    record.risk_scenario_score <= 0 ? "collapse" :
-    record.risk_scenario_drop > score * 0.6 ? "severe" :
-    record.risk_scenario_drop > score * 0.3 ? "significant" :
-    record.risk_scenario_drop > 5 ? "moderate" : "minor";
-
-  const peerPercentileValue = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? 50);
-  const peerInterpretation: string =
-    peerPercentileValue <= 10 ? "far below benchmark" :
-    peerPercentileValue <= 30 ? "below benchmark" :
-    peerPercentileValue <= 60 ? "around benchmark" :
-    peerPercentileValue <= 85 ? "above benchmark" : "well above benchmark";
 
   // ── Consumer-friendly label maps ──
   const failureModeLabel: Record<string, string> = {
