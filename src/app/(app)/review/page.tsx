@@ -810,9 +810,9 @@ export default function ReviewPage() {
     D2: `${name} is exceptionally strong. The focus now is maintaining discipline and long-term resilience.`,
   };
 
-  const p2WorkingTitle: string = ["A1", "A2"].includes(subTier) ? "There is some income activity in place" : ["A3"].includes(subTier) ? "Some early structure is visible" : ["B1", "B2"].includes(subTier) ? "There is a real foundation in place" : ["C1", "C2"].includes(subTier) ? "There is real stability in place" : "The structure is already strong";
+  const p2WorkingTitle: string = ["A1", "A2"].includes(subTier) ? "There is some income activity in place" : ["A3"].includes(subTier) ? "Some early structure is visible" : subTier === "B1" ? "There is an early foundation forming" : subTier === "B2" ? "There is a developing foundation in place" : ["C1", "C2"].includes(subTier) ? "There is real stability in place" : "The structure is already strong";
 
-  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? "The income is not starting from zero. This is an early base to build from, but it is not yet strong protection." : ["A3"].includes(subTier) ? "The income is no longer starting from zero. A base exists, but it is still below a stable range." : ["B1", "B2"].includes(subTier) ? "Parts of the structure are already supporting stability. This is progress, but not yet enough protection." : ["C1", "C2"].includes(subTier) ? "Parts of the structure are already working well. The next gains come from strengthening what already exists." : "Protection is already substantial. The focus is refinement rather than repair.";
+  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? "The income is not starting from zero. This is an early base to build from, but it is not yet strong protection." : ["A3"].includes(subTier) ? "The income is no longer starting from zero. A base exists, but it is still below a stable range." : subTier === "B1" ? "The structure is not starting from zero, but it is still early. Important weaknesses remain." : subTier === "B2" ? "Parts of the structure are beginning to support stability, but stronger protection is still needed." : ["C1", "C2"].includes(subTier) ? "Parts of the structure are already working well. The next gains come from strengthening what already exists." : "Protection is already substantial. The focus is refinement rather than repair.";
 
   const p3Intro: Record<string, string> = {
     A1: `This page shows what could cause the most damage because the current structure has very little protection in place.`,
@@ -870,17 +870,17 @@ export default function ReviewPage() {
     D2: "The priority now is long-term discipline: preserve strength, avoid unnecessary fragility, and maintain resilience over time.",
   };
 
-  const p5CompareInterpretation: Record<string, string> = {
-    A1: "This score is currently far below the peer average and well below the top benchmark range.",
-    A2: "This score is currently below the peer average and far below the top benchmark range.",
-    A3: "This score is still below the peer average and below the top benchmark range.",
-    B1: "This score is approaching the middle of the benchmark, but still trails stronger structures.",
-    B2: "This score is around the middle of the benchmark, but still below higher-performing structures.",
-    C1: "This score is above the peer average, but still below the top benchmark range.",
-    C2: "This score is solidly above the peer average and moving closer to the top benchmark range.",
-    D1: "This score is well above the peer average and within a strong benchmark range.",
-    D2: "This score is far above the peer average and within the highest benchmark range.",
-  };
+  const p5CompareInterpretation: string = (() => {
+    const pct = peerPercentileValue;
+    const avg = v2Benchmarks?.cluster_average_score ?? 42;
+    const top20 = v2Benchmarks?.top_20_threshold ?? 65;
+    if (score < avg && pct <= 10) return `This score is currently far below the peer average of ${avg} and well below the top 20% threshold of ${top20}.`;
+    if (score < avg && pct <= 30) return `This score is currently below the peer average of ${avg} and below the top 20% threshold of ${top20}.`;
+    if (score < avg) return `This score is still below the peer average of ${avg}.`;
+    if (score >= top20) return `This score is above both the peer average of ${avg} and the top 20% threshold of ${top20}.`;
+    if (score >= avg) return `This score is above the peer average of ${avg}, but still below the top 20% threshold of ${top20}.`;
+    return `This score is around the peer average of ${avg}.`;
+  })();
 
   // ── Consumer-friendly label maps ──
   const failureModeLabel: Record<string, string> = {
@@ -1071,8 +1071,8 @@ export default function ReviewPage() {
             <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
           </div>
           <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>There are signs of strength in the structure</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>Some parts of the setup are already supporting stability. The opportunity now is to make that support stronger and more durable.</p>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{tier === "limited" ? "The structure is early, but not absent" : tier === "developing" ? "There is progress to build on" : "There are signs of strength in the structure"}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{tier === "limited" ? "This is a starting point. The priority is to build basic protection before focusing on growth." : tier === "developing" ? "The structure is developing, but it still needs stronger protection in key areas." : "Some parts of the setup are already supporting stability. The opportunity now is to make that support stronger and more durable."}</p>
           </div>
         </div>
 
@@ -1187,8 +1187,27 @@ export default function ReviewPage() {
                       market_contraction: "Your industry slows down significantly",
                       regulatory_disruption: "Rules or regulations change in your field",
                       revenue_model_disruption: "Your main way of earning income stops working",
+                      high_volatility_month: "You experience a month with very low income",
+                      seasonal_revenue_gap: "A seasonal gap significantly reduces income",
+                      key_client_loss: "A key client or contract ends unexpectedly",
+                      pricing_pressure: "Pricing pressure reduces your income per unit of work",
                     };
-                    return scenarioPlain[s.scenario_id] ?? s.label;
+                    // Try exact match first, then normalize the label
+                    const plain = scenarioPlain[s.scenario_id];
+                    if (plain) return plain;
+                    // Fallback: rewrite common model labels into customer language
+                    return s.label
+                      .replace(/^Active Labor Interrupted$/i, "You cannot work for 90 days")
+                      .replace(/^Platform Dependency Shock$/i, "A platform or channel you rely on changes suddenly")
+                      .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed")
+                      .replace(/^High Volatility Month$/i, "You experience a month with very low income")
+                      .replace(/^Client Concentration Loss$/i, "Your largest client leaves")
+                      .replace(/^Market Contraction$/i, "Your industry slows down significantly")
+                      .replace(/^Revenue Model Disruption$/i, "Your main way of earning income stops working")
+                      .replace(/^Seasonal Revenue Gap$/i, "A seasonal gap significantly reduces income")
+                      .replace(/^Key Client Loss$/i, "A key client or contract ends unexpectedly")
+                      .replace(/^Regulatory Disruption$/i, "Rules or regulations change in your field")
+                      .replace(/^Pricing Pressure$/i, "Pricing pressure reduces your income per unit of work");
                   })()}</span>
                   <span style={{ ...T.meta, color: B.muted, marginLeft: 8 }}>{s.description}</span>
                 </div>
@@ -1387,12 +1406,21 @@ export default function ReviewPage() {
                 copy: a.description,
                 why: a.why_now,
               }))
-            : [
-                { rank: "Priority 1", title: "Increase Income Secured Ahead", copy: "Create more income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, pre-sold packages, or recurring contracts.", why: "" },
-                { rank: "Priority 2", title: "Reduce Dependence on the Largest Source", copy: "Reduce how much the structure depends on the largest source by strengthening one or more dependable secondary sources.", why: "" },
-                { rank: "Priority 3", title: "Convert One-Time Work into Ongoing Revenue", copy: "Shift part of one-time work into income that repeats or renews where the business model allows.", why: "" },
-                { rank: "Priority 4", title: "Extend How Long Income Continues", copy: "Build more income that can continue for a period of time even when daily work slows or stops.", why: "" },
-              ]
+            : (() => {
+                const priorities = [
+                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: "Add income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, or recurring contracts." },
+                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: "Strengthen one or more additional dependable sources so the structure is not overly exposed to a single client or channel." },
+                  { key: "labor_dependence", title: "Convert active work into repeatable income", copy: "Shift part of one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
+                  { key: "low_continuity", title: "Increase how long income would continue if work stopped", copy: "Build more income that can keep coming in for a period of time even if daily work slows down or stops." },
+                ];
+                // Put dominant constraint first
+                const sorted = [
+                  ...priorities.filter(p => p.key === dominantConstraint),
+                  ...priorities.filter(p => p.key !== dominantConstraint),
+                ];
+                return sorted.map((p, i) => ({ rank: `Priority ${i + 1}`, title: p.title, copy: p.copy, why: "" }));
+              })()
+
           ).map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
               <div style={{ ...T.micro, color: B.purple, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
@@ -1547,7 +1575,7 @@ export default function ReviewPage() {
                   <div style={{ ...T.small, color: B.ink }}>Top 20% threshold: <span style={{ fontWeight: 600 }}>{v2Benchmarks.top_20_threshold}</span></div>
                   <div style={{ ...T.small, color: B.ink }}>Your percentile: <span style={{ fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || `${v2Benchmarks.peer_percentile}th`}</span></div>
                 </div>
-                <p style={{ ...T.meta, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>{p5CompareInterpretation[subTier]}</p>
+                <p style={{ ...T.meta, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>{p5CompareInterpretation}</p>
                 </>
               )}
               {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
