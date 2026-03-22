@@ -1652,37 +1652,130 @@ export default function ReviewPage() {
           </button>
         </div>
 
-        {/* Share Result Card */}
-        <div style={{ padding: "20px 24px", borderRadius: 12, border: `1px solid ${B.stone}`, backgroundColor: B.white }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 500, color: B.taupe, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>INCOME STABILITY SCORE™</div>
-              <div style={{ fontSize: 36, fontWeight: 600, color: B.navy, lineHeight: 1 }}>{record.final_score}</div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
-                <span style={{ fontSize: 14, fontWeight: 500, color: bandColor }}>{record.stability_band}</span>
+        {/* Shareable Score Card */}
+        <div style={{ borderRadius: 16, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden" }}>
+          {/* Card header */}
+          <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "28px 28px 24px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>INCOME STABILITY SCORE™</div>
+                <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>{record.final_score}</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
+                  <span style={{ fontSize: 15, fontWeight: 500, color: bandColor }}>{record.stability_band}</span>
+                </div>
               </div>
-              <div style={{ fontSize: 12, color: B.muted, marginTop: 8 }}>{name}</div>
-              <div style={{ fontSize: 11, color: B.taupe, marginTop: 2 }}>Assessed {issuedDate} · Model RP-2.0</div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              <Image src={logoImg} alt="RunPayway" width={90} height={11} style={{ height: "auto", marginBottom: 8 }} />
-              <div style={{ fontSize: 10, color: B.taupe }}>runpayway.com/verify</div>
+              <div style={{ textAlign: "right" }}>
+                <Image src={logoImg} alt="RunPayway" width={100} height={12} style={{ height: "auto", marginBottom: 8, filter: "brightness(10)" }} />
+                <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>Verified Assessment</div>
+              </div>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-            <button
-              onClick={() => {
-                const text = `${name} — Income Stability Score™: ${record.final_score} (${record.stability_band}). Assessed under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}`;
-                navigator.clipboard.writeText(text).then(() => {
-                  setLinkCopied(true);
-                  setTimeout(() => setLinkCopied(false), 3000);
-                });
-              }}
-              style={{ padding: "8px 14px", fontSize: 12, fontWeight: 500, color: B.navy, borderRadius: 8, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease" }}
-            >
-              Copy Result Summary
-            </button>
+          {/* Card body */}
+          <div style={{ padding: "20px 28px 24px", backgroundColor: "#FFFFFF" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+              {[
+                ["Prepared for", name],
+                ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())],
+                ["Assessed", issuedDate],
+              ].map(([l, v]) => (
+                <div key={l}>
+                  <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>{l}</div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: B.navy }}>{v}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: 16 }} />
+            <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Peer Percentile</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || "—"}</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Model Version</div>
+                <div style={{ fontSize: 12, fontWeight: 500, color: B.navy }}>RP-2.0</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Record ID</div>
+                <div style={{ fontSize: 12, fontWeight: 500, color: B.navy, fontFamily: "monospace" }}>{record.record_id.slice(0, 8)}</div>
+              </div>
+            </div>
+            <div style={{ fontSize: 10, color: B.taupe, marginBottom: 16 }}>
+              Verify this score at peoplestar.com/RunPayway/verify
+            </div>
+            {/* Share actions */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <button
+                onClick={() => {
+                  const text = `${name} — Income Stability Score™: ${record.final_score} (${record.stability_band}). ${record.peer_stability_percentile_label ? `${record.peer_stability_percentile_label} percentile. ` : ""}Assessed ${issuedDate} under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+                  navigator.clipboard.writeText(text).then(() => {
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 3000);
+                  });
+                }}
+                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: B.navy, borderRadius: 10, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease", flex: 1 }}
+              >
+                {linkCopied ? "Copied to clipboard" : "Copy score summary"}
+              </button>
+              <button
+                onClick={() => {
+                  const url = `https://peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+                  navigator.clipboard.writeText(url).then(() => {
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 3000);
+                  });
+                }}
+                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: B.navy, borderRadius: 10, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease", flex: 1 }}
+              >
+                Copy verification link
+              </button>
+            </div>
+          </div>
+          {/* Send to someone */}
+          <div style={{ padding: "16px 28px 20px", backgroundColor: B.bone, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Send to a lender, partner, or advisor</div>
+            <p style={{ fontSize: 11, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
+              They will receive your score summary and a verification link.
+            </p>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input
+                type="email"
+                placeholder="Recipient's email address"
+                value={advisorEmail}
+                onChange={(e) => setAdvisorEmail(e.target.value)}
+                style={{ flex: 1, padding: "10px 14px", fontSize: 13, borderRadius: 10, border: `1px solid ${B.stone}`, outline: "none", color: B.navy, backgroundColor: "#FFFFFF" }}
+              />
+              <button
+                disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
+                onClick={async () => {
+                  setAdvisorSending(true);
+                  try {
+                    const res = await fetch("/api/v1/send-report", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        recipientEmail: advisorEmail.trim(),
+                        assessmentTitle: record.assessment_title,
+                        finalScore: record.final_score,
+                        stabilityBand: record.stability_band,
+                        recordId: record.record_id,
+                        modelVersion: record.model_version || "RP-2.0",
+                        issuedTimestamp: record.issued_timestamp_utc || record.assessment_date_utc,
+                        industrySector: record.industry_sector,
+                        classification: record.classification,
+                        primaryConstraintLabel: record.primary_constraint_label,
+                        bandInterpretationText: record.band_interpretation_text,
+                        peerPercentileLabel: record.peer_stability_percentile_label,
+                      }),
+                    });
+                    if (res.ok) { setAdvisorSent(true); }
+                  } catch { /* silent */ }
+                  finally { setAdvisorSending(false); }
+                }}
+                style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 10, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap" }}>
+                {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1691,53 +1784,6 @@ export default function ReviewPage() {
             <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>PDF download failed: {downloadError}. Try refreshing the page.</p>
           </div>
         )}
-
-        {/* Share Report Summary */}
-        <div style={{ padding: "8px 12px", borderRadius: 12, border: `1px solid ${B.stone}`, backgroundColor: B.bone }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Share Report Summary</div>
-          <p style={{ fontSize: 12, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
-            Send the report summary and verification link to an advisor, planner, consultant, or reviewer.
-          </p>
-          <div style={{ display: "flex", gap: 8 }}>
-            <input
-              type="email"
-              placeholder="Recipient's email address"
-              value={advisorEmail}
-              onChange={(e) => setAdvisorEmail(e.target.value)}
-              style={{ flex: 1, padding: "8px 12px", fontSize: 13, borderRadius: 12, border: `1px solid ${B.stone}`, outline: "none", color: B.navy }}
-            />
-            <button
-              disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
-              onClick={async () => {
-                setAdvisorSending(true);
-                try {
-                  const res = await fetch("/api/v1/send-report", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      recipientEmail: advisorEmail.trim(),
-                      assessmentTitle: record.assessment_title,
-                      finalScore: record.final_score,
-                      stabilityBand: record.stability_band,
-                      recordId: record.record_id,
-                      modelVersion: record.model_version || "RP-1.0",
-                      issuedTimestamp: record.issued_timestamp_utc || record.assessment_date_utc,
-                      industrySector: record.industry_sector,
-                      classification: record.classification,
-                      primaryConstraintLabel: record.primary_constraint_label,
-                      bandInterpretationText: record.band_interpretation_text,
-                      peerPercentileLabel: record.peer_stability_percentile_label,
-                    }),
-                  });
-                  if (res.ok) { setAdvisorSent(true); }
-                } catch { /* silent */ }
-                finally { setAdvisorSending(false); }
-              }}
-              style={{ padding: "10px 18px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: advisorSent ? B.purple : B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap", boxShadow: "0 4px 12px rgba(75,63,174,0.20)" }}>
-              {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
-            </button>
-          </div>
-        </div>
 
         {/* Email delivery status */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
