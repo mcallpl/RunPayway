@@ -724,7 +724,7 @@ function IncomePatterns() {
       ref={ref}
       aria-label="Income Patterns"
       style={{
-        background: "#FFFFFF",
+        background: "#F8F6F2",
         paddingTop: mobile ? 80 : 120,
         paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
@@ -791,7 +791,7 @@ function IncomePatterns() {
                 key={p.label}
                 onClick={() => setExpanded(isOpen ? null : i)}
                 style={{
-                  background: B.sand,
+                  background: "#FFFFFF",
                   borderRadius: 16,
                   border: isOpen ? "1px solid rgba(75,63,174,0.18)" : "1px solid rgba(14,26,43,0.05)",
                   padding: mobile ? "32px 28px" : "40px 36px",
@@ -2606,6 +2606,8 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
       <HeroSection />
       <FourFactorsSection />
+      {/* Section divider */}
+      <div className="section-divider-elegant"><div className="divider-dot" /></div>
       <IncomePatterns />
       <WhatYourReportSection />
       <SampleResultSection />
