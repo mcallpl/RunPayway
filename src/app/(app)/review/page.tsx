@@ -231,7 +231,7 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
       <Image src={logoImg} alt="RunPayway" width={120} height={14} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
@@ -246,12 +246,12 @@ function Overline({ children }: { children: React.ReactNode }) {
 }
 
 function SectionDivider() {
-  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
+  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.12)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function PageFooter({ section, page }: { section: string; page: number }) {
   return (
-    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
+    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page}</span>
         <span style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · runpayway.com/methodology</span>
@@ -1033,7 +1033,7 @@ export default function ReviewPage() {
         </div>
 
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
           {[["Prepared for", name], ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
             <div key={l}>
               <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
