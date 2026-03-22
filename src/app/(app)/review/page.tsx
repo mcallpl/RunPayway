@@ -1217,6 +1217,10 @@ export default function ReviewPage() {
                 .replace(/^Referral Pipeline Dries$/i, "Your referral or lead pipeline dries up")
                 .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
                 .replace(/^Scope Reduction$/i, "A key client reduces the scope of your work");
+              // Safety: if title still looks like a model label (multiple capital words), lowercase it
+              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
+                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+                : title;
               const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
               const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
               return (
@@ -1224,7 +1228,7 @@ export default function ReviewPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
-                      <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
+                      <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
                     </div>
                     <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
                       {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
@@ -1533,7 +1537,7 @@ export default function ReviewPage() {
               "Working more without improving the structure underneath it",
               "Short bursts of output that do not improve durability",
               "Temporary spikes that disappear when work stops",
-              "Measures that do not improve income continuity or income secured ahead of time",
+              "Measures that do not improve how long income continues or how much is secured ahead of time",
             ].map((item) => (
               <div key={item} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: B.taupe }}>—</span>{item}
