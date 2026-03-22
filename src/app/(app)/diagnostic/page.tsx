@@ -359,6 +359,11 @@ export default function DiagnosticPage() {
         const v2Result = await executeClientEngineV2({ profile, inputs });
         record = adaptV2ToV1(v2Result);
       }
+      // Override assessment_title with user-entered value from profile
+      if (profile.assessment_title) {
+        (record as Record<string, unknown>).assessment_title = profile.assessment_title;
+      }
+
       sessionStorage.setItem("rp_record", JSON.stringify(record));
 
       // Persist record for lookup (v1-adapted field names)
@@ -366,10 +371,12 @@ export default function DiagnosticPage() {
       const adapted = record as Record<string, unknown>;
       stored.push({
         record_id: adapted.record_id,
+        authorization_code: adapted.authorization_code,
         model_version: adapted.model_version ?? "RP-2.0",
         final_score: adapted.final_score,
         stability_band: adapted.stability_band,
         assessment_date_utc: adapted.assessment_date_utc,
+        issued_timestamp_utc: adapted.issued_timestamp_utc,
       });
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
