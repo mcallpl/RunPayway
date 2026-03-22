@@ -662,13 +662,13 @@ export default function ReviewPage() {
 
     // Page 3
     p3_intro: tier === "limited"
-      ? `This page shows where ${name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`
-      : `This page shows where ${name} is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`,
+      ? `This page shows where your income structure is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`
+      : `This page shows where your income structure is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`,
 
     // Page 4
     p4_intro: tier === "limited"
       ? `The fastest way to raise this score is not to work more. It is to strengthen how the income is set up: more income secured ahead, less dependence on one source, and more income that continues without daily effort.`
-      : `The fastest way to raise this score is not to work more. It is to change how ${name} is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.`,
+      : `The fastest way to raise this score is not to work more. It is to change how your income is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.`,
 
     // Page 5
     p5_heading: "Main takeaway",
@@ -846,7 +846,7 @@ export default function ReviewPage() {
         </div>
 
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
-          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of ${name} would likely keep coming in if active work stopped today.`} />
+          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.`} />
           <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
           <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
           <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong protection" : tier === "established" ? "Moderate protection" : "Needs stronger protection"} explanation="The structure has some support, but not enough protection yet against disruption." />
@@ -887,7 +887,7 @@ export default function ReviewPage() {
           </div>
           <div>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Some income would continue even if active work stopped</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of {name} would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
           </div>
           <div>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>There are signs of strength in the structure</div>
@@ -939,7 +939,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          This page shows what could hurt {name} the most if the income structure were tested.
+          This page shows what could hurt your income the most if the structure were tested.
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
@@ -1133,7 +1133,7 @@ export default function ReviewPage() {
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                Together, these changes could move {name} from {record.final_score} into <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_band}</span> and strengthen protection against disruption.
+                Together, these changes could move your score from {record.final_score} into <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_band}</span> and strengthen protection against disruption.
               </div>
             )}
           </div>
@@ -1201,7 +1201,7 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
 
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540, lineHeight: 1.6 }}>
-          The first priority for {name} is not bigger income. It is stronger income. That means more income secured ahead of time, less reliance on one source, and more income that continues without daily effort.
+          The first priority for {name} is not bigger income. It is stronger income. That means more income secured ahead of time, less reliance on one source, and more income that continues without daily work.
         </p>
 
         {/* Two columns: 5 actions + 4 avoid — side by side */}
