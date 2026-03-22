@@ -63,10 +63,10 @@ const B = {
   border: "#E6E9EF",
   gradient:
     "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-  bandLimited: "#DC2626",
-  bandDeveloping: "#D97706",
-  bandEstablished: "#2563EB",
-  bandHigh: "#16A34A",
+  bandLimited: "#9B2C2C",
+  bandDeveloping: "#92640A",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1F6D7A",
 };
 
 const S = {
@@ -196,9 +196,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            RunPayway turns six answers about your income structure into a fixed
-            0&ndash;100 score, a complete structural breakdown, and a clear path
-            to improvement &mdash; all under Model RP-2.0.
+            RunPayway&#8482; turns six answers about your income into a 0&ndash;100 score, a 5-page diagnostic report, and a clear path to stronger protection &mdash; all under Model RP-2.0.
           </p>
         </div>
       </div>
@@ -218,19 +216,19 @@ function ThreeSteps() {
       num: "1",
       title: "Answer six questions",
       subtitle: "About your income structure",
-      body: "Each question measures a specific structural dimension \u2014 recurring income, concentration, forward visibility, variability, source diversity, and continuity without active work.",
+      body: "Each question looks at a different part of your income \u2014 how much repeats, how many sources you depend on, how much is secured ahead of time, how stable it is month to month, and how much continues without daily work.",
     },
     {
       num: "2",
       title: "The model scores",
       subtitle: "Fixed rules, no AI",
-      body: "Model RP-2.0 calculates your score from fixed scoring rules. The same answers always produce the same result. No AI, no human judgment, no variability.",
+      body: "Model RP-2.0 calculates your score using fixed, deterministic rules. The same answers always produce the same result. No AI, no subjective judgment, no variability.",
     },
     {
       num: "3",
       title: "Get your full report",
       subtitle: "Delivered instantly",
-      body: "A 5-page diagnostic covering your score, what drives it, where the structure is exposed, how to improve, and what to do next. Personalized to your industry.",
+      body: "A 5-page diagnostic report covering your score, what it means, your biggest risks, how to raise it, and what to do next. Personalized with your name and industry.",
     },
   ];
 
@@ -444,40 +442,40 @@ function ReportCovers() {
     {
       num: "01",
       title: "Your Score",
-      question: "Where do I stand?",
-      desc: "You will know exactly where your income stands — your score, your band, and the single most important thing to address.",
+      question: "What is my score?",
+      desc: "Your score, your stability band, a plain-English summary, and the single most important thing holding the structure back.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>,
       accent: B.purple,
     },
     {
       num: "02",
-      title: "Why This Score",
-      question: "What is behind the result?",
-      desc: "You will see what is driving your score up and what is holding it back — ranked by impact, not guesswork.",
+      title: "What This Score Means",
+      question: "What does it mean?",
+      desc: "What is already working, what is still vulnerable, and a plain-English interpretation of what the score says about your income structure.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>,
       accent: B.teal,
     },
     {
       num: "03",
-      title: "What Could Go Wrong",
-      question: "What is most exposed?",
-      desc: "You will see what would happen if your largest source disappeared — and how your structure compares to peers in your industry.",
+      title: "Your Biggest Risks",
+      question: "What could hurt it?",
+      desc: "What would happen if your largest source disappeared, how long income would continue if work stopped, and how your structure compares to peers.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandLimited} strokeWidth="1.5" strokeLinecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>,
       accent: B.bandLimited,
     },
     {
       num: "04",
-      title: "How to Improve",
-      question: "What would raise the score?",
-      desc: "You will see exactly which change would raise your score the most — with projected point gains and actions tailored to your industry.",
+      title: "How to Raise Your Score",
+      question: "How can I improve it?",
+      desc: "The specific changes that would raise your score the most, with projected point gains and prioritized action steps.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandHigh} strokeWidth="1.5" strokeLinecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>,
       accent: B.bandHigh,
     },
     {
       num: "05",
       title: "What to Do Next",
-      question: "What is the plan?",
-      desc: "You will have a clear plan — what to do first, what not to focus on yet, and when to reassess.",
+      question: "What should I do next?",
+      desc: "A clear action plan, a 90-day checklist, when to reassess, and how your score compares to the benchmark.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
       accent: B.navy,
     },
@@ -650,28 +648,28 @@ function ClassificationScale() {
       label: "Limited Stability",
       color: B.bandLimited,
       width: "30%",
-      desc: "Income structure is fragile and depends heavily on active work.",
+      desc: "The income structure is vulnerable and not yet protected against disruption.",
     },
     {
       range: "30\u201349",
       label: "Developing Stability",
       color: B.bandDeveloping,
       width: "20%",
-      desc: "Some support exists, but the structure is still exposed.",
+      desc: "The structure is developing but still needs stronger protection in key areas.",
     },
     {
       range: "50\u201374",
       label: "Established Stability",
       color: B.bandEstablished,
       width: "25%",
-      desc: "Income reflects meaningful stability and stronger protection.",
+      desc: "The structure has real stability but is not yet fully protected against disruption.",
     },
     {
       range: "75\u2013100",
       label: "High Stability",
       color: B.bandHigh,
       width: "25%",
-      desc: "Income structure is durable and less dependent on constant effort.",
+      desc: "The structure is strong, well-protected, and resilient against most disruptions.",
     },
   ];
 
