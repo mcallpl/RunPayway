@@ -122,7 +122,7 @@ function Hero() {
             className="text-[11px] uppercase"
             style={{ color: B.teal, fontWeight: 600, letterSpacing: S.lsLabel, marginBottom: 20 }}
           >
-            Model RP-2.0
+            PeopleStar Enterprises, Inc.
           </div>
           <h1
             className="text-[36px] md:text-[52px]"
@@ -140,7 +140,7 @@ function Hero() {
             className="text-[16px] md:text-[18px]"
             style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
-            RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic, structural assessment of how durable your income is. Not a credit score. Not a prediction. A structural measurement.
+            RunPayway&#8482; is a product of PeopleStar Enterprises, Inc. It produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change.
           </p>
         </div>
       </div>
@@ -177,7 +177,7 @@ function WhatIsISS() {
           }}
         >
           <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            What is the Income Stability Score&#8482;?
+            The Income Stability Score&#8482;
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             The Income Stability Score&#8482; is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
@@ -485,6 +485,110 @@ function ModelBadge() {
 
 
 /* ================================================================== */
+/* CTA                                                                 */
+/* ================================================================== */
+function CtaSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Call to Action"
+      style={{
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: mobile ? 72 : 96,
+        paddingBottom: mobile ? 72 : 96,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: 600,
+          height: 600,
+          transform: "translate(-50%, -50%)",
+          background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          maxWidth: S.maxW,
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            textAlign: "center",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: mobile ? 26 : 36,
+              color: "#F4F1EA",
+              fontWeight: 600,
+              letterSpacing: S.lsHeading,
+              lineHeight: S.lhHeading,
+              marginBottom: 16,
+            }}
+          >
+            Get your Income Stability Score&#8482;
+          </h2>
+          <p
+            style={{
+              fontSize: 16,
+              color: "rgba(244,241,234,0.60)",
+              lineHeight: 1.65,
+              marginBottom: 28,
+              maxWidth: 440,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Under two minutes. Five-page diagnostic report. Instant delivery.
+          </p>
+          <Link
+            href="/pricing"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: 52,
+              paddingLeft: 32,
+              paddingRight: 32,
+              borderRadius: 12,
+              backgroundColor: "#F4F1EA",
+              color: B.navy,
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              textDecoration: "none",
+            }}
+          >
+            Get My Income Stability Score&#8482;
+          </Link>
+          <div style={{ marginTop: 16, fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
+            Model RP-2.0 &#183; Private by default
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== */
 /* MAIN EXPORT                                                         */
 /* ================================================================== */
 export default function AboutPage() {
@@ -498,6 +602,7 @@ export default function AboutPage() {
       <Verification />
       <WhoBuiltIt />
       <ModelBadge />
+      <CtaSection />
     </div>
   );
 }
