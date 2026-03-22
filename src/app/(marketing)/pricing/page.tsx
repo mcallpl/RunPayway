@@ -475,7 +475,7 @@ function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
           transform: hovered ? "translateY(-1px)" : "translateY(0)",
         }}
       >
-        Get Annual Monitoring
+        Get Annual Plan
       </a>
 
       <p
@@ -545,31 +545,31 @@ function WhatsIncluded() {
     {
       num: "01",
       title: "Your Score",
-      desc: "Score, band, classification, resilience grade, key insight, and confidence level.",
+      desc: "Your score, stability band, peer percentile, and the main thing holding the structure back.",
       accent: B.purple,
     },
     {
       num: "02",
-      title: "Why This Score",
-      desc: "Five key factors, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      title: "What This Score Means",
+      desc: "What is already working, what is still vulnerable, and a plain-English interpretation.",
       accent: B.teal,
     },
     {
       num: "03",
-      title: "What Could Go Wrong",
-      desc: "Stress test, continuity window, structural scenarios, income mix, and peer comparison.",
+      title: "Your Biggest Risks",
+      desc: "What would happen if your largest source disappeared, how long income would continue, and how you compare to peers.",
       accent: B.purple,
     },
     {
       num: "04",
-      title: "How to Improve",
-      desc: "Projected improvements, industry-tailored actions, and what not to do.",
+      title: "How to Raise Your Score",
+      desc: "The specific changes that would raise your score the most, with prioritized action steps.",
       accent: B.teal,
     },
     {
       num: "05",
       title: "What to Do Next",
-      desc: "Action list, 90-day checklist, reassessment triggers, benchmarks, and verification.",
+      desc: "A clear action plan, 90-day checklist, when to reassess, and how you compare to the benchmark.",
       accent: B.purple,
     },
   ];
