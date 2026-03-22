@@ -55,47 +55,47 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#FAF9F7",
+  sand: "#F4F1EA",
   sandDk: "#F4F1EA",
-  offWhite: "#FEFDFB",
-  muted: "#4B5563",
-  light: "#9CA3AF",
-  border: "#E6E9EF",
+  offWhite: "#FFFFFF",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  border: "rgba(14,26,43,0.12)",
   gradient:
     "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-  bandLimited: "#DC2626",
-  bandDeveloping: "#D97706",
-  bandEstablished: "#2563EB",
-  bandHigh: "#16A34A",
+  bandLimited: "#9B2C2C",
+  bandDeveloping: "#92640A",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1F6D7A",
 };
 
 const S = {
-  sectionY: { desktop: 160, mobile: 88 },
-  sectionYsm: { desktop: 120, mobile: 72 },
-  transitionY: { desktop: 72, mobile: 48 },
-  disclaimerY: { desktop: 24, mobile: 16 },
+  sectionY: { desktop: 120, mobile: 80 },
+  sectionYsm: { desktop: 100, mobile: 64 },
+  transitionY: { desktop: 56, mobile: 40 },
+  disclaimerY: { desktop: 20, mobile: 14 },
   maxW: 1060,
   padX: { desktop: 48, mobile: 24 },
-  h1mb: 28,
-  h2mb: 24,
-  subtextMb: 56,
-  paraMb: 24,
-  labelMb: 16,
-  cardPad: { desktop: 36, mobile: 24 },
-  cardRadius: 16,
-  panelRadius: 20,
-  gridGap: 24,
-  gridGapSm: 16,
-  ctaH: 56,
-  ctaHsm: 46,
-  ctaPadX: 32,
-  ctaRadius: 14,
-  lhHeading: 1.08,
-  lhBody: 1.75,
+  h1mb: 20,
+  h2mb: 20,
+  subtextMb: 44,
+  paraMb: 20,
+  labelMb: 14,
+  cardPad: { desktop: 32, mobile: 24 },
+  cardRadius: 12,
+  panelRadius: 16,
+  gridGap: 20,
+  gridGapSm: 14,
+  ctaH: 52,
+  ctaHsm: 44,
+  ctaPadX: 28,
+  ctaRadius: 12,
+  lhHeading: 1.12,
+  lhBody: 1.65,
   lhDense: 1.5,
-  lsHeading: "-0.025em",
-  lsHero: "-0.035em",
-  lsLabel: "0.14em",
+  lsHeading: "-0.02em",
+  lsHero: "-0.03em",
+  lsLabel: "0.12em",
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
@@ -163,7 +163,7 @@ function Hero() {
             className="text-[11px] uppercase"
             style={{
               color: "rgba(255,255,255,0.50)",
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: S.lsLabel,
               marginBottom: 20,
             }}
@@ -173,7 +173,7 @@ function Hero() {
           <h1
             className="text-[36px] md:text-[44px]"
             style={{
-              color: "#FAF9F7",
+              color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHero,
@@ -186,7 +186,7 @@ function Hero() {
           <p
             className="text-[15px] md:text-[17px]"
             style={{
-              color: "rgba(250,249,247,0.70)",
+              color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
               maxWidth: 620,
               marginLeft: "auto",
@@ -272,9 +272,10 @@ function Purpose() {
               marginBottom: 0,
             }}
           >
-            It answers six questions: How much income repeats? How concentrated
-            is it? How far ahead is it secured? How variable is it? How many
-            sources support it? How much continues without active work?
+            It answers six questions: How much income is repeatable? How much
+            depends on one source? How many sources support it? How much is
+            secured ahead of time? How stable is it month to month? How much
+            continues without daily work?
           </p>
         </div>
       </div>
@@ -293,38 +294,38 @@ function SixDimensions() {
   const dimensions = [
     {
       num: "01",
-      title: "Recurring or Continuing Income",
-      desc: "How much income continues from existing sources without new acquisition.",
+      title: "Repeatable Income",
+      desc: "How much of your income comes back without needing to be rebuilt each time.",
       accent: B.teal,
     },
     {
       num: "02",
-      title: "Income Concentration",
-      desc: "How much depends on your single largest source.",
+      title: "Reliance on One Source",
+      desc: "How much depends on your single largest client, channel, or source of work.",
       accent: B.purple,
     },
     {
       num: "03",
-      title: "Source Diversity",
-      desc: "How many meaningful income sources support the structure.",
+      title: "Number of Income Sources",
+      desc: "How many independent, meaningful sources support the income structure.",
       accent: B.teal,
     },
     {
       num: "04",
-      title: "Forward Visibility",
-      desc: "How far ahead income is already committed or scheduled.",
+      title: "Income Secured Ahead of Time",
+      desc: "How much upcoming income is already committed before the month begins.",
       accent: B.purple,
     },
     {
       num: "05",
-      title: "Income Variability",
-      desc: "How sharply income moves between strong and weak months.",
+      title: "Month-to-Month Stability",
+      desc: "How consistent the income is from one month to the next.",
       accent: B.teal,
     },
     {
       num: "06",
-      title: "Continuity Without Active Work",
-      desc: "How much income would continue if active work stopped for 90 days.",
+      title: "Income That Continues Without Daily Work",
+      desc: "How much income would keep coming in if active work stopped.",
       accent: B.purple,
     },
   ];
@@ -379,7 +380,7 @@ function SixDimensions() {
               marginRight: "auto",
             }}
           >
-            Your score is built from six structural dimensions.
+            Your score is built from six key measures.
           </p>
         </div>
 
@@ -420,7 +421,7 @@ function SixDimensions() {
                   className="text-[12px]"
                   style={{
                     color: dim.accent,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.06em",
                     opacity: 0.6,
                   }}
@@ -429,7 +430,7 @@ function SixDimensions() {
                 </span>
                 <h3
                   className="text-[15px]"
-                  style={{ fontWeight: 700, color: B.navy, margin: 0 }}
+                  style={{ fontWeight: 600, color: B.navy, margin: 0 }}
                 >
                   {dim.title}
                 </h3>
@@ -459,7 +460,7 @@ function SixDimensions() {
             transition: "opacity 0.5s ease-out 500ms",
           }}
         >
-          These six dimensions are fixed under Model RP-2.0.
+          These six measures are fixed under Model RP-2.0.
         </p>
       </div>
     </section>
@@ -479,12 +480,12 @@ function ScoringFramework() {
     {
       label: "Structure Block",
       color: B.teal,
-      desc: "Evaluates the composition of your income \u2014 recurring revenue, source diversity, forward visibility, and concentration resilience.",
+      desc: "Evaluates the composition of your income \u2014 repeatable income, number of income sources, income secured ahead of time, and reliance on one source.",
     },
     {
       label: "Stability Block",
       color: B.purple,
-      desc: "Evaluates the durability of your income \u2014 dependence on active work, earnings variability, and continuity under interruption.",
+      desc: "Evaluates the durability of your income \u2014 month-to-month stability and income that continues without daily work.",
     },
   ];
 
@@ -590,7 +591,7 @@ function ScoringFramework() {
                   className="text-[11px] uppercase"
                   style={{
                     color: block.color,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.08em",
                   }}
                 >
@@ -644,12 +645,12 @@ function InteractionEffects() {
     {
       type: "Penalty",
       color: B.bandLimited,
-      desc: "High concentration combined with weak forward visibility triggers a penalty.",
+      desc: "Heavy reliance on one source combined with little income secured ahead of time triggers a penalty.",
     },
     {
       type: "Bonus",
       color: B.bandHigh,
-      desc: "Strong persistent income combined with low labor dependence produces a bonus.",
+      desc: "Strong repeatable income combined with income that continues without daily work produces a bonus.",
     },
   ];
 
@@ -783,28 +784,28 @@ function ClassificationBands() {
       range: "0\u201329",
       label: "Limited Stability",
       color: B.bandLimited,
-      desc: "Income structure is fragile and depends heavily on active work.",
+      desc: "The income structure is vulnerable and not yet protected against disruption.",
       width: "30%",
     },
     {
       range: "30\u201349",
       label: "Developing Stability",
       color: B.bandDeveloping,
-      desc: "Some support exists, but the structure is still exposed.",
+      desc: "The structure is developing but still needs stronger protection in key areas.",
       width: "20%",
     },
     {
       range: "50\u201374",
       label: "Established Stability",
       color: B.bandEstablished,
-      desc: "Income reflects meaningful stability and stronger protection.",
+      desc: "The structure has real stability but is not yet fully protected against disruption.",
       width: "25%",
     },
     {
       range: "75\u2013100",
       label: "High Stability",
       color: B.bandHigh,
-      desc: "Income structure is durable and less dependent on constant effort.",
+      desc: "The structure is strong, well-protected, and resilient against most disruptions.",
       width: "25%",
     },
   ];
@@ -924,7 +925,7 @@ function ClassificationBands() {
                   />
                   <span
                     className="text-[13px]"
-                    style={{ fontWeight: 700, color: B.navy }}
+                    style={{ fontWeight: 600, color: B.navy }}
                   >
                     {band.range}
                   </span>
@@ -1341,7 +1342,7 @@ function CtaSection() {
           <h2
             className="text-[32px] md:text-[40px]"
             style={{
-              color: "#FAF9F7",
+              color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHero,
@@ -1354,7 +1355,7 @@ function CtaSection() {
           <p
             className="text-[15px] md:text-[16px]"
             style={{
-              color: "rgba(250,249,247,0.70)",
+              color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
               marginBottom: 40,
             }}
@@ -1374,7 +1375,7 @@ function CtaSection() {
               paddingLeft: S.ctaPadX,
               paddingRight: S.ctaPadX,
               borderRadius: S.ctaRadius,
-              backgroundColor: "#FAF9F7",
+              backgroundColor: "#F4F1EA",
               color: B.navy,
               fontSize: mobile ? 14 : 15,
               fontWeight: 600,
@@ -1394,7 +1395,7 @@ function CtaSection() {
           <p
             className="text-[12px]"
             style={{
-              color: "rgba(250,249,247,0.40)",
+              color: "rgba(244,241,234,0.40)",
               marginTop: 24,
               letterSpacing: "0.02em",
             }}
