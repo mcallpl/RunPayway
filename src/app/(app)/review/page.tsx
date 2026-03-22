@@ -1077,21 +1077,44 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* What is still vulnerable */}
+        {/* What is still vulnerable — ordered by dominant constraint */}
         <Overline>WHAT IS STILL VULNERABLE</Overline>
         <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Too much still depends on one source</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>If the largest income source disappeared, the score would likely fall from {record.final_score} to {Math.max(0, record.risk_scenario_score)}. That is still too large a drop.</p>
-          </div>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>More income needs to be secured ahead of time</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>The next gains will come from having more income already committed before the month begins.</p>
-          </div>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Income would continue, but not for long enough yet</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>Based on the current structure, income would likely continue for about {continuityDisplay} if active work stopped. Longer is better.</p>
-          </div>
+          {(() => {
+            const vulnerabilities: Record<string, Array<{ title: string; body: string }>> = {
+              source_concentration: [
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
+                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+              ],
+              forward_visibility: [
+                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+              ],
+              labor_dependence: [
+                { title: "Too much income still depends on daily work", body: "A large share of the income requires active work to keep being produced. If work slows or stops, stability drops quickly." },
+                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+              ],
+              low_continuity: [
+                { title: "Income would not continue for long enough if work stopped", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. That is not yet enough.` },
+                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+              ],
+              few_sources: [
+                { title: "The income depends on too few sources", body: "The structure is still too narrow. Adding dependable sources would reduce exposure to any single one changing." },
+                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
+                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+              ],
+            };
+            return (vulnerabilities[dominantConstraint] ?? vulnerabilities.forward_visibility).map((v) => (
+              <div key={v.title}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{v.title}</div>
+                <p style={{ ...T.body, color: B.muted, margin: 0 }}>{v.body}</p>
+              </div>
+            ));
+          })()}
         </div>
 
         <SectionDivider />
@@ -1316,15 +1339,22 @@ export default function ReviewPage() {
                 <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
                 <span style={{ ...T.small, color: B.navy, fontWeight: 600, flex: 1 }}>{(() => {
                   const liftPlain: Record<string, string> = {
-                    reduce_labor_dependence: "Reduce dependence on daily work",
-                    extend_forward_visibility: "Secure more income ahead of time",
+                    reduce_labor_dependence: "Reduce how much income depends on daily work",
+                    extend_forward_visibility: "Secure more income before next month begins",
                     reduce_concentration: "Reduce reliance on the largest source",
                     increase_persistence: "Increase recurring or continuing income",
                     increase_persistent_revenue: "Increase recurring or continuing income",
                     add_income_sources: "Add more dependable income sources",
                     reduce_variability: "Reduce month-to-month income swings",
+                    increase_continuity: "Increase how long income would continue if work stopped",
+                    extend_continuity: "Increase how long income would continue if work stopped",
+                    diversify_sources: "Spread income across more independent sources",
+                    reduce_active_dependence: "Reduce how much income depends on daily work",
+                    improve_forward_secured: "Secure more income before next month begins",
+                    strengthen_persistence: "Build more income that continues without daily work",
+                    reduce_largest_source: "Reduce reliance on the largest source",
                   };
-                  return liftPlain[s.scenario_id] ?? s.label;
+                  return liftPlain[s.scenario_id] ?? s.label.replace(/Extend Forward Visibility/i, "Secure more income before next month begins").replace(/Reduce Labor Dependence/i, "Reduce how much income depends on daily work").replace(/Reduce Concentration/i, "Reduce reliance on the largest source").replace(/Increase Persist.*Revenue/i, "Increase recurring or continuing income");
                 })()}</span>
                 <span style={{ ...T.small, color: B.navy }}>
                   {s.original_score} → <span style={{ color: B.teal, fontWeight: 600 }}>{s.projected_score}</span>
