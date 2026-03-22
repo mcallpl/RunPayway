@@ -809,7 +809,7 @@ function Faq() {
     },
     {
       q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
+      a: "No. RunPayway\u2122 never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
     },
     {
       q: "How long does it take?",
