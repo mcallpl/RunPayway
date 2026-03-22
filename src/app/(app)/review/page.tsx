@@ -1186,28 +1186,37 @@ export default function ReviewPage() {
               const scenarioPlain: Record<string, string> = {
                 active_labor_interrupted: "You cannot work for 90 days",
                 platform_dependency_shock: "A platform or channel you rely on changes suddenly",
-                forward_commitments_delayed: "Expected income gets delayed",
-                client_concentration_loss: "Your largest client leaves",
+                forward_commitments_delayed: "Expected income gets delayed by several months",
+                client_concentration_loss: "Your largest client or contract ends unexpectedly",
                 market_contraction: "Your industry slows down significantly",
                 regulatory_disruption: "Rules or regulations change in your field",
                 revenue_model_disruption: "Your main way of earning income stops working",
                 high_volatility_month: "You experience a month with very low income",
                 seasonal_revenue_gap: "A seasonal gap significantly reduces income",
                 key_client_loss: "A key client or contract ends unexpectedly",
-                pricing_pressure: "Pricing pressure reduces your income per unit of work",
+                pricing_pressure: "Pricing pressure reduces what you earn per unit of work",
+                recurring_stream_degrades: "A recurring income stream weakens or stops renewing",
+                referral_pipeline_dries: "Your referral or lead pipeline dries up",
+                contract_non_renewal: "A major contract is not renewed",
+                scope_reduction: "A key client reduces the scope of your work",
               };
+              // Normalize: try ID match, then label match via replace chain
               const title = scenarioPlain[s.scenario_id] ?? s.label
                 .replace(/^Active Labor Interrupted$/i, "You cannot work for 90 days")
                 .replace(/^Platform Dependency Shock$/i, "A platform or channel you rely on changes suddenly")
-                .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed")
+                .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed by several months")
                 .replace(/^High Volatility Month$/i, "You experience a month with very low income")
-                .replace(/^Client Concentration Loss$/i, "Your largest client leaves")
+                .replace(/^Client Concentration Loss$/i, "Your largest client or contract ends unexpectedly")
                 .replace(/^Market Contraction$/i, "Your industry slows down significantly")
                 .replace(/^Revenue Model Disruption$/i, "Your main way of earning income stops working")
                 .replace(/^Seasonal Revenue Gap$/i, "A seasonal gap significantly reduces income")
                 .replace(/^Key Client Loss$/i, "A key client or contract ends unexpectedly")
                 .replace(/^Regulatory Disruption$/i, "Rules or regulations change in your field")
-                .replace(/^Pricing Pressure$/i, "Pricing pressure reduces your income per unit of work");
+                .replace(/^Pricing Pressure$/i, "Pricing pressure reduces what you earn per unit of work")
+                .replace(/^Recurring Stream Degrades$/i, "A recurring income stream weakens or stops renewing")
+                .replace(/^Referral Pipeline Dries$/i, "Your referral or lead pipeline dries up")
+                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
+                .replace(/^Scope Reduction$/i, "A key client reduces the scope of your work");
               const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
               const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
               return (
@@ -1223,7 +1232,7 @@ export default function ReviewPage() {
                   </div>
                   <div style={{ paddingLeft: 70 }}>
                     <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-                      {s.scenario_score <= 0 ? "This would effectively collapse the structure's protection." : s.band_shift ? `This would materially weaken the structure and move it into a lower stability band.` : s.score_drop > 10 ? "This would meaningfully weaken the current level of protection." : `This would reduce protection by ${s.score_drop} points.`}
+                      {s.scenario_score <= 0 ? "This would effectively collapse the structure's protection." : s.band_shift ? "This would materially weaken the structure and move it into a lower stability band." : s.score_drop > 10 ? "This would meaningfully weaken the current level of protection." : s.score_drop > 5 ? "This would noticeably reduce the structure's current protection." : "This would have a limited but real impact on the structure."}
                     </p>
                   </div>
                 </div>
@@ -1241,8 +1250,8 @@ export default function ReviewPage() {
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           {[
-            { label: "Requires active work", pct: record.active_income_level, color: B.ink },
-            { label: "Repeats month to month", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Requires daily work to earn", pct: record.active_income_level, color: B.ink },
+            { label: "Repeats on a recurring basis", pct: record.semi_persistent_income_level, color: B.taupe },
             { label: "Continues without daily work", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
@@ -1480,19 +1489,19 @@ export default function ReviewPage() {
               source_concentration: [
                 "Reduce how much the structure depends on the single largest source",
                 "Lock in at least one income source committed for more than one month",
-                "Convert some active-work income into recurring or repeatable income",
+                "Build more income that repeats or continues without daily work",
                 "Know more of next month\u2019s income before the month begins",
                 "Reassess only after these changes are actually live, not just planned",
               ],
               forward_visibility: [
                 "Lock in at least one income source that is committed for more than one month",
                 "Reduce how much the structure depends on the single largest source",
-                "Convert some active-work income into recurring or repeatable income",
+                "Build more income that repeats or continues without daily work",
                 "Know more of next month\u2019s income before the month begins",
                 "Reassess only after these changes are actually live, not just planned",
               ],
               labor_dependence: [
-                "Convert some active-work income into recurring or repeatable income",
+                "Build more income that repeats or continues without daily work",
                 "Lock in at least one income source committed for more than one month",
                 "Reduce how much the structure depends on the single largest source",
                 "Know more of next month\u2019s income before the month begins",
@@ -1508,7 +1517,7 @@ export default function ReviewPage() {
               few_sources: [
                 "Add at least one additional dependable income source",
                 "Lock in at least one income source committed for more than one month",
-                "Convert some active-work income into recurring or repeatable income",
+                "Build more income that repeats or continues without daily work",
                 "Know more of next month\u2019s income before the month begins",
                 "Reassess only after these changes are actually live, not just planned",
               ],
@@ -1539,7 +1548,7 @@ export default function ReviewPage() {
           {[
             "Create one offer, agreement, or revenue stream that secures income ahead for more than one month.",
             "Identify the largest source and reduce how much the structure depends on it.",
-            "Add one recurring, retained, or repeatable income component.",
+            "Add one income stream that repeats or continues without daily work.",
             "Know more of next month\u2019s income before the month begins.",
             "Reassess only after the structural changes are active, not just planned.",
           ].map((row, i) => (
