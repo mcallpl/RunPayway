@@ -87,11 +87,11 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#FAF9F7",
+  sand: "#F4F1EA",
   sandDk: "#F4F1EA",
-  offWhite: "#FEFDFB",
-  muted: "#4B5563",
-  light: "#9CA3AF",
+  offWhite: "#FFFFFF",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
   border: "#E6E9EF",
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
@@ -238,7 +238,7 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
           `}</style>
           <span
             style={{
-              fontSize: mobile ? 52 : 64, fontWeight: 700, color: "#F4F1EA",
+              fontSize: mobile ? 52 : 64, fontWeight: 600, color: "#F4F1EA",
               lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
               animation: "none",
             }}
@@ -1086,7 +1086,7 @@ function WhatYourReportSection() {
               <div style={{ flex: 1 }}>
                 <h3 style={{
                   fontSize: 20,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: B.navy,
                   marginBottom: 8,
                   letterSpacing: "-0.02em",
@@ -1275,7 +1275,7 @@ function SampleResultSection() {
               </div>
 
               {/* Score */}
-              <div style={{ fontSize: 40, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
+              <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
                 {sampleScore}
               </div>
 
@@ -1403,7 +1403,7 @@ function SampleResultSection() {
           />
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 32, fontWeight: 700, color: "#F4F1EA" }}>{demoScore}</div>
+              <div style={{ fontSize: 32, fontWeight: 600, color: "#F4F1EA" }}>{demoScore}</div>
               <div style={{ fontSize: 13, color: demoBandColor, fontWeight: 600, marginTop: 4 }}>{demoBand}</div>
             </div>
           </div>
@@ -1597,7 +1597,7 @@ function HowItWorksSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   fontSize: 18,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   marginBottom: 20,
                   boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
                 }}
@@ -1735,7 +1735,7 @@ function WhatItMeasuresSection() {
                 style={{
                   position: "absolute",
                   top: 16, right: 20,
-                  fontSize: 28, fontWeight: 700,
+                  fontSize: 28, fontWeight: 600,
                   color: "rgba(14,26,43,0.08)",
                   lineHeight: 1,
                 }}
@@ -1911,7 +1911,7 @@ function PricingSection() {
             >
               Single Assessment
             </div>
-            <div style={{ fontSize: 40, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
+            <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $39
             </div>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
@@ -1963,7 +1963,7 @@ function PricingSection() {
             <div
               style={{
                 display: "inline-block",
-                fontSize: 9, fontWeight: 700, textTransform: "uppercase",
+                fontSize: 9, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: "0.08em",
                 backgroundColor: B.purple,
                 color: "#FFFFFF",
@@ -1983,7 +1983,7 @@ function PricingSection() {
             >
               Annual Monitoring
             </div>
-            <div style={{ fontSize: 40, fontWeight: 700, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
+            <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $99
             </div>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
@@ -2699,16 +2699,12 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
       <HeroSection />
       <FourFactorsSection />
-      <IncomePatterns />
       <WhatYourReportSection />
-      <SampleResultSection />
       <HowItWorksSection />
-      <WhatItMeasuresSection />
       <PricingSection />
       <TrustSection trustOpen={trustOpen} setTrustOpen={setTrustOpen} />
-      <ClassificationSection />
-      <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <ShareableScoreSection />
+      <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
     </div>
   );
