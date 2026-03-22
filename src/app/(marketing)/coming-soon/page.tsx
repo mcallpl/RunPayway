@@ -66,6 +66,129 @@ const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
+function NotifyForm({ mobile }: { mobile: boolean }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [interest, setInterest] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    // Store locally for now — will connect to backend/email service later
+    try {
+      const existing = JSON.parse(localStorage.getItem("rp_notify_signups") || "[]");
+      existing.push({ name, email, interest, timestamp: new Date().toISOString() });
+      localStorage.setItem("rp_notify_signups", JSON.stringify(existing));
+    } catch { /* ignore */ }
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div
+        style={{
+          textAlign: "center",
+          padding: "40px 24px",
+          backgroundColor: B.sand,
+          borderRadius: 12,
+          border: "1px solid rgba(14,26,43,0.06)",
+        }}
+      >
+        <div style={{ fontSize: 24, marginBottom: 12 }}>&#10003;</div>
+        <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 8 }}>
+          You are on the list
+        </div>
+        <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
+          We will notify you at <strong>{email}</strong> when{interest ? ` ${interest} is` : " new products are"} available.
+        </p>
+      </div>
+    );
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    height: mobile ? 48 : 44,
+    padding: "0 16px",
+    borderRadius: 10,
+    border: "1px solid rgba(14,26,43,0.12)",
+    background: "#FFFFFF",
+    fontSize: 14,
+    color: B.navy,
+    outline: "none",
+    boxSizing: "border-box",
+    transition: "border-color 180ms ease, box-shadow 180ms ease",
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <input
+        type="text"
+        placeholder="Your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={inputStyle}
+        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+      />
+      <input
+        type="email"
+        placeholder="Your email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={inputStyle}
+        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+      />
+      <select
+        value={interest}
+        onChange={(e) => setInterest(e.target.value)}
+        style={{
+          ...inputStyle,
+          color: interest ? B.navy : "rgba(14,26,43,0.42)",
+          appearance: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%230E1A2B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.3'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: `right 16px center`,
+        }}
+        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+      >
+        <option value="">What are you most interested in?</option>
+        <option value="Annual Monitoring">Annual Income Monitoring</option>
+        <option value="Advisor License">Advisor / API License</option>
+        <option value="Enterprise">Enterprise / Platform Integration</option>
+        <option value="Languages">New Language Support</option>
+        <option value="All">All of the above</option>
+      </select>
+      <button
+        type="submit"
+        style={{
+          height: mobile ? 52 : 48,
+          borderRadius: 10,
+          background: B.navy,
+          color: "#ffffff",
+          fontSize: 15,
+          fontWeight: 600,
+          border: "none",
+          cursor: "pointer",
+          letterSpacing: "0.01em",
+          transition: "background 200ms ease",
+          marginTop: 4,
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.background = B.purple; }}
+        onMouseLeave={(e) => { e.currentTarget.style.background = B.navy; }}
+      >
+        Notify Me
+      </button>
+      <p style={{ fontSize: 12, color: B.light, textAlign: "center", margin: 0 }}>
+        No spam. We will only email you when something launches.
+      </p>
+    </form>
+  );
+}
+
 export default function ComingSoonPage() {
   const hero = useInView();
   const products = useInView();
@@ -400,10 +523,42 @@ export default function ComingSoonPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Notify Me — email capture */}
       <section
         style={{
           backgroundColor: "#FFFFFF",
+          paddingTop: mobile ? 80 : 120,
+          paddingBottom: mobile ? 80 : 120,
+        }}
+      >
+        <div style={{ maxWidth: 520, margin: "0 auto", padding: `0 ${pad}px` }}>
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <h2
+              style={{
+                fontSize: mobile ? 28 : 36,
+                fontFamily: DISPLAY_FONT,
+                fontWeight: 400,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.12,
+                color: B.navy,
+                marginBottom: 12,
+              }}
+            >
+              Get notified when we launch
+            </h2>
+            <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, margin: 0 }}>
+              Leave your details and we will let you know when new products and languages become available.
+            </p>
+          </div>
+
+          <NotifyForm mobile={mobile} />
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section
+        style={{
+          backgroundColor: B.sand,
           paddingTop: mobile ? 64 : 96,
           paddingBottom: mobile ? 64 : 96,
           textAlign: "center",
