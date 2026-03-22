@@ -569,14 +569,34 @@ export default function InitializationPage() {
         </section>
       )}
 
-      {/* Continue button for steps 0 and 1 */}
+      {/* Navigation buttons for steps 0, 1 */}
       {step < 2 && (
-        <div>
+        <div style={{ display: "flex", gap: 12 }}>
+          {step > 0 && (
+            <button
+              onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}
+              style={{
+                height: 52,
+                borderRadius: 12,
+                background: "#FFFFFF",
+                color: B.navy,
+                fontSize: 15,
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+                border: `1px solid rgba(14,26,43,0.12)`,
+                cursor: "pointer",
+                padding: "0 24px",
+                transition: "background 180ms ease",
+              }}
+            >
+              Back
+            </button>
+          )}
           <button
             disabled={step === 0 ? !canContinueStep0 : !canContinueStep1}
             onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}
             style={{
-              width: "100%",
+              flex: 1,
               height: 52,
               borderRadius: 12,
               background: (step === 0 ? canContinueStep0 : canContinueStep1) ? B.purple : "rgba(14,26,43,0.12)",
@@ -597,12 +617,30 @@ export default function InitializationPage() {
 
       {/* Begin Assessment button for step 2 */}
       {step === 2 && (
-        <div>
+        <div style={{ display: "flex", gap: 12 }}>
+          <button
+            onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}
+            style={{
+              height: 52,
+              borderRadius: 12,
+              background: "#FFFFFF",
+              color: B.navy,
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              border: `1px solid rgba(14,26,43,0.12)`,
+              cursor: "pointer",
+              padding: "0 24px",
+              transition: "background 180ms ease",
+            }}
+          >
+            Back
+          </button>
           <button
             disabled={!isValid}
             onClick={handleBegin}
             style={{
-              width: "100%",
+              flex: 1,
               height: 52,
               borderRadius: 12,
               background: isValid ? B.purple : "rgba(14,26,43,0.12)",
