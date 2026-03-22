@@ -879,11 +879,11 @@ export default function ReviewPage() {
     const pct = peerPercentileValue;
     const avg = v2Benchmarks?.cluster_average_score ?? 42;
     const top20 = v2Benchmarks?.top_20_threshold ?? 65;
-    if (score < avg && pct <= 10) return `This score is currently far below the peer average of ${avg} and well below the top 20% threshold of ${top20}.`;
-    if (score < avg && pct <= 30) return `This score is currently below the peer average of ${avg} and below the top 20% threshold of ${top20}.`;
-    if (score < avg) return `This score is still below the peer average of ${avg}.`;
-    if (score >= top20) return `This score is above both the peer average of ${avg} and the top 20% threshold of ${top20}.`;
-    if (score >= avg) return `This score is above the peer average of ${avg}, but still below the top 20% threshold of ${top20}.`;
+    if (score < avg && pct <= 10) return `This score is well below the peer average of ${avg} and far from the top 20% benchmark of ${top20}. Strengthening the structure would close this gap meaningfully.`;
+    if (score < avg && pct <= 30) return `This score is below the peer average of ${avg}. Reaching the peer average is a realistic near-term target, with the top 20% benchmark of ${top20} as a longer-term goal.`;
+    if (score < avg) return `This score is approaching the peer average of ${avg}. A few structural improvements could move it above average.`;
+    if (score >= top20) return `This score is above both the peer average of ${avg} and the top 20% benchmark of ${top20}. The focus now is maintaining this position.`;
+    if (score >= avg) return `This score is above the peer average of ${avg}, but there is still room to reach the top 20% benchmark of ${top20}.`;
     return `This score is around the peer average of ${avg}.`;
   })();
 
@@ -1184,39 +1184,39 @@ export default function ReviewPage() {
             <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
             {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
               const scenarioPlain: Record<string, string> = {
-                active_labor_interrupted: "You cannot work for 90 days",
-                platform_dependency_shock: "A platform or channel you rely on changes suddenly",
-                forward_commitments_delayed: "Expected income gets delayed by several months",
-                client_concentration_loss: "Your largest client or contract ends unexpectedly",
-                market_contraction: "Your industry slows down significantly",
-                regulatory_disruption: "Rules or regulations change in your field",
-                revenue_model_disruption: "Your main way of earning income stops working",
-                high_volatility_month: "You experience a month with very low income",
-                seasonal_revenue_gap: "A seasonal gap significantly reduces income",
-                key_client_loss: "A key client or contract ends unexpectedly",
-                pricing_pressure: "Pricing pressure reduces what you earn per unit of work",
-                recurring_stream_degrades: "A recurring income stream weakens or stops renewing",
-                referral_pipeline_dries: "Your referral or lead pipeline dries up",
+                active_labor_interrupted: "You are unable to work for an extended period",
+                platform_dependency_shock: "An income channel you rely on changes its terms or access",
+                forward_commitments_delayed: "Income you were expecting gets delayed",
+                client_concentration_loss: "Your largest client leaves or stops paying",
+                market_contraction: "Demand in your industry drops significantly",
+                regulatory_disruption: "A regulatory or policy change affects your work",
+                revenue_model_disruption: "Your primary way of earning income stops working",
+                high_volatility_month: "You have a month where income drops sharply",
+                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
+                key_client_loss: "You lose a key client or contract",
+                pricing_pressure: "What you can charge drops due to market pressure",
+                recurring_stream_degrades: "A repeating income stream weakens or ends",
+                referral_pipeline_dries: "New business or referrals slow down significantly",
                 contract_non_renewal: "A major contract is not renewed",
-                scope_reduction: "A key client reduces the scope of your work",
+                scope_reduction: "A client significantly reduces the scope of your work",
               };
               // Normalize: try ID match, then label match via replace chain
               const title = scenarioPlain[s.scenario_id] ?? s.label
-                .replace(/^Active Labor Interrupted$/i, "You cannot work for 90 days")
-                .replace(/^Platform Dependency Shock$/i, "A platform or channel you rely on changes suddenly")
-                .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed by several months")
-                .replace(/^High Volatility Month$/i, "You experience a month with very low income")
-                .replace(/^Client Concentration Loss$/i, "Your largest client or contract ends unexpectedly")
-                .replace(/^Market Contraction$/i, "Your industry slows down significantly")
-                .replace(/^Revenue Model Disruption$/i, "Your main way of earning income stops working")
-                .replace(/^Seasonal Revenue Gap$/i, "A seasonal gap significantly reduces income")
-                .replace(/^Key Client Loss$/i, "A key client or contract ends unexpectedly")
-                .replace(/^Regulatory Disruption$/i, "Rules or regulations change in your field")
-                .replace(/^Pricing Pressure$/i, "Pricing pressure reduces what you earn per unit of work")
-                .replace(/^Recurring Stream Degrades$/i, "A recurring income stream weakens or stops renewing")
-                .replace(/^Referral Pipeline Dries$/i, "Your referral or lead pipeline dries up")
+                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
+                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
+                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
+                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
+                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
+                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
+                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
+                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
+                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
+                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
+                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
+                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
+                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
                 .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
-                .replace(/^Scope Reduction$/i, "A key client reduces the scope of your work");
+                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
               // Safety: if title still looks like a model label (multiple capital words), lowercase it
               const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
                 ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
@@ -1254,8 +1254,8 @@ export default function ReviewPage() {
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           {[
-            { label: "Requires daily work to earn", pct: record.active_income_level, color: B.ink },
-            { label: "Repeats on a recurring basis", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Earned through active work", pct: record.active_income_level, color: B.ink },
+            { label: "Repeatable income", pct: record.semi_persistent_income_level, color: B.taupe },
             { label: "Continues without daily work", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
@@ -1427,10 +1427,10 @@ export default function ReviewPage() {
               }))
             : (() => {
                 const priorities = [
-                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: "Add income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, or recurring contracts." },
-                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: "Strengthen one or more additional dependable sources so the structure is not overly exposed to a single client or channel." },
-                  { key: "labor_dependence", title: "Build more income that repeats or continues without daily work", copy: "Shift part of one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
-                  { key: "low_continuity", title: "Increase how long income would continue if work stopped", copy: "Build more income that can keep coming in for a period of time even if daily work slows down or stops." },
+                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: "Lock in income before each month begins — retainers, multi-month agreements, advance bookings, or recurring contracts." },
+                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: "Add or strengthen dependable secondary sources so the structure is not overexposed to one client or channel." },
+                  { key: "labor_dependence", title: "Build more repeatable income", copy: "Convert one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
+                  { key: "low_continuity", title: "Extend how long income continues without active work", copy: "Create income streams that keep producing even when daily work slows down or pauses." },
                 ];
                 // Put dominant constraint first
                 const sorted = [
