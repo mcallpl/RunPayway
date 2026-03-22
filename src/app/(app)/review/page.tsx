@@ -1051,6 +1051,29 @@ export default function ReviewPage() {
           ))}
         </div>
 
+        {/* Score trend — shown only if previous assessments exist */}
+        {(() => {
+          try {
+            const allRecords = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string }>;
+            const previous = allRecords.filter(r => r.record_id !== record.record_id && typeof r.final_score === "number").sort((a, b) => (b.assessment_date_utc || "").localeCompare(a.assessment_date_utc || ""));
+            if (previous.length === 0) return null;
+            const last = previous[0];
+            const diff = record.final_score - last.final_score;
+            return (
+              <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}>
+                <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>SCORE TREND</div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+                  <span style={{ ...T.sectionLabel, color: B.navy }}>{last.final_score}</span>
+                  <span style={{ ...T.meta, color: B.taupe }}>→</span>
+                  <span style={{ ...T.sectionLabel, color: B.navy }}>{record.final_score}</span>
+                  <span style={{ ...T.small, fontWeight: 600, color: diff > 0 ? B.teal : diff < 0 ? B.bandLimited : B.muted }}>{diff > 0 ? `+${diff}` : diff === 0 ? "no change" : String(diff)} points</span>
+                </div>
+                <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0" }}>Compared with your previous assessment{last.assessment_date_utc ? ` from ${last.assessment_date_utc.split("T")[0]}` : ""}.</p>
+              </div>
+            );
+          } catch { return null; }
+        })()}
+
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
           The Income Stability Score\u2122 is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
@@ -1120,6 +1143,30 @@ export default function ReviewPage() {
             ));
           })()}
         </div>
+
+        {/* Peer comparison insight */}
+        {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px", marginTop: 16, marginBottom: 4 }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW YOU COMPARE TO PEERS{olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}</div>
+            {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
+              const peerLabel: Record<string, string> = {
+                income_persistence: "Income that continues if work stops",
+                forward_revenue_visibility: "Income secured ahead of time",
+                concentration_resilience: "Reliance on one source",
+                income_source_diversity: "Number of income sources",
+                labor_dependence: "Dependence on daily work",
+                earnings_stability: "Month-to-month earnings stability",
+              };
+              const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
+              return (
+                <p key={d.factor} style={{ ...T.small, color: B.navy, margin: "0 0 4px", lineHeight: 1.5 }}>
+                  <span style={{ fontWeight: 500 }}>{label}</span>{" — "}
+                  <span style={{ color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{d.direction} {olIndustryLabel || "peer"} average</span>
+                </p>
+              );
+            })}
+          </div>
+        )}
 
         <SectionDivider />
 
@@ -1406,6 +1453,25 @@ export default function ReviewPage() {
                 {p4CombinedLine}
               </div>
             )}
+            {/* Score progression visual */}
+            {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
+            <div style={{ marginTop: 16, marginBottom: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
+                <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>Now</span>
+                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${record.final_score}%`, backgroundColor: B.navy, borderRadius: 4 }} />
+                </div>
+                <span style={{ ...T.meta, color: B.navy, fontWeight: 600, minWidth: 24, textAlign: "right" }}>{record.final_score}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>After</span>
+                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${Math.min(100, v2Lift.combined_top_two.projected_score)}%`, backgroundColor: B.teal, borderRadius: 4 }} />
+                </div>
+                <span style={{ ...T.meta, color: B.teal, fontWeight: 600, minWidth: 24, textAlign: "right" }}>{v2Lift.combined_top_two.projected_score}</span>
+              </div>
+            </div>
+            )}
           </div>
         )}
 
@@ -1444,7 +1510,7 @@ export default function ReviewPage() {
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 3 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
-                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontStyle: "italic" }}>{action.why}</p>}
+                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
               </div>
             </div>
           ))}
