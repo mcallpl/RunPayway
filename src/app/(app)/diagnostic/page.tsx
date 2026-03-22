@@ -277,6 +277,7 @@ export default function DiagnosticPage() {
   const allAnswered = answers.every((a) => a !== null);
 
   const selectAnswer = useCallback((letter: string) => {
+    if (transitioning) return; // Guard against accidental selection during transition
     setError(null);
     setAnswers((prev) => {
       const next = [...prev];
@@ -291,11 +292,11 @@ export default function DiagnosticPage() {
         setTransitioning(true);
         setTimeout(() => {
           setCurrentQuestion((prev) => Math.min(5, prev + 1));
-          setTransitioning(false);
+          setTimeout(() => setTransitioning(false), 100); // Extra guard after render
         }, 300);
-      }, 400);
+      }, 500); // Longer delay on mobile to prevent ghost taps
     }
-  }, [currentQuestion]);
+  }, [currentQuestion, transitioning]);
 
   const goTo = (index: number) => {
     setError(null);
@@ -727,7 +728,8 @@ export default function DiagnosticPage() {
             return (
               <button
                 key={opt.letter}
-                onClick={() => selectAnswer(opt.letter)}
+                onClick={() => !transitioning && selectAnswer(opt.letter)}
+                disabled={transitioning}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -736,11 +738,12 @@ export default function DiagnosticPage() {
                   borderRadius: 12,
                   border: `1px solid ${isSelected ? B.purple : "rgba(14,26,43,0.08)"}`,
                   background: isSelected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                  cursor: "pointer",
+                  cursor: transitioning ? "default" : "pointer",
                   textAlign: "left",
                   transition: "border-color 160ms ease, background 160ms ease, transform 120ms ease",
                   transform: isSelected ? "scale(1)" : "scale(1)",
                   width: "100%",
+                  pointerEvents: transitioning ? "none" : "auto",
                 }}
               >
                 {/* Selection indicator */}
