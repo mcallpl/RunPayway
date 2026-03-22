@@ -1099,19 +1099,7 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-          {[
-            ["Classification", record.classification || "—"],
-            ["Operating Structure", record.operating_structure || "—"],
-            ["Income Model", record.primary_income_model || "—"],
-            ["Revenue Structure", record.revenue_structure || "—"],
-          ].map(([l, v]) => (
-            <div key={l}>
-              <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
-              <div style={{ ...T.meta, fontWeight: 500, color: B.navy }}>{v}</div>
-            </div>
-          ))}
-        </div>
+        {/* Classification/Operating Structure/Income Model/Revenue Structure — already stated in headline */}
 
         {/* Score trend — shown only if previous assessments exist */}
         {(() => {
@@ -1154,30 +1142,15 @@ export default function ReviewPage() {
 
         {/* What is already working */}
         <Overline>WHAT IS ALREADY WORKING</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
-          <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{record.income_continuity_pct}%</span>{(() => { const peerVal = v2Benchmarks?.outlier_dimensions.find(d => d.factor.toLowerCase().includes("persistence") || d.factor.toLowerCase().includes("continuity"))?.peer_average; return peerVal && peerVal > 0 ? <span style={{ color: B.muted }}> (peers: {Math.round(peerVal)}%)</span> : null; })()}</div>
-            <div style={{ ...T.small, color: B.navy }}>Active work: <span style={{ fontWeight: 600 }}>{record.active_income_level}%</span></div>
-            <div style={{ ...T.small, color: B.navy }}>Repeatable: <span style={{ fontWeight: 600 }}>{record.semi_persistent_income_level}%</span></div>
-            <div style={{ ...T.small, color: B.navy }}>Passive: <span style={{ fontWeight: 600 }}>{record.persistent_income_level}%</span></div>
-          </div>
-        </div>
+        <p style={{ ...T.body, color: B.muted, margin: "0 0 20px" }}>{p2WorkingBody}</p>
 
         <SectionDivider />
 
-        {/* What is still vulnerable — ordered by dominant constraint */}
+        {/* What is still vulnerable */}
         <Overline>WHAT IS STILL VULNERABLE</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Primary: {dominantConstraintPlain[dominantConstraint]}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]}</p>
-          </div>
-          <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ ...T.small, color: B.navy }}>Stress test: <span style={{ fontWeight: 600, color: B.bandLimited }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</span> <span style={{ color: B.muted }}>({record.risk_scenario_drop}-pt drop)</span></div>
-            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{continuityDisplay}</span></div>
-            <div style={{ ...T.small, color: B.navy }}>Active work: <span style={{ fontWeight: 600 }}>{record.active_income_level}%</span></div>
-          </div>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Primary: {dominantConstraintPlain[dominantConstraint]}</div>
+          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]}</p>
         </div>
 
         {/* Peer comparison insight */}
@@ -1362,69 +1335,7 @@ export default function ReviewPage() {
           {record.active_income_level >= 80 ? `High active-work dependence for a ${structureDesc}. ${profileConstraintAdvice.labor_dependence?.split(".")[0]}.` : record.active_income_level >= 50 ? `${record.active_income_level}% active-work dependence. Shift more toward repeatable income.` : `${100 - record.active_income_level}% repeats or continues independently — a structural advantage.`}
         </p>
 
-        {/* Peer band distribution */}
-        {v2Benchmarks && (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHERE YOUR PEERS LAND</div>
-            <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
-              {[
-                { pct: v2Benchmarks.peer_band_distribution.limited, color: B.bandLimited, t: "limited" },
-                { pct: v2Benchmarks.peer_band_distribution.developing, color: B.bandDeveloping, t: "developing" },
-                { pct: v2Benchmarks.peer_band_distribution.established, color: B.bandEstablished, t: "established" },
-                { pct: v2Benchmarks.peer_band_distribution.high, color: B.bandHigh, t: "high" },
-              ].map((seg, i) => (
-                <div key={i} style={{ width: `${seg.pct}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: tier === seg.t ? 1 : 0.3 }} />
-              ))}
-            </div>
-            <div style={{ display: "flex", gap: 2, marginBottom: 12 }}>
-              {[
-                { pct: v2Benchmarks.peer_band_distribution.limited, label: "Limited", color: B.bandLimited },
-                { pct: v2Benchmarks.peer_band_distribution.developing, label: "Developing", color: B.bandDeveloping },
-                { pct: v2Benchmarks.peer_band_distribution.established, label: "Established", color: B.bandEstablished },
-                { pct: v2Benchmarks.peer_band_distribution.high, label: "High", color: B.bandHigh },
-              ].map((seg) => (
-                <div key={seg.label} style={{ flex: 1, ...T.meta, color: B.muted }}><span style={{ color: seg.color, fontWeight: 600 }}>{seg.pct}%</span> {seg.label}</div>
-              ))}
-            </div>
-
-            {/* Outlier dimensions — top 3 */}
-            {v2Benchmarks.outlier_dimensions.length > 0 && (
-              <div style={{ marginBottom: 12 }}>
-                {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
-                  const peerLabel: Record<string, string> = {
-                    income_persistence: "Income that continues if work stops",
-                    forward_revenue_visibility: "Income secured ahead of time",
-                    concentration_resilience: "Reliance on one source",
-                    income_source_diversity: "Number of income sources",
-                    labor_dependence: "Dependence on daily work",
-                    earnings_stability: "Month-to-month earnings stability",
-                  };
-                  const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
-                  return (
-                    <div key={d.factor} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                      <span>{label}</span>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}</span></span>
-                        <span style={{ color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}</span></span>
-                        <span style={{ fontWeight: 600, color: d.direction === "above" ? B.teal : B.bandLimited }}>
-                          {d.direction === "above" ? "▲ above peers" : "▼ below peers"}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <p style={{ ...T.meta, color: B.muted, margin: 0, fontStyle: "italic" }}>
-              {`${name} scored ${score} vs. peer average of ${v2Benchmarks.cluster_average_score} in ${industrySector}. `}
-              {score < v2Benchmarks.cluster_average_score
-                ? `${v2Benchmarks.cluster_average_score - score} points below average.`
-                : score > v2Benchmarks.cluster_average_score
-                ? `${score - v2Benchmarks.cluster_average_score} points above average.`
-                : "At the peer average."}
-            </p>
-          </div>
-        )}
+        {/* Peer comparison moved to Page 2 — shown once for clarity */}
 
 
         <PageFooter section="Your Biggest Risks" page={3} />
@@ -1641,46 +1552,7 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Benchmark context — only if data available */}
-        {(v2Benchmarks || olBenchmark) && (
-          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-            <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
-              <Overline>HOW YOU COMPARE</Overline>
-              {v2Benchmarks && (
-                <>
-                <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                  <div style={{ ...T.small, color: B.ink }}>Peer average: <span style={{ fontWeight: 600 }}>{v2Benchmarks.cluster_average_score}</span></div>
-                  <div style={{ ...T.small, color: B.ink }}>Top 20% threshold: <span style={{ fontWeight: 600 }}>{v2Benchmarks.top_20_threshold}</span></div>
-                  <div style={{ ...T.small, color: B.ink }}>Your percentile: <span style={{ fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || `${v2Benchmarks.peer_percentile}th`}</span></div>
-                </div>
-                <p style={{ ...T.meta, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>{p5CompareInterpretation}</p>
-                </>
-              )}
-              {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
-            </div>
-            {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
-                <Overline>TYPICAL PATTERNS IN YOUR PEER GROUP</Overline>
-                {olBenchmark.common_strengths?.length > 0 && (
-                  <>
-                    <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 2 }}>Common strengths:</div>
-                    {olBenchmark.common_strengths.slice(0, 3).map((s) => (
-                      <div key={s} style={{ ...T.meta, color: B.muted, marginBottom: 2 }}>— {s}</div>
-                    ))}
-                  </>
-                )}
-                {olBenchmark.common_weaknesses?.length > 0 && (
-                  <>
-                    <div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 500, marginTop: 6, marginBottom: 2 }}>Common gaps:</div>
-                    {olBenchmark.common_weaknesses.slice(0, 3).map((w) => (
-                      <div key={w} style={{ ...T.meta, color: B.muted, marginBottom: 2 }}>— {w}</div>
-                    ))}
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+        {/* Peer comparison shown once on Page 2 — not repeated here */}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
