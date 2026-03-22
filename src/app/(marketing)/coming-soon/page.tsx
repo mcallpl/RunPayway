@@ -78,7 +78,7 @@ export default function ComingSoonPage() {
   const upcomingProducts = [
     {
       name: "Annual Income Monitoring",
-      price: "$149/year",
+      price: "Coming Soon",
       description: "Quarterly reassessments with score tracking over time. See how structural changes move your score. Includes a personal dashboard, email alerts when it is time to reassess, and full trend history.",
       features: [
         "Initial assessment + quarterly reassessments",
@@ -91,7 +91,7 @@ export default function ComingSoonPage() {
     },
     {
       name: "Advisor / API License",
-      price: "Starting at $500/year",
+      price: "Coming Soon",
       description: "Run income stability assessments for your clients. Designed for financial advisors, lenders, accountants, and platforms that need to evaluate income structure at scale.",
       features: [
         "Unlimited client assessments",
@@ -104,7 +104,7 @@ export default function ComingSoonPage() {
     },
     {
       name: "Enterprise / Platform Integration",
-      price: "Custom pricing",
+      price: "Coming Soon",
       description: "Embed the Income Stability Score directly into your platform. Built for payroll companies, gig platforms, lending institutions, and HR technology providers.",
       features: [
         "Full API with webhooks",
