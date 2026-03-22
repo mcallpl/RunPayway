@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     if (
       !authorization_code ||
       typeof authorization_code !== "string" ||
-      !/^[a-f0-9]{64}$/.test(authorization_code)
+      !/^[a-f0-9]{16,64}$/.test(authorization_code)
     ) {
       return NextResponse.json(
         { valid_record: false },
