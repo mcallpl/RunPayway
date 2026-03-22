@@ -535,7 +535,7 @@ function FourFactorsSection() {
       ref={ref}
       aria-label="What RunPayway Measures"
       style={{
-        background: "#FFFFFF",
+        background: "linear-gradient(180deg, #FFFFFF 0%, #F8F6F2 100%)",
         paddingTop: mobile ? 80 : 120,
         paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
@@ -724,7 +724,7 @@ function IncomePatterns() {
       ref={ref}
       aria-label="Income Patterns"
       style={{
-        background: "#F8F6F2",
+        background: "linear-gradient(180deg, #F8F6F2 0%, #F4F1EA 100%)",
         paddingTop: mobile ? 80 : 120,
         paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
