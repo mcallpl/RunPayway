@@ -1079,8 +1079,8 @@ export default function ReviewPage() {
             <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.{record.income_continuity_pct <= 5 ? " That is a very small amount and one of the most important areas to strengthen." : record.income_continuity_pct <= 20 ? " That is a limited base that needs to grow before the structure can hold up well." : " That is a real base, but there is still room to strengthen it."}</p>
           </div>
           <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{tier === "limited" ? "The structure is early, but not absent" : tier === "developing" ? "There is progress to build on" : "The opportunity is refinement, not rebuilding"}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{tier === "limited" ? "This is a starting point. The priority is to build basic protection before focusing on growth." : tier === "developing" ? "The structure is developing, but it still needs stronger protection in key areas." : "The foundation is working. The next gains come from strengthening what is already in place, not starting over."}</p>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{record.persistent_income_level >= 20 ? "Some income already continues without daily work" : record.semi_persistent_income_level >= 15 ? "Some repeatable income is already in place" : tier === "limited" ? "The structure is early, but not absent" : "There is a base to build from"}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.persistent_income_level >= 20 ? `${record.persistent_income_level}% of your income continues without daily work. That is a meaningful foundation to protect and grow.` : record.semi_persistent_income_level >= 15 ? `${record.semi_persistent_income_level}% of your income repeats on a regular basis. Converting more active work into repeatable income would strengthen the structure further.` : `${record.active_income_level}% of your income currently requires active work. The priority is to convert some of that into income that repeats or continues without daily effort.`}</p>
           </div>
         </div>
 
@@ -1093,28 +1093,23 @@ export default function ReviewPage() {
             const vulnerabilities: Record<string, Array<{ title: string; body: string }>> = {
               source_concentration: [
                 { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
-                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
                 { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
               ],
               forward_visibility: [
-                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
-                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
+                { title: "Not enough income is secured ahead of time", body: `Too little of your income is already committed before the month begins. Locking in retainers, contracts, or recurring agreements would directly strengthen the structure.` },
+                { title: "Too much still depends on one source", body: `If the largest source disappeared, the score would drop by ${record.risk_scenario_drop} points. Reducing that exposure is the second priority.` },
               ],
               labor_dependence: [
-                { title: "Too much income still depends on daily work", body: `${record.active_income_level}% of your income currently requires active work to keep being produced. If work slows or stops, stability drops quickly.` },
-                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
+                { title: "Too much income depends on daily work", body: `${record.active_income_level}% of your income currently requires active work. If work slows or stops, stability drops quickly.` },
+                { title: "Too much still depends on one source", body: `If the largest source disappeared, the score would drop by ${record.risk_scenario_drop} points. That compounds the active-work risk.` },
               ],
               low_continuity: [
                 { title: `Income would only continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is critically short and the most urgent area to address." : " That is not yet enough to absorb even a moderate disruption."}` },
-                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
+                { title: `${record.active_income_level}% of income requires active work`, body: "Reducing that dependence would directly extend how long income continues when work slows." },
               ],
               few_sources: [
-                { title: "The income depends on too few sources", body: `The structure is still too narrow. If any single source changes, the impact on the score would be significant — as shown by the ${record.risk_scenario_drop}-point stress test drop.` },
-                { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
+                { title: "The income depends on too few sources", body: `The structure is still too narrow. The ${record.risk_scenario_drop}-point stress test drop shows how exposed it is to a single source changing.` },
+                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short." : " Extending this would add protection."}` },
               ],
             };
             return (vulnerabilities[dominantConstraint] ?? vulnerabilities.forward_visibility).map((v) => (
@@ -1151,7 +1146,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {p3Intro[subTier]}
+          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are assessed in the context of the ${olIndustryLabel} industry.` : ""}
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
@@ -1252,7 +1247,7 @@ export default function ReviewPage() {
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
         </div>
-        <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 24, marginBottom: 10 }}>
           {[
             { label: "Earned through active work", pct: record.active_income_level, color: B.ink },
             { label: "Repeatable income", pct: record.semi_persistent_income_level, color: B.taupe },
@@ -1266,6 +1261,9 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
+        <p style={{ ...T.meta, color: B.muted, marginBottom: 20, fontStyle: "italic" }}>
+          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income requires active work. That is a high level of dependence — if work slows, most of the income is at risk.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires active work. Shifting more toward repeatable income would strengthen the structure.` : `${record.active_income_level}% of your income requires active work. The rest repeats or continues independently — that is a meaningful structural advantage.`}
+        </p>
 
         {/* Peer band distribution */}
         {v2Benchmarks && (
@@ -1549,13 +1547,46 @@ export default function ReviewPage() {
         {/* 90-Day Checklist */}
         <Overline>YOUR 90-DAY ACTION PLAN</Overline>
         <div style={{ display: "flex", flexDirection: "column", marginBottom: 20 }}>
-          {[
-            "Create one offer, agreement, or revenue stream that secures income ahead for more than one month.",
-            "Identify the largest source and reduce how much the structure depends on it.",
-            "Add one income stream that repeats or continues without daily work.",
-            "Know more of next month\u2019s income before the month begins.",
-            "Reassess only after the structural changes are active, not just planned.",
-          ].map((row, i) => (
+          {(() => {
+            const checklist: Record<string, string[]> = {
+              forward_visibility: [
+                "Lock in at least one income source committed for more than one month.",
+                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
+                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
+                "Know more of next month\u2019s income before the month begins.",
+                "Reassess only after these changes are active, not just planned.",
+              ],
+              source_concentration: [
+                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
+                "Lock in at least one income source committed for more than one month.",
+                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
+                "Know more of next month\u2019s income before the month begins.",
+                "Reassess only after these changes are active, not just planned.",
+              ],
+              labor_dependence: [
+                `Convert some active-work income into repeatable income — currently ${record.active_income_level}% requires active work.`,
+                "Lock in at least one income source committed for more than one month.",
+                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
+                "Know more of next month\u2019s income before the month begins.",
+                "Reassess only after these changes are active, not just planned.",
+              ],
+              low_continuity: [
+                `Build income that would continue longer if work stopped — currently about ${continuityDisplay}.`,
+                "Lock in at least one income source committed for more than one month.",
+                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
+                "Know more of next month\u2019s income before the month begins.",
+                "Reassess only after these changes are active, not just planned.",
+              ],
+              few_sources: [
+                "Add at least one additional dependable income source.",
+                "Lock in at least one income source committed for more than one month.",
+                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
+                "Know more of next month\u2019s income before the month begins.",
+                "Reassess only after these changes are active, not just planned.",
+              ],
+            };
+            return (checklist[dominantConstraint] ?? checklist.forward_visibility);
+          })().map((row, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ width: 14, height: 14, borderRadius: "50%", border: `1.5px solid ${B.stone}`, flexShrink: 0, marginTop: 2 }} />
               <span style={{ ...T.small, color: B.ink }}>{row}</span>
