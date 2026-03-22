@@ -764,19 +764,25 @@ export default function ReviewPage() {
     D2: "The structure is exceptionally strong. The remaining gains come from refinement rather than repair.",
   };
 
-  const p4TargetBandBody: string = tier === "limited" ? "The next level means moving from fragile or early-stage structure into something more stable and better protected." : tier === "developing" ? "The next level means moving from a developing structure into one with clearer stability and stronger protection." : tier === "established" ? "The next level means moving from established stability into a more resilient and well-protected structure." : "The focus now is not a new band. It is preserving strength and reducing remaining weak points.";
+  const p4TargetBandBody: string = (() => {
+    if (tier === "high") return "The focus now is not a new band. It is preserving strength and reducing remaining weak points.";
+    const distanceNote = bandDistance === "CLOSE" ? " A few practical changes could make this realistic." : bandDistance === "MODERATE" ? " This is achievable with sustained structural improvement." : " This will take sustained effort, but each step reduces vulnerability.";
+    if (tier === "limited") return "The next level means moving from fragile or early-stage structure into something more stable and better protected." + distanceNote;
+    if (tier === "developing") return "The next level means moving from a developing structure into one with clearer stability and stronger protection." + distanceNote;
+    return "The next level means moving from established stability into a more resilient and well-protected structure." + distanceNote;
+  })();
 
-  const p4CombinedLine: Record<string, string> = {
-    A1: "These changes would be a strong first step. The score may still remain in Limited Stability, but the structure would be meaningfully less fragile.",
-    A2: "These changes would create real progress, even if more work would still be needed to move fully out of Limited Stability.",
-    A3: "These changes could help move the structure closer to Developing Stability and materially reduce vulnerability.",
-    B1: `Together, these changes could move ${name} closer to a more protected developing structure.`,
-    B2: `Together, these changes could move ${name} into Established Stability.`,
-    C1: `Together, these changes could move ${name} deeper into Established Stability and strengthen protection against disruption.`,
-    C2: `Together, these changes could move ${name} toward High Stability.`,
-    D1: "These changes would further strengthen an already strong structure.",
-    D2: "These changes would be refinements to an already highly protected structure.",
-  };
+  const p4CombinedLine: string = (() => {
+    if (tier === "high") return "These changes would further strengthen an already strong structure.";
+    if (bandDistance === "CLOSE") return `A few practical changes could move ${name} into ${score < 30 ? "Developing" : score < 50 ? "Established" : "High"} Stability. Near-term improvement is realistic.`;
+    if (bandDistance === "FAR" && tier === "limited") return "These changes would be a meaningful first step. More than one round of improvement may be needed, but each step materially reduces vulnerability.";
+    if (bandDistance === "FAR" && tier === "developing") return `These changes would strengthen protection meaningfully. The next band is achievable, but will take sustained effort.`;
+    if (bandDistance === "FAR") return "These changes would create meaningful progress toward stronger protection.";
+    // MODERATE
+    if (tier === "limited") return "These changes would create real progress, even if more work would still be needed to move fully out of Limited Stability.";
+    if (tier === "developing") return `Together, these changes would create meaningful progress toward Established Stability.`;
+    return `Together, these changes could move ${name} deeper into stability and strengthen protection against disruption.`;
+  })();
 
   const p5Intro: Record<string, string> = {
     A1: `The first priority for ${name} is not bigger income. It is building basic protection. That means securing more income ahead of time, reducing reliance on one source, and creating more income that continues if work stops.`,
@@ -828,6 +834,52 @@ export default function ReviewPage() {
   const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
   const olBenchmark = ol?.benchmark_context_layer ?? null;
+
+  // ── LAYER 2: Dominant constraint ──
+  const dominantConstraintKey = v2Constraints?.root_constraint ?? "weak_forward_visibility";
+  const dominantConstraint: "source_concentration" | "forward_visibility" | "labor_dependence" | "low_continuity" | "few_sources" =
+    dominantConstraintKey === "high_concentration" ? "source_concentration" :
+    dominantConstraintKey === "weak_forward_visibility" ? "forward_visibility" :
+    dominantConstraintKey === "high_labor_dependence" ? "labor_dependence" :
+    dominantConstraintKey === "low_persistence" ? "low_continuity" :
+    dominantConstraintKey === "low_source_diversity" ? "few_sources" :
+    "forward_visibility";
+
+  const dominantConstraintPlain: Record<string, string> = {
+    source_concentration: "too much reliance on one source",
+    forward_visibility: "not enough income secured ahead of time",
+    labor_dependence: "too much of the income still depends on daily work",
+    low_continuity: "too little income would continue if work stopped",
+    few_sources: "the income structure is still too narrow",
+  };
+
+  // ── LAYER 3: Distance to next band ──
+  const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
+  const distanceToNext = nextBandThreshold - score;
+  const bandDistance: "CLOSE" | "MODERATE" | "FAR" | "TOP_BAND" =
+    tier === "high" ? "TOP_BAND" :
+    distanceToNext <= 4 ? "CLOSE" :
+    distanceToNext <= 14 ? "MODERATE" : "FAR";
+
+  // ── LAYER 4: Metric severity ──
+  const continuitySeverity: string =
+    record.income_continuity_months < 1 ? "very short" :
+    record.income_continuity_months < 3 ? "limited" :
+    record.income_continuity_months < 6 ? "moderate" :
+    record.income_continuity_months < 12 ? "meaningful" : "strong";
+
+  const sourceDropSeverity: "collapse" | "severe" | "significant" | "moderate" | "minor" =
+    record.risk_scenario_score <= 0 ? "collapse" :
+    record.risk_scenario_drop > score * 0.6 ? "severe" :
+    record.risk_scenario_drop > score * 0.3 ? "significant" :
+    record.risk_scenario_drop > 5 ? "moderate" : "minor";
+
+  const peerPercentileValue = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? 50);
+  const peerInterpretation: string =
+    peerPercentileValue <= 10 ? "far below benchmark" :
+    peerPercentileValue <= 30 ? "below benchmark" :
+    peerPercentileValue <= 60 ? "around benchmark" :
+    peerPercentileValue <= 85 ? "above benchmark" : "well above benchmark";
 
   // ── Consumer-friendly label maps ──
   const failureModeLabel: Record<string, string> = {
@@ -962,17 +1014,21 @@ export default function ReviewPage() {
         {/* Single most important insight — one line the customer remembers */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 24 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
-            {v2Constraints
-              ? `The main thing holding ${name} back right now: ${constraintLabel[v2Constraints.root_constraint] ?? "not enough recurring or committed income"}.`
-              : `The main thing holding ${name} back right now: not enough recurring or committed income.`}
+            {`The main thing holding ${name} back right now: ${dominantConstraintPlain[dominantConstraint]}.`}
             {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
 
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
-          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.`} />
-          <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
-          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] === "Too much dependence on one source" ? "If the largest source changed, the score would drop significantly." : constraintLabel[v2Constraints.root_constraint] === "Too much dependence on active work" ? "Too much income still requires daily work to keep being produced." : "The main factor limiting the score needs to be addressed first.") : "The main factor limiting the score needs to be addressed first."} />
+          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a ${continuitySeverity} level of continuity.`} />
+          <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation={sourceDropSeverity === "collapse" ? "If the largest source disappeared, the score would collapse to near zero. This is a severe concentration risk." : sourceDropSeverity === "severe" ? "If the largest source disappeared, the score would drop sharply. Too much still depends on one source." : "If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source."} />
+          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} explanation={({
+            source_concentration: "If the largest source changed, the score would drop significantly.",
+            forward_visibility: "More income needs to be committed before each month begins.",
+            labor_dependence: "Too much income still requires daily work to keep being produced.",
+            low_continuity: "Income would not continue for long enough if active work stopped.",
+            few_sources: "The income depends on too few independent sources.",
+          })[dominantConstraint]} />
           <MetricCard label="OVERALL DURABILITY" value={durabilityValue[subTier]} explanation={durabilityBody[subTier]} />
         </div>
 
@@ -1208,6 +1264,19 @@ export default function ReviewPage() {
                 ))}
               </div>
             )}
+            <p style={{ ...T.meta, color: B.muted, margin: 0, fontStyle: "italic" }}>
+              {({
+                A1: `Compared with peers, ${name} is currently well below benchmark in several protection areas.`,
+                A2: `Compared with peers, ${name} is below benchmark in several areas that matter for stability.`,
+                A3: `Compared with peers, ${name} is still behind in several important stability areas.`,
+                B1: `Compared with peers, ${name} is improving, but still trails the benchmark in important areas.`,
+                B2: `Compared with peers, ${name} is close to the middle in some areas, but still below benchmark in others.`,
+                C1: `Compared with peers, ${name} is around or above benchmark in some areas, but still weaker in others.`,
+                C2: `Compared with peers, ${name} is performing solidly, with only a few remaining areas below benchmark.`,
+                D1: `Compared with peers, ${name} is performing strongly across most areas.`,
+                D2: `Compared with peers, ${name} is performing at a very high level across the benchmark.`,
+              })[subTier]}
+            </p>
           </div>
         )}
 
@@ -1267,7 +1336,7 @@ export default function ReviewPage() {
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                {p4CombinedLine[subTier]}
+                {p4CombinedLine}
               </div>
             )}
           </div>
@@ -1342,13 +1411,43 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 24, marginBottom: 24 }}>
           <div style={{ flex: 1 }}>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do next</div>
-            {[
-              "Secure at least one multi-month or forward-committed revenue arrangement",
-              "Reduce dependence on the single largest source",
-              "Convert part of active-work income into repeatable income",
-              "Know more of next month\u2019s income before the month begins",
-              "Reassess only after real structural change is in place",
-            ].map((item, i) => (
+            {(({
+              source_concentration: [
+                "Reduce how much the structure depends on the single largest source",
+                "Lock in at least one income source committed for more than one month",
+                "Convert some active-work income into recurring or repeatable income",
+                "Know more of next month\u2019s income before the month begins",
+                "Reassess only after these changes are actually live, not just planned",
+              ],
+              forward_visibility: [
+                "Lock in at least one income source that is committed for more than one month",
+                "Reduce how much the structure depends on the single largest source",
+                "Convert some active-work income into recurring or repeatable income",
+                "Know more of next month\u2019s income before the month begins",
+                "Reassess only after these changes are actually live, not just planned",
+              ],
+              labor_dependence: [
+                "Convert some active-work income into recurring or repeatable income",
+                "Lock in at least one income source committed for more than one month",
+                "Reduce how much the structure depends on the single largest source",
+                "Know more of next month\u2019s income before the month begins",
+                "Reassess only after these changes are actually live, not just planned",
+              ],
+              low_continuity: [
+                "Build income that would continue for longer if active work stopped",
+                "Lock in at least one income source committed for more than one month",
+                "Reduce how much the structure depends on the single largest source",
+                "Know more of next month\u2019s income before the month begins",
+                "Reassess only after these changes are actually live, not just planned",
+              ],
+              few_sources: [
+                "Add at least one additional dependable income source",
+                "Lock in at least one income source committed for more than one month",
+                "Convert some active-work income into recurring or repeatable income",
+                "Know more of next month\u2019s income before the month begins",
+                "Reassess only after these changes are actually live, not just planned",
+              ],
+            })[dominantConstraint]).map((item, i) => (
               <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
               </div>
