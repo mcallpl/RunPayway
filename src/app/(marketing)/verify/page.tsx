@@ -55,11 +55,11 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  sand: "#F4F1EA",
+  sandDk: "#F4F1EA",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
 /* ------------------------------------------------------------------ */
@@ -300,8 +300,8 @@ export default function VerifyPage() {
           position: "relative",
           overflow: "hidden",
           background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
+          paddingTop: mobile ? 80 : 100,
+          paddingBottom: mobile ? 64 : 80,
         }}
       >
         {/* Grain overlay */}
@@ -352,7 +352,7 @@ export default function VerifyPage() {
           <h1
             style={{
               fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
+              fontWeight: 600,
               color: "#FFFFFF",
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
@@ -366,7 +366,7 @@ export default function VerifyPage() {
             style={{
               fontSize: mobile ? 15 : 18,
               color: "rgba(255,255,255,0.65)",
-              lineHeight: 1.7,
+              lineHeight: 1.65,
               maxWidth: 560,
               margin: "0 auto 8px",
             }}
@@ -406,7 +406,7 @@ export default function VerifyPage() {
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: 20,
+              borderRadius: 12,
               border: "1px solid rgba(14,26,43,0.06)",
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
@@ -415,7 +415,7 @@ export default function VerifyPage() {
             <h2
               style={{
                 fontSize: mobile ? 18 : 22,
-                fontWeight: 700,
+                fontWeight: 600,
                 color: B.navy,
                 letterSpacing: "-0.02em",
                 marginBottom: 8,
@@ -423,7 +423,7 @@ export default function VerifyPage() {
             >
               {t.verifyPage.formTitle}
             </h2>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
+            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 28 }}>
               {t.verifyPage.formSubtitle}
             </p>
 
@@ -554,7 +554,7 @@ export default function VerifyPage() {
               style={{
                 marginTop: 24,
                 background: "#FFFFFF",
-                borderRadius: 20,
+                borderRadius: 12,
                 border: result.valid_record
                   ? "1px solid rgba(31,109,122,0.20)"
                   : "1px solid rgba(14,26,43,0.08)",
@@ -577,7 +577,7 @@ export default function VerifyPage() {
                     }}
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, letterSpacing: "0.04em", textTransform: "uppercase" }}>
                       {t.verifyPage.verifiedBadge}
                     </span>
                   </div>
@@ -632,11 +632,11 @@ export default function VerifyPage() {
                     }}
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.light }} />
-                    <span style={{ fontSize: 12, fontWeight: 700, color: B.muted, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: B.muted, letterSpacing: "0.04em", textTransform: "uppercase" }}>
                       {t.verifyPage.noMatchBadge}
                     </span>
                   </div>
-                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>
+                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
                     {t.verifyPage.noMatchText}
                   </p>
                 </div>
@@ -649,7 +649,7 @@ export default function VerifyPage() {
             style={{
               marginTop: 32,
               padding: mobile ? "24px 24px" : "28px 28px",
-              borderRadius: 16,
+              borderRadius: 12,
               background: "#FFFFFF",
               border: "1px solid rgba(14,26,43,0.06)",
             }}
@@ -677,9 +677,9 @@ export default function VerifyPage() {
                       marginTop: 2,
                     }}
                   >
-                    <span style={{ fontSize: 11, fontWeight: 700, color: B.purple }}>{i + 1}</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: B.purple }}>{i + 1}</span>
                   </div>
-                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>{text}</p>
+                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>{text}</p>
                 </div>
               ))}
             </div>
