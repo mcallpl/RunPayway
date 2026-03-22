@@ -261,80 +261,37 @@ function Hero() {
 /* ================================================================== */
 /* PAGE 1: YOUR SCORE — FULL REVEAL                                    */
 /* ================================================================== */
-function Page1Score() {
+function Page1Preview() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-  const score = useAnimatedCounter(78, visible, 1500);
-
   return (
-    <section ref={ref} style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        <ReportCard visible={visible} mobile={mobile} delay={100}>
-          {/* Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
-            <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
+    <div ref={ref}>
+      <PagePreview
+        pageNum="1" title="Your Score" question="What is my score?"
+        description="The first page delivers your result immediately — your score, your stability band, where you land relative to peers, and the single most important thing holding the structure back."
+        bullets={["Your 0–100 Income Stability Score with band classification", "A plain-English summary calibrated to your score severity", "Four structural metrics: continuity, stress test, main constraint, and overall durability"]}
+        alignRight={true} visible={visible} mobile={mobile}
+        cardContent={<>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
+            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal }}>YOUR INCOME STABILITY REPORT</div>
-            <div style={{ flexShrink: 0, textAlign: "center" }}>
-              <div style={{ width: 64, height: 64, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="4" width="12" height="12" rx="1" fill={B.navy} /><rect x="32" y="4" width="12" height="12" rx="1" fill={B.navy} /><rect x="4" y="32" width="12" height="12" rx="1" fill={B.navy} /><rect x="7" y="7" width="6" height="6" rx="0.5" fill="#FFFFFF" /><rect x="35" y="7" width="6" height="6" rx="0.5" fill="#FFFFFF" /><rect x="7" y="35" width="6" height="6" rx="0.5" fill="#FFFFFF" /><rect x="9" y="9" width="2" height="2" fill={B.navy} /><rect x="37" y="9" width="2" height="2" fill={B.navy} /><rect x="9" y="37" width="2" height="2" fill={B.navy} /><rect x="20" y="4" width="3" height="3" fill={B.navy} /><rect x="20" y="20" width="3" height="3" fill={B.navy} /><rect x="26" y="20" width="3" height="3" fill={B.navy} /><rect x="32" y="26" width="3" height="3" fill={B.navy} /><rect x="26" y="32" width="3" height="3" fill={B.navy} /><rect x="38" y="38" width="3" height="3" fill={B.navy} /></svg>
-              </div>
-              <div style={{ fontSize: 9, color: B.light, marginTop: 3 }}>Scan to verify</div>
-            </div>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>YOUR INCOME STABILITY REPORT</div>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Score</h3>
+          <div style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 6 }}>78</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandHigh }} />
+            <span style={{ fontSize: 13, fontWeight: 500, color: B.bandHigh }}>High Stability</span>
           </div>
-          <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 16 }}>Your Score</h2>
-
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 64, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 8 }}>{score}</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: B.bandHigh }} />
-              <span style={{ fontSize: 16, fontWeight: 500, color: B.bandHigh }}>High Stability</span>
-            </div>
-            <div style={{ fontSize: 12, color: B.muted, marginTop: 6 }}>72nd percentile among Professional Services professionals in this benchmark</div>
-          </div>
-
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.light, marginBottom: 8 }}>WHERE YOU LAND</div>
-            <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
-              {[{ w: 30, active: false }, { w: 20, active: false }, { w: 25, active: false }, { w: 25, active: true }].map((seg, i) => (
-                <div key={i} style={{ width: `${seg.w}%`, backgroundColor: [B.bandLimited, B.bandDeveloping, B.bandEstablished, B.bandHigh][i], borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: seg.active ? 1 : 0.25 }} />
-              ))}
-            </div>
-          </div>
-
-          <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>Sample Professional Services scored 78 out of 100. The income structure is strong, with substantial protection already in place.</p>
-          <p style={{ fontSize: 11, color: B.teal, fontWeight: 500, marginBottom: 16 }}>Why this matters: income that looks fine today can still be structurally weak if too much depends on active work, one source, or income that is not secured ahead of time.</p>
-
-          <div style={{ backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "12px 16px", marginBottom: 16 }}>
-            <p style={{ fontSize: 12, color: B.navy, lineHeight: 1.6, margin: 0, fontWeight: 500 }}>The main thing holding this profile back right now: not enough income secured ahead of time. Fixing this could raise the score by about 8 points.</p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
-            {[
-              { label: "INCOME THAT WOULD CONTINUE IF WORK STOPPED", value: "38%" },
-              { label: "IF LARGEST SOURCE DISAPPEARED", value: "78 → 56" },
-              { label: "MAIN REASON SCORE IS HELD BACK", value: "Not enough income secured ahead" },
-              { label: "OVERALL DURABILITY", value: "Strong protection" },
-            ].map((m) => (
-              <div key={m.label} style={{ backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "10px 12px" }}>
-                <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>{m.label}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, lineHeight: 1.3 }}>{m.value}</div>
-              </div>
+          <div style={{ display: "flex", gap: 2, height: 6, marginBottom: 12 }}>
+            {[{ w: 30 }, { w: 20 }, { w: 25 }, { w: 25 }].map((seg, i) => (
+              <div key={i} style={{ width: `${seg.w}%`, backgroundColor: [B.bandLimited, B.bandDeveloping, B.bandEstablished, B.bandHigh][i], borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: i === 3 ? 1 : 0.25 }} />
             ))}
           </div>
-
-          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.12)", marginBottom: 10 }}>
-            {[["Prepared for", "Sample Professional Services"], ["Industry", "Professional Services"], ["Date Issued", "2026-03-22"], ["Record ID", "a1b2c3d4"]].map(([l, v]) => (
-              <div key={l}><div style={{ fontSize: 9, color: B.light }}>{l}</div><div style={{ fontSize: 10, fontWeight: 500, color: B.navy }}>{v}</div></div>
-            ))}
-          </div>
-          <CardFooter left="Your Score · Page 1" right="Model RP-2.0" />
-        </ReportCard>
-      </div>
-    </section>
+          <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.5, margin: 0 }}>The income structure is strong, with substantial protection already in place.</p>
+        </>}
+      />
+    </div>
   );
 }
 
@@ -346,15 +303,15 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
 }) {
   const content = (
     <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>PAGE {pageNum}</div>
-      <div style={{ fontSize: 14, color: B.muted, fontStyle: "italic", marginBottom: 12 }}>{question}</div>
-      <h3 style={{ fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 14 }}>{title}</h3>
-      <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 20 }}>{description}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: B.teal, marginBottom: 12 }}>PAGE {pageNum}</div>
+      <div style={{ fontSize: 15, color: B.muted, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
+      <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
+      <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {bullets.map((b) => (
-          <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, marginTop: 6, flexShrink: 0 }} />
-            <span style={{ fontSize: 13, color: "rgba(14,26,43,0.55)", lineHeight: 1.55 }}>{b}</span>
+          <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
+            <span style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.6 }}>{b}</span>
           </div>
         ))}
       </div>
@@ -362,17 +319,17 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
   );
 
   const card = (
-    <div style={{ flex: 1, maxWidth: mobile ? undefined : 380 }}>
-      <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={320}>
+    <div style={{ flex: 1, maxWidth: mobile ? undefined : 400 }}>
+      <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={340}>
         {cardContent}
       </ReportCard>
     </div>
   );
 
   return (
-    <section style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 40 : 64, paddingBottom: mobile ? 40 : 64, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
-      <div ref={undefined} style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 56 }}>
-        {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 32 : 0 }} />{card}</> : <>{card}<div style={{ width: 56 }} />{content}</>}
+    <section style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 48 : 80, paddingBottom: mobile ? 48 : 80, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
+        {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 36 : 0 }} />{card}</> : <>{card}<div style={{ width: 64 }} />{content}</>}
       </div>
     </section>
   );
@@ -637,7 +594,7 @@ export default function SampleReportPage() {
   return (
     <div style={{ backgroundColor: "#F8F6F2" }}>
       <Hero />
-      <Page1Score />
+      <Page1Preview />
       <Page2Preview />
       <Page3Preview />
       <Page4Preview />
