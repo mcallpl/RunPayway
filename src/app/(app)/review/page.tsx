@@ -1653,7 +1653,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Shareable Score Card */}
-        <div style={{ borderRadius: 16, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden" }}>
+        <div id="shareable-score-card" style={{ borderRadius: 16, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden" }}>
           {/* Card header */}
           <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "28px 28px 24px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -1729,10 +1729,32 @@ export default function ReviewPage() {
               >
                 Copy verification link
               </button>
+              <button
+                onClick={async () => {
+                  const el = document.getElementById("shareable-score-card");
+                  if (!el) return;
+                  const sendSection = el.querySelector("[data-send-section]") as HTMLElement | null;
+                  if (sendSection) sendSection.style.display = "none";
+                  try {
+                    const html2canvas = (await import("html2canvas")).default;
+                    const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
+                    if (sendSection) sendSection.style.display = "";
+                    const link = document.createElement("a");
+                    link.download = `RunPayway-Score-Card-${record.record_id.slice(0, 8)}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                  } catch {
+                    if (sendSection) sendSection.style.display = "";
+                  }
+                }}
+                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: "#FFFFFF", borderRadius: 10, border: "none", cursor: "pointer", backgroundColor: B.navy, transition: "all 150ms ease", flex: 1 }}
+              >
+                Download score card
+              </button>
             </div>
           </div>
           {/* Send to someone */}
-          <div style={{ padding: "16px 28px 20px", backgroundColor: B.bone, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
+          <div data-send-section style={{ padding: "16px 28px 20px", backgroundColor: B.bone, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Send to a lender, partner, or advisor</div>
             <p style={{ fontSize: 11, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
               They will receive your score summary and a verification link.
