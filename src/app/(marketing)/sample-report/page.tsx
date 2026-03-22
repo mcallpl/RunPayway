@@ -370,7 +370,38 @@ function Page1Score() {
           <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
         </div>
 
-        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>YOUR INCOME STABILITY REPORT</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal }}>YOUR INCOME STABILITY REPORT</div>
+          <div style={{ flexShrink: 0, textAlign: "center" }}>
+            <div style={{ width: 64, height: 64, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="4" y="4" width="12" height="12" rx="1" fill={B.navy} />
+                <rect x="32" y="4" width="12" height="12" rx="1" fill={B.navy} />
+                <rect x="4" y="32" width="12" height="12" rx="1" fill={B.navy} />
+                <rect x="7" y="7" width="6" height="6" rx="0.5" fill="#FFFFFF" />
+                <rect x="35" y="7" width="6" height="6" rx="0.5" fill="#FFFFFF" />
+                <rect x="7" y="35" width="6" height="6" rx="0.5" fill="#FFFFFF" />
+                <rect x="9" y="9" width="2" height="2" fill={B.navy} />
+                <rect x="37" y="9" width="2" height="2" fill={B.navy} />
+                <rect x="9" y="37" width="2" height="2" fill={B.navy} />
+                <rect x="20" y="4" width="3" height="3" fill={B.navy} />
+                <rect x="20" y="10" width="3" height="3" fill={B.navy} />
+                <rect x="26" y="4" width="3" height="3" fill={B.navy} />
+                <rect x="20" y="20" width="3" height="3" fill={B.navy} />
+                <rect x="26" y="20" width="3" height="3" fill={B.navy} />
+                <rect x="32" y="20" width="3" height="3" fill={B.navy} />
+                <rect x="20" y="26" width="3" height="3" fill={B.navy} />
+                <rect x="32" y="26" width="3" height="3" fill={B.navy} />
+                <rect x="38" y="26" width="3" height="3" fill={B.navy} />
+                <rect x="26" y="32" width="3" height="3" fill={B.navy} />
+                <rect x="32" y="32" width="3" height="3" fill={B.navy} />
+                <rect x="38" y="38" width="3" height="3" fill={B.navy} />
+                <rect x="20" y="38" width="3" height="3" fill={B.navy} />
+              </svg>
+            </div>
+            <div style={{ fontSize: 9, color: B.light, marginTop: 3 }}>Scan to verify</div>
+          </div>
+        </div>
         <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 16 }}>Your Score</h2>
 
         {/* Score + band */}
