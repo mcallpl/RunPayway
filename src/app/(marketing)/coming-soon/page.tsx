@@ -69,16 +69,16 @@ const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 function NotifyForm({ mobile }: { mobile: boolean }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [interest, setInterest] = useState("");
+  const [product, setProduct] = useState("");
+  const [question, setQuestion] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    // Store locally for now — will connect to backend/email service later
     try {
       const existing = JSON.parse(localStorage.getItem("rp_notify_signups") || "[]");
-      existing.push({ name, email, interest, timestamp: new Date().toISOString() });
+      existing.push({ name, email, product, question, timestamp: new Date().toISOString() });
       localStorage.setItem("rp_notify_signups", JSON.stringify(existing));
     } catch { /* ignore */ }
     setSubmitted(true);
@@ -97,10 +97,10 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
       >
         <div style={{ fontSize: 24, marginBottom: 12 }}>&#10003;</div>
         <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 8 }}>
-          You are on the list
+          Thank you, {name || "we got it"}
         </div>
         <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-          We will notify you at <strong>{email}</strong> when{interest ? ` ${interest} is` : " new products are"} available.
+          We will reach out to <strong>{email}</strong> with updates{product ? ` on ${product}` : ""}.
         </p>
       </div>
     );
@@ -120,6 +120,15 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
     transition: "border-color 180ms ease, box-shadow 180ms ease",
   };
 
+  const focusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = B.purple;
+    e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)";
+  };
+  const blurHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)";
+    e.currentTarget.style.boxShadow = "none";
+  };
+
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <input
@@ -128,8 +137,8 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         style={inputStyle}
-        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
       />
       <input
         type="email"
@@ -138,30 +147,46 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         style={inputStyle}
-        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
       />
       <select
-        value={interest}
-        onChange={(e) => setInterest(e.target.value)}
+        value={product}
+        onChange={(e) => setProduct(e.target.value)}
         style={{
           ...inputStyle,
-          color: interest ? B.navy : "rgba(14,26,43,0.42)",
+          color: product ? B.navy : "rgba(14,26,43,0.42)",
           appearance: "none",
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%230E1A2B' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.3'/%3E%3C/svg%3E")`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: `right 16px center`,
         }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.boxShadow = "none"; }}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
       >
-        <option value="">What are you most interested in?</option>
+        <option value="">Which product are you interested in?</option>
         <option value="Annual Monitoring">Annual Income Monitoring</option>
         <option value="Advisor License">Advisor / API License</option>
         <option value="Enterprise">Enterprise / Platform Integration</option>
         <option value="Languages">New Language Support</option>
         <option value="All">All of the above</option>
       </select>
+      <textarea
+        placeholder="Any questions about a coming soon product?"
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        rows={3}
+        style={{
+          ...inputStyle,
+          height: "auto",
+          padding: "12px 16px",
+          resize: "vertical" as const,
+          fontFamily: "inherit",
+          lineHeight: 1.55,
+        }}
+        onFocus={focusHandler}
+        onBlur={blurHandler}
+      />
       <button
         type="submit"
         style={{
@@ -180,10 +205,10 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
         onMouseEnter={(e) => { e.currentTarget.style.background = B.purple; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = B.navy; }}
       >
-        Notify Me
+        Submit
       </button>
       <p style={{ fontSize: 12, color: B.light, textAlign: "center", margin: 0 }}>
-        No spam. We will only email you when something launches.
+        No spam. We will only reach out with product updates.
       </p>
     </form>
   );
@@ -544,10 +569,10 @@ export default function ComingSoonPage() {
                 marginBottom: 12,
               }}
             >
-              Get notified when we launch
+              Have questions? Want updates?
             </h2>
             <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, margin: 0 }}>
-              Leave your details and we will let you know when new products and languages become available.
+              Ask about any upcoming product or leave your email to be notified when we launch.
             </p>
           </div>
 
