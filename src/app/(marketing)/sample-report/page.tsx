@@ -9,18 +9,18 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#FAF9F7",
+  sand: "#F4F1EA",
   sandDk: "#F4F1EA",
-  offWhite: "#FEFDFB",
-  muted: "#4B5563",
-  light: "#9CA3AF",
-  border: "#E6E9EF",
+  offWhite: "#FFFFFF",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  border: "rgba(14,26,43,0.12)",
   gradient:
     "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-  bandLimited: "#DC2626",
-  bandDeveloping: "#D97706",
-  bandEstablished: "#2563EB",
-  bandHigh: "#16A34A",
+  bandLimited: "#9B2C2C",
+  bandDeveloping: "#92640A",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1F6D7A",
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
@@ -114,7 +114,7 @@ function ReportCard({
         margin: "0 auto",
         backgroundColor: "#ffffff",
         border: "1px solid rgba(14,26,43,0.06)",
-        borderRadius: 16,
+        borderRadius: 12,
         boxShadow: hovered
           ? "0 12px 40px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.05)"
           : "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
@@ -137,7 +137,7 @@ function ReportCard({
           top: 0,
           left: 0,
           right: 0,
-          height: 3,
+          height: 2,
           background: `linear-gradient(90deg, ${B.purple}, ${B.teal})`,
         }}
       />
@@ -190,7 +190,7 @@ function SectionLabel({ label }: { label: string }) {
       <span
         style={{
           fontSize: 11,
-          fontWeight: 700,
+          fontWeight: 600,
           color: B.teal,
           letterSpacing: "0.14em",
           textTransform: "uppercase",
@@ -306,7 +306,7 @@ function Hero() {
           <div
             style={{
               fontSize: 11,
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: "0.14em",
               textTransform: "uppercase",
               color: "rgba(250,249,247,0.50)",
@@ -364,7 +364,7 @@ function Page1Score() {
   ];
 
   const metrics = [
-    { label: "Continuity", value: "38%", accent: B.teal },
+    { label: "Income that continues without daily work", value: "38%", accent: B.teal },
     { label: "Stress Test", value: "78 \u2192 56", accent: B.bandLimited },
     {
       label: "Main Constraint",
@@ -404,7 +404,7 @@ function Page1Score() {
           <span
             style={{
               fontSize: 13,
-              fontWeight: 700,
+              fontWeight: 600,
               color: B.navy,
               letterSpacing: "0.06em",
             }}
@@ -420,7 +420,7 @@ function Page1Score() {
         <div
           style={{
             fontSize: 10,
-            fontWeight: 700,
+            fontWeight: 600,
             letterSpacing: "0.14em",
             textTransform: "uppercase",
             color: B.teal,
@@ -452,7 +452,7 @@ function Page1Score() {
         >
           <span
             className="text-[48px] md:text-[64px]"
-            style={{ fontWeight: 700, color: B.navy, lineHeight: 1 }}
+            style={{ fontWeight: 600, color: B.navy, lineHeight: 1 }}
           >
             {score}
           </span>
@@ -571,8 +571,8 @@ function Page1Score() {
               fontWeight: 500,
             }}
           >
-            The biggest structural weak point is limited forward visibility.
-            Improving forward secured income could add 8 points.
+            The biggest weak point is limited income secured ahead of time.
+            Improving this could add 8 points.
           </p>
         </div>
 
@@ -598,7 +598,7 @@ function Page1Score() {
               <div
                 style={{
                   fontSize: 10,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   letterSpacing: "0.1em",
                   textTransform: "uppercase",
                   color: B.light,
@@ -610,7 +610,7 @@ function Page1Score() {
               <div
                 style={{
                   fontSize: m.small ? 12 : 16,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: B.navy,
                   lineHeight: 1.3,
                 }}
@@ -662,9 +662,9 @@ function Page2WhyThisScore() {
   const mobile = useMobile();
 
   const drivers = [
-    { label: "Continuity", level: "Moderate", pct: 45, color: B.bandDeveloping },
-    { label: "Income Secured Ahead", level: "Low", pct: 18, color: B.bandLimited },
-    { label: "Source Diversification", level: "Moderate", pct: 50, color: B.bandDeveloping },
+    { label: "Income that continues without daily work", level: "Moderate", pct: 45, color: B.bandDeveloping },
+    { label: "Income secured ahead of time", level: "Low", pct: 18, color: B.bandLimited },
+    { label: "Number of income sources", level: "Moderate", pct: 50, color: B.bandDeveloping },
     { label: "Dependence on Work", level: "High", pct: 75, color: B.bandLimited },
     { label: "Dependence on One Source", level: "Moderate", pct: 50, color: B.bandDeveloping },
   ];
@@ -684,7 +684,7 @@ function Page2WhyThisScore() {
   return (
     <section
       ref={ref}
-      aria-label="Page 2 — Why This Score"
+      aria-label="Page 2 — What This Score Means"
       style={{
         backgroundColor: B.sand,
         paddingTop: mobile ? 48 : 0,
@@ -705,7 +705,7 @@ function Page2WhyThisScore() {
             marginTop: 8,
           }}
         >
-          Why This Score
+          What This Score Means
         </h2>
 
         {/* Driver bars — fully visible */}
@@ -780,7 +780,7 @@ function Page2WhyThisScore() {
             <div
               style={{
                 fontSize: 10,
-                fontWeight: 700,
+                fontWeight: 600,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
                 color: B.teal,
@@ -799,7 +799,7 @@ function Page2WhyThisScore() {
                 <div
                   style={{
                     fontSize: 9,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.1em",
                     color:
                       c.rank === "PRIMARY"
@@ -846,7 +846,7 @@ function Page2WhyThisScore() {
           <div
             style={{
               fontSize: 14,
-              fontWeight: 700,
+              fontWeight: 600,
               color: B.navy,
               marginBottom: 14,
             }}
@@ -878,7 +878,7 @@ function Page2WhyThisScore() {
                 <span
                   style={{
                     fontSize: 14,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: B.light,
                     flexShrink: 0,
                   }}
@@ -900,7 +900,7 @@ function Page2WhyThisScore() {
                     <span
                       style={{
                         fontSize: 13,
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: B.bandHigh,
                       }}
                     >
@@ -910,7 +910,7 @@ function Page2WhyThisScore() {
                       <span
                         style={{
                           fontSize: 9,
-                          fontWeight: 700,
+                          fontWeight: 600,
                           letterSpacing: "0.06em",
                           color: "#ffffff",
                           backgroundColor: B.bandHigh,
@@ -929,7 +929,7 @@ function Page2WhyThisScore() {
           </div>
         </FadeOverlay>
 
-        <CardFooter left="Why This Score · Page 2" right="Model RP-2.0" />
+        <CardFooter left="What This Score Means · Page 2" right="Model RP-2.0" />
       </ReportCard>
     </section>
   );
@@ -978,7 +978,7 @@ function Page3WhatCouldGoWrong() {
   return (
     <section
       ref={ref}
-      aria-label="Page 3 — What Could Go Wrong"
+      aria-label="Page 3 — Your Biggest Risks"
       style={{
         backgroundColor: "#ffffff",
         paddingTop: mobile ? 48 : 0,
@@ -999,7 +999,7 @@ function Page3WhatCouldGoWrong() {
             marginTop: 8,
           }}
         >
-          What Could Go Wrong
+          Your Biggest Risks
         </h2>
 
         {/* Two summary cards — VISIBLE */}
@@ -1022,7 +1022,7 @@ function Page3WhatCouldGoWrong() {
             <div
               style={{
                 fontSize: 10,
-                fontWeight: 700,
+                fontWeight: 600,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: B.light,
@@ -1039,14 +1039,14 @@ function Page3WhatCouldGoWrong() {
                 gap: 8,
               }}
             >
-              <span style={{ fontSize: 32, fontWeight: 700, color: B.navy }}>
+              <span style={{ fontSize: 32, fontWeight: 600, color: B.navy }}>
                 78
               </span>
               <span style={{ fontSize: 18, color: B.light }}>&rarr;</span>
               <span
                 style={{
                   fontSize: 32,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: B.bandLimited,
                 }}
               >
@@ -1065,16 +1065,16 @@ function Page3WhatCouldGoWrong() {
             <div
               style={{
                 fontSize: 10,
-                fontWeight: 700,
+                fontWeight: 600,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 color: B.light,
                 marginBottom: 10,
               }}
             >
-              CONTINUITY WINDOW
+              RECURRING INCOME WINDOW
             </div>
-            <div style={{ fontSize: 32, fontWeight: 700, color: B.navy }}>
+            <div style={{ fontSize: 32, fontWeight: 600, color: B.navy }}>
               4{" "}
               <span style={{ fontSize: 16, fontWeight: 500, color: B.muted }}>
                 months
@@ -1108,7 +1108,7 @@ function Page3WhatCouldGoWrong() {
                 <span
                   style={{
                     fontSize: 9,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
                     color:
@@ -1141,14 +1141,14 @@ function Page3WhatCouldGoWrong() {
                     flexShrink: 0,
                   }}
                 >
-                  <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>
                     {s.from}
                   </span>
                   <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
                   <span
                     style={{
                       fontSize: 14,
-                      fontWeight: 700,
+                      fontWeight: 600,
                       color: B.bandLimited,
                     }}
                   >
@@ -1187,7 +1187,7 @@ function Page3WhatCouldGoWrong() {
           <div
             style={{
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 600,
               color: B.navy,
               marginBottom: 10,
             }}
@@ -1247,7 +1247,7 @@ function Page3WhatCouldGoWrong() {
           <div
             style={{
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 600,
               color: B.navy,
               marginBottom: 10,
             }}
@@ -1291,7 +1291,7 @@ function Page3WhatCouldGoWrong() {
           </div>
         </FadeOverlay>
 
-        <CardFooter left="What Could Go Wrong · Page 3" right="Model RP-2.0" />
+        <CardFooter left="Your Biggest Risks · Page 3" right="Model RP-2.0" />
       </ReportCard>
     </section>
   );
@@ -1307,7 +1307,7 @@ function Page4HowToImprove() {
   return (
     <section
       ref={ref}
-      aria-label="Page 4 — How to Improve"
+      aria-label="Page 4 — How to Raise Your Score"
       style={{
         backgroundColor: B.sand,
         paddingTop: mobile ? 48 : 0,
@@ -1328,7 +1328,7 @@ function Page4HowToImprove() {
             marginTop: 8,
           }}
         >
-          How to Improve
+          How to Raise Your Score
         </h2>
 
         {/* First line — VISIBLE */}
@@ -1347,7 +1347,7 @@ function Page4HowToImprove() {
           <span
             style={{
               fontSize: 10,
-              fontWeight: 700,
+              fontWeight: 600,
               color: B.light,
               letterSpacing: "0.08em",
               textTransform: "uppercase",
@@ -1365,7 +1365,7 @@ function Page4HowToImprove() {
               flex: 1,
             }}
           >
-            Extend Forward Visibility
+            Lock in income ahead of time
           </span>
           <div
             style={{
@@ -1375,12 +1375,12 @@ function Page4HowToImprove() {
               flexShrink: 0,
             }}
           >
-            <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>
               78
             </span>
             <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
             <span
-              style={{ fontSize: 14, fontWeight: 700, color: B.bandHigh }}
+              style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}
             >
               86
             </span>
@@ -1416,7 +1416,7 @@ function Page4HowToImprove() {
               <span
                 style={{
                   fontSize: 10,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: B.light,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
@@ -1432,9 +1432,9 @@ function Page4HowToImprove() {
                 Reduce Labor Dependence
               </span>
               <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>78</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>78</span>
                 <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-                <span style={{ fontSize: 14, fontWeight: 700, color: B.bandHigh }}>83</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}>83</span>
                 <span style={{ fontSize: 11, fontWeight: 600, color: B.bandHigh }}>(+5)</span>
               </div>
             </div>
@@ -1455,7 +1455,7 @@ function Page4HowToImprove() {
               <span
                 style={{
                   fontSize: 10,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: B.light,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
@@ -1471,9 +1471,9 @@ function Page4HowToImprove() {
                 Increase Persistent Revenue
               </span>
               <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>78</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>78</span>
                 <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-                <span style={{ fontSize: 14, fontWeight: 700, color: B.bandHigh }}>81</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}>81</span>
                 <span style={{ fontSize: 11, fontWeight: 600, color: B.bandHigh }}>(+3)</span>
               </div>
             </div>
@@ -1491,10 +1491,10 @@ function Page4HowToImprove() {
               }}
             >
               <span style={{ fontSize: 13, color: B.muted }}>Combined: </span>
-              <span style={{ fontSize: 15, fontWeight: 700, color: B.navy }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>
                 Score would reach{" "}
               </span>
-              <span style={{ fontSize: 20, fontWeight: 700, color: B.purple }}>91</span>
+              <span style={{ fontSize: 20, fontWeight: 600, color: B.purple }}>91</span>
               <span style={{ fontSize: 13, fontWeight: 600, color: B.bandHigh }}>
                 {" "}(+13 points)
               </span>
@@ -1533,7 +1533,7 @@ function Page4HowToImprove() {
                       backgroundColor: "rgba(75,63,174,0.08)",
                       color: B.purple,
                       fontSize: 12,
-                      fontWeight: 700,
+                      fontWeight: 600,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -1606,7 +1606,7 @@ function Page4HowToImprove() {
           </div>
         </div>
 
-        <CardFooter left="How to Improve · Page 4" right="Model RP-2.0" />
+        <CardFooter left="How to Raise Your Score · Page 4" right="Model RP-2.0" />
       </ReportCard>
     </section>
   );
@@ -1703,7 +1703,7 @@ function Page5WhatToDoNext() {
                 <div
                   style={{
                     fontSize: 10,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     color: B.bandHigh,
@@ -1728,7 +1728,7 @@ function Page5WhatToDoNext() {
                       lineHeight: 1.5,
                     }}
                   >
-                    <span style={{ fontWeight: 700, color: B.bandHigh, flexShrink: 0 }}>
+                    <span style={{ fontWeight: 600, color: B.bandHigh, flexShrink: 0 }}>
                       {i + 1}.
                     </span>
                     <span>{item}</span>
@@ -1747,7 +1747,7 @@ function Page5WhatToDoNext() {
                 <div
                   style={{
                     fontSize: 10,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     color: B.bandLimited,
@@ -1785,7 +1785,7 @@ function Page5WhatToDoNext() {
             <div
               style={{
                 fontSize: 14,
-                fontWeight: 700,
+                fontWeight: 600,
                 color: B.navy,
                 marginBottom: 14,
               }}
@@ -1846,7 +1846,7 @@ function Page5WhatToDoNext() {
                   border: "1px solid rgba(75,63,174,0.08)",
                 }}
               >
-                <div style={{ fontSize: 18, fontWeight: 700, color: B.navy }}>
+                <div style={{ fontSize: 18, fontWeight: 600, color: B.navy }}>
                   Reassess in 92 days
                 </div>
               </div>
@@ -1906,7 +1906,7 @@ function Page5WhatToDoNext() {
                 backgroundColor: B.sandDk,
                 color: B.navy,
                 fontSize: 15,
-                fontWeight: 700,
+                fontWeight: 600,
                 letterSpacing: "0.01em",
                 textDecoration: "none",
                 border: "1px solid rgba(14,26,43,0.08)",
@@ -2023,7 +2023,7 @@ function CtaSection() {
               backgroundColor: "#FAF9F7",
               color: B.navy,
               fontSize: 15,
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: "0.01em",
               textDecoration: "none",
               boxShadow: hovered
