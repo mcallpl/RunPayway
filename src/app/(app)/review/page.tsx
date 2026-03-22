@@ -186,27 +186,27 @@ const B = {
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
 const R = {
-  pagePad: 48,
-  headerMb: 24,
-  sectionGap: 28,
-  labelMb: 12,
-  paraMb: 16,
-  itemGap: 14,
-  dividerMy: 24,
-  footerMt: 24,
+  pagePad: 40,
+  headerMb: 16,
+  sectionGap: 16,
+  labelMb: 8,
+  paraMb: 12,
+  itemGap: 10,
+  dividerMy: 16,
+  footerMt: 16,
 };
 
 const T = {
-  score: { fontSize: 80, fontWeight: 600, lineHeight: 1 },
-  pageTitle: { fontSize: 26, fontWeight: 600, lineHeight: 1.25, color: "#0E1A2B" },
-  classification: { fontSize: 17, fontWeight: 500, lineHeight: 1.3 },
-  overline: { fontSize: 10.5, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4 },
-  cardHeading: { fontSize: 14, fontWeight: 600, lineHeight: 1.4 },
-  body: { fontSize: 12.5, fontWeight: 400, lineHeight: 1.65 },
-  small: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.55 },
-  meta: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
-  micro: { fontSize: 10, fontWeight: 500, lineHeight: 1.3 },
+  score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },
+  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: "#0E1A2B" },
+  classification: { fontSize: 16, fontWeight: 500, lineHeight: 1.3 },
+  overline: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 12, fontWeight: 600, lineHeight: 1.35 },
+  cardHeading: { fontSize: 13, fontWeight: 600, lineHeight: 1.35 },
+  body: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.6 },
+  small: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
+  meta: { fontSize: 10, fontWeight: 400, lineHeight: 1.45 },
+  micro: { fontSize: 9.5, fontWeight: 500, lineHeight: 1.3 },
 };
 
 // ── PDF page dimensions ──
@@ -262,9 +262,9 @@ function PageFooter({ section, page }: { section: string; page: number }) {
 
 function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
   return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "20px 22px" }}>
-      <div style={{ ...T.overline, color: B.teal, marginBottom: 10 }}>{label}</div>
-      <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 10, lineHeight: 1.3 }}>{value}</div>
+    <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 16px" }}>
+      <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>{label}</div>
+      <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{value}</div>
       <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
     </div>
   );
@@ -964,11 +964,11 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Your Score</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
 
-        <div style={{ marginBottom: 28 }}>
+        <div style={{ marginBottom: 20 }}>
           <div style={{ ...T.score, color: B.navy }}>{animatedScore}</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
@@ -980,7 +980,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Classification Scale */}
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>WHERE YOU LAND</div>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
             {[
@@ -1007,19 +1007,19 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
 
         {/* Single most important insight — one line the customer remembers */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 24 }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {`The main thing holding ${name} back right now: ${dominantConstraintPlain[dominantConstraint]}.`}
             {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
           <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a ${continuitySeverity} level of continuity.`} />
           <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation={sourceDropSeverity === "collapse" ? "If the largest source disappeared, the score would collapse to near zero. This is a severe concentration risk." : sourceDropSeverity === "severe" ? "If the largest source disappeared, the score would drop sharply. Too much still depends on one source." : "If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source."} />
           <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} explanation={({
@@ -1054,13 +1054,13 @@ export default function ReviewPage() {
       <ReportPage record={record}>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What This Score Means</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 28, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           {p2Intro[subTier]}
         </p>
 
         {/* What is already working */}
         <Overline>WHAT IS ALREADY WORKING</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
           <div>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{p2WorkingTitle}</div>
             <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
@@ -1079,7 +1079,7 @@ export default function ReviewPage() {
 
         {/* What is still vulnerable — ordered by dominant constraint */}
         <Overline>WHAT IS STILL VULNERABLE</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
           {(() => {
             const vulnerabilities: Record<string, Array<{ title: string; body: string }>> = {
               source_concentration: [
@@ -1121,13 +1121,13 @@ export default function ReviewPage() {
 
         {/* Plain-English interpretation */}
         <Overline>PLAIN-ENGLISH INTERPRETATION</Overline>
-        <p style={{ ...T.body, color: B.navy, marginBottom: 24, lineHeight: 1.7, maxWidth: 600 }}>
+        <p style={{ ...T.body, color: B.navy, marginBottom: 16, lineHeight: 1.6, maxWidth: 600 }}>
           {p2Interpretation[subTier]}
         </p>
 
         {/* Bottom takeaway */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "18px 22px" }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px" }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
             {p2BottomLine[subTier]}
           </p>
@@ -1146,8 +1146,8 @@ export default function ReviewPage() {
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
-        <div style={{ display: "flex", gap: 20, marginBottom: 28 }}>
-          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "22px 26px" }}>
+        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
+          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
             <Overline>IF YOUR LARGEST INCOME SOURCE DISAPPEARED</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
@@ -1158,7 +1158,7 @@ export default function ReviewPage() {
               If the largest income source disappeared tomorrow, the score would likely fall to {Math.max(0, record.risk_scenario_score)}. This shows that the structure still depends too heavily on that one source.
             </p>
           </div>
-          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "22px 26px" }}>
+          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
             <Overline>HOW LONG INCOME WOULD CONTINUE IF WORK STOPPED</Overline>
             <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 4 }}>
               Estimated: {continuityDisplay}
@@ -1317,13 +1317,13 @@ export default function ReviewPage() {
         </p>
 
         {/* Current Band / Next Target Band — compact side by side */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "18px 22px" }}>
+        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "14px 18px" }}>
             <Overline>CURRENT BAND</Overline>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
             <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0" }}>{p4CurrentBandBody[subTier]}</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "18px 22px" }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "14px 18px" }}>
             <Overline>NEXT TARGET BAND</Overline>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
             <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{p4TargetBandBody}</p>
@@ -1516,14 +1516,14 @@ export default function ReviewPage() {
         </div>
 
         {/* Bottom cards: Reassessment + Verification */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
             <p style={{ ...T.meta, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{copy.p5_reassess}</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
             <Overline>VERIFICATION</Overline>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
@@ -1536,8 +1536,8 @@ export default function ReviewPage() {
 
         {/* Benchmark context — only if data available */}
         {(v2Benchmarks || olBenchmark) && (
-          <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
-            <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
               <Overline>HOW YOU COMPARE</Overline>
               {v2Benchmarks && (
                 <>
@@ -1552,7 +1552,7 @@ export default function ReviewPage() {
               {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
             </div>
             {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
                 <Overline>TYPICAL PATTERNS IN YOUR PEER GROUP</Overline>
                 {olBenchmark.common_strengths?.length > 0 && (
                   <>
