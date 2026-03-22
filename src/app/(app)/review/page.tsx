@@ -659,18 +659,90 @@ export default function ReviewPage() {
   const evolutionSteps: string[] = safeJsonParse(record.evolution_path_steps_payload, []);
   const advisorGuide: { talking_points: string[]; client_questions: string[]; red_flags: string[]; next_steps: string[] } = safeJsonParse(record.advisor_discussion_guide_payload, { talking_points: [], client_questions: [], red_flags: [], next_steps: [] });
 
+  // ── Profile context for dynamic personalization ──
+  const profileClass = (record.classification || "").toLowerCase();
+  const opStructure = (record.operating_structure || "").toLowerCase();
+  const incomeModel = (record.primary_income_model || "").toLowerCase();
+  const revStructure = (record.revenue_structure || "").toLowerCase();
+  const industrySector = (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+
+  // Dynamic labels based on profile
+  const profileNoun = profileClass.includes("business") ? "business" : profileClass.includes("team") ? "team" : "individual";
+  const structureDesc = opStructure.includes("employee") || opStructure.includes("w-2") ? "salaried employee"
+    : opStructure.includes("contractor") || opStructure.includes("independent") ? "independent contractor"
+    : opStructure.includes("business owner") || opStructure.includes("firm") ? "business owner"
+    : opStructure.includes("partnership") ? "partnership"
+    : opStructure.includes("nonprofit") ? "nonprofit operator"
+    : "professional";
+
+  const incomeModelDesc = incomeModel.includes("salary") ? "salary-based"
+    : incomeModel.includes("commission") ? "commission-driven"
+    : incomeModel.includes("contract") ? "contract-based"
+    : incomeModel.includes("retainer") || incomeModel.includes("subscription") ? "retainer/subscription-based"
+    : incomeModel.includes("project") ? "project-based"
+    : incomeModel.includes("consulting") || incomeModel.includes("client") ? "consulting/client-services"
+    : incomeModel.includes("product") ? "product-sales"
+    : incomeModel.includes("creator") || incomeModel.includes("media") ? "creator/media"
+    : incomeModel.includes("rental") || incomeModel.includes("real estate") ? "rental/real-estate"
+    : incomeModel.includes("franchise") ? "franchise"
+    : incomeModel.includes("hybrid") || incomeModel.includes("multiple") ? "hybrid/multi-source"
+    : "mixed-income";
+
+  const revenueDesc = revStructure.includes("one-time") ? "mostly one-time payments"
+    : revStructure.includes("repeat") ? "repeat-client revenue"
+    : revStructure.includes("monthly") ? "monthly recurring revenue"
+    : revStructure.includes("contracted") ? "contracted multi-month revenue"
+    : revStructure.includes("long-term") ? "long-term recurring income"
+    : revStructure.includes("mixed") ? "a mixed revenue structure"
+    : "variable revenue";
+
+  // Dynamic constraint advice based on profile
+  const profileConstraintAdvice: Record<string, string> = {
+    source_concentration: opStructure.includes("contractor") || opStructure.includes("independent")
+      ? "As a contractor, losing your primary client would be devastating. Secure at least 2–3 active contracts at all times."
+      : opStructure.includes("employee")
+      ? "As a salaried employee, your income depends entirely on one employer. Building a secondary income stream is critical."
+      : profileClass.includes("business")
+      ? "Your business revenue is too concentrated. No single client should represent more than 30% of total revenue."
+      : "Your income is too concentrated in one source. Diversify to protect against sudden loss.",
+    forward_visibility: incomeModel.includes("commission") || incomeModel.includes("project")
+      ? `With ${incomeModelDesc} income, future earnings are unpredictable. Lock in advance commitments, retainers, or pipeline guarantees.`
+      : opStructure.includes("contractor")
+      ? "As a contractor, secure multi-month engagements or retainer agreements instead of rolling month-to-month."
+      : profileClass.includes("business")
+      ? "Your business needs more contracted or recurring revenue locked in before each month begins."
+      : "Too little of your income is committed before the month starts. Lock in recurring or pre-committed income.",
+    labor_dependence: opStructure.includes("employee")
+      ? "As an employee, 100% of your income stops if you stop working. Build passive or semi-passive income alongside your salary."
+      : incomeModel.includes("consulting") || incomeModel.includes("client")
+      ? "Your consulting income requires constant client delivery. Productize your expertise into courses, templates, or licensing."
+      : profileClass.includes("business")
+      ? "Your business is still owner-dependent. Build systems, recurring revenue, or delegated delivery so income continues without you."
+      : "Too much income requires your daily effort. Shift toward streams that produce without constant work.",
+    low_continuity: incomeModel.includes("commission")
+      ? "Commission income stops immediately when deals stop closing. Build a base of recurring or residual commissions."
+      : opStructure.includes("contractor")
+      ? "Contract income has a short shelf life. Negotiate longer-term contracts or build retainer relationships."
+      : "Your income would stop too quickly if active work paused. Build streams that continue producing independently.",
+    few_sources: profileClass.includes("business")
+      ? "Your business relies on too few revenue channels. Add a new client segment, product line, or service tier."
+      : opStructure.includes("contractor")
+      ? "You need more active clients. Each new contract that contributes at least 10% of income strengthens the structure."
+      : "Your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
+  };
+
   // ── Tier-aware copy ──
   const copy = {
     p1_headline: ({
-      A1: `${name} scored ${score} out of 100. The income is active, but the structure is very vulnerable if conditions change. Most of the protection needed for stability is not yet in place.`,
-      A2: `${name} scored ${score} out of 100. The income is active, but the structure is still weak and vulnerable if conditions change. Protection is limited, and important stability elements are still missing.`,
-      A3: `${name} scored ${score} out of 100. Some early income structure is in place, but the setup is still below a stable range and remains vulnerable to disruption.`,
-      B1: `${name} scored ${score} out of 100. The structure is developing, but it is not yet protected enough against disruption. The next gains will come from improving continuity, visibility, and source balance.`,
-      B2: `${name} scored ${score} out of 100. The income structure is developing, but it still needs stronger protection before it can be considered stable.`,
-      C1: `${name} scored ${score} out of 100. The income structure has real stability, but it is not yet strongly protected against disruption. The main opportunity now is to secure more income ahead of time and reduce reliance on any single source.`,
-      C2: `${name} scored ${score} out of 100. The structure is established and relatively stable, but it is not yet fully insulated from meaningful disruption.`,
-      D1: `${name} scored ${score} out of 100. The income structure is strong, with substantial protection already in place. The focus now is on preserving strength and tightening remaining weak points.`,
-      D2: `${name} scored ${score} out of 100. The structure is exceptionally strong and highly protected. The focus now is on maintaining durability and avoiding unnecessary concentration risk.`,
+      A1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income and ${revenueDesc}. The structure is highly vulnerable — most protection needed for stability is not yet in place.`,
+      A2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. With ${incomeModelDesc} income and ${revenueDesc}, the structure is weak and exposed to disruption.`,
+      A3: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Some early structure exists, but the ${incomeModelDesc} income with ${revenueDesc} is still below a stable range.`,
+      B1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure is developing but not yet protected against disruption.`,
+      B2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure needs stronger protection before it can be considered stable.`,
+      C1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure has real stability but is not yet fully protected against disruption.`,
+      C2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure is established and relatively stable.`,
+      D1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure is strong with substantial protection in place.`,
+      D2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure is exceptionally strong and highly protected.`,
     })[subTier],
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
@@ -748,19 +820,6 @@ export default function ReviewPage() {
     peerPercentileValue <= 60 ? "around benchmark" :
     peerPercentileValue <= 85 ? "above benchmark" : "well above benchmark";
 
-  // ── Band-sensitive copy blocks ──
-  const bandExplainer: Record<string, string> = {
-    A1: `${name} is active right now, but the structure is highly vulnerable if conditions change. Very little protection is in place.`,
-    A2: `${name} is active right now, but the structure is still weak and not yet protected enough against disruption.`,
-    A3: `${name} has some early structure in place, but protection is still limited and meaningful vulnerability remains.`,
-    B1: `${name} is developing, but the structure is still not protected enough against disruption.`,
-    B2: `${name} has a developing structure, but stronger protection is still needed in key areas.`,
-    C1: `${name} has real stability, but the structure is not yet strongly protected against disruption.`,
-    C2: `${name} has established stability and meaningful protection, though some vulnerabilities still remain.`,
-    D1: `${name} is strong and well-protected compared with most benchmarks, with only limited vulnerabilities remaining.`,
-    D2: `${name} is exceptionally strong, highly protected, and structurally resilient across the benchmark.`,
-  };
-
   const durabilityValue: Record<string, string> = {
     A1: "Very weak protection", A2: "Weak protection", A3: "Limited protection",
     B1: "Needs stronger protection", B2: "Partly protected",
@@ -781,55 +840,53 @@ export default function ReviewPage() {
   };
 
   const p2Intro: Record<string, string> = {
-    A1: `${name} scored ${score} out of 100. This is a weak score. The income is active, but the structure is highly exposed and not yet stable enough to absorb disruption well.`,
-    A2: `${name} scored ${score} out of 100. This is still a weak score. The income is active, but the structure is not yet stable enough to handle disruption confidently.`,
-    A3: `${name} scored ${score} out of 100. This score shows that some early structure is in place, but protection is still limited and the setup remains vulnerable.`,
-    B1: `${name} scored ${score} out of 100. This score shows a developing structure, but protection is still incomplete and meaningful vulnerabilities remain.`,
-    B2: `${name} scored ${score} out of 100. This is an improving score, but the structure still needs stronger protection before it can be called stable.`,
-    C1: `${name} scored ${score} out of 100. This is a solid score. The structure is working, but it is not yet strongly protected from disruption.`,
-    C2: `${name} scored ${score} out of 100. This is a strong score. The structure has established stability, though important vulnerabilities still remain.`,
-    D1: `${name} scored ${score} out of 100. This is a strong score. The structure already has substantial protection, with only limited weaknesses remaining.`,
-    D2: `${name} scored ${score} out of 100. This is an exceptional score. The structure is highly protected and well-positioned relative to the benchmark.`,
+    A1: `${name} scored ${score} out of 100 as a ${structureDesc} with ${incomeModelDesc} income in ${industrySector}. The structure is highly exposed and not stable enough to absorb disruption.`,
+    A2: `${name} scored ${score} out of 100. As a ${structureDesc} with ${revenueDesc}, the structure cannot yet handle disruption.`,
+    A3: `${name} scored ${score} out of 100. Some early structure exists, but the ${incomeModelDesc} setup in ${industrySector} is still vulnerable.`,
+    B1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure in ${industrySector} is developing but has meaningful vulnerabilities.`,
+    B2: `${name} scored ${score} out of 100. The structure is improving but needs stronger protection before it can be called stable.`,
+    C1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure in ${industrySector} has real stability but is not yet fully protected.`,
+    C2: `${name} scored ${score} out of 100. The structure is established in ${industrySector} with only limited vulnerabilities remaining.`,
+    D1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure has substantial protection with only minor weaknesses.`,
+    D2: `${name} scored ${score} out of 100. Exceptionally strong. The structure is highly protected and well-positioned in ${industrySector}.`,
   };
 
   const p2Interpretation: Record<string, string> = {
-    A1: `This is a weak score. The income is active, but the structure is highly exposed. The main issue is ${dominantConstraintPlain[dominantConstraint]}. With only ${record.income_continuity_pct}% continuity and a ${record.risk_scenario_drop}-point stress test drop, the setup could weaken quickly if conditions change.`,
-    A2: `This is still a weak score. The structure is active, but it is not yet stable enough to absorb disruption well. The main issue — ${dominantConstraintPlain[dominantConstraint]} — needs to be addressed before focusing on growth.`,
-    A3: "This score shows that some structure is beginning to form, but it is still below a stable level. The next step is to strengthen protection, continuity, and balance.",
-    B1: `This is a developing score. The structure is improving, but the main issue — ${dominantConstraintPlain[dominantConstraint]} — still limits protection. The next step is to turn early progress into stronger durability.`,
-    B2: "This is an improving score, but the structure still needs stronger protection before it can be considered stable. The next gains will come from strengthening continuity and reducing major vulnerabilities.",
-    C1: `This is a solid score. The structure is working, but ${dominantConstraintPlain[dominantConstraint]} still limits full protection. A ${record.risk_scenario_drop}-point stress test drop shows there is still meaningful exposure.`,
-    C2: "This is a strong score. The structure is established, but it is not fully insulated from disruption. The next gains come from refinement, stronger continuity, and reducing concentration risk.",
-    D1: "This is a strong score. The structure is already well-protected. The next gains come from preserving continuity, reducing residual risk, and maintaining strength over time.",
-    D2: "This is an exceptional score. The structure is highly resilient and already protected at a high level. The next focus is maintenance, discipline, and avoiding unnecessary fragility.",
+    A1: `The main issue: ${dominantConstraintPlain[dominantConstraint]}. With ${record.income_continuity_pct}% continuity and a ${record.risk_scenario_drop}-point stress test drop, the ${incomeModelDesc} structure could collapse quickly under pressure.`,
+    A2: `The main issue — ${dominantConstraintPlain[dominantConstraint]} — must be addressed before anything else. As a ${structureDesc}, this is the priority.`,
+    A3: `Some structure is forming, but the ${incomeModelDesc} setup is still below stable. Focus: strengthen continuity and balance.`,
+    B1: `The main issue — ${dominantConstraintPlain[dominantConstraint]} — still limits protection. As a ${structureDesc} in ${industrySector}, the next step is turning progress into durability.`,
+    B2: `Stronger protection is needed. The ${record.risk_scenario_drop}-point stress test drop and ${record.income_continuity_pct}% continuity show where the ${incomeModelDesc} structure is still exposed.`,
+    C1: `${dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} still limits full protection. The ${record.risk_scenario_drop}-point stress test drop shows remaining exposure in this ${incomeModelDesc} structure.`,
+    C2: `The structure is established. Remaining gains come from reducing concentration risk and extending continuity in this ${incomeModelDesc} setup.`,
+    D1: `Well-protected. Focus on preserving strength and reducing the remaining ${record.risk_scenario_drop}-point stress test exposure.`,
+    D2: `Exceptionally strong. Maintain discipline and avoid unnecessary fragility in this ${incomeModelDesc} structure.`,
   };
 
   const p2BottomLine: Record<string, string> = {
-    A1: `${name} is active, but not yet stable enough. The first priority is building protection.`,
-    A2: `${name} has early income activity, but the structure still needs much stronger protection.`,
-    A3: `${name} has a starting structure in place. The next gains come from turning it into something more stable.`,
-    B1: `${name} is developing. The next gains come from stronger protection, not just more output.`,
-    B2: `${name} has real progress. The next gains come from strengthening the structure so it can hold up better.`,
-    C1: `${name} has real stability. The next gains come from stronger protection, not just higher output.`,
-    C2: `${name} is established. The next gains come from refinement and stronger durability.`,
-    D1: `${name} is strong. The next gains come from preserving resilience and reducing remaining weak points.`,
-    D2: `${name} is exceptionally strong. The focus now is maintaining discipline and long-term resilience.`,
+    A1: `${name} needs protection first, not more output. As a ${structureDesc}, build structural safeguards before scaling.`,
+    A2: `${name} needs stronger protection. The ${incomeModelDesc} structure cannot absorb disruption yet.`,
+    A3: `${name} has a starting structure. Turn it into something stable by addressing ${dominantConstraintPlain[dominantConstraint]}.`,
+    B1: `${name} is developing. The next gains come from protection, not more output.`,
+    B2: `${name} is progressing. Strengthen the structure so the ${incomeModelDesc} income holds up under pressure.`,
+    C1: `${name} has real stability. Strengthen protection to lock it in.`,
+    C2: `${name} is established. Refine and harden what is already working.`,
+    D1: `${name} is strong. Preserve resilience and close the remaining gaps.`,
+    D2: `${name} is exceptionally strong. Maintain discipline.`,
   };
 
-  const p2WorkingTitle: string = ["A1", "A2"].includes(subTier) ? "There is some income activity in place" : ["A3"].includes(subTier) ? "Some early structure is visible" : subTier === "B1" ? "There is an early foundation forming" : subTier === "B2" ? "There is a developing foundation in place" : ["C1", "C2"].includes(subTier) ? "There is real stability in place" : "The structure is already strong";
-
-  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? "The income is not starting from zero. This is an early base to build from, but it is not yet strong protection." : ["A3"].includes(subTier) ? "The income is no longer starting from zero. A base exists, but it is still below a stable range." : subTier === "B1" ? "The structure is not starting from zero, but it is still early. Important weaknesses remain." : subTier === "B2" ? "Parts of the structure are beginning to support stability, but stronger protection is still needed." : ["C1", "C2"].includes(subTier) ? "Parts of the structure are already working well. The next gains come from strengthening what already exists." : "Protection is already substantial. The focus is refinement rather than repair.";
+  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? `Not starting from zero. As a ${structureDesc} with ${incomeModelDesc} income, this is an early base to build from.` : ["A3"].includes(subTier) ? `A base exists in the ${incomeModelDesc} structure, but still below a stable range.` : subTier === "B1" ? `The ${incomeModelDesc} structure is building, but important weaknesses remain.` : subTier === "B2" ? `Parts of the ${incomeModelDesc} structure support stability. Stronger protection is still needed.` : ["C1", "C2"].includes(subTier) ? `The ${incomeModelDesc} structure is working. Next gains come from strengthening what exists.` : `Protection is substantial in this ${incomeModelDesc} structure. Focus: refinement.`;
 
   const p3Intro: Record<string, string> = {
-    A1: `This page shows what could cause the most damage because the current structure has very little protection in place.`,
-    A2: `This page shows what could hurt your income most because the current structure is still weak and vulnerable to disruption.`,
-    A3: `This page shows what could hurt your income most as the structure is still below a stable range.`,
-    B1: `This page shows what could hurt your income most while the structure is still developing.`,
-    B2: `This page shows what could hurt your income most before the structure becomes more stable.`,
-    C1: `This page shows what could still weaken the structure even though it is already stable.`,
-    C2: `This page shows what could still weaken your income despite an established structure.`,
-    D1: `This page shows the main risks that could still weaken your income, even from a position of strength.`,
-    D2: `This page shows the limited risks that could still affect your income despite a highly resilient structure.`,
+    A1: `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, these are the biggest threats to your structure right now.`,
+    A2: `These are the scenarios that would hurt your ${incomeModelDesc} income most given the current weak structure.`,
+    A3: `These risks are specific to your ${incomeModelDesc} setup in ${industrySector} while the structure is still below stable.`,
+    B1: `These risks show where your ${incomeModelDesc} structure in ${industrySector} is still exposed.`,
+    B2: `These are the scenarios that could set back your developing ${incomeModelDesc} structure.`,
+    C1: `Even with real stability, these scenarios could still weaken your ${incomeModelDesc} income in ${industrySector}.`,
+    C2: `Despite an established structure, these risks still matter for your ${incomeModelDesc} setup.`,
+    D1: `From a position of strength, these are the limited risks that could still affect your ${incomeModelDesc} income.`,
+    D2: `These are the only remaining risks for your highly resilient ${incomeModelDesc} structure.`,
   };
 
   const p4CurrentBandBody: Record<string, string> = {
@@ -865,15 +922,15 @@ export default function ReviewPage() {
   })();
 
   const p5Intro: Record<string, string> = {
-    A1: `The first priority for ${name} is not bigger income. It is building basic protection. That means securing more income ahead of time, reducing reliance on one source, and creating more income that continues if work stops.`,
-    A2: `The first priority for ${name} is not bigger income. It is building stronger protection so the structure can hold up better if conditions change.`,
-    A3: `The first priority for ${name} is to turn early structure into something more stable. That means stronger continuity, more income secured ahead of time, and less reliance on one source.`,
-    B1: `The next priority for ${name} is to strengthen the developing structure so it can handle disruption more confidently.`,
-    B2: `The first priority for ${name} is not simply more income. It is stronger protection, better continuity, and less concentration risk.`,
-    C1: "The priority now is not simply earning more. It is strengthening protection, visibility, and continuity.",
-    C2: "The priority now is to refine an established structure so it becomes even more durable and less exposed to disruption.",
-    D1: "The priority now is to preserve strength, reduce residual vulnerabilities, and maintain continuity over time.",
-    D2: "The priority now is long-term discipline: preserve strength, avoid unnecessary fragility, and maintain resilience over time.",
+    A1: `As a ${structureDesc} in ${industrySector}, ${name} needs basic protection first: secure income ahead of time, reduce single-source reliance, and build income that continues if work stops.`,
+    A2: `${name} needs structural protection before growth. As a ${structureDesc} with ${incomeModelDesc} income, focus on durability.`,
+    A3: `${name} has early structure. As a ${structureDesc} in ${industrySector}, the next step is turning ${incomeModelDesc} income into something stable.`,
+    B1: `${name} needs to strengthen the developing ${incomeModelDesc} structure so it handles disruption in ${industrySector}.`,
+    B2: `${name} needs stronger protection, better continuity, and less concentration risk in this ${incomeModelDesc} setup.`,
+    C1: `As a ${structureDesc} in ${industrySector}, the priority is strengthening protection and forward visibility.`,
+    C2: `Refine the established ${incomeModelDesc} structure to become more durable and less exposed.`,
+    D1: `Preserve strength, reduce residual vulnerabilities, and maintain continuity in this ${incomeModelDesc} structure.`,
+    D2: `Maintain discipline and long-term resilience. The ${incomeModelDesc} structure is strong — protect it.`,
   };
 
   const p5CompareInterpretation: string = (() => {
@@ -981,7 +1038,7 @@ export default function ReviewPage() {
           </div>
           {record.peer_stability_percentile_label && (
             <div style={{ ...T.small, color: B.muted, marginTop: 8 }}>
-              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals in this benchmark
+              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
             </div>
           )}
         </div>
@@ -1014,40 +1071,44 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 10, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
           {copy.p1_headline}
-        </p>
-        <p style={{ ...T.small, color: B.teal, marginBottom: 16, fontWeight: 500 }}>
-          Why this matters: income that looks fine today can still be structurally weak if too much depends on active work, one source, or income that is not secured ahead of time.
         </p>
 
         {/* Single most important insight — one line the customer remembers */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
-            {`The main thing holding ${name} back right now: ${dominantConstraintPlain[dominantConstraint]}.`}
+            {profileConstraintAdvice[dominantConstraint] || `The main thing holding ${name} back: ${dominantConstraintPlain[dominantConstraint]}.`}
             {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
-          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a ${continuitySeverity} level of continuity.`} />
-          <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation={sourceDropSeverity === "collapse" ? "If the largest source disappeared, the score would collapse to near zero. This is a severe concentration risk." : sourceDropSeverity === "severe" ? "If the largest source disappeared, the score would drop sharply. Too much still depends on one source." : "If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source."} />
-          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} explanation={({
-            source_concentration: "If the largest source changed, the score would drop significantly.",
-            forward_visibility: "More income needs to be committed before each month begins.",
-            labor_dependence: "Too much income still requires daily work to keep being produced.",
-            low_continuity: "Income would not continue for long enough if active work stopped.",
-            few_sources: "The income depends on too few independent sources.",
-          })[dominantConstraint]} />
-          <MetricCard label="OVERALL DURABILITY" value={durabilityValue[subTier]} explanation={durabilityBody[subTier]} />
+          <MetricCard label="INCOME CONTINUITY IF WORK STOPS" value={`${record.income_continuity_pct}%`} explanation={`${continuitySeverity.charAt(0).toUpperCase() + continuitySeverity.slice(1)} continuity for a ${structureDesc}.`} />
+          <MetricCard label="LARGEST SOURCE STRESS TEST" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation={`${record.risk_scenario_drop}-point drop. ${sourceDropSeverity === "collapse" ? "Severe concentration risk." : sourceDropSeverity === "severe" ? "Too dependent on one source." : "Meaningful single-source exposure."}`} />
+          <MetricCard label="PRIMARY CONSTRAINT" value={dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} explanation={profileConstraintAdvice[dominantConstraint]?.split(".")[0] + "." || ""} />
+          <MetricCard label="DURABILITY" value={durabilityValue[subTier]} explanation={durabilityBody[subTier]} />
         </div>
 
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
-          {[["Prepared for", name], ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
+          {[["Prepared for", name], ["Industry", industrySector], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
             <div key={l}>
               <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
               <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+          {[
+            ["Classification", record.classification || "—"],
+            ["Operating Structure", record.operating_structure || "—"],
+            ["Income Model", record.primary_income_model || "—"],
+            ["Revenue Structure", record.revenue_structure || "—"],
+          ].map(([l, v]) => (
+            <div key={l}>
+              <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
+              <div style={{ ...T.meta, fontWeight: 500, color: B.navy }}>{v}</div>
             </div>
           ))}
         </div>
@@ -1076,7 +1137,7 @@ export default function ReviewPage() {
         })()}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score&#8482; is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+          The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
 
         <PageFooter section="Your Score" page={1} />
@@ -1093,18 +1154,13 @@ export default function ReviewPage() {
 
         {/* What is already working */}
         <Overline>WHAT IS ALREADY WORKING</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{p2WorkingTitle}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
-          </div>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{record.income_continuity_pct <= 5 ? "Very little income would continue if work stopped" : record.income_continuity_pct <= 20 ? "Some income would continue, but not much" : "Some income would continue even if active work stopped"}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.{record.income_continuity_pct <= 5 ? " That is a very small amount and one of the most important areas to strengthen." : record.income_continuity_pct <= 20 ? " That is a limited base that needs to grow before the structure can hold up well." : " That is a real base, but there is still room to strengthen it."}</p>
-          </div>
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{record.persistent_income_level >= 20 ? "Some income already continues without daily work" : record.semi_persistent_income_level >= 15 ? "Some repeatable income is already in place" : tier === "limited" ? "The structure is early, but not absent" : "There is a base to build from"}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.persistent_income_level >= 20 ? `${record.persistent_income_level}% of your income continues without daily work. That is a meaningful foundation to protect and grow.` : record.semi_persistent_income_level >= 15 ? `${record.semi_persistent_income_level}% of your income repeats on a regular basis. Converting more active work into repeatable income would strengthen the structure further.` : `${record.active_income_level}% of your income currently requires active work. The priority is to convert some of that into income that repeats or continues without daily effort.`}</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
+          <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{record.income_continuity_pct}%</span> <span style={{ color: B.muted }}>(peers: {v2Benchmarks ? `${Math.round((v2Benchmarks.outlier_dimensions.find(d => d.factor.toLowerCase().includes("persistence") || d.factor.toLowerCase().includes("continuity"))?.peer_average ?? 0))}` : "—"}%)</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Active work: <span style={{ fontWeight: 600 }}>{record.active_income_level}%</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Repeatable: <span style={{ fontWeight: 600 }}>{record.semi_persistent_income_level}%</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Passive: <span style={{ fontWeight: 600 }}>{record.persistent_income_level}%</span></div>
           </div>
         </div>
 
@@ -1112,43 +1168,27 @@ export default function ReviewPage() {
 
         {/* What is still vulnerable — ordered by dominant constraint */}
         <Overline>WHAT IS STILL VULNERABLE</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
-          {(() => {
-            const vulnerabilities: Record<string, Array<{ title: string; body: string }>> = {
-              source_concentration: [
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
-                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
-              ],
-              forward_visibility: [
-                { title: "Not enough income is secured ahead of time", body: `Too little of your income is already committed before the month begins. Locking in retainers, contracts, or recurring agreements would directly strengthen the structure.` },
-                { title: "Too much still depends on one source", body: `If the largest source disappeared, the score would drop by ${record.risk_scenario_drop} points. Reducing that exposure is the second priority.` },
-              ],
-              labor_dependence: [
-                { title: "Too much income depends on daily work", body: `${record.active_income_level}% of your income currently requires active work. If work slows or stops, stability drops quickly.` },
-                { title: "Too much still depends on one source", body: `If the largest source disappeared, the score would drop by ${record.risk_scenario_drop} points. That compounds the active-work risk.` },
-              ],
-              low_continuity: [
-                { title: `Income would only continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is critically short and the most urgent area to address." : " That is not yet enough to absorb even a moderate disruption."}` },
-                { title: `${record.active_income_level}% of income requires active work`, body: "Reducing that dependence would directly extend how long income continues when work slows." },
-              ],
-              few_sources: [
-                { title: "The income depends on too few sources", body: `The structure is still too narrow. The ${record.risk_scenario_drop}-point stress test drop shows how exposed it is to a single source changing.` },
-                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short." : " Extending this would add protection."}` },
-              ],
-            };
-            return (vulnerabilities[dominantConstraint] ?? vulnerabilities.forward_visibility).map((v) => (
-              <div key={v.title}>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{v.title}</div>
-                <p style={{ ...T.body, color: B.muted, margin: 0 }}>{v.body}</p>
-              </div>
-            ));
-          })()}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Primary: {dominantConstraintPlain[dominantConstraint]}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]}</p>
+          </div>
+          <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ ...T.small, color: B.navy }}>Stress test: <span style={{ fontWeight: 600, color: B.bandLimited }}>{record.final_score} → {Math.max(0, record.risk_scenario_score)}</span> <span style={{ color: B.muted }}>({record.risk_scenario_drop}-pt drop)</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{continuityDisplay}</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Active work: <span style={{ fontWeight: 600 }}>{record.active_income_level}%</span></div>
+          </div>
         </div>
 
         {/* Peer comparison insight */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
           <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px", marginTop: 16, marginBottom: 4 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW YOU COMPARE TO PEERS{olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}</div>
+            <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
+              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, fontSize: 14 }}>{score}</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, fontSize: 14, color: B.navy }}>{v2Benchmarks.cluster_average_score}</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, fontSize: 14, color: B.teal }}>{v2Benchmarks.top_20_threshold}</span></div>
+            </div>
             {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
               const peerLabel: Record<string, string> = {
                 income_persistence: "Income that continues if work stops",
@@ -1166,10 +1206,14 @@ export default function ReviewPage() {
               };
               const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
               return (
-                <p key={d.factor} style={{ ...T.small, color: B.navy, margin: "0 0 4px", lineHeight: 1.5 }}>
-                  <span style={{ fontWeight: 500 }}>{label}</span>{" — "}
-                  <span style={{ color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{d.direction} {olIndustryLabel || "peer"} average</span>
-                </p>
+                <div key={d.factor} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0 0 6px" }}>
+                  <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{label}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ ...T.meta, color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}</span></span>
+                    <span style={{ ...T.meta, color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}</span></span>
+                    <span style={{ ...T.micro, color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{d.direction === "above" ? "▲" : "▼"} {d.direction}</span>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -1283,11 +1327,13 @@ export default function ReviewPage() {
                       {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
                     </span>
                   </div>
+                  {s.band_shift && (
                   <div style={{ paddingLeft: 70 }}>
-                    <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-                      {s.scenario_score <= 0 ? "This would effectively collapse the structure's protection." : s.band_shift ? "This would materially weaken the structure and move it into a lower stability band." : s.score_drop > 10 ? "This would meaningfully weaken the current level of protection." : s.score_drop > 5 ? "This would noticeably reduce the structure's current protection." : "This would have a limited but real impact on the structure."}
+                    <p style={{ ...T.meta, color: B.bandLimited, margin: 0, fontWeight: 500 }}>
+                      Would drop to {s.scenario_band} band.
                     </p>
                   </div>
+                  )}
                 </div>
               );
             })}
@@ -1316,7 +1362,7 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.meta, color: B.muted, marginBottom: 20, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income requires active work. That is a high level of dependence — if work slows, most of the income is at risk.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires active work. Shifting more toward repeatable income would strengthen the structure.` : `${record.active_income_level}% of your income requires active work. The rest repeats or continues independently — that is a meaningful structural advantage.`}
+          {record.active_income_level >= 80 ? `High active-work dependence for a ${structureDesc}. ${profileConstraintAdvice.labor_dependence?.split(".")[0]}.` : record.active_income_level >= 50 ? `${record.active_income_level}% active-work dependence. Shift more toward repeatable income.` : `${100 - record.active_income_level}% repeats or continues independently — a structural advantage.`}
         </p>
 
         {/* Peer band distribution */}
@@ -1347,38 +1393,38 @@ export default function ReviewPage() {
             {/* Outlier dimensions — top 3 */}
             {v2Benchmarks.outlier_dimensions.length > 0 && (
               <div style={{ marginBottom: 12 }}>
-                {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => (
-                  <div key={d.factor} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                    <span>{(() => {
-                      const peerLabel: Record<string, string> = {
-                        income_persistence: "Income that continues if work stops",
-                        forward_revenue_visibility: "Income secured ahead of time",
-                        concentration_resilience: "Reliance on one source",
-                        income_source_diversity: "Number of income sources",
-                        labor_dependence: "Dependence on daily work",
-                        earnings_stability: "Month-to-month earnings stability",
-                      };
-                      return peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
-                    })()}</span>
-                    <span style={{ fontWeight: 600, color: d.direction === "above" ? B.teal : B.bandLimited }}>
-                      {d.direction === "above" ? "▲ above peers" : "▲ below peers"}
-                    </span>
-                  </div>
-                ))}
+                {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
+                  const peerLabel: Record<string, string> = {
+                    income_persistence: "Income that continues if work stops",
+                    forward_revenue_visibility: "Income secured ahead of time",
+                    concentration_resilience: "Reliance on one source",
+                    income_source_diversity: "Number of income sources",
+                    labor_dependence: "Dependence on daily work",
+                    earnings_stability: "Month-to-month earnings stability",
+                  };
+                  const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
+                  return (
+                    <div key={d.factor} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                      <span>{label}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}</span></span>
+                        <span style={{ color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}</span></span>
+                        <span style={{ fontWeight: 600, color: d.direction === "above" ? B.teal : B.bandLimited }}>
+                          {d.direction === "above" ? "▲ above peers" : "▼ below peers"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
             <p style={{ ...T.meta, color: B.muted, margin: 0, fontStyle: "italic" }}>
-              {({
-                A1: `Compared with peers, ${name} is currently well below benchmark in several protection areas.`,
-                A2: `Compared with peers, ${name} is below benchmark in several areas that matter for stability.`,
-                A3: `Compared with peers, ${name} is still behind in several important stability areas.`,
-                B1: `Compared with peers, ${name} is improving, but still trails the benchmark in important areas.`,
-                B2: `Compared with peers, ${name} is close to the middle in some areas, but still below benchmark in others.`,
-                C1: `Compared with peers, ${name} is around or above benchmark in some areas, but still weaker in others.`,
-                C2: `Compared with peers, ${name} is performing solidly, with only a few remaining areas below benchmark.`,
-                D1: `Compared with peers, ${name} is performing strongly across most areas.`,
-                D2: `Compared with peers, ${name} is performing at a very high level across the benchmark.`,
-              })[subTier]}
+              {`${name} scored ${score} vs. peer average of ${v2Benchmarks.cluster_average_score} in ${industrySector}. `}
+              {score < v2Benchmarks.cluster_average_score
+                ? `${v2Benchmarks.cluster_average_score - score} points below average.`
+                : score > v2Benchmarks.cluster_average_score
+                ? `${score - v2Benchmarks.cluster_average_score} points above average.`
+                : "At the peer average."}
             </p>
           </div>
         )}
@@ -1393,7 +1439,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How to Raise Your Score</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          The fastest way to raise this score is not just to work more. It is to improve how the income is structured — with more income secured ahead of time, less dependence on one source, and more income that continues without daily effort.
+          As a {structureDesc} in {industrySector} with {incomeModelDesc} income and {revenueDesc}, the fastest path to a higher score is restructuring how income flows — not just earning more.
         </p>
 
         {/* Current Band / Next Target Band — compact side by side */}
@@ -1414,9 +1460,6 @@ export default function ReviewPage() {
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <Overline>IF YOU MADE THESE CHANGES</Overline>
-            <p style={{ ...T.small, color: B.muted, marginBottom: 12, maxWidth: 520 }}>
-              These are the changes that would likely raise your score the most, based on how your income is currently structured.
-            </p>
             {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => {
               const liftPlain: Record<string, string> = {
                 reduce_labor_dependence: "Reduce how much income depends on daily work",
@@ -1498,10 +1541,10 @@ export default function ReviewPage() {
               }))
             : (() => {
                 const priorities = [
-                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: `Currently, not enough of your income is committed before the month begins. Lock in retainers, multi-month agreements, advance bookings, or recurring contracts to change this.` },
-                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your largest source disappears. Add or strengthen secondary sources to reduce this exposure.` },
-                  { key: "labor_dependence", title: "Build more repeatable income", copy: `${record.active_income_level}% of your income currently requires active work. Convert some of that into income that repeats or continues without needing to be rebuilt each time.` },
-                  { key: "low_continuity", title: "Extend how long income continues without active work", copy: `Your income would currently continue for about ${continuityDisplay} if work stopped. Build streams that keep producing even when daily work slows down.` },
+                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: profileConstraintAdvice.forward_visibility },
+                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: `${profileConstraintAdvice.source_concentration} Your stress test shows a ${record.risk_scenario_drop}-point drop if the largest source disappears.` },
+                  { key: "labor_dependence", title: "Build more repeatable income", copy: profileConstraintAdvice.labor_dependence },
+                  { key: "low_continuity", title: "Extend income continuity", copy: `${profileConstraintAdvice.low_continuity} Currently: about ${continuityDisplay}.` },
                 ];
                 // Put dominant constraint first
                 const sorted = [
@@ -1523,24 +1566,7 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* What NOT to do — compact dash list */}
-        {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHAT NOT TO DO</div>
-            {(v2AvoidActions ?? []).map((a) => (
-              <div key={a.action_id} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 4 }}>
-                <span style={{ color: B.taupe }}>—</span>
-                <span><span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</span>
-              </div>
-            ))}
-            {(olAvoid ?? []).map((text) => (
-              <div key={text} style={{ ...T.meta, color: B.ink, display: "flex", gap: 6, marginBottom: 4 }}>
-                <span style={{ color: B.taupe }}>—</span>
-                <span>{text}</span>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* What NOT to do — removed: generic filler */}
 
 
         <PageFooter section="How to Raise Your Score" page={4} />
@@ -1556,65 +1582,45 @@ export default function ReviewPage() {
           {p5Intro[subTier]}
         </p>
 
-        {/* Two columns: 5 actions + 4 avoid — side by side */}
-        <div style={{ display: "flex", gap: 24, marginBottom: 24 }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do next</div>
-            {(({
-              source_concentration: [
-                "Reduce how much the structure depends on the single largest source",
-                "Lock in at least one income source committed for more than one month",
-                "Build more income that repeats or continues without daily work",
-                "Know more of next month\u2019s income before the month begins",
-                "Reassess only after these changes are actually live, not just planned",
-              ],
-              forward_visibility: [
-                "Lock in at least one income source that is committed for more than one month",
-                "Reduce how much the structure depends on the single largest source",
-                "Build more income that repeats or continues without daily work",
-                "Know more of next month\u2019s income before the month begins",
-                "Reassess only after these changes are actually live, not just planned",
-              ],
-              labor_dependence: [
-                "Build more income that repeats or continues without daily work",
-                "Lock in at least one income source committed for more than one month",
-                "Reduce how much the structure depends on the single largest source",
-                "Know more of next month\u2019s income before the month begins",
-                "Reassess only after these changes are actually live, not just planned",
-              ],
-              low_continuity: [
-                "Build income that would continue for longer if active work stopped",
-                "Lock in at least one income source committed for more than one month",
-                "Reduce how much the structure depends on the single largest source",
-                "Know more of next month\u2019s income before the month begins",
-                "Reassess only after these changes are actually live, not just planned",
-              ],
-              few_sources: [
-                "Add at least one additional dependable income source",
-                "Lock in at least one income source committed for more than one month",
-                "Build more income that repeats or continues without daily work",
-                "Know more of next month\u2019s income before the month begins",
-                "Reassess only after these changes are actually live, not just planned",
-              ],
-            })[dominantConstraint]).map((item, i) => (
-              <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
-                <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
-              </div>
-            ))}
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What not to prioritize yet</div>
-            {[
-              "Working more without improving the structure underneath it",
-              "Short bursts of output that do not improve durability",
-              "Temporary spikes that disappear when work stops",
-              "Measures that do not improve how long income continues or how much is secured ahead of time",
-            ].map((item) => (
-              <div key={item} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 5 }}>
-                <span style={{ color: B.taupe }}>—</span>{item}
-              </div>
-            ))}
-          </div>
+        {/* Action items — profile-specific */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do next as a {structureDesc} in {industrySector}</div>
+          {(({
+            source_concentration: [
+              `Reduce largest-source dependency (currently a ${record.risk_scenario_drop}-point stress test drop)`,
+              `Lock in at least one ${incomeModel.includes("commission") ? "recurring commission" : incomeModel.includes("contract") ? "multi-month contract" : "committed income source"} for 3+ months`,
+              `Build ${incomeModel.includes("consulting") ? "productized or retainer" : "repeatable"} income alongside ${incomeModelDesc} work`,
+              "Reassess only after changes are active, not planned",
+            ],
+            forward_visibility: [
+              `Lock in ${incomeModel.includes("commission") ? "advance pipeline commitments" : incomeModel.includes("contract") ? "multi-month contract extensions" : "recurring or pre-committed revenue"} for next quarter`,
+              `Reduce largest-source dependency (${record.risk_scenario_drop}-point drop risk)`,
+              `Convert some ${revenueDesc} into contracted or recurring payments`,
+              "Reassess only after changes are active, not planned",
+            ],
+            labor_dependence: [
+              `Convert ${record.active_income_level}% active-work income into ${incomeModel.includes("consulting") ? "productized delivery or licensing" : incomeModel.includes("creator") ? "royalties, licensing, or syndication" : "repeatable or passive streams"}`,
+              `Lock in at least one committed income source for 3+ months`,
+              `Reduce largest-source exposure (${record.risk_scenario_drop}-point drop risk)`,
+              "Reassess only after changes are active, not planned",
+            ],
+            low_continuity: [
+              `Extend continuity beyond ${continuityDisplay} with ${incomeModel.includes("contract") ? "longer-term contracts" : incomeModel.includes("commission") ? "residual or trail commissions" : "recurring revenue streams"}`,
+              "Lock in at least one committed income source for 3+ months",
+              `Reduce largest-source exposure (${record.risk_scenario_drop}-point drop risk)`,
+              "Reassess only after changes are active, not planned",
+            ],
+            few_sources: [
+              `Add at least one new ${incomeModel.includes("consulting") ? "client segment or service line" : incomeModel.includes("product") ? "distribution channel" : "income source"} contributing 10%+ of total`,
+              "Lock in at least one committed income source for 3+ months",
+              `Convert some ${revenueDesc} into repeatable income`,
+              "Reassess only after changes are active, not planned",
+            ],
+          })[dominantConstraint]).map((item, i) => (
+            <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
+              <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
+            </div>
+          ))}
         </div>
 
         {/* 90-Day Checklist */}
@@ -1728,7 +1734,7 @@ export default function ReviewPage() {
         )}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score&#8482; is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway&#8482; framework.
+          The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
         <PageFooter section="What to Do Next" page={5} />
