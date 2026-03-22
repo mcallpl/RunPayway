@@ -311,15 +311,20 @@ function ReportPage({ children, noPad }: { record: AssessmentRecord; children: R
 }
 
 // ── QR Code component ──
-function QRCodeImage({ recordId, authCode }: { recordId: string; authCode?: string }) {
+function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordId: string; authCode?: string; score?: number; band?: string; date?: string; model?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const url = authCode
-      ? `https://peoplestar.com/RunPayway/verify?id=${recordId}&auth=${authCode}`
-      : `https://peoplestar.com/RunPayway/verify?id=${recordId}`;
+    const params = new URLSearchParams();
+    params.set("id", recordId);
+    if (authCode) params.set("auth", authCode);
+    if (score !== undefined) params.set("s", String(score));
+    if (band) params.set("b", band);
+    if (date) params.set("d", date);
+    if (model) params.set("m", model);
+    const url = `https://peoplestar.com/RunPayway/verify?${params.toString()}`;
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
         width: 140,
@@ -960,7 +965,7 @@ export default function ReviewPage() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
           <div style={{ flexShrink: 0, textAlign: "center" }}>
-            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
+            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
             <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan to verify</div>
           </div>
         </div>
