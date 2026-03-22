@@ -322,14 +322,15 @@ function QRCodeImage({ recordId, authCode }: { recordId: string; authCode?: stri
       : `https://peoplestar.com/RunPayway/verify?id=${recordId}`;
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
-        width: 72,
-        margin: 0,
+        width: 140,
+        margin: 2,
         color: { dark: "#0E1A2B", light: "#FFFFFF" },
+        errorCorrectionLevel: "M",
       });
     }).catch(() => {});
   }, [recordId, authCode]);
 
-  return <canvas ref={canvasRef} width={72} height={72} style={{ width: 72, height: 72, borderRadius: 4 }} />;
+  return <canvas ref={canvasRef} width={140} height={140} style={{ width: 80, height: 80 }} />;
 }
 
 // ============================================================
