@@ -792,12 +792,12 @@ export default function ReviewPage() {
   };
 
   const p2Interpretation: Record<string, string> = {
-    A1: "This is a weak score. The income is active, but the structure is still highly exposed. Too much depends on ongoing work, too little is secured ahead of time, and the setup could weaken quickly if conditions change.",
-    A2: "This is still a weak score. The structure is active, but it is not yet stable enough to absorb disruption well. The next step is to build stronger protection before focusing on growth.",
+    A1: `This is a weak score. The income is active, but the structure is highly exposed. The main issue is ${dominantConstraintPlain[dominantConstraint]}. With only ${record.income_continuity_pct}% continuity and a ${record.risk_scenario_drop}-point stress test drop, the setup could weaken quickly if conditions change.`,
+    A2: `This is still a weak score. The structure is active, but it is not yet stable enough to absorb disruption well. The main issue — ${dominantConstraintPlain[dominantConstraint]} — needs to be addressed before focusing on growth.`,
     A3: "This score shows that some structure is beginning to form, but it is still below a stable level. The next step is to strengthen protection, continuity, and balance.",
-    B1: "This is a developing score. The structure is improving, but important weaknesses still remain. The next step is to turn early progress into stronger protection.",
+    B1: `This is a developing score. The structure is improving, but the main issue — ${dominantConstraintPlain[dominantConstraint]} — still limits protection. The next step is to turn early progress into stronger durability.`,
     B2: "This is an improving score, but the structure still needs stronger protection before it can be considered stable. The next gains will come from strengthening continuity and reducing major vulnerabilities.",
-    C1: "This is a solid score. The structure is working, but it is not fully protected yet. A disruption to one major source would still matter too much, and more income needs to be lined up ahead of time.",
+    C1: `This is a solid score. The structure is working, but ${dominantConstraintPlain[dominantConstraint]} still limits full protection. A ${record.risk_scenario_drop}-point stress test drop shows there is still meaningful exposure.`,
     C2: "This is a strong score. The structure is established, but it is not fully insulated from disruption. The next gains come from refinement, stronger continuity, and reducing concentration risk.",
     D1: "This is a strong score. The structure is already well-protected. The next gains come from preserving continuity, reducing residual risk, and maintaining strength over time.",
     D2: "This is an exceptional score. The structure is highly resilient and already protected at a high level. The next focus is maintenance, discipline, and avoiding unnecessary fragility.",
@@ -1075,8 +1075,8 @@ export default function ReviewPage() {
             <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
           </div>
           <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Some income would continue even if active work stopped</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{record.income_continuity_pct <= 5 ? "Very little income would continue if work stopped" : record.income_continuity_pct <= 20 ? "Some income would continue, but not much" : "Some income would continue even if active work stopped"}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.{record.income_continuity_pct <= 5 ? " That is a very small amount and one of the most important areas to strengthen." : record.income_continuity_pct <= 20 ? " That is a limited base that needs to grow before the structure can hold up well." : " That is a real base, but there is still room to strengthen it."}</p>
           </div>
           <div>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{tier === "limited" ? "The structure is early, but not absent" : tier === "developing" ? "There is progress to build on" : "The opportunity is refinement, not rebuilding"}</div>
@@ -1092,29 +1092,29 @@ export default function ReviewPage() {
           {(() => {
             const vulnerabilities: Record<string, Array<{ title: string; body: string }>> = {
               source_concentration: [
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
                 { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
               ],
               forward_visibility: [
                 { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
-                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
+                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
               ],
               labor_dependence: [
-                { title: "Too much income still depends on daily work", body: "A large share of the income requires active work to keep being produced. If work slows or stops, stability drops quickly." },
+                { title: "Too much income still depends on daily work", body: `${record.active_income_level}% of your income currently requires active work to keep being produced. If work slows or stops, stability drops quickly.` },
                 { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
               ],
               low_continuity: [
-                { title: "Income would not continue for long enough if work stopped", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. That is not yet enough.` },
+                { title: `Income would only continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is critically short and the most urgent area to address." : " That is not yet enough to absorb even a moderate disruption."}` },
                 { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would likely fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)}. That is still too large a drop.` },
+                { title: "Too much still depends on one source", body: `If the largest income source disappeared, the score would fall from ${record.final_score} to ${Math.max(0, record.risk_scenario_score)} — a drop of ${record.risk_scenario_drop} points. That level of exposure needs to be reduced.` },
               ],
               few_sources: [
-                { title: "The income depends on too few sources", body: "The structure is still too narrow. Adding dependable sources would reduce exposure to any single one changing." },
+                { title: "The income depends on too few sources", body: `The structure is still too narrow. If any single source changes, the impact on the score would be significant — as shown by the ${record.risk_scenario_drop}-point stress test drop.` },
                 { title: "More income needs to be secured ahead of time", body: "The next gains will come from having more income already committed before the month begins." },
-                { title: "Income would continue, but not for long enough yet", body: `Based on the current structure, income would likely continue for about ${continuityDisplay} if active work stopped. Longer is better.` },
+                { title: `Income would continue for about ${continuityDisplay}`, body: `If active work stopped today, income would likely continue for about ${continuityDisplay}.${record.income_continuity_months < 1 ? " That is very short and one of the most urgent areas to address." : record.income_continuity_months < 3 ? " That is limited — building longer continuity would meaningfully strengthen the structure." : " Extending this would add another layer of protection."}` },
               ],
             };
             return (vulnerabilities[dominantConstraint] ?? vulnerabilities.forward_visibility).map((v) => (
@@ -1427,10 +1427,10 @@ export default function ReviewPage() {
               }))
             : (() => {
                 const priorities = [
-                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: "Lock in income before each month begins — retainers, multi-month agreements, advance bookings, or recurring contracts." },
-                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: "Add or strengthen dependable secondary sources so the structure is not overexposed to one client or channel." },
-                  { key: "labor_dependence", title: "Build more repeatable income", copy: "Convert one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
-                  { key: "low_continuity", title: "Extend how long income continues without active work", copy: "Create income streams that keep producing even when daily work slows down or pauses." },
+                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: `Currently, not enough of your income is committed before the month begins. Lock in retainers, multi-month agreements, advance bookings, or recurring contracts to change this.` },
+                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your largest source disappears. Add or strengthen secondary sources to reduce this exposure.` },
+                  { key: "labor_dependence", title: "Build more repeatable income", copy: `${record.active_income_level}% of your income currently requires active work. Convert some of that into income that repeats or continues without needing to be rebuilt each time.` },
+                  { key: "low_continuity", title: "Extend how long income continues without active work", copy: `Your income would currently continue for about ${continuityDisplay} if work stopped. Build streams that keep producing even when daily work slows down.` },
                 ];
                 // Put dominant constraint first
                 const sorted = [
