@@ -798,7 +798,7 @@ export default function ReviewPage() {
           </div>
           {record.peer_stability_percentile_label && (
             <div style={{ ...T.small, color: B.muted, marginTop: 6 }}>
-              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals
+              Higher than {record.peer_stability_percentile_label}% of {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals in this benchmark
             </div>
           )}
         </div>
@@ -846,10 +846,10 @@ export default function ReviewPage() {
         </div>
 
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
-          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`Only a small portion of ${name} would likely keep coming in if active work stopped today.`} />
-          <MetricCard label="BIGGEST SOURCE STRESS TEST" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
+          <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of ${name} would likely keep coming in if active work stopped today.`} />
+          <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
           <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
-          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong" : tier === "established" ? "Moderate" : tier === "developing" ? "Needs strengthening" : "Vulnerable to disruption"} explanation={tier === "limited" ? "The structure is highly exposed. A single change could weaken stability significantly." : "The structure has some support, but not enough protection yet against disruption."} />
+          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong protection" : tier === "established" ? "Moderate protection" : "Needs stronger protection"} explanation="The structure has some support, but not enough protection yet against disruption." />
         </div>
 
 
@@ -870,100 +870,67 @@ export default function ReviewPage() {
       </ReportPage>
 
 
-      {/* ---- PAGE 2 — Why did I get this score? ---- */}
+      {/* ---- PAGE 2 — What does this score mean? ---- */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Why You Got This Score</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          This page shows why {name} received this score. It looks at five parts of the income structure and how well they hold up if something changes.
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What This Score Means</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 28, maxWidth: 540 }}>
+          {name} scored {record.final_score} out of 100. That means the income structure has real stability, but it is not yet strongly protected from disruption.
         </p>
 
-        <div style={{ display: "flex", gap: 20 }}>
-          {/* Left: 5 driver bars */}
-          <div style={{ flex: 2 }}>
-            <Overline>WHAT IS DRIVING YOUR SCORE</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 18, marginBottom: 24 }}>
-              {[
-                { label: "Income continuity", level: indicatorLevel(record.income_persistence_label, false), pct: record.persistent_income_level + record.semi_persistent_income_level, desc: "How long income would keep coming in if you stopped working." },
-                { label: "Income secured ahead", level: indicatorLevel(record.forward_revenue_visibility_label, false), pct: Math.min(record.forward_revenue_visibility_label === "High" || record.forward_revenue_visibility_label === "Very High" ? 70 : record.forward_revenue_visibility_label === "Moderate" ? 45 : 18, 100), desc: "How much upcoming income is already committed before the month begins." },
-                { label: "Source diversification", level: indicatorLevel(record.income_source_diversity_label, false), pct: record.income_source_diversity_label === "High" || record.income_source_diversity_label === "Very High" ? 65 : record.income_source_diversity_label === "Moderate" ? 50 : 25, desc: "How many independent sources support the income." },
-                { label: "Dependence on daily work", level: indicatorLevel(record.active_labor_dependence_label, true), pct: record.active_income_level, desc: "How much income requires you to keep working directly." },
-                { label: "Dependence on one source", level: indicatorLevel(record.exposure_concentration_label, true), pct: record.exposure_concentration_label === "High" || record.exposure_concentration_label === "Very High" ? 82 : record.exposure_concentration_label === "Moderate" ? 50 : 25, desc: "How exposed the structure is if the largest source disappears." },
-              ].map((s) => (
-                <div key={s.label}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 3 }}>
-                    <span style={{ ...T.sectionLabel, color: B.navy }}>{s.label}</span>
-                    <span style={{ ...T.small, fontWeight: 600, color: s.level.color }}>{s.level.display}</span>
-                  </div>
-                  <div style={{ height: 6, borderRadius: 3, backgroundColor: B.stone, marginBottom: 4 }}>
-                    <div style={{ height: "100%", borderRadius: 3, width: `${s.pct}%`, backgroundColor: B.navy }} />
-                  </div>
-                  <div style={{ ...T.small, color: B.muted, marginTop: 2 }}>{s.desc}</div>
-                </div>
-              ))}
-            </div>
+        {/* What is already working */}
+        <Overline>WHAT IS ALREADY WORKING</Overline>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>You have real income structure in place</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>The income is not starting from zero. There is already a meaningful base to build from.</p>
           </div>
-
-          {/* Right: Constraint hierarchy */}
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 22px" }}>
-            <Overline>WHAT IS HOLDING YOUR SCORE BACK</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {v2Constraints ? [
-                { tag: "MAIN ISSUE", key: v2Constraints.root_constraint },
-                { tag: "SECOND ISSUE", key: v2Constraints.primary_constraint },
-                { tag: "ALSO AFFECTING", key: v2Constraints.secondary_constraint },
-              ].filter((c, i, arr) => arr.findIndex(x => x.key === c.key) === i).map((c) => (
-                <div key={c.key} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
-                  <div style={{ ...T.micro, color: B.purple }}>{c.tag}</div>
-                  <div style={{ ...T.small, color: B.navy, fontWeight: 500, marginTop: 1 }}>{constraintLabel[c.key] ?? c.key}</div>
-                  <div style={{ ...T.meta, color: B.muted, marginTop: 1 }}>{olExplanations?.[c.key.replace("weak_forward_visibility", "low_forward_secured").replace("high_concentration", "high_concentration").replace("high_labor_dependence", "high_labor_dependence")] ?? ""}</div>
-                </div>
-              )) : [
-                { code: "MAIN ISSUE", title: "Low Forward-Secured Income", text: olExplanations?.low_forward_secured || "Not enough future income is already lined up before the month begins." },
-                { code: "SECOND ISSUE", title: "High Source Dependence", text: olExplanations?.high_concentration || "The structure depends too much on the largest income source." },
-                { code: "ALSO AFFECTING", title: "Short Continuity Window", text: olExplanations?.short_continuity || "Income does not continue long enough without active work." },
-              ].map((rc) => (
-                <div key={rc.code} style={{ borderBottom: `1px solid ${B.stone}`, paddingBottom: 6 }}>
-                  <div style={{ ...T.micro, color: B.purple }}>{rc.code}</div>
-                  <div style={{ ...T.small, color: B.navy, fontWeight: 500, marginTop: 1 }}>{rc.title}</div>
-                  <div style={{ ...T.meta, color: B.muted, marginTop: 1 }}>{rc.text}</div>
-                </div>
-              ))}
-            </div>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Some income would continue even if active work stopped</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of {name} would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
+          </div>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>There are signs of strength in the structure</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>Some parts of the setup are already supporting stability. The opportunity now is to make that support stronger and more durable.</p>
           </div>
         </div>
 
-        {/* Fastest ways to raise your score */}
-        {v2Sensitivity && v2Sensitivity.tests.length > 0 && (
-          <div style={{ marginTop: 24, marginBottom: 20 }}>
-            <Overline>FASTEST WAYS TO RAISE YOUR SCORE</Overline>
-            <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 520 }}>
-              These changes would likely help {name} the most, ranked from strongest impact to lowest.
-            </p>
-            {v2Sensitivity.tests.slice(0, 4).map((t, i) => {
-              const plainLabel: Record<string, string> = {
-                labor_dependence: "Reduce dependence on daily work",
-                forward_secured: "Secure more income ahead of time",
-                income_persistence: "Increase income that continues month to month",
-                income_sources: "Add more dependable income sources",
-                largest_source: "Reduce reliance on the single largest source",
-                concentration: "Spread income across more sources",
-                variability: "Reduce month-to-month income swings",
-              };
-              return (
-                <div key={t.factor} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", marginBottom: 8, backgroundColor: i === 0 ? "rgba(31,109,122,0.04)" : "transparent", borderRadius: 6, border: i === 0 ? "1px solid rgba(31,109,122,0.12)" : "1px solid transparent" }}>
-                  <span style={{ fontSize: 18, fontWeight: 600, color: i === 0 ? B.teal : B.taupe, minWidth: 24 }}>{i + 1}</span>
-                  <span style={{ ...T.body, color: B.navy, flex: 1 }}>{plainLabel[t.factor] ?? t.delta_description}</span>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: t.lift > 0 ? B.teal : B.muted }}>+{t.lift}</span>
-                  <span style={{ ...T.small, color: B.muted }}>points</span>
-                </div>
-              );
-            })}
+        <SectionDivider />
+
+        {/* What is still vulnerable */}
+        <Overline>WHAT IS STILL VULNERABLE</Overline>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Too much still depends on one source</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>If the largest income source disappeared, the score would likely fall from {record.final_score} to {Math.max(0, record.risk_scenario_score)}. That is still too large a drop.</p>
           </div>
-        )}
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>More income needs to be secured ahead of time</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>The next gains will come from having more income already committed before the month begins.</p>
+          </div>
+          <div>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Income would continue, but not for long enough yet</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>Based on the current structure, income would likely continue for about {continuityDisplay} if active work stopped. Longer is better.</p>
+          </div>
+        </div>
 
+        <SectionDivider />
 
-        <PageFooter section="Why This Score" page={2} />
+        {/* Plain-English interpretation */}
+        <Overline>PLAIN-ENGLISH INTERPRETATION</Overline>
+        <p style={{ ...T.body, color: B.navy, marginBottom: 24, lineHeight: 1.7, maxWidth: 600 }}>
+          This is not a weak score. The structure is working. But it is not fully protected yet. A disruption to one major source would still matter too much, and more income needs to be lined up ahead of time. The next step is not just earning more. It is making more of the income repeat, stay visible ahead of time, and rely less on one source.
+        </p>
+
+        {/* Bottom takeaway */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "18px 22px" }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
+          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
+            {name} has real stability. The next gains come from stronger protection, not just higher output.
+          </p>
+        </div>
+
+        <PageFooter section="What This Score Means" page={2} />
       </ReportPage>
 
 
@@ -978,7 +945,7 @@ export default function ReviewPage() {
         {/* Two large cards: Stress Test + Continuity */}
         <div style={{ display: "flex", gap: 20, marginBottom: 28 }}>
           <div style={{ flex: 3, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>LARGEST SOURCE STRESS TEST</div>
+            <Overline>IF YOUR LARGEST INCOME SOURCE DISAPPEARED</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
               <span style={{ fontSize: 16, color: B.taupe }}>→</span>
@@ -989,7 +956,7 @@ export default function ReviewPage() {
             </p>
           </div>
           <div style={{ flex: 2, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>CONTINUITY WINDOW</div>
+            <Overline>HOW LONG INCOME WOULD CONTINUE IF WORK STOPPED</Overline>
             <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 4 }}>
               Estimated: {continuityDisplay}
             </div>
@@ -1056,9 +1023,9 @@ export default function ReviewPage() {
         </div>
         <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           {[
-            { label: "Earned by working", pct: record.active_income_level, color: B.ink },
-            { label: "Repeats regularly", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "Continues without active work", pct: record.persistent_income_level, color: B.teal },
+            { label: "Requires active work", pct: record.active_income_level, color: B.ink },
+            { label: "Repeats month to month", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Continues without daily work", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
             <div key={seg.label} style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -1120,7 +1087,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How to Raise Your Score</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          The fastest way to raise this score is not just to work more. It is to improve how {name} is set up — with more income secured ahead of time, less dependence on one source, and more income that continues without daily effort.
+          The fastest way to raise this score is not just to work more. It is to improve how the income is structured — with more income secured ahead of time, less dependence on one source, and more income that continues without daily effort.
         </p>
 
         {/* Current Band / Next Target Band — compact side by side */}
@@ -1166,7 +1133,7 @@ export default function ReviewPage() {
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                Together, these changes could move the score from {record.final_score} to <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span>{v2Lift.combined_top_two.band_shift && <span style={{ color: B.teal }}>, into {v2Lift.combined_top_two.projected_band}</span>}.
+                Together, these changes could move {name} from {record.final_score} into <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_band}</span> and strengthen protection against disruption.
               </div>
             )}
           </div>
@@ -1245,7 +1212,7 @@ export default function ReviewPage() {
               "Secure at least one multi-month or forward-committed revenue arrangement",
               "Reduce dependence on the single largest source",
               "Convert part of active-work income into repeatable income",
-              "Build a longer period of income continuity before reassessment",
+              "Know more of next month\u2019s income before the month begins",
               "Reassess only after real structural change is in place",
             ].map((item, i) => (
               <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
@@ -1259,7 +1226,7 @@ export default function ReviewPage() {
               "Working more without improving the structure underneath it",
               "Short bursts of output that do not improve durability",
               "Temporary spikes that disappear when work stops",
-              "Metrics that do not improve continuity or income secured ahead",
+              "Measures that do not improve income continuity or income secured ahead of time",
             ].map((item) => (
               <div key={item} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 5 }}>
                 <span style={{ color: B.taupe }}>—</span>{item}
@@ -1275,7 +1242,7 @@ export default function ReviewPage() {
             "Create one offer, agreement, or revenue stream that secures income ahead for more than one month.",
             "Identify the largest source and reduce how much the structure depends on it.",
             "Add one recurring, retained, or repeatable income component.",
-            "Improve visibility into next month's income before the month begins.",
+            "Know more of next month\u2019s income before the month begins.",
             "Reassess only after the structural changes are active, not just planned.",
           ].map((row, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
