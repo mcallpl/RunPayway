@@ -376,7 +376,7 @@ export default function DiagnosticPage() {
       setShowLoading(true);
       setTimeout(() => {
         router.push("/review");
-      }, 3600);
+      }, 5100);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
       setError(message);
@@ -413,7 +413,7 @@ export default function DiagnosticPage() {
           >
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: B.purple, animation: "pulse 1.2s ease-in-out infinite" }} />
             <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Model RP-1.0
+              Model RP-2.0
             </span>
           </div>
 
@@ -421,7 +421,7 @@ export default function DiagnosticPage() {
             Generating Your Assessment
           </h2>
           <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, marginBottom: 32 }}>
-            Structural Stability Model RP-1.0 is evaluating your income structure.
+            Structural Stability Model RP-2.0 is evaluating your income structure.
           </p>
 
           {/* Processing steps */}
