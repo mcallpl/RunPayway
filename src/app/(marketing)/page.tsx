@@ -505,32 +505,28 @@ function FourFactorsSection() {
 
   const factors = [
     {
+      number: "I",
       label: "Recurrence",
-      value: "74%",
-      description: "How much of your income repeats on a predictable cycle.",
-      accent: B.teal,
-      gradient: "linear-gradient(135deg, rgba(31,109,122,0.08) 0%, rgba(31,109,122,0.02) 100%)",
+      question: "Does your income repeat?",
+      description: "We measure how much of your income comes back on a predictable cycle — retainers, subscriptions, recurring contracts — versus income you have to rebuild from zero each time.",
     },
     {
+      number: "II",
       label: "Concentration",
-      value: "3:1",
-      description: "How many independent sources your income depends on.",
-      accent: B.purple,
-      gradient: "linear-gradient(135deg, rgba(75,63,174,0.08) 0%, rgba(75,63,174,0.02) 100%)",
+      question: "How many sources do you depend on?",
+      description: "We measure how spread out your income is across independent sources. The more you depend on a single client or channel, the more exposed you are if it changes.",
     },
     {
+      number: "III",
       label: "Visibility",
-      value: "9mo",
-      description: "How far ahead your income is contractually secured.",
-      accent: B.teal,
-      gradient: "linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)",
+      question: "How far ahead is your income secured?",
+      description: "We measure how much of your upcoming income is already committed — booked, contracted, or locked in — before the month begins.",
     },
     {
+      number: "IV",
       label: "Passivity",
-      value: "41%",
-      description: "How much continues without your active involvement.",
-      accent: B.purple,
-      gradient: "linear-gradient(135deg, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.04) 100%)",
+      question: "What continues if you stop working?",
+      description: "We measure how much of your income would keep coming in even if you stopped active work today. Royalties, licensing, rental income, and similar streams.",
     },
   ];
 
@@ -538,34 +534,15 @@ function FourFactorsSection() {
     <section
       ref={ref}
       aria-label="What RunPayway Measures"
-      className="relative overflow-hidden"
       style={{
-        background: B.navy,
+        background: "#FFFFFF",
         paddingTop: mobile ? 80 : 120,
         paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      {/* Ambient glows */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 600, height: 600, borderRadius: "50%",
-          top: "-20%", left: "-10%",
-          background: "radial-gradient(circle, rgba(31,109,122,0.12) 0%, transparent 65%)",
-        }}
-      />
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500, height: 500, borderRadius: "50%",
-          bottom: "-15%", right: "-5%",
-          background: "radial-gradient(circle, rgba(75,63,174,0.10) 0%, transparent 60%)",
-        }}
-      />
-
-      <div className="relative mx-auto" style={{ maxWidth: S.maxW }}>
+      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
         {/* Section header */}
         <div
           style={{
@@ -582,12 +559,12 @@ function FourFactorsSection() {
               letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
             }}
           >
-            Four dimensions of stability
+            Methodology
           </div>
           <h2
             style={{
               fontSize: mobile ? 32 : 48,
-              color: "#F4F1EA",
+              color: B.navy,
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
               fontFamily: DISPLAY_FONT, fontWeight: 400,
@@ -596,90 +573,65 @@ function FourFactorsSection() {
           >
             What RunPayway&#8482; measures
           </h2>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
-            Every score is built from four structural factors. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
+          <p style={{ fontSize: 17, color: "rgba(14,26,43,0.50)", lineHeight: S.lhBody, maxWidth: 560, margin: "0 auto" }}>
+            Every score is built from four structural dimensions. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
           </p>
         </div>
 
-        {/* Four factor cards — 2x2 grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: mobile ? 16 : 20,
-          }}
-        >
+        {/* Four factors — editorial list */}
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
           {factors.map((f, i) => (
             <div
               key={f.label}
               style={{
-                background: "rgba(244,241,234,0.04)",
-                borderRadius: 16,
-                border: "1px solid rgba(244,241,234,0.08)",
-                padding: mobile ? "32px 28px" : "44px 40px",
-                position: "relative",
-                overflow: "hidden",
+                display: mobile ? "block" : "flex",
+                alignItems: "flex-start",
+                gap: 40,
+                paddingTop: i === 0 ? 0 : (mobile ? 36 : 48),
+                paddingBottom: mobile ? 36 : 48,
+                borderBottom: i < factors.length - 1 ? "1px solid rgba(14,26,43,0.08)" : "none",
                 opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 600ms ease-out ${200 + i * 100}ms, transform 600ms ease-out ${200 + i * 100}ms, border-color 300ms ease, background 300ms ease`,
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.borderColor = `${f.accent}40`;
-                e.currentTarget.style.background = "rgba(244,241,234,0.06)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(244,241,234,0.08)";
-                e.currentTarget.style.background = "rgba(244,241,234,0.04)";
+                transform: visible ? "translateY(0)" : "translateY(16px)",
+                transition: `opacity 600ms ease-out ${200 + i * 120}ms, transform 600ms ease-out ${200 + i * 120}ms`,
               }}
             >
-              {/* Background gradient wash */}
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  inset: 0,
-                  background: f.gradient,
-                  opacity: 0.5,
-                }}
-              />
-
-              {/* Content */}
-              <div style={{ position: "relative" }}>
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 20 }}>
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-                        letterSpacing: "0.08em", color: f.accent, marginBottom: 12,
-                      }}
-                    >
-                      {f.label}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: mobile ? 36 : 44,
-                        fontWeight: 300,
-                        color: "#F4F1EA",
-                        letterSpacing: "-0.03em",
-                        lineHeight: 1,
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      {f.value}
-                    </div>
-                  </div>
-
-                  {/* Decorative arc */}
-                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style={{ opacity: 0.25, flexShrink: 0 }}>
-                    <circle cx="24" cy="24" r="20" stroke={f.accent} strokeWidth="1" strokeDasharray="4 6" />
-                    <circle cx="24" cy="24" r="12" stroke={f.accent} strokeWidth="0.5" />
-                  </svg>
+              {/* Left — numeral + label */}
+              <div style={{ minWidth: mobile ? undefined : 180, marginBottom: mobile ? 16 : 0 }}>
+                <div
+                  style={{
+                    fontSize: 28, fontWeight: 300, color: B.teal,
+                    letterSpacing: "0.04em", lineHeight: 1, marginBottom: 8,
+                    fontFamily: DISPLAY_FONT,
+                  }}
+                >
+                  {f.number}
                 </div>
+                <div
+                  style={{
+                    fontSize: 13, fontWeight: 600, textTransform: "uppercase",
+                    letterSpacing: "0.06em", color: B.navy,
+                  }}
+                >
+                  {f.label}
+                </div>
+              </div>
 
-                {/* Thin accent line */}
-                <div style={{ width: 32, height: 1, background: f.accent, opacity: 0.3, marginBottom: 16 }} />
-
-                <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65 }}>
+              {/* Right — question + description */}
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontSize: mobile ? 20 : 22,
+                    fontWeight: 400,
+                    color: B.navy,
+                    lineHeight: 1.35,
+                    letterSpacing: "-0.01em",
+                    marginBottom: 12,
+                    fontFamily: DISPLAY_FONT,
+                  }}
+                >
+                  {f.question}
+                </div>
+                <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, margin: 0 }}>
                   {f.description}
                 </p>
               </div>
