@@ -634,6 +634,12 @@ export default function ReviewPage() {
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
 
+  const subTier: "A1" | "A2" | "A3" | "B1" | "B2" | "C1" | "C2" | "D1" | "D2" =
+    score <= 9 ? "A1" : score <= 19 ? "A2" : score <= 29 ? "A3" :
+    score <= 39 ? "B1" : score <= 49 ? "B2" :
+    score <= 59 ? "C1" : score <= 74 ? "C2" :
+    score <= 89 ? "D1" : "D2";
+
   const name = record.assessment_title || "This income profile";
   const issuedDate = (record.issued_timestamp_utc || record.assessment_date_utc).split("T")[0];
   const reassessDate = (() => {
@@ -648,34 +654,152 @@ export default function ReviewPage() {
 
   // ── Tier-aware copy ──
   const copy = {
-    // Page 1
-    p1_headline: tier === "limited"
-      ? `${name} scored ${score} out of 100. That means the income is active, but currently quite vulnerable if conditions change. Most of it depends on ongoing work, and very little is secured ahead of time.`
-      : tier === "developing"
-        ? `${name} scored ${score} out of 100. That means the income is active, but not yet strongly protected. If work slows down or a major income source changes, stability could drop quickly.`
-        : tier === "established"
-          ? `${name} scored ${score} out of 100. The income structure has real stability. The main opportunity now is to lock in more income ahead of time and reduce how much depends on any single source.`
-          : `${name} scored ${score} out of 100. The income structure is strong and durable, with good forward visibility and healthy diversification across sources.`,
-
-    // Page 2
-    p2_intro: `This page shows the main reasons behind the score. The question is not whether income exists today. The question is whether the structure can hold up when something changes.`,
-
-    // Page 3
-    p3_intro: tier === "limited"
-      ? `This page shows where your income structure is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`
-      : `This page shows where your income structure is most vulnerable. It does not predict the future — it shows what would weaken first if something changes.`,
-
-    // Page 4
-    p4_intro: tier === "limited"
-      ? `The fastest way to raise this score is not to work more. It is to strengthen how the income is set up: more income secured ahead, less dependence on one source, and more income that continues without daily effort.`
-      : `The fastest way to raise this score is not to work more. It is to change how your income is set up — more income lined up ahead, less dependence on one source, and more income that keeps going without daily effort.`,
-
-    // Page 5
-    p5_heading: "Main takeaway",
-    p5_body: tier === "limited"
-      ? "The first need is not more output. It is a stronger structure. Income is being generated, but the setup needs more income secured ahead, less source dependence, and more continuity without daily effort."
-      : `${name} does not need to earn more first. The income is there, but the setup needs to change — more income lined up ahead, less reliance on one source, and more income that continues on its own.`,
+    p1_headline: ({
+      A1: `${name} scored ${score} out of 100. The income is active, but the structure is very vulnerable if conditions change. Most of the protection needed for stability is not yet in place.`,
+      A2: `${name} scored ${score} out of 100. The income is active, but the structure is still weak and vulnerable if conditions change. Protection is limited, and important stability elements are still missing.`,
+      A3: `${name} scored ${score} out of 100. Some early income structure is in place, but the setup is still below a stable range and remains vulnerable to disruption.`,
+      B1: `${name} scored ${score} out of 100. The structure is developing, but it is not yet protected enough against disruption. The next gains will come from improving continuity, visibility, and source balance.`,
+      B2: `${name} scored ${score} out of 100. The income structure is developing, but it still needs stronger protection before it can be considered stable.`,
+      C1: `${name} scored ${score} out of 100. The income structure has real stability, but it is not yet strongly protected against disruption. The main opportunity now is to secure more income ahead of time and reduce reliance on any single source.`,
+      C2: `${name} scored ${score} out of 100. The structure is established and relatively stable, but it is not yet fully insulated from meaningful disruption.`,
+      D1: `${name} scored ${score} out of 100. The income structure is strong, with substantial protection already in place. The focus now is on preserving strength and tightening remaining weak points.`,
+      D2: `${name} scored ${score} out of 100. The structure is exceptionally strong and highly protected. The focus now is on maintaining durability and avoiding unnecessary concentration risk.`,
+    })[subTier],
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
+  };
+
+  // ── Band-sensitive copy blocks ──
+  const bandExplainer: Record<string, string> = {
+    A1: `${name} is active right now, but the structure is highly vulnerable if conditions change. Very little protection is in place.`,
+    A2: `${name} is active right now, but the structure is still weak and not yet protected enough against disruption.`,
+    A3: `${name} has some early structure in place, but protection is still limited and meaningful vulnerability remains.`,
+    B1: `${name} is developing, but the structure is still not protected enough against disruption.`,
+    B2: `${name} has a developing structure, but stronger protection is still needed in key areas.`,
+    C1: `${name} has real stability, but the structure is not yet strongly protected against disruption.`,
+    C2: `${name} has established stability and meaningful protection, though some vulnerabilities still remain.`,
+    D1: `${name} is strong and well-protected compared with most benchmarks, with only limited vulnerabilities remaining.`,
+    D2: `${name} is exceptionally strong, highly protected, and structurally resilient across the benchmark.`,
+  };
+
+  const durabilityValue: Record<string, string> = {
+    A1: "Very weak protection", A2: "Weak protection", A3: "Limited protection",
+    B1: "Needs stronger protection", B2: "Partly protected",
+    C1: "Moderately protected", C2: "Meaningfully protected",
+    D1: "Strong protection", D2: "Very strong protection",
+  };
+
+  const durabilityBody: Record<string, string> = {
+    A1: "The structure has very little protection in place if conditions change.",
+    A2: "The structure has some support, but not enough to absorb disruption well.",
+    A3: "Some support exists, but the structure is still below a stable level of protection.",
+    B1: "The structure is improving, but it is still vulnerable in important areas.",
+    B2: "The structure has a foundation, but stronger protection is still needed.",
+    C1: "The structure has real support, but not enough protection yet against meaningful disruption.",
+    C2: "The structure is relatively stable, though some vulnerabilities still matter.",
+    D1: "The structure is strong and holds up well under most common disruptions.",
+    D2: "The structure is highly durable and well-protected across the benchmark.",
+  };
+
+  const p2Intro: Record<string, string> = {
+    A1: `${name} scored ${score} out of 100. This is a weak score. The income is active, but the structure is highly exposed and not yet stable enough to absorb disruption well.`,
+    A2: `${name} scored ${score} out of 100. This is still a weak score. The income is active, but the structure is not yet stable enough to handle disruption confidently.`,
+    A3: `${name} scored ${score} out of 100. This score shows that some early structure is in place, but protection is still limited and the setup remains vulnerable.`,
+    B1: `${name} scored ${score} out of 100. This score shows a developing structure, but protection is still incomplete and meaningful vulnerabilities remain.`,
+    B2: `${name} scored ${score} out of 100. This is an improving score, but the structure still needs stronger protection before it can be called stable.`,
+    C1: `${name} scored ${score} out of 100. This is a solid score. The structure is working, but it is not yet strongly protected from disruption.`,
+    C2: `${name} scored ${score} out of 100. This is a strong score. The structure has established stability, though important vulnerabilities still remain.`,
+    D1: `${name} scored ${score} out of 100. This is a strong score. The structure already has substantial protection, with only limited weaknesses remaining.`,
+    D2: `${name} scored ${score} out of 100. This is an exceptional score. The structure is highly protected and well-positioned relative to the benchmark.`,
+  };
+
+  const p2Interpretation: Record<string, string> = {
+    A1: "This is a weak score. The income is active, but the structure is still highly exposed. Too much depends on ongoing work, too little is secured ahead of time, and the setup could weaken quickly if conditions change.",
+    A2: "This is still a weak score. The structure is active, but it is not yet stable enough to absorb disruption well. The next step is to build stronger protection before focusing on growth.",
+    A3: "This score shows that some structure is beginning to form, but it is still below a stable level. The next step is to strengthen protection, continuity, and balance.",
+    B1: "This is a developing score. The structure is improving, but important weaknesses still remain. The next step is to turn early progress into stronger protection.",
+    B2: "This is an improving score, but the structure still needs stronger protection before it can be considered stable. The next gains will come from strengthening continuity and reducing major vulnerabilities.",
+    C1: "This is a solid score. The structure is working, but it is not fully protected yet. A disruption to one major source would still matter too much, and more income needs to be lined up ahead of time.",
+    C2: "This is a strong score. The structure is established, but it is not fully insulated from disruption. The next gains come from refinement, stronger continuity, and reducing concentration risk.",
+    D1: "This is a strong score. The structure is already well-protected. The next gains come from preserving continuity, reducing residual risk, and maintaining strength over time.",
+    D2: "This is an exceptional score. The structure is highly resilient and already protected at a high level. The next focus is maintenance, discipline, and avoiding unnecessary fragility.",
+  };
+
+  const p2BottomLine: Record<string, string> = {
+    A1: `${name} is active, but not yet stable enough. The first priority is building protection.`,
+    A2: `${name} has early income activity, but the structure still needs much stronger protection.`,
+    A3: `${name} has a starting structure in place. The next gains come from turning it into something more stable.`,
+    B1: `${name} is developing. The next gains come from stronger protection, not just more output.`,
+    B2: `${name} has real progress. The next gains come from strengthening the structure so it can hold up better.`,
+    C1: `${name} has real stability. The next gains come from stronger protection, not just higher output.`,
+    C2: `${name} is established. The next gains come from refinement and stronger durability.`,
+    D1: `${name} is strong. The next gains come from preserving resilience and reducing remaining weak points.`,
+    D2: `${name} is exceptionally strong. The focus now is maintaining discipline and long-term resilience.`,
+  };
+
+  const p2WorkingTitle: string = ["A1", "A2"].includes(subTier) ? "There is some income activity in place" : ["A3"].includes(subTier) ? "Some early structure is visible" : ["B1", "B2"].includes(subTier) ? "There is a real foundation in place" : ["C1", "C2"].includes(subTier) ? "There is real stability in place" : "The structure is already strong";
+
+  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? "The income is not starting from zero. This is an early base to build from, but it is not yet strong protection." : ["A3"].includes(subTier) ? "The income is no longer starting from zero. A base exists, but it is still below a stable range." : ["B1", "B2"].includes(subTier) ? "Parts of the structure are already supporting stability. This is progress, but not yet enough protection." : ["C1", "C2"].includes(subTier) ? "Parts of the structure are already working well. The next gains come from strengthening what already exists." : "Protection is already substantial. The focus is refinement rather than repair.";
+
+  const p3Intro: Record<string, string> = {
+    A1: `This page shows what could cause the most damage because the current structure has very little protection in place.`,
+    A2: `This page shows what could hurt your income most because the current structure is still weak and vulnerable to disruption.`,
+    A3: `This page shows what could hurt your income most as the structure is still below a stable range.`,
+    B1: `This page shows what could hurt your income most while the structure is still developing.`,
+    B2: `This page shows what could hurt your income most before the structure becomes more stable.`,
+    C1: `This page shows what could hurt your income most even though real stability is already present.`,
+    C2: `This page shows what could still weaken your income despite an established structure.`,
+    D1: `This page shows the main risks that could still weaken your income, even from a position of strength.`,
+    D2: `This page shows the limited risks that could still affect your income despite a highly resilient structure.`,
+  };
+
+  const p4CurrentBandBody: Record<string, string> = {
+    A1: "The income is working now, but the structure is still fragile. Immediate stability and protection need to come first.",
+    A2: "The income is active, but the structure is still weak and needs stronger protection before it can absorb disruption well.",
+    A3: "Some early structure is in place, but the setup is still below a stable level and needs stronger protection first.",
+    B1: "The structure is developing, but it is not yet strong enough to absorb disruption well.",
+    B2: "The structure has a real foundation, but stronger protection is still needed in key areas.",
+    C1: "The structure is stable, but it is not yet strongly protected against meaningful disruption.",
+    C2: "The structure is established and relatively stable, though some important vulnerabilities still remain.",
+    D1: "The structure is strong, with only limited areas left to refine.",
+    D2: "The structure is exceptionally strong. The remaining gains come from refinement rather than repair.",
+  };
+
+  const p4TargetBandBody: string = tier === "limited" ? "The next level means moving from fragile or early-stage structure into something more stable and better protected." : tier === "developing" ? "The next level means moving from a developing structure into one with clearer stability and stronger protection." : tier === "established" ? "The next level means moving from established stability into a more resilient and well-protected structure." : "The focus now is not a new band. It is preserving strength and reducing remaining weak points.";
+
+  const p4CombinedLine: Record<string, string> = {
+    A1: "These changes would be a strong first step. The score may still remain in Limited Stability, but the structure would be meaningfully less fragile.",
+    A2: "These changes would create real progress, even if more work would still be needed to move fully out of Limited Stability.",
+    A3: "These changes could help move the structure closer to Developing Stability and materially reduce vulnerability.",
+    B1: `Together, these changes could move ${name} closer to a more protected developing structure.`,
+    B2: `Together, these changes could move ${name} into Established Stability.`,
+    C1: `Together, these changes could move ${name} deeper into Established Stability and strengthen protection against disruption.`,
+    C2: `Together, these changes could move ${name} toward High Stability.`,
+    D1: "These changes would further strengthen an already strong structure.",
+    D2: "These changes would be refinements to an already highly protected structure.",
+  };
+
+  const p5Intro: Record<string, string> = {
+    A1: `The first priority for ${name} is not bigger income. It is building basic protection. That means securing more income ahead of time, reducing reliance on one source, and creating more income that continues if work stops.`,
+    A2: `The first priority for ${name} is not bigger income. It is building stronger protection so the structure can hold up better if conditions change.`,
+    A3: `The first priority for ${name} is to turn early structure into something more stable. That means stronger continuity, more income secured ahead of time, and less reliance on one source.`,
+    B1: `The next priority for ${name} is to strengthen the developing structure so it can handle disruption more confidently.`,
+    B2: `The first priority for ${name} is not simply more income. It is stronger protection, better continuity, and less concentration risk.`,
+    C1: "The priority now is not simply earning more. It is strengthening protection, visibility, and continuity.",
+    C2: "The priority now is to refine an established structure so it becomes even more durable and less exposed to disruption.",
+    D1: "The priority now is to preserve strength, reduce residual vulnerabilities, and maintain continuity over time.",
+    D2: "The priority now is long-term discipline: preserve strength, avoid unnecessary fragility, and maintain resilience over time.",
+  };
+
+  const p5CompareInterpretation: Record<string, string> = {
+    A1: "This score is currently far below the peer average and well below the top benchmark range.",
+    A2: "This score is currently below the peer average and far below the top benchmark range.",
+    A3: "This score is still below the peer average and below the top benchmark range.",
+    B1: "This score is approaching the middle of the benchmark, but still trails stronger structures.",
+    B2: "This score is around the middle of the benchmark, but still below higher-performing structures.",
+    C1: "This score is above the peer average, but still below the top benchmark range.",
+    C2: "This score is solidly above the peer average and moving closer to the top benchmark range.",
+    D1: "This score is well above the peer average and within a strong benchmark range.",
+    D2: "This score is far above the peer average and within the highest benchmark range.",
   };
 
   // ── V2 engine data ──
@@ -798,7 +922,7 @@ export default function ReviewPage() {
           </div>
           {record.peer_stability_percentile_label && (
             <div style={{ ...T.small, color: B.muted, marginTop: 8 }}>
-              Higher than {record.peer_stability_percentile_label}% of {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals in this benchmark
+              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals in this benchmark
             </div>
           )}
         </div>
@@ -848,8 +972,8 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
           <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today.`} />
           <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
-          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
-          <MetricCard label="OVERALL DURABILITY" value={tier === "high" ? "Strong protection" : tier === "established" ? "Moderate protection" : "Needs stronger protection"} explanation="The structure has some support, but not enough protection yet against disruption." />
+          <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] === "Too much dependence on one source" ? "If the largest source changed, the score would drop significantly." : constraintLabel[v2Constraints.root_constraint] === "Too much dependence on active work" ? "Too much income still requires daily work to keep being produced." : "The main factor limiting the score needs to be addressed first.") : "The main factor limiting the score needs to be addressed first."} />
+          <MetricCard label="OVERALL DURABILITY" value={durabilityValue[subTier]} explanation={durabilityBody[subTier]} />
         </div>
 
 
@@ -875,15 +999,15 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What This Score Means</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 28, maxWidth: 540 }}>
-          {name} scored {record.final_score} out of 100. That means the income structure has real stability, but it is not yet strongly protected from disruption.
+          {p2Intro[subTier]}
         </p>
 
         {/* What is already working */}
         <Overline>WHAT IS ALREADY WORKING</Overline>
         <div style={{ display: "flex", flexDirection: "column", gap: 20, marginBottom: 32 }}>
           <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>You have real income structure in place</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>The income is not starting from zero. There is already a meaningful base to build from.</p>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{p2WorkingTitle}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
           </div>
           <div>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>Some income would continue even if active work stopped</div>
@@ -919,14 +1043,14 @@ export default function ReviewPage() {
         {/* Plain-English interpretation */}
         <Overline>PLAIN-ENGLISH INTERPRETATION</Overline>
         <p style={{ ...T.body, color: B.navy, marginBottom: 24, lineHeight: 1.7, maxWidth: 600 }}>
-          This is not a weak score. The structure is working. But it is not fully protected yet. A disruption to one major source would still matter too much, and more income needs to be lined up ahead of time. The next step is not just earning more. It is making more of the income repeat, stay visible ahead of time, and rely less on one source.
+          {p2Interpretation[subTier]}
         </p>
 
         {/* Bottom takeaway */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "18px 22px" }}>
           <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
-            {name} has real stability. The next gains come from stronger protection, not just higher output.
+            {p2BottomLine[subTier]}
           </p>
         </div>
 
@@ -939,7 +1063,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          This page shows what could hurt your income the most if the structure were tested.
+          {p3Intro[subTier]}
         </p>
 
         {/* Two large cards: Stress Test + Continuity */}
@@ -972,7 +1096,7 @@ export default function ReviewPage() {
             <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
             {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => (
               <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : s.score_drop > 5 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW"}</div>
+                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? B.bandLimited : s.score_drop > 5 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW"}</div>
                 <div style={{ flex: 1 }}>
                   <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{(() => {
                     const scenarioPlain: Record<string, string> = {
@@ -1066,9 +1190,19 @@ export default function ReviewPage() {
               <div style={{ marginBottom: 12 }}>
                 {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => (
                   <div key={d.factor} style={{ ...T.meta, color: B.ink, display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                    <span>{d.factor}</span>
+                    <span>{(() => {
+                      const peerLabel: Record<string, string> = {
+                        income_persistence: "Income that continues if work stops",
+                        forward_revenue_visibility: "Income secured ahead of time",
+                        concentration_resilience: "Reliance on one source",
+                        income_source_diversity: "Number of income sources",
+                        labor_dependence: "Dependence on daily work",
+                        earnings_stability: "Month-to-month earnings stability",
+                      };
+                      return peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
+                    })()}</span>
                     <span style={{ fontWeight: 600, color: d.direction === "above" ? B.teal : B.bandLimited }}>
-                      {d.magnitude === "significant" ? "▲▲" : "▲"} {d.direction} peers
+                      {d.direction === "above" ? "▲ above peers" : "▲ below peers"}
                     </span>
                   </div>
                 ))}
@@ -1095,12 +1229,12 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "18px 22px" }}>
             <Overline>CURRENT BAND</Overline>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0" }}>{tier === "limited" || tier === "developing" ? "The income works now, but it is not yet strong enough to absorb disruption well." : "Stable, with room to strengthen further."}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0" }}>{p4CurrentBandBody[subTier]}</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "18px 22px" }}>
             <Overline>NEXT TARGET BAND</Overline>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 75 ? "This next level means better protection, better visibility ahead, and less vulnerability to sudden change." : "Maintain and protect this position."}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{p4TargetBandBody}</p>
           </div>
         </div>
 
@@ -1133,7 +1267,7 @@ export default function ReviewPage() {
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                Together, these changes could move your score from {record.final_score} into <span style={{ fontWeight: 600, color: B.teal }}>{v2Lift.combined_top_two.projected_band}</span> and strengthen protection against disruption.
+                {p4CombinedLine[subTier]}
               </div>
             )}
           </div>
@@ -1201,7 +1335,7 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
 
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540, lineHeight: 1.6 }}>
-          The first priority for {name} is not bigger income. It is stronger income. That means more income secured ahead of time, less reliance on one source, and more income that continues without daily work.
+          {p5Intro[subTier]}
         </p>
 
         {/* Two columns: 5 actions + 4 avoid — side by side */}
@@ -1277,11 +1411,14 @@ export default function ReviewPage() {
             <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
               <Overline>HOW YOU COMPARE</Overline>
               {v2Benchmarks && (
+                <>
                 <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                   <div style={{ ...T.small, color: B.ink }}>Peer average: <span style={{ fontWeight: 600 }}>{v2Benchmarks.cluster_average_score}</span></div>
                   <div style={{ ...T.small, color: B.ink }}>Top 20% threshold: <span style={{ fontWeight: 600 }}>{v2Benchmarks.top_20_threshold}</span></div>
                   <div style={{ ...T.small, color: B.ink }}>Your percentile: <span style={{ fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || `${v2Benchmarks.peer_percentile}th`}</span></div>
                 </div>
+                <p style={{ ...T.meta, color: B.muted, margin: "10px 0 0", fontStyle: "italic" }}>{p5CompareInterpretation[subTier]}</p>
+                </>
               )}
               {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
             </div>
