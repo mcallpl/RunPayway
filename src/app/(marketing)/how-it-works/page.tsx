@@ -54,12 +54,12 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#FAF9F7",
+  sand: "#F4F1EA",
   sandDk: "#F4F1EA",
-  offWhite: "#FEFDFB",
-  muted: "#4B5563",
-  light: "#9CA3AF",
-  border: "#E6E9EF",
+  offWhite: "#FFFFFF",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  border: "rgba(14,26,43,0.12)",
   gradient:
     "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
   bandLimited: "#9B2C2C",
@@ -69,32 +69,32 @@ const B = {
 };
 
 const S = {
-  sectionY: { desktop: 160, mobile: 88 },
-  sectionYsm: { desktop: 120, mobile: 72 },
-  transitionY: { desktop: 72, mobile: 48 },
-  disclaimerY: { desktop: 24, mobile: 16 },
+  sectionY: { desktop: 120, mobile: 80 },
+  sectionYsm: { desktop: 100, mobile: 64 },
+  transitionY: { desktop: 56, mobile: 40 },
+  disclaimerY: { desktop: 20, mobile: 14 },
   maxW: 1060,
   padX: { desktop: 48, mobile: 24 },
-  h1mb: 28,
-  h2mb: 24,
-  subtextMb: 56,
-  paraMb: 24,
-  labelMb: 16,
-  cardPad: { desktop: 36, mobile: 24 },
-  cardRadius: 16,
-  panelRadius: 20,
-  gridGap: 24,
-  gridGapSm: 16,
-  ctaH: 56,
-  ctaHsm: 46,
-  ctaPadX: 32,
-  ctaRadius: 14,
-  lhHeading: 1.08,
-  lhBody: 1.75,
+  h1mb: 20,
+  h2mb: 20,
+  subtextMb: 44,
+  paraMb: 20,
+  labelMb: 14,
+  cardPad: { desktop: 32, mobile: 24 },
+  cardRadius: 12,
+  panelRadius: 16,
+  gridGap: 20,
+  gridGapSm: 14,
+  ctaH: 52,
+  ctaHsm: 44,
+  ctaPadX: 28,
+  ctaRadius: 12,
+  lhHeading: 1.12,
+  lhBody: 1.65,
   lhDense: 1.5,
-  lsHeading: "-0.025em",
-  lsHero: "-0.035em",
-  lsLabel: "0.14em",
+  lsHeading: "-0.02em",
+  lsHero: "-0.03em",
+  lsLabel: "0.12em",
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
@@ -159,7 +159,7 @@ function Hero() {
               fontSize: 11,
               textTransform: "uppercase",
               color: "rgba(250,249,247,0.50)",
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: S.lsLabel,
               marginBottom: 24,
             }}
@@ -386,7 +386,7 @@ function StepCard({
           style={{
             color: "#ffffff",
             fontSize: 18,
-            fontWeight: 700,
+            fontWeight: 600,
           }}
         >
           {step.num}
@@ -395,11 +395,11 @@ function StepCard({
 
       <h3
         style={{
-          fontSize: 18,
-          fontWeight: 700,
+          fontSize: 17,
+          fontWeight: 600,
           color: B.navy,
           letterSpacing: S.lsHeading,
-          marginBottom: 4,
+          marginBottom: 6,
         }}
       >
         {step.title}
@@ -592,11 +592,11 @@ function ReportCovers() {
               {/* Content */}
               <div style={{ flex: 1, paddingTop: 4 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
                   <span style={{ fontSize: 13, color: B.light }}>—</span>
                   <span style={{ fontSize: 13, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
                 </div>
-                <h3 style={{ fontSize: mobile ? 16 : 18, fontWeight: 700, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{page.title}</h3>
+                <h3 style={{ fontSize: mobile ? 16 : 17, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{page.title}</h3>
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.desc}</p>
               </div>
             </div>
@@ -759,7 +759,7 @@ function ClassificationScale() {
                 <div
                   style={{
                     fontSize: 14,
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: B.navy,
                     marginBottom: 2,
                   }}
@@ -952,8 +952,8 @@ function SixDimensions() {
               }}>
                 {dim.icon}
               </div>
-              <div style={{ fontSize: 10, fontWeight: 700, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{dim.title}</h3>
+              <div style={{ fontSize: 10, fontWeight: 600, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{dim.title}</h3>
               <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, margin: 0, maxWidth: 240, marginLeft: "auto", marginRight: "auto" }}>{dim.desc}</p>
             </div>
           ))}
