@@ -293,6 +293,7 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
     "Full 5-page diagnostic report",
     "Score, drivers, stress scenarios, actions",
     "Industry-tailored recommendations",
+    "Verified, shareable score card",
     "Instant digital delivery",
   ];
 

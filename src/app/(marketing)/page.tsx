@@ -2498,6 +2498,99 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
 
 /* ================================================================== */
+/* SHAREABLE SCORE SECTION                                              */
+/* ================================================================== */
+function ShareableScoreSection() {
+  const mobile = useMobile();
+
+  return (
+    <section
+      style={{
+        background: "#FFFFFF",
+        paddingTop: mobile ? 80 : 100,
+        paddingBottom: mobile ? 80 : 100,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
+        <div
+          style={{
+            display: mobile ? "block" : "flex",
+            alignItems: "center",
+            gap: 64,
+          }}
+        >
+          <div style={{ flex: 1, marginBottom: mobile ? 40 : 0 }}>
+            <div
+              style={{
+                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                letterSpacing: "0.08em", color: B.teal, marginBottom: 16,
+              }}
+            >
+              Verified &amp; shareable
+            </div>
+            <h2
+              style={{
+                fontSize: mobile ? 28 : 40,
+                color: B.navy,
+                lineHeight: 1.2,
+                letterSpacing: "-0.02em",
+                fontFamily: DISPLAY_FONT, fontWeight: 400,
+                marginBottom: 20,
+              }}
+            >
+              A score you can share
+            </h2>
+            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 440, marginBottom: 24 }}>
+              Every RunPayway&#8482; score is verified, timestamped, and shareable. Send it to a lender, landlord, business partner, or advisor. They can verify it instantly with your unique QR code or verification link.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {["Share with lenders evaluating your application", "Send to partners assessing your stability", "Provide to clients who want confidence in your durability"].map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
+                  <span style={{ fontSize: 15, color: "rgba(14,26,43,0.60)", lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ flex: 1, maxWidth: 400 }}>
+            {/* Preview of shareable score card */}
+            <div style={{ borderRadius: 12, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.06)" }}>
+              <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "24px 24px 20px" }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>INCOME STABILITY SCORE&#8482;</div>
+                <div style={{ fontSize: 40, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>72</div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#1F6D7A" }} />
+                  <span style={{ fontSize: 13, fontWeight: 500, color: "#1F6D7A" }}>Established Stability</span>
+                </div>
+              </div>
+              <div style={{ padding: "16px 24px 20px", backgroundColor: "#FFFFFF" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 9, color: "rgba(14,26,43,0.42)" }}>Prepared for</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: "#0E1A2B" }}>Sample Assessment</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 9, color: "rgba(14,26,43,0.42)" }}>Verified</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: "#0E1A2B" }}>March 2026</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)" }}>Verify at peoplestar.com/RunPayway/verify</div>
+              </div>
+            </div>
+            <div style={{ textAlign: "center", marginTop: 12 }}>
+              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.40)" }}>Sample score card</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 12: DISCLAIMER — "The Footnote"                             */
 /* ================================================================== */
 function DisclaimerSection() {
@@ -2615,6 +2708,7 @@ export default function LandingPage() {
       <TrustSection trustOpen={trustOpen} setTrustOpen={setTrustOpen} />
       <ClassificationSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+      <ShareableScoreSection />
       <DisclaimerSection />
     </div>
   );
