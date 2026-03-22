@@ -1170,70 +1170,57 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Structural stress scenarios — top 3, compact list */}
+        {/* Stress scenarios — top 3, clear layout */}
         {v2Scenarios && v2Scenarios.length > 0 && (
           <div style={{ marginBottom: 20 }}>
             <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
-            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => (
-              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <div style={{ ...T.micro, color: s.band_shift ? B.bandLimited : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? B.bandLimited : s.score_drop > 5 ? B.bandDeveloping : B.muted, minWidth: 70, paddingTop: 1 }}>{s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW"}</div>
-                <div style={{ flex: 1 }}>
-                  <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{(() => {
-                    const scenarioPlain: Record<string, string> = {
-                      active_labor_interrupted: "You cannot work for 90 days",
-                      platform_dependency_shock: "A platform or channel you rely on changes suddenly",
-                      forward_commitments_delayed: "Expected income gets delayed",
-                      client_concentration_loss: "Your largest client leaves",
-                      market_contraction: "Your industry slows down significantly",
-                      regulatory_disruption: "Rules or regulations change in your field",
-                      revenue_model_disruption: "Your main way of earning income stops working",
-                      high_volatility_month: "You experience a month with very low income",
-                      seasonal_revenue_gap: "A seasonal gap significantly reduces income",
-                      key_client_loss: "A key client or contract ends unexpectedly",
-                      pricing_pressure: "Pricing pressure reduces your income per unit of work",
-                    };
-                    // Try exact match first, then normalize the label
-                    const plain = scenarioPlain[s.scenario_id];
-                    if (plain) return plain;
-                    // Fallback: rewrite common model labels into customer language
-                    return s.label
-                      .replace(/^Active Labor Interrupted$/i, "You cannot work for 90 days")
-                      .replace(/^Platform Dependency Shock$/i, "A platform or channel you rely on changes suddenly")
-                      .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed")
-                      .replace(/^High Volatility Month$/i, "You experience a month with very low income")
-                      .replace(/^Client Concentration Loss$/i, "Your largest client leaves")
-                      .replace(/^Market Contraction$/i, "Your industry slows down significantly")
-                      .replace(/^Revenue Model Disruption$/i, "Your main way of earning income stops working")
-                      .replace(/^Seasonal Revenue Gap$/i, "A seasonal gap significantly reduces income")
-                      .replace(/^Key Client Loss$/i, "A key client or contract ends unexpectedly")
-                      .replace(/^Regulatory Disruption$/i, "Rules or regulations change in your field")
-                      .replace(/^Pricing Pressure$/i, "Pricing pressure reduces your income per unit of work");
-                  })()}</span>
-                  <span style={{ ...T.meta, color: B.muted, marginLeft: 8 }}>{s.description}</span>
+            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
+              const scenarioPlain: Record<string, string> = {
+                active_labor_interrupted: "You cannot work for 90 days",
+                platform_dependency_shock: "A platform or channel you rely on changes suddenly",
+                forward_commitments_delayed: "Expected income gets delayed",
+                client_concentration_loss: "Your largest client leaves",
+                market_contraction: "Your industry slows down significantly",
+                regulatory_disruption: "Rules or regulations change in your field",
+                revenue_model_disruption: "Your main way of earning income stops working",
+                high_volatility_month: "You experience a month with very low income",
+                seasonal_revenue_gap: "A seasonal gap significantly reduces income",
+                key_client_loss: "A key client or contract ends unexpectedly",
+                pricing_pressure: "Pricing pressure reduces your income per unit of work",
+              };
+              const title = scenarioPlain[s.scenario_id] ?? s.label
+                .replace(/^Active Labor Interrupted$/i, "You cannot work for 90 days")
+                .replace(/^Platform Dependency Shock$/i, "A platform or channel you rely on changes suddenly")
+                .replace(/^Forward Commitments Delayed$/i, "Expected income gets delayed")
+                .replace(/^High Volatility Month$/i, "You experience a month with very low income")
+                .replace(/^Client Concentration Loss$/i, "Your largest client leaves")
+                .replace(/^Market Contraction$/i, "Your industry slows down significantly")
+                .replace(/^Revenue Model Disruption$/i, "Your main way of earning income stops working")
+                .replace(/^Seasonal Revenue Gap$/i, "A seasonal gap significantly reduces income")
+                .replace(/^Key Client Loss$/i, "A key client or contract ends unexpectedly")
+                .replace(/^Regulatory Disruption$/i, "Rules or regulations change in your field")
+                .replace(/^Pricing Pressure$/i, "Pricing pressure reduces your income per unit of work");
+              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
+              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
+              return (
+                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
+                      <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
+                    </div>
+                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
+                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
+                    </span>
+                  </div>
+                  <div style={{ paddingLeft: 70 }}>
+                    <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+                      Your score would drop by {s.score_drop} points.{s.band_shift ? ` That would move you into a lower stability band.` : ""}{s.scenario_score <= 0 ? " This represents a near-total collapse of structural protection." : ""}
+                    </p>
+                  </div>
                 </div>
-                <div style={{ ...T.micro, color: B.navy, flexShrink: 0 }}>
-                  {s.original_score} → {s.scenario_score} <span style={{ color: B.bandLimited }}>(-{s.score_drop})</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Industry scenarios — top 2, compact list */}
-        {olScenarios && olScenarios.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>
-              INDUSTRY SCENARIOS{olIndustryLabel ? ` · ${olIndustryLabel.toUpperCase()}` : ""}
-            </div>
-            {olScenarios.slice(0, 2).map((s) => (
-              <div key={s.scenario_id} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <div style={{ ...T.micro, color: s.severity === "critical" ? B.bandLimited : s.severity === "high" ? B.bandDeveloping : B.muted, minWidth: 60, paddingTop: 1 }}>{s.severity.toUpperCase()}</div>
-                <div style={{ flex: 1 }}>
-                  <span style={{ ...T.small, color: B.navy, fontWeight: 600 }}>{s.label}</span>
-                  <span style={{ ...T.meta, color: B.muted, marginLeft: 8 }}>{s.description}</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -1350,39 +1337,50 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Top 3 projected improvements — compact */}
+        {/* Top 3 projected improvements — clear layout */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IF YOU MADE THESE CHANGES</div>
-            {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => (
-              <div key={s.scenario_id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-                <span style={{ ...T.micro, color: B.purple, minWidth: 18 }}>{i + 1}.</span>
-                <span style={{ ...T.small, color: B.navy, fontWeight: 600, flex: 1 }}>{(() => {
-                  const liftPlain: Record<string, string> = {
-                    reduce_labor_dependence: "Reduce how much income depends on daily work",
-                    extend_forward_visibility: "Secure more income before next month begins",
-                    reduce_concentration: "Reduce reliance on the largest source",
-                    increase_persistence: "Increase recurring or continuing income",
-                    increase_persistent_revenue: "Increase recurring or continuing income",
-                    add_income_sources: "Add more dependable income sources",
-                    reduce_variability: "Reduce month-to-month income swings",
-                    increase_continuity: "Increase how long income would continue if work stopped",
-                    extend_continuity: "Increase how long income would continue if work stopped",
-                    diversify_sources: "Spread income across more independent sources",
-                    reduce_active_dependence: "Reduce how much income depends on daily work",
-                    improve_forward_secured: "Secure more income before next month begins",
-                    strengthen_persistence: "Build more income that continues without daily work",
-                    reduce_largest_source: "Reduce reliance on the largest source",
-                  };
-                  return liftPlain[s.scenario_id] ?? s.label.replace(/Extend Forward Visibility/i, "Secure more income before next month begins").replace(/Reduce Labor Dependence/i, "Reduce how much income depends on daily work").replace(/Reduce Concentration/i, "Reduce reliance on the largest source").replace(/Increase Persist.*Revenue/i, "Increase recurring or continuing income");
-                })()}</span>
-                <span style={{ ...T.small, color: B.navy }}>
-                  {s.original_score} → <span style={{ color: B.teal, fontWeight: 600 }}>{s.projected_score}</span>
-                  <span style={{ color: B.teal, marginLeft: 4 }}>+{s.lift}</span>
-                </span>
-                {s.band_shift && <span style={{ ...T.meta, color: B.teal, fontWeight: 500 }}>→ {s.projected_band}</span>}
-              </div>
-            ))}
+            <Overline>IF YOU MADE THESE CHANGES</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12, maxWidth: 520 }}>
+              These are the changes that would likely raise your score the most, based on how your income is currently structured.
+            </p>
+            {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => {
+              const liftPlain: Record<string, string> = {
+                reduce_labor_dependence: "Reduce how much income depends on daily work",
+                extend_forward_visibility: "Secure more income before next month begins",
+                reduce_concentration: "Reduce reliance on the largest source",
+                increase_persistence: "Increase recurring or continuing income",
+                increase_persistent_revenue: "Increase recurring or continuing income",
+                add_income_sources: "Add more dependable income sources",
+                reduce_variability: "Reduce month-to-month income swings",
+                increase_continuity: "Increase how long income would continue if work stopped",
+                extend_continuity: "Increase how long income would continue if work stopped",
+                diversify_sources: "Spread income across more independent sources",
+                reduce_active_dependence: "Reduce how much income depends on daily work",
+                improve_forward_secured: "Secure more income before next month begins",
+                strengthen_persistence: "Build more income that continues without daily work",
+                reduce_largest_source: "Reduce reliance on the largest source",
+              };
+              const title = liftPlain[s.scenario_id] ?? s.label
+                .replace(/Extend Forward Visibility/i, "Secure more income before next month begins")
+                .replace(/Reduce Labor Dependence/i, "Reduce how much income depends on daily work")
+                .replace(/Reduce Concentration/i, "Reduce reliance on the largest source")
+                .replace(/Increase Persist.*Revenue/i, "Increase recurring or continuing income");
+              return (
+                <div key={s.scenario_id} style={{ padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 16, fontWeight: 600, color: B.purple, minWidth: 20 }}>{i + 1}</span>
+                      <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>+{s.lift} points</span>
+                      <span style={{ ...T.meta, color: B.muted }}>→ {s.projected_score}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
             {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
               <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
