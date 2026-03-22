@@ -203,12 +203,12 @@ function WhatModelMeasures() {
   const mobile = useMobile();
 
   const dimensions = [
-    { title: "Source Count", desc: "How many distinct income sources contribute to total earnings." },
-    { title: "Source Diversification", desc: "How evenly income is distributed across sources, measuring reliance on one source." },
-    { title: "Income Predictability", desc: "The regularity and consistency of income patterns over time." },
-    { title: "Income Secured Ahead of Time", desc: "How much income is contractually committed before the earning period begins." },
-    { title: "Income That Continues", desc: "The share of income that keeps coming without daily work." },
-    { title: "Structural Resilience", desc: "How the income architecture responds to disruption of individual components." },
+    { title: "Repeatable Income", desc: "How much of your income comes back without needing to be rebuilt each time." },
+    { title: "Reliance on One Source", desc: "How much depends on your single largest client, channel, or source of work." },
+    { title: "Number of Income Sources", desc: "How many independent, meaningful sources support the income structure." },
+    { title: "Income Secured Ahead of Time", desc: "How much upcoming income is already committed before the month begins." },
+    { title: "Month-to-Month Stability", desc: "How consistent the income is from one month to the next." },
+    { title: "Income That Continues Without Daily Work", desc: "How much income would keep coming in if active work stopped." },
   ];
 
   return (
@@ -232,7 +232,7 @@ function WhatModelMeasures() {
           }}
         >
           <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
-            Six dimensions of income structure
+            What the model measures
           </h2>
           <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
             The model evaluates income across six independent dimensions. Each contributes to the final score.
@@ -299,10 +299,10 @@ function HowCalculated() {
             Model RP-2.0 is entirely deterministic. There is no machine learning, no AI, no probabilistic modeling, and no human judgment in the scoring process. The same six inputs always produce the same score.
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            The model uses 20 deterministic engines that evaluate structural properties of income. Each engine applies fixed rules to the inputs and produces a component score. These components combine into the final 0-100 result through weighted aggregation with interaction effects.
+            The model evaluates your income across six dimensions using fixed, versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            Scoring is divided into two blocks: the Structure block (60 points maximum) measures the architecture of income sources, while the Stability block (40 points maximum) measures behavioral durability. Interaction penalties and bonuses adjust the raw total based on cross-dimensional patterns.
+            The result is a five-page diagnostic report that explains your score, translates what it means, shows your biggest risks, identifies the specific changes that would raise it, and gives you a clear action plan.
           </p>
         </div>
       </div>
@@ -431,10 +431,13 @@ function WhoBuiltIt() {
             Who built this
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            RunPayway is built and operated by PeopleStar Enterprises, LLC. The Income Stability Score and Model RP-2.0 were developed to fill a gap in how income is evaluated: credit scores measure borrowing, income verification measures the past, but nothing measured the structural durability of how someone earns.
+            RunPayway&#8482; is built and operated by PeopleStar Enterprises, Inc. The Income Stability Score&#8482; was developed to fill a gap in how income is evaluated: credit scores measure borrowing history, income verification confirms what you earned last month, but nothing measured the structural durability of how you earn.
+          </p>
+          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            RunPayway&#8482; exists to give people a clear, verifiable way to understand and communicate the stability of their income. The score is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            The model is designed for anyone whose income does not fit neatly into a W-2 paycheck — freelancers, consultants, contractors, gig workers, small business owners, and anyone with variable or multi-source income. The assessment is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
+            The model is designed for anyone whose income does not fit neatly into a W-2 paycheck — business owners, self-employed professionals, consultants, contractors, and anyone with variable or multi-source income.
           </p>
         </div>
       </div>
