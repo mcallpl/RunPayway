@@ -912,7 +912,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "Why This Score", "What Could Go Wrong", "How to Improve", "What to Do Next"];
+  const pageTitles = ["Your Score", "What This Score Means", "Your Biggest Risks", "How to Raise Your Score", "What to Do Next"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1304,7 +1304,7 @@ export default function ReviewPage() {
         )}
 
 
-        <PageFooter section="What Could Go Wrong" page={3} />
+        <PageFooter section="Your Biggest Risks" page={3} />
       </ReportPage>
 
 
@@ -1424,7 +1424,7 @@ export default function ReviewPage() {
         )}
 
 
-        <PageFooter section="How to Improve" page={4} />
+        <PageFooter section="How to Raise Your Score" page={4} />
       </ReportPage>
 
 
