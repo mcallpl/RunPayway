@@ -182,6 +182,7 @@ export default function DiagnosticPage() {
   const [transitioning, setTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
+  const [assessmentTitle, setAssessmentTitle] = useState("");
   const [elapsed, setElapsed] = useState(0);
 
   // Lock user in — prevent back button and tab close
@@ -373,10 +374,11 @@ export default function DiagnosticPage() {
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
       localStorage.removeItem(STORAGE_KEY);
+      setAssessmentTitle(profile.assessment_title || "");
       setShowLoading(true);
       setTimeout(() => {
         router.push("/review");
-      }, 5100);
+      }, 5000);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
       setError(message);
@@ -420,9 +422,14 @@ export default function DiagnosticPage() {
           <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
             Generating Your Assessment
           </h2>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, marginBottom: 32 }}>
+          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, marginBottom: 12 }}>
             Structural Stability Model RP-2.0 is evaluating your income structure.
           </p>
+          {assessmentTitle && (
+            <p style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 32 }}>
+              Preparing report for {assessmentTitle}
+            </p>
+          )}
 
           {/* Processing steps */}
           <div style={{ display: "flex", flexDirection: "column", gap: 0, textAlign: "left", marginBottom: 32 }}>
