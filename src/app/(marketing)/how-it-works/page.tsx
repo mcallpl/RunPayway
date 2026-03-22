@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -552,9 +551,9 @@ function ReportCovers() {
               left: 27,
               top: 40,
               bottom: 40,
-              width: 2,
-              background: `linear-gradient(180deg, ${B.purple}, ${B.teal}, ${B.bandLimited}, ${B.bandHigh}, ${B.navy})`,
-              opacity: visible ? 0.2 : 0,
+              width: 1,
+              background: "rgba(14,26,43,0.10)",
+              opacity: visible ? 1 : 0,
               transition: "opacity 1s ease-out 300ms",
             }} />
           )}
@@ -573,28 +572,27 @@ function ReportCovers() {
                 transition: `opacity 0.5s ease-out ${i * 100}ms, transform 0.5s ease-out ${i * 100}ms`,
               }}
             >
-              {/* Node circle with icon */}
+              {/* Node circle */}
               <div style={{
                 width: 56,
                 height: 56,
                 borderRadius: "50%",
                 backgroundColor: "#ffffff",
-                border: `2px solid ${page.accent}`,
+                border: "1px solid rgba(14,26,43,0.10)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
                 position: "relative",
                 zIndex: 2,
-                boxShadow: `0 0 0 4px ${B.sand}, 0 2px 8px rgba(14,26,43,0.06)`,
               }}>
-                {page.icon}
+                <span style={{ fontSize: 16, fontWeight: 600, color: B.teal }}>{page.num}</span>
               </div>
 
               {/* Content */}
               <div style={{ flex: 1, paddingTop: 4 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: page.accent, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
                   <span style={{ fontSize: 13, color: B.light }}>—</span>
                   <span style={{ fontSize: 13, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
                 </div>
@@ -605,29 +603,6 @@ function ReportCovers() {
           ))}
         </div>
 
-        {/* Sample report link */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 40,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 600ms",
-          }}
-        >
-          <Link
-            href="/sample-report"
-            style={{
-              fontSize: 15,
-              fontWeight: 600,
-              color: B.purple,
-              textDecoration: "none",
-              borderBottom: `1px solid rgba(75,63,174,0.3)`,
-              paddingBottom: 2,
-            }}
-          >
-            View the sample report &rarr;
-          </Link>
-        </div>
       </div>
     </section>
   );
@@ -1141,7 +1116,6 @@ export default function HowItWorksPage() {
       <ThreeSteps />
       <ReportCovers />
       <ClassificationScale />
-      <SixDimensions />
       <CtaSection />
     </div>
   );
