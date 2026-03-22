@@ -1076,7 +1076,7 @@ export default function ReviewPage() {
         })()}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score\u2122 is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+          The Income Stability Score&#8482; is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
 
         <PageFooter section="Your Score" page={1} />
@@ -1155,8 +1155,14 @@ export default function ReviewPage() {
                 forward_revenue_visibility: "Income secured ahead of time",
                 concentration_resilience: "Reliance on one source",
                 income_source_diversity: "Number of income sources",
+                source_diversification: "Number of income sources",
                 labor_dependence: "Dependence on daily work",
+                active_labor_dependence: "Dependence on daily work",
                 earnings_stability: "Month-to-month earnings stability",
+                income_variability: "Month-to-month earnings stability",
+                forward_visibility: "Income secured ahead of time",
+                income_continuity: "Income that continues if work stops",
+                source_concentration: "Reliance on one source",
               };
               const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
               return (
@@ -1722,7 +1728,7 @@ export default function ReviewPage() {
         )}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score\u2122 is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway\u2122 framework.
+          The Income Stability Score&#8482; is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway&#8482; framework.
         </p>
 
         <PageFooter section="What to Do Next" page={5} />
