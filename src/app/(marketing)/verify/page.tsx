@@ -99,7 +99,7 @@ export default function VerifyPage() {
   const isValid =
     /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
       recordId.trim()
-    ) && /^[a-f0-9]{64}$/.test(authCode.trim().toLowerCase());
+    ) && /^[a-f0-9]{16,64}$/.test(authCode.trim().toLowerCase());
 
   const handleVerify = async () => {
     setLoading(true);
@@ -188,7 +188,7 @@ export default function VerifyPage() {
       const trimmedId = urlId.trim();
       const trimmedAuth = urlAuth.trim().toLowerCase();
       const idValid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(trimmedId);
-      const authValid = /^[a-f0-9]{64}$/.test(trimmedAuth);
+      const authValid = /^[a-f0-9]{16,64}$/.test(trimmedAuth);
 
       if (idValid && authValid) {
         setLoading(true);
