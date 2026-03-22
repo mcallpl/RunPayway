@@ -56,11 +56,11 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  sand: "#F4F1EA",
+  sandDk: "#F4F1EA",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
 /* ------------------------------------------------------------------ */
@@ -166,7 +166,7 @@ export default function ContactPage() {
           <h1
             style={{
               fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
+              fontWeight: 600,
               color: "#FFFFFF",
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
@@ -180,7 +180,7 @@ export default function ContactPage() {
             style={{
               fontSize: mobile ? 15 : 18,
               color: "rgba(255,255,255,0.65)",
-              lineHeight: 1.7,
+              lineHeight: 1.65,
               maxWidth: 600,
               margin: "0 auto 16px",
             }}
@@ -188,7 +188,7 @@ export default function ContactPage() {
             {t.contact.heroDesc}
           </p>
 
-          <p style={{ fontSize: mobile ? 14 : 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 8px" }}>
+          <p style={{ fontSize: mobile ? 14 : 15, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto 8px" }}>
             {t.contact.heroNote}
           </p>
 
@@ -226,7 +226,7 @@ export default function ContactPage() {
             style={{
               flex: 1.2,
               background: "#FFFFFF",
-              borderRadius: 20,
+              borderRadius: 12,
               border: "1px solid rgba(14,26,43,0.06)",
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
@@ -367,7 +367,7 @@ export default function ContactPage() {
             <div
               style={{
                 background: "#FFFFFF",
-                borderRadius: 16,
+                borderRadius: 12,
                 border: "1px solid rgba(14,26,43,0.06)",
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
@@ -376,13 +376,13 @@ export default function ContactPage() {
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.responseTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.responseP1}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.responseP2}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
                 {t.contact.responseP3}
               </p>
             </div>
@@ -391,7 +391,7 @@ export default function ContactPage() {
             <div
               style={{
                 background: "#FFFFFF",
-                borderRadius: 16,
+                borderRadius: 12,
                 border: "1px solid rgba(14,26,43,0.06)",
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
@@ -400,7 +400,7 @@ export default function ContactPage() {
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.resourcesTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 16 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 16 }}>
                 {t.contact.resourcesDesc}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -433,7 +433,7 @@ export default function ContactPage() {
                   </Link>
                 ))}
               </div>
-              <p style={{ fontSize: 13, color: B.light, lineHeight: 1.7, marginTop: 14 }}>
+              <p style={{ fontSize: 13, color: B.light, lineHeight: 1.65, marginTop: 14 }}>
                 {t.contact.resourcesNote}
               </p>
             </div>
@@ -442,7 +442,7 @@ export default function ContactPage() {
             <div
               style={{
                 background: "#FFFFFF",
-                borderRadius: 16,
+                borderRadius: 12,
                 border: "1px solid rgba(14,26,43,0.06)",
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
@@ -451,10 +451,10 @@ export default function ContactPage() {
               <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.securityTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.securityP1}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.75 }}>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
                 {t.contact.securityP2}
               </p>
             </div>
@@ -514,7 +514,7 @@ export default function ContactPage() {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
