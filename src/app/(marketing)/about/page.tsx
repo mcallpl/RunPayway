@@ -177,13 +177,13 @@ function WhatIsISS() {
           }}
         >
           <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            What is the Income Stability Score?
+            What is the Income Stability Score&#8482;?
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            The Income Stability Score is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
+            The Income Stability Score&#8482; is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score examines the architecture of how you earn. It looks at how many sources you have, how predictable they are, how much continues without active work, and how far forward your income is committed.
+            Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score&#8482; examines the architecture of how you earn. It looks at how many sources you have, how predictable they are, how much continues without active work, and how far forward your income is committed.
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             The result is a deterministic structural assessment — the same inputs always produce the same score, and every score maps to a fixed classification band under Model RP-2.0.

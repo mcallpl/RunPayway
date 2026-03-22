@@ -1052,7 +1052,7 @@ export default function ReviewPage() {
         </div>
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+          The Income Stability Score\u2122 is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
 
         <PageFooter section="Your Score" page={1} />
@@ -1624,7 +1624,7 @@ export default function ReviewPage() {
         )}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.
+          The Income Stability Score\u2122 is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway\u2122 framework.
         </p>
 
         <PageFooter section="What to Do Next" page={5} />

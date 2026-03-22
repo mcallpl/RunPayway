@@ -260,7 +260,7 @@ function Purpose() {
               marginBottom: S.paraMb,
             }}
           >
-            The Income Stability Score measures how structurally stable your
+            The Income Stability Score&#8482; measures how structurally stable your
             income is — not how much you earn, but how well your income holds up
             when something changes.
           </p>
