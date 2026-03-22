@@ -890,15 +890,15 @@ export default function ReviewPage() {
   };
 
   const p4CurrentBandBody: Record<string, string> = {
-    A1: "The income is working now, but the structure is still fragile. Immediate stability and protection need to come first.",
-    A2: "The income is active, but the structure is still weak and needs stronger protection before it can absorb disruption well.",
-    A3: "Some early structure is in place, but the setup is still below a stable level and needs stronger protection first.",
-    B1: "The structure is developing, but it is not yet strong enough to absorb disruption well.",
-    B2: "The structure has a real foundation, but stronger protection is still needed in key areas.",
-    C1: "The structure is stable, but it is not yet strongly protected against meaningful disruption.",
-    C2: "The structure is established and relatively stable, though some important vulnerabilities still remain.",
-    D1: "The structure is strong, with only limited areas left to refine.",
-    D2: "The structure is exceptionally strong. The remaining gains come from refinement rather than repair.",
+    A1: `The ${incomeModelDesc} structure is fragile. As a ${structureDesc}, build protection first.`,
+    A2: `The ${incomeModelDesc} structure needs stronger protection before it can absorb disruption.`,
+    A3: `Some early ${incomeModelDesc} structure exists but is still below stable for a ${structureDesc}.`,
+    B1: `The ${incomeModelDesc} structure is developing but not yet strong enough for a ${structureDesc} in ${industrySector}.`,
+    B2: `The ${incomeModelDesc} structure has a foundation. Stronger protection is needed.`,
+    C1: `The ${incomeModelDesc} structure is stable but not yet fully protected.`,
+    C2: `Established ${incomeModelDesc} structure with limited vulnerabilities remaining.`,
+    D1: `Strong ${incomeModelDesc} structure. Only limited refinements needed.`,
+    D2: `Exceptionally strong. Refinement, not repair.`,
   };
 
   const p4TargetBandBody: string = (() => {
@@ -1157,7 +1157,7 @@ export default function ReviewPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
           <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
           <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{record.income_continuity_pct}%</span> <span style={{ color: B.muted }}>(peers: {v2Benchmarks ? `${Math.round((v2Benchmarks.outlier_dimensions.find(d => d.factor.toLowerCase().includes("persistence") || d.factor.toLowerCase().includes("continuity"))?.peer_average ?? 0))}` : "—"}%)</span></div>
+            <div style={{ ...T.small, color: B.navy }}>Continuity: <span style={{ fontWeight: 600 }}>{record.income_continuity_pct}%</span>{(() => { const peerVal = v2Benchmarks?.outlier_dimensions.find(d => d.factor.toLowerCase().includes("persistence") || d.factor.toLowerCase().includes("continuity"))?.peer_average; return peerVal && peerVal > 0 ? <span style={{ color: B.muted }}> (peers: {Math.round(peerVal)}%)</span> : null; })()}</div>
             <div style={{ ...T.small, color: B.navy }}>Active work: <span style={{ fontWeight: 600 }}>{record.active_income_level}%</span></div>
             <div style={{ ...T.small, color: B.navy }}>Repeatable: <span style={{ fontWeight: 600 }}>{record.semi_persistent_income_level}%</span></div>
             <div style={{ ...T.small, color: B.navy }}>Passive: <span style={{ fontWeight: 600 }}>{record.persistent_income_level}%</span></div>
@@ -1221,17 +1221,14 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Plain-English interpretation */}
-        <Overline>PLAIN-ENGLISH INTERPRETATION</Overline>
-        <p style={{ ...T.body, color: B.navy, marginBottom: 16, lineHeight: 1.6, maxWidth: 600 }}>
-          {p2Interpretation[subTier]}
-        </p>
-
-        {/* Bottom takeaway */}
+        {/* Bottom line — one clear takeaway */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px" }}>
           <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
-          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", fontWeight: 500 }}>
             {p2BottomLine[subTier]}
+          </p>
+          <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+            {p2Interpretation[subTier]}
           </p>
         </div>
 
@@ -1257,7 +1254,7 @@ export default function ReviewPage() {
               <span style={{ fontSize: 28, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              If the largest income source disappeared tomorrow, the score would likely fall to {Math.max(0, record.risk_scenario_score)}. This shows that the structure still depends too heavily on that one source.
+              A {record.risk_scenario_drop}-point drop from losing one source.{record.risk_scenario_drop > score * 0.4 ? " That is a severe dependency." : ""}
             </p>
           </div>
           <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
@@ -1266,7 +1263,7 @@ export default function ReviewPage() {
               Estimated: {continuityDisplay}
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              Based on the current structure, income would likely continue for about {continuityDisplay} if active work stopped. Longer is better.
+              {record.income_continuity_months < 1 ? `As a ${structureDesc}, this is critically short.` : record.income_continuity_months < 3 ? `Limited runway for a ${structureDesc}.` : record.income_continuity_months < 6 ? `Moderate runway. Extend further for stronger protection.` : `Strong continuity window.`}
             </p>
           </div>
         </div>
@@ -1623,55 +1620,7 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* 90-Day Checklist */}
-        <Overline>YOUR 90-DAY ACTION PLAN</Overline>
-        <div style={{ display: "flex", flexDirection: "column", marginBottom: 20 }}>
-          {(() => {
-            const checklist: Record<string, string[]> = {
-              forward_visibility: [
-                "Lock in at least one income source committed for more than one month.",
-                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
-                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
-                "Know more of next month\u2019s income before the month begins.",
-                "Reassess only after these changes are active, not just planned.",
-              ],
-              source_concentration: [
-                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
-                "Lock in at least one income source committed for more than one month.",
-                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
-                "Know more of next month\u2019s income before the month begins.",
-                "Reassess only after these changes are active, not just planned.",
-              ],
-              labor_dependence: [
-                `Convert some active-work income into repeatable income — currently ${record.active_income_level}% requires active work.`,
-                "Lock in at least one income source committed for more than one month.",
-                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
-                "Know more of next month\u2019s income before the month begins.",
-                "Reassess only after these changes are active, not just planned.",
-              ],
-              low_continuity: [
-                `Build income that would continue longer if work stopped — currently about ${continuityDisplay}.`,
-                "Lock in at least one income source committed for more than one month.",
-                `Reduce reliance on the largest source — currently a ${record.risk_scenario_drop}-point stress test drop.`,
-                "Know more of next month\u2019s income before the month begins.",
-                "Reassess only after these changes are active, not just planned.",
-              ],
-              few_sources: [
-                "Add at least one additional dependable income source.",
-                "Lock in at least one income source committed for more than one month.",
-                `Build income that continues without daily work — currently ${record.persistent_income_level}% of total.`,
-                "Know more of next month\u2019s income before the month begins.",
-                "Reassess only after these changes are active, not just planned.",
-              ],
-            };
-            return (checklist[dominantConstraint] ?? checklist.forward_visibility);
-          })().map((row, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-              <div style={{ width: 14, height: 14, borderRadius: "50%", border: `1.5px solid ${B.stone}`, flexShrink: 0, marginTop: 2 }} />
-              <span style={{ ...T.small, color: B.ink }}>{row}</span>
-            </div>
-          ))}
-        </div>
+        {/* 90-Day Action Plan removed — duplicated the numbered list above */}
 
         {/* Bottom cards: Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
