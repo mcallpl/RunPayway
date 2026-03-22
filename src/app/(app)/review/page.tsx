@@ -778,33 +778,33 @@ export default function ReviewPage() {
 
       {/* ---- PAGE 1 — Where do I stand? ---- */}
       <ReportPage record={record}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div style={{ flex: 1 }}>
-            <ReportHeader />
-            <Overline>YOUR INCOME STABILITY REPORT</Overline>
-          </div>
-          <div style={{ flexShrink: 0, marginLeft: 24, textAlign: "center" }}>
+        <ReportHeader />
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+          <Overline>YOUR INCOME STABILITY REPORT</Overline>
+          <div style={{ flexShrink: 0, textAlign: "center" }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} />
             <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan to verify</div>
           </div>
         </div>
-        <h1 style={{ ...T.pageTitle, marginBottom: 28 }}>Your Score</h1>
 
-        <div style={{ marginBottom: 24 }}>
+        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Your Score</h1>
+
+        <div style={{ marginBottom: 28 }}>
           <div style={{ ...T.score, color: B.navy }}>{animatedScore}</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
           {record.peer_stability_percentile_label && (
-            <div style={{ ...T.small, color: B.muted, marginTop: 6 }}>
+            <div style={{ ...T.small, color: B.muted, marginTop: 8 }}>
               Higher than {record.peer_stability_percentile_label}% of {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals in this benchmark
             </div>
           )}
         </div>
 
         {/* Classification Scale */}
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 24 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>WHERE YOU LAND</div>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
             {[
@@ -831,12 +831,12 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
 
         {/* Single most important insight — one line the customer remembers */}
-        <div style={{ backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 24 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {v2Constraints
               ? `The main thing holding ${name} back right now: ${constraintLabel[v2Constraints.root_constraint] ?? "not enough recurring or committed income"}.`
@@ -845,7 +845,7 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
           <MetricCard label="INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY" value={`${record.income_continuity_pct}%`} explanation={`${record.income_continuity_pct}% of ${name} would likely keep coming in if active work stopped today.`} />
           <MetricCard label="IF THE LARGEST INCOME SOURCE DISAPPEARED" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation="If the largest income source disappeared, the score would likely fall to this level. That means too much still depends on one source." />
           <MetricCard label="MAIN REASON THE SCORE IS HELD BACK" value={v2Constraints ? (constraintLabel[v2Constraints.root_constraint] ?? "Not enough recurring income") : "Not enough recurring income"} explanation="Too much of the income still depends on work that must keep being produced." />
@@ -853,7 +853,7 @@ export default function ReviewPage() {
         </div>
 
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
           {[["Assessment Title", name], ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
             <div key={l}>
               <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
@@ -944,7 +944,7 @@ export default function ReviewPage() {
 
         {/* Two large cards: Stress Test + Continuity */}
         <div style={{ display: "flex", gap: 20, marginBottom: 28 }}>
-          <div style={{ flex: 3, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
+          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "22px 26px" }}>
             <Overline>IF YOUR LARGEST INCOME SOURCE DISAPPEARED</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
@@ -955,7 +955,7 @@ export default function ReviewPage() {
               If the largest income source disappeared tomorrow, the score would likely fall to {Math.max(0, record.risk_scenario_score)}. This shows that the structure still depends too heavily on that one source.
             </p>
           </div>
-          <div style={{ flex: 2, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "20px 24px" }}>
+          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "22px 26px" }}>
             <Overline>HOW LONG INCOME WOULD CONTINUE IF WORK STOPPED</Overline>
             <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 4 }}>
               Estimated: {continuityDisplay}
@@ -1091,14 +1091,14 @@ export default function ReviewPage() {
         </p>
 
         {/* Current Band / Next Target Band — compact side by side */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${bandColor}`, borderRadius: 2, padding: "16px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT BAND</div>
+        <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "18px 22px" }}>
+            <Overline>CURRENT BAND</Overline>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{tier === "limited" || tier === "developing" ? "The income works now, but it is not yet strong enough to absorb disruption well." : "Stable, with room to strengthen further."}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0" }}>{tier === "limited" || tier === "developing" ? "The income works now, but it is not yet strong enough to absorb disruption well." : "Stable, with room to strengthen further."}</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.white, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 2, padding: "16px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>NEXT TARGET BAND</div>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "18px 22px" }}>
+            <Overline>NEXT TARGET BAND</Overline>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
             <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{record.final_score < 75 ? "This next level means better protection, better visibility ahead, and less vulnerability to sudden change." : "Maintain and protect this position."}</p>
           </div>
@@ -1253,15 +1253,15 @@ export default function ReviewPage() {
         </div>
 
         {/* Bottom cards: Reassessment + Verification */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>WHEN TO REASSESS</div>
+        <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+            <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
             <p style={{ ...T.meta, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{copy.p5_reassess}</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "18px 20px" }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>VERIFICATION</div>
+          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+            <Overline>VERIFICATION</Overline>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
               <div>Registry Status: Private Record</div>
@@ -1273,9 +1273,9 @@ export default function ReviewPage() {
 
         {/* Benchmark context — only if data available */}
         {(v2Benchmarks || olBenchmark) && (
-          <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
-            <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW YOU COMPARE</div>
+          <div style={{ display: "flex", gap: 14, marginBottom: 24 }}>
+            <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+              <Overline>HOW YOU COMPARE</Overline>
               {v2Benchmarks && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                   <div style={{ ...T.small, color: B.ink }}>Peer average: <span style={{ fontWeight: 600 }}>{v2Benchmarks.cluster_average_score}</span></div>
@@ -1286,8 +1286,8 @@ export default function ReviewPage() {
               {olBenchmark && <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>{olBenchmark.framing_text}</p>}
             </div>
             {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: `1px solid ${B.stone}`, borderRadius: 2, padding: "16px 18px" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>TYPICAL PATTERNS IN YOUR PEER GROUP</div>
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "18px 22px" }}>
+                <Overline>TYPICAL PATTERNS IN YOUR PEER GROUP</Overline>
                 {olBenchmark.common_strengths?.length > 0 && (
                   <>
                     <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 2 }}>Common strengths:</div>
