@@ -361,8 +361,7 @@ function Page1Score() {
   const score = useAnimatedCounter(78, visible, 1500);
 
   return (
-    <section ref={ref} aria-label="Page 1 — Your Score" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <SectionLabel label="PAGE 1 — WHAT IS MY SCORE?" />
+    <section ref={ref} aria-label="Page 1 — Your Score" style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 24 : 0, paddingBottom: mobile ? 24 : 32, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={0}>
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
@@ -491,8 +490,7 @@ function Page2WhyThisScore() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 2 — What This Score Means" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <SectionLabel label="PAGE 2 — WHAT DOES IT MEAN?" />
+    <section ref={ref} aria-label="Page 2 — What This Score Means" style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 24 : 0, paddingBottom: mobile ? 24 : 32, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={1.5}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
@@ -566,8 +564,7 @@ function Page3WhatCouldGoWrong() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 3 — Your Biggest Risks" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <SectionLabel label="PAGE 3 — WHAT COULD HURT IT?" />
+    <section ref={ref} aria-label="Page 3 — Your Biggest Risks" style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 24 : 0, paddingBottom: mobile ? 24 : 32, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={3}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
@@ -647,8 +644,7 @@ function Page4HowToImprove() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 4 — How to Raise Your Score" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <SectionLabel label="PAGE 4 — HOW CAN I IMPROVE IT?" />
+    <section ref={ref} aria-label="Page 4 — How to Raise Your Score" style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 24 : 0, paddingBottom: mobile ? 24 : 32, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={5}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
@@ -728,8 +724,7 @@ function Page5WhatToDoNext() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 5 — What to Do Next" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
-      <SectionLabel label="PAGE 5 — WHAT SHOULD I DO NEXT?" />
+    <section ref={ref} aria-label="Page 5 — What to Do Next" style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 24 : 0, paddingBottom: mobile ? 24 : 32, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={7}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
@@ -923,7 +918,7 @@ function CtaSection() {
 function ArrowBetweenPages() {
   const { ref, visible } = useInView();
   return (
-    <div ref={ref} style={{ backgroundColor: "#ffffff" }}>
+    <div ref={ref} style={{ backgroundColor: "#F8F6F2", paddingTop: 8, paddingBottom: 8 }}>
       <PageArrow visible={visible} />
     </div>
   );
@@ -931,8 +926,9 @@ function ArrowBetweenPages() {
 
 export default function SampleReportPage() {
   return (
-    <div style={{ backgroundColor: "#ffffff" }}>
+    <div style={{ backgroundColor: "#F8F6F2" }}>
       <Hero />
+      <div style={{ paddingTop: 8 }} />
       <Page1Score />
       <ArrowBetweenPages />
       <Page2WhyThisScore />
@@ -942,6 +938,7 @@ export default function SampleReportPage() {
       <Page4HowToImprove />
       <ArrowBetweenPages />
       <Page5WhatToDoNext />
+      <div style={{ paddingTop: 8 }} />
       <CtaSection />
     </div>
   );
