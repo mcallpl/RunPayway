@@ -737,6 +737,27 @@ export default function ReviewPage() {
       : "Your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
   };
 
+  // ── Outcome layer explanations override profileConstraintAdvice when available ──
+  // olExplanations comes from the 19-industry backend and is more specific
+  if (olExplanations) {
+    const constraintKeyMap: Record<string, string> = {
+      source_concentration: "high_concentration",
+      forward_visibility: "low_forward_secured",
+      labor_dependence: "high_labor_dependence",
+      low_continuity: "short_continuity",
+      few_sources: "low_source_diversity",
+    };
+    for (const [constraint, olKey] of Object.entries(constraintKeyMap)) {
+      if (olExplanations[olKey]) {
+        profileConstraintAdvice[constraint] = olExplanations[olKey];
+      }
+    }
+    // Also map variability if present
+    if (olExplanations.high_variability && !profileConstraintAdvice.high_variability) {
+      profileConstraintAdvice.high_variability = olExplanations.high_variability;
+    }
+  }
+
   // ── Tier-aware copy ──
   const copy = {
     p1_headline: ({
@@ -1079,6 +1100,23 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Score breakdown */}
+        {v2Scores && (
+          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            {[
+              { label: "Structure", value: v2Scores.structure_score, desc: "How the income is built" },
+              { label: "Stability", value: v2Scores.stability_score, desc: "How well it holds up" },
+              { label: "Quality", value: v2Scores.quality_adjustment, desc: v2Scores.quality_adjustment >= 0 ? "Durability bonus" : "Durability adjustment" },
+            ].map((s) => (
+              <div key={s.label} style={{ flex: 1, textAlign: "center", padding: "12px 0" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>{s.label.toUpperCase()}</div>
+                <div style={{ ...T.cardHero, color: s.value < 0 ? B.bandLimited : B.navy }}>{s.value > 0 && s.label === "Quality" ? "+" : ""}{s.value}</div>
+                <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
         <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
@@ -1242,6 +1280,109 @@ export default function ReviewPage() {
           </div>
         )}
 
+        {/* Structural Indicators — 6 dimensions */}
+        {v2?.indicators && v2.indicators.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Structural Indicators</Overline>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+            {v2.indicators.map((ind) => {
+              const levelColor = /high|very high/i.test(ind.level) ? B.teal : /low|very low/i.test(ind.level) ? B.bandLimited : B.muted;
+              const indicatorLabel: Record<string, string> = {
+                income_persistence: "Income Persistence",
+                source_diversity: "Source Diversity",
+                forward_secured: "Forward Visibility",
+                income_variability: "Earnings Stability",
+                labor_dependence: "Labor Independence",
+                concentration_resilience: "Concentration Resilience",
+              };
+              return (
+                <div key={ind.key} style={{ flex: "1 1 calc(33.33% - 8px)", minWidth: 200, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{indicatorLabel[ind.key] ?? ind.label}</span>
+                    <span style={{ ...T.micro, color: levelColor, textTransform: "uppercase" as const }}>{ind.level}</span>
+                  </div>
+                  <div style={{ height: 4, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${Math.min(100, ind.normalized_value)}%`, backgroundColor: levelColor, borderRadius: 2 }} />
+                  </div>
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>Score: {Math.round(ind.normalized_value)} / 100</div>
+                </div>
+              );
+            })}
+          </div>
+          </>
+        )}
+
+        {/* Fragility + Confidence + Quality — diagnostic row */}
+        {(v2Fragility || v2Confidence || v2Quality) && (
+          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            {v2Fragility && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+                <Overline>FRAGILITY</Overline>
+                <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 4 }}>
+                  {(v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1)}
+                </div>
+                <div style={{ ...T.meta, color: B.muted }}>
+                  {({
+                    brittle: "The structure could break under minor pressure.",
+                    thin: "The structure can handle small disruptions but not sustained ones.",
+                    uneven: "Some areas are protected, others are exposed.",
+                    supported: "The structure is well-supported with limited fragility.",
+                    resilient: "The structure can absorb significant disruption.",
+                  })[v2Fragility.fragility_class] ?? ""}
+                </div>
+                {v2Fragility.primary_failure_mode && (
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
+                    Primary risk: {({
+                      concentration_collapse: "single-source dependency",
+                      labor_interruption: "income stops when work stops",
+                      visibility_gap: "no forward-committed income",
+                      durability_thinness: "recurring income is fragile",
+                    })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
+                  </div>
+                )}
+              </div>
+            )}
+            {v2Confidence && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+                <Overline>ASSESSMENT CONFIDENCE</Overline>
+                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "low" ? B.bandLimited : B.navy, marginBottom: 4 }}>
+                  {(v2Confidence.confidence_level || "").charAt(0).toUpperCase() + (v2Confidence.confidence_level || "").slice(1)} Confidence
+                </div>
+                <div style={{ ...T.meta, color: B.muted }}>
+                  {v2Confidence.confidence_level === "high" ? "Your inputs are consistent. This score is reliable." :
+                   v2Confidence.confidence_level === "moderate" ? "Inputs are mostly consistent with minor gaps." :
+                   v2Confidence.confidence_level === "guarded" ? "Some input inconsistencies reduce precision." :
+                   "Input gaps limit score precision. Reassess with more complete data."}
+                </div>
+                {v2Confidence.deductions.length > 0 && (
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
+                    {v2Confidence.deductions.slice(0, 2).map((d) => (
+                      <div key={d.reason}>— {d.reason}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            {v2Quality && (
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+                <Overline>DURABILITY GRADE</Overline>
+                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 4 }}>{v2Quality.durability_grade}</div>
+                <div style={{ ...T.meta, color: B.muted }}>
+                  Quality score: {v2Quality.quality_score} ({v2Quality.quality_score >= 70 ? "Strong" : v2Quality.quality_score >= 40 ? "Moderate" : "Weak"} income quality)
+                </div>
+                {v2Quality.adjustments.length > 0 && (
+                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
+                    {v2Quality.adjustments.slice(0, 2).map((a) => (
+                      <div key={a.factor}>{a.delta > 0 ? "+" : ""}{a.delta} — {a.reason}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <PageFooter section="How Your Income Is Built" page={2} />
       </ReportPage>
 
@@ -1333,6 +1474,63 @@ export default function ReviewPage() {
             {p2Interpretation[subTier]}
           </p>
         </div>
+
+        {/* Interaction effects — cross-factor penalties/bonuses */}
+        {v2Interactions && v2Interactions.effects.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Cross-Factor Effects on Your Score</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            These adjustments reflect how different parts of your income structure interact. When weaknesses compound each other, the score is penalized. When strengths reinforce each other, the score is boosted.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+            {v2Interactions.effects.filter(e => e.condition_met !== false).map((e) => {
+              const effectLabel: Record<string, string> = {
+                "CF-01": "High concentration + low forward visibility",
+                "CF-02": "High labor dependence + low persistence",
+                "CF-03": "Multiple sources but still concentrated",
+                "CF-04": "Recurring income but high cancellation risk",
+                "CF-05": "Forward visibility but mostly cancelable",
+                "CF-06": "Few sources + extreme variability",
+                "CF-B01": "Strong forward visibility + low concentration",
+                "CF-B02": "High persistence + low labor dependence",
+              };
+              return (
+                <div key={e.code} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", backgroundColor: e.type === "bonus" ? "rgba(31,109,122,0.06)" : "rgba(155,44,44,0.04)", borderRadius: 4 }}>
+                  <span style={{ ...T.small, color: B.navy }}>{effectLabel[e.code] ?? e.trigger_condition}</span>
+                  <span style={{ ...T.sectionLabel, color: e.points > 0 ? B.teal : B.bandLimited }}>
+                    {e.points > 0 ? "+" : ""}{e.points} pts
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
+            Net adjustment: <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment >= 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</span>
+            {v2Interactions.total_penalty !== 0 && <span> ({v2Interactions.total_penalty} penalty</span>}
+            {v2Interactions.total_bonus !== 0 && <span>{v2Interactions.total_penalty !== 0 ? ", " : " ("}+{v2Interactions.total_bonus} bonus</span>}
+            {(v2Interactions.total_penalty !== 0 || v2Interactions.total_bonus !== 0) && <span>)</span>}
+          </div>
+          </>
+        )}
+
+        {/* Reassessment triggers */}
+        {((v2Triggers && v2Triggers.length > 0) || (olTriggers && olTriggers.length > 0)) && (
+          <>
+          <Overline large>When to Reassess</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 8 }}>
+            Reassess when any of these conditions are met — not before.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+            {(olTriggers ?? v2Triggers ?? []).slice(0, 4).map((t) => (
+              <div key={t.trigger_id} style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.purple, marginTop: 5, flexShrink: 0 }} />
+                <span style={{ ...T.small, color: B.navy }}>{"display_text" in t ? t.display_text : t.description}</span>
+              </div>
+            ))}
+          </div>
+          </>
+        )}
 
         <PageFooter section="Your Biggest Risks" page={3} />
       </ReportPage>
@@ -1465,6 +1663,47 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
+
+        {/* Advisor Discussion Guide */}
+        {advisorGuide && (advisorGuide.talking_points.length > 0 || advisorGuide.client_questions.length > 0) && (
+          <>
+          <SectionDivider />
+          <Overline large>Share With Your Advisor</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Use this section when discussing your income stability with a financial advisor, lender, or business partner.
+          </p>
+          <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+            {advisorGuide.talking_points.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>Key Discussion Points</div>
+                {advisorGuide.talking_points.slice(0, 4).map((tp, i) => (
+                  <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
+                    <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
+                  </div>
+                ))}
+              </div>
+            )}
+            {advisorGuide.client_questions.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>Questions to Explore</div>
+                {advisorGuide.client_questions.slice(0, 4).map((q, i) => (
+                  <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
+                    <span style={{ color: B.taupe }}>—</span>{q}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {advisorGuide.red_flags.length > 0 && (
+            <div style={{ backgroundColor: "rgba(155,44,44,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 16 }}>
+              <div style={{ ...T.overline, color: B.bandLimited, marginBottom: 4 }}>RED FLAGS TO ADDRESS</div>
+              {advisorGuide.red_flags.slice(0, 3).map((rf, i) => (
+                <div key={i} style={{ ...T.small, color: B.navy, marginBottom: 2 }}>— {rf}</div>
+              ))}
+            </div>
+          )}
+          </>
+        )}
 
         {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
