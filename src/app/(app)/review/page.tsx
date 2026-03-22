@@ -185,28 +185,32 @@ const B = {
 // ============================================================
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
+// ── Spacing: strict 4px grid ──
 const R = {
   pagePad: 40,
   headerMb: 16,
-  sectionGap: 16,
+  sectionGap: 24,
   labelMb: 8,
   paraMb: 12,
-  itemGap: 10,
-  dividerMy: 16,
+  itemGap: 12,
+  dividerMy: 20,
   footerMt: 16,
 };
 
+// ── Typography: 7-step scale with clear hierarchy ──
 const T = {
-  score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },
-  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: "#0E1A2B" },
-  classification: { fontSize: 16, fontWeight: 500, lineHeight: 1.3 },
-  overline: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 12, fontWeight: 600, lineHeight: 1.35 },
-  cardHeading: { fontSize: 13, fontWeight: 600, lineHeight: 1.35 },
-  body: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.6 },
-  small: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
-  meta: { fontSize: 10, fontWeight: 400, lineHeight: 1.45 },
-  micro: { fontSize: 9.5, fontWeight: 500, lineHeight: 1.3 },
+  score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },                                          // The big number
+  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: "#0E1A2B" },                  // Page titles
+  sectionTitle: { fontSize: 15, fontWeight: 600, lineHeight: 1.3, color: "#0E1A2B" },               // Major section headers (H2)
+  classification: { fontSize: 16, fontWeight: 500, lineHeight: 1.3 },                               // Band label
+  overline: { fontSize: 9, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.14em", textTransform: "uppercase" as const },  // Small metadata labels only
+  sectionLabel: { fontSize: 12, fontWeight: 600, lineHeight: 1.35 },                                // Bold inline labels
+  cardHeading: { fontSize: 13, fontWeight: 600, lineHeight: 1.35 },                                 // Card hero values
+  cardHero: { fontSize: 22, fontWeight: 600, lineHeight: 1.1 },                                     // Consistent card numbers
+  body: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.65 },                                      // Paragraph text
+  small: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.55 },                                     // Secondary text
+  meta: { fontSize: 9.5, fontWeight: 400, lineHeight: 1.45 },                                       // Fine print
+  micro: { fontSize: 8.5, fontWeight: 600, lineHeight: 1.3 },                                       // Severity tags
 };
 
 // ── PDF page dimensions ──
@@ -241,12 +245,14 @@ function ReportHeader() {
   );
 }
 
-function Overline({ children }: { children: React.ReactNode }) {
-  return <div style={{ ...T.overline, color: B.teal, marginBottom: R.labelMb }}>{children}</div>;
+function Overline({ children, large }: { children: React.ReactNode; large?: boolean }) {
+  return large
+    ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: R.labelMb }}>{children}</div>
+    : <div style={{ ...T.overline, color: B.teal, marginBottom: 4 }}>{children}</div>;
 }
 
 function SectionDivider() {
-  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.12)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
+  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function PageFooter({ section, page }: { section: string; page: number }) {
@@ -1046,8 +1052,8 @@ export default function ReviewPage() {
         </div>
 
         {/* Band scale */}
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>WHERE YOU LAND</div>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHERE YOU LAND</div>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
             {[
               { w: 30, color: B.bandLimited },
@@ -1078,7 +1084,7 @@ export default function ReviewPage() {
         </p>
 
         {/* One key insight */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {profileConstraintAdvice[dominantConstraint] || `The main thing holding ${name} back: ${dominantConstraintPlain[dominantConstraint]}.`}
             {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
@@ -1136,8 +1142,8 @@ export default function ReviewPage() {
         </p>
 
         {/* Income Structure Bar */}
-        <Overline>INCOME STRUCTURE</Overline>
-        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
+        <Overline large>Income Structure</Overline>
+        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 4 }}>
           <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
@@ -1161,21 +1167,21 @@ export default function ReviewPage() {
         </p>
 
         {/* Stress Test + Continuity cards */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 16 }}>
-          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
-            <Overline>IF YOUR LARGEST SOURCE DISAPPEARED</Overline>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-              <span style={{ fontSize: 24, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+            <Overline>LARGEST SOURCE STRESS TEST</Overline>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}</span>
               <span style={{ fontSize: 14, color: B.taupe }}>→</span>
-              <span style={{ fontSize: 24, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
+              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              A {record.risk_scenario_drop}-point drop.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
+              {record.risk_scenario_drop}-point drop.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
             </p>
           </div>
-          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
+          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
             <Overline>CONTINUITY IF WORK STOPS</Overline>
-            <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{continuityDisplay}</div>
+            <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
               {record.income_continuity_months < 1 ? `Critically short for a ${structureDesc}.` : record.income_continuity_months < 3 ? `Limited runway.` : record.income_continuity_months < 6 ? `Moderate runway.` : `Strong window.`}
             </p>
@@ -1185,15 +1191,15 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* What's working + What's vulnerable — compact */}
-        <div style={{ display: "flex", gap: 24, marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
           <div style={{ flex: 1 }}>
-            <Overline>WHAT IS WORKING</Overline>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
+            <Overline large>What Is Working</Overline>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
           </div>
           <div style={{ flex: 1 }}>
-            <Overline>PRIMARY VULNERABILITY</Overline>
-            <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)}</div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]?.split(".").slice(0, 2).join(".") + "."}</p>
+            <Overline large>Primary Vulnerability</Overline>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]?.split(".").slice(0, 2).join(".") + "."}</p>
           </div>
         </div>
 
@@ -1253,7 +1259,7 @@ export default function ReviewPage() {
         {/* Stress scenarios — top 3 */}
         {v2Scenarios && v2Scenarios.length > 0 && (
           <div style={{ marginBottom: 20 }}>
-            <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
+            <Overline large>What Could Hurt Your Score Most</Overline>
             {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
               const scenarioPlain: Record<string, string> = {
                 active_labor_interrupted: "You are unable to work for an extended period",
@@ -1318,8 +1324,8 @@ export default function ReviewPage() {
         )}
 
         {/* Bottom line */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px" }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px" }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
           <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", fontWeight: 500 }}>
             {p2BottomLine[subTier]}
           </p>
@@ -1338,12 +1344,12 @@ export default function ReviewPage() {
       <ReportPage record={record}>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Action Plan</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
           As a {structureDesc} in {industrySector} with {incomeModelDesc} income and {revenueDesc}, the fastest path to a higher score is restructuring how income flows — not just earning more.
         </p>
 
         {/* Current Band → Next Target Band */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "14px 18px" }}>
             <Overline>CURRENT BAND</Overline>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
@@ -1359,7 +1365,7 @@ export default function ReviewPage() {
         {/* Top 3 improvements + progress bar */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
-            <Overline>IF YOU MADE THESE CHANGES</Overline>
+            <Overline large>If You Made These Changes</Overline>
             {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => {
               const liftPlain: Record<string, string> = {
                 reduce_labor_dependence: "Reduce how much income depends on daily work",
@@ -1421,7 +1427,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Priority actions — from outcome layer or fallback */}
-        <Overline>YOUR NEXT STEPS AS A {structureDesc.toUpperCase()} IN {industrySector.toUpperCase()}</Overline>
+        <Overline large>Your Next Steps as a {structureDesc} in {industrySector}</Overline>
         {olActions && olActions.length > 0 && (
           <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 8 }}>
             Tailored for {olIndustryLabel ? `${olIndustryLabel} · ` : ""}{olFamilyLabel ?? "your income model"}
