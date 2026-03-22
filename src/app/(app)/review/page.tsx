@@ -976,7 +976,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "What This Score Means", "Your Biggest Risks", "How to Raise Your Score", "What to Do Next"];
+  const pageTitles = ["Your Score", "How Your Income Is Built", "Your Biggest Risks", "Your Action Plan"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1016,7 +1016,9 @@ export default function ReviewPage() {
     <ReportErrorBoundary>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
 
-      {/* ---- PAGE 1 — Where do I stand? ---- */}
+      {/* ════════════════════════════════════════════════════════
+          PAGE 1 — YOUR SCORE (Anchor: clean, confident, contextual)
+          ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
 
@@ -1038,12 +1040,12 @@ export default function ReviewPage() {
           </div>
           {record.peer_stability_percentile_label && (
             <div style={{ ...T.small, color: B.muted, marginTop: 8 }}>
-              {record.peer_stability_percentile_label} percentile among {(record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
+              {record.peer_stability_percentile_label} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
             </div>
           )}
         </div>
 
-        {/* Classification Scale */}
+        {/* Band scale */}
         <div style={{ marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 10 }}>WHERE YOU LAND</div>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
@@ -1075,31 +1077,13 @@ export default function ReviewPage() {
           {copy.p1_headline}
         </p>
 
-        {/* Single most important insight — one line the customer remembers */}
+        {/* One key insight */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
             {profileConstraintAdvice[dominantConstraint] || `The main thing holding ${name} back: ${dominantConstraintPlain[dominantConstraint]}.`}
             {v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : ""}
           </p>
         </div>
-
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 16 }}>
-          <MetricCard label="INCOME CONTINUITY IF WORK STOPS" value={`${record.income_continuity_pct}%`} explanation={`${continuitySeverity.charAt(0).toUpperCase() + continuitySeverity.slice(1)} continuity for a ${structureDesc}.`} />
-          <MetricCard label="LARGEST SOURCE STRESS TEST" value={<>{record.final_score} <span style={{ color: B.taupe, fontWeight: 400 }}>→</span> {Math.max(0, record.risk_scenario_score)}</>} explanation={`${record.risk_scenario_drop}-point drop. ${sourceDropSeverity === "collapse" ? "Severe concentration risk." : sourceDropSeverity === "severe" ? "Too dependent on one source." : "Meaningful single-source exposure."}`} />
-          <MetricCard label="PRIMARY CONSTRAINT" value={dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} explanation={profileConstraintAdvice[dominantConstraint]?.split(".")[0] + "." || ""} />
-          <MetricCard label="DURABILITY" value={durabilityValue[subTier]} explanation={durabilityBody[subTier]} />
-        </div>
-
-
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
-          {[["Prepared for", name], ["Industry", industrySector], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
-            <div key={l}>
-              <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
-              <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
-            </div>
-          ))}
-        </div>
-        {/* Classification/Operating Structure/Income Model/Revenue Structure — already stated in headline */}
 
         {/* Score trend — shown only if previous assessments exist */}
         {(() => {
@@ -1124,6 +1108,15 @@ export default function ReviewPage() {
           } catch { return null; }
         })()}
 
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
+          {[["Prepared for", name], ["Industry", industrySector], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
+            <div key={l}>
+              <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
+              <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
+            </div>
+          ))}
+        </div>
+
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
         </p>
@@ -1132,30 +1125,81 @@ export default function ReviewPage() {
       </ReportPage>
 
 
-      {/* ---- PAGE 2 — What does this score mean? ---- */}
+      {/* ════════════════════════════════════════════════════════
+          PAGE 2 — HOW YOUR INCOME IS BUILT (Understand: the x-ray)
+          ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What This Score Means</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           {p2Intro[subTier]}
         </p>
 
-        {/* What is already working */}
-        <Overline>WHAT IS ALREADY WORKING</Overline>
-        <p style={{ ...T.body, color: B.muted, margin: "0 0 20px" }}>{p2WorkingBody}</p>
+        {/* Income Structure Bar */}
+        <Overline>INCOME STRUCTURE</Overline>
+        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
+          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
+          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
+          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
+        </div>
+        <div style={{ display: "flex", gap: 24, marginBottom: 10 }}>
+          {[
+            { label: "Earned through active work", pct: record.active_income_level, color: B.ink },
+            { label: "Repeatable income", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Continues without daily work", pct: record.persistent_income_level, color: B.teal },
+          ].map((seg) => (
+            <div key={seg.label} style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color }} />
+                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
+          {record.active_income_level >= 80 ? `High active-work dependence for a ${structureDesc}. ${profileConstraintAdvice.labor_dependence?.split(".")[0]}.` : record.active_income_level >= 50 ? `${record.active_income_level}% active-work dependence. Shift more toward repeatable income.` : `${100 - record.active_income_level}% repeats or continues independently — a structural advantage.`}
+        </p>
+
+        {/* Stress Test + Continuity cards */}
+        <div style={{ display: "flex", gap: 14, marginBottom: 16 }}>
+          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
+            <Overline>IF YOUR LARGEST SOURCE DISAPPEARED</Overline>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 24, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
+              <span style={{ fontSize: 14, color: B.taupe }}>→</span>
+              <span style={{ fontSize: 24, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
+            </div>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+              A {record.risk_scenario_drop}-point drop.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
+            </p>
+          </div>
+          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
+            <Overline>CONTINUITY IF WORK STOPS</Overline>
+            <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{continuityDisplay}</div>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+              {record.income_continuity_months < 1 ? `Critically short for a ${structureDesc}.` : record.income_continuity_months < 3 ? `Limited runway.` : record.income_continuity_months < 6 ? `Moderate runway.` : `Strong window.`}
+            </p>
+          </div>
+        </div>
 
         <SectionDivider />
 
-        {/* What is still vulnerable */}
-        <Overline>WHAT IS STILL VULNERABLE</Overline>
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Primary: {dominantConstraintPlain[dominantConstraint]}</div>
-          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]}</p>
+        {/* What's working + What's vulnerable — compact */}
+        <div style={{ display: "flex", gap: 24, marginBottom: 16 }}>
+          <div style={{ flex: 1 }}>
+            <Overline>WHAT IS WORKING</Overline>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
+          </div>
+          <div style={{ flex: 1 }}>
+            <Overline>PRIMARY VULNERABILITY</Overline>
+            <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)}</div>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]?.split(".").slice(0, 2).join(".") + "."}</p>
+          </div>
         </div>
 
-        {/* Peer comparison insight */}
+        {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
-          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px", marginTop: 16, marginBottom: 4 }}>
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px", marginBottom: 4 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW YOU COMPARE TO PEERS{olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, fontSize: 14 }}>{score}</span></div>
@@ -1192,24 +1236,13 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <SectionDivider />
-
-        {/* Bottom line — one clear takeaway */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px" }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", fontWeight: 500 }}>
-            {p2BottomLine[subTier]}
-          </p>
-          <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            {p2Interpretation[subTier]}
-          </p>
-        </div>
-
-        <PageFooter section="What This Score Means" page={2} />
+        <PageFooter section="How Your Income Is Built" page={2} />
       </ReportPage>
 
 
-      {/* ---- PAGE 3 — Where is the structure exposed? ---- */}
+      {/* ════════════════════════════════════════════════════════
+          PAGE 3 — YOUR BIGGEST RISKS (Confront: what's at stake)
+          ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
@@ -1217,31 +1250,7 @@ export default function ReviewPage() {
           {p3Intro[subTier]}{olIndustryLabel ? ` These risks are assessed in the context of the ${olIndustryLabel} industry.` : ""}
         </p>
 
-        {/* Two large cards: Stress Test + Continuity */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 20 }}>
-          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-            <Overline>IF YOUR LARGEST INCOME SOURCE DISAPPEARED</Overline>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
-              <span style={{ fontSize: 28, fontWeight: 600, color: B.navy }}>{record.final_score}</span>
-              <span style={{ fontSize: 16, color: B.taupe }}>→</span>
-              <span style={{ fontSize: 28, fontWeight: 600, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
-            </div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              A {record.risk_scenario_drop}-point drop from losing one source.{record.risk_scenario_drop > score * 0.4 ? " That is a severe dependency." : ""}
-            </p>
-          </div>
-          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-            <Overline>HOW LONG INCOME WOULD CONTINUE IF WORK STOPPED</Overline>
-            <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 4 }}>
-              Estimated: {continuityDisplay}
-            </div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.income_continuity_months < 1 ? `As a ${structureDesc}, this is critically short.` : record.income_continuity_months < 3 ? `Limited runway for a ${structureDesc}.` : record.income_continuity_months < 6 ? `Moderate runway. Extend further for stronger protection.` : `Strong continuity window.`}
-            </p>
-          </div>
-        </div>
-
-        {/* Stress scenarios — top 3, clear layout */}
+        {/* Stress scenarios — top 3 */}
         {v2Scenarios && v2Scenarios.length > 0 && (
           <div style={{ marginBottom: 20 }}>
             <Overline>WHAT COULD HURT YOUR SCORE MOST</Overline>
@@ -1263,7 +1272,6 @@ export default function ReviewPage() {
                 contract_non_renewal: "A major contract is not renewed",
                 scope_reduction: "A client significantly reduces the scope of your work",
               };
-              // Normalize: try ID match, then label match via replace chain
               const title = scenarioPlain[s.scenario_id] ?? s.label
                 .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
                 .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
@@ -1280,7 +1288,6 @@ export default function ReviewPage() {
                 .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
                 .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
                 .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
-              // Safety: if title still looks like a model label (multiple capital words), lowercase it
               const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
                 ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
                 : title;
@@ -1310,47 +1317,32 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Income Structure Mix */}
-        <Overline>HOW THE INCOME IS CURRENTLY BUILT</Overline>
-        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 6 }}>
-          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
-          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
-          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
+        {/* Bottom line */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "14px 18px" }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", fontWeight: 500 }}>
+            {p2BottomLine[subTier]}
+          </p>
+          <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+            {p2Interpretation[subTier]}
+          </p>
         </div>
-        <div style={{ display: "flex", gap: 24, marginBottom: 10 }}>
-          {[
-            { label: "Earned through active work", pct: record.active_income_level, color: B.ink },
-            { label: "Repeatable income", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "Continues without daily work", pct: record.persistent_income_level, color: B.teal },
-          ].map((seg) => (
-            <div key={seg.label} style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color }} />
-                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p style={{ ...T.meta, color: B.muted, marginBottom: 20, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `High active-work dependence for a ${structureDesc}. ${profileConstraintAdvice.labor_dependence?.split(".")[0]}.` : record.active_income_level >= 50 ? `${record.active_income_level}% active-work dependence. Shift more toward repeatable income.` : `${100 - record.active_income_level}% repeats or continues independently — a structural advantage.`}
-        </p>
-
-        {/* Peer comparison moved to Page 2 — shown once for clarity */}
-
 
         <PageFooter section="Your Biggest Risks" page={3} />
       </ReportPage>
 
 
-      {/* ---- PAGE 4 — What would improve it? ---- */}
+      {/* ════════════════════════════════════════════════════════
+          PAGE 4 — YOUR ACTION PLAN (Act: empowerment)
+          ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How to Raise Your Score</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Action Plan</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
           As a {structureDesc} in {industrySector} with {incomeModelDesc} income and {revenueDesc}, the fastest path to a higher score is restructuring how income flows — not just earning more.
         </p>
 
-        {/* Current Band / Next Target Band — compact side by side */}
+        {/* Current Band → Next Target Band */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "14px 18px" }}>
             <Overline>CURRENT BAND</Overline>
@@ -1364,7 +1356,7 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Top 3 projected improvements — clear layout */}
+        {/* Top 3 improvements + progress bar */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <Overline>IF YOU MADE THESE CHANGES</Overline>
@@ -1405,15 +1397,8 @@ export default function ReviewPage() {
                 </div>
               );
             })}
-            {/* Combined improvement line */}
             {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-              <div style={{ ...T.small, color: B.muted, marginTop: 10, fontStyle: "italic" }}>
-                {p4CombinedLine}
-              </div>
-            )}
-            {/* Score progression visual */}
-            {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-            <div style={{ marginTop: 16, marginBottom: 8 }}>
+            <div style={{ marginTop: 12, marginBottom: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
                 <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>Now</span>
                 <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
@@ -1433,16 +1418,19 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* 4 priority actions — compact list */}
+        <SectionDivider />
+
+        {/* Priority actions — from outcome layer or fallback */}
+        <Overline>YOUR NEXT STEPS AS A {structureDesc.toUpperCase()} IN {industrySector.toUpperCase()}</Overline>
         {olActions && olActions.length > 0 && (
           <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 8 }}>
             Tailored for {olIndustryLabel ? `${olIndustryLabel} · ` : ""}{olFamilyLabel ?? "your income model"}
           </div>
         )}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
           {(olActions && olActions.length > 0
             ? olActions.slice(0, 4).map((a, i) => ({
-                rank: `Priority ${i + 1}`,
+                rank: `${i + 1}`,
                 title: a.label,
                 copy: a.description,
                 why: a.why_now,
@@ -1450,96 +1438,35 @@ export default function ReviewPage() {
             : (() => {
                 const priorities = [
                   { key: "forward_visibility", title: "Secure more income ahead of time", copy: profileConstraintAdvice.forward_visibility },
-                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: `${profileConstraintAdvice.source_concentration} Your stress test shows a ${record.risk_scenario_drop}-point drop if the largest source disappears.` },
+                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: profileConstraintAdvice.source_concentration },
                   { key: "labor_dependence", title: "Build more repeatable income", copy: profileConstraintAdvice.labor_dependence },
-                  { key: "low_continuity", title: "Extend income continuity", copy: `${profileConstraintAdvice.low_continuity} Currently: about ${continuityDisplay}.` },
+                  { key: "low_continuity", title: "Extend income continuity", copy: profileConstraintAdvice.low_continuity },
                 ];
-                // Put dominant constraint first
                 const sorted = [
                   ...priorities.filter(p => p.key === dominantConstraint),
                   ...priorities.filter(p => p.key !== dominantConstraint),
                 ];
-                return sorted.map((p, i) => ({ rank: `Priority ${i + 1}`, title: p.title, copy: p.copy, why: "" }));
+                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "" }));
               })()
-
           ).map((action) => (
-            <div key={action.rank} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <div style={{ ...T.micro, color: B.purple, minWidth: 60, paddingTop: 2 }}>{action.rank}</div>
+            <div key={action.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <span style={{ fontSize: 14, fontWeight: 600, color: B.purple, minWidth: 18 }}>{action.rank}.</span>
               <div>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 3 }}>{action.title}</div>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
-                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
+                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "3px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
               </div>
             </div>
           ))}
         </div>
 
-        {/* What NOT to do — removed: generic filler */}
-
-
-        <PageFooter section="How to Raise Your Score" page={4} />
-      </ReportPage>
-
-
-      {/* ---- PAGE 5 — What do I do next? ---- */}
-      <ReportPage record={record}>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>What to Do Next</h1>
-
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540, lineHeight: 1.6 }}>
-          {p5Intro[subTier]}
-        </p>
-
-        {/* Action items — profile-specific */}
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to do next as a {structureDesc} in {industrySector}</div>
-          {(({
-            source_concentration: [
-              `Reduce largest-source dependency (currently a ${record.risk_scenario_drop}-point stress test drop)`,
-              `Lock in at least one ${incomeModel.includes("commission") ? "recurring commission" : incomeModel.includes("contract") ? "multi-month contract" : "committed income source"} for 3+ months`,
-              `Build ${incomeModel.includes("consulting") ? "productized or retainer" : "repeatable"} income alongside ${incomeModelDesc} work`,
-              "Reassess only after changes are active, not planned",
-            ],
-            forward_visibility: [
-              `Lock in ${incomeModel.includes("commission") ? "advance pipeline commitments" : incomeModel.includes("contract") ? "multi-month contract extensions" : "recurring or pre-committed revenue"} for next quarter`,
-              `Reduce largest-source dependency (${record.risk_scenario_drop}-point drop risk)`,
-              `Convert some ${revenueDesc} into contracted or recurring payments`,
-              "Reassess only after changes are active, not planned",
-            ],
-            labor_dependence: [
-              `Convert ${record.active_income_level}% active-work income into ${incomeModel.includes("consulting") ? "productized delivery or licensing" : incomeModel.includes("creator") ? "royalties, licensing, or syndication" : "repeatable or passive streams"}`,
-              `Lock in at least one committed income source for 3+ months`,
-              `Reduce largest-source exposure (${record.risk_scenario_drop}-point drop risk)`,
-              "Reassess only after changes are active, not planned",
-            ],
-            low_continuity: [
-              `Extend continuity beyond ${continuityDisplay} with ${incomeModel.includes("contract") ? "longer-term contracts" : incomeModel.includes("commission") ? "residual or trail commissions" : "recurring revenue streams"}`,
-              "Lock in at least one committed income source for 3+ months",
-              `Reduce largest-source exposure (${record.risk_scenario_drop}-point drop risk)`,
-              "Reassess only after changes are active, not planned",
-            ],
-            few_sources: [
-              `Add at least one new ${incomeModel.includes("consulting") ? "client segment or service line" : incomeModel.includes("product") ? "distribution channel" : "income source"} contributing 10%+ of total`,
-              "Lock in at least one committed income source for 3+ months",
-              `Convert some ${revenueDesc} into repeatable income`,
-              "Reassess only after changes are active, not planned",
-            ],
-          })[dominantConstraint]).map((item, i) => (
-            <div key={i} style={{ ...T.small, color: B.ink, display: "flex", gap: 8, marginBottom: 5 }}>
-              <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
-            </div>
-          ))}
-        </div>
-
-        {/* 90-Day Action Plan removed — duplicated the numbered list above */}
-
-        {/* Bottom cards: Reassessment + Verification */}
+        {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{copy.p5_reassess}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{copy.p5_reassess}</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
             <Overline>VERIFICATION</Overline>
@@ -1552,13 +1479,11 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Peer comparison shown once on Page 2 — not repeated here */}
-
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
-        <PageFooter section="What to Do Next" page={5} />
+        <PageFooter section="Your Action Plan" page={4} />
       </ReportPage>
 
 
