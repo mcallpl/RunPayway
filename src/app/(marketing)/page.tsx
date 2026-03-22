@@ -97,35 +97,35 @@ const B = {
 };
 
 const S = {
-  sectionY:     { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 120, mobile: 72 },
-  transitionY:  { desktop: 72, mobile: 48 },
-  disclaimerY:  { desktop: 24, mobile: 16 },
-  maxW:         1060,
-  padX:         { desktop: 48, mobile: 24 },
-  h1mb:         32,
-  h2mb:         20,
-  subtextMb:    40,
+  sectionY:     { desktop: 140, mobile: 80 },
+  sectionYsm:   { desktop: 100, mobile: 64 },
+  transitionY:  { desktop: 56, mobile: 40 },
+  disclaimerY:  { desktop: 20, mobile: 14 },
+  maxW:         1100,
+  padX:         { desktop: 56, mobile: 24 },
+  h1mb:         24,
+  h2mb:         16,
+  subtextMb:    48,
   paraMb:       20,
   labelMb:      14,
   cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   16,
-  panelRadius:  20,
+  cardRadius:   12,
+  panelRadius:  16,
   gridGap:      24,
   gridGapSm:    16,
-  ctaH:         56,
-  ctaHsm:       48,
+  ctaH:         52,
+  ctaHsm:       44,
   ctaPadX:      32,
-  ctaRadius:    14,
-  lhHeading:    1.08,
+  ctaRadius:    12,
+  lhHeading:    1.1,
   lhBody:       1.65,
   lhDense:      1.5,
-  lsHeading:    "-0.025em",
-  lsHero:       "-0.035em",
-  lsLabel:      "0.14em",
+  lsHeading:    "-0.02em",
+  lsHero:       "-0.03em",
+  lsLabel:      "0.10em",
 };
 
-const spaciousY = { desktop: 200, mobile: 100 };
+const spaciousY = { desktop: 160, mobile: 88 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
@@ -350,8 +350,8 @@ input[type="range"]::-webkit-slider-thumb {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? 100 : 160,
-          paddingBottom: mobile ? 80 : 140,
+          paddingTop: mobile ? 100 : 180,
+          paddingBottom: mobile ? 80 : 160,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         }}
@@ -382,13 +382,13 @@ input[type="range"]::-webkit-slider-thumb {
 
             <h1
               style={{
-                fontSize: mobile ? 34 : 56,
+                fontSize: mobile ? 36 : 64,
                 fontWeight: 400,
                 color: "#F4F1EA",
-                lineHeight: S.lhHeading,
-                letterSpacing: "-0.015em",
+                lineHeight: 1.05,
+                letterSpacing: "-0.025em",
                 marginBottom: S.h1mb,
-                maxWidth: mobile ? undefined : 560,
+                maxWidth: mobile ? undefined : 600,
                 fontFamily: DISPLAY_FONT,
               }}
             >
@@ -396,12 +396,12 @@ input[type="range"]::-webkit-slider-thumb {
             </h1>
 
             <p
-              className="text-[15px] md:text-[17px]"
               style={{
-                color: "rgba(244,241,234,0.75)",
-                lineHeight: S.lhBody,
-                marginBottom: 28,
-                maxWidth: mobile ? undefined : 480,
+                fontSize: mobile ? 15 : 18,
+                color: "rgba(244,241,234,0.65)",
+                lineHeight: 1.7,
+                marginBottom: 36,
+                maxWidth: mobile ? undefined : 500,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
@@ -536,8 +536,8 @@ function FourFactorsSection() {
       aria-label="What RunPayway Measures"
       style={{
         background: "linear-gradient(180deg, #FFFFFF 0%, #F8F6F2 100%)",
-        paddingTop: mobile ? 80 : 120,
-        paddingBottom: mobile ? 80 : 120,
+        paddingTop: mobile ? 80 : 140,
+        paddingBottom: mobile ? 80 : 140,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -563,17 +563,17 @@ function FourFactorsSection() {
           </div>
           <h2
             style={{
-              fontSize: mobile ? 32 : 48,
+              fontSize: mobile ? 32 : 52,
               color: B.navy,
-              lineHeight: S.lhHeading,
-              letterSpacing: S.lsHeading,
+              lineHeight: 1.08,
+              letterSpacing: "-0.025em",
               fontFamily: DISPLAY_FONT, fontWeight: 400,
-              marginBottom: 20,
+              marginBottom: 24,
             }}
           >
             What RunPayway&#8482; measures
           </h2>
-          <p style={{ fontSize: 17, color: "rgba(14,26,43,0.50)", lineHeight: S.lhBody, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: mobile ? 15 : 18, color: "rgba(14,26,43,0.48)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto" }}>
             Every score is built from four structural dimensions. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
           </p>
         </div>
@@ -587,8 +587,8 @@ function FourFactorsSection() {
                 display: mobile ? "block" : "flex",
                 alignItems: "flex-start",
                 gap: 40,
-                paddingTop: i === 0 ? 0 : (mobile ? 36 : 48),
-                paddingBottom: mobile ? 36 : 48,
+                paddingTop: i === 0 ? 0 : (mobile ? 40 : 56),
+                paddingBottom: mobile ? 40 : 56,
                 borderBottom: i < factors.length - 1 ? "1px solid rgba(14,26,43,0.08)" : "none",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -599,7 +599,7 @@ function FourFactorsSection() {
               <div style={{ minWidth: mobile ? undefined : 180, marginBottom: mobile ? 16 : 0 }}>
                 <div
                   style={{
-                    fontSize: 28, fontWeight: 300, color: B.teal,
+                    fontSize: 32, fontWeight: 300, color: B.teal,
                     letterSpacing: "0.04em", lineHeight: 1, marginBottom: 8,
                     fontFamily: DISPLAY_FONT,
                   }}
@@ -620,12 +620,12 @@ function FourFactorsSection() {
               <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    fontSize: mobile ? 20 : 22,
+                    fontSize: mobile ? 22 : 26,
                     fontWeight: 400,
                     color: B.navy,
-                    lineHeight: 1.35,
-                    letterSpacing: "-0.01em",
-                    marginBottom: 12,
+                    lineHeight: 1.25,
+                    letterSpacing: "-0.015em",
+                    marginBottom: 14,
                     fontFamily: DISPLAY_FONT,
                   }}
                 >
@@ -1250,7 +1250,7 @@ function SampleResultSection() {
               maxWidth: 560,
               width: "100%",
               background: "#FFFFFF",
-              borderRadius: 20,
+              borderRadius: 12,
               border: "1px solid rgba(14,26,43,0.08)",
               boxShadow: "0 24px 80px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
               overflow: "hidden",
@@ -1894,7 +1894,7 @@ function PricingSection() {
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: 20,
+              borderRadius: 12,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
               border: "1px solid rgba(255,255,255,0.15)",
               boxShadow: "0 16px 48px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -1949,7 +1949,7 @@ function PricingSection() {
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: 20,
+              borderRadius: 12,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
               border: "1px solid rgba(75,63,174,0.20)",
               boxShadow: "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)",
