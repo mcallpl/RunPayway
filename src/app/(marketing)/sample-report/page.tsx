@@ -349,1580 +349,410 @@ function Hero() {
 }
 
 /* ================================================================== */
-/* PAGE 1: YOUR SCORE — ~90% REVEALED                                  */
+/* PAGE 1: YOUR SCORE                                                   */
 /* ================================================================== */
 function Page1Score() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
   const score = useAnimatedCounter(78, visible, 1500);
 
-  const bandSegments = [
-    { range: "0\u201329", label: "Limited Stability", color: B.bandLimited },
-    { range: "30\u201349", label: "Developing Stability", color: B.bandDeveloping },
-    { range: "50\u201374", label: "Established Stability", color: B.bandEstablished },
-    { range: "75\u2013100", label: "High Stability", color: B.bandHigh, active: true },
-  ];
-
-  const metrics = [
-    { label: "Income that continues without daily work", value: "38%", accent: B.teal },
-    { label: "Stress Test", value: "78 \u2192 56", accent: B.bandLimited },
-    {
-      label: "Main Constraint",
-      value: "Too little income secured ahead",
-      accent: B.purple,
-      small: true,
-    },
-    { label: "How Resilient", value: "Supported", accent: B.bandHigh },
-  ];
-
   return (
-    <section
-      ref={ref}
-      aria-label="Page 1 — Your Score"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? 48 : 0,
-        paddingBottom: mobile ? 48 : 64,
-        paddingLeft: mobile ? 16 : 24,
-        paddingRight: mobile ? 16 : 24,
-      }}
-    >
-      <SectionLabel label="PAGE 1 — WHERE DO I STAND?" />
+    <section ref={ref} aria-label="Page 1 — Your Score" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+      <SectionLabel label="PAGE 1 — WHAT IS MY SCORE?" />
       <ReportCard visible={visible} mobile={mobile} delay={100}>
         {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 24,
-            marginTop: 8,
-            flexWrap: "wrap",
-            gap: 8,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: B.navy,
-              letterSpacing: "0.06em",
-            }}
-          >
-            RUNPAYWAY&trade;
-          </span>
-          <span style={{ fontSize: 11, color: B.light }}>
-            Income Stability Score&trade; &middot; Model RP-2.0
-          </span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
+          <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
         </div>
 
-        {/* Overline + title */}
-        <div
-          style={{
-            fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            color: B.teal,
-            marginBottom: 8,
-          }}
-        >
-          YOUR INCOME STABILITY REPORT
-        </div>
-        <h2
-          style={{
-            fontSize: 22,
-            fontFamily: DISPLAY_FONT,
-            fontWeight: 400,
-            color: B.navy,
-            marginBottom: 20,
-          }}
-        >
-          Your Score
-        </h2>
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>YOUR INCOME STABILITY REPORT</div>
+        <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 16 }}>Your Score</h2>
 
         {/* Score + band */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 16,
-            marginBottom: 8,
-          }}
-        >
-          <span
-            className="text-[48px] md:text-[64px]"
-            style={{ fontWeight: 600, color: B.navy, lineHeight: 1 }}
-          >
-            {score}
-          </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              backgroundColor: "rgba(22,163,74,0.08)",
-              color: B.bandHigh,
-              fontWeight: 600,
-              fontSize: 14,
-              padding: "4px 14px",
-              borderRadius: 100,
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                backgroundColor: B.bandHigh,
-              }}
-            />
-            High Stability
-          </span>
-        </div>
-        <div
-          style={{
-            fontSize: 13,
-            color: B.muted,
-            marginBottom: 28,
-          }}
-        >
-          <span style={{ fontWeight: 600, color: B.navy }}>
-            72nd percentile
-          </span>{" "}
-          among Professional Services
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 64, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 8 }}>{score}</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: B.bandHigh }} />
+            <span style={{ fontSize: 16, fontWeight: 500, color: B.bandHigh }}>High Stability</span>
+          </div>
+          <div style={{ fontSize: 12, color: B.muted, marginTop: 6 }}>72nd percentile among Professional Services professionals in this benchmark</div>
         </div>
 
-        {/* Classification scale bar */}
-        <div style={{ marginBottom: 8 }}>
-          <div
-            style={{
-              display: "flex",
-              borderRadius: 6,
-              overflow: "hidden",
-              height: 10,
-            }}
-          >
-            {bandSegments.map((seg) => (
-              <div
-                key={seg.label}
-                style={{
-                  flex:
-                    seg.label === "High"
-                      ? 26
-                      : seg.label === "Limited"
-                        ? 30
-                        : seg.label === "Developing"
-                          ? 20
-                          : 25,
-                  backgroundColor: seg.color,
-                  opacity: seg.active ? 1 : 0.25,
-                }}
-              />
+        {/* Classification scale */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.light, marginBottom: 8 }}>WHERE YOU LAND</div>
+          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
+            {[{ w: 30, color: B.bandLimited, active: false }, { w: 20, color: B.bandDeveloping, active: false }, { w: 25, color: B.bandEstablished, active: false }, { w: 25, color: B.bandHigh, active: true }].map((seg, i) => (
+              <div key={i} style={{ width: `${seg.w}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: seg.active ? 1 : 0.25 }} />
             ))}
           </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 6,
-            }}
-          >
-            {bandSegments.map((seg) => (
-              <span
-                key={seg.label}
-                style={{
-                  fontSize: 10,
-                  color: seg.active ? seg.color : B.light,
-                  fontWeight: seg.active ? 700 : 500,
-                }}
-              >
-                {seg.range} {seg.label}
-              </span>
+          <div style={{ display: "flex", gap: 2 }}>
+            {[{ range: "0–29", label: "Limited Stability", active: false }, { range: "30–49", label: "Developing Stability", active: false }, { range: "50–74", label: "Established Stability", active: false }, { range: "75–100", label: "High Stability", active: true }].map((b) => (
+              <div key={b.range} style={{ flex: 1, opacity: b.active ? 1 : 0.5 }}>
+                <div style={{ fontSize: 10, color: b.active ? B.bandHigh : B.light, fontWeight: b.active ? 600 : 400 }}>{b.range}</div>
+                <div style={{ fontSize: 10, color: b.active ? B.navy : B.light, fontWeight: b.active ? 600 : 400 }}>{b.label}</div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Divider */}
-        <div
-          style={{
-            height: 1,
-            background: "rgba(14,26,43,0.06)",
-            margin: "24px 0",
-          }}
-        />
+        {/* Summary */}
+        <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
+          Sample Professional Services scored 78 out of 100. The income structure is strong, with substantial protection already in place. The focus now is on preserving strength and tightening remaining weak points.
+        </p>
+        <p style={{ fontSize: 11, color: B.teal, fontWeight: 500, marginBottom: 16 }}>
+          Why this matters: income that looks fine today can still be structurally weak if too much depends on active work, one source, or income that is not secured ahead of time.
+        </p>
 
-        {/* Key insight */}
-        <div
-          style={{
-            borderLeft: `3px solid ${B.purple}`,
-            padding: "14px 18px",
-            backgroundColor: "rgba(75,63,174,0.04)",
-            borderRadius: "0 8px 8px 0",
-            marginBottom: 24,
-          }}
-        >
-          <p
-            style={{
-              fontSize: 14,
-              color: B.navy,
-              lineHeight: 1.6,
-              margin: 0,
-              fontWeight: 500,
-            }}
-          >
-            The biggest weak point is limited income secured ahead of time.
-            Improving this could add 8 points.
+        {/* Callout box */}
+        <div style={{ backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "12px 16px", marginBottom: 16 }}>
+          <p style={{ fontSize: 12, color: B.navy, lineHeight: 1.6, margin: 0, fontWeight: 500 }}>
+            The main thing holding this profile back right now: not enough income secured ahead of time. Fixing this could raise the score by about 8 points.
           </p>
         </div>
 
         {/* 4 metric cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr 1fr",
-            gap: 12,
-            marginBottom: 24,
-          }}
-        >
-          {metrics.map((m) => (
-            <div
-              key={m.label}
-              style={{
-                borderLeft: `3px solid ${m.accent}`,
-                padding: "12px 14px",
-                backgroundColor: B.sand,
-                borderRadius: "0 8px 8px 0",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: B.light,
-                  marginBottom: 6,
-                }}
-              >
-                {m.label}
-              </div>
-              <div
-                style={{
-                  fontSize: m.small ? 12 : 16,
-                  fontWeight: 600,
-                  color: B.navy,
-                  lineHeight: 1.3,
-                }}
-              >
-                {m.value}
-              </div>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 10, marginBottom: 20 }}>
+          {[
+            { label: "INCOME THAT WOULD CONTINUE IF YOU STOPPED WORKING TODAY", value: "38%", body: "A moderate level of continuity." },
+            { label: "IF THE LARGEST INCOME SOURCE DISAPPEARED", value: "78 → 56", body: "Too much still depends on one source." },
+            { label: "MAIN REASON THE SCORE IS HELD BACK", value: "Not enough income secured ahead of time", body: "More income needs to be committed before each month begins." },
+            { label: "OVERALL DURABILITY", value: "Strong protection", body: "The structure holds up well under most common disruptions." },
+          ].map((m) => (
+            <div key={m.label} style={{ backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 14px" }}>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>{m.label}</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4, lineHeight: 1.3 }}>{m.value}</div>
+              <div style={{ fontSize: 10, color: B.muted, lineHeight: 1.5 }}>{m.body}</div>
             </div>
           ))}
         </div>
 
-        {/* Metadata row */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: mobile ? 8 : 16,
-            fontSize: 12,
-            color: B.muted,
-          }}
-        >
-          <span>
-            Confidence: <strong style={{ color: B.navy }}>High</strong>
-          </span>
-          <span style={{ color: B.light }}>&middot;</span>
-          <span>
-            Durability: <strong style={{ color: B.navy }}>Durable</strong>
-          </span>
-          <span style={{ color: B.light }}>&middot;</span>
-          <span>
-            Structure: <strong style={{ color: B.navy }}>42/60</strong>
-          </span>
-          <span style={{ color: B.light }}>&middot;</span>
-          <span>
-            Stability: <strong style={{ color: B.navy }}>29/40</strong>
-          </span>
+        {/* Profile row */}
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.12)", marginBottom: 12 }}>
+          {[["Prepared for", "Sample Professional Services"], ["Industry", "Professional Services"], ["Date Issued", "2026-03-22"], ["Record ID", "a1b2c3d4"]].map(([l, v]) => (
+            <div key={l}>
+              <div style={{ fontSize: 10, color: B.light }}>{l}</div>
+              <div style={{ fontSize: 11, fontWeight: 500, color: B.navy }}>{v}</div>
+            </div>
+          ))}
         </div>
 
-        <CardFooter left="Your Score · Page 1" right="Model RP-2.0" />
+        <p style={{ fontSize: 10, color: B.light, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
+          The Income Stability Score is a present-state assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
+        </p>
+
+        <CardFooter left="Your Score · Page 1" right="Model RP-2.0 · runpayway.com/methodology" />
       </ReportCard>
     </section>
   );
 }
 
 /* ================================================================== */
-/* PAGE 2: WHY THIS SCORE — ~65% REVEALED                             */
+/* PAGE 2: WHAT THIS SCORE MEANS                                       */
 /* ================================================================== */
 function Page2WhyThisScore() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const drivers = [
-    { label: "Income that continues without daily work", level: "Moderate", pct: 45, color: B.bandDeveloping },
-    { label: "Income secured ahead of time", level: "Low", pct: 18, color: B.bandLimited },
-    { label: "Number of income sources", level: "Moderate", pct: 50, color: B.bandDeveloping },
-    { label: "Dependence on Work", level: "High", pct: 75, color: B.bandLimited },
-    { label: "Dependence on One Source", level: "Moderate", pct: 50, color: B.bandDeveloping },
-  ];
-
-  const constraints = [
-    { rank: "PRIMARY", text: "Too little income secured ahead" },
-    { rank: "SECONDARY", text: "Too much dependence on active work" },
-    { rank: "CONTRIBUTING", text: "Income does not continue long enough" },
-  ];
-
-  const improvements = [
-    { change: "+15 forward secured %", pts: "+8 pts", best: true },
-    { change: "\u221215 labor dependence %", pts: "+5 pts", best: false },
-    { change: "+15 income persistence %", pts: "+3 pts", best: false },
-  ];
-
   return (
-    <section
-      ref={ref}
-      aria-label="Page 2 — What This Score Means"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? 48 : 0,
-        paddingBottom: mobile ? 48 : 64,
-        paddingLeft: mobile ? 16 : 24,
-        paddingRight: mobile ? 16 : 24,
-      }}
-    >
-      <SectionLabel label="PAGE 2 — WHY THIS SCORE?" />
+    <section ref={ref} aria-label="Page 2 — What This Score Means" style={{ backgroundColor: B.sand, paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+      <SectionLabel label="PAGE 2 — WHAT DOES IT MEAN?" />
       <ReportCard visible={visible} mobile={mobile} delay={100}>
-        <h2
-          style={{
-            fontSize: 22,
-            fontFamily: DISPLAY_FONT,
-            fontWeight: 400,
-            color: B.navy,
-            marginBottom: 24,
-            marginTop: 8,
-          }}
-        >
-          What This Score Means
-        </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
+          <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
+        </div>
 
-        {/* Driver bars — fully visible */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1.4fr 1fr",
-            gap: mobile ? 28 : 32,
-            marginBottom: 28,
-          }}
-        >
-          {/* LEFT: drivers */}
+        <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 10 }}>What This Score Means</h2>
+        <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 24 }}>
+          Sample Professional Services scored 78 out of 100. This is a strong score. The structure already has substantial protection, with only limited weaknesses remaining.
+        </p>
+
+        {/* What is already working */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT IS ALREADY WORKING</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
           <div>
-            {drivers.map((d, i) => (
-              <div
-                key={d.label}
-                style={{ marginBottom: i < drivers.length - 1 ? 18 : 0 }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "baseline",
-                    marginBottom: 6,
-                  }}
-                >
-                  <span
-                    style={{ fontSize: 13, fontWeight: 600, color: B.navy }}
-                  >
-                    {d.label}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      fontWeight: 600,
-                      color: d.color,
-                    }}
-                  >
-                    {d.level}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    height: 7,
-                    borderRadius: 4,
-                    backgroundColor: "rgba(14,26,43,0.06)",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      height: "100%",
-                      borderRadius: 4,
-                      backgroundColor: d.color,
-                      width: visible ? `${d.pct}%` : "0%",
-                      transition: `width 0.8s ease-out ${200 + i * 100}ms`,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>The structure is already strong</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.6 }}>Protection is already substantial. The focus is refinement rather than repair.</p>
           </div>
-
-          {/* RIGHT: Constraint Hierarchy — fully visible */}
-          <div
-            style={{
-              backgroundColor: B.sand,
-              borderRadius: 12,
-              padding: mobile ? 16 : 20,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: B.teal,
-                marginBottom: 16,
-              }}
-            >
-              CONSTRAINT HIERARCHY
-            </div>
-            {constraints.map((c, i) => (
-              <div
-                key={c.rank}
-                style={{
-                  marginBottom: i < constraints.length - 1 ? 14 : 0,
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    color:
-                      c.rank === "PRIMARY"
-                        ? B.bandLimited
-                        : c.rank === "SECONDARY"
-                          ? B.bandDeveloping
-                          : B.light,
-                    marginBottom: 3,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {c.rank}
-                </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: B.navy,
-                    fontWeight: 500,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {c.text}
-                </div>
-              </div>
-            ))}
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Some income would continue even if active work stopped</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.6 }}>38% of your income would likely keep coming in if active work stopped today.</p>
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>The opportunity is refinement, not rebuilding</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.6 }}>The foundation is working. The next gains come from strengthening what is already in place.</p>
           </div>
         </div>
 
-        {/* Divider */}
-        <div
-          style={{
-            height: 1,
-            background: "rgba(14,26,43,0.06)",
-            margin: "4px 0 24px",
-          }}
-        />
+        <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.12)", margin: "0 0 20px" }} />
 
-        {/* Sensitivity ranking — FADED: first item visible, rest hidden */}
-        <FadeOverlay
-          overlayText="Full sensitivity analysis included in your report"
-          backgroundColor="#ffffff"
-          fadeHeight={180}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              fontWeight: 600,
-              color: B.navy,
-              marginBottom: 14,
-            }}
-          >
-            Which changes help most
+        {/* What is still vulnerable */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT IS STILL VULNERABLE</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>More income needs to be secured ahead of time</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.6 }}>The next gains will come from having more income already committed before the month begins.</p>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr",
-              gap: 10,
-            }}
-          >
-            {improvements.map((imp, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: "10px 14px",
-                  backgroundColor: B.sand,
-                  borderRadius: 8,
-                  border: imp.best
-                    ? "1px solid rgba(22,163,74,0.2)"
-                    : "1px solid rgba(14,26,43,0.06)",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: B.light,
-                    flexShrink: 0,
-                  }}
-                >
-                  {i + 1}.
-                </span>
-                <div>
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: B.navy,
-                      fontWeight: 500,
-                      marginBottom: 2,
-                    }}
-                  >
-                    {imp.change}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <span
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 600,
-                        color: B.bandHigh,
-                      }}
-                    >
-                      {imp.pts}
-                    </span>
-                    {imp.best && (
-                      <span
-                        style={{
-                          fontSize: 9,
-                          fontWeight: 600,
-                          letterSpacing: "0.06em",
-                          color: "#ffffff",
-                          backgroundColor: B.bandHigh,
-                          padding: "2px 6px",
-                          borderRadius: 4,
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        BEST
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Too much still depends on one source</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.6 }}>If the largest income source disappeared, the score would likely fall from 78 to 56. That is still too large a drop.</p>
           </div>
-        </FadeOverlay>
+        </div>
 
-        <CardFooter left="What This Score Means · Page 2" right="Model RP-2.0" />
+        <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.12)", margin: "0 0 20px" }} />
+
+        {/* Interpretation */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>PLAIN-ENGLISH INTERPRETATION</div>
+        <p style={{ fontSize: 12, color: B.navy, lineHeight: 1.65, marginBottom: 20 }}>
+          This is a strong score. The structure is already well-protected. The next gains come from preserving continuity, reducing residual risk, and maintaining strength over time.
+        </p>
+
+        {/* Bottom line */}
+        <div style={{ backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "12px 16px" }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>BOTTOM LINE</div>
+          <p style={{ fontSize: 12, color: B.navy, margin: 0, fontWeight: 500 }}>
+            Sample Professional Services is strong. The next gains come from preserving resilience and reducing remaining weak points.
+          </p>
+        </div>
+
+        <CardFooter left="What This Score Means · Page 2" right="Model RP-2.0 · runpayway.com/methodology" />
       </ReportCard>
     </section>
   );
 }
 
 /* ================================================================== */
-/* PAGE 3: WHAT COULD GO WRONG — ~40% REVEALED                        */
+/* PAGE 3: YOUR BIGGEST RISKS                                          */
 /* ================================================================== */
 function Page3WhatCouldGoWrong() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const scenarios = [
-    {
-      severity: "SIGNIFICANT",
-      title: "Largest Source Removed",
-      from: 78,
-      to: 56,
-      diff: -22,
-      bandDrop: null,
-    },
-    {
-      severity: "BAND DROP",
-      title: "Active Labor Interrupted",
-      from: 78,
-      to: 34,
-      diff: -44,
-      bandDrop: "Limited Stability",
-    },
-    {
-      severity: "MODERATE",
-      title: "Forward Commitments Delayed",
-      from: 78,
-      to: 65,
-      diff: -13,
-      bandDrop: null,
-    },
-  ];
-
-  const structureMix = [
-    { label: "Active", pct: 62, color: B.navy },
-    { label: "Recurring", pct: 25, color: B.teal },
-    { label: "Built-In", pct: 13, color: B.purple },
-  ];
-
   return (
-    <section
-      ref={ref}
-      aria-label="Page 3 — Your Biggest Risks"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? 48 : 0,
-        paddingBottom: mobile ? 48 : 64,
-        paddingLeft: mobile ? 16 : 24,
-        paddingRight: mobile ? 16 : 24,
-      }}
-    >
-      <SectionLabel label="PAGE 3 — WHAT COULD GO WRONG?" />
+    <section ref={ref} aria-label="Page 3 — Your Biggest Risks" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+      <SectionLabel label="PAGE 3 — WHAT COULD HURT IT?" />
       <ReportCard visible={visible} mobile={mobile} delay={100}>
-        <h2
-          style={{
-            fontSize: 22,
-            fontFamily: DISPLAY_FONT,
-            fontWeight: 400,
-            color: B.navy,
-            marginBottom: 24,
-            marginTop: 8,
-          }}
-        >
-          Your Biggest Risks
-        </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
+          <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
+        </div>
 
-        {/* Two summary cards — VISIBLE */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: 12,
-            marginBottom: 24,
-          }}
-        >
-          <div
-            style={{
-              padding: "18px 20px",
-              backgroundColor: B.sand,
-              borderRadius: 12,
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: B.light,
-                marginBottom: 10,
-              }}
-            >
-              STRESS TEST
+        <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 10 }}>Your Biggest Risks</h2>
+        <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 20 }}>
+          This page shows the main risks that could still weaken your income, even from a position of strength.
+        </p>
+
+        {/* Two cards */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 3, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>IF YOUR LARGEST INCOME SOURCE DISAPPEARED</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 24, fontWeight: 600, color: B.navy }}>78</span>
+              <span style={{ fontSize: 14, color: B.light }}>{"\u2192"}</span>
+              <span style={{ fontSize: 24, fontWeight: 600, color: B.bandLimited }}>56</span>
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "center",
-                gap: 8,
-              }}
-            >
-              <span style={{ fontSize: 32, fontWeight: 600, color: B.navy }}>
-                78
-              </span>
-              <span style={{ fontSize: 18, color: B.light }}>&rarr;</span>
-              <span
-                style={{
-                  fontSize: 32,
-                  fontWeight: 600,
-                  color: B.bandLimited,
-                }}
-              >
-                56
-              </span>
-            </div>
+            <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>If the largest source disappeared, the score would drop sharply. Too much still depends on one source.</p>
           </div>
-          <div
-            style={{
-              padding: "18px 20px",
-              backgroundColor: B.sand,
-              borderRadius: 12,
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-                color: B.light,
-                marginBottom: 10,
-              }}
-            >
-              RECURRING INCOME WINDOW
-            </div>
-            <div style={{ fontSize: 32, fontWeight: 600, color: B.navy }}>
-              4{" "}
-              <span style={{ fontSize: 16, fontWeight: 500, color: B.muted }}>
-                months
-              </span>
-            </div>
+          <div style={{ flex: 2, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>HOW LONG INCOME WOULD CONTINUE IF WORK STOPPED</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Estimated: 8.2 months</div>
+            <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>A meaningful level of continuity. Longer is better.</p>
           </div>
         </div>
 
-        {/* BELOW: scenarios, income mix, peer comparison — FADED */}
-        <FadeOverlay
-          overlayText="See your full risk exposure and peer comparison"
-          backgroundColor="#ffffff"
-          fadeHeight={320}
-        >
-          {/* Scenario rows */}
-          <div style={{ marginBottom: 24 }}>
-            {scenarios.map((s, i) => (
-              <div
-                key={s.title}
-                style={{
-                  display: "flex",
-                  alignItems: mobile ? "flex-start" : "center",
-                  flexDirection: mobile ? "column" : "row",
-                  gap: mobile ? 6 : 16,
-                  padding: "14px 16px",
-                  backgroundColor: i % 2 === 0 ? B.sand : "transparent",
-                  borderRadius: 8,
-                  marginBottom: 4,
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: 9,
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color:
-                      s.severity === "BAND DROP"
-                        ? B.bandLimited
-                        : s.severity === "SIGNIFICANT"
-                          ? B.bandDeveloping
-                          : B.muted,
-                    minWidth: mobile ? "auto" : 90,
-                    flexShrink: 0,
-                  }}
-                >
-                  {s.severity}
-                </span>
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: B.navy,
-                    flex: 1,
-                  }}
-                >
-                  {s.title}
-                </span>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    flexShrink: 0,
-                  }}
-                >
-                  <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>
-                    {s.from}
-                  </span>
-                  <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: B.bandLimited,
-                    }}
-                  >
-                    {s.to}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      color: B.bandLimited,
-                      fontWeight: 600,
-                    }}
-                  >
-                    ({s.diff})
-                  </span>
-                  {s.bandDrop && (
-                    <span
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 600,
-                        color: "#ffffff",
-                        backgroundColor: B.bandLimited,
-                        padding: "2px 8px",
-                        borderRadius: 4,
-                        marginLeft: 4,
-                      }}
-                    >
-                      {s.bandDrop}
-                    </span>
-                  )}
-                </div>
+        {/* Scenarios */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
+        {[
+          { severity: "HIGH", title: "You are unable to work for an extended period", body: "This would meaningfully weaken the current level of protection.", score: "78 \u2192 62" },
+          { severity: "MODERATE", title: "An income channel you rely on changes its terms", body: "This would noticeably reduce the structure's current protection.", score: "78 \u2192 70" },
+          { severity: "MODERATE", title: "You lose a key client or contract", body: "This would noticeably reduce the structure's current protection.", score: "78 \u2192 72" },
+        ].map((s) => (
+          <div key={s.title} style={{ padding: "10px 0", borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 10, fontWeight: 600, color: s.severity === "HIGH" ? B.bandDeveloping : B.muted, minWidth: 60 }}>{s.severity}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>{s.title}</span>
               </div>
-            ))}
+              <span style={{ fontSize: 11, color: B.navy, flexShrink: 0 }}>{s.score}</span>
+            </div>
+            <div style={{ paddingLeft: 70 }}>
+              <p style={{ fontSize: 11, color: B.muted, margin: 0 }}>{s.body}</p>
+            </div>
           </div>
+        ))}
 
-          {/* Income Structure Mix */}
-          <div
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: B.navy,
-              marginBottom: 10,
-            }}
-          >
-            Income Structure Mix
+        {/* Income mix */}
+        <div style={{ marginTop: 20 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>HOW THE INCOME IS CURRENTLY BUILT</div>
+          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
+            <div style={{ width: "42%", backgroundColor: B.navy, borderRadius: 1 }} />
+            <div style={{ width: "28%", backgroundColor: B.light, borderRadius: 1 }} />
+            <div style={{ width: "30%", backgroundColor: B.teal, borderRadius: 1 }} />
           </div>
-          <div
-            style={{
-              display: "flex",
-              borderRadius: 6,
-              overflow: "hidden",
-              height: 10,
-              marginBottom: 8,
-            }}
-          >
-            {structureMix.map((s) => (
-              <div
-                key={s.label}
-                style={{ flex: s.pct, backgroundColor: s.color }}
-              />
-            ))}
+          <div style={{ display: "flex", gap: 16, fontSize: 11 }}>
+            <span><span style={{ display: "inline-block", width: 8, height: 8, backgroundColor: B.navy, borderRadius: 1, marginRight: 6 }} />Earned through active work — 42%</span>
+            <span><span style={{ display: "inline-block", width: 8, height: 8, backgroundColor: B.light, borderRadius: 1, marginRight: 6 }} />Repeatable income — 28%</span>
+            <span><span style={{ display: "inline-block", width: 8, height: 8, backgroundColor: B.teal, borderRadius: 1, marginRight: 6 }} />Continues without daily work — 30%</span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              gap: 16,
-              flexWrap: "wrap",
-              marginBottom: 24,
-            }}
-          >
-            {structureMix.map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontSize: 11,
-                  color: B.muted,
-                }}
-              >
-                <span
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: 2,
-                    backgroundColor: s.color,
-                    flexShrink: 0,
-                  }}
-                />
-                {s.label} {s.pct}%
-              </div>
-            ))}
-          </div>
+        </div>
 
-          {/* Peer comparison bar */}
-          <div
-            style={{
-              fontSize: 12,
-              fontWeight: 600,
-              color: B.navy,
-              marginBottom: 10,
-            }}
-          >
-            Peer Comparison — Professional Services
-          </div>
-          <div
-            style={{
-              display: "flex",
-              borderRadius: 6,
-              overflow: "hidden",
-              height: 10,
-              marginBottom: 8,
-            }}
-          >
-            <div
-              style={{ flex: 12, backgroundColor: B.bandLimited, opacity: 0.6 }}
-            />
-            <div
-              style={{ flex: 22, backgroundColor: B.bandDeveloping, opacity: 0.6 }}
-            />
-            <div
-              style={{ flex: 38, backgroundColor: B.bandEstablished, opacity: 0.6 }}
-            />
-            <div
-              style={{ flex: 28, backgroundColor: B.bandHigh, opacity: 0.8 }}
-            />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: 10,
-              color: B.light,
-            }}
-          >
-            <span>Limited (12%)</span>
-            <span>Developing (22%)</span>
-            <span>Established (38%)</span>
-            <span>High (28%)</span>
-          </div>
-        </FadeOverlay>
-
-        <CardFooter left="Your Biggest Risks · Page 3" right="Model RP-2.0" />
+        <CardFooter left="Your Biggest Risks · Page 3" right="Model RP-2.0 · runpayway.com/methodology" />
       </ReportCard>
     </section>
   );
 }
 
 /* ================================================================== */
-/* PAGE 4: HOW TO IMPROVE — ~20% REVEALED                             */
+/* PAGE 4: HOW TO RAISE YOUR SCORE                                     */
 /* ================================================================== */
 function Page4HowToImprove() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   return (
-    <section
-      ref={ref}
-      aria-label="Page 4 — How to Raise Your Score"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? 48 : 0,
-        paddingBottom: mobile ? 48 : 64,
-        paddingLeft: mobile ? 16 : 24,
-        paddingRight: mobile ? 16 : 24,
-      }}
-    >
-      <SectionLabel label="PAGE 4 — HOW TO IMPROVE?" />
+    <section ref={ref} aria-label="Page 4 — How to Raise Your Score" style={{ backgroundColor: B.sand, paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+      <SectionLabel label="PAGE 4 — HOW CAN I IMPROVE IT?" />
       <ReportCard visible={visible} mobile={mobile} delay={100}>
-        <h2
-          style={{
-            fontSize: 22,
-            fontFamily: DISPLAY_FONT,
-            fontWeight: 400,
-            color: B.navy,
-            marginBottom: 24,
-            marginTop: 8,
-          }}
-        >
-          How to Raise Your Score
-        </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
+          <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
+        </div>
 
-        {/* First line — VISIBLE */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: mobile ? "flex-start" : "center",
-            flexDirection: mobile ? "column" : "row",
-            gap: mobile ? 6 : 16,
-            padding: "12px 16px",
-            backgroundColor: B.sand,
-            borderRadius: 8,
-            marginBottom: 4,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 10,
-              fontWeight: 600,
-              color: B.light,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              minWidth: mobile ? "auto" : 60,
-              flexShrink: 0,
-            }}
-          >
-            Option 1
-          </span>
-          <span
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: B.navy,
-              flex: 1,
-            }}
-          >
-            Lock in income ahead of time
-          </span>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              flexShrink: 0,
-            }}
-          >
-            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>
-              78
-            </span>
-            <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-            <span
-              style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}
-            >
-              86
-            </span>
-            <span
-              style={{ fontSize: 11, fontWeight: 600, color: B.bandHigh }}
-            >
-              (+8)
-            </span>
+        <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 10 }}>How to Raise Your Score</h2>
+        <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 20 }}>
+          The fastest way to raise this score is not just to work more. It is to improve how the income is structured — with more income secured ahead of time, less dependence on one source, and more income that continues without daily effort.
+        </p>
+
+        {/* Band boxes */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 1, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandHigh}`, borderRadius: 4, padding: "12px 16px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>CURRENT BAND</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.bandHigh }}>High Stability | 78</div>
+            <p style={{ fontSize: 10, color: B.muted, margin: "6px 0 0" }}>The structure is strong, with only limited areas left to refine.</p>
+          </div>
+          <div style={{ flex: 1, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandHigh}`, borderRadius: 4, padding: "12px 16px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>NEXT TARGET</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>Maintain Current</div>
+            <p style={{ fontSize: 10, color: B.muted, margin: "6px 0 0" }}>The focus now is not a new band. It is preserving strength and reducing remaining weak points.</p>
           </div>
         </div>
 
-        {/* Everything else — BLURRED */}
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              filter: "blur(6px)",
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
-          >
-            {/* Option 2 */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: mobile ? "flex-start" : "center",
-                flexDirection: mobile ? "column" : "row",
-                gap: mobile ? 6 : 16,
-                padding: "12px 16px",
-                borderRadius: 8,
-                marginBottom: 4,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  color: B.light,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  minWidth: mobile ? "auto" : 60,
-                  flexShrink: 0,
-                }}
-              >
-                Option 2
-              </span>
-              <span
-                style={{ fontSize: 13, fontWeight: 600, color: B.navy, flex: 1 }}
-              >
-                Reduce Labor Dependence
-              </span>
+        {/* Improvement rows */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
+        <p style={{ fontSize: 11, color: B.muted, marginBottom: 12 }}>These are the changes that would likely raise your score the most.</p>
+        {[
+          { num: "1", title: "Secure more income before next month begins", lift: "+8 points", result: "\u2192 86" },
+          { num: "2", title: "Reduce reliance on the largest source", lift: "+5 points", result: "\u2192 83" },
+          { num: "3", title: "Build more repeatable income", lift: "+3 points", result: "\u2192 81" },
+        ].map((r) => (
+          <div key={r.num} style={{ padding: "10px 0", borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 16, fontWeight: 600, color: B.purple, minWidth: 20 }}>{r.num}</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>{r.title}</span>
+              </div>
               <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>78</span>
-                <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}>83</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.bandHigh }}>(+5)</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>{r.lift}</span>
+                <span style={{ fontSize: 10, color: B.muted }}>{r.result}</span>
               </div>
             </div>
+          </div>
+        ))}
+        <p style={{ fontSize: 11, color: B.muted, marginTop: 10, fontStyle: "italic" }}>These changes would further strengthen an already strong structure.</p>
 
-            {/* Option 3 */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: mobile ? "flex-start" : "center",
-                flexDirection: mobile ? "column" : "row",
-                gap: mobile ? 6 : 16,
-                padding: "12px 16px",
-                backgroundColor: B.sand,
-                borderRadius: 8,
-                marginBottom: 4,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  color: B.light,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  minWidth: mobile ? "auto" : 60,
-                  flexShrink: 0,
-                }}
-              >
-                Option 3
-              </span>
-              <span
-                style={{ fontSize: 13, fontWeight: 600, color: B.navy, flex: 1 }}
-              >
-                Increase Persistent Revenue
-              </span>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>78</span>
-                <span style={{ fontSize: 12, color: B.light }}>&rarr;</span>
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.bandHigh }}>81</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.bandHigh }}>(+3)</span>
+        {/* Priorities */}
+        <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 14 }}>
+          {[
+            { rank: "Priority 1", title: "Secure more income ahead of time", body: "Lock in income before each month begins \u2014 retainers, multi-month agreements, advance bookings, or recurring contracts." },
+            { rank: "Priority 2", title: "Reduce reliance on the largest source", body: "Add or strengthen dependable secondary sources so the structure is not overexposed to one client or channel." },
+            { rank: "Priority 3", title: "Build more repeatable income", body: "Convert one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
+          ].map((p) => (
+            <div key={p.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <span style={{ fontSize: 10, fontWeight: 600, color: B.purple, minWidth: 56, paddingTop: 2 }}>{p.rank}</span>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 3 }}>{p.title}</div>
+                <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>{p.body}</p>
               </div>
             </div>
-
-            {/* Combined score */}
-            <div
-              style={{
-                textAlign: "center",
-                padding: "16px 20px",
-                backgroundColor: "rgba(75,63,174,0.04)",
-                borderRadius: 10,
-                marginBottom: 28,
-                border: "1px solid rgba(75,63,174,0.08)",
-                marginTop: 20,
-              }}
-            >
-              <span style={{ fontSize: 13, color: B.muted }}>Combined: </span>
-              <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>
-                Score would reach{" "}
-              </span>
-              <span style={{ fontSize: 20, fontWeight: 600, color: B.purple }}>91</span>
-              <span style={{ fontSize: 13, fontWeight: 600, color: B.bandHigh }}>
-                {" "}(+13 points)
-              </span>
-            </div>
-
-            {/* Divider */}
-            <div
-              style={{
-                height: 1,
-                background: "rgba(14,26,43,0.06)",
-                marginBottom: 24,
-              }}
-            />
-
-            {/* 3 priority actions */}
-            <div style={{ marginBottom: 24 }}>
-              {[
-                { rank: 1, title: "Extend forward commitments", desc: "Create more income already committed before the month begins." },
-                { rank: 2, title: "Reduce dependence on active work", desc: "Build income that continues without daily effort." },
-                { rank: 3, title: "Strengthen recurring base", desc: "Convert one-time work into repeating revenue." },
-              ].map((p, i) => (
-                <div
-                  key={p.rank}
-                  style={{
-                    display: "flex",
-                    gap: 14,
-                    alignItems: "flex-start",
-                    marginBottom: i < 2 ? 18 : 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 26,
-                      height: 26,
-                      borderRadius: "50%",
-                      backgroundColor: "rgba(75,63,174,0.08)",
-                      color: B.purple,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                      marginTop: 1,
-                    }}
-                  >
-                    {p.rank}
-                  </div>
-                  <div>
-                    <div
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 600,
-                        color: B.navy,
-                        marginBottom: 3,
-                      }}
-                    >
-                      {p.title}
-                    </div>
-                    <div
-                      style={{ fontSize: 13, color: B.muted, lineHeight: 1.5 }}
-                    >
-                      {p.desc}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Overlay on blurred area */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <p
-                style={{
-                  fontSize: 15,
-                  color: B.navy,
-                  fontWeight: 500,
-                  marginBottom: 8,
-                }}
-              >
-                Your improvement path is waiting
-              </p>
-              <a
-                href={STRIPE_SINGLE}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontSize: 14,
-                  color: B.purple,
-                  fontWeight: 600,
-                  textDecoration: "underline",
-                }}
-              >
-                Get my report &rarr;
-              </a>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <CardFooter left="How to Raise Your Score · Page 4" right="Model RP-2.0" />
+        <CardFooter left="How to Raise Your Score · Page 4" right="Model RP-2.0 · runpayway.com/methodology" />
       </ReportCard>
     </section>
   );
 }
 
 /* ================================================================== */
-/* PAGE 5: WHAT TO DO NEXT — ~5% REVEALED (LOCKED)                     */
+/* PAGE 5: WHAT TO DO NEXT                                             */
 /* ================================================================== */
 function Page5WhatToDoNext() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-  const [hovered, setHovered] = useState(false);
 
   return (
-    <section
-      ref={ref}
-      aria-label="Page 5 — What to Do Next"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? 48 : 0,
-        paddingBottom: mobile ? 48 : 64,
-        paddingLeft: mobile ? 16 : 24,
-        paddingRight: mobile ? 16 : 24,
-      }}
-    >
-      <SectionLabel label="PAGE 5 — WHAT TO DO NEXT?" />
+    <section ref={ref} aria-label="Page 5 — What to Do Next" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+      <SectionLabel label="PAGE 5 — WHAT SHOULD I DO NEXT?" />
       <ReportCard visible={visible} mobile={mobile} delay={100}>
-        {/* Title — visible but dimmed */}
-        <h2
-          style={{
-            fontSize: 22,
-            fontFamily: DISPLAY_FONT,
-            fontWeight: 400,
-            color: B.navy,
-            marginBottom: 24,
-            marginTop: 8,
-            opacity: 0.5,
-          }}
-        >
-          What to Do Next
-        </h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
+          <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
+        </div>
 
-        {/* ALL content — heavily blurred */}
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              filter: "blur(8px)",
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
-          >
-            {/* Main takeaway */}
-            <div
-              style={{
-                borderLeft: `3px solid ${B.teal}`,
-                padding: "14px 18px",
-                backgroundColor: "rgba(31,109,122,0.04)",
-                borderRadius: "0 8px 8px 0",
-                marginBottom: 24,
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 14,
-                  color: B.navy,
-                  lineHeight: 1.6,
-                  margin: 0,
-                  fontWeight: 500,
-                }}
-              >
-                Your income scores in the High Stability band, but forward
-                visibility is the clear structural gap. Addressing it first
-                creates the largest improvement per effort.
-              </p>
-            </div>
+        <h2 style={{ fontSize: 22, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 10 }}>What to Do Next</h2>
+        <p style={{ fontSize: 12, color: B.muted, lineHeight: 1.65, marginBottom: 20 }}>
+          The priority now is to preserve strength, reduce residual vulnerabilities, and maintain continuity over time.
+        </p>
 
-            {/* Do / Avoid side by side */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-                gap: 16,
-                marginBottom: 28,
-              }}
-            >
-              <div
-                style={{
-                  padding: "16px 18px",
-                  backgroundColor: "rgba(22,163,74,0.04)",
-                  borderRadius: 10,
-                  border: "1px solid rgba(22,163,74,0.08)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: B.bandHigh,
-                    marginBottom: 12,
-                  }}
-                >
-                  DO
-                </div>
-                {[
-                  "Extend at least one client engagement into a forward commitment.",
-                  "Diversify income so no single source exceeds 40% of total.",
-                  "Introduce a recurring revenue component that pays monthly.",
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      marginBottom: i < 2 ? 10 : 0,
-                      fontSize: 13,
-                      color: B.navy,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    <span style={{ fontWeight: 600, color: B.bandHigh, flexShrink: 0 }}>
-                      {i + 1}.
-                    </span>
-                    <span>{item}</span>
-                  </div>
-                ))}
+        {/* Two columns */}
+        <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 8 }}>What to do next</div>
+            {["Lock in at least one income source committed for more than one month", "Reduce how much the structure depends on the single largest source", "Build more income that repeats or continues without daily work", "Know more of next month\u2019s income before the month begins", "Reassess only after these changes are actually live"].map((item, i) => (
+              <div key={i} style={{ fontSize: 11, color: B.navy, display: "flex", gap: 8, marginBottom: 5 }}>
+                <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{item}
               </div>
-
-              <div
-                style={{
-                  padding: "16px 18px",
-                  backgroundColor: "rgba(220,38,38,0.03)",
-                  borderRadius: 10,
-                  border: "1px solid rgba(220,38,38,0.08)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    color: B.bandLimited,
-                    marginBottom: 12,
-                  }}
-                >
-                  AVOID
-                </div>
-                {[
-                  "Taking on more project work without structural terms.",
-                  "Relying on a single client for majority of income.",
-                  "Deferring changes until income disruption occurs.",
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      marginBottom: i < 2 ? 10 : 0,
-                      fontSize: 13,
-                      color: B.navy,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    <span style={{ fontWeight: 600, color: B.bandLimited, flexShrink: 0 }}>
-                      &mdash;
-                    </span>
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 90-Day Checklist */}
-            <div
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: B.navy,
-                marginBottom: 14,
-              }}
-            >
-              90-Day Checklist
-            </div>
-            <div
-              style={{
-                padding: "16px 18px",
-                backgroundColor: B.sand,
-                borderRadius: 10,
-                marginBottom: 24,
-              }}
-            >
-              {[
-                "Create one forward-committed revenue arrangement",
-                "Reduce dependence on the single largest source",
-                "Add one recurring income component",
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    marginBottom: i < 2 ? 12 : 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: "50%",
-                      border: `2px solid ${B.border}`,
-                      flexShrink: 0,
-                    }}
-                  />
-                  <span style={{ fontSize: 13, color: B.navy, lineHeight: 1.4 }}>
-                    {item}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* Reassessment + verification */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-                gap: 12,
-              }}
-            >
-              <div
-                style={{
-                  padding: "16px 18px",
-                  backgroundColor: "rgba(75,63,174,0.04)",
-                  borderRadius: 10,
-                  border: "1px solid rgba(75,63,174,0.08)",
-                }}
-              >
-                <div style={{ fontSize: 18, fontWeight: 600, color: B.navy }}>
-                  Reassess in 92 days
-                </div>
-              </div>
-              <div
-                style={{
-                  padding: "16px 18px",
-                  backgroundColor: B.sand,
-                  borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.06)",
-                }}
-              >
-                <div style={{ fontSize: 12, color: B.muted }}>
-                  Record ID: RPW-2026-SAMPLE
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Large centered overlay */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <p
-              style={{
-                fontSize: 18,
-                color: B.navy,
-                fontWeight: 600,
-                marginBottom: 20,
-              }}
-            >
-              Your personalized action plan
-            </p>
-            <a
-              href={STRIPE_SINGLE}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={() => canHover() && setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 48,
-                paddingLeft: 32,
-                paddingRight: 32,
-                borderRadius: 12,
-                backgroundColor: B.sandDk,
-                color: B.navy,
-                fontSize: 15,
-                fontWeight: 600,
-                letterSpacing: "0.01em",
-                textDecoration: "none",
-                border: "1px solid rgba(14,26,43,0.08)",
-                boxShadow: hovered
-                  ? "0 6px 20px rgba(14,26,43,0.10)"
-                  : "0 2px 8px rgba(14,26,43,0.06)",
-                transform: hovered ? "translateY(-1px)" : "translateY(0)",
-                transition: "box-shadow 260ms ease, transform 260ms ease",
-              }}
-            >
-              Get My Income Stability Score&trade; &mdash; $39
-            </a>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 8 }}>What not to prioritize yet</div>
+            {["Working more without improving the structure underneath it", "Short bursts of output that do not improve durability", "Temporary spikes that disappear when work stops"].map((item) => (
+              <div key={item} style={{ fontSize: 11, color: B.muted, display: "flex", gap: 8, marginBottom: 5 }}>
+                <span style={{ color: B.light }}>{"\u2014"}</span>{item}
+              </div>
+            ))}
           </div>
         </div>
 
-        <CardFooter left="What to Do Next · Page 5" right="Model RP-2.0" />
+        {/* 90-day plan */}
+        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>YOUR 90-DAY ACTION PLAN</div>
+        {["Create one offer or agreement that secures income ahead for more than one month.", "Identify the largest source and reduce how much the structure depends on it.", "Add one income stream that repeats or continues without daily work.", "Know more of next month\u2019s income before the month begins.", "Reassess only after the changes are active and producing real improvement."].map((item, i) => (
+          <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
+            <div style={{ width: 14, height: 14, borderRadius: "50%", border: "1.5px solid rgba(14,26,43,0.12)", flexShrink: 0, marginTop: 1 }} />
+            <span style={{ fontSize: 11, color: B.navy }}>{item}</span>
+          </div>
+        ))}
+
+        {/* Bottom cards */}
+        <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+          <div style={{ flex: 1, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>WHEN TO REASSESS</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>2026-09-22</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, marginBottom: 4 }}>183 days from now</div>
+            <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Reassess after real improvement is in place, not after a short-term spike.</p>
+          </div>
+          <div style={{ flex: 1, backgroundColor: B.sand, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>HOW YOU COMPARE</div>
+            <div style={{ fontSize: 11, color: B.navy }}>Peer average: <strong>52</strong></div>
+            <div style={{ fontSize: 11, color: B.navy }}>Top 20% threshold: <strong>72</strong></div>
+            <div style={{ fontSize: 11, color: B.navy }}>Your percentile: <strong style={{ color: B.purple }}>72nd</strong></div>
+            <p style={{ fontSize: 10, color: B.muted, margin: "6px 0 0", fontStyle: "italic" }}>This score is above both the peer average and the top 20% benchmark. The focus now is maintaining this position.</p>
+          </div>
+        </div>
+
+        <CardFooter left="What to Do Next · Page 5" right="Model RP-2.0 · runpayway.com/methodology" />
       </ReportCard>
     </section>
   );
