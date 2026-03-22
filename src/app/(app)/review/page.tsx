@@ -854,7 +854,7 @@ export default function ReviewPage() {
 
 
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
-          {[["Assessment Title", name], ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
+          {[["Prepared for", name], ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
             <div key={l}>
               <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
               <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
