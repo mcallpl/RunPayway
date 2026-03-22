@@ -91,7 +91,6 @@ const S = {
 
 const STRIPE = {
   single: "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02",
-  annual: "https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03",
 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
@@ -254,7 +253,7 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
         <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>
-          $39
+          $59
         </span>
         <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
       </div>
@@ -333,166 +332,6 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
   );
 }
 
-function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
-  const [hovered, setHovered] = useState(false);
-
-  const features = [
-    "Everything in Single Assessment",
-    "Three full assessments over 12 months",
-    "Track structural changes over time",
-    "See which improvements moved the score",
-    "Includes all Model RP-2.0 updates",
-  ];
-
-  return (
-    <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        position: "relative",
-        background: "#FFFFFF",
-        borderRadius: S.cardRadius,
-        border: "1px solid rgba(75,63,174,0.15)",
-        padding: mobile ? "32px 28px" : "40px",
-        boxShadow: hovered
-          ? "0 20px 48px rgba(75,63,174,0.14), 0 4px 12px rgba(14,26,43,0.04), inset 0 0 0 1px rgba(75,63,174,0.04)"
-          : "0 8px 32px rgba(75,63,174,0.10), 0 2px 8px rgba(14,26,43,0.04), inset 0 0 0 1px rgba(75,63,174,0.04)",
-        transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-4px)"
-            : "translateY(0)"
-          : "translateY(28px)",
-        transitionDelay: `${delay}ms`,
-        display: "flex",
-        flexDirection: "column" as const,
-      }}
-    >
-      {/* Recommended badge */}
-      <div
-        style={{
-          position: "absolute",
-          top: -14,
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "6px 20px",
-          borderRadius: 100,
-          background: B.purple,
-          color: "#FFFFFF",
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase" as const,
-          whiteSpace: "nowrap" as const,
-        }}
-      >
-        Recommended
-      </div>
-
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 600,
-          textTransform: "uppercase" as const,
-          letterSpacing: "0.10em",
-          color: B.teal,
-          marginBottom: 20,
-        }}
-      >
-        Annual Monitoring
-      </div>
-
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>
-          $99
-        </span>
-        <span style={{ fontSize: 14, color: B.muted }}>
-          per year &middot; 3 assessments
-        </span>
-      </div>
-
-      <div style={{ fontSize: 13, color: B.purple, fontWeight: 500, marginTop: 8 }}>
-        Save $18 vs. three single assessments
-      </div>
-
-      <div
-        style={{
-          height: 1,
-          background: "rgba(14,26,43,0.06)",
-          margin: "24px 0",
-        }}
-      />
-
-      <div style={{ flex: 1, marginBottom: 32 }}>
-        {features.map((f) => (
-          <div
-            key={f}
-            style={{
-              display: "flex",
-              gap: 12,
-              alignItems: "flex-start",
-              marginBottom: 14,
-            }}
-          >
-            <div
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                backgroundColor: B.teal,
-                flexShrink: 0,
-                marginTop: 7,
-              }}
-            />
-            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
-              {f}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <a
-        href={STRIPE.annual}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: S.ctaH,
-          borderRadius: S.ctaRadius,
-          background: "linear-gradient(135deg, #4B3FAE 0%, #3A2F8E 100%)",
-          color: "#ffffff",
-          fontSize: 15,
-          fontWeight: 600,
-          textDecoration: "none",
-          letterSpacing: "0.01em",
-          boxShadow: hovered
-            ? "0 12px 28px rgba(75,63,174,0.30)"
-            : "0 4px 16px rgba(75,63,174,0.20)",
-          transition: "box-shadow 260ms ease, transform 200ms ease",
-          transform: hovered ? "translateY(-1px)" : "translateY(0)",
-        }}
-      >
-        Get Annual Plan
-      </a>
-
-      <p
-        style={{
-          fontSize: 12,
-          color: B.light,
-          textAlign: "center",
-          marginTop: 14,
-          marginBottom: 0,
-        }}
-      >
-        Under 2 minutes &middot; No bank connection
-      </p>
-    </div>
-  );
-}
-
 function PricingCards() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
@@ -518,15 +357,11 @@ function PricingCards() {
       >
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: 32,
-            maxWidth: 780,
+            maxWidth: 420,
             margin: "0 auto",
           }}
         >
           <SingleCard visible={visible} mobile={mobile} delay={0} />
-          <AnnualCard visible={visible} mobile={mobile} delay={120} />
         </div>
       </div>
     </section>
@@ -545,31 +380,31 @@ function WhatsIncluded() {
     {
       num: "01",
       title: "Your Score",
-      desc: "Your score, stability band, peer percentile, and the main thing holding the structure back.",
+      desc: "Your score, stability band, peer percentile, and a breakdown showing exactly how your score is calculated.",
       accent: B.purple,
     },
     {
       num: "02",
-      title: "What This Score Means",
-      desc: "What is already working, what is still vulnerable, and a plain-English interpretation.",
+      title: "How Your Income Is Built",
+      desc: "Income structure breakdown, stress test, continuity window, peer comparison with actual numbers, and your biggest weakness.",
       accent: B.teal,
     },
     {
       num: "03",
-      title: "Your Biggest Risks",
-      desc: "What would happen if your largest source disappeared, how long income would continue, and how you compare to peers.",
+      title: "Your Income Deep Dive",
+      desc: "Six structural indicators with scores, fragility classification, confidence level, durability grade, and cross-factor effects.",
       accent: B.purple,
     },
     {
       num: "04",
-      title: "How to Raise Your Score",
-      desc: "The specific changes that would raise your score the most, with prioritized action steps.",
+      title: "Your Biggest Risks",
+      desc: "The specific scenarios that would hurt your score most, ranked by severity with projected score impact.",
       accent: B.teal,
     },
     {
       num: "05",
-      title: "What to Do Next",
-      desc: "A clear action plan, 90-day checklist, when to reassess, and how you compare to the benchmark.",
+      title: "Your Action Plan",
+      desc: "Industry-specific priorities, projected score improvements, an advisor discussion guide, and your reassessment date.",
       accent: B.purple,
     },
   ];
@@ -625,7 +460,7 @@ function WhatsIncluded() {
               marginRight: "auto",
             }}
           >
-            Both plans include the same 5-page report. Nothing is withheld.
+            Every assessment delivers the full 5-page report. Nothing is withheld.
           </p>
         </div>
 
@@ -817,8 +652,8 @@ function Faq() {
 
   const faqs = [
     {
-      q: "What is the difference between Single and Annual?",
-      a: "Single is a one-time assessment. Annual gives you three assessments over 12 months to track structural changes. Both use Model RP-2.0 and produce the same 5-page report.",
+      q: "What do I get for $59?",
+      a: "A full 5-page income stability assessment: your score with breakdown, income structure analysis, six structural indicators, risk scenarios, cross-factor effects, industry-specific action plan, and an advisor discussion guide. All personalized to your industry and income model.",
     },
     {
       q: "Do you need access to my bank accounts?",

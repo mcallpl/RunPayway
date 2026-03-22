@@ -268,6 +268,7 @@ export default function MarketingLayout({
     { href: "/sample-report", label: t.nav.sampleReport },
     { href: "/methodology", label: t.nav.methodology },
     { href: "/pricing", label: t.nav.pricing },
+    { href: "/coming-soon", label: "Coming Soon" },
   ];
 
   const MORE_LINKS = [
@@ -701,6 +702,7 @@ export default function MarketingLayout({
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/verify", label: t.nav.verifyAScore },
                   { href: "/pricing", label: t.nav.pricing },
+                  { href: "/coming-soon", label: "Coming Soon" },
                   { href: "/faq", label: t.nav.faq },
                 ].map((link) => (
                   <Link
