@@ -252,6 +252,19 @@ function Hero() {
           >
             A sample Income Stability Score&#8482; report for a professional services profile scoring 78 out of 100. Your report will be personalized to your name, industry, and income structure.
           </p>
+          <p
+            style={{
+              fontSize: mobile ? 13 : 14,
+              color: "rgba(244,241,234,0.45)",
+              lineHeight: 1.6,
+              maxWidth: 480,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 16,
+            }}
+          >
+            Every report uses your actual numbers &#8212; your continuity percentage, your stress test drop, your peer comparison, your industry benchmarks. No two reports are the same.
+          </p>
         </div>
       </div>
     </section>

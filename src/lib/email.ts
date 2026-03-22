@@ -29,6 +29,7 @@ export interface ReportEmailData {
   primaryConstraintLabel: string;
   bandInterpretationText: string;
   peerPercentileLabel: string;
+  riskScenarioDrop?: number;
 }
 
 /**
@@ -78,9 +79,9 @@ function buildReportEmailHtml(data: ReportEmailData): string {
   const brandNavy = "#0E1A2B";
   const brandPurple = "#4B3FAE";
   const brandTeal = "#1F6D7A";
-  const muted = "#6B7280";
-  const light = "#9CA3AF";
-  const sand = "#F7F6F3";
+  const muted = "rgba(14,26,43,0.58)";
+  const light = "rgba(14,26,43,0.42)";
+  const sand = "#F4F1EA";
 
   return `
 <!DOCTYPE html>
@@ -175,9 +176,9 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                 <tr>
                   <td style="background-color:${sand}; border-radius:8px; padding:20px 24px;">
                     <p style="font-size:13px; font-weight:600; color:${brandNavy}; margin:0 0 6px;">Your full report is ready</p>
+                    ${data.primaryConstraintLabel ? `<p style="font-size:12px; color:${brandNavy}; line-height:1.6; margin:0 0 12px; font-weight:500;">Your biggest opportunity: ${data.primaryConstraintLabel.toLowerCase()}. See your full report for the specific changes that would raise your score the most.</p>` : ""}
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
-                      Your complete 5-page diagnostic report includes structural analysis, industry benchmarks,
-                      improvement path, and 90-day action plan. Sign in to view and download the PDF.
+                      Your 5-page diagnostic report includes your score interpretation, biggest risks, projected improvements, and a personalized 90-day action plan.
                     </p>
                     <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
                   </td>
@@ -202,7 +203,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
           <tr>
             <td style="padding:24px 0; text-align:center;">
               <p style="font-size:11px; color:${light}; margin:0 0 4px;">
-                RunPayway™ · Income Stability Score™ · Structural Stability Model RP-1.0
+                RunPayway™ · Income Stability Score™ · Model RP-2.0
               </p>
               <p style="font-size:10px; color:${light}; margin:0;">
                 Confidential — Prepared for ${data.assessmentTitle || "Assessment Subject"} · support@runpayway.com

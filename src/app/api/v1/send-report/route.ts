@@ -39,13 +39,14 @@ export async function POST(request: NextRequest) {
       finalScore: body.finalScore,
       stabilityBand: body.stabilityBand,
       recordId: body.recordId,
-      modelVersion: body.modelVersion || "RP-1.0",
+      modelVersion: body.modelVersion || "RP-2.0",
       issuedTimestamp: body.issuedTimestamp || new Date().toISOString(),
       industrySector: body.industrySector || "",
       classification: body.classification || "",
       primaryConstraintLabel: body.primaryConstraintLabel || "",
       bandInterpretationText: body.bandInterpretationText || "",
       peerPercentileLabel: body.peerPercentileLabel || "",
+      riskScenarioDrop: body.riskScenarioDrop || 0,
     };
 
     const result = await sendReportEmail(data);

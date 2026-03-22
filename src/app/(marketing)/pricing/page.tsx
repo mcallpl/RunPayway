@@ -788,6 +788,19 @@ function TrustStrip() {
             </div>
           ))}
         </div>
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: 28,
+            fontSize: 13,
+            color: B.muted,
+            lineHeight: 1.6,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 0.5s ease-out 200ms",
+          }}
+        >
+          If the report doesn&#8217;t tell you something you didn&#8217;t already know, contact us at support@runpayway.com.
+        </p>
       </div>
     </section>
   );

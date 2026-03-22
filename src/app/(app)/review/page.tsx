@@ -607,6 +607,7 @@ export default function ReviewPage() {
               primaryConstraintLabel: parsed.primary_constraint_label,
               bandInterpretationText: parsed.band_interpretation_text,
               peerPercentileLabel: parsed.peer_stability_percentile_label,
+              riskScenarioDrop: parsed.risk_scenario_drop,
             }),
           })
             .then((res) => res.ok ? setEmailStatus("sent") : setEmailStatus("error"))
