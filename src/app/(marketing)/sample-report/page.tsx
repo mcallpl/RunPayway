@@ -270,8 +270,8 @@ function Hero() {
         background: B.gradient,
         position: "relative",
         overflow: "hidden",
-        paddingTop: 160,
-        paddingBottom: 100,
+        paddingTop: mobile ? 80 : 100,
+        paddingBottom: mobile ? 60 : 72,
       }}
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
@@ -280,11 +280,11 @@ function Hero() {
           position: "absolute",
           top: "30%",
           left: "50%",
-          width: 800,
-          height: 800,
+          width: 600,
+          height: 600,
           transform: "translate(-50%, -50%)",
           background:
-            "radial-gradient(circle, rgba(75,63,174,0.25) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -303,48 +303,46 @@ function Hero() {
           style={{
             textAlign: "center",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
           <div
             style={{
               fontSize: 11,
               fontWeight: 600,
-              letterSpacing: "0.14em",
+              letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "rgba(250,249,247,0.50)",
-              marginBottom: 24,
+              color: "rgba(244,241,234,0.50)",
+              marginBottom: 16,
             }}
           >
-            SAMPLE REPORT
+            Preview
           </div>
           <h1
-            className="text-[32px] md:text-[44px]"
             style={{
-              color: "#FAF9F7",
+              fontSize: mobile ? 28 : 38,
+              color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
-              letterSpacing: "-0.035em",
-              lineHeight: 1.08,
-              marginBottom: 24,
+              letterSpacing: "-0.025em",
+              lineHeight: 1.15,
+              marginBottom: 16,
             }}
           >
-            See what your report looks like.
+            Sample Assessment Report
           </h1>
           <p
-            className="text-[15px] md:text-[17px]"
             style={{
-              color: "rgba(250,249,247,0.70)",
-              lineHeight: 1.75,
-              maxWidth: 560,
+              fontSize: mobile ? 14 : 16,
+              color: "rgba(244,241,234,0.60)",
+              lineHeight: 1.65,
+              maxWidth: 520,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            This is a sample report for a consulting professional scoring 78 out
-            of 100. Your report will be personalized to your income structure,
-            industry, and profile.
+            A sample Income Stability Score&#8482; report for a professional services profile scoring 78 out of 100. Your report will be personalized to your name, industry, and income structure.
           </p>
         </div>
       </div>
@@ -804,8 +802,8 @@ function CtaSection() {
         background: B.gradient,
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? 88 : 120,
-        paddingBottom: mobile ? 88 : 120,
+        paddingTop: mobile ? 72 : 96,
+        paddingBottom: mobile ? 72 : 96,
       }}
     >
       <div
@@ -817,7 +815,7 @@ function CtaSection() {
           height: 700,
           transform: "translate(-50%, -50%)",
           background:
-            "radial-gradient(circle, rgba(75,63,174,0.30) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -843,7 +841,7 @@ function CtaSection() {
           <h2
             className="text-[28px] md:text-[40px]"
             style={{
-              color: "#FAF9F7",
+              color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: "-0.03em",
@@ -851,20 +849,20 @@ function CtaSection() {
               marginBottom: 20,
             }}
           >
-            Get your own Income Stability Score&trade;
+            Get your Income Stability Score&#8482;
           </h2>
           <p
             style={{
               fontSize: 16,
-              color: "rgba(250,249,247,0.70)",
-              lineHeight: 1.7,
-              marginBottom: 36,
+              color: "rgba(244,241,234,0.60)",
+              lineHeight: 1.65,
+              marginBottom: 32,
               maxWidth: 440,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            Under two minutes. Full structural diagnosis. Instant delivery.
+            Under two minutes. Five-page diagnostic report. Instant delivery.
           </p>
           <a
             href={STRIPE_SINGLE}
@@ -879,8 +877,8 @@ function CtaSection() {
               height: mobile ? 48 : 56,
               paddingLeft: 36,
               paddingRight: 36,
-              borderRadius: 14,
-              backgroundColor: "#FAF9F7",
+              borderRadius: 12,
+              backgroundColor: "#F4F1EA",
               color: B.navy,
               fontSize: 15,
               fontWeight: 600,
@@ -893,18 +891,17 @@ function CtaSection() {
               transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            Get My Score &mdash; $39
+            Get My Income Stability Score&#8482;
           </a>
           <div
             style={{
               marginTop: 20,
               fontSize: 12,
-              color: "rgba(250,249,247,0.40)",
+              color: "rgba(244,241,234,0.40)",
               letterSpacing: "0.02em",
             }}
           >
-            Model RP-2.0 &middot; No bank connection &middot; Private by
-            default
+            Model RP-2.0 &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>
       </div>
