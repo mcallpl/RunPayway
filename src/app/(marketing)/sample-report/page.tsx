@@ -98,36 +98,30 @@ function ReportCard({
   visible,
   delay = 0,
   mobile,
+  blurLevel = 0,
 }: {
   children: React.ReactNode;
   visible: boolean;
   delay?: number;
   mobile: boolean;
+  blurLevel?: number;
 }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       style={{
         maxWidth: 700,
         margin: "0 auto",
         backgroundColor: "#ffffff",
         border: "1px solid rgba(14,26,43,0.06)",
         borderRadius: 12,
-        boxShadow: hovered
-          ? "0 12px 40px rgba(14,26,43,0.10), 0 4px 12px rgba(14,26,43,0.05)"
-          : "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
+        boxShadow: "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
         padding: mobile ? 24 : 32,
         position: "relative",
         overflow: "hidden",
         opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-2px)"
-            : "translateY(0)"
-          : "translateY(20px)",
-        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.4s ease-out ${visible ? 0 : delay}ms, box-shadow 0.3s ease`,
+        transform: visible ? "translateY(0)" : "translateY(20px)",
+        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.4s ease-out ${visible ? 0 : delay}ms`,
+        filter: blurLevel > 0 ? `blur(${blurLevel}px)` : "none",
       }}
     >
       {/* Gradient accent bar */}
@@ -142,6 +136,16 @@ function ReportCard({
         }}
       />
       {children}
+    </div>
+  );
+}
+
+function PageArrow({ visible }: { visible: boolean }) {
+  return (
+    <div style={{ textAlign: "center", padding: "20px 0", opacity: visible ? 0.3 : 0, transition: "opacity 0.5s ease-out" }}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 5v14M19 12l-7 7-7-7" />
+      </svg>
     </div>
   );
 }
@@ -359,7 +363,7 @@ function Page1Score() {
   return (
     <section ref={ref} aria-label="Page 1 — Your Score" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <SectionLabel label="PAGE 1 — WHAT IS MY SCORE?" />
-      <ReportCard visible={visible} mobile={mobile} delay={100}>
+      <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={0}>
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
@@ -456,9 +460,9 @@ function Page2WhyThisScore() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 2 — What This Score Means" style={{ backgroundColor: B.sand, paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+    <section ref={ref} aria-label="Page 2 — What This Score Means" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <SectionLabel label="PAGE 2 — WHAT DOES IT MEAN?" />
-      <ReportCard visible={visible} mobile={mobile} delay={100}>
+      <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={1.5}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
           <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
@@ -533,7 +537,7 @@ function Page3WhatCouldGoWrong() {
   return (
     <section ref={ref} aria-label="Page 3 — Your Biggest Risks" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <SectionLabel label="PAGE 3 — WHAT COULD HURT IT?" />
-      <ReportCard visible={visible} mobile={mobile} delay={100}>
+      <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={3}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
           <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
@@ -612,9 +616,9 @@ function Page4HowToImprove() {
   const mobile = useMobile();
 
   return (
-    <section ref={ref} aria-label="Page 4 — How to Raise Your Score" style={{ backgroundColor: B.sand, paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
+    <section ref={ref} aria-label="Page 4 — How to Raise Your Score" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <SectionLabel label="PAGE 4 — HOW CAN I IMPROVE IT?" />
-      <ReportCard visible={visible} mobile={mobile} delay={100}>
+      <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={5}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
           <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
@@ -695,7 +699,7 @@ function Page5WhatToDoNext() {
   return (
     <section ref={ref} aria-label="Page 5 — What to Do Next" style={{ backgroundColor: "#ffffff", paddingTop: mobile ? 48 : 0, paddingBottom: mobile ? 48 : 64, paddingLeft: mobile ? 16 : 24, paddingRight: mobile ? 16 : 24 }}>
       <SectionLabel label="PAGE 5 — WHAT SHOULD I DO NEXT?" />
-      <ReportCard visible={visible} mobile={mobile} delay={100}>
+      <ReportCard visible={visible} mobile={mobile} delay={100} blurLevel={7}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, marginTop: 8, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, letterSpacing: "0.06em" }}>RUNPAYWAY&trade;</span>
           <span style={{ fontSize: 11, color: B.light }}>Income Stability Score&trade; &middot; Model RP-2.0</span>
@@ -885,14 +889,27 @@ function CtaSection() {
 /* ================================================================== */
 /* MAIN EXPORT                                                         */
 /* ================================================================== */
+function ArrowBetweenPages() {
+  const { ref, visible } = useInView();
+  return (
+    <div ref={ref} style={{ backgroundColor: "#ffffff" }}>
+      <PageArrow visible={visible} />
+    </div>
+  );
+}
+
 export default function SampleReportPage() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#ffffff" }}>
       <Hero />
       <Page1Score />
+      <ArrowBetweenPages />
       <Page2WhyThisScore />
+      <ArrowBetweenPages />
       <Page3WhatCouldGoWrong />
+      <ArrowBetweenPages />
       <Page4HowToImprove />
+      <ArrowBetweenPages />
       <Page5WhatToDoNext />
       <CtaSection />
     </div>
