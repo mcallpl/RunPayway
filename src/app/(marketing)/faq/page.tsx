@@ -57,11 +57,11 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  sand: "#F4F1EA",
+  sandDk: "#F4F1EA",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
 /* ------------------------------------------------------------------ */
@@ -167,7 +167,7 @@ function AccordionItem({
     <div
       style={{
         background: "#FFFFFF",
-        borderRadius: 14,
+        borderRadius: 12,
         border: `1px solid ${isOpen ? "rgba(75,63,174,0.18)" : "rgba(14,26,43,0.06)"}`,
         overflow: "hidden",
         transition: "border-color 220ms ease, box-shadow 220ms ease",
@@ -320,7 +320,7 @@ export default function FaqPage() {
         .faq-answer p {
           font-size: 15px;
           color: ${B.muted};
-          line-height: 1.75;
+          line-height: 1.65;
           margin-bottom: 10px;
         }
         .faq-answer p:last-child {
@@ -334,7 +334,7 @@ export default function FaqPage() {
         .faq-answer ul li {
           font-size: 15px;
           color: ${B.muted};
-          line-height: 1.75;
+          line-height: 1.65;
           padding-left: 20px;
           position: relative;
         }
@@ -452,7 +452,7 @@ export default function FaqPage() {
           <h1
             style={{
               fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
+              fontWeight: 600,
               color: "#FFFFFF",
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
@@ -466,7 +466,7 @@ export default function FaqPage() {
             style={{
               fontSize: mobile ? 15 : 18,
               color: "rgba(255,255,255,0.65)",
-              lineHeight: 1.7,
+              lineHeight: 1.65,
               maxWidth: 600,
               margin: "0 auto",
             }}
@@ -554,7 +554,7 @@ export default function FaqPage() {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
