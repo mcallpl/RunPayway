@@ -825,7 +825,7 @@ export default function ReviewPage() {
     A3: `This page shows what could hurt your income most as the structure is still below a stable range.`,
     B1: `This page shows what could hurt your income most while the structure is still developing.`,
     B2: `This page shows what could hurt your income most before the structure becomes more stable.`,
-    C1: `This page shows what could hurt your income most even though real stability is already present.`,
+    C1: `This page shows what could still weaken the structure even though it is already stable.`,
     C2: `This page shows what could still weaken your income despite an established structure.`,
     D1: `This page shows the main risks that could still weaken your income, even from a position of strength.`,
     D2: `This page shows the limited risks that could still affect your income despite a highly resilient structure.`,
@@ -1013,8 +1013,11 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 10, maxWidth: 540 }}>
           {copy.p1_headline}
+        </p>
+        <p style={{ ...T.small, color: B.teal, marginBottom: 16, fontWeight: 500 }}>
+          Why this matters: income that looks fine today can still be structurally weak if too much depends on active work, one source, or income that is not secured ahead of time.
         </p>
 
         {/* Single most important insight — one line the customer remembers */}
@@ -1076,8 +1079,8 @@ export default function ReviewPage() {
             <p style={{ ...T.body, color: B.muted, margin: 0 }}>{record.income_continuity_pct}% of your income would likely keep coming in if active work stopped today. That is a real base, but it is still smaller than ideal.</p>
           </div>
           <div>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{tier === "limited" ? "The structure is early, but not absent" : tier === "developing" ? "There is progress to build on" : "There are signs of strength in the structure"}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{tier === "limited" ? "This is a starting point. The priority is to build basic protection before focusing on growth." : tier === "developing" ? "The structure is developing, but it still needs stronger protection in key areas." : "Some parts of the setup are already supporting stability. The opportunity now is to make that support stronger and more durable."}</p>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{tier === "limited" ? "The structure is early, but not absent" : tier === "developing" ? "There is progress to build on" : "The opportunity is refinement, not rebuilding"}</div>
+            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{tier === "limited" ? "This is a starting point. The priority is to build basic protection before focusing on growth." : tier === "developing" ? "The structure is developing, but it still needs stronger protection in key areas." : "The foundation is working. The next gains come from strengthening what is already in place, not starting over."}</p>
           </div>
         </div>
 
@@ -1220,7 +1223,7 @@ export default function ReviewPage() {
                   </div>
                   <div style={{ paddingLeft: 70 }}>
                     <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-                      Your score would drop by {s.score_drop} points.{s.band_shift ? ` That would move you into a lower stability band.` : ""}{s.scenario_score <= 0 ? " This represents a near-total collapse of structural protection." : ""}
+                      {s.scenario_score <= 0 ? "This would effectively collapse the structure's protection." : s.band_shift ? `This would materially weaken the structure and move it into a lower stability band.` : s.score_drop > 10 ? "This would meaningfully weaken the current level of protection." : `This would reduce protection by ${s.score_drop} points.`}
                     </p>
                   </div>
                 </div>
@@ -1354,8 +1357,8 @@ export default function ReviewPage() {
                 reduce_labor_dependence: "Reduce how much income depends on daily work",
                 extend_forward_visibility: "Secure more income before next month begins",
                 reduce_concentration: "Reduce reliance on the largest source",
-                increase_persistence: "Increase recurring or continuing income",
-                increase_persistent_revenue: "Increase recurring or continuing income",
+                increase_persistence: "Build more income that repeats or continues without daily work",
+                increase_persistent_revenue: "Build more income that repeats or continues without daily work",
                 add_income_sources: "Add more dependable income sources",
                 reduce_variability: "Reduce month-to-month income swings",
                 increase_continuity: "Increase how long income would continue if work stopped",
@@ -1370,7 +1373,7 @@ export default function ReviewPage() {
                 .replace(/Extend Forward Visibility/i, "Secure more income before next month begins")
                 .replace(/Reduce Labor Dependence/i, "Reduce how much income depends on daily work")
                 .replace(/Reduce Concentration/i, "Reduce reliance on the largest source")
-                .replace(/Increase Persist.*Revenue/i, "Increase recurring or continuing income");
+                .replace(/Increase Persist.*Revenue/i, "Build more income that repeats or continues without daily work");
               return (
                 <div key={s.scenario_id} style={{ padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -1413,7 +1416,7 @@ export default function ReviewPage() {
                 const priorities = [
                   { key: "forward_visibility", title: "Secure more income ahead of time", copy: "Add income that is already committed before the month begins. Examples include retainers, multi-month agreements, advance bookings, or recurring contracts." },
                   { key: "source_concentration", title: "Reduce reliance on the largest source", copy: "Strengthen one or more additional dependable sources so the structure is not overly exposed to a single client or channel." },
-                  { key: "labor_dependence", title: "Convert active work into repeatable income", copy: "Shift part of one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
+                  { key: "labor_dependence", title: "Build more income that repeats or continues without daily work", copy: "Shift part of one-time work into income that repeats, renews, or continues without needing to be rebuilt each time." },
                   { key: "low_continuity", title: "Increase how long income would continue if work stopped", copy: "Build more income that can keep coming in for a period of time even if daily work slows down or stops." },
                 ];
                 // Put dominant constraint first
