@@ -55,34 +55,34 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#FAF9F7",
+  sand: "#F4F1EA",
   sandDk: "#F4F1EA",
-  offWhite: "#FEFDFB",
-  muted: "#4B5563",
-  light: "#9CA3AF",
-  border: "#E6E9EF",
+  offWhite: "#FFFFFF",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  border: "rgba(14,26,43,0.12)",
   gradient:
     "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-  cream: "#FAF9F7",
+  cream: "#F4F1EA",
 };
 
 const S = {
-  sectionY: { desktop: 160, mobile: 88 },
-  sectionYsm: { desktop: 120, mobile: 72 },
+  sectionY: { desktop: 120, mobile: 80 },
+  sectionYsm: { desktop: 100, mobile: 64 },
   maxW: 1060,
   padX: { desktop: 48, mobile: 24 },
-  h1mb: 28,
-  h2mb: 24,
-  subtextMb: 56,
-  cardRadius: 20,
-  ctaH: 56,
-  ctaHsm: 50,
-  ctaRadius: 14,
-  lhHeading: 1.08,
-  lhBody: 1.75,
-  lsHeading: "-0.025em",
-  lsHero: "-0.035em",
-  lsLabel: "0.14em",
+  h1mb: 20,
+  h2mb: 20,
+  subtextMb: 44,
+  cardRadius: 12,
+  ctaH: 52,
+  ctaHsm: 44,
+  ctaRadius: 12,
+  lhHeading: 1.12,
+  lhBody: 1.65,
+  lsHeading: "-0.02em",
+  lsHero: "-0.03em",
+  lsLabel: "0.12em",
 };
 
 /* ------------------------------------------------------------------ */
@@ -96,86 +96,6 @@ const STRIPE = {
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
-
-/* ================================================================== */
-/* FLOATING PARTICLES                                                  */
-/* ================================================================== */
-function FloatingParticles() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<
-    Array<{ x: number; y: number; vx: number; vy: number; r: number; o: number }>
-  >([]);
-  const rafRef = useRef<number>(0);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
-      canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
-      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
-    };
-    resize();
-
-    const count = 20;
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
-    particlesRef.current = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.25,
-      r: 1 + Math.random() * 1.5,
-      o: 0.06 + Math.random() * 0.14,
-    }));
-
-    const animate = () => {
-      const cw = canvas.offsetWidth;
-      const ch = canvas.offsetHeight;
-      ctx.clearRect(0, 0, cw, ch);
-
-      for (const p of particlesRef.current) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < -10) p.x = cw + 10;
-        if (p.x > cw + 10) p.x = -10;
-        if (p.y < -10) p.y = ch + 10;
-        if (p.y > ch + 10) p.y = -10;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.o})`;
-        ctx.fill();
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-    window.addEventListener("resize", resize);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-      }}
-    />
-  );
-}
 
 
 /* ================================================================== */
@@ -192,8 +112,8 @@ function Hero() {
       style={{
         position: "relative",
         background: B.gradient,
-        paddingTop: mobile ? 120 : 180,
-        paddingBottom: mobile ? 80 : 120,
+        paddingTop: mobile ? 100 : 140,
+        paddingBottom: mobile ? 64 : 96,
         overflow: "hidden",
       }}
     >
@@ -213,8 +133,6 @@ function Hero() {
           pointerEvents: "none",
         }}
       />
-
-      <FloatingParticles />
 
       <div
         style={{
@@ -238,7 +156,7 @@ function Hero() {
           <div
             style={{
               fontSize: 11,
-              fontWeight: 700,
+              fontWeight: 600,
               textTransform: "uppercase" as const,
               letterSpacing: S.lsLabel,
               color: B.teal,
@@ -266,15 +184,14 @@ function Hero() {
             style={{
               fontSize: 17,
               lineHeight: S.lhBody,
-              color: "rgba(250,249,247,0.75)",
+              color: "rgba(244,241,234,0.75)",
               maxWidth: 560,
               marginLeft: "auto",
               marginRight: "auto",
               margin: "0 auto",
             }}
           >
-            A fixed structural assessment that shows your score, reveals what is
-            exposed, and identifies what would strengthen it next.
+            A five-page diagnostic report that shows your score, explains what it means, reveals your biggest risks, and gives you a clear path to stronger protection.
           </p>
         </div>
       </div>
@@ -290,9 +207,9 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
   const [hovered, setHovered] = useState(false);
 
   const features = [
-    "Full 5-page diagnostic report",
-    "Score, drivers, stress scenarios, actions",
-    "Industry-tailored recommendations",
+    "Five-page diagnostic report",
+    "Score, interpretation, risks, improvements, and next steps",
+    "Personalized to your name and industry",
     "Verified, shareable score card",
     "Instant digital delivery",
   ];
@@ -325,7 +242,7 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
       <div
         style={{
           fontSize: 11,
-          fontWeight: 700,
+          fontWeight: 600,
           textTransform: "uppercase" as const,
           letterSpacing: "0.10em",
           color: B.teal,
@@ -336,7 +253,7 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-        <span style={{ fontSize: 52, fontWeight: 700, color: B.navy, lineHeight: 1 }}>
+        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>
           $39
         </span>
         <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
@@ -464,7 +381,7 @@ function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
           background: B.purple,
           color: "#FFFFFF",
           fontSize: 11,
-          fontWeight: 700,
+          fontWeight: 600,
           letterSpacing: "0.08em",
           textTransform: "uppercase" as const,
           whiteSpace: "nowrap" as const,
@@ -476,7 +393,7 @@ function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
       <div
         style={{
           fontSize: 11,
-          fontWeight: 700,
+          fontWeight: 600,
           textTransform: "uppercase" as const,
           letterSpacing: "0.10em",
           color: B.teal,
@@ -487,7 +404,7 @@ function AnnualCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-        <span style={{ fontSize: 52, fontWeight: 700, color: B.navy, lineHeight: 1 }}>
+        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>
           $99
         </span>
         <span style={{ fontSize: 14, color: B.muted }}>
@@ -634,7 +551,7 @@ function WhatsIncluded() {
     {
       num: "02",
       title: "Why This Score",
-      desc: "Five structural drivers, constraint hierarchy, sensitivity ranking, and interaction effects.",
+      desc: "Five key factors, constraint hierarchy, sensitivity ranking, and interaction effects.",
       accent: B.teal,
     },
     {
@@ -731,7 +648,7 @@ function WhatsIncluded() {
               <span
                 style={{
                   fontSize: mobile ? 28 : 36,
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: "rgba(14,26,43,0.06)",
                   lineHeight: 1,
                   flexShrink: 0,
@@ -1092,7 +1009,7 @@ function FinalCta() {
           <p
             style={{
               fontSize: 16,
-              color: "rgba(250,249,247,0.70)",
+              color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
               maxWidth: 480,
               marginLeft: "auto",
@@ -1136,7 +1053,7 @@ function FinalCta() {
           <p
             style={{
               fontSize: 12,
-              color: "rgba(250,249,247,0.40)",
+              color: "rgba(244,241,234,0.40)",
               marginTop: 24,
               marginBottom: 0,
             }}
