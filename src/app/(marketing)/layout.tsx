@@ -311,9 +311,9 @@ export default function MarketingLayout({
           className="mx-auto flex items-center"
           style={{
             maxWidth: 1200,
-            height: mobile ? 56 : 72,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
+            height: mobile ? 64 : 72,
+            paddingLeft: mobile ? 20 : 40,
+            paddingRight: mobile ? 16 : 40,
           }}
         >
           {/* Logo */}
@@ -331,8 +331,8 @@ export default function MarketingLayout({
             <Image
               src={logoImg}
               alt="RunPayway"
-              width={mobile ? 130 : 180}
-              height={mobile ? 15 : 21}
+              width={mobile ? 160 : 180}
+              height={mobile ? 19 : 21}
               priority
               style={{ height: "auto" }}
             />
@@ -519,8 +519,8 @@ export default function MarketingLayout({
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                width: 44,
-                height: 44,
+                width: 48,
+                height: 48,
                 background: "none",
                 border: "none",
                 cursor: "pointer",
@@ -530,22 +530,22 @@ export default function MarketingLayout({
               <span
                 style={{
                   display: "block",
-                  width: 20,
-                  height: 1.5,
+                  width: 26,
+                  height: 2,
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
                   transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
-                  transform: menuOpen ? "rotate(45deg) translateY(4.5px)" : "none",
+                  transform: menuOpen ? "rotate(45deg) translateY(5.5px)" : "none",
                 }}
               />
               <span
                 style={{
                   display: "block",
-                  width: 20,
-                  height: 1.5,
+                  width: 26,
+                  height: 2,
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
-                  marginTop: 5,
+                  marginTop: 6,
                   transition: "opacity 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                   opacity: menuOpen ? 0 : 1,
                   transform: menuOpen ? "scaleX(0)" : "scaleX(1)",
@@ -554,13 +554,13 @@ export default function MarketingLayout({
               <span
                 style={{
                   display: "block",
-                  width: 20,
-                  height: 1.5,
+                  width: 26,
+                  height: 2,
                   borderRadius: 1,
                   backgroundColor: "#0E1A2B",
-                  marginTop: 5,
+                  marginTop: 6,
                   transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
-                  transform: menuOpen ? "rotate(-45deg) translateY(-4.5px)" : "none",
+                  transform: menuOpen ? "rotate(-45deg) translateY(-5.5px)" : "none",
                 }}
               />
             </button>
