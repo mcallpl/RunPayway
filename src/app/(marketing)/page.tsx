@@ -2606,8 +2606,6 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
       <HeroSection />
       <FourFactorsSection />
-      {/* Section divider */}
-      <div className="section-divider-elegant"><div className="divider-dot" /></div>
       <IncomePatterns />
       <WhatYourReportSection />
       <SampleResultSection />
