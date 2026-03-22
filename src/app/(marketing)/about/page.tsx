@@ -55,40 +55,40 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  sand: "#F4F1EA",
+  sandDk: "#F4F1EA",
+  muted: "rgba(14,26,43,0.58)",
+  light: "rgba(14,26,43,0.42)",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
 const S = {
-  sectionY:     { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 120, mobile: 72 },
-  transitionY:  { desktop: 72, mobile: 48 },
-  disclaimerY:  { desktop: 64, mobile: 48 },
+  sectionY:     { desktop: 120, mobile: 80 },
+  sectionYsm:   { desktop: 100, mobile: 64 },
+  transitionY:  { desktop: 56, mobile: 40 },
+  disclaimerY:  { desktop: 48, mobile: 36 },
   maxW:         1060,
   padX:         { desktop: 48, mobile: 24 },
-  h1mb:         28,
-  h2mb:         24,
-  subtextMb:    56,
-  paraMb:       24,
-  labelMb:      16,
-  cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   16,
-  panelRadius:  20,
-  gridGap:      24,
-  gridGapSm:    16,
-  ctaH:         56,
-  ctaHsm:       46,
-  ctaPadX:      32,
-  ctaRadius:    14,
-  lhHeading:    1.08,
-  lhBody:       1.75,
+  h1mb:         20,
+  h2mb:         20,
+  subtextMb:    44,
+  paraMb:       20,
+  labelMb:      14,
+  cardPad:      { desktop: 32, mobile: 24 },
+  cardRadius:   12,
+  panelRadius:  16,
+  gridGap:      20,
+  gridGapSm:    14,
+  ctaH:         52,
+  ctaHsm:       44,
+  ctaPadX:      28,
+  ctaRadius:    12,
+  lhHeading:    1.12,
+  lhBody:       1.65,
   lhDense:      1.5,
-  lsHeading:    "-0.025em",
-  lsHero:       "-0.035em",
-  lsLabel:      "0.14em",
+  lsHeading:    "-0.02em",
+  lsHero:       "-0.03em",
+  lsLabel:      "0.12em",
 };
 
 
@@ -120,7 +120,7 @@ function Hero() {
         >
           <div
             className="text-[11px] uppercase"
-            style={{ color: B.teal, fontWeight: 700, letterSpacing: S.lsLabel, marginBottom: 20 }}
+            style={{ color: B.teal, fontWeight: 600, letterSpacing: S.lsLabel, marginBottom: 20 }}
           >
             Model RP-2.0
           </div>
@@ -128,7 +128,7 @@ function Hero() {
             className="text-[36px] md:text-[52px]"
             style={{
               color: B.navy,
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: S.h1mb,
@@ -204,10 +204,10 @@ function WhatModelMeasures() {
 
   const dimensions = [
     { title: "Source Count", desc: "How many distinct income sources contribute to total earnings." },
-    { title: "Source Diversification", desc: "How evenly income is distributed across sources, measuring concentration risk." },
+    { title: "Source Diversification", desc: "How evenly income is distributed across sources, measuring reliance on one source." },
     { title: "Income Predictability", desc: "The regularity and consistency of income patterns over time." },
-    { title: "Forward Commitment", desc: "How much income is contractually committed before the earning period begins." },
-    { title: "Income Continuity", desc: "The share of income that would continue without active work." },
+    { title: "Income Secured Ahead of Time", desc: "How much income is contractually committed before the earning period begins." },
+    { title: "Income That Continues", desc: "The share of income that keeps coming without daily work." },
     { title: "Structural Resilience", desc: "How the income architecture responds to disruption of individual components." },
   ];
 
@@ -254,7 +254,7 @@ function WhatModelMeasures() {
               }}
             >
               <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient, marginBottom: 16 }} />
-              <h3 className="text-[15px]" style={{ fontWeight: 700, color: B.navy, marginBottom: 10 }}>{d.title}</h3>
+              <h3 className="text-[15px]" style={{ fontWeight: 600, color: B.navy, marginBottom: 10 }}>{d.title}</h3>
               <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
