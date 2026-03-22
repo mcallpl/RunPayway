@@ -106,7 +106,11 @@ export default function VerifyPage() {
     setError(null);
     setResult(null);
 
+    const trimmedId = recordId.trim();
+    const trimmedAuth = authCode.trim().toLowerCase();
+
     try {
+      // Check localStorage first
       const stored: Array<{
         record_id: string;
         authorization_code: string;
@@ -117,20 +121,17 @@ export default function VerifyPage() {
         issued_timestamp_utc: string;
       }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
 
-      // Check localStorage records
       let match = stored.find(
-        (r) =>
-          r.record_id === recordId.trim() &&
-          r.authorization_code === authCode.trim().toLowerCase()
+        (r) => r.record_id === trimmedId && r.authorization_code === trimmedAuth
       );
 
-      // Also check sessionStorage for the current assessment
+      // Check sessionStorage
       if (!match) {
         try {
           const sessionRecord = sessionStorage.getItem("rp_record");
           if (sessionRecord) {
             const sr = JSON.parse(sessionRecord);
-            if (sr.record_id === recordId.trim() && sr.authorization_code === authCode.trim().toLowerCase()) {
+            if (sr.record_id === trimmedId && sr.authorization_code === trimmedAuth) {
               match = sr;
             }
           }
@@ -150,6 +151,19 @@ export default function VerifyPage() {
           verification_statement:
             "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
         });
+        return;
+      }
+
+      // Not in local storage — verify against server
+      const res = await fetch("/api/verify-public", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ record_id: trimmedId, authorization_code: trimmedAuth }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setResult(data);
       } else {
         setResult({ valid_record: false });
       }
@@ -170,30 +184,47 @@ export default function VerifyPage() {
       setRecordId(urlId);
       setAuthCode(urlAuth);
       setAutoVerified(true);
-      // Auto-verify after state is set
-      setTimeout(() => {
-        const idValid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(urlId.trim());
-        const authValid = /^[a-f0-9]{64}$/.test(urlAuth.trim().toLowerCase());
-        if (idValid && authValid) {
-          setLoading(true);
-          try {
-            const stored: Array<{ record_id: string; authorization_code: string; model_version: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
-            let match = stored.find((r) => r.record_id === urlId.trim() && r.authorization_code === urlAuth.trim().toLowerCase());
-            if (!match) {
-              try {
-                const sr = JSON.parse(sessionStorage.getItem("rp_record") || "null");
-                if (sr && sr.record_id === urlId.trim() && sr.authorization_code === urlAuth.trim().toLowerCase()) match = sr;
-              } catch { /* ignore */ }
+
+      const trimmedId = urlId.trim();
+      const trimmedAuth = urlAuth.trim().toLowerCase();
+      const idValid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(trimmedId);
+      const authValid = /^[a-f0-9]{64}$/.test(trimmedAuth);
+
+      if (idValid && authValid) {
+        setLoading(true);
+
+        // Check local storage first
+        let localMatch: typeof result = null;
+        try {
+          const stored: Array<{ record_id: string; authorization_code: string; model_version: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
+          const match = stored.find((r) => r.record_id === trimmedId && r.authorization_code === trimmedAuth);
+          if (match) {
+            localMatch = { valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." };
+          }
+          if (!localMatch) {
+            const sr = JSON.parse(sessionStorage.getItem("rp_record") || "null");
+            if (sr && sr.record_id === trimmedId && sr.authorization_code === trimmedAuth) {
+              localMatch = { valid_record: true, record_id: sr.record_id, model_version: sr.model_version, final_score: sr.final_score, stability_band: sr.stability_band, assessment_date: sr.assessment_date_utc, issued_timestamp: sr.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." };
             }
-            if (match) {
-              setResult({ valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." });
-            } else {
-              setResult({ valid_record: false });
-            }
-          } catch { setError("Verification failed"); }
-          finally { setLoading(false); }
+          }
+        } catch { /* ignore */ }
+
+        if (localMatch) {
+          setResult(localMatch);
+          setLoading(false);
+        } else {
+          // Fall back to server verification
+          fetch("/api/verify-public", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ record_id: trimmedId, authorization_code: trimmedAuth }),
+          })
+            .then((res) => res.ok ? res.json() : { valid_record: false })
+            .then((data) => setResult(data))
+            .catch(() => setError("Verification failed"))
+            .finally(() => setLoading(false));
         }
-      }, 100);
+      }
     } else if (urlId) {
       setRecordId(urlId);
     }
