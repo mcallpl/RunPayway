@@ -424,9 +424,11 @@ async function downloadPDF(record: AssessmentRecord) {
 
   const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, canvasW, pxPerInch, sliceH } = PDF;
 
-  // Hide all HTML page footers (PDF adds its own)
+  // Hide all HTML page footers (PDF adds its own) and interactive-only sections
   const htmlFooters = reportContainer.querySelectorAll(".report-page-footer") as NodeListOf<HTMLElement>;
   htmlFooters.forEach((f) => { f.style.display = "none"; });
+  const noPrintEls = reportContainer.querySelectorAll(".no-print") as NodeListOf<HTMLElement>;
+  noPrintEls.forEach((el) => { el.style.display = "none"; });
 
   // Temporarily style for capture
   const savedContainerStyle = {
@@ -463,6 +465,7 @@ async function downloadPDF(record: AssessmentRecord) {
   // Restore styles
   pages.forEach((el, i) => { Object.assign(el.style, savedPageStyles[i]); });
   htmlFooters.forEach((f) => { f.style.display = ""; });
+  noPrintEls.forEach((el) => { el.style.display = ""; });
   reportContainer.style.maxWidth = savedContainerStyle.maxWidth;
   (reportContainer as HTMLElement).style.gap = savedContainerStyle.gap;
 
@@ -2028,9 +2031,23 @@ export default function ReviewPage() {
 
       {/* ════════════════════════════════════════════════════════
           PAGE 6 — INTERACTIVE TOOLS (Simulator, Runway, Roadmap, Scripts)
-          This page is app-only (not in PDF) — interactive features.
+          This page is app-only — excluded from PDF capture.
           ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+      <div className="interactive-tools-page no-print" style={{
+        width: PDF.captureW,
+        maxWidth: "100%",
+        backgroundColor: B.sand,
+        border: "none",
+        borderRadius: 0,
+        padding: R.pagePad,
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "visible",
+        position: "relative",
+      }}>
+        {/* Top accent line */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Interactive Tools</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
@@ -2351,7 +2368,7 @@ export default function ReviewPage() {
         )}
 
         <PageFooter section="Interactive Tools" page={6} />
-      </ReportPage>
+      </div>
 
 
       {/* ================================================================
