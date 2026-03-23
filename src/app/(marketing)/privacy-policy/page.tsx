@@ -351,7 +351,7 @@ export default function PrivacyPolicyPage() {
                 t.privacyPolicy.s3Li8,
                 t.privacyPolicy.s3Li9,
                 t.privacyPolicy.s3Li10,
-              ]} />
+              ].filter(Boolean)} />
               <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s3P2}</P>
             </Section>
           </div>
