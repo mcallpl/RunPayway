@@ -1098,30 +1098,9 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Score breakdown — shows how the score is composed */}
-        {v2Scores && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, padding: "16px 20px", backgroundColor: B.bone, borderRadius: 4, border: "1px solid rgba(14,26,43,0.06)" }}>
-            <div style={{ flex: 1, textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>STRUCTURE</div>
-              <div style={{ ...T.sectionLabel, color: B.navy }}>{v2Scores.structure_score}</div>
-            </div>
-            <span style={{ ...T.small, color: B.taupe }}>+</span>
-            <div style={{ flex: 1, textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>STABILITY</div>
-              <div style={{ ...T.sectionLabel, color: B.navy }}>{v2Scores.stability_score}</div>
-            </div>
-            <span style={{ ...T.small, color: B.taupe }}>{v2Scores.quality_adjustment >= 0 ? "+" : "−"}</span>
-            <div style={{ flex: 1, textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>QUALITY</div>
-              <div style={{ ...T.sectionLabel, color: v2Scores.quality_adjustment < 0 ? B.bandLimited : B.teal }}>{Math.abs(v2Scores.quality_adjustment)}</div>
-            </div>
-            <span style={{ ...T.small, color: B.taupe }}>=</span>
-            <div style={{ flex: 1, textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>SCORE</div>
-              <div style={{ ...T.sectionLabel, color: B.navy, fontWeight: 700 }}>{score}</div>
-            </div>
-          </div>
-        )}
+        {/* Score breakdown removed from Page 1 — math doesn't add up without
+            showing interaction penalties. Full breakdown shown on Page 3 where
+            cross-factor effects are explained in context. */}
 
         <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
           {copy.p1_headline}
@@ -1308,22 +1287,22 @@ export default function ReviewPage() {
             {v2.indicators.map((ind) => {
               const levelColor = /high|very high/i.test(ind.level) ? B.teal : /low|very low/i.test(ind.level) ? B.bandLimited : B.muted;
               const indicatorLabel: Record<string, string> = {
-                income_persistence: "Income That Keeps Coming",
-                source_diversity: "Spread Across Multiple Sources",
-                income_source_diversity: "Spread Across Multiple Sources",
-                forward_secured: "Locked In Ahead of Time",
-                forward_revenue_visibility: "Locked In Ahead of Time",
-                income_variability: "Consistent Month to Month",
-                labor_dependence: "Doesn't Need Daily Work",
-                active_labor_dependence: "Doesn't Need Daily Work",
-                concentration_resilience: "Not Too Dependent on One Source",
-                exposure_concentration: "Not Too Dependent on One Source",
+                income_persistence: "Income Persistence",
+                source_diversity: "Source Diversification",
+                income_source_diversity: "Source Diversification",
+                forward_secured: "Forward Revenue Visibility",
+                forward_revenue_visibility: "Forward Revenue Visibility",
+                income_variability: "Earnings Stability",
+                labor_dependence: "Labor Independence",
+                active_labor_dependence: "Labor Independence",
+                concentration_resilience: "Source Independence",
+                exposure_concentration: "Source Independence",
               };
               return (
                 <div key={ind.key} style={{ flex: "1 1 calc(33.33% - 8px)", minWidth: 190, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                    <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{indicatorLabel[ind.key] ?? ind.label}</span>
-                    <span style={{ ...T.micro, color: levelColor }}>{ind.level.toUpperCase()}</span>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                    <span style={{ ...T.small, fontWeight: 600, color: B.navy, flex: 1, lineHeight: 1.3 }}>{indicatorLabel[ind.key] ?? ind.label}</span>
+                    <span style={{ ...T.micro, color: levelColor, flexShrink: 0 }}>{ind.level.toUpperCase()}</span>
                   </div>
                   <div style={{ height: 5, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
                     <div style={{ height: "100%", width: `${Math.min(100, ind.normalized_value)}%`, backgroundColor: levelColor, borderRadius: 2 }} />
@@ -1538,12 +1517,10 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "16px 20px" }}>
             <Overline>CURRENT BAND</Overline>
             <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "8px 0 0" }}>{p4CurrentBandBody[subTier]}</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "16px 20px" }}>
             <Overline>NEXT TARGET BAND</Overline>
             <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
-            <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>{p4TargetBandBody}</p>
           </div>
         </div>
 
@@ -1620,7 +1597,7 @@ export default function ReviewPage() {
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
           {(olActions && olActions.length > 0
-            ? olActions.slice(0, 4).map((a, i) => ({
+            ? olActions.slice(0, 3).map((a, i) => ({
                 rank: `${i + 1}`,
                 title: a.label,
                 copy: a.description,
@@ -1645,52 +1622,13 @@ export default function ReviewPage() {
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
-                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "3px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Advisor Discussion Guide */}
-        {advisorGuide && (advisorGuide.talking_points.length > 0 || advisorGuide.client_questions.length > 0) && (
-          <>
-          <SectionDivider />
-          <Overline large>Share With Your Advisor</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            For discussions with a financial advisor, lender, or business partner.
-          </p>
-          <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
-            {advisorGuide.talking_points.length > 0 && (
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>Key Discussion Points</div>
-                {advisorGuide.talking_points.slice(0, 4).map((tp, i) => (
-                  <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
-                    <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
-                  </div>
-                ))}
-              </div>
-            )}
-            {advisorGuide.client_questions.length > 0 && (
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>Questions to Explore</div>
-                {advisorGuide.client_questions.slice(0, 4).map((q, i) => (
-                  <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
-                    <span style={{ color: B.taupe }}>—</span>{q}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          {advisorGuide.red_flags.length > 0 && (
-            <div style={{ backgroundColor: "rgba(155,44,44,0.04)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
-              <div style={{ ...T.overline, color: B.bandLimited, marginBottom: 4 }}>RED FLAGS TO ADDRESS</div>
-              {advisorGuide.red_flags.slice(0, 3).map((rf, i) => (
-                <div key={i} style={{ ...T.small, color: B.navy, marginBottom: 2 }}>— {rf}</div>
-              ))}
-            </div>
-          )}
-          </>
-        )}
+        {/* Advisor guide removed from Page 5 to reduce density.
+            Data still available in the record for future use. */}
 
         {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
