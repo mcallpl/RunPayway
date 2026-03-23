@@ -9,9 +9,12 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
+  cream: "#F4F1EA",
   light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
+
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
   monitoring: { title: "Annual Monitoring", price: "$199" },
@@ -79,100 +82,105 @@ function CheckoutSuccessContent() {
     return () => clearTimeout(timer);
   }, [ready, router, plan]);
 
+  const [visible, setVisible] = useState(false);
+  useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
+
+  const steps = [
+    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}` },
+    { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure." },
+    { num: "3", title: "Take the assessment", desc: "Six questions, then your full 5-page report." },
+  ];
+
   return (
     <div
       style={{
         position: "fixed",
         inset: 0,
+        background: B.gradient,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: B.navy,
+        overflow: "auto",
       }}
     >
-      <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
-        {/* Spinner */}
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: "50%",
-            border: "3px solid rgba(255,255,255,0.15)",
-            borderTopColor: "#ffffff",
-            margin: "0 auto 28px",
-            animation: "spin 0.8s linear infinite",
-          }}
-        />
-
-        {/* Label */}
-        <div
-          style={{
-            fontSize: 13,
-            fontWeight: 500,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.45)",
-            marginBottom: 16,
-          }}
-        >
-          PREPARING YOUR ASSESSMENT
-        </div>
-
-        {/* Product name */}
-        <div
-          style={{
-            fontSize: 28,
-            fontWeight: 700,
-            color: "#ffffff",
-            marginBottom: 8,
-          }}
-        >
-          {info.title}
-        </div>
-
-        {/* Price */}
-        <div
-          style={{
-            fontSize: 16,
-            color: "rgba(255,255,255,0.5)",
-            marginBottom: 32,
-          }}
-        >
-          {info.price}
-        </div>
-
-        {/* Status text */}
-        <div
-          style={{
-            fontSize: 14,
-            color: "rgba(255,255,255,0.35)",
-            lineHeight: 1.6,
-          }}
-        >
-          Setting up your Income Stability Assessment&trade;...
-        </div>
-
-        {/* Back to pricing link */}
-        <Link
-          href="/pricing"
-          style={{
-            display: "inline-block",
-            marginTop: 48,
-            fontSize: 13,
-            color: "rgba(255,255,255,0.25)",
-            textDecoration: "none",
-            transition: "color 180ms ease",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.25)"; }}
-        >
-          &larr; Back to pricing
-        </Link>
-      </div>
-
       <style>{`
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+        @keyframes rp-spin { to { transform: rotate(360deg); } }
+        @keyframes rp-pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
       `}</style>
+
+      {/* Radial glow */}
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: 480,
+          padding: "60px 24px",
+          textAlign: "center",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+        }}
+      >
+        {/* Checkmark */}
+        <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(31,109,122,0.15)", border: "2px solid rgba(31,109,122,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 32px" }}>
+          <span style={{ fontSize: 24, color: B.teal }}>&#10003;</span>
+        </div>
+
+        {/* Overline */}
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+          Purchase Confirmed
+        </div>
+
+        {/* Headline */}
+        <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.cream, marginBottom: 36 }}>
+          Your full assessment is ready to begin.
+        </h1>
+
+        {/* Steps */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 36, textAlign: "left" }}>
+          {steps.map((step, i) => (
+            <div
+              key={step.num}
+              style={{
+                display: "flex",
+                gap: 16,
+                alignItems: "flex-start",
+                padding: "16px 0",
+                borderBottom: "1px solid rgba(244,241,234,0.08)",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(12px)",
+                transition: `opacity 0.5s ease-out ${300 + i * 150}ms, transform 0.5s ease-out ${300 + i * 150}ms`,
+              }}
+            >
+              <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: i === 0 ? "rgba(31,109,122,0.20)" : "rgba(244,241,234,0.06)", border: `1px solid ${i === 0 ? "rgba(31,109,122,0.30)" : "rgba(244,241,234,0.10)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                {i === 0
+                  ? <span style={{ fontSize: 12, color: B.teal }}>&#10003;</span>
+                  : <span style={{ fontSize: 12, fontWeight: 700, color: B.cream }}>{step.num}</span>
+                }
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.cream, marginBottom: 2 }}>{step.title}</div>
+                <div style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", lineHeight: 1.5 }}>{step.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Progress dots */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 16 }}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.cream, animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite` }} />
+          ))}
+        </div>
+
+        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)" }}>
+          Redirecting to your assessment...
+        </div>
+      </div>
     </div>
   );
 }
