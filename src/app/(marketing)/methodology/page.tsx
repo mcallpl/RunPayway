@@ -98,7 +98,6 @@ const S = {
   lsLabel: "0.12em",
 };
 
-const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 
@@ -250,7 +249,7 @@ function Purpose() {
               marginBottom: S.h2mb,
             }}
           >
-            Purpose of the model
+            What the score actually measures
           </h2>
           <p
             className="text-[15px] md:text-[17px]"
@@ -1350,21 +1349,31 @@ function CtaSection() {
               marginBottom: 20,
             }}
           >
-            See where your income stands.
+            Now that you know how it works &#8212; see your score.
           </h2>
           <p
             className="text-[15px] md:text-[16px]"
             style={{
               color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
+              marginBottom: 12,
+            }}
+          >
+            Your free score shows where you stand. The full report shows what to do about it &#8212; $99.
+          </p>
+          <p
+            className="text-[13px]"
+            style={{
+              color: "rgba(244,241,234,0.40)",
+              lineHeight: 1.6,
               marginBottom: 40,
             }}
           >
-            Under two minutes. Full structural diagnosis. Instant delivery.
+            If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund.
           </p>
 
           <Link
-            href={STRIPE_SINGLE}
+            href="/diagnostic-portal"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
@@ -1400,7 +1409,7 @@ function CtaSection() {
               letterSpacing: "0.02em",
             }}
           >
-            Model RP-2.0 &middot; Private by default
+            Free to start &middot; Under 2 minutes &middot; No bank connection
           </p>
         </div>
       </div>
