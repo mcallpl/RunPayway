@@ -917,9 +917,7 @@ function FinalCta() {
           </p>
 
           <a
-            href={STRIPE.single}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/begin"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
