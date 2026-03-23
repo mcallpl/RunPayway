@@ -521,26 +521,26 @@ function FourFactorsSection() {
     {
       number: "I",
       label: "Recurrence",
-      question: "Does your income repeat?",
-      description: "We measure how much of your income comes back on a predictable cycle — retainers, subscriptions, recurring contracts — versus income you have to rebuild from zero each time.",
+      question: "Do you rebuild your income from scratch every month?",
+      description: "If none of your income repeats automatically — no retainers, no subscriptions, no recurring contracts — you start at zero every month. That is structurally fragile.",
     },
     {
       number: "II",
       label: "Concentration",
-      question: "How many sources do you depend on?",
-      description: "We measure how spread out your income is across independent sources. The more you depend on a single client or channel, the more exposed you are if it changes.",
+      question: "Would losing one client wipe out half your income?",
+      description: "If too much depends on a single source, one lost contract or one client decision can collapse your entire income. Diversification is structural protection.",
     },
     {
       number: "III",
       label: "Visibility",
-      question: "How far ahead is your income secured?",
-      description: "We measure how much of your upcoming income is already committed — booked, contracted, or locked in — before the month begins.",
+      question: "Do you know what you will earn next month — or are you guessing?",
+      description: "If your upcoming income is not already committed — booked, contracted, or locked in — you have no forward visibility. That means no ability to plan.",
     },
     {
       number: "IV",
       label: "Passivity",
-      question: "What continues if you stop working?",
-      description: "We measure how much of your income would keep coming in even if you stopped active work today. Royalties, licensing, rental income, and similar streams.",
+      question: "If you stopped working today, when does the money stop?",
+      description: "If 100% of your income requires your daily effort, any disruption — illness, burnout, a slow month — immediately threatens everything.",
     },
   ];
 
@@ -573,7 +573,7 @@ function FourFactorsSection() {
               letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
             }}
           >
-            Methodology
+            Why income disappears
           </div>
           <h2
             style={{
@@ -585,10 +585,10 @@ function FourFactorsSection() {
               marginBottom: 24,
             }}
           >
-            What RunPayway&#8482; measures
+            The four reasons income falls apart
           </h2>
           <p style={{ fontSize: mobile ? 15 : 18, color: "rgba(14,26,43,0.48)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto" }}>
-            Every score is built from four structural dimensions. No opinions, no AI interpretation&#8202;&#8212;&#8202;just the math behind your income.
+            Your Income Stability Score&#8482; measures these four structural risks. If any one of them is weak, your income is exposed.
           </p>
         </div>
 
@@ -979,11 +979,11 @@ function WhatYourReportSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   const pages = [
-    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Your score, stability band, peer percentile, and score breakdown showing exactly how Structure + Stability + Quality combine.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", question: "Why is my score what it is?", desc: "Income structure breakdown, stress test, continuity window, peer comparison with actual numbers, and your biggest weakness.", color: B.teal },
-    { num: "03", title: "Your Income Deep Dive", question: "What are the details?", desc: "Six structural indicators scored out of 100, fragility classification, confidence level, and how your strengths and weaknesses interact.", color: B.navy },
-    { num: "04", title: "Your Biggest Risks", question: "What could go wrong?", desc: "The specific scenarios that would hurt your score most — ranked by severity with projected score impact.", color: B.purple },
-    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "Industry-specific priorities, projected improvements, an advisor discussion guide, and your reassessment date.", color: B.teal },
+    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "You will know your exact number — and whether you should be worried.", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", question: "Why this score?", desc: "You will see the one structural weakness most likely to cost you — and how you compare to peers in your industry with actual numbers.", color: B.teal },
+    { num: "03", title: "Your Income Deep Dive", question: "How deep does it go?", desc: "You will understand exactly why your income is vulnerable — six dimensions scored, fragility classified, and every cross-factor penalty explained.", color: B.navy },
+    { num: "04", title: "Your Biggest Risks", question: "What could go wrong?", desc: "You will know what happens if your biggest client leaves tomorrow, if you cannot work for 90 days, or if your industry contracts — each scenario scored.", color: B.purple },
+    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "You will have 3 specific things to do this quarter — tailored to your industry, income model, and operating structure. Plus an advisor discussion guide you can share.", color: B.teal },
   ];
 
   return (
@@ -1013,7 +1013,7 @@ function WhatYourReportSection() {
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          What you will learn
+          What the report tells you
         </h2>
 
         <p
@@ -1029,7 +1029,7 @@ function WhatYourReportSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          Five pages. Five questions answered. One clear path forward.
+          Five pages. Each one answers a question you need answered before something goes wrong.
         </p>
 
         {/* Tab navigation */}
@@ -1487,7 +1487,7 @@ function HowItWorksSection() {
   const steps = [
     { num: "1", title: "Answer six questions", desc: "About how your income is structured today. Takes under two minutes." },
     { num: "2", title: "Get your free score", desc: "See your score, stability band, peer percentile, and one key insight — instantly, at no cost." },
-    { num: "3", title: "Unlock the full report", desc: "For $99, get the complete 5-page breakdown with structural indicators, risk scenarios, cross-factor effects, and a personalized action plan." },
+    { num: "3", title: "Unlock the full report — $99", desc: "Get the complete 5-page breakdown: what is weak, what would break, and exactly what to do about it. If it does not reveal something new, full refund." },
   ];
 
   return (
@@ -1847,7 +1847,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          Measure the structure behind your income
+          Find out before it costs you
         </h2>
 
         <p
@@ -1863,7 +1863,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          See how stable your income structure is, where it is exposed, and what would strengthen it.
+          Your free score shows where you stand. The full report shows what to do about it.
         </p>
 
         {/* Proof line */}
@@ -2038,20 +2038,22 @@ function PricingSection() {
           </div>
         </div>
 
-        {/* Below cards */}
+        {/* Guarantee + trust */}
         <div
           style={{
             textAlign: "center",
-            marginTop: 32,
+            marginTop: 40,
             opacity: visible ? 1 : 0,
             transition: "opacity 600ms ease-out 400ms",
           }}
         >
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 4 }}>
-            No bank connection required &#183; No credit pull &#183; Private by default
-          </p>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)" }}>
-            Average completion: under 2 minutes
+          <div style={{ display: "inline-block", padding: "16px 32px", borderRadius: 12, border: "1px solid rgba(244,241,234,0.12)", marginBottom: 20 }}>
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
+              If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
+            </p>
+          </div>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)" }}>
+            No bank connection &#183; No credit pull &#183; Private by default &#183; Under 2 minutes
           </p>
         </div>
       </div>
@@ -2713,17 +2715,14 @@ function SocialProof() {
 /* ================================================================== */
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [trustOpen, setTrustOpen] = useState<number | null>(null);
 
   return (
     <div className="overflow-x-hidden">
       <HeroSection />
       <FourFactorsSection />
-      <WhatYourReportSection />
       <HowItWorksSection />
+      <WhatYourReportSection />
       <PricingSection />
-      <TrustSection trustOpen={trustOpen} setTrustOpen={setTrustOpen} />
-      <ShareableScoreSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
     </div>
