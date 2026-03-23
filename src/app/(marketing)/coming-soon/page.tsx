@@ -332,15 +332,15 @@ export default function ComingSoonPage() {
         <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
           <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, marginBottom: 16 }}>Available right now</h2>
           <p style={{ ...F.body, color: B.muted, maxWidth: 480, margin: "0 auto 36px" }}>
-            Get your Income Stability Score today with a full 5-page assessment report.
+            Get your Income Stability Score today — free. Upgrade to the full 5-page report for $99.
           </p>
           <a
-            href="/pricing"
+            href="/diagnostic-portal"
             style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: SP.cardRadius, background: B.navy, color: "#ffffff", ...F.body, fontWeight: 600, textDecoration: "none", letterSpacing: "0.01em", transition: "background 200ms ease, transform 200ms ease, box-shadow 200ms ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.20)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = B.navy; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
           >
-            Get My Score — $59
+            Get My Free Score
           </a>
         </div>
       </section>
