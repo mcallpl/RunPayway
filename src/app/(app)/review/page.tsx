@@ -1270,7 +1270,95 @@ export default function ReviewPage() {
 
 
       {/* ════════════════════════════════════════════════════════
-          PAGE 3 — YOUR INCOME DEEP DIVE (currently renders as page 3)
+          PAGE 3 — YOUR BIGGEST RISKS (Confront before explain)
+          ════════════════════════════════════════════════════════ */}
+      <ReportPage record={record}>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}
+        </p>
+
+        {/* Stress scenarios — top 3 */}
+        {v2Scenarios && v2Scenarios.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <Overline large>What Could Hurt Your Score Most</Overline>
+            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
+              const scenarioPlain: Record<string, string> = {
+                active_labor_interrupted: "You are unable to work for an extended period",
+                platform_dependency_shock: "An income channel you rely on changes its terms or access",
+                forward_commitments_delayed: "Income you were expecting gets delayed",
+                client_concentration_loss: "Your largest client leaves or stops paying",
+                market_contraction: "Demand in your industry drops significantly",
+                regulatory_disruption: "A regulatory or policy change affects your work",
+                revenue_model_disruption: "Your primary way of earning income stops working",
+                high_volatility_month: "You have a month where income drops sharply",
+                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
+                key_client_loss: "You lose a key client or contract",
+                pricing_pressure: "What you can charge drops due to market pressure",
+                recurring_stream_degrades: "A repeating income stream weakens or ends",
+                referral_pipeline_dries: "New business or referrals slow down significantly",
+                contract_non_renewal: "A major contract is not renewed",
+                scope_reduction: "A client significantly reduces the scope of your work",
+              };
+              const title = scenarioPlain[s.scenario_id] ?? s.label
+                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
+                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
+                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
+                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
+                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
+                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
+                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
+                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
+                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
+                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
+                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
+                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
+                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
+                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
+                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
+              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
+                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+                : title;
+              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
+              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
+              return (
+                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
+                      <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
+                    </div>
+                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
+                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
+                    </span>
+                  </div>
+                  {s.band_shift && (
+                  <div style={{ paddingLeft: 70 }}>
+                    <p style={{ ...T.meta, color: B.bandLimited, margin: 0, fontWeight: 500 }}>
+                      Would drop to {s.scenario_band} band.
+                    </p>
+                  </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Urgency */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
+            If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection.
+          </p>
+        </div>
+
+        <PageFooter section="Your Biggest Risks" page={3} />
+      </ReportPage>
+
+
+      {/* ════════════════════════════════════════════════════════
+          PAGE 4 — YOUR INCOME DEEP DIVE
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
@@ -1418,94 +1506,6 @@ export default function ReviewPage() {
         </div>
 
         <PageFooter section="Your Income Deep Dive" page={4} />
-      </ReportPage>
-
-
-      {/* ════════════════════════════════════════════════════════
-          PAGE 4 — YOUR BIGGEST RISKS
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}
-        </p>
-
-        {/* Stress scenarios — top 3 */}
-        {v2Scenarios && v2Scenarios.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <Overline large>What Could Hurt Your Score Most</Overline>
-            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
-              const scenarioPlain: Record<string, string> = {
-                active_labor_interrupted: "You are unable to work for an extended period",
-                platform_dependency_shock: "An income channel you rely on changes its terms or access",
-                forward_commitments_delayed: "Income you were expecting gets delayed",
-                client_concentration_loss: "Your largest client leaves or stops paying",
-                market_contraction: "Demand in your industry drops significantly",
-                regulatory_disruption: "A regulatory or policy change affects your work",
-                revenue_model_disruption: "Your primary way of earning income stops working",
-                high_volatility_month: "You have a month where income drops sharply",
-                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
-                key_client_loss: "You lose a key client or contract",
-                pricing_pressure: "What you can charge drops due to market pressure",
-                recurring_stream_degrades: "A repeating income stream weakens or ends",
-                referral_pipeline_dries: "New business or referrals slow down significantly",
-                contract_non_renewal: "A major contract is not renewed",
-                scope_reduction: "A client significantly reduces the scope of your work",
-              };
-              const title = scenarioPlain[s.scenario_id] ?? s.label
-                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
-                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
-                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
-                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
-                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
-                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
-                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
-                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
-                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
-                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
-                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
-                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
-                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
-                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
-                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
-              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
-                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
-                : title;
-              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
-              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
-              return (
-                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
-                      <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
-                    </div>
-                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
-                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
-                    </span>
-                  </div>
-                  {s.band_shift && (
-                  <div style={{ paddingLeft: 70 }}>
-                    <p style={{ ...T.meta, color: B.bandLimited, margin: 0, fontWeight: 500 }}>
-                      Would drop to {s.scenario_band} band.
-                    </p>
-                  </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Urgency */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px" }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
-            If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection.
-          </p>
-        </div>
-
-        <PageFooter section="Your Biggest Risks" page={4} />
       </ReportPage>
 
 
