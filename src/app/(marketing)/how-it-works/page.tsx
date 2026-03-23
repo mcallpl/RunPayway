@@ -195,7 +195,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            RunPayway&#8482; turns six answers about your income into a 0&ndash;100 score, a 5-page diagnostic report, and a clear path to stronger protection &mdash; all under Model RP-2.0.
+            Six questions. Under two minutes. Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
           </p>
         </div>
       </div>
@@ -225,9 +225,9 @@ function ThreeSteps() {
     },
     {
       num: "3",
-      title: "Get your full report",
-      subtitle: "Delivered instantly",
-      body: "A 5-page diagnostic report covering your score, what it means, your biggest risks, how to raise it, and what to do next. Personalized with your name and industry.",
+      title: "Get your free score",
+      subtitle: "Upgrade to the full report for $99",
+      body: "Your score, stability band, peer percentile, and one key insight \u2014 free and instant. The full 5-page report adds structural indicators, risk scenarios, cross-factor effects, and a personalized action plan.",
     },
   ];
 
@@ -1057,13 +1057,11 @@ function CtaSection() {
               marginBottom: 40,
             }}
           >
-            Under two minutes. No bank connection. Instant delivery.
+            Your free score shows where you stand. The full report shows what to do about it.
           </p>
 
           <a
-            href={STRIPE_SINGLE}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/begin"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
@@ -1098,7 +1096,7 @@ function CtaSection() {
               color: "rgba(250,249,247,0.40)",
             }}
           >
-            Model RP-2.0 &middot; Private by default
+            Free to start &middot; Under 2 minutes &middot; No bank connection
           </div>
         </div>
       </div>
