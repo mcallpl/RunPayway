@@ -249,18 +249,18 @@ function WhatModelMeasures() {
             <div
               key={d.title}
               style={{
-                backgroundColor: B.sand,
+                backgroundColor: B.purple,
                 borderRadius: S.cardRadius,
                 padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-                border: "1px solid rgba(14,26,43,0.06)",
+                border: "none",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(12px)",
                 transition: `opacity 0.5s ease-out ${i * 60}ms, transform 0.5s ease-out ${i * 60}ms`,
               }}
             >
-              <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient, marginBottom: 16 }} />
-              <h3 className="text-[15px]" style={{ fontWeight: 600, color: B.navy, marginBottom: 10 }}>{d.title}</h3>
-              <p className="text-[13px]" style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal, marginBottom: 16 }} />
+              <h3 className="text-[15px]" style={{ fontWeight: 600, color: "#FFFFFF", marginBottom: 10 }}>{d.title}</h3>
+              <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.70)", lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
         </div>
