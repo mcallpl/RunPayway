@@ -406,42 +406,31 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", overflowY: "auto" }}>
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           minHeight: "100vh",
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
-          {/* Model badge */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "5px 14px",
-              borderRadius: 8,
-              background: "rgba(75,63,174,0.06)",
-              marginBottom: 24,
-            }}
-          >
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: B.purple, animation: "pulse 1.2s ease-in-out infinite" }} />
-            <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Model RP-2.0
-            </span>
+        <div style={{ textAlign: "center", maxWidth: 420, padding: "0 24px" }}>
+          {/* Spinner */}
+          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 28px", animation: "rp-spin 0.8s linear infinite" }} />
+
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
+            GENERATING YOUR ASSESSMENT
           </div>
 
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
-            Generating Your Assessment
+          <h2 style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 8 }}>
+            Income Stability Score&#8482;
           </h2>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, marginBottom: 12 }}>
-            Structural Stability Model RP-2.0 is evaluating your income structure.
-          </p>
           {assessmentTitle && (
-            <p style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 32 }}>
+            <p style={{ fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.60)", marginBottom: 32 }}>
               Preparing report for {assessmentTitle}
             </p>
           )}
@@ -455,34 +444,35 @@ export default function DiagnosticPage() {
                   display: "flex",
                   alignItems: "center",
                   gap: 14,
-                  padding: "10px 0",
-                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(14,26,43,0.04)" : "none",
-                  opacity: i <= loadingStep ? 1 : 0.25,
+                  padding: "12px 0",
+                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none",
+                  opacity: i <= loadingStep ? 1 : 0.3,
                   transition: "opacity 400ms ease",
                 }}
               >
                 <div
                   style={{
-                    width: 20,
-                    height: 20,
+                    width: 22,
+                    height: 22,
                     borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: i < loadingStep ? B.teal : i === loadingStep ? B.purple : "rgba(14,26,43,0.08)",
-                    transition: "background 400ms ease",
+                    background: i < loadingStep ? "rgba(31,109,122,0.30)" : i === loadingStep ? "rgba(75,63,174,0.30)" : "rgba(244,241,234,0.06)",
+                    border: `1px solid ${i < loadingStep ? "rgba(31,109,122,0.40)" : i === loadingStep ? "rgba(75,63,174,0.40)" : "rgba(244,241,234,0.08)"}`,
+                    transition: "background 400ms ease, border-color 400ms ease",
                     flexShrink: 0,
                   }}
                 >
                   {i < loadingStep ? (
                     <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                      <path d="M1 4L3.5 6.5L9 1" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1 4L3.5 6.5L9 1" stroke="#1F6D7A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : i === loadingStep ? (
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fff" }} />
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#F4F1EA", animation: "rp-pulse 1s ease-in-out infinite" }} />
                   ) : null}
                 </div>
-                <span style={{ fontSize: 13, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? B.navy : B.light }}>
+                <span style={{ fontSize: 13, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? "#F4F1EA" : "rgba(244,241,234,0.30)" }}>
                   {step}
                 </span>
               </div>
@@ -490,12 +480,12 @@ export default function DiagnosticPage() {
           </div>
 
           {/* Progress bar */}
-          <div style={{ height: 3, borderRadius: 2, background: B.sandDk, overflow: "hidden" }}>
+          <div style={{ height: 2, borderRadius: 2, background: "rgba(244,241,234,0.08)", overflow: "hidden" }}>
             <div
               style={{
                 height: "100%",
                 borderRadius: 2,
-                background: B.gradient,
+                background: "linear-gradient(90deg, #4B3FAE, #1F6D7A)",
                 animation: "loadProgress 3.4s ease-in-out forwards",
               }}
             />
@@ -508,10 +498,8 @@ export default function DiagnosticPage() {
               70% { width: 80%; }
               100% { width: 100%; }
             }
-            @keyframes pulse {
-              0%, 100% { opacity: 1; }
-              50% { opacity: 0.4; }
-            }
+            @keyframes rp-spin { to { transform: rotate(360deg); } }
+            @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
           `}</style>
         </div>
       </div>
@@ -525,6 +513,12 @@ export default function DiagnosticPage() {
   if (showReview) {
     return (
       <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
+      {/* Dark branded header */}
+      <div style={{ background: B.navy, padding: "20px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+          Income Stability Score&#8482; &middot; Model RP-2.0
+        </div>
+      </div>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -539,7 +533,7 @@ export default function DiagnosticPage() {
             Confirm before we generate your score
           </h2>
           <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
-            Review each response below. Tap any answer to change it. Once confirmed, your Income Stability Score™ will be calculated immediately.
+            Review each response. Tap any answer to change it.
           </p>
         </div>
 
@@ -632,9 +626,18 @@ export default function DiagnosticPage() {
       background: "#F7F6F3",
       overflowY: "auto",
     }}>
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+    {/* Dark branded header */}
+    <div style={{ background: B.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+        Income Stability Score&#8482;
+      </div>
+      <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>
+        Model RP-2.0
+      </div>
+    </div>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
       {/* Top bar — factor label + progress */}
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
