@@ -180,7 +180,7 @@ function Hero() {
               marginRight: "auto",
             }}
           >
-            Six questions. Under two minutes.
+            Under two minutes.
             <br />
             Full structural diagnosis.
           </h1>
@@ -195,7 +195,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            Six questions. Under two minutes. Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
+            Under two minutes. Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
           </p>
         </div>
       </div>
@@ -213,7 +213,7 @@ function ThreeSteps() {
   const steps = [
     {
       num: "1",
-      title: "Answer six questions",
+      title: "Take the assessment",
       subtitle: "About your income structure",
       body: "Each question looks at a different part of your income \u2014 how much repeats, how many sources you depend on, how much is secured ahead of time, how stable it is month to month, and how much continues without daily work.",
     },

@@ -526,7 +526,7 @@ export default function DiagnosticPage() {
               Review Your Answers
             </div>
             <span style={{ fontSize: 11, color: B.light, fontFeatureSettings: "'tnum'" }}>
-              {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")} · Avg 1:47
+              {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
           </div>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
@@ -652,7 +652,7 @@ export default function DiagnosticPage() {
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
             <span style={{ fontSize: 11, color: "rgba(14,26,43,0.10)" }}>|</span>
-            <span style={{ fontSize: 11, color: B.light }}>Avg 1:47</span>
+            <span style={{ fontSize: 11, color: B.light }}></span>
           </div>
         </div>
 

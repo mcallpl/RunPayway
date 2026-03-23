@@ -190,7 +190,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            6 questions. Under 2 minutes. See your score free — or get the full 5-page report with your structural breakdown, risk scenarios, and personalized action plan.
+            Under 2 minutes. See your score free — or get the full 5-page report with your structural breakdown, risk scenarios, and personalized action plan.
           </p>
         </div>
       </div>
@@ -705,7 +705,7 @@ function Faq() {
     },
     {
       q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway\u2122 never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
+      a: "No. RunPayway\u2122 never connects to a bank, pulls credit, or accesses financial accounts. The assessment is generated entirely from your responses.",
     },
     {
       q: "How long does it take?",

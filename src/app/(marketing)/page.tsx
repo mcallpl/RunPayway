@@ -419,7 +419,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
               }}
             >
-              Most people don&#8217;t know until it&#8217;s too late. Answer 6 questions. Get your score in under 2 minutes. See exactly where your income is vulnerable.
+              Most people don&#8217;t know until it&#8217;s too late. Get your score in under 2 minutes. See exactly where your income is vulnerable.
             </p>
 
             <p
@@ -1549,7 +1549,7 @@ function HowItWorksSection() {
   const mobile = useMobile();
 
   const steps = [
-    { num: "1", title: "Answer six questions", desc: "About how your income is structured today. Takes under two minutes." },
+    { num: "1", title: "Take the assessment", desc: "A short diagnostic about how your income is structured today. Under two minutes." },
     { num: "2", title: "Get your free score", desc: "See your score, stability band, peer percentile, and one key insight — instantly, at no cost." },
     { num: "3", title: "Unlock the full report — $99", desc: "Get the complete 5-page breakdown: what is weak, what would break, and exactly what to do about it. If it does not reveal something new, full refund." },
   ];
@@ -1607,7 +1607,7 @@ function HowItWorksSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          Six questions. Under two minutes. Full structural diagnosis.
+          Under two minutes. Full structural diagnosis.
         </p>
 
         {/* Steps grid */}
@@ -2559,11 +2559,11 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "How long does it take?",
-      a: "Under two minutes. Six questions. Your free score is delivered instantly.",
+      a: "Under two minutes. Your free score is delivered instantly.",
     },
     {
       q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway™ never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
+      a: "No. RunPayway™ never connects to a bank, pulls credit, or accesses financial accounts. The assessment is generated entirely from your responses.",
     },
     {
       q: "Can I retake it later?",

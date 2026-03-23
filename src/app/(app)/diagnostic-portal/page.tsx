@@ -703,7 +703,7 @@ export default function InitializationPage() {
       <div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
           <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>{progressLabels[step]}</span>
-          <span style={{ fontSize: 11, color: B.light }}>6 questions remaining</span>
+          <span style={{ fontSize: 11, color: B.light }}>Under 2 minutes</span>
         </div>
         <div style={{ height: 4, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
           <div style={{ height: "100%", width: progressWidths[step], borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />

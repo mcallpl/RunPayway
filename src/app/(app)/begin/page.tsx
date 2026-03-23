@@ -54,7 +54,7 @@ export default function BeginPage() {
 
   const steps = [
     { num: "1", title: "Set up your profile", desc: "Your industry, income model, and operating structure." },
-    { num: "2", title: "Answer six questions", desc: "About how your income is structured today." },
+    { num: "2", title: "Take the assessment", desc: "A short diagnostic about how your income is structured today." },
     { num: "3", title: "Get your score", desc: "Instantly, on screen, free." },
   ];
 
@@ -185,7 +185,7 @@ export default function BeginPage() {
 
           {/* Trust line */}
           <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? 12 : 20 }}>
-            {["Under 2 minutes", "No bank connection", "No credit pull", "Model RP-2.0"].map((badge) => (
+            {["Under 2 minutes", "No bank connection", "No credit pull", "Private by default"].map((badge) => (
               <span key={badge} style={{ fontSize: 11, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>
                 {badge}
               </span>

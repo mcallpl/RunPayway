@@ -271,7 +271,7 @@ function Purpose() {
               marginBottom: 0,
             }}
           >
-            It answers six questions: How much income is repeatable? How much
+            It evaluates: How much income is repeatable? How much
             depends on one source? How many sources support it? How much is
             secured ahead of time? How stable is it month to month? How much
             continues without daily work?

@@ -90,7 +90,7 @@ function CheckoutSuccessContent() {
   ] : [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure.", done: false },
-    { num: "3", title: "Take the assessment", desc: "Six questions, then your full 5-page report.", done: false },
+    { num: "3", title: "Take the assessment", desc: "Under two minutes, then your full 5-page report.", done: false },
   ];
 
   return (
