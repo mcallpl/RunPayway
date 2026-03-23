@@ -737,27 +737,6 @@ export default function ReviewPage() {
       : "Your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
   };
 
-  // ── Outcome layer explanations override profileConstraintAdvice when available ──
-  // olExplanations comes from the 19-industry backend and is more specific
-  if (olExplanations) {
-    const constraintKeyMap: Record<string, string> = {
-      source_concentration: "high_concentration",
-      forward_visibility: "low_forward_secured",
-      labor_dependence: "high_labor_dependence",
-      low_continuity: "short_continuity",
-      few_sources: "low_source_diversity",
-    };
-    for (const [constraint, olKey] of Object.entries(constraintKeyMap)) {
-      if (olExplanations[olKey]) {
-        profileConstraintAdvice[constraint] = olExplanations[olKey];
-      }
-    }
-    // Also map variability if present
-    if (olExplanations.high_variability && !profileConstraintAdvice.high_variability) {
-      profileConstraintAdvice.high_variability = olExplanations.high_variability;
-    }
-  }
-
   // ── Tier-aware copy ──
   const copy = {
     p1_headline: ({
@@ -800,6 +779,25 @@ export default function ReviewPage() {
   const olFamilyLabel = ol?.income_model_family?.family_label ?? null;
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
   const olBenchmark = ol?.benchmark_context_layer ?? null;
+
+  // ── Outcome layer explanations override profileConstraintAdvice when available ──
+  if (olExplanations) {
+    const constraintKeyMap: Record<string, string> = {
+      source_concentration: "high_concentration",
+      forward_visibility: "low_forward_secured",
+      labor_dependence: "high_labor_dependence",
+      low_continuity: "short_continuity",
+      few_sources: "low_source_diversity",
+    };
+    for (const [constraint, olKey] of Object.entries(constraintKeyMap)) {
+      if (olExplanations[olKey]) {
+        profileConstraintAdvice[constraint] = olExplanations[olKey];
+      }
+    }
+    if (olExplanations.high_variability && !profileConstraintAdvice.high_variability) {
+      profileConstraintAdvice.high_variability = olExplanations.high_variability;
+    }
+  }
 
   // ── LAYER 2: Dominant constraint ──
   const dominantConstraintKey = v2Constraints?.root_constraint ?? "weak_forward_visibility";
