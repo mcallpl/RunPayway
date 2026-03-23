@@ -141,6 +141,7 @@ const selectStyle: React.CSSProperties = {
 export default function InitializationPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
+  const [ready, setReady] = useState(false);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     assessment_title: "",
@@ -235,6 +236,7 @@ export default function InitializationPage() {
         }
 
         setAuthorized(true);
+        setTimeout(() => setReady(true), 3000);
       } catch {
         router.push("/pricing");
       }
@@ -243,10 +245,43 @@ export default function InitializationPage() {
     verifyAccess();
   }, [router]);
 
-  if (!authorized) {
+  if (!authorized || !ready) {
     return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-        <p style={{ fontSize: 14, color: B.light }}>Redirecting to pricing...</p>
+      <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999 }}>
+        <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
+          {/* Spinner */}
+          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 32px", animation: "rp-spin 0.8s linear infinite" }} />
+
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
+            PREPARING YOUR ASSESSMENT
+          </div>
+
+          <div style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA", marginBottom: 12 }}>
+            Income Stability Score&#8482;
+          </div>
+
+          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>
+            Setting up your profile and diagnostic...
+          </div>
+
+          {/* Progress dots */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 32 }}>
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                style={{
+                  width: 6, height: 6, borderRadius: "50%",
+                  backgroundColor: "#F4F1EA",
+                  animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+        <style>{`
+          @keyframes rp-spin { to { transform: rotate(360deg); } }
+          @keyframes rp-pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+        `}</style>
       </div>
     );
   }
