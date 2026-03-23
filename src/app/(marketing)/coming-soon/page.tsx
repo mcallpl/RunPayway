@@ -210,7 +210,7 @@ export default function ComingSoonPage() {
     },
     {
       name: "Enterprise / Platform Integration",
-      description: "Embed the Income Stability Score directly into your platform. Built for payroll companies, gig platforms, lending institutions, and HR technology providers.",
+      description: "Embed the Income Stability Score™ directly into your platform. Built for payroll companies, gig platforms, lending institutions, and HR technology providers.",
       features: ["Full API with webhooks", "Custom scoring parameters", "Multi-tenant architecture", "SLA-backed uptime guarantee", "Dedicated integration engineering"],
       color: B.navy,
     },
@@ -251,7 +251,7 @@ export default function ComingSoonPage() {
           <div style={{ textAlign: "center", marginBottom: 56, opacity: products.visible ? 1 : 0, transform: products.visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.5s ease-out, transform 0.5s ease-out" }}>
             <h2 style={{ ...F.h2, fontSize: mobile ? 28 : F.h2.fontSize, fontFamily: DISPLAY_FONT, color: B.navy, marginBottom: 16 }}>Upcoming products</h2>
             <p style={{ ...F.body, color: B.muted, maxWidth: 520, margin: "0 auto" }}>
-              The Income Stability Score is expanding beyond single assessments.
+              The Income Stability Score™ is expanding beyond single assessments.
             </p>
           </div>
 
@@ -269,7 +269,7 @@ export default function ComingSoonPage() {
           <div style={{ textAlign: "center", marginBottom: 56, opacity: languages.visible ? 1 : 0, transform: languages.visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.5s ease-out, transform 0.5s ease-out" }}>
             <h2 style={{ ...F.h2, fontSize: mobile ? 28 : F.h2.fontSize, fontFamily: DISPLAY_FONT, color: B.navy, marginBottom: 16 }}>Language support</h2>
             <p style={{ ...F.body, color: B.muted, maxWidth: 520, margin: "0 auto" }}>
-              The Income Stability Score will be available in multiple languages.
+              The Income Stability Score™ will be available in multiple languages.
             </p>
           </div>
 
@@ -332,7 +332,7 @@ export default function ComingSoonPage() {
         <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
           <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, marginBottom: 16 }}>Available right now</h2>
           <p style={{ ...F.body, color: B.muted, maxWidth: 480, margin: "0 auto 36px" }}>
-            Get your Income Stability Score today — free. Upgrade to the full 5-page report for $99.
+            Get your Income Stability Score™ today — free. Upgrade to the full 5-page report for $99.
           </p>
           <a
             href="/diagnostic-portal"

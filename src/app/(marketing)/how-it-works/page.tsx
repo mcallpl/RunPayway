@@ -1088,7 +1088,7 @@ function CtaSection() {
                 "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            Get My Income Stability Score&trade; &mdash; $39
+            Get My Free Score
           </a>
 
           <div

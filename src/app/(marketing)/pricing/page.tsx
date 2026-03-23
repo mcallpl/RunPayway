@@ -943,7 +943,7 @@ function FinalCta() {
               transform: hovered ? "translateY(-2px)" : "translateY(0)",
             }}
           >
-            Get My Income Stability Score&trade;
+            Get My Free Score
           </a>
 
           <p

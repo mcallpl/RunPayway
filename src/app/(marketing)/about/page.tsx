@@ -577,7 +577,7 @@ function CtaSection() {
               textDecoration: "none",
             }}
           >
-            Get My Income Stability Score&#8482;
+            Get My Free Score
           </Link>
           <div style={{ marginTop: 16, fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
             Model RP-2.0 &#183; Private by default

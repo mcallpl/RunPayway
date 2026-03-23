@@ -282,7 +282,7 @@ function Page1Preview() {
       <PagePreview
         pageNum="1" title="Your Score" question="What is my score?"
         description="The first page delivers your result immediately — your score, your stability band, where you land relative to peers, and the single most important thing holding the structure back."
-        bullets={["Your 0–100 Income Stability Score with band classification", "A plain-English summary calibrated to your score severity", "Four structural metrics: continuity, stress test, main constraint, and overall durability"]}
+        bullets={["Your 0–100 Income Stability Score™ with band classification", "A plain-English summary calibrated to your score severity", "Four structural metrics: continuity, stress test, main constraint, and overall durability"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
@@ -585,7 +585,7 @@ function CtaSection() {
               transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            Get My Income Stability Score&#8482;
+            Get My Free Score
           </a>
           <div
             style={{

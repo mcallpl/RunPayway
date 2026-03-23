@@ -547,7 +547,7 @@ function FourFactorsSection() {
   return (
     <section
       ref={ref}
-      aria-label="What RunPayway Measures"
+      aria-label="What RunPayway™ Measures"
       style={{
         background: "linear-gradient(180deg, #FFFFFF 0%, #F8F6F2 100%)",
         paddingTop: mobile ? 80 : 140,
@@ -2388,7 +2388,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
+      a: "No. RunPayway™ never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
     },
     {
       q: "Can I retake it later?",

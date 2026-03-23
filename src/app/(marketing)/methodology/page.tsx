@@ -1389,7 +1389,7 @@ function CtaSection() {
                 : "0 2px 8px rgba(0,0,0,0.12)",
             }}
           >
-            Get My Income Stability Score&trade; &mdash; $39
+            Get My Free Score
           </Link>
 
           <p

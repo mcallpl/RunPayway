@@ -164,7 +164,7 @@ export default function FreeScorePage() {
           <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
             <Image src={logoImg} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", filter: "brightness(10)", marginBottom: mobile ? 32 : 40 }} />
 
-            <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score</div>
+            <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score™</div>
 
             <div style={{ ...F.score, fontSize: mobile ? 64 : 72, color: "#F4F1EA", marginBottom: 16 }}>{animatedScore}</div>
 
