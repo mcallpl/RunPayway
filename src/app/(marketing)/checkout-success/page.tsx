@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 
@@ -22,14 +22,16 @@ const PLAN_INFO: Record<string, { title: string; price: string }> = {
 };
 
 function CheckoutSuccessContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") || "single";
   const stripeSessionId = searchParams.get("session_id") || "";
   const customerEmail = searchParams.get("email") || searchParams.get("customer_email") || "";
   const [ready, setReady] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const info = PLAN_INFO[plan] || PLAN_INFO.single;
+
+  useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
 
   // Store purchase session and obtain signed payment token from server
   useEffect(() => {
@@ -74,9 +76,6 @@ function CheckoutSuccessContent() {
   }, [plan, stripeSessionId, customerEmail]);
 
   // No auto-redirect — user clicks "Begin Assessment" when ready
-
-  const [visible, setVisible] = useState(false);
-  useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
 
   const steps = [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}` },
