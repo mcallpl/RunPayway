@@ -650,6 +650,7 @@ export default function ReviewPage() {
   const score = record.final_score;
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
+  const isHighScorer = score >= 50; // Established or High — needs preservation framing, not repair framing
 
   const subTier: "A1" | "A2" | "A3" | "B1" | "B2" | "C1" | "C2" | "D1" | "D2" =
     score <= 9 ? "A1" : score <= 19 ? "A2" : score <= 29 ? "A3" :
@@ -1005,7 +1006,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "How Your Income Is Built", "Your Biggest Risks", "Your Income Deep Dive", "Your Action Plan"];
+  const pageTitles = ["Your Score", "How Your Income Is Built", isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks", "Your Income Deep Dive", isHighScorer ? "How to Protect Your Position" : "Your Action Plan"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1233,7 +1234,7 @@ export default function ReviewPage() {
         {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
           <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 4 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW YOU COMPARE TO PEERS{olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}</div>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer ? `YOU OUTPERFORM ${100 - (peerPercentileValue ?? 50)}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, fontSize: 14 }}>{score}</span></div>
               <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, fontSize: 14, color: B.navy }}>{v2Benchmarks.cluster_average_score}</span></div>
@@ -1278,9 +1279,11 @@ export default function ReviewPage() {
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>{isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks"}</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}
+          {isHighScorer
+            ? `You have built real stability. These are the scenarios that could weaken what you have built.${olIndustryLabel ? ` Assessed for ${olIndustryLabel}.` : ""}`
+            : `${p3Intro[subTier]}${olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}`}
         </p>
 
         {/* Stress scenarios — top 3 */}
@@ -1353,11 +1356,13 @@ export default function ReviewPage() {
         {/* Urgency */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px" }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
-            If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection.
+            {isHighScorer
+              ? "Stability is not permanent. The structural advantages you have today require active maintenance. These risks are worth monitoring."
+              : "If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection."}
           </p>
         </div>
 
-        <PageFooter section="Your Biggest Risks" page={3} />
+        <PageFooter section={isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks"} page={3} />
       </ReportPage>
 
 
@@ -1498,6 +1503,59 @@ export default function ReviewPage() {
           </>
         )}
 
+        {/* High scorer: What separates you from the top + Stronger patterns */}
+        {isHighScorer && v2Benchmarks && (
+          <>
+          <SectionDivider />
+          <Overline large>{score >= (v2Benchmarks.top_20_threshold ?? 65) ? "Why You Are in the Top 20%" : "What Separates You From the Top 20%"}</Overline>
+          <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+            <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>YOUR SCORE</div>
+              <div style={{ ...T.cardHero, color: B.navy }}>{score}</div>
+            </div>
+            <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>PEER AVERAGE</div>
+              <div style={{ ...T.cardHero, color: B.muted }}>{v2Benchmarks.cluster_average_score}</div>
+            </div>
+            <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>TOP 20%</div>
+              <div style={{ ...T.cardHero, color: B.teal }}>{v2Benchmarks.top_20_threshold}</div>
+            </div>
+          </div>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
+            {score >= (v2Benchmarks.top_20_threshold ?? 65)
+              ? `You outperform ${100 - (peerPercentileValue ?? 50)}% of ${industrySector} professionals. Your position is strong — the focus is maintaining it.`
+              : `You are ${(v2Benchmarks.top_20_threshold ?? 65) - score} points from the top 20% of ${industrySector} professionals. Closing this gap would put you among the most protected in your industry.`}
+          </p>
+
+          {/* Dimensions where they trail the elite */}
+          {v2Benchmarks.outlier_dimensions.filter(d => d.direction === "below").length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{score >= (v2Benchmarks.top_20_threshold ?? 65) ? "Where to maintain focus" : "Where the top 20% pull ahead"}</div>
+              {v2Benchmarks.outlier_dimensions.filter(d => d.direction === "below").map((d) => (
+                <div key={d.factor} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: `1px solid ${B.stone}` }}>
+                  <span style={{ ...T.small, color: B.navy }}>{d.factor.replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}</span>
+                  <span style={{ ...T.small, color: B.muted }}>You: {Math.round(d.user_value)} | Peers: {Math.round(d.peer_average)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Stronger structure patterns */}
+          {olStrongerPatterns && olStrongerPatterns.length > 0 && (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>Structural strength signals in {industrySector}</div>
+              {olStrongerPatterns.slice(0, 5).map((pattern, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 5, flexShrink: 0 }} />
+                  <span style={{ ...T.small, color: B.muted }}>{pattern}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          </>
+        )}
+
         {/* Bottom line */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px" }}>
           <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
@@ -1518,9 +1576,11 @@ export default function ReviewPage() {
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Action Plan</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>{isHighScorer ? "How to Protect Your Position" : "Your Action Plan"}</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          As a {structureDesc} in {industrySector} with {incomeModelDesc} income, the fastest way to raise your score is to change how your money comes in — not just earn more.
+          {isHighScorer
+            ? `As a ${structureDesc} in ${industrySector}, you have built real stability. The priority now is to lock it in, close the remaining gaps, and maintain your position.`
+            : `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, the fastest way to raise your score is to change how your money comes in — not just earn more.`}
         </p>
 
         {/* Current Band → Next Target Band */}
@@ -1538,7 +1598,7 @@ export default function ReviewPage() {
         {/* Top 3 improvements + progress bar */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
-            <Overline large>If You Made These Changes</Overline>
+            <Overline large>{isHighScorer ? "How to Strengthen Further" : "If You Made These Changes"}</Overline>
             {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => {
               const liftPlain: Record<string, string> = {
                 reduce_labor_dependence: "Reduce how much income depends on daily work",
@@ -1600,7 +1660,7 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Priority actions — from outcome layer or fallback */}
-        <Overline large>Your Next Steps as a {structureDesc} in {industrySector}</Overline>
+        <Overline large>{isHighScorer ? `How to Maintain Your Position in ${industrySector}` : `Your Next Steps as a ${structureDesc} in ${industrySector}`}</Overline>
         {olActions && olActions.length > 0 && (
           <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 8 }}>
             Tailored for {olIndustryLabel ? `${olIndustryLabel} · ` : ""}{olFamilyLabel ?? "your income model"}
@@ -1676,7 +1736,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
-        <PageFooter section="Your Action Plan" page={5} />
+        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
       </ReportPage>
 
 
