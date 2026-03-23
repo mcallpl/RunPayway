@@ -946,7 +946,7 @@ function IncomePatterns() {
 
                     {/* CTA */}
                     <Link
-                      href="/pricing"
+                      href="/diagnostic-portal"
                       onClick={(e) => e.stopPropagation()}
                       style={{
                         display: "block", textAlign: "center",
@@ -956,7 +956,7 @@ function IncomePatterns() {
                         borderTop: "1px solid #E2E8F0",
                       }}
                     >
-                      Get your full report &#8594;
+                      Get your free score &#8594;
                     </Link>
                   </div>
                 </div>
@@ -1436,7 +1436,7 @@ function SampleResultSection() {
             What would your number be?
           </p>
           <a
-            href="https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02"
+            href="/diagnostic-portal"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -1465,10 +1465,10 @@ function SampleResultSection() {
               e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25)";
             }}
           >
-            Find out — $39
+            Get My Free Score
           </a>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginTop: 12 }}>
-            Under 2 minutes · Instant report · No bank connection
+            Free · Under 2 minutes · No bank connection
           </p>
         </div>
       </div>
@@ -1904,7 +1904,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
           }}
         >
-          {/* CARD 1 — Single Assessment */}
+          {/* CARD 1 — Free Score */}
           <div
             style={{
               background: "#FFFFFF",
@@ -1923,43 +1923,46 @@ function PricingSection() {
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
-              Single Assessment
+              Free Score
             </div>
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
-              $39
+              $0
             </div>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Full 5-page diagnostic &#183; Instant delivery &#183; One-time
+              Score &#183; Band &#183; Percentile &#183; One key insight
             </p>
-            <a
-              href="https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02"
+            <Link
+              href="/diagnostic-portal"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
                 height: S.ctaH,
                 borderRadius: S.ctaRadius,
-                backgroundColor: B.navy,
-                color: "#FFFFFF",
+                backgroundColor: "#FFFFFF",
+                color: B.navy,
                 fontSize: 15,
                 textDecoration: "none",
-                transition: "background-color 180ms ease, transform 180ms ease",
-                boxShadow: "0 4px 12px rgba(14,26,43,0.20)",
+                border: `1px solid ${B.navy}`,
+                transition: "background-color 180ms ease, color 180ms ease, transform 180ms ease",
+                boxShadow: "0 4px 12px rgba(14,26,43,0.10)",
               }}
               onMouseEnter={(e) => {
                 if (!canHover()) return;
-                e.currentTarget.style.backgroundColor = "#1E293B";
+                e.currentTarget.style.backgroundColor = B.navy;
+                e.currentTarget.style.color = "#FFFFFF";
                 e.currentTarget.style.transform = "translateY(-1px)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = B.navy;
+                e.currentTarget.style.backgroundColor = "#FFFFFF";
+                e.currentTarget.style.color = B.navy;
                 e.currentTarget.style.transform = "translateY(0)";
               }}
             >
-              Get My Score
-            </a>
+              Get My Free Score
+            </Link>
           </div>
 
-          {/* CARD 2 — Annual Monitoring */}
+          {/* CARD 2 — Full Report $99 */}
           <div
             style={{
               background: "#FFFFFF",
@@ -1973,7 +1976,7 @@ function PricingSection() {
             onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 28px 72px rgba(75,63,174,0.22), 0 12px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.08)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)"; }}
           >
-            {/* RECOMMENDED badge */}
+            {/* FULL REPORT badge */}
             <div
               style={{
                 display: "inline-block",
@@ -1986,7 +1989,7 @@ function PricingSection() {
                 marginBottom: 12,
               }}
             >
-              Recommended
+              Full Report
             </div>
 
             <div
@@ -1995,16 +1998,16 @@ function PricingSection() {
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
-              Annual Monitoring
+              Complete Assessment
             </div>
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $99
             </div>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Three assessments over 12 months &#183; Track structural changes
+              Full 5-page report &#183; All engine data &#183; Advisor guide
             </p>
             <a
-              href="https://buy.stripe.com/aFacMXdJe2so7Fw7UR2Nq03"
+              href="https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
@@ -2027,8 +2030,11 @@ function PricingSection() {
                 e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)";
               }}
             >
-              Get Annual Monitoring
+              Get Full Report — $99
             </a>
+            <p style={{ fontSize: 11, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+              Full refund if it doesn&#8217;t reveal something new.
+            </p>
           </div>
         </div>
 
@@ -2496,13 +2502,13 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           }}
         >
           <Link
-            href="/pricing"
+            href="/diagnostic-portal"
             style={{
               fontSize: 15, color: B.purple, fontWeight: 500,
               textDecoration: "underline", textUnderlineOffset: 4,
             }}
           >
-            Get My Income Stability Score&#8482; &#8594;
+            Get My Free Score &#8594;
           </Link>
         </div>
       </div>
