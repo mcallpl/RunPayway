@@ -591,28 +591,32 @@ function FourFactorsSection() {
 
   const factors = [
     {
-      number: "I",
+      num: "01",
       label: "Recurrence",
       question: "Do you rebuild your income from scratch every month?",
-      description: "If none of your income repeats automatically — no retainers, no subscriptions, no recurring contracts — you start at zero every month. That is structurally fragile.",
+      description: "No retainers, no subscriptions, no recurring contracts means you start at zero every month.",
+      accent: B.purple,
     },
     {
-      number: "II",
+      num: "02",
       label: "Concentration",
       question: "Would losing one client wipe out half your income?",
-      description: "If too much depends on a single source, one lost contract or one client decision can collapse your entire income. Diversification is structural protection.",
+      description: "One lost contract or one client decision can collapse your entire income structure.",
+      accent: B.teal,
     },
     {
-      number: "III",
+      num: "03",
       label: "Visibility",
-      question: "Do you know what you will earn next month — or are you guessing?",
-      description: "If your upcoming income is not already committed — booked, contracted, or locked in — you have no forward visibility. That means no ability to plan.",
+      question: "Do you know what you will earn next month?",
+      description: "If your income is not already committed — booked, contracted, locked in — you are guessing.",
+      accent: B.purple,
     },
     {
-      number: "IV",
+      num: "04",
       label: "Passivity",
       question: "If you stopped working today, when does the money stop?",
-      description: "If 100% of your income requires your daily effort, any disruption — illness, burnout, a slow month — immediately threatens everything.",
+      description: "If 100% requires your daily effort, any disruption immediately threatens everything.",
+      accent: B.teal,
     },
   ];
 
@@ -621,19 +625,24 @@ function FourFactorsSection() {
       ref={ref}
       aria-label="What RunPayway™ Measures"
       style={{
-        background: "linear-gradient(180deg, #FFFFFF 0%, #F8F6F2 100%)",
+        background: B.navy,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
+      {/* Subtle radial glow */}
+      <div style={{ position: "absolute", top: "50%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      <div className="mx-auto" style={{ maxWidth: S.maxW, position: "relative", zIndex: 1 }}>
         {/* Section header */}
         <div
           style={{
             textAlign: "center",
-            marginBottom: mobile ? 56 : 80,
+            marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
@@ -649,78 +658,66 @@ function FourFactorsSection() {
           </div>
           <h2
             style={{
-              fontSize: mobile ? 32 : 52,
-              color: B.navy,
-              lineHeight: 1.08,
+              fontSize: mobile ? 28 : 44,
+              color: "#F4F1EA",
+              lineHeight: 1.12,
               letterSpacing: "-0.025em",
               fontFamily: DISPLAY_FONT, fontWeight: 400,
-              marginBottom: 24,
+              marginBottom: S.h2mb,
             }}
           >
             The four reasons income falls apart
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 18, color: "rgba(14,26,43,0.48)", lineHeight: 1.7, maxWidth: 540, margin: "0 auto" }}>
-            Your Income Stability Score&#8482; measures these four structural risks. If any one of them is weak, your income is exposed.
+          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: S.subtextMaxW, margin: "0 auto" }}>
+            Your Income Stability Score&#8482; measures these four structural risks. If any one is weak, your income is exposed.
           </p>
         </div>
 
-        {/* Four factors — editorial list */}
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        {/* 2x2 card grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: mobile ? 16 : 20,
+            maxWidth: 880,
+            margin: "0 auto",
+          }}
+        >
           {factors.map((f, i) => (
             <div
               key={f.label}
               style={{
-                display: mobile ? "block" : "flex",
-                alignItems: "flex-start",
-                gap: 40,
-                paddingTop: i === 0 ? 0 : (mobile ? 40 : 56),
-                paddingBottom: mobile ? 40 : 56,
-                borderBottom: i < factors.length - 1 ? "1px solid rgba(14,26,43,0.08)" : "none",
+                backgroundColor: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: S.cardRadius,
+                padding: mobile ? "28px 24px" : "32px 28px",
+                position: "relative",
+                overflow: "hidden",
                 opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(16px)",
-                transition: `opacity 600ms ease-out ${200 + i * 120}ms, transform 600ms ease-out ${200 + i * 120}ms`,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 500ms ease-out ${200 + i * 100}ms, transform 500ms ease-out ${200 + i * 100}ms`,
               }}
             >
-              {/* Left — numeral + label */}
-              <div style={{ minWidth: mobile ? undefined : 180, marginBottom: mobile ? 16 : 0 }}>
-                <div
-                  style={{
-                    fontSize: 32, fontWeight: 300, color: B.teal,
-                    letterSpacing: "0.04em", lineHeight: 1, marginBottom: 8,
-                    fontFamily: DISPLAY_FONT,
-                  }}
-                >
-                  {f.number}
-                </div>
-                <div
-                  style={{
-                    fontSize: 13, fontWeight: 600, textTransform: "uppercase",
-                    letterSpacing: "0.06em", color: B.navy,
-                  }}
-                >
-                  {f.label}
-                </div>
+              {/* Large watermark number */}
+              <div style={{ position: "absolute", top: -8, right: 12, fontSize: 80, fontWeight: 700, color: "rgba(255,255,255,0.03)", lineHeight: 1, pointerEvents: "none" }}>
+                {f.num}
               </div>
 
-              {/* Right — question + description */}
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: mobile ? 22 : 26,
-                    fontWeight: 400,
-                    color: B.navy,
-                    lineHeight: 1.25,
-                    letterSpacing: "-0.015em",
-                    marginBottom: 14,
-                    fontFamily: DISPLAY_FONT,
-                  }}
-                >
-                  {f.question}
-                </div>
-                <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, margin: 0 }}>
-                  {f.description}
-                </p>
+              {/* Accent dot + label */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: f.accent }} />
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)" }}>{f.label}</span>
               </div>
+
+              {/* Question */}
+              <div style={{ fontSize: mobile ? 18 : 20, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.01em", marginBottom: 12 }}>
+                {f.question}
+              </div>
+
+              {/* Description */}
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, margin: 0 }}>
+                {f.description}
+              </p>
             </div>
           ))}
         </div>
