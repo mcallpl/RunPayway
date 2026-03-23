@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoImg from "../../../../public/runpayway-logo.png";
 import { useAssessmentServer } from "@/lib/monitoring";
+import { simulateScore, SIMULATOR_PRESETS, computeProgressionTiers } from "@/lib/engine/v2/simulate";
+import type { CanonicalInput } from "@/lib/engine/v2/types";
 
 // ============================================================
 // ERROR BOUNDARY
@@ -152,6 +154,11 @@ interface AssessmentRecord {
     tradeoff_narratives?: { action_label: string; upside: string; downside: string; net_recommendation: string }[];
     one_thing_that_matters?: string;
     reusable_framework?: string[];
+    predictive_warnings?: { headline: string; explanation: string; timeframe: string }[];
+    behavioral_insights?: { pattern: string; consequence: string; reframe: string }[];
+    execution_roadmap?: { week: string; action: string; detail: string; success_metric: string }[];
+    script_templates?: { id: string; title: string; context: string; script: string }[];
+    normalized_inputs?: { income_persistence_pct: number; largest_source_pct: number; source_diversity_count: number; forward_secured_pct: number; income_variability_level: string; labor_dependence_pct: number };
     outcome_layer?: {
       income_model_family: { family_id: string; family_label: string };
       industry_refinement_profile: { industry_id: string; industry_label: string } | null;
@@ -537,6 +544,8 @@ export default function ReviewPage() {
   const [advisorSent, setAdvisorSent] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
+  const [simPreset, setSimPreset] = useState<string | null>(null);
+  const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const monitoringTracked = useRef(false);
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
@@ -787,6 +796,11 @@ export default function ReviewPage() {
   const v2TradeoffNarratives = v2?.tradeoff_narratives ?? null;
   const v2OneThingThatMatters = v2?.one_thing_that_matters ?? null;
   const v2ReusableFramework = v2?.reusable_framework ?? null;
+  const v2PredictiveWarnings = v2?.predictive_warnings ?? null;
+  const v2BehavioralInsights = v2?.behavioral_insights ?? null;
+  const v2ExecutionRoadmap = v2?.execution_roadmap ?? null;
+  const v2ScriptTemplates = v2?.script_templates ?? null;
+  const v2NormalizedInputs = v2?.normalized_inputs ?? null;
 
   // ── Outcome layer ──
   const ol = v2?.outcome_layer;
@@ -2009,6 +2023,335 @@ export default function ReviewPage() {
         </p>
 
         <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
+      </ReportPage>
+
+
+      {/* ════════════════════════════════════════════════════════
+          PAGE 6 — INTERACTIVE TOOLS (Simulator, Runway, Roadmap, Scripts)
+          This page is app-only (not in PDF) — interactive features.
+          ════════════════════════════════════════════════════════ */}
+      <ReportPage record={record}>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Interactive Tools</h1>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
+          These tools let you explore scenarios, plan your next moves, and take action. Use them repeatedly — this is not a one-time report, it is a decision-making system.
+        </p>
+
+        {/* ── LIVE SIMULATOR ── */}
+        {v2NormalizedInputs && (() => {
+          const baseInputs: CanonicalInput = {
+            income_persistence_pct: v2NormalizedInputs.income_persistence_pct,
+            largest_source_pct: v2NormalizedInputs.largest_source_pct,
+            source_diversity_count: v2NormalizedInputs.source_diversity_count,
+            forward_secured_pct: v2NormalizedInputs.forward_secured_pct,
+            income_variability_level: v2NormalizedInputs.income_variability_level as "low" | "moderate" | "high" | "extreme",
+            labor_dependence_pct: v2NormalizedInputs.labor_dependence_pct,
+          };
+          const qualityScore = v2Quality?.quality_score ?? 5;
+          const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset);
+          const simInputs = activePreset ? activePreset.modify(baseInputs) : baseInputs;
+          const simResult = simulateScore(simInputs, qualityScore);
+          const scoreDelta = simResult.overall_score - score;
+          const progressionTiers = computeProgressionTiers(score, baseInputs, qualityScore);
+
+          return (
+            <>
+            <Overline large>Score Simulator</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              Click a scenario to see how it would change your score in real time.
+            </p>
+
+            {/* Preset buttons */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+              {SIMULATOR_PRESETS.map((preset) => {
+                const isActive = simPreset === preset.id;
+                return (
+                  <button
+                    key={preset.id}
+                    onClick={() => setSimPreset(isActive ? null : preset.id)}
+                    style={{
+                      padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${isActive ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms ease",
+                      backgroundColor: isActive ? "rgba(75,63,174,0.08)" : "#fff",
+                      color: isActive ? B.purple : B.navy,
+                    }}
+                  >
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Simulation result */}
+            <div style={{ display: "flex", gap: 16, marginBottom: 20, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT SCORE</div>
+                <div style={{ ...T.cardHero, color: B.navy }}>{score}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{record.stability_band}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{simPreset ? "SIMULATED SCORE" : "NO CHANGES"}</div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
+              </div>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CHANGE</div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.muted }}>
+                  {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta === 0 ? "—" : String(scoreDelta)}
+                </div>
+                <div style={{ ...T.meta, color: B.muted }}>Fragility: {simResult.fragility_class}</div>
+              </div>
+            </div>
+
+            {activePreset && (
+              <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 20 }}>
+                <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{activePreset.label}</div>
+                <p style={{ ...T.small, color: B.muted, margin: 0 }}>{activePreset.description}</p>
+                {scoreDelta !== 0 && (
+                  <p style={{ ...T.small, color: scoreDelta > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>
+                    {scoreDelta > 0 ? `This move would improve your score by ${scoreDelta} points${simResult.band !== record.stability_band ? ` and move you to ${simResult.band}` : ""}.` : `This would drop your score by ${Math.abs(scoreDelta)} points${simResult.band !== record.stability_band ? ` — dropping you to ${simResult.band}` : ""}.`}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <SectionDivider />
+
+            {/* ── INCOME RUNWAY CALCULATOR ── */}
+            <Overline large>Income Runway Calculator</Overline>
+            {(() => {
+              const runwayDays = Math.round(record.income_continuity_months * 30);
+              const target90Days = 90 - runwayDays;
+              const persistenceNeeded = Math.max(0, Math.round((90 / 30 - record.income_continuity_months) / 0.03));
+              return (
+                <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
+                    <div style={{ ...T.score, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, fontSize: 40, marginBottom: 4 }}>{runwayDays}</div>
+                    <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
+                    <p style={{ ...T.meta, color: B.muted, marginTop: 8, lineHeight: 1.5 }}>
+                      {runwayDays < 14 ? "This is a crisis-level runway. Any disruption becomes an emergency." : runwayDays < 30 ? "Less than one month. A single slow period could force difficult decisions." : runwayDays < 90 ? "Moderate runway, but not enough for a real transition or recovery." : "Strong runway. You could handle a significant disruption."}
+                    </p>
+                  </div>
+                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
+                    {runwayDays >= 90 ? (
+                      <>
+                      <div style={{ ...T.cardHero, color: B.teal, marginBottom: 8 }}>Already there</div>
+                      <p style={{ ...T.small, color: B.muted, margin: 0 }}>You have 90+ days of income runway. Focus on maintaining this buffer.</p>
+                      </>
+                    ) : (
+                      <>
+                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>You need {target90Days} more days</div>
+                      <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                        Increase recurring revenue by ~{Math.min(persistenceNeeded, 100 - baseInputs.income_persistence_pct)}% to close the gap. This means converting {Math.ceil(persistenceNeeded / 15)} more client{Math.ceil(persistenceNeeded / 15) > 1 ? "s" : ""} to retainers or building {Math.ceil(persistenceNeeded / 20)} passive income stream{Math.ceil(persistenceNeeded / 20) > 1 ? "s" : ""}.
+                      </p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
+            <SectionDivider />
+
+            {/* ── SCORE IMPROVEMENT ROADMAP ── */}
+            <Overline large>Score Progression Roadmap</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              Here is exactly what it takes to reach each level — and the maximum score possible with your income model.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+              {progressionTiers.map((tier) => {
+                const tierColor = tier.target_score >= 75 ? B.bandHigh : tier.target_score >= 50 ? B.bandEstablished : tier.target_score >= 30 ? B.bandDeveloping : B.bandLimited;
+                return (
+                  <div key={tier.target_score} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tierColor}`, borderRadius: 4 }}>
+                    <div style={{ minWidth: 50, textAlign: "center" }}>
+                      <div style={{ ...T.cardHero, color: tierColor, fontSize: 20 }}>{tier.target_score}</div>
+                      <div style={{ ...T.meta, color: B.muted }}>+{tier.current_gap}</div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{tier.target_band}</div>
+                      <p style={{ ...T.small, color: B.muted, margin: 0 }}>{tier.what_to_do}</p>
+                      {tier.achievable && <span style={{ ...T.meta, color: B.teal, fontWeight: 600 }}>Achievable with focused effort</span>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            </>
+          );
+        })()}
+
+        {/* ── PREDICTIVE WARNINGS ── */}
+        {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What You Are Likely to Do Wrong Next</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Based on your structure, these are the mistakes people in your position typically make in the coming months.
+          </p>
+          {v2PredictiveWarnings.map((w, i) => (
+            <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "14px 18px", marginBottom: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy }}>{w.headline}</div>
+                <span style={{ ...T.micro, color: B.bandLimited }}>{w.timeframe}</span>
+              </div>
+              <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{w.explanation}</p>
+            </div>
+          ))}
+          </>
+        )}
+
+        {/* ── BEHAVIORAL INSIGHTS ── */}
+        {v2BehavioralInsights && v2BehavioralInsights.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What Your Structure Says About Your Decisions</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Your income structure reveals patterns in how you make decisions. Understanding these patterns is the first step to changing them.
+          </p>
+          {v2BehavioralInsights.map((b, i) => (
+            <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 10 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{b.pattern}</div>
+              <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{b.consequence}</p>
+              <div style={{ borderTop: `1px solid ${B.stone}`, paddingTop: 8 }}>
+                <div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 2 }}>HOW TO REFRAME</div>
+                <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>{b.reframe}</p>
+              </div>
+            </div>
+          ))}
+          </>
+        )}
+
+        {/* ── VISUAL INCOME MAP ── */}
+        {v2NormalizedInputs && (() => {
+          const ni = v2NormalizedInputs;
+          const riskLevel = (val: number, threshold: number, inverted?: boolean) => {
+            const v = inverted ? 100 - val : val;
+            return v >= threshold ? B.bandLimited : v >= threshold * 0.6 ? B.bandDeveloping : B.teal;
+          };
+          return (
+            <>
+            <SectionDivider />
+            <Overline large>Your Income System Map</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
+              A visual overview of how your income flows, where dependencies exist, and where risk concentrates.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 20 }}>
+              {/* Row 1: Sources */}
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 8 }}>
+                {Array.from({ length: Math.min(6, ni.source_diversity_count) }, (_, i) => (
+                  <div key={i} style={{ width: 60, height: 40, borderRadius: 4, backgroundColor: i === 0 ? riskLevel(ni.largest_source_pct, 60) : B.teal, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(14,26,43,0.08)" }}>
+                    <span style={{ ...T.meta, color: "#fff", fontWeight: 600 }}>{i === 0 ? `${ni.largest_source_pct}%` : ""}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ textAlign: "center", ...T.meta, color: B.taupe, marginBottom: 4 }}>{ni.source_diversity_count} income source{ni.source_diversity_count !== 1 ? "s" : ""} → {ni.largest_source_pct}% from largest</div>
+
+              {/* Row 2: Flow indicators */}
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 8 }}>
+                {[
+                  { label: "Recurring", value: `${ni.income_persistence_pct}%`, color: riskLevel(100 - ni.income_persistence_pct, 70) },
+                  { label: "Forward", value: `${ni.forward_secured_pct}%`, color: riskLevel(100 - ni.forward_secured_pct, 70) },
+                  { label: "Passive", value: `${100 - ni.labor_dependence_pct}%`, color: riskLevel(ni.labor_dependence_pct, 70) },
+                ].map((item) => (
+                  <div key={item.label} style={{ textAlign: "center", padding: "8px 16px", borderRadius: 4, backgroundColor: B.bone, border: `2px solid ${item.color}`, minWidth: 80 }}>
+                    <div style={{ ...T.sectionLabel, color: item.color }}>{item.value}</div>
+                    <div style={{ ...T.meta, color: B.muted }}>{item.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Row 3: Risk indicators */}
+              <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+                {[
+                  { label: "Concentration Risk", active: ni.largest_source_pct >= 50 },
+                  { label: "Labor Risk", active: ni.labor_dependence_pct >= 70 },
+                  { label: "Visibility Risk", active: ni.forward_secured_pct <= 20 },
+                  { label: "Variability Risk", active: ni.income_variability_level === "high" || ni.income_variability_level === "extreme" },
+                ].filter(r => r.active).map((risk) => (
+                  <span key={risk.label} style={{ ...T.micro, color: B.bandLimited, padding: "4px 10px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.06)", border: "1px solid rgba(155,44,44,0.12)" }}>
+                    {risk.label}
+                  </span>
+                ))}
+                {ni.largest_source_pct < 50 && ni.labor_dependence_pct < 70 && ni.forward_secured_pct > 20 && ni.income_variability_level !== "high" && ni.income_variability_level !== "extreme" && (
+                  <span style={{ ...T.micro, color: B.teal, padding: "4px 10px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.12)" }}>
+                    No critical risk flags
+                  </span>
+                )}
+              </div>
+            </div>
+            </>
+          );
+        })()}
+
+        {/* ── EXECUTION ROADMAP ── */}
+        {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Your 6-Week Execution Plan</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Here is exactly what to do for the next 6 weeks. Each step builds on the last. Follow this and you will see measurable structural improvement.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 20 }}>
+            {v2ExecutionRoadmap.map((week, i) => (
+              <div key={i} style={{ display: "flex", gap: 16, padding: "14px 0", borderBottom: i < v2ExecutionRoadmap.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                <div style={{ minWidth: 70, flexShrink: 0 }}>
+                  <div style={{ ...T.sectionLabel, color: B.purple }}>{week.week}</div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{week.action}</div>
+                  <p style={{ ...T.small, color: B.muted, margin: "0 0 6px", lineHeight: 1.55 }}>{week.detail}</p>
+                  <div style={{ ...T.meta, color: B.teal, fontWeight: 500 }}>Success metric: {week.success_metric}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          </>
+        )}
+
+        {/* ── SCRIPTS & TEMPLATES ── */}
+        {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Ready-to-Use Scripts</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Do not just know what to do — have the words to do it. These scripts are tailored to your situation. Copy, customize, and send.
+          </p>
+          {v2ScriptTemplates.map((script) => {
+            const isExpanded = expandedScript === script.id;
+            return (
+              <div key={script.id} style={{ marginBottom: 8, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                <button
+                  onClick={() => setExpandedScript(isExpanded ? null : script.id)}
+                  style={{ width: "100%", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.04)" : B.bone, transition: "background-color 150ms ease" }}
+                >
+                  <div style={{ textAlign: "left" }}>
+                    <div style={{ ...T.sectionLabel, color: B.navy }}>{script.title}</div>
+                    <div style={{ ...T.meta, color: B.muted }}>{script.context}</div>
+                  </div>
+                  <span style={{ ...T.sectionLabel, color: B.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
+                </button>
+                {isExpanded && (
+                  <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
+                    <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(script.script);
+                      }}
+                      style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: B.purple, borderRadius: 6, border: `1px solid ${B.purple}`, cursor: "pointer", backgroundColor: "rgba(75,63,174,0.04)" }}
+                    >
+                      Copy to clipboard
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          </>
+        )}
+
+        <PageFooter section="Interactive Tools" page={6} />
       </ReportPage>
 
 

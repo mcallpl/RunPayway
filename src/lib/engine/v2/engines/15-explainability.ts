@@ -15,8 +15,11 @@ import type {
   ExplainabilityResult,
   SurprisingInsight,
   TradeoffNarrative,
+  PredictiveWarning,
+  BehavioralInsight,
   BenchmarkResult,
   ConstraintKey,
+  ResolvedProfile,
 } from "../types";
 import { CONSTRAINT_LABELS, FAILURE_MODE_LABELS } from "../constants";
 
@@ -30,6 +33,7 @@ export function generateExplainability(
   quality: QualityResult,
   normalized: CanonicalInput,
   benchmarks: BenchmarkResult | null,
+  profile: ResolvedProfile,
 ): ExplainabilityResult {
   return {
     why_this_score: generateWhyThisScore(scores, bands),
@@ -43,6 +47,8 @@ export function generateExplainability(
     tradeoff_narratives: generateTradeoffNarratives(constraints, normalized, sensitivity),
     one_thing_that_matters: generateOneThingThatMatters(sensitivity, constraints, scores),
     reusable_framework: generateReusableFramework(scores, normalized),
+    predictive_warnings: generatePredictiveWarnings(normalized, constraints, fragility, scores),
+    behavioral_insights: generateBehavioralInsights(normalized, constraints, profile, scores),
   };
 }
 
@@ -386,4 +392,120 @@ function generateReusableFramework(
     `Variability: How much does your income swing month to month? Lower swings = better planning, less stress, fewer crises.`,
     `Quality: How durable are your contracts? Long terms, low cancellation risk, and low platform dependency make each dollar worth more.`,
   ];
+}
+
+// ─── NEW: PREDICTIVE WARNINGS ────────────────────────────
+
+function generatePredictiveWarnings(
+  n: CanonicalInput,
+  constraints: ConstraintHierarchy,
+  fragility: FragilityResult,
+  scores: ScoreBreakdown,
+): PredictiveWarning[] {
+  const warnings: PredictiveWarning[] = [];
+
+  // Over-reliance escalation
+  if (n.largest_source_pct >= 50 && n.largest_source_pct < 80) {
+    warnings.push({
+      headline: "You are likely to become more dependent on your top source",
+      explanation: `At ${n.largest_source_pct}%, your largest source is already dominant. Without active diversification, natural gravity pulls this higher — your best client gives you more work, you say yes, and concentration creeps toward dangerous levels. Most people do not notice until it is too late.`,
+      timeframe: "Next 3-6 months",
+    });
+  }
+
+  // Burnout risk from labor + low persistence
+  if (n.labor_dependence_pct >= 75 && n.income_persistence_pct <= 30) {
+    warnings.push({
+      headline: "Your current structure encourages burnout",
+      explanation: `${n.labor_dependence_pct}% of your income requires daily effort and only ${n.income_persistence_pct}% recurs. This means you must perform at full capacity every month to maintain income. Fatigue, illness, or even a vacation creates an immediate income gap. This structure is not sustainable long-term.`,
+      timeframe: "Next 60-90 days",
+    });
+  }
+
+  // Forward visibility collapse
+  if (n.forward_secured_pct <= 15 && n.source_diversity_count <= 2) {
+    warnings.push({
+      headline: "You are one slow month away from a cash crisis",
+      explanation: `With only ${n.forward_secured_pct}% forward visibility and ${n.source_diversity_count} income source${n.source_diversity_count > 1 ? "s" : ""}, a single dry spell could cascade. You have no pipeline buffer, so any gap between clients becomes an emergency, not an inconvenience.`,
+      timeframe: "Next 30-60 days",
+    });
+  }
+
+  // False confidence from good score but brittle fragility
+  if (scores.overall_score >= 45 && (fragility.fragility_class === "brittle" || fragility.fragility_class === "thin")) {
+    warnings.push({
+      headline: "Your score may be giving you false confidence",
+      explanation: `A score of ${scores.overall_score} looks reasonable, but your fragility class is "${fragility.fragility_class}." This means things look fine until they do not. One disruption — a lost client, a health event, a market shift — could drop your score dramatically. Do not confuse a decent average with actual protection.`,
+      timeframe: "Ongoing",
+    });
+  }
+
+  // Complacency risk for high scorers
+  if (scores.overall_score >= 70 && n.forward_secured_pct <= 30) {
+    warnings.push({
+      headline: "Stability without forward visibility is borrowed time",
+      explanation: `Your score of ${scores.overall_score} is strong, but only ${n.forward_secured_pct}% is locked in ahead. This means your stability depends on things continuing to go right. The moment they do not — a client pauses, a deal slips — you will feel it immediately.`,
+      timeframe: "Next quarter",
+    });
+  }
+
+  return warnings.slice(0, 2);
+}
+
+// ─── NEW: BEHAVIORAL INSIGHTS ────────────────────────────
+
+function generateBehavioralInsights(
+  n: CanonicalInput,
+  constraints: ConstraintHierarchy,
+  profile: ResolvedProfile,
+  scores: ScoreBreakdown,
+): BehavioralInsight[] {
+  const insights: BehavioralInsight[] = [];
+
+  // High effort, low leverage
+  if (n.labor_dependence_pct >= 70 && n.income_persistence_pct <= 25) {
+    insights.push({
+      pattern: "You are optimizing for short-term cash over long-term stability",
+      consequence: "Every month you restart from near-zero. You work hard but the work does not compound. This is the highest-effort, lowest-leverage income model.",
+      reframe: "Shift 10-15% of your time from active delivery to building one recurring stream. The first 90 days feel slower. After that, each month gets easier.",
+    });
+  }
+
+  // Relationship dependency
+  if (n.largest_source_pct >= 60 && n.source_diversity_count <= 2) {
+    insights.push({
+      pattern: "You are building a business around a relationship, not a structure",
+      consequence: "When your biggest source is also your only real source, every business decision optimizes for keeping that one relationship happy. You lose negotiating power, take on scope you should not, and avoid uncomfortable conversations.",
+      reframe: "Adding even one more meaningful source at 15-20% changes the dynamic entirely. You negotiate better, say no more easily, and sleep better.",
+    });
+  }
+
+  // Comfort zone trap — decent score but no forward momentum
+  if (scores.overall_score >= 40 && scores.overall_score <= 60 && n.forward_secured_pct <= 20) {
+    insights.push({
+      pattern: "You are in a comfort zone that feels stable but is not protected",
+      consequence: "A mid-range score feels like you have figured it out. But without forward visibility, you are just having a good streak. Streaks end. When this one does, you will not have a plan B ready.",
+      reframe: "Use this stable period to lock things in — retainers, contracts, commitments. Building from strength is easier than building from crisis.",
+    });
+  }
+
+  // Avoidance of structure
+  if (n.income_persistence_pct <= 15 && n.forward_secured_pct <= 15 && profile.is_project_model) {
+    insights.push({
+      pattern: "You are trading freedom for fragility",
+      consequence: "Project-based work feels like independence, but zero recurring revenue and zero forward visibility is not freedom — it is constant reinvention. The mental cost of always hunting for the next project compounds into chronic stress.",
+      reframe: "One retainer at 20-30% of your income buys real freedom — the freedom to say no, take vacations, and be strategic instead of reactive.",
+    });
+  }
+
+  // Over-diversification without depth
+  if (n.source_diversity_count >= 5 && n.income_persistence_pct <= 20) {
+    insights.push({
+      pattern: "You are spreading wide instead of building deep",
+      consequence: `${n.source_diversity_count} sources looks diversified, but with only ${n.income_persistence_pct}% persistence, none of these relationships have real depth. You are a freelancer with many clients, not a business with durable revenue.`,
+      reframe: "Pick your 2-3 best clients and convert them to recurring arrangements. Depth of relationship is more valuable than breadth of portfolio.",
+    });
+  }
+
+  return insights.slice(0, 2);
 }

@@ -12,6 +12,8 @@ import type {
   ActionResult,
   RecommendedAction,
   AvoidAction,
+  ExecutionRoadmapWeek,
+  ScriptTemplate,
   ConstraintKey,
   FragilityClass,
 } from "../types";
@@ -259,7 +261,10 @@ export function prioritizeActions(
     });
   }
 
-  return { recommended_actions: recommended, avoid_actions: avoid };
+  const execution_roadmap = generateExecutionRoadmap(constraints, normalized, profile);
+  const script_templates = generateScriptTemplates(constraints, normalized, profile);
+
+  return { recommended_actions: recommended, avoid_actions: avoid, execution_roadmap, script_templates };
 }
 
 // ─── TARGET PERSONALIZATION ──────────────────────────────
@@ -289,4 +294,147 @@ function personalizeTarget(
     default:
       return fallback;
   }
+}
+
+// ─── EXECUTION ROADMAP ───────────────────────────────────
+
+function generateExecutionRoadmap(
+  constraints: ConstraintHierarchy,
+  n: CanonicalInput,
+  profile: ResolvedProfile,
+): ExecutionRoadmapWeek[] {
+  const weeks: ExecutionRoadmapWeek[] = [];
+  const root = constraints.root_constraint;
+  const isProject = profile.is_project_model;
+
+  // Week 1: Assessment and identification
+  weeks.push({
+    week: "Week 1",
+    action: "Audit your current income structure",
+    detail: root === "high_concentration"
+      ? `List all income sources. Confirm your top source is at ${n.largest_source_pct}%. Identify 3 prospects who could become 10%+ sources within 90 days.`
+      : root === "weak_forward_visibility"
+      ? `Review every current client. Identify which ones could commit to retainers, advance bookings, or multi-month contracts. Draft a shortlist of your top 3 conversion candidates.`
+      : root === "high_labor_dependence"
+      ? `Map every hour you work to the revenue it generates. Identify which services could be productized, templated, or delivered by someone else.`
+      : root === "low_persistence"
+      ? `Calculate what percentage of last month's revenue will repeat this month without re-selling. Identify 2-3 clients where a retainer conversation is natural.`
+      : "Review your six structural factors. Identify the single weakest area and list 3 specific actions that could improve it.",
+    success_metric: "You have a written list of specific opportunities to act on",
+  });
+
+  // Week 2: First outreach / conversation
+  weeks.push({
+    week: "Week 2",
+    action: root === "high_concentration"
+      ? "Reach out to 3 new prospects"
+      : root === "weak_forward_visibility"
+      ? "Pitch your first retainer or advance commitment"
+      : root === "high_labor_dependence"
+      ? "Design one productized or semi-passive offering"
+      : root === "low_persistence"
+      ? "Have the retainer conversation with your best client"
+      : "Start one conversation that addresses your primary constraint",
+    detail: root === "high_concentration"
+      ? "Send personalized outreach to 3 qualified prospects. Focus on people who need ongoing work, not one-off projects. Use the outreach script from this report."
+      : root === "weak_forward_visibility"
+      ? `Choose your most likely conversion candidate and propose a ${isProject ? "3-month project commitment" : "monthly retainer"} with a small discount for commitment. Use the retainer pitch script from this report.`
+      : root === "high_labor_dependence"
+      ? "Package your most common deliverable into a fixed-scope offering that could be partially automated or delegated. Price it at 70-80% of your custom rate."
+      : "Propose converting one project relationship into a monthly engagement. Frame it as guaranteed priority access.",
+    success_metric: root === "high_concentration"
+      ? "3 outreach messages sent, at least 1 response received"
+      : "1 proposal delivered to a specific client",
+  });
+
+  // Week 3-4: Follow through and close
+  weeks.push({
+    week: "Weeks 3-4",
+    action: root === "high_concentration"
+      ? "Close 1 new client and nurture 2 more"
+      : root === "weak_forward_visibility"
+      ? "Close the commitment and identify the next conversion"
+      : root === "high_labor_dependence"
+      ? "Launch your productized offering and get your first customer"
+      : "Finalize the retainer agreement and identify the second conversion",
+    detail: root === "high_concentration"
+      ? `Target: bring your top source below ${Math.max(50, n.largest_source_pct - 15)}%. Even one new client at 10% makes a structural difference.`
+      : root === "weak_forward_visibility"
+      ? `Target: increase forward-secured revenue from ${n.forward_secured_pct}% toward ${Math.min(100, n.forward_secured_pct + 15)}%. One signed commitment changes your runway.`
+      : `Target: have at least one arrangement generating revenue that does not require your daily labor.`,
+    success_metric: "1 structural change completed (new client, signed retainer, or launched product)",
+  });
+
+  // Weeks 5-6: Consolidate and measure
+  weeks.push({
+    week: "Weeks 5-6",
+    action: "Measure the impact and plan the next move",
+    detail: `Reassess your six structural factors. Has your ${CONSTRAINT_LABELS_PLAIN[root] ?? "primary constraint"} improved? If yes, move to your secondary constraint (${CONSTRAINT_LABELS_PLAIN[constraints.primary_constraint] ?? "next area"}). If not, double down on the same area.`,
+    success_metric: "Measurable improvement in at least one structural factor. Ready for reassessment.",
+  });
+
+  return weeks;
+}
+
+const CONSTRAINT_LABELS_PLAIN: Record<string, string> = {
+  weak_forward_visibility: "forward visibility",
+  high_labor_dependence: "labor dependence",
+  high_concentration: "client concentration",
+  low_persistence: "recurring revenue",
+  high_variability: "earnings variability",
+  weak_durability: "revenue durability",
+  shallow_continuity: "income continuity",
+};
+
+// ─── SCRIPT TEMPLATES ────────────────────────────────────
+
+function generateScriptTemplates(
+  constraints: ConstraintHierarchy,
+  n: CanonicalInput,
+  profile: ResolvedProfile,
+): ScriptTemplate[] {
+  const scripts: ScriptTemplate[] = [];
+  const root = constraints.root_constraint;
+
+  // Always include retainer pitch if relevant
+  if (root === "weak_forward_visibility" || root === "low_persistence" || n.forward_secured_pct <= 30) {
+    scripts.push({
+      id: "SCRIPT-RETAINER",
+      title: "Retainer Conversion Pitch",
+      context: "Use this when proposing to convert a project-based client to a monthly retainer or ongoing commitment.",
+      script: `"I have enjoyed working on [project name] and I think there is an opportunity to make this work better for both of us. Instead of scoping each project individually, I would like to propose a monthly arrangement where you get [X hours / deliverables] per month at a [5-10]% preferred rate. This gives you guaranteed priority access and predictable costs. For me, it means I can plan around your needs instead of scrambling between projects. Would you be open to trying this for 3 months?"`,
+    });
+  }
+
+  // Client diversification outreach
+  if (root === "high_concentration" || n.largest_source_pct >= 50) {
+    scripts.push({
+      id: "SCRIPT-OUTREACH",
+      title: "New Client Outreach Message",
+      context: `Use this to reach prospects who could become meaningful income sources (target: 10-15% of total revenue each).`,
+      script: `"Hi [Name], I have been doing [specific work] for [industry/clients like them] and wanted to reach out because [specific reason this prospect is a fit]. I specialize in [your core offering] and typically work with clients on a [retainer / project / ongoing] basis. Would you have 15 minutes this week to explore whether there is a fit? I am currently taking on [1-2] new ongoing clients."`,
+    });
+  }
+
+  // Pricing restructure
+  if (root === "high_variability" || root === "low_persistence") {
+    scripts.push({
+      id: "SCRIPT-PRICING",
+      title: "Pricing Restructure Conversation",
+      context: "Use this when proposing to restructure variable or project-based pricing into a predictable monthly arrangement.",
+      script: `"I have noticed that our work together tends to fluctuate month to month, which makes it harder for both of us to plan. I would like to propose a fixed monthly arrangement at [$X/month] that covers [scope]. This gives you budget predictability and gives me the stability to prioritize your work. If we try it for 3 months, I am confident we will both prefer it."`,
+    });
+  }
+
+  // Passive income launch
+  if (root === "high_labor_dependence" || n.labor_dependence_pct >= 70) {
+    scripts.push({
+      id: "SCRIPT-PRODUCTIZE",
+      title: "Productized Offering Framework",
+      context: "Use this framework to design your first non-labor-dependent revenue stream.",
+      script: `Step 1: Identify your most repeated deliverable — the thing you do most often for clients.\nStep 2: Package it at a fixed price with a defined scope (e.g., "[Service] Package — $[X]/month, includes [deliverables]").\nStep 3: Price it at 70-80% of your custom rate. The margin comes from efficiency, not higher pricing.\nStep 4: Offer it first to existing clients: "I have created a streamlined version of [service] that I think would work well for you at a lower price point."\nStep 5: Target: 2-3 clients on this package within 60 days = 15-20% of revenue on a lower-effort model.`,
+    });
+  }
+
+  return scripts.slice(0, 3);
 }

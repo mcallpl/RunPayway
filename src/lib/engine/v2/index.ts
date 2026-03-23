@@ -222,6 +222,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     quality,
     normalized,
     benchmarks,
+    resolvedProfile,
   );
   reason_codes.push(REASON_CODES["EXP-001"]);
 
@@ -289,6 +290,8 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     explainability,
     recommended_actions: actions.recommended_actions,
     avoid_actions: actions.avoid_actions,
+    execution_roadmap: actions.execution_roadmap,
+    script_templates: actions.script_templates,
     reassessment_triggers: reassessmentTriggers,
     benchmarks,
     comparison,

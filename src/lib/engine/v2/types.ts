@@ -353,6 +353,32 @@ export interface TradeoffNarrative {
   net_recommendation: string;
 }
 
+export interface PredictiveWarning {
+  headline: string;
+  explanation: string;
+  timeframe: string;
+}
+
+export interface BehavioralInsight {
+  pattern: string;
+  consequence: string;
+  reframe: string;
+}
+
+export interface ExecutionRoadmapWeek {
+  week: string;
+  action: string;
+  detail: string;
+  success_metric: string;
+}
+
+export interface ScriptTemplate {
+  id: string;
+  title: string;
+  context: string;
+  script: string;
+}
+
 export interface ExplainabilityResult {
   why_this_score: string;
   why_not_higher: string;
@@ -365,6 +391,8 @@ export interface ExplainabilityResult {
   tradeoff_narratives: TradeoffNarrative[];
   one_thing_that_matters: string;
   reusable_framework: string[];
+  predictive_warnings: PredictiveWarning[];
+  behavioral_insights: BehavioralInsight[];
 }
 
 // ─── ACTIONS ────────────────────────────────────────────
@@ -392,6 +420,8 @@ export interface AvoidAction {
 export interface ActionResult {
   recommended_actions: RecommendedAction[];
   avoid_actions: AvoidAction[];
+  execution_roadmap: ExecutionRoadmapWeek[];
+  script_templates: ScriptTemplate[];
 }
 
 // ─── REASSESSMENT ───────────────────────────────────────
@@ -527,6 +557,8 @@ export interface AssessmentRecord {
   explainability: ExplainabilityResult;
   recommended_actions: RecommendedAction[];
   avoid_actions: AvoidAction[];
+  execution_roadmap: ExecutionRoadmapWeek[];
+  script_templates: ScriptTemplate[];
   reassessment_triggers: ReassessmentTrigger[];
   benchmarks: BenchmarkResult | null;
   comparison: ComparisonResult | null;
