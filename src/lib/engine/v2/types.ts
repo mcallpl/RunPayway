@@ -340,6 +340,19 @@ export interface ConfidenceDeduction {
 
 // ─── EXPLAINABILITY ─────────────────────────────────────
 
+export interface SurprisingInsight {
+  headline: string;
+  explanation: string;
+  data_point: string;
+}
+
+export interface TradeoffNarrative {
+  action_label: string;
+  upside: string;
+  downside: string;
+  net_recommendation: string;
+}
+
 export interface ExplainabilityResult {
   why_this_score: string;
   why_not_higher: string;
@@ -348,6 +361,10 @@ export interface ExplainabilityResult {
   interaction_summary: string;
   best_lift_explanation: string;
   fragility_explanation: string;
+  surprising_insights: SurprisingInsight[];
+  tradeoff_narratives: TradeoffNarrative[];
+  one_thing_that_matters: string;
+  reusable_framework: string[];
 }
 
 // ─── ACTIONS ────────────────────────────────────────────
@@ -361,6 +378,9 @@ export interface RecommendedAction {
   expected_impact: string;
   blocked_until?: string;
   sequencing_note?: string;
+  timeframe: string;
+  target: string;
+  tradeoff: string;
 }
 
 export interface AvoidAction {

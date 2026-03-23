@@ -220,6 +220,8 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     sensitivity,
     fragility,
     quality,
+    normalized,
+    benchmarks,
   );
   reason_codes.push(REASON_CODES["EXP-001"]);
 
@@ -229,6 +231,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     fragility,
     sensitivity,
     resolvedProfile,
+    normalized,
   );
   reason_codes.push(REASON_CODES["ACT-001"]);
 

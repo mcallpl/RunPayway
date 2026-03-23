@@ -148,6 +148,10 @@ interface AssessmentRecord {
     reassessment_triggers?: { trigger_id: string; condition: string; threshold: string; current_value: string; description: string }[];
     benchmarks?: { peer_percentile: number; cluster_average_score: number; top_20_threshold: number; peer_band_distribution: { limited: number; developing: number; established: number; high: number }; outlier_dimensions: { factor: string; user_value: number; peer_average: number; direction: string; magnitude: string }[] };
     indicators?: { key: string; label: string; raw_value: number; normalized_value: number; level: string }[];
+    surprising_insights?: { headline: string; explanation: string; data_point: string }[];
+    tradeoff_narratives?: { action_label: string; upside: string; downside: string; net_recommendation: string }[];
+    one_thing_that_matters?: string;
+    reusable_framework?: string[];
     outcome_layer?: {
       income_model_family: { family_id: string; family_label: string };
       industry_refinement_profile: { industry_id: string; industry_label: string } | null;
@@ -778,6 +782,12 @@ export default function ReviewPage() {
   const v2Benchmarks = v2?.benchmarks ?? null;
   const v2Scores = v2?.scores ?? null;
 
+  // ── Strategic insight data (RP-2.1) ──
+  const v2SurprisingInsights = v2?.surprising_insights ?? null;
+  const v2TradeoffNarratives = v2?.tradeoff_narratives ?? null;
+  const v2OneThingThatMatters = v2?.one_thing_that_matters ?? null;
+  const v2ReusableFramework = v2?.reusable_framework ?? null;
+
   // ── Outcome layer ──
   const ol = v2?.outcome_layer;
   const olActions = ol?.ranked_action_map ?? null;
@@ -1154,6 +1164,14 @@ export default function ReviewPage() {
           </p>
         </div>
 
+        {/* The One Change That Matters Most — RP-2.1 */}
+        {v2OneThingThatMatters && (
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>IF YOU FIX ONE THING, FIX THIS</div>
+            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65, fontWeight: 500 }}>{v2OneThingThatMatters}</p>
+          </div>
+        )}
+
         {/* Score trend — shown only if previous assessments exist */}
         {(() => {
           try {
@@ -1303,6 +1321,24 @@ export default function ReviewPage() {
               );
             })}
           </div>
+        )}
+
+        {/* What You Might Not Realize — Surprising Insights (RP-2.1) */}
+        {v2SurprisingInsights && v2SurprisingInsights.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What You Might Not Realize</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            These are non-obvious findings from your assessment — things that are easy to miss but significantly affect your stability.
+          </p>
+          {v2SurprisingInsights.map((insight, i) => (
+            <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 10 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{insight.headline}</div>
+              <p style={{ ...T.small, color: B.muted, margin: "0 0 6px", lineHeight: 1.55 }}>{insight.explanation}</p>
+              <div style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>{insight.data_point}</div>
+            </div>
+          ))}
+          </>
         )}
 
         {/* Common patterns in your peer group */}
@@ -1801,6 +1837,20 @@ export default function ReviewPage() {
                 copy: a.description,
                 why: a.why_now,
                 effect: a.expected_effect,
+                timeframe: "",
+                target: "",
+                tradeoff: "",
+              }))
+            : (v2?.recommended_actions && v2.recommended_actions.length > 0)
+            ? v2.recommended_actions.slice(0, 4).map((a, i) => ({
+                rank: `${i + 1}`,
+                title: a.label,
+                copy: a.description,
+                why: "",
+                effect: a.expected_impact,
+                timeframe: (a as Record<string, string>).timeframe ?? "",
+                target: (a as Record<string, string>).target ?? "",
+                tradeoff: (a as Record<string, string>).tradeoff ?? "",
               }))
             : (() => {
                 const priorities = isHighScorer ? [
@@ -1818,20 +1868,53 @@ export default function ReviewPage() {
                   ...priorities.filter(p => p.key === dominantConstraint),
                   ...priorities.filter(p => p.key !== dominantConstraint),
                 ];
-                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "", effect: "" }));
+                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "", effect: "", timeframe: "", target: "", tradeoff: "" }));
               })()
           ).map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
               <span style={{ ...T.sectionLabel, color: B.purple, minWidth: 18 }}>{action.rank}.</span>
-              <div>
+              <div style={{ flex: 1 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
                 {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
                 {(action as Record<string, string>).effect && <p style={{ ...T.meta, color: B.muted, margin: "2px 0 0" }}>Expected effect: {(action as Record<string, string>).effect}</p>}
+                {(action as Record<string, string>).timeframe && <p style={{ ...T.meta, color: B.purple, margin: "4px 0 0", fontWeight: 500 }}>Timeline: {(action as Record<string, string>).timeframe}</p>}
+                {(action as Record<string, string>).target && <p style={{ ...T.meta, color: B.navy, margin: "2px 0 0", fontWeight: 500 }}>Target: {(action as Record<string, string>).target}</p>}
+                {(action as Record<string, string>).tradeoff && (
+                  <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", fontStyle: "italic" }}>Tradeoff: {(action as Record<string, string>).tradeoff}</p>
+                )}
               </div>
             </div>
           ))}
         </div>
+
+        {/* Tradeoffs & Strategy — RP-2.1 */}
+        {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <Overline large>Tradeoffs to Understand</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              Real strategy means understanding consequences, not just following suggestions. Here is what each move actually costs — and why it is still worth it.
+            </p>
+            {v2TradeoffNarratives.map((t, i) => (
+              <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px", marginBottom: 8 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
+                <div style={{ display: "flex", gap: 16 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div>
+                    <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div>
+                    <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p>
+                  </div>
+                </div>
+                <div style={{ borderTop: `1px solid ${B.stone}`, marginTop: 8, paddingTop: 6 }}>
+                  <p style={{ ...T.meta, color: B.navy, margin: 0, fontWeight: 500 }}>{t.net_recommendation}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* What NOT to do — from avoid_actions */}
         {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
@@ -1870,6 +1953,34 @@ export default function ReviewPage() {
                 <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
               </div>
             ))}
+          </div>
+          </>
+        )}
+
+        {/* How to Evaluate Your Income Going Forward — Reusable Framework (RP-2.1) */}
+        {v2ReusableFramework && v2ReusableFramework.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>How to Evaluate Your Income Going Forward</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            After reading this report, you should be able to assess your income stability on your own. These are the six factors that matter — and where you stand on each right now.
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
+            {v2ReusableFramework.map((item, i) => {
+              const [title, ...rest] = item.split(": ");
+              const body = rest.join(": ");
+              return (
+                <div key={i} style={{ flex: "1 1 calc(50% - 6px)", minWidth: 280, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
+                  <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{title}</div>
+                  <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{body}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.teal}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
+            <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>
+              Use this framework to re-evaluate every quarter. If any factor shifts by more than 15%, your overall stability has materially changed. That is when you should reassess.
+            </p>
           </div>
           </>
         )}
