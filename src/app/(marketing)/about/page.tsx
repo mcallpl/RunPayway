@@ -62,6 +62,8 @@ const B = {
   gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
 };
 
+const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+
 const S = {
   sectionY:     { desktop: 120, mobile: 80 },
   sectionYsm:   { desktop: 100, mobile: 64 },
@@ -104,31 +106,35 @@ function Hero() {
       ref={ref}
       aria-label="About Hero"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        background: B.gradient,
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: mobile ? 100 : 160,
+        paddingBottom: mobile ? 72 : 100,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1 }}>
         <div
           style={{
             textAlign: "center",
+            maxWidth: 720,
+            margin: "0 auto",
             opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <div
-            className="text-[11px] uppercase"
-            style={{ color: B.teal, fontWeight: 600, letterSpacing: S.lsLabel, marginBottom: 20 }}
-          >
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)", marginBottom: 20 }}>
             PeopleStar Enterprises, Inc.
           </div>
           <h1
-            className="text-[36px] md:text-[52px]"
             style={{
-              color: B.navy,
-              fontWeight: 600,
+              fontSize: mobile ? 36 : 52,
+              color: "#F4F1EA",
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHero,
               lineHeight: S.lhHeading,
               marginBottom: S.h1mb,
@@ -137,10 +143,9 @@ function Hero() {
             About RunPayway&#8482;
           </h1>
           <p
-            className="text-[16px] md:text-[18px]"
-            style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
+            style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
-            RunPayway&#8482; is a product of PeopleStar Enterprises, Inc. It produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change.
+            RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. No AI. No opinions. Just the math.
           </p>
         </div>
       </div>
@@ -176,7 +181,7 @@ function WhatIsISS() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
             The Income Stability Score&#8482;
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
@@ -231,7 +236,7 @@ function WhatModelMeasures() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: 12 }}>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: 12 }}>
             What the model measures
           </h2>
           <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
@@ -292,7 +297,7 @@ function HowCalculated() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
             How the score is calculated
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
@@ -338,7 +343,7 @@ function ModelGovernance() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
             Model governance
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
@@ -369,7 +374,7 @@ function Verification() {
       ref={ref}
       aria-label="Verification"
       style={{
-        backgroundColor: B.sand,
+        background: B.navy,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
@@ -384,15 +389,25 @@ function Verification() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
-            Verification
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+            Every score is verifiable
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Every assessment generated by RunPayway&#8482; is independently verifiable. Each report includes a SHA-256 hash, a model version stamp, and a timestamp. These three elements together prove that the assessment was produced by Model RP-2.0 and has not been altered.
+          <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Every assessment includes a SHA-256 hash, a model version stamp, and a timestamp. These three elements prove the assessment was produced by Model RP-2.0 and has not been altered.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
-            This matters for anyone who needs to share their assessment with a lender, employer, insurance provider, or financial advisor. The recipient does not need to trust you or trust RunPayway&#8482; — they can verify the report themselves.
+          <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: 0 }}>
+            Share your score with a lender, employer, or financial advisor. They don&#8217;t need to trust you or trust RunPayway&#8482; — they can verify it themselves.
           </p>
+
+          {/* Verification badges */}
+          <div style={{ display: "flex", gap: mobile ? 12 : 20, marginTop: 36, flexWrap: "wrap", justifyContent: "center" }}>
+            {["SHA-256 Hash", "Model Version Stamp", "Immutable Timestamp", "QR Verification"].map((badge) => (
+              <div key={badge} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -427,7 +442,7 @@ function WhoBuiltIt() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
             Who built this
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
@@ -457,26 +472,23 @@ function ModelBadge() {
       aria-label="Model Badge"
       style={{
         backgroundColor: B.sand,
-        paddingTop: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
-        paddingBottom: mobile ? S.disclaimerY.mobile : S.disclaimerY.desktop,
+        paddingTop: mobile ? 48 : 64,
+        paddingBottom: mobile ? 48 : 64,
       }}
     >
       <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            padding: "10px 20px",
-            borderRadius: 100,
-            backgroundColor: "#ffffff",
-            border: "1px solid rgba(14,26,43,0.06)",
-          }}
-        >
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.gradient }} />
-          <span className="text-[12px]" style={{ color: B.navy, fontWeight: 600, letterSpacing: "0.04em" }}>
-            Model RP-2.0
-          </span>
+        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 24, flexWrap: "wrap" }}>
+          {[
+            { label: "Model RP-2.0", sub: "Current version" },
+            { label: "20 Engines", sub: "Deterministic pipeline" },
+            { label: "19 Industries", sub: "Full sector coverage" },
+            { label: "6 Dimensions", sub: "Structural analysis" },
+          ].map((item) => (
+            <div key={item.label} style={{ textAlign: "center", minWidth: mobile ? 120 : 140 }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: B.navy, marginBottom: 4 }}>{item.label}</div>
+              <div style={{ fontSize: 11, color: B.light, letterSpacing: "0.02em" }}>{item.sub}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -538,7 +550,8 @@ function CtaSection() {
             style={{
               fontSize: mobile ? 26 : 36,
               color: "#F4F1EA",
-              fontWeight: 600,
+              fontFamily: DISPLAY_FONT,
+              fontWeight: 400,
               letterSpacing: S.lsHeading,
               lineHeight: S.lhHeading,
               marginBottom: 16,
