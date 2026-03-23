@@ -439,6 +439,13 @@ export default function FreeScorePage() {
               </a>
             </div>
 
+            {/* Deterministic notice */}
+            <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.15)", marginBottom: 16 }}>
+              <p style={{ ...F.small, color: "rgba(244,241,234,0.65)", margin: 0 }}>
+                Your full report is built from the answers you already gave. Same answers, same score — the model is deterministic. You do not retake the assessment.
+              </p>
+            </div>
+
             {/* Guarantee */}
             <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 10, border: "1px solid rgba(244,241,234,0.08)", marginBottom: 20 }}>
               <p style={{ ...F.small, color: "rgba(244,241,234,0.50)", margin: 0 }}>
@@ -447,7 +454,7 @@ export default function FreeScorePage() {
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
-              {["No bank connection", "Instant delivery", "Model RP-2.0"].map((b) => (
+              {["Instant delivery", "No retake required", "Model RP-2.0"].map((b) => (
                 <span key={b} style={{ ...F.small, color: "rgba(244,241,234,0.30)" }}>{b}</span>
               ))}
             </div>
