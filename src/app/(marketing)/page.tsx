@@ -510,6 +510,66 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* ================================================================== */
+/* BRIDGE — Emotional beat between hero and methodology                 */
+/* ================================================================== */
+function BridgeSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Why this matters"
+      style={{
+        background: "#FFFFFF",
+        paddingTop: mobile ? 56 : 80,
+        paddingBottom: mobile ? 56 : 80,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+      }}
+    >
+      <div
+        className="mx-auto"
+        style={{
+          maxWidth: 720,
+          textAlign: "center",
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 700ms ease-out, transform 700ms ease-out",
+        }}
+      >
+        <p
+          style={{
+            fontSize: mobile ? 18 : 24,
+            fontFamily: DISPLAY_FONT,
+            fontWeight: 400,
+            color: B.navy,
+            lineHeight: 1.45,
+            letterSpacing: "-0.01em",
+            margin: 0,
+          }}
+        >
+          The average self-employed professional has less than 30 days of income protection.
+          Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
+        </p>
+        <div
+          style={{
+            width: 40,
+            height: 2,
+            backgroundColor: B.teal,
+            margin: "28px auto 0",
+            borderRadius: 1,
+            opacity: visible ? 1 : 0,
+            transition: "opacity 600ms ease-out 400ms",
+          }}
+        />
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 2: FOUR FACTORS — "What We Measure"                         */
 /* ================================================================== */
 function FourFactorsSection() {
@@ -2827,6 +2887,7 @@ export default function LandingPage() {
   return (
     <div className="overflow-x-hidden">
       <HeroSection />
+      <BridgeSection />
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
