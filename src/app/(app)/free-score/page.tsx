@@ -414,8 +414,6 @@ export default function FreeScorePage() {
               </div>
               <a
                 href={STRIPE_FULL_REPORT}
-                target="_blank"
-                rel="noopener noreferrer"
                 style={{
                   display: "flex",
                   alignItems: "center",

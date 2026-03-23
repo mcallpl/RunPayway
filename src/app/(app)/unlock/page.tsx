@@ -10,8 +10,12 @@ export default function UnlockPage() {
   useEffect(() => {
     requestAnimationFrame(() => setVisible(true));
 
-    // Verify record exists, then redirect to full report
-    const record = sessionStorage.getItem("rp_record");
+    // Verify record exists — check localStorage too (Stripe opens new tab)
+    let record = sessionStorage.getItem("rp_record");
+    if (!record) {
+      record = localStorage.getItem("rp_record");
+      if (record) sessionStorage.setItem("rp_record", record);
+    }
     if (!record) {
       router.push("/pricing");
       return;

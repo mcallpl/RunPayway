@@ -534,7 +534,11 @@ export default function ReviewPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const stored = sessionStorage.getItem("rp_record");
+    let stored = sessionStorage.getItem("rp_record");
+    if (!stored) {
+      stored = localStorage.getItem("rp_record");
+      if (stored) sessionStorage.setItem("rp_record", stored);
+    }
     if (!stored) { router.push("/diagnostic-portal"); return; }
 
     let parsed: AssessmentRecord;

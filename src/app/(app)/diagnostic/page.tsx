@@ -366,6 +366,7 @@ export default function DiagnosticPage() {
       }
 
       sessionStorage.setItem("rp_record", JSON.stringify(record));
+      localStorage.setItem("rp_record", JSON.stringify(record));
 
       // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");

@@ -68,14 +68,23 @@ function CheckoutSuccessContent() {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         // Check if customer already completed a free assessment
-        const existingRecord = sessionStorage.getItem("rp_record");
+        // sessionStorage is per-tab, so check localStorage too (Stripe opens new tab)
+        let existingRecord = sessionStorage.getItem("rp_record");
+        if (!existingRecord) {
+          existingRecord = localStorage.getItem("rp_record");
+          if (existingRecord) sessionStorage.setItem("rp_record", existingRecord);
+        }
         if (existingRecord) setHasExistingRecord(true);
         setReady(true);
       })
       .catch(() => {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
-        const existingRecord = sessionStorage.getItem("rp_record");
+        let existingRecord = sessionStorage.getItem("rp_record");
+        if (!existingRecord) {
+          existingRecord = localStorage.getItem("rp_record");
+          if (existingRecord) sessionStorage.setItem("rp_record", existingRecord);
+        }
         if (existingRecord) setHasExistingRecord(true);
         setReady(true);
       });
