@@ -306,78 +306,64 @@ export default function FreeScorePage() {
 
       <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA" }}>
 
-        {/* ══ Score Hero ══ */}
-        <section style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", paddingTop: mobile ? 80 : 120, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
+        {/* ══ 1. ANCHOR — Score Hero (white, clean, the number breathes) ══ */}
+        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 80 : 120, paddingBottom: mobile ? 56 : 72, textAlign: "center" }}>
           <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <Image src={logoImg} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", filter: "brightness(10)", marginBottom: mobile ? 32 : 40 }} />
+            <Image src={logoImg} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", marginBottom: mobile ? 32 : 40 }} />
 
             <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score™</div>
 
-            <div style={{ ...F.score, fontSize: mobile ? 64 : 72, color: "#F4F1EA", marginBottom: 16 }}>{animatedScore}</div>
+            <div style={{ fontSize: mobile ? 80 : 96, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>{animatedScore}</div>
 
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
               <div style={{ width: 12, height: 12, borderRadius: 3, backgroundColor: bandColor }} />
               <span style={{ ...F.h3, fontSize: mobile ? 18 : 20, color: bandColor }}>{band}</span>
             </div>
 
             {percentileLabel && (
-              <div style={{ ...F.body, color: "rgba(244,241,234,0.60)", marginTop: 8 }}>
+              <div style={{ ...F.body, color: B.muted, marginBottom: 8 }}>
                 {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
               </div>
             )}
 
-            {/* Download score card */}
             <button
               onClick={handleDownload}
               disabled={downloading}
-              style={{
-                marginTop: 28,
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 40,
-                padding: "0 24px",
-                borderRadius: 8,
-                background: "rgba(255,255,255,0.10)",
-                border: "1px solid rgba(255,255,255,0.15)",
-                color: "rgba(244,241,234,0.70)",
-                ...F.small,
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "background 200ms ease, border-color 200ms ease",
-                opacity: downloading ? 0.6 : 1,
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.10)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
+              style={{ marginTop: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", height: 40, padding: "0 24px", borderRadius: 8, background: "transparent", border: `1px solid ${B.border}`, color: B.muted, ...F.small, fontWeight: 600, cursor: "pointer", transition: "border-color 200ms ease, color 200ms ease", opacity: downloading ? 0.6 : 1 }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.navy; e.currentTarget.style.color = B.navy; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = B.border; e.currentTarget.style.color = B.muted; }}
             >
               {downloading ? "Generating..." : "Download Score Card (PDF)"}
             </button>
           </div>
         </section>
 
-        {/* ══ Key Insight ══ */}
-        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
-          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px`, textAlign: "center" }}>
-            <div style={{ ...F.label, color: B.teal, marginBottom: 16 }}>
+        {/* ══ 2. AGITATE — The insight that creates desire (navy, dramatic) ══ */}
+        <section style={{ background: B.navy, paddingTop: mobile ? 56 : 72, paddingBottom: mobile ? 56 : 72 }}>
+          <div style={{ maxWidth: 640, margin: "0 auto", padding: `0 ${pad}px`, textAlign: "center" }}>
+            <div style={{ ...F.label, color: B.teal, marginBottom: 20 }}>
               THE ONE THING HOLDING {name.toUpperCase()} BACK
             </div>
-            <p style={{ ...F.lead, fontSize: mobile ? 16 : 17, fontWeight: 500, color: B.navy, margin: "0 0 24px" }}>
+            <p style={{ fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", color: "#F4F1EA", lineHeight: 1.35, margin: "0 0 20px" }}>
               {insightText}
             </p>
-            <p style={{ ...F.body, color: B.muted, margin: 0 }}>
-              Your full report explains exactly why, shows how it interacts with your other structural factors, and gives you a step-by-step plan to fix it.
+            <p style={{ ...F.body, color: "rgba(244,241,234,0.50)", margin: 0 }}>
+              The full report explains exactly why, shows how it interacts with your other structural factors, and gives you a step-by-step plan to fix it.
             </p>
           </div>
         </section>
 
-        {/* ══ What the Full Report Reveals ══ */}
-        <section style={{ backgroundColor: B.sand, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
-          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, textAlign: "center", marginBottom: 40 }}>
-              What the full report reveals
+        {/* ══ 3. SHOW THE GAP — What you're missing (white, 2x4 grid) ══ */}
+        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
+          <div style={{ maxWidth: 800, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, textAlign: "center", marginBottom: 16 }}>
+              You have the score. Here is what you are missing.
             </h2>
+            <p style={{ ...F.body, color: B.muted, textAlign: "center", maxWidth: 520, margin: "0 auto 40px" }}>
+              The full report includes all of this — personalized to your industry, income model, and operating structure.
+            </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: SP.gap }}>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 12 : 16 }}>
               {features.map((item, i) => (
                 <FeatureCard key={item.title} title={item.title} desc={item.desc} index={i} mobile={mobile} />
               ))}
@@ -385,23 +371,23 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ══ Testimonials ══ */}
-        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
+        {/* ══ 4. PROVE IT — Testimonials (navy, dramatic) ══ */}
+        <section style={{ background: B.navy, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
           <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <h2 style={{ ...F.h2, fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, color: B.navy, textAlign: "center", marginBottom: 32 }}>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, color: "#F4F1EA", textAlign: "center", marginBottom: 36 }}>
               What customers say
             </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: SP.gap }}>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: SP.gap }}>
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: B.bone, borderRadius: SP.cardRadius, border: `1px solid ${B.borderLight}` }}>
-                  <p style={{ ...F.body, color: B.navy, margin: "0 0 16px", fontStyle: "italic" }}>
+                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: SP.cardRadius, display: "flex", flexDirection: "column" as const }}>
+                  <p style={{ ...F.body, color: "rgba(244,241,234,0.80)", margin: "0 0 20px", fontStyle: "italic", flex: 1 }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <img src={t.photo} alt={t.name} width={40} height={40} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+                    <img src={t.photo} alt={t.name} width={40} height={40} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }} />
                     <div>
-                      <div style={{ ...F.small, fontWeight: 600, color: B.navy }}>{t.name}</div>
-                      <div style={{ ...F.small, color: B.muted }}>{t.industry} &middot; Score: {t.score}</div>
+                      <div style={{ ...F.small, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
+                      <div style={{ ...F.small, color: "rgba(244,241,234,0.45)" }}>{t.industry} &middot; Score: {t.score}</div>
                     </div>
                   </div>
                 </div>
@@ -410,51 +396,59 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ══ CTA — Upgrade ══ */}
-        <section style={{ backgroundColor: B.navy, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
+        {/* ══ 5. CONVERT — The ask (gradient, builds from navy above) ══ */}
+        <section style={{ background: "linear-gradient(180deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 100%)", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
           <div style={{ maxWidth: 520, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <div style={{ ...F.label, color: B.teal, marginBottom: 16 }}>FULL REPORT</div>
-            <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: "#F4F1EA", marginBottom: 12 }}>
-              Get the full 5-page report
-            </h2>
-            <p style={{ ...F.body, color: "rgba(244,241,234,0.65)", marginBottom: 8 }}>
-              Your score is {score}. The full report shows you exactly why — and what to do about it.
+            <div style={{ fontSize: mobile ? 48 : 64, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 8 }}>{score}</div>
+            <p style={{ ...F.lead, color: "rgba(244,241,234,0.55)", marginBottom: 32 }}>
+              Your score is {score}. The full report shows you why — and exactly what to do about it.
             </p>
 
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 32 }}>
-              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 600, color: "#F4F1EA" }}>$99</span>
-              <span style={{ ...F.body, color: "rgba(244,241,234,0.50)" }}>one-time</span>
+            <div style={{ display: "inline-block", padding: mobile ? "32px 28px" : "40px 48px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, marginBottom: 32 }}>
+              <div style={{ ...F.label, color: B.teal, marginBottom: 12 }}>FULL 5-PAGE REPORT</div>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 20 }}>
+                <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 600, color: "#F4F1EA" }}>$99</span>
+                <span style={{ ...F.body, color: "rgba(244,241,234,0.45)" }}>one-time</span>
+              </div>
+              <a
+                href={STRIPE_FULL_REPORT}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: mobile ? 52 : 56,
+                  borderRadius: 12,
+                  background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+                  color: B.navy,
+                  ...F.body,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.30)",
+                  transition: "transform 200ms ease, box-shadow 200ms ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.35)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.30)"; }}
+              >
+                Get Full Report — $99
+              </a>
             </div>
 
-            <a
-              href={STRIPE_FULL_REPORT}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: mobile ? 52 : 56,
-                padding: "0 40px",
-                borderRadius: 12,
-                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-                color: B.navy,
-                ...F.body,
-                fontWeight: 600,
-                textDecoration: "none",
-                letterSpacing: "-0.01em",
-                boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
-                transition: "transform 200ms ease, box-shadow 200ms ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
-            >
-              Get Full Report — $99
-            </a>
+            {/* Guarantee */}
+            <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 10, border: "1px solid rgba(244,241,234,0.08)", marginBottom: 20 }}>
+              <p style={{ ...F.small, color: "rgba(244,241,234,0.50)", margin: 0 }}>
+                If the report doesn&apos;t reveal at least one insight you didn&apos;t already know, full refund. No questions.
+              </p>
+            </div>
 
-            <p style={{ ...F.small, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
-              If the report doesn&apos;t reveal at least one insight you didn&apos;t already know, email support@runpayway.com for a full refund.
-            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
+              {["No bank connection", "Instant delivery", "Model RP-2.0"].map((b) => (
+                <span key={b} style={{ ...F.small, color: "rgba(244,241,234,0.30)" }}>{b}</span>
+              ))}
+            </div>
           </div>
         </section>
       </div>
