@@ -1112,9 +1112,28 @@ export default function ReviewPage() {
             showing interaction penalties. Full breakdown shown on Page 3 where
             cross-factor effects are explained in context. */}
 
-        <p style={{ ...T.body, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
+        <p style={{ ...T.body, color: B.muted, marginBottom: 12, maxWidth: 540 }}>
           {copy.p1_headline}
         </p>
+
+        {/* What this score means for your daily life */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT THIS MEANS FOR YOU</div>
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
+            {isHighScorer ? ({
+              C1: `Your income can handle moderate disruptions. You could likely sustain 3-6 months of reduced activity without crisis. But a major client loss or industry shift would still hurt.`,
+              C2: `Your income is well-protected against most common disruptions. You have meaningful runway and diversification. The remaining gaps are refinements, not emergencies.`,
+              D1: `Your income is strongly protected. You could weather significant disruptions — a lost client, an illness, a market downturn — and maintain stability. Focus on maintaining what you have built.`,
+              D2: `Your income is among the most protected in your industry. You have substantial runway, diversification, and forward visibility. Very few scenarios would threaten your stability.`,
+            })[subTier] || `Your income has real stability. The priority now is strengthening what exists, not rebuilding.` : ({
+              A1: `If your main income source changed tomorrow, you would have almost no cushion. You are one bad month away from a serious problem. This report shows you exactly what to fix first.`,
+              A2: `Your income is active but fragile. A lost client, a slow month, or an unexpected break from work could quickly become a financial emergency.`,
+              A3: `You have a starting foundation, but your income cannot absorb a meaningful disruption yet. One unexpected change could set you back significantly.`,
+              B1: `Your income is developing but still vulnerable. You could handle a minor disruption, but a major one — like losing your biggest client — would be painful. The gap between where you are and stable is closable.`,
+              B2: `You are close to stable but not there yet. Your income can handle small bumps but a sustained disruption would still create real pressure.`,
+            })[subTier] || `Your income is developing. The next gains come from building structural protection.`}
+          </p>
+        </div>
 
         {/* One key insight */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
@@ -1600,6 +1619,35 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* What the next level looks like */}
+        {!isHighScorer && (
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>WHAT {score < 30 ? "DEVELOPING" : score < 50 ? "ESTABLISHED" : "HIGH"} STABILITY LOOKS LIKE</div>
+            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
+              {score < 30
+                ? "At Developing Stability (30+), your income can handle minor disruptions. Your stress test drop shrinks, your continuity extends past 1 month, and you move above the bottom third of your industry."
+                : score < 50
+                ? "At Established Stability (50+), your income survives most common disruptions. Your continuity extends to 3-6 months, your peer percentile jumps above 60%, and your income no longer depends on any single source for survival."
+                : "At High Stability (75+), your income is among the most protected in your industry. You could weather a major client loss, an illness, or a market downturn without financial crisis."}
+            </p>
+          </div>
+        )}
+
+        {/* What successful people in your industry do differently */}
+        {olStrongerPatterns && olStrongerPatterns.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <Overline large>{isHighScorer ? "Structural Strengths to Maintain" : `What Top ${industrySector} Professionals Do Differently`}</Overline>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {olStrongerPatterns.slice(0, 4).map((pattern, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: isHighScorer ? B.teal : B.purple, marginTop: 6, flexShrink: 0 }} />
+                  <span style={{ ...T.small, color: B.muted }}>{pattern}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Top 3 improvements + progress bar */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -1680,11 +1728,16 @@ export default function ReviewPage() {
                 why: a.why_now,
               }))
             : (() => {
-                const priorities = [
-                  { key: "forward_visibility", title: "Secure more income ahead of time", copy: profileConstraintAdvice.forward_visibility },
-                  { key: "source_concentration", title: "Reduce reliance on the largest source", copy: profileConstraintAdvice.source_concentration },
-                  { key: "labor_dependence", title: "Build more repeatable income", copy: profileConstraintAdvice.labor_dependence },
-                  { key: "low_continuity", title: "Extend income continuity", copy: profileConstraintAdvice.low_continuity },
+                const priorities = isHighScorer ? [
+                  { key: "forward_visibility", title: "Maintain forward revenue visibility", copy: "Review your committed revenue quarterly. Ensure at least 60% of next quarter's income is already locked in." },
+                  { key: "source_concentration", title: "Monitor client concentration", copy: "No single client should exceed 25% of revenue. Review your client mix monthly and diversify proactively." },
+                  { key: "labor_dependence", title: "Protect income continuity", copy: "Ensure your passive and repeatable income streams are growing, not shrinking. Review annually." },
+                  { key: "low_continuity", title: "Extend your runway", copy: "Your continuity window is your safety margin. Every quarter, ask: could I sustain 6 months without new business?" },
+                ] : [
+                  { key: "forward_visibility", title: "This week: start locking in future income", copy: `Reach out to your top 3 clients or prospects about converting to retainers, multi-month contracts, or advance commitments. Your forward visibility is your biggest gap right now.` },
+                  { key: "source_concentration", title: "This month: add a second meaningful income source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your biggest source disappears. Identify one new client, product, or revenue stream that could reach 10%+ of your income within 90 days.` },
+                  { key: "labor_dependence", title: "This quarter: build one income stream that doesn't need you daily", copy: `${record.active_income_level}% of your income requires your daily effort. Pick one service, product, or arrangement you can convert into recurring or passive revenue this quarter.` },
+                  { key: "low_continuity", title: "This quarter: extend how long income lasts without work", copy: `Your income would continue for about ${continuityDisplay} if you stopped. Build at least one stream that would keep producing for 3+ months independently.` },
                 ];
                 const sorted = [
                   ...priorities.filter(p => p.key === dominantConstraint),
