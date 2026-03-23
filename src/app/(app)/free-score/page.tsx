@@ -222,30 +222,7 @@ export default function FreeScorePage() {
             )}
           </div>
 
-          {/* Score breakdown */}
-          {v2Scores && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32, padding: "14px 20px", backgroundColor: "#F8F6F1", borderRadius: 6, justifyContent: "center" }}>
-              <div style={{ textAlign: "center", flex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>STRUCTURE</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{v2Scores.structure_score}</div>
-              </div>
-              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>+</span>
-              <div style={{ textAlign: "center", flex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>STABILITY</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{v2Scores.stability_score}</div>
-              </div>
-              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>{v2Scores.quality_adjustment >= 0 ? "+" : "−"}</span>
-              <div style={{ textAlign: "center", flex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>QUALITY</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: v2Scores.quality_adjustment < 0 ? B.bandLimited : B.teal }}>{Math.abs(v2Scores.quality_adjustment)}</div>
-              </div>
-              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>=</span>
-              <div style={{ textAlign: "center", flex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>SCORE</div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>{score}</div>
-              </div>
-            </div>
-          )}
+          {/* Score breakdown removed — math doesn't add up without interaction penalties */}
 
           {/* Band scale */}
           <div style={{ marginBottom: 32 }}>
