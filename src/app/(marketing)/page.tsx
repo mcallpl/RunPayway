@@ -625,19 +625,14 @@ function FourFactorsSection() {
       ref={ref}
       aria-label="What RunPayway™ Measures"
       style={{
-        background: B.navy,
+        background: "#FFFFFF",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      {/* Subtle radial glow */}
-      <div style={{ position: "absolute", top: "50%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-      <div className="mx-auto" style={{ maxWidth: S.maxW, position: "relative", zIndex: 1 }}>
+      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
         {/* Section header */}
         <div
           style={{
@@ -659,7 +654,7 @@ function FourFactorsSection() {
           <h2
             style={{
               fontSize: mobile ? 28 : 44,
-              color: "#F4F1EA",
+              color: B.navy,
               lineHeight: 1.12,
               letterSpacing: "-0.025em",
               fontFamily: DISPLAY_FONT, fontWeight: 400,
@@ -668,7 +663,7 @@ function FourFactorsSection() {
           >
             The four reasons income falls apart
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: S.subtextMaxW, margin: "0 auto" }}>
+          <p style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.65, maxWidth: S.subtextMaxW, margin: "0 auto" }}>
             Your Income Stability Score&#8482; measures these four structural risks. If any one is weak, your income is exposed.
           </p>
         </div>
@@ -687,19 +682,19 @@ function FourFactorsSection() {
             <div
               key={f.label}
               style={{
-                backgroundColor: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                backgroundColor: B.navy,
                 borderRadius: S.cardRadius,
                 padding: mobile ? "28px 24px" : "32px 28px",
                 position: "relative",
                 overflow: "hidden",
+                boxShadow: "0 8px 32px rgba(14,26,43,0.12)",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(20px)",
                 transition: `opacity 500ms ease-out ${200 + i * 100}ms, transform 500ms ease-out ${200 + i * 100}ms`,
               }}
             >
               {/* Large watermark number */}
-              <div style={{ position: "absolute", top: -8, right: 12, fontSize: 80, fontWeight: 700, color: "rgba(255,255,255,0.03)", lineHeight: 1, pointerEvents: "none" }}>
+              <div style={{ position: "absolute", top: -8, right: 12, fontSize: 80, fontWeight: 700, color: "rgba(255,255,255,0.04)", lineHeight: 1, pointerEvents: "none" }}>
                 {f.num}
               </div>
 
@@ -715,7 +710,7 @@ function FourFactorsSection() {
               </div>
 
               {/* Description */}
-              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
                 {f.description}
               </p>
             </div>
