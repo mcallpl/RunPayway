@@ -355,7 +355,7 @@ export default function TermsOfUsePage() {
                 t.termsOfUse.s8Li3,
                 t.termsOfUse.s8Li4,
                 t.termsOfUse.s8Li5,
-              ]} />
+              ].filter(Boolean)} />
               <P>{t.termsOfUse.s8P3}</P>
               <P>{t.termsOfUse.s8P4}</P>
               <P style={{ marginBottom: 0 }}>{t.termsOfUse.s8P5}</P>
