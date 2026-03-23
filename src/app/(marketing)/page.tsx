@@ -979,11 +979,11 @@ function WhatYourReportSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   const pages = [
-    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "You will know exactly where your income stands — your score, your band, and the single most important thing to address.", color: B.purple },
-    { num: "02", title: "Why This Score", question: "What is behind the result?", desc: "You will see what is driving your score up and what is holding it back — ranked by impact, not guesswork.", color: B.teal },
-    { num: "03", title: "What Could Go Wrong", question: "What is most exposed?", desc: "You will see what would happen if your largest source disappeared — and how your structure compares to peers in your industry.", color: B.navy },
-    { num: "04", title: "How to Improve", question: "What would raise the score?", desc: "You will see exactly which change would raise your score the most — with projected point gains and actions tailored to your industry.", color: B.purple },
-    { num: "05", title: "What to Do Next", question: "What is the plan?", desc: "You will have a clear plan — what to do first, what not to focus on yet, and when to reassess.", color: B.teal },
+    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Your score, stability band, peer percentile, and score breakdown showing exactly how Structure + Stability + Quality combine.", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", question: "Why is my score what it is?", desc: "Income structure breakdown, stress test, continuity window, peer comparison with actual numbers, and your biggest weakness.", color: B.teal },
+    { num: "03", title: "Your Income Deep Dive", question: "What are the details?", desc: "Six structural indicators scored out of 100, fragility classification, confidence level, and how your strengths and weaknesses interact.", color: B.navy },
+    { num: "04", title: "Your Biggest Risks", question: "What could go wrong?", desc: "The specific scenarios that would hurt your score most — ranked by severity with projected score impact.", color: B.purple },
+    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "Industry-specific priorities, projected improvements, an advisor discussion guide, and your reassessment date.", color: B.teal },
   ];
 
   return (
@@ -1485,9 +1485,9 @@ function HowItWorksSection() {
   const mobile = useMobile();
 
   const steps = [
-    { num: "1", title: "Answer six questions", desc: "About how your income is structured today." },
-    { num: "2", title: "The model runs", desc: "Model RP-2.0 calculates your result from fixed scoring rules. No AI. Same answers always produce the same score." },
-    { num: "3", title: "Get your full report", desc: "Score, structural breakdown, stress scenarios, improvement paths, and reassessment triggers. Delivered instantly." },
+    { num: "1", title: "Answer six questions", desc: "About how your income is structured today. Takes under two minutes." },
+    { num: "2", title: "Get your free score", desc: "See your score, stability band, peer percentile, and one key insight — instantly, at no cost." },
+    { num: "3", title: "Unlock the full report", desc: "For $99, get the complete 5-page breakdown with structural indicators, risk scenarios, cross-factor effects, and a personalized action plan." },
   ];
 
   return (
@@ -2371,28 +2371,28 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
   const faqs = [
     {
-      q: "What does the Income Stability Score\u2122 measure?",
-      a: "It measures how stable your income structure is based on recurring income, concentration, source diversity, forward visibility, variability, and continuity without active work.",
+      q: "What do I get for free?",
+      a: "Your score out of 100, your stability band, your peer percentile, and one key insight about what is holding your income back. No payment required.",
     },
     {
-      q: "How long does the assessment take?",
-      a: "Most people complete it in under two minutes.",
+      q: "What does the $99 full report include?",
+      a: "A 5-page report with your score breakdown, six structural indicators, fragility and confidence classification, cross-factor interaction effects, industry-specific risk scenarios, a personalized action plan, and an advisor discussion guide.",
     },
     {
-      q: "What is included in the report?",
-      a: "A 5-page report covering your score and classification, structural drivers and constraint hierarchy, stress scenarios and peer comparison, projected improvements with industry-tailored actions, and a 90-day action checklist with reassessment triggers.",
+      q: "What if the report doesn\u2019t tell me anything new?",
+      a: "Email support@runpayway.com for a full refund. No questions asked.",
     },
     {
-      q: "Can I retake the assessment?",
-      a: "Yes. Retake after a meaningful structural change to see how your score has moved.",
+      q: "How long does it take?",
+      a: "Under two minutes. Six questions. Your free score is delivered instantly.",
     },
     {
-      q: "How is my data handled?",
-      a: "No bank connection is required. Your data is private by default and handled according to our privacy and security policies.",
+      q: "Do you need access to my bank accounts?",
+      a: "No. RunPayway never connects to a bank, pulls credit, or accesses financial accounts. You answer six questions and the model generates your assessment from those inputs alone.",
     },
     {
-      q: "Do I need exact financial records?",
-      a: "No. The assessment works from informed estimates. More accurate inputs produce more precise results, but exact bookkeeping is not required.",
+      q: "Can I retake it later?",
+      a: "Yes. Retake after a meaningful structural change to see how your score has moved. Your report includes a recommended reassessment date.",
     },
   ];
 
