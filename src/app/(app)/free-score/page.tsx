@@ -6,7 +6,22 @@ import Image from "next/image";
 import logoImg from "../../../../public/runpayway-logo.png";
 
 /* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
+/*  Hooks                                                              */
+/* ------------------------------------------------------------------ */
+
+function useMobile(breakpoint = 768) {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return mobile;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens — strict scale (mirrors Coming Soon page)            */
 /* ------------------------------------------------------------------ */
 
 const B = {
@@ -17,15 +32,37 @@ const B = {
   bone: "#F8F6F1",
   muted: "rgba(14,26,43,0.58)",
   light: "rgba(14,26,43,0.42)",
+  border: "rgba(14,26,43,0.10)",
+  borderLight: "rgba(14,26,43,0.06)",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
   bandHigh: "#1F6D7A",
 };
 
-const STRIPE_FULL_REPORT = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+// 7-step type scale: 11 · 13 · 15 · 17 · 20 · 32 · 72
+const F = {
+  label: { fontSize: 11, fontWeight: 700 as const, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  small: { fontSize: 13, lineHeight: 1.55 },
+  body: { fontSize: 15, lineHeight: 1.65 },
+  lead: { fontSize: 17, lineHeight: 1.65 },
+  h3: { fontSize: 20, fontWeight: 600 as const, lineHeight: 1.3 },
+  h2: { fontSize: 32, fontWeight: 400 as const, letterSpacing: "-0.02em", lineHeight: 1.12 },
+  score: { fontSize: 72, fontWeight: 600 as const, lineHeight: 1 },
+};
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+
+const SP = {
+  section: { desktop: 96, mobile: 64 },
+  maxW: 600,
+  pad: { desktop: 40, mobile: 24 },
+  cardPad: { desktop: "20px 24px", mobile: "16px 20px" },
+  cardRadius: 10,
+  gap: 16,
+};
+
+const STRIPE_FULL_REPORT = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
 
 /* ------------------------------------------------------------------ */
 /*  Testimonial data (placeholder — replace with real quotes)          */
@@ -43,9 +80,12 @@ const TESTIMONIALS = [
 
 export default function FreeScorePage() {
   const router = useRouter();
+  const mobile = useMobile();
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [animatedScore, setAnimatedScore] = useState(0);
   const scoreAnimated = useRef(false);
+
+  const pad = mobile ? SP.pad.mobile : SP.pad.desktop;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,16 +94,12 @@ export default function FreeScorePage() {
     try {
       const parsed = JSON.parse(stored);
       if (!parsed || !parsed.record_id || typeof parsed.final_score !== "number") {
-        router.push("/diagnostic-portal");
-        return;
+        router.push("/diagnostic-portal"); return;
       }
       setRecord(parsed);
-    } catch {
-      router.push("/diagnostic-portal");
-    }
+    } catch { router.push("/diagnostic-portal"); }
   }, [router]);
 
-  // Score animation
   useEffect(() => {
     if (!record || scoreAnimated.current) return;
     scoreAnimated.current = true;
@@ -90,10 +126,8 @@ export default function FreeScorePage() {
 
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
-
   const bandColor = tier === "high" ? B.bandHigh : tier === "established" ? B.bandEstablished : tier === "developing" ? B.bandDeveloping : B.bandLimited;
 
-  // V2 data for the one key insight
   const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
   const v2Constraints = v2?.constraints as { root_constraint: string } | undefined;
   const v2Benchmarks = v2?.benchmarks as { cluster_average_score: number } | undefined;
@@ -109,95 +143,87 @@ export default function FreeScorePage() {
   const rootConstraint = v2Constraints?.root_constraint || "weak_forward_visibility";
   const insightText = constraintPlain[rootConstraint] || "Your income structure has room to improve.";
 
+  const features = [
+    { title: "Score Breakdown", desc: "See exactly how Structure + Stability + Quality combine into your score." },
+    { title: "6 Structural Indicators", desc: "Each dimension scored out of 100 with a progress bar and level." },
+    { title: "Cross-Factor Effects", desc: "See exactly which penalties and bonuses apply — and how many points each costs." },
+    { title: "Fragility Classification", desc: "Brittle, Thin, Uneven, Supported, or Resilient. Know how easily your income could break." },
+    { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you can't work for 90 days? Each scenario scored." },
+    { title: "Industry-Specific Action Plan", desc: "Specific steps for your industry, income model, and operating structure." },
+    { title: "Advisor Discussion Guide", desc: "Talking points to share with your financial advisor, lender, or business partner." },
+    { title: "Peer Comparison", desc: "Your score vs. actual peer averages — with numbers, not vague labels." },
+  ];
+
   return (
     <>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA" }}>
 
         {/* ══ Score Hero ══ */}
-        <section style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", paddingTop: 100, paddingBottom: 80, textAlign: "center" }}>
-          <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
-            <Image src={logoImg} alt="RunPayway" width={140} height={16} style={{ height: "auto", filter: "brightness(10)", marginBottom: 40 }} />
+        <section style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", paddingTop: mobile ? 80 : 120, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
+          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <Image src={logoImg} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", filter: "brightness(10)", marginBottom: mobile ? 32 : 40 }} />
 
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: B.teal, marginBottom: 24 }}>
-              Your Income Stability Score
-            </div>
+            <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score</div>
 
-            <div style={{ fontSize: 96, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 16 }}>
-              {animatedScore}
-            </div>
+            <div style={{ ...F.score, fontSize: mobile ? 64 : 72, color: "#F4F1EA", marginBottom: 16 }}>{animatedScore}</div>
 
             <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
               <div style={{ width: 12, height: 12, borderRadius: 3, backgroundColor: bandColor }} />
-              <span style={{ fontSize: 20, fontWeight: 500, color: bandColor }}>{band}</span>
+              <span style={{ ...F.h3, fontSize: mobile ? 18 : 20, color: bandColor }}>{band}</span>
             </div>
 
             {percentileLabel && (
-              <div style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", marginTop: 8 }}>
+              <div style={{ ...F.body, color: "rgba(244,241,234,0.60)", marginTop: 8 }}>
                 {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
               </div>
             )}
           </div>
         </section>
 
-        {/* ══ Key Insight (the one free takeaway) ══ */}
-        <section style={{ backgroundColor: "#FFFFFF", paddingTop: 56, paddingBottom: 56 }}>
-          <div style={{ maxWidth: 560, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>
+        {/* ══ Key Insight ══ */}
+        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
+          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px`, textAlign: "center" }}>
+            <div style={{ ...F.label, color: B.teal, marginBottom: 16 }}>
               THE ONE THING HOLDING {name.toUpperCase()} BACK
             </div>
-            <p style={{ fontSize: 18, fontWeight: 500, color: B.navy, lineHeight: 1.55, margin: "0 0 24px" }}>
+            <p style={{ ...F.lead, fontSize: mobile ? 16 : 17, fontWeight: 500, color: B.navy, margin: "0 0 24px" }}>
               {insightText}
             </p>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, margin: 0 }}>
+            <p style={{ ...F.body, color: B.muted, margin: 0 }}>
               Your full report explains exactly why, shows how it interacts with your other structural factors, and gives you a step-by-step plan to fix it.
             </p>
           </div>
         </section>
 
-        {/* ══ What You're Missing ══ */}
-        <section style={{ backgroundColor: B.sand, paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
-            <h2 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", color: B.navy, textAlign: "center", marginBottom: 36 }}>
+        {/* ══ What the Full Report Reveals ══ */}
+        <section style={{ backgroundColor: B.sand, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
+          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, textAlign: "center", marginBottom: 40 }}>
               What the full report reveals
             </h2>
 
-            {[
-              { title: "Score Breakdown", desc: "See exactly how Structure + Stability + Quality combine into your score." },
-              { title: "6 Structural Indicators", desc: "Income persistence, source diversity, forward visibility, earnings stability, labor independence, concentration resilience — each scored." },
-              { title: "Cross-Factor Effects", desc: "When two weak areas overlap, your score drops more. See exactly which penalties and bonuses apply to you." },
-              { title: "Fragility Classification", desc: "Is your income Brittle, Thin, Uneven, Supported, or Resilient? Know how easily it could break." },
-              { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you can't work for 90 days? Each scenario scored." },
-              { title: "Industry-Specific Action Plan", desc: "Not generic advice. Specific steps for your industry, income model, and operating structure." },
-              { title: "Advisor Discussion Guide", desc: "Talking points and questions to share with your financial advisor, lender, or business partner." },
-              { title: "Peer Comparison", desc: "Your score vs. actual peer averages in your industry — with numbers, not vague labels." },
-            ].map((item, i) => (
-              <div key={item.title} style={{ display: "flex", gap: 16, alignItems: "flex-start", marginBottom: 20, padding: "16px 20px", backgroundColor: "#FFFFFF", borderRadius: 10, border: "1px solid rgba(14,26,43,0.06)" }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: i % 2 === 0 ? "rgba(75,63,174,0.08)" : "rgba(31,109,122,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: i % 2 === 0 ? B.purple : B.teal }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{item.title}</div>
-                  <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
-                </div>
-              </div>
-            ))}
+            <div style={{ display: "flex", flexDirection: "column", gap: SP.gap }}>
+              {features.map((item, i) => (
+                <FeatureCard key={item.title} title={item.title} desc={item.desc} index={i} mobile={mobile} />
+              ))}
+            </div>
           </div>
         </section>
 
         {/* ══ Testimonials ══ */}
-        <section style={{ backgroundColor: "#FFFFFF", paddingTop: 64, paddingBottom: 64 }}>
-          <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
-            <h2 style={{ fontSize: 24, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", color: B.navy, textAlign: "center", marginBottom: 32 }}>
+        <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
+          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, color: B.navy, textAlign: "center", marginBottom: 32 }}>
               What customers say
             </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: SP.gap }}>
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} style={{ padding: "20px 24px", backgroundColor: B.bone, borderRadius: 10, border: "1px solid rgba(14,26,43,0.06)" }}>
-                  <p style={{ fontSize: 14, color: B.navy, lineHeight: 1.6, margin: "0 0 12px", fontStyle: "italic" }}>
+                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: B.bone, borderRadius: SP.cardRadius, border: `1px solid ${B.borderLight}` }}>
+                  <p style={{ ...F.body, color: B.navy, margin: "0 0 12px", fontStyle: "italic" }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <div style={{ fontSize: 12, color: B.muted }}>
+                  <div style={{ ...F.small, color: B.muted }}>
                     <strong>{t.name}</strong> &middot; {t.industry} &middot; Score: {t.score}
                   </div>
                 </div>
@@ -206,22 +232,20 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ══ CTA — Upgrade to Full Report ══ */}
-        <section style={{ backgroundColor: B.navy, paddingTop: 64, paddingBottom: 64, textAlign: "center" }}>
-          <div style={{ maxWidth: 520, margin: "0 auto", padding: "0 24px" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>
-              FULL REPORT
-            </div>
-            <h2 style={{ fontSize: 32, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 12 }}>
+        {/* ══ CTA — Upgrade ══ */}
+        <section style={{ backgroundColor: B.navy, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
+          <div style={{ maxWidth: 520, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <div style={{ ...F.label, color: B.teal, marginBottom: 16 }}>FULL REPORT</div>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: "#F4F1EA", marginBottom: 12 }}>
               Get the full 5-page report
             </h2>
-            <p style={{ fontSize: 16, color: "rgba(244,241,234,0.65)", lineHeight: 1.65, marginBottom: 8 }}>
+            <p style={{ ...F.body, color: "rgba(244,241,234,0.65)", marginBottom: 8 }}>
               Your score is {score}. The full report shows you exactly why — and what to do about it.
             </p>
 
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 24 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA" }}>$99</span>
-              <span style={{ fontSize: 15, color: "rgba(244,241,234,0.50)" }}>one-time</span>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 32 }}>
+              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 600, color: "#F4F1EA" }}>$99</span>
+              <span style={{ ...F.body, color: "rgba(244,241,234,0.50)" }}>one-time</span>
             </div>
 
             <a
@@ -232,28 +256,65 @@ export default function FreeScorePage() {
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                height: 56,
+                height: mobile ? 52 : 56,
                 padding: "0 40px",
                 borderRadius: 12,
                 background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
                 color: B.navy,
-                fontSize: 16,
+                ...F.body,
                 fontWeight: 600,
                 textDecoration: "none",
                 letterSpacing: "-0.01em",
                 boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
                 transition: "transform 200ms ease, box-shadow 200ms ease",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
             >
               Get Full Report — $99
             </a>
 
-            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", marginTop: 16, lineHeight: 1.6 }}>
+            <p style={{ ...F.small, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
               If the report doesn&apos;t reveal at least one insight you didn&apos;t already know, email support@runpayway.com for a full refund.
             </p>
           </div>
         </section>
       </div>
     </>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  FeatureCard — with hover state                                     */
+/* ------------------------------------------------------------------ */
+
+function FeatureCard({ title, desc, index, mobile }: { title: string; desc: string; index: number; mobile: boolean }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex",
+        gap: 16,
+        alignItems: "flex-start",
+        padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop,
+        backgroundColor: "#FFFFFF",
+        borderRadius: SP.cardRadius,
+        border: `1px solid ${B.borderLight}`,
+        boxShadow: hovered ? "0 8px 24px rgba(14,26,43,0.06)" : "none",
+        transform: hovered ? "translateY(-2px)" : "translateY(0)",
+        transition: "box-shadow 200ms ease, transform 200ms ease",
+      }}
+    >
+      <div style={{ width: 28, height: 28, borderRadius: 8, background: index % 2 === 0 ? "rgba(75,63,174,0.08)" : "rgba(31,109,122,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+        <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: index % 2 === 0 ? B.purple : B.teal }} />
+      </div>
+      <div>
+        <div style={{ ...F.body, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{title}</div>
+        <p style={{ ...F.small, color: B.muted, margin: 0 }}>{desc}</p>
+      </div>
+    </div>
   );
 }
