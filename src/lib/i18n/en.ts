@@ -840,7 +840,7 @@ export const en: Translations = {
     ctaTitle: "Run Your Assessment",
     ctaDesc: "Complete the assessment in under two minutes and receive your Income Stability Score\u2122 instantly with a comprehensive diagnostic report delivered on screen and emailed automatically.",
     ctaButton: "Get My Income Stability Score\u2122",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Privacy Policy page ──
@@ -979,7 +979,7 @@ export const en: Translations = {
     s14P2: "Material changes will be published with an updated effective date.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Terms of Use page ──
@@ -1094,7 +1094,7 @@ export const en: Translations = {
     s20P4: "No silent changes are made to scoring logic.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Accessibility page ──
@@ -1128,7 +1128,7 @@ export const en: Translations = {
     s4Li3: "avoiding reliance on color alone to convey meaning",
     s4Li4: "providing accessible validation and error messaging",
     s4Li5: "avoiding forced time limits during assessment completion",
-    s4P2: "Registry verification pages and account management interfaces are designed using similar accessibility principles.",
+    s4P2: "The free score results page, paid report page, registry verification page, and PDF download functionality are designed using similar accessibility principles.",
     s5Title: "Ongoing Accessibility Improvements",
     s5P1: "Accessibility is an ongoing effort.",
     s5P2: "RunPayway™ periodically reviews the platform to identify opportunities for improving usability and accessibility as part of routine system updates and platform improvements.",
@@ -1142,7 +1142,7 @@ export const en: Translations = {
     s7P2: "Accessibility inquiries will be reviewed and addressed within reasonable timeframes.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Acceptable Use Policy page ──
@@ -1157,10 +1157,10 @@ export const en: Translations = {
     s1P2: "Use of the platform constitutes agreement to comply with this policy.",
     s2Title: "Permitted Use",
     s2P1: "You may use RunPayway™ solely for personal or internal informational purposes, including to:",
-    s2Li1: "complete an Income Stability Score™ assessment",
-    s2Li2: "manage your account",
-    s2Li3: "verify an assessment snapshot through the registry",
-    s2Li4: "submit enterprise or partnership inquiries",
+    s2Li1: "complete a free or paid Income Stability Score™ assessment",
+    s2Li2: "download and share your score card or diagnostic report",
+    s2Li3: "verify an assessment record through the registry",
+    s2Li4: "submit enterprise, partnership, or product inquiries",
     s2P2: "Use must comply with applicable laws and the RunPayway™ Terms of Use.",
     s3Title: "Prohibited Conduct",
     s3P1: "You may not:",
@@ -1210,7 +1210,7 @@ export const en: Translations = {
     s9P2: "Violations may result in suspension of access, termination of accounts, or legal action where appropriate.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Security Practices page ──
@@ -1278,7 +1278,7 @@ export const en: Translations = {
     s10P2: "Updates to security practices will not retroactively alter previously issued Income Stability Score™ snapshot records.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Model Version Policy page ──
@@ -1345,7 +1345,7 @@ export const en: Translations = {
     s10P2: "This policy does not govern pricing, subscription structure, or promotional offerings.",
     closingBrand: "RunPayway™",
     closingSubtitle: "Income Stability Score™",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 
   // ── Verify page ──
@@ -1378,6 +1378,6 @@ export const en: Translations = {
     howStep1: "Each completed assessment receives a unique Record ID and Authorization Code.",
     howStep2: "Enter both credentials above to verify that a score was generated using the official RunPayway™ model.",
     howStep3: "Verification confirms the record exists and returns the score, classification band, and issuance details without exposing internal assessment data.",
-    closingPowered: "Powered by Structural Stability Model RP-2.0",
+    closingPowered: "Model RP-2.0",
   },
 };
