@@ -175,7 +175,7 @@ function CheckoutSuccessContent() {
         {/* CTA — user clicks when ready */}
         {ready ? (
           <Link
-            href={hasExistingRecord ? "/review" : plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
+            href={hasExistingRecord ? "/unlock" : plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
             style={{
               display: "inline-flex",
               alignItems: "center",
