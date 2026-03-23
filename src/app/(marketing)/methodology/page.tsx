@@ -658,7 +658,7 @@ function InteractionEffects() {
       ref={ref}
       aria-label="Interaction Effects"
       style={{
-        backgroundColor: B.sand,
+        backgroundColor: B.navy,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
@@ -684,7 +684,7 @@ function InteractionEffects() {
           <h2
             className="text-[28px] md:text-[36px]"
             style={{
-              color: B.navy,
+              color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHeading,
@@ -696,7 +696,7 @@ function InteractionEffects() {
           <p
             className="text-[15px] md:text-[17px]"
             style={{
-              color: B.muted,
+              color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
               marginBottom: 40,
             }}
@@ -724,7 +724,6 @@ function InteractionEffects() {
                   backgroundColor: "#ffffff",
                   borderRadius: S.cardRadius,
                   padding: mobile ? "20px" : "24px 28px",
-                  border: "1px solid rgba(14,26,43,0.06)",
                   opacity: visible ? 1 : 0,
                   transform: visible ? "translateY(0)" : "translateY(10px)",
                   transition: `opacity 0.5s ease-out ${200 + i * 100}ms, transform 0.5s ease-out ${200 + i * 100}ms`,
@@ -743,7 +742,7 @@ function InteractionEffects() {
                 <p
                   className="text-[14px] md:text-[15px]"
                   style={{
-                    color: B.muted,
+                    color: B.navy,
                     lineHeight: S.lhBody,
                     margin: 0,
                   }}
@@ -757,7 +756,7 @@ function InteractionEffects() {
           <p
             className="text-[13px]"
             style={{
-              color: B.light,
+              color: "rgba(244,241,234,0.40)",
               letterSpacing: "0.02em",
             }}
           >
