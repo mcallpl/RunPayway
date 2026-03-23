@@ -252,7 +252,7 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
       </div>
 
       <Link
-        href="/diagnostic-portal"
+        href="/begin"
         style={{
           display: "flex",
           alignItems: "center",

@@ -1372,7 +1372,7 @@ function CtaSection() {
           </p>
 
           <Link
-            href="/diagnostic-portal"
+            href="/begin"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{

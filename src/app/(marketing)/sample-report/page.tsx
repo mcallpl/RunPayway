@@ -576,7 +576,7 @@ function CtaSection() {
             If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
           </p>
           <a
-            href="/diagnostic-portal"
+            href="/begin"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{

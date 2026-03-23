@@ -335,7 +335,7 @@ export default function ComingSoonPage() {
             Get your Income Stability Score™ today — free. Upgrade to the full 5-page report for $99.
           </p>
           <a
-            href="/diagnostic-portal"
+            href="/begin"
             style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: SP.cardRadius, background: B.navy, color: "#ffffff", ...F.body, fontWeight: 600, textDecoration: "none", letterSpacing: "0.01em", transition: "background 200ms ease, transform 200ms ease, box-shadow 200ms ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = B.purple; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.20)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = B.navy; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
