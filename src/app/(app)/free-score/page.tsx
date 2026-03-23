@@ -128,9 +128,12 @@ export default function FreeScorePage() {
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
   const bandColor = tier === "high" ? B.bandHigh : tier === "established" ? B.bandEstablished : tier === "developing" ? B.bandDeveloping : B.bandLimited;
 
+  const [downloading, setDownloading] = useState(false);
+
   const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
   const v2Constraints = v2?.constraints as { root_constraint: string } | undefined;
   const v2Benchmarks = v2?.benchmarks as { cluster_average_score: number } | undefined;
+  const v2Scores = v2?.scores as { structure_score: number; stability_score: number; quality_adjustment: number } | undefined;
 
   const constraintPlain: Record<string, string> = {
     high_concentration: "Too much of your income depends on one source.",
@@ -154,9 +157,153 @@ export default function FreeScorePage() {
     { title: "Peer Comparison", desc: "Your score vs. actual peer averages — with numbers, not vague labels." },
   ];
 
+  const issuedDate = ((record.issued_timestamp_utc as string) || (record.assessment_date_utc as string) || "").split("T")[0];
+  const recordId = ((record.record_id as string) || "").slice(0, 8);
+
+  const handleDownload = async () => {
+    setDownloading(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+
+      const el = document.getElementById("free-score-card");
+      if (!el) return;
+
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false, width: 816, height: el.scrollHeight, windowWidth: 816 });
+
+      const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
+      pdf.setProperties({ title: `Income Stability Score Card — ${name}`, author: "RunPayway", subject: "Income Stability Score Card" });
+
+      const imgW = 7.06;
+      const imgH = (canvas.height / canvas.width) * imgW;
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0.72, 0.72, imgW, imgH);
+
+      pdf.save(`RunPayway-Score-Card-${recordId}.pdf`);
+    } catch {
+      alert("PDF generation failed. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
+
+      {/* Hidden score card for PDF capture */}
+      <div style={{ position: "absolute", left: "-9999px", top: 0 }}>
+        <div id="free-score-card" style={{ width: 816, padding: 48, backgroundColor: "#FFFFFF", fontFamily: "Inter, -apple-system, sans-serif", boxSizing: "border-box" }}>
+          {/* Top accent bar */}
+          <div style={{ height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)", marginBottom: 32 }} />
+
+          {/* Header */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40 }}>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 4 }}>INCOME STABILITY SCORE™</div>
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.42)" }}>Model RP-2.0</div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.42)" }}>Score Card</div>
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.42)" }}>{issuedDate}</div>
+            </div>
+          </div>
+
+          {/* Score */}
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <div style={{ fontSize: 80, fontWeight: 600, color: B.navy, lineHeight: 1 }}>{score}</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 12 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
+              <span style={{ fontSize: 18, fontWeight: 500, color: bandColor }}>{band}</span>
+            </div>
+            {percentileLabel && (
+              <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 8 }}>
+                {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
+              </div>
+            )}
+          </div>
+
+          {/* Score breakdown */}
+          {v2Scores && (
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32, padding: "14px 20px", backgroundColor: "#F8F6F1", borderRadius: 6, justifyContent: "center" }}>
+              <div style={{ textAlign: "center", flex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>STRUCTURE</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{v2Scores.structure_score}</div>
+              </div>
+              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>+</span>
+              <div style={{ textAlign: "center", flex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>STABILITY</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{v2Scores.stability_score}</div>
+              </div>
+              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>{v2Scores.quality_adjustment >= 0 ? "+" : "−"}</span>
+              <div style={{ textAlign: "center", flex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>QUALITY</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: v2Scores.quality_adjustment < 0 ? B.bandLimited : B.teal }}>{Math.abs(v2Scores.quality_adjustment)}</div>
+              </div>
+              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.30)" }}>=</span>
+              <div style={{ textAlign: "center", flex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 4 }}>SCORE</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: B.navy }}>{score}</div>
+              </div>
+            </div>
+          )}
+
+          {/* Band scale */}
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(14,26,43,0.42)", marginBottom: 8 }}>WHERE YOU LAND</div>
+            <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
+              {[
+                { w: 30, color: B.bandLimited, t: "limited" },
+                { w: 20, color: B.bandDeveloping, t: "developing" },
+                { w: 25, color: B.bandEstablished, t: "established" },
+                { w: 25, color: B.bandHigh, t: "high" },
+              ].map((seg, i) => (
+                <div key={i} style={{ width: `${seg.w}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: tier === seg.t ? 1 : 0.25 }} />
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 2 }}>
+              {[
+                { range: "0–29", label: "Limited", color: B.bandLimited, t: "limited" },
+                { range: "30–49", label: "Developing", color: B.bandDeveloping, t: "developing" },
+                { range: "50–74", label: "Established", color: B.bandEstablished, t: "established" },
+                { range: "75–100", label: "High", color: B.bandHigh, t: "high" },
+              ].map((b) => (
+                <div key={b.range} style={{ flex: 1, opacity: tier === b.t ? 1 : 0.5 }}>
+                  <div style={{ fontSize: 9, fontWeight: tier === b.t ? 700 : 500, color: b.color }}>{b.range}</div>
+                  <div style={{ fontSize: 9, color: tier === b.t ? B.navy : "rgba(14,26,43,0.42)", fontWeight: tier === b.t ? 600 : 400 }}>{b.label} Stability</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Key insight */}
+          <div style={{ backgroundColor: "#F8F6F1", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 32 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>KEY INSIGHT</div>
+            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, lineHeight: 1.5 }}>{insightText}</div>
+          </div>
+
+          {/* Metadata */}
+          <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 20, borderTop: "1px solid rgba(14,26,43,0.08)", marginBottom: 24 }}>
+            {[["Prepared for", name], ["Industry", industrySector], ["Date", issuedDate], ["Record ID", recordId]].map(([l, v]) => (
+              <div key={l}>
+                <div style={{ fontSize: 9, color: "rgba(14,26,43,0.42)" }}>{l}</div>
+                <div style={{ fontSize: 10, fontWeight: 500, color: B.navy }}>{v}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Upgrade CTA */}
+          <div style={{ textAlign: "center", padding: "20px 24px", backgroundColor: B.navy, borderRadius: 8 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full 5-page report — $99</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Structural indicators, risk scenarios, cross-factor effects, action plan, and advisor guide.</div>
+          </div>
+
+          {/* Disclaimer */}
+          <div style={{ marginTop: 20, fontSize: 9, color: "rgba(14,26,43,0.30)", textAlign: "center", lineHeight: 1.5 }}>
+            The Income Stability Score™ is a present-state assessment based on information provided by the user. It does not provide financial advice and does not predict future outcomes. RunPayway™ Model RP-2.0.
+          </div>
+        </div>
+      </div>
+
       <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA" }}>
 
         {/* ══ Score Hero ══ */}
@@ -178,6 +325,33 @@ export default function FreeScorePage() {
                 {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
               </div>
             )}
+
+            {/* Download score card */}
+            <button
+              onClick={handleDownload}
+              disabled={downloading}
+              style={{
+                marginTop: 28,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 40,
+                padding: "0 24px",
+                borderRadius: 8,
+                background: "rgba(255,255,255,0.10)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "rgba(244,241,234,0.70)",
+                ...F.small,
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "background 200ms ease, border-color 200ms ease",
+                opacity: downloading ? 0.6 : 1,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.10)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}
+            >
+              {downloading ? "Generating..." : "Download Score Card (PDF)"}
+            </button>
           </div>
         </section>
 
