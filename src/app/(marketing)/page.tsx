@@ -2188,7 +2188,7 @@ function PricingSection() {
               Full 5-page report &#183; All engine data &#183; Advisor guide
             </p>
             <a
-              href="https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02"
+              href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",

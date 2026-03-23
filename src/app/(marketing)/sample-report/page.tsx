@@ -23,7 +23,7 @@ const B = {
   bandHigh: "#1F6D7A",
 };
 
-const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+const STRIPE_SINGLE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 const FONT_IMPORT = `@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`;
 

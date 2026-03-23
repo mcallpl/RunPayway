@@ -97,7 +97,7 @@ const S = {
   lsLabel: "0.12em",
 };
 
-const STRIPE_SINGLE = "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02";
+const STRIPE_SINGLE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 /* ================================================================== */

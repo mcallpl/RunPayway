@@ -90,7 +90,7 @@ const S = {
 /* ------------------------------------------------------------------ */
 
 const STRIPE = {
-  single: "https://buy.stripe.com/14A28j48E2socZQa2Z2Nq02",
+  single: "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04",
 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
