@@ -236,8 +236,7 @@ export default function InitializationPage() {
         }
 
         setAuthorized(true);
-        const delay = parsed.plan_key === "free" ? 3000 : 5000;
-        setTimeout(() => setReady(true), delay);
+        setTimeout(() => setReady(true), 3000);
       } catch {
         router.push("/pricing");
       }

@@ -73,14 +73,7 @@ function CheckoutSuccessContent() {
       });
   }, [plan, stripeSessionId, customerEmail]);
 
-  // Redirect after token is stored
-  useEffect(() => {
-    if (!ready) return;
-    const timer = setTimeout(() => {
-      router.push(plan === "monitoring" ? "/create-account" : "/diagnostic-portal");
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [ready, router, plan]);
+  // No auto-redirect — user clicks "Begin Assessment" when ready
 
   const [visible, setVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
@@ -170,15 +163,44 @@ function CheckoutSuccessContent() {
           ))}
         </div>
 
-        {/* Progress dots */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 16 }}>
-          {[0, 1, 2].map((i) => (
-            <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.cream, animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite` }} />
-          ))}
-        </div>
+        {/* CTA — user clicks when ready */}
+        {ready ? (
+          <Link
+            href={plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              maxWidth: 360,
+              height: 52,
+              borderRadius: 12,
+              background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+              color: B.navy,
+              fontSize: 16,
+              fontWeight: 600,
+              textDecoration: "none",
+              letterSpacing: "-0.01em",
+              boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+              transition: "transform 200ms ease, box-shadow 200ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
+          >
+            Begin Assessment
+          </Link>
+        ) : (
+          <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.cream, animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite` }} />
+            ))}
+          </div>
+        )}
 
-        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)" }}>
-          Redirecting to your assessment...
+        <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
+          {["Under 2 minutes", "No bank connection", "Model RP-2.0"].map((badge) => (
+            <span key={badge} style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{badge}</span>
+          ))}
         </div>
       </div>
     </div>
