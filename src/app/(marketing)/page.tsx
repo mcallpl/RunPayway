@@ -1868,11 +1868,12 @@ function TestimonialsSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  // PLACEHOLDER — Replace with real testimonials before launch
+  // PLACEHOLDER — Replace with real testimonials + headshot paths before launch
+  // To use real photos: add images to /public/testimonials/ and update the `photo` field
   const testimonials = [
-    { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", role: "Real Estate Agent", score: 28 },
-    { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", role: "Software Contractor", score: 44 },
-    { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", role: "Management Consultant", score: 61 },
+    { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
+    { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
+    { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
   ];
 
   return (
@@ -1941,25 +1942,24 @@ function TestimonialsSection() {
                 transition: `opacity 600ms ease-out ${200 + i * 120}ms, transform 600ms ease-out ${200 + i * 120}ms`,
               }}
             >
-              {/* Score badge */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(75,63,174,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: "#F4F1EA" }}>{t.score}</span>
-                </div>
-                <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
-                  Score: {t.score}/100
-                </span>
-              </div>
-
               {/* Quote */}
-              <p style={{ fontSize: 15, color: "rgba(244,241,234,0.80)", lineHeight: 1.65, margin: "0 0 20px", flex: 1, fontStyle: "italic" }}>
+              <p style={{ fontSize: 15, color: "rgba(244,241,234,0.80)", lineHeight: 1.65, margin: "0 0 24px", flex: 1, fontStyle: "italic" }}>
                 &ldquo;{t.quote}&rdquo;
               </p>
 
-              {/* Attribution */}
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.role}</div>
+              {/* Attribution with headshot */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <img
+                  src={t.photo}
+                  alt={t.name}
+                  width={44}
+                  height={44}
+                  style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }}
+                />
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
+                  <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.role} &middot; Score: {t.score}</div>
+                </div>
               </div>
             </div>
           ))}

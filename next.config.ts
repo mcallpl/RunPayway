@@ -9,7 +9,7 @@ const securityHeaders = [
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://i.pravatar.cc",
       "font-src 'self' https://fonts.gstatic.com",
       "connect-src 'self' https://*.stripe.com",
       "frame-ancestors 'none'",

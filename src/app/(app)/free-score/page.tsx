@@ -68,10 +68,11 @@ const STRIPE_FULL_REPORT = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
 /*  Testimonial data (placeholder — replace with real quotes)          */
 /* ------------------------------------------------------------------ */
 
+// PLACEHOLDER — Replace with real testimonials + headshot paths before launch
 const TESTIMONIALS = [
-  { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", industry: "Real Estate", score: 28 },
-  { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", industry: "Technology", score: 44 },
-  { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", industry: "Consulting", score: 61 },
+  { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", industry: "Real Estate", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
+  { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", industry: "Technology", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
+  { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", industry: "Consulting", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -394,11 +395,15 @@ export default function FreeScorePage() {
             <div style={{ display: "flex", flexDirection: "column", gap: SP.gap }}>
               {TESTIMONIALS.map((t) => (
                 <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: B.bone, borderRadius: SP.cardRadius, border: `1px solid ${B.borderLight}` }}>
-                  <p style={{ ...F.body, color: B.navy, margin: "0 0 12px", fontStyle: "italic" }}>
+                  <p style={{ ...F.body, color: B.navy, margin: "0 0 16px", fontStyle: "italic" }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <div style={{ ...F.small, color: B.muted }}>
-                    <strong>{t.name}</strong> &middot; {t.industry} &middot; Score: {t.score}
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <img src={t.photo} alt={t.name} width={40} height={40} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+                    <div>
+                      <div style={{ ...F.small, fontWeight: 600, color: B.navy }}>{t.name}</div>
+                      <div style={{ ...F.small, color: B.muted }}>{t.industry} &middot; Score: {t.score}</div>
+                    </div>
                   </div>
                 </div>
               ))}
