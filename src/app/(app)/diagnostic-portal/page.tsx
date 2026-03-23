@@ -153,22 +153,16 @@ export default function InitializationPage() {
     recipient_email: "", // populated from Stripe checkout, not user input
   });
 
-  // Lock user in — prevent back button and tab close
+  // Warn before leaving (but don't trap the user)
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
+      if (form.assessment_title || form.classification) {
+        e.preventDefault();
+      }
     };
-    const onPopState = () => {
-      window.history.pushState(null, "", window.location.href);
-    };
-    window.history.pushState(null, "", window.location.href);
     window.addEventListener("beforeunload", onBeforeUnload);
-    window.addEventListener("popstate", onPopState);
-    return () => {
-      window.removeEventListener("beforeunload", onBeforeUnload);
-      window.removeEventListener("popstate", onPopState);
-    };
-  }, []);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [form.assessment_title, form.classification]);
 
   // Pre-fill email from Stripe checkout session
   useEffect(() => {
@@ -709,7 +703,7 @@ export default function InitializationPage() {
           <div style={{ height: "100%", width: progressWidths[step], borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
         </div>
         <p style={{ fontSize: 11, color: B.light, textAlign: "center", marginTop: 10 }}>
-          Average completion: 1 min 47 sec — starts after Begin Assessment
+          Under 2 minutes — starts after Begin Assessment
         </p>
       </div>
     </div>
