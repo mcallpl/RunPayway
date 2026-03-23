@@ -379,6 +379,19 @@ input[type="range"]::-webkit-slider-thumb {
               Income Stability Score&#8482;
             </div>
 
+            <p
+              style={{
+                fontSize: mobile ? 13 : 15,
+                color: "rgba(244,241,234,0.50)",
+                lineHeight: 1.6,
+                marginBottom: mobile ? 16 : 20,
+                opacity: visible ? 1 : 0,
+                transition: "opacity 500ms ease-out 100ms",
+              }}
+            >
+              For freelancers, contractors, business owners, and anyone whose income doesn&#8217;t come from a single paycheck.
+            </p>
+
             <h1
               style={{
                 fontSize: mobile ? 36 : 64,
