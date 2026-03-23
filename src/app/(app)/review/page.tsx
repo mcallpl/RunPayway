@@ -740,15 +740,15 @@ export default function ReviewPage() {
   // ── Tier-aware copy ──
   const copy = {
     p1_headline: ({
-      A1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income and ${revenueDesc}. The structure is highly vulnerable — most protection needed for stability is not yet in place.`,
-      A2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. With ${incomeModelDesc} income and ${revenueDesc}, the structure is weak and exposed to disruption.`,
-      A3: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Some early structure exists, but the ${incomeModelDesc} income with ${revenueDesc} is still below a stable range.`,
-      B1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure is developing but not yet protected against disruption.`,
-      B2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure needs stronger protection before it can be considered stable.`,
-      C1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure has real stability but is not yet fully protected against disruption.`,
-      C2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure is established and relatively stable.`,
-      D1: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The ${incomeModelDesc} income structure is strong with substantial protection in place.`,
-      D2: `${name} scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. The structure is exceptionally strong and highly protected.`,
+      A1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Most of the income protection you need is not in place yet. This report shows you exactly where you are exposed and what to do first.`,
+      A2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is active but not protected. If conditions change, you have very little cushion.`,
+      A3: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You have some early protection, but you are still below a stable range. This report shows you what to fix first.`,
+      B1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is developing but not yet protected enough. The next gains come from building protection, not earning more.`,
+      B2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You are making progress, but your income still needs stronger protection before it can handle disruption.`,
+      C1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You have real stability. This report shows the remaining gaps and how to close them.`,
+      C2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is established and relatively stable. This report shows where to refine.`,
+      D1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is strong with substantial protection in place. This report shows how to maintain it.`,
+      D2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is exceptionally well-protected. This report shows how to keep it that way.`,
     })[subTier],
     p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
   };
@@ -1001,7 +1001,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "How Your Income Is Built", "Your Income Deep Dive", "Your Biggest Risks", "Your Action Plan"];
+  const pageTitles = ["Your Score", "How Your Income Is Built", "Your Biggest Risks", "Your Income Deep Dive", "Your Action Plan"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1186,7 +1186,7 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `High active-work dependence for a ${structureDesc}. ${profileConstraintAdvice.labor_dependence?.split(".")[0]}.` : record.active_income_level >= 50 ? `${record.active_income_level}% active-work dependence. Shift more toward repeatable income.` : `${100 - record.active_income_level}% repeats or continues independently — a structural advantage.`}
+          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. That is not a business — that is a job without benefits.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
         </p>
 
         {/* Stress Test + Continuity cards */}
@@ -1270,7 +1270,7 @@ export default function ReviewPage() {
 
 
       {/* ════════════════════════════════════════════════════════
-          PAGE 3 — STRUCTURAL DIAGNOSTIC (Deep analysis)
+          PAGE 3 — YOUR INCOME DEEP DIVE (currently renders as page 3)
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
@@ -1417,18 +1417,18 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <PageFooter section="Your Income Deep Dive" page={3} />
+        <PageFooter section="Your Income Deep Dive" page={4} />
       </ReportPage>
 
 
       {/* ════════════════════════════════════════════════════════
-          PAGE 4 — YOUR BIGGEST RISKS (Confront: what's at stake)
+          PAGE 4 — YOUR BIGGEST RISKS
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Biggest Risks</h1>
         <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are assessed in the context of the ${olIndustryLabel} industry.` : ""}
+          {p3Intro[subTier]}{olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}
         </p>
 
         {/* Stress scenarios — top 3 */}
@@ -1497,6 +1497,13 @@ export default function ReviewPage() {
             })}
           </div>
         )}
+
+        {/* Urgency */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
+            If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection.
+          </p>
+        </div>
 
         <PageFooter section="Your Biggest Risks" page={4} />
       </ReportPage>
