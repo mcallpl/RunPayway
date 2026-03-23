@@ -544,23 +544,36 @@ function CtaSection() {
               marginBottom: 16,
             }}
           >
-            Get your Income Stability Score&#8482;
+            Now that you know who built it &#8212; see your score.
           </h2>
           <p
             style={{
               fontSize: 16,
               color: "rgba(244,241,234,0.60)",
               lineHeight: 1.65,
+              marginBottom: 12,
+              maxWidth: 440,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Your free score shows where you stand. The full report shows what to do about it &#8212; $99.
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "rgba(244,241,234,0.40)",
+              lineHeight: 1.6,
               marginBottom: 28,
               maxWidth: 440,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            Under two minutes. Five-page diagnostic report. Instant delivery.
+            If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund.
           </p>
           <Link
-            href="/pricing"
+            href="/diagnostic-portal"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -580,7 +593,7 @@ function CtaSection() {
             Get My Free Score
           </Link>
           <div style={{ marginTop: 16, fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
-            Model RP-2.0 &#183; Private by default
+            Free to start &#183; Under 2 minutes &#183; No bank connection
           </div>
         </div>
       </div>
