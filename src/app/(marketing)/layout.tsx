@@ -448,21 +448,6 @@ export default function MarketingLayout({
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
                 <LanguageSelector mobile={false} />
                 <Link
-                  href="/sign-in"
-                  className="header-nav-link"
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: "rgba(14,26,43,0.65)",
-                    transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-                    paddingBottom: 2,
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
-                >
-                  {t.nav.signIn}
-                </Link>
-                <Link
                   href="/pricing"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
@@ -588,7 +573,7 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, ...MORE_LINKS, { href: "/sign-in", label: t.nav.signIn }].map((link, i) => (
+              {[...NAV_LINKS, ...MORE_LINKS].map((link, i) => (
                 <Link
                   key={link.label}
                   href={link.href}
