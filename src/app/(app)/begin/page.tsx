@@ -49,6 +49,8 @@ export default function BeginPage() {
     if (!existing) {
       sessionStorage.setItem("rp_purchase_session", JSON.stringify({ plan_key: "free", status: "paid" }));
     }
+    // Mark as free plan for upgrade detection
+    localStorage.setItem("rp_previous_plan", "free");
     requestAnimationFrame(() => setVisible(true));
   }, []);
 

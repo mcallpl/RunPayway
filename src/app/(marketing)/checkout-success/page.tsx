@@ -67,52 +67,45 @@ function CheckoutSuccessContent() {
         }
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
-        // Check if customer just completed a free assessment (upgrade path)
-        // Only count as upgrade if record was created within the last hour
-        let existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-        if (existingRecord) {
-          try {
-            const rec = JSON.parse(existingRecord);
-            const recordTime = new Date(rec.issued_timestamp_utc || rec.assessment_date_utc || "").getTime();
-            const oneHourAgo = Date.now() - (60 * 60 * 1000);
-            if (recordTime > oneHourAgo) {
-              // Recent record — this is a free-to-paid upgrade
-              sessionStorage.setItem("rp_record", existingRecord);
-              setHasExistingRecord(true);
-            } else {
-              // Old record — clear it for a fresh assessment
-              sessionStorage.removeItem("rp_record");
-              localStorage.removeItem("rp_record");
-            }
-          } catch {
-            // Invalid record — clear it
+        // Check if this is a free-to-paid upgrade
+        // Only count as upgrade if the PREVIOUS session was a free plan
+        try {
+          const prevSession = localStorage.getItem("rp_previous_plan");
+          const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
+          if (prevSession === "free" && existingRecord) {
+            sessionStorage.setItem("rp_record", existingRecord);
+            setHasExistingRecord(true);
+          } else {
+            // Not an upgrade — clear old record for fresh assessment
             sessionStorage.removeItem("rp_record");
             localStorage.removeItem("rp_record");
           }
+        } catch {
+          sessionStorage.removeItem("rp_record");
+          localStorage.removeItem("rp_record");
         }
+        // Store current plan for future upgrade detection
+        localStorage.setItem("rp_previous_plan", planKey);
         setReady(true);
       })
       .catch(() => {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
-        let existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-        if (existingRecord) {
-          try {
-            const rec = JSON.parse(existingRecord);
-            const recordTime = new Date(rec.issued_timestamp_utc || rec.assessment_date_utc || "").getTime();
-            const oneHourAgo = Date.now() - (60 * 60 * 1000);
-            if (recordTime > oneHourAgo) {
-              sessionStorage.setItem("rp_record", existingRecord);
-              setHasExistingRecord(true);
-            } else {
-              sessionStorage.removeItem("rp_record");
-              localStorage.removeItem("rp_record");
-            }
-          } catch {
+        try {
+          const prevSession = localStorage.getItem("rp_previous_plan");
+          const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
+          if (prevSession === "free" && existingRecord) {
+            sessionStorage.setItem("rp_record", existingRecord);
+            setHasExistingRecord(true);
+          } else {
             sessionStorage.removeItem("rp_record");
             localStorage.removeItem("rp_record");
           }
+        } catch {
+          sessionStorage.removeItem("rp_record");
+          localStorage.removeItem("rp_record");
         }
+        localStorage.setItem("rp_previous_plan", planKey);
         setReady(true);
       });
   }, [plan, stripeSessionId, customerEmail]);
