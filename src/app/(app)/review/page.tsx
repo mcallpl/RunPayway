@@ -1039,7 +1039,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "How Your Income Is Built", isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks", "Your Income Deep Dive", isHighScorer ? "How to Protect Your Position" : "Your Action Plan"];
+  const pageTitles = ["Your Score", "How Your Income Is Built", isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks", "Your Income Deep Dive", isHighScorer ? "How to Protect Your Position" : "Your Action Plan", "Your Interactive Tools"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1576,9 +1576,9 @@ export default function ReviewPage() {
             {v2Quality && (
               <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW WELL-BUILT IT IS</div>
-                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{v2Quality.durability_grade}</div>
+                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{(v2Quality.durability_grade || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}</div>
                 <div style={{ ...T.meta, color: B.muted }}>
-                  Quality: {v2Quality.quality_score}/100 ({v2Quality.quality_score >= 70 ? "strong" : v2Quality.quality_score >= 40 ? "moderate" : "weak"})
+                  Quality: {v2Quality.quality_score}/10 ({v2Quality.quality_score >= 7 ? "strong" : v2Quality.quality_score >= 4 ? "moderate" : "weak"})
                 </div>
               </div>
             )}
@@ -2127,7 +2127,7 @@ export default function ReviewPage() {
                 <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
                   <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
                     <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
-                    <div style={{ ...T.score, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, fontSize: 40, marginBottom: 4 }}>{runwayDays}</div>
+                    <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
                     <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
                     <p style={{ ...T.meta, color: B.muted, marginTop: 8, lineHeight: 1.5 }}>
                       {runwayDays < 14 ? "This is a crisis-level runway. Any disruption becomes an emergency." : runwayDays < 30 ? "Less than one month. A single slow period could force difficult decisions." : runwayDays < 90 ? "Moderate runway, but not enough for a real transition or recovery." : "Strong runway. You could handle a significant disruption."}
@@ -2226,9 +2226,8 @@ export default function ReviewPage() {
         {/* ── VISUAL INCOME MAP ── */}
         {v2NormalizedInputs && (() => {
           const ni = v2NormalizedInputs;
-          const riskLevel = (val: number, threshold: number, inverted?: boolean) => {
-            const v = inverted ? 100 - val : val;
-            return v >= threshold ? B.bandLimited : v >= threshold * 0.6 ? B.bandDeveloping : B.teal;
+          const riskLevel = (val: number, threshold: number) => {
+            return val >= threshold ? B.bandLimited : val >= threshold * 0.6 ? B.bandDeveloping : B.teal;
           };
           return (
             <>
