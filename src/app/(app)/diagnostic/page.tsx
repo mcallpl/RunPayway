@@ -384,8 +384,15 @@ export default function DiagnosticPage() {
       localStorage.removeItem(STORAGE_KEY);
       setAssessmentTitle(profile.assessment_title || "");
       setShowLoading(true);
+      // Route based on plan type
+      const planKey = (() => {
+        try {
+          const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
+          return ps.plan_key || "free";
+        } catch { return "free"; }
+      })();
       setTimeout(() => {
-        router.push("/review");
+        router.push(planKey === "free" ? "/free-score" : "/review");
       }, 5000);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";

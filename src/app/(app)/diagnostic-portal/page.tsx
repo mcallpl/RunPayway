@@ -194,7 +194,12 @@ export default function InitializationPage() {
           session = stored;
         }
       }
-      if (!session) { router.push("/pricing"); return; }
+      if (!session) {
+        // Allow free tier — create a free session
+        const freeSession = { plan_key: "free", status: "paid" };
+        sessionStorage.setItem("rp_purchase_session", JSON.stringify(freeSession));
+        session = JSON.stringify(freeSession);
+      }
 
       try {
         const parsed = JSON.parse(session);

@@ -377,7 +377,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 500ms ease-out, transform 500ms ease-out",
               }}
             >
-              Measure what matters
+              Income Stability Score&#8482;
             </div>
 
             <h1
@@ -392,7 +392,7 @@ input[type="range"]::-webkit-slider-thumb {
                 fontFamily: DISPLAY_FONT,
               }}
             >
-              <RevealText text="How protected is your income, really?" visible={visible} baseDelay={200} />
+              <RevealText text="Could your income survive the next 60 days?" visible={visible} baseDelay={200} />
             </h1>
 
             <p
@@ -400,14 +400,28 @@ input[type="range"]::-webkit-slider-thumb {
                 fontSize: mobile ? 15 : 18,
                 color: "rgba(244,241,234,0.65)",
                 lineHeight: 1.7,
-                marginBottom: 36,
+                marginBottom: 12,
                 maxWidth: mobile ? undefined : 500,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
                 transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
               }}
             >
-              Pay stubs and tax returns don&#8217;t tell the full story. They miss the contracts, recurring clients, and revenue streams that actually keep your income stable.
+              Most people don&#8217;t know until it&#8217;s too late. Answer 6 questions. Get your score in under 2 minutes. See exactly where your income is vulnerable.
+            </p>
+
+            <p
+              style={{
+                fontSize: mobile ? 13 : 14,
+                color: "rgba(244,241,234,0.40)",
+                lineHeight: 1.6,
+                marginBottom: 36,
+                maxWidth: mobile ? undefined : 500,
+                opacity: visible ? 1 : 0,
+                transition: "opacity 600ms ease-out 300ms",
+              }}
+            >
+              No bank connection. No credit pull. Free to start.
             </p>
 
             <div
@@ -418,7 +432,7 @@ input[type="range"]::-webkit-slider-thumb {
               }}
             >
               <Link
-                href="/pricing"
+                href="/diagnostic-portal"
                 className="cta-tick inline-flex items-center justify-center font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2"
                 style={{
                   height: S.ctaH,
@@ -450,7 +464,7 @@ input[type="range"]::-webkit-slider-thumb {
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 <span className="tick tick-navy" />
-                <span className="cta-label">Get My Income Stability Score&#8482;</span>
+                <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
 

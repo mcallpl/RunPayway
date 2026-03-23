@@ -176,7 +176,7 @@ function Hero() {
               marginBottom: S.h1mb,
             }}
           >
-            Know exactly where your income stands.
+            Find out before it&apos;s too late.
           </h1>
 
           <p
@@ -190,7 +190,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            A five-page diagnostic report that shows your score, explains what it means, reveals your biggest risks, and gives you a clear path to stronger protection.
+            6 questions. Under 2 minutes. See your score free — or get the full 5-page report with your structural breakdown, risk scenarios, and personalized action plan.
           </p>
         </div>
       </div>
@@ -202,15 +202,14 @@ function Hero() {
 /* ================================================================== */
 /* 2. PRICING CARDS — The centerpiece                                  */
 /* ================================================================== */
-function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
+function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
   const [hovered, setHovered] = useState(false);
 
   const features = [
-    "Five-page diagnostic report",
-    "Score, interpretation, risks, improvements, and next steps",
-    "Personalized to your name and industry",
-    "Verified, shareable score card",
-    "Instant digital delivery",
+    "Your score out of 100",
+    "Your stability band",
+    "Your peer percentile",
+    "One key insight about your income",
   ];
 
   return (
@@ -223,73 +222,121 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
         borderRadius: S.cardRadius,
         border: "1px solid rgba(14,26,43,0.06)",
         padding: mobile ? "32px 28px" : "40px",
-        boxShadow: hovered
-          ? "0 12px 32px rgba(14,26,43,0.08)"
-          : "0 4px 16px rgba(14,26,43,0.04)",
+        boxShadow: hovered ? "0 12px 32px rgba(14,26,43,0.08)" : "0 4px 16px rgba(14,26,43,0.04)",
         transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
         opacity: visible ? 1 : 0,
-        transform: visible
-          ? hovered
-            ? "translateY(-4px)"
-            : "translateY(0)"
-          : "translateY(28px)",
+        transform: visible ? hovered ? "translateY(-4px)" : "translateY(0)" : "translateY(28px)",
         transitionDelay: `${delay}ms`,
         display: "flex",
         flexDirection: "column" as const,
       }}
     >
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 600,
-          textTransform: "uppercase" as const,
-          letterSpacing: "0.10em",
-          color: B.teal,
-          marginBottom: 20,
-        }}
-      >
-        Single Assessment
+      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: B.teal, marginBottom: 20 }}>
+        Free Score
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>
-          $59
-        </span>
-        <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
+        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$0</span>
+        <span style={{ fontSize: 14, color: B.muted }}>always free</span>
       </div>
 
-      <div
-        style={{
-          height: 1,
-          background: "rgba(14,26,43,0.06)",
-          margin: "24px 0",
-        }}
-      />
+      <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0" }} />
 
       <div style={{ flex: 1, marginBottom: 32 }}>
         {features.map((f) => (
-          <div
-            key={f}
-            style={{
-              display: "flex",
-              gap: 12,
-              alignItems: "flex-start",
-              marginBottom: 14,
-            }}
-          >
-            <div
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                backgroundColor: B.teal,
-                flexShrink: 0,
-                marginTop: 7,
-              }}
-            />
-            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
-              {f}
-            </span>
+          <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
+            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>{f}</span>
+          </div>
+        ))}
+      </div>
+
+      <Link
+        href="/diagnostic-portal"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: S.ctaH,
+          borderRadius: S.ctaRadius,
+          background: "#FFFFFF",
+          color: B.navy,
+          fontSize: 15,
+          fontWeight: 600,
+          textDecoration: "none",
+          letterSpacing: "0.01em",
+          border: `1px solid ${B.navy}`,
+          transition: "background 200ms ease, color 200ms ease",
+          ...(hovered ? { background: B.navy, color: "#FFFFFF" } : {}),
+        }}
+      >
+        Get My Free Score
+      </Link>
+
+      <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+        Under 2 minutes &middot; No bank connection
+      </p>
+    </div>
+  );
+}
+
+function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: boolean; delay: number }) {
+  const [hovered, setHovered] = useState(false);
+
+  const features = [
+    "Everything in Free, plus:",
+    "Full 5-page diagnostic report",
+    "6 structural indicators with scores",
+    "Fragility, confidence, and durability grades",
+    "Cross-factor interaction effects",
+    "Industry-specific risk scenarios",
+    "Personalized action plan with priorities",
+    "Advisor discussion guide",
+    "Peer comparison with actual numbers",
+  ];
+
+  return (
+    <div
+      onMouseEnter={() => canHover() && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        background: "#FFFFFF",
+        borderRadius: S.cardRadius,
+        border: "1px solid rgba(75,63,174,0.15)",
+        padding: mobile ? "32px 28px" : "40px",
+        boxShadow: hovered
+          ? "0 20px 48px rgba(75,63,174,0.14), 0 4px 12px rgba(14,26,43,0.04)"
+          : "0 8px 32px rgba(75,63,174,0.10), 0 2px 8px rgba(14,26,43,0.04)",
+        transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
+        opacity: visible ? 1 : 0,
+        transform: visible ? hovered ? "translateY(-4px)" : "translateY(0)" : "translateY(28px)",
+        transitionDelay: `${delay}ms`,
+        display: "flex",
+        flexDirection: "column" as const,
+      }}
+    >
+      {/* Recommended badge */}
+      <div style={{ position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)", padding: "6px 20px", borderRadius: 100, background: B.purple, color: "#FFFFFF", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>
+        Full Report
+      </div>
+
+      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: B.teal, marginBottom: 20 }}>
+        Complete Assessment
+      </div>
+
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$99</span>
+        <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
+      </div>
+
+      <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0" }} />
+
+      <div style={{ flex: 1, marginBottom: 32 }}>
+        {features.map((f, i) => (
+          <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: i === 0 ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
+            <span style={{ fontSize: 14, color: i === 0 ? B.navy : B.muted, lineHeight: 1.6, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
           </div>
         ))}
       </div>
@@ -304,29 +351,22 @@ function SingleCard({ visible, mobile, delay }: { visible: boolean; mobile: bool
           justifyContent: "center",
           height: S.ctaH,
           borderRadius: S.ctaRadius,
-          background: B.navy,
+          background: "linear-gradient(135deg, #4B3FAE 0%, #3A2F8E 100%)",
           color: "#ffffff",
           fontSize: 15,
           fontWeight: 600,
           textDecoration: "none",
           letterSpacing: "0.01em",
-          transition: "background 200ms ease",
-          ...(hovered ? { background: "#162236" } : {}),
+          boxShadow: hovered ? "0 12px 28px rgba(75,63,174,0.30)" : "0 4px 16px rgba(75,63,174,0.20)",
+          transition: "box-shadow 260ms ease, transform 200ms ease",
+          transform: hovered ? "translateY(-1px)" : "translateY(0)",
         }}
       >
-        Get My Score
+        Get Full Report — $99
       </a>
 
-      <p
-        style={{
-          fontSize: 12,
-          color: B.light,
-          textAlign: "center",
-          marginTop: 14,
-          marginBottom: 0,
-        }}
-      >
-        Under 2 minutes &middot; No bank connection
+      <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+        If it doesn&apos;t reveal something new, full refund. No questions.
       </p>
     </div>
   );
@@ -357,11 +397,15 @@ function PricingCards() {
       >
         <div
           style={{
-            maxWidth: 420,
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+            gap: 32,
+            maxWidth: 780,
             margin: "0 auto",
           }}
         >
-          <SingleCard visible={visible} mobile={mobile} delay={0} />
+          <FreeCard visible={visible} mobile={mobile} delay={0} />
+          <FullReportCard visible={visible} mobile={mobile} delay={120} />
         </div>
       </div>
     </section>
@@ -652,8 +696,12 @@ function Faq() {
 
   const faqs = [
     {
-      q: "What do I get for $59?",
-      a: "A full 5-page income stability assessment: your score with breakdown, income structure analysis, six structural indicators, risk scenarios, cross-factor effects, industry-specific action plan, and an advisor discussion guide. All personalized to your industry and income model.",
+      q: "What's the difference between Free and the Full Report?",
+      a: "Free gives you your score, stability band, peer percentile, and one key insight. The $99 Full Report adds a 5-page breakdown with 6 structural indicators, cross-factor effects, fragility classification, industry-specific risk scenarios, a personalized action plan, and an advisor discussion guide.",
+    },
+    {
+      q: "What if the report doesn't tell me anything new?",
+      a: "Email support@runpayway.com and we'll refund you. No questions asked. But the structural breakdown, cross-factor effects, and industry-specific risk scenarios consistently reveal blind spots that pay stubs and tax returns miss.",
     },
     {
       q: "Do you need access to my bank accounts?",
