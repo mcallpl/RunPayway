@@ -98,13 +98,14 @@ const B = {
 
 const S = {
   sectionY:     { desktop: 140, mobile: 80 },
+  sectionYlg:   { desktop: 160, mobile: 88 },
   sectionYsm:   { desktop: 100, mobile: 64 },
   transitionY:  { desktop: 56, mobile: 40 },
-  disclaimerY:  { desktop: 20, mobile: 14 },
   maxW:         1100,
+  subtextMaxW:  540,
   padX:         { desktop: 56, mobile: 24 },
   h1mb:         24,
-  h2mb:         16,
+  h2mb:         20,
   subtextMb:    48,
   paraMb:       20,
   labelMb:      14,
@@ -124,8 +125,6 @@ const S = {
   lsHero:       "-0.03em",
   lsLabel:      "0.10em",
 };
-
-const spaciousY = { desktop: 160, mobile: 88 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
@@ -550,8 +549,8 @@ function FourFactorsSection() {
       aria-label="What RunPayway™ Measures"
       style={{
         background: "linear-gradient(180deg, #FFFFFF 0%, #F8F6F2 100%)",
-        paddingTop: mobile ? 80 : 140,
-        paddingBottom: mobile ? 80 : 140,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -1198,8 +1197,8 @@ function SampleResultSection() {
           linear-gradient(180deg, #0E1A2B 0%, #141225 50%, #1A1540 100%)
         `,
         position: "relative",
-        paddingTop: mobile ? spaciousY.mobile : spaciousY.desktop,
-        paddingBottom: mobile ? spaciousY.mobile : spaciousY.desktop,
+        paddingTop: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
+        paddingBottom: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -1236,7 +1235,7 @@ function SampleResultSection() {
             fontSize: mobile ? 16 : 18,
             color: "rgba(244,241,234,0.60)",
             lineHeight: S.lhBody,
-            maxWidth: 520,
+            maxWidth: S.subtextMaxW,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(10px)",
@@ -1261,7 +1260,7 @@ function SampleResultSection() {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{
-              maxWidth: 560,
+              maxWidth: S.subtextMaxW,
               width: "100%",
               background: "#FFFFFF",
               borderRadius: 12,
@@ -1790,6 +1789,115 @@ function WhatItMeasuresSection() {
 
 
 /* ================================================================== */
+/* TESTIMONIALS — Social proof before the ask                           */
+/* ================================================================== */
+function TestimonialsSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  // PLACEHOLDER — Replace with real testimonials before launch
+  const testimonials = [
+    { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", role: "Real Estate Agent", score: 28 },
+    { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", role: "Software Contractor", score: 44 },
+    { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", role: "Management Consultant", score: 61 },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Customer testimonials"
+      style={{
+        background: B.navy,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+      }}
+    >
+      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: mobile ? 40 : 56,
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 600ms ease-out, transform 600ms ease-out",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+              letterSpacing: S.lsLabel, color: B.teal, marginBottom: S.labelMb,
+            }}
+          >
+            What customers say
+          </div>
+          <h2
+            style={{
+              fontSize: mobile ? 28 : 40,
+              color: "#F4F1EA",
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              fontFamily: DISPLAY_FONT, fontWeight: 400,
+              marginBottom: S.h2mb,
+            }}
+          >
+            Real people. Real scores. Real insight.
+          </h2>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
+            gap: S.gridGap,
+          }}
+        >
+          {testimonials.map((t, i) => (
+            <div
+              key={t.name}
+              style={{
+                backgroundColor: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: S.cardRadius,
+                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+                display: "flex",
+                flexDirection: "column",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 600ms ease-out ${200 + i * 120}ms, transform 600ms ease-out ${200 + i * 120}ms`,
+              }}
+            >
+              {/* Score badge */}
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(75,63,174,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#F4F1EA" }}>{t.score}</span>
+                </div>
+                <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
+                  Score: {t.score}/100
+                </span>
+              </div>
+
+              {/* Quote */}
+              <p style={{ fontSize: 15, color: "rgba(244,241,234,0.80)", lineHeight: 1.65, margin: "0 0 20px", flex: 1, fontStyle: "italic" }}>
+                &ldquo;{t.quote}&rdquo;
+              </p>
+
+              {/* Attribution */}
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
+                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.role}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 8: PRICING — "The Decision"                                 */
 /* ================================================================== */
 function PricingSection() {
@@ -1804,8 +1912,8 @@ function PricingSection() {
         background: "linear-gradient(180deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 100%)",
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? spaciousY.mobile : spaciousY.desktop,
-        paddingBottom: mobile ? spaciousY.mobile : spaciousY.desktop,
+        paddingTop: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
+        paddingBottom: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -1856,7 +1964,7 @@ function PricingSection() {
             fontSize: mobile ? 16 : 18,
             color: "rgba(244,241,234,0.80)",
             lineHeight: S.lhBody,
-            maxWidth: 560,
+            maxWidth: S.subtextMaxW,
             marginBottom: mobile ? 40 : 56,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
@@ -2403,7 +2511,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       ref={ref}
       aria-label="FAQ"
       style={{
-        background: B.offWhite,
+        background: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
@@ -2623,8 +2731,8 @@ function DisclaimerSection() {
       aria-label="Disclaimer"
       style={{
         background: B.navy,
-        paddingTop: 32,
-        paddingBottom: 32,
+        paddingTop: mobile ? 40 : 48,
+        paddingBottom: mobile ? 40 : 48,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -2632,10 +2740,10 @@ function DisclaimerSection() {
       <p
         className="mx-auto text-center"
         style={{
-          fontSize: 14,
-          color: "rgba(244,241,234,0.45)",
+          fontSize: 13,
+          color: "rgba(244,241,234,0.35)",
           lineHeight: S.lhBody,
-          maxWidth: 720,
+          maxWidth: 640,
           margin: "0 auto",
         }}
       >
@@ -2722,6 +2830,7 @@ export default function LandingPage() {
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
+      <TestimonialsSection />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
