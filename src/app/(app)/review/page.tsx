@@ -1042,7 +1042,7 @@ export default function ReviewPage() {
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
   // ── Page navigation ──
-  const pageTitles = ["Your Score", "How Your Income Is Built", isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks", "Your Income Deep Dive", isHighScorer ? "How to Protect Your Position" : "Your Action Plan", "Your Interactive Tools"];
+  const pageTitles = ["Your Score", "How Your Income Is Built", isHighScorer ? "What Could Erode Your Stability" : "Your Biggest Risks", "Your Income Deep Dive", isHighScorer ? "How to Protect Your Position" : "Your Action Plan"];
   const toggleSection = (page: number) => setCollapsed((prev) => ({ ...prev, [page]: !prev[page] }));
 
   // ── Reassessment countdown ──
@@ -1228,6 +1228,108 @@ export default function ReviewPage() {
         <PageFooter section="Your Score" page={1} />
       </ReportPage>
 
+      {/* ── SIMULATOR + RUNWAY — inline after score, browser-only ── */}
+      {v2NormalizedInputs && (() => {
+        const baseInputs: CanonicalInput = {
+          income_persistence_pct: v2NormalizedInputs.income_persistence_pct,
+          largest_source_pct: v2NormalizedInputs.largest_source_pct,
+          source_diversity_count: v2NormalizedInputs.source_diversity_count,
+          forward_secured_pct: v2NormalizedInputs.forward_secured_pct,
+          income_variability_level: v2NormalizedInputs.income_variability_level as "low" | "moderate" | "high" | "extreme",
+          labor_dependence_pct: v2NormalizedInputs.labor_dependence_pct,
+        };
+        const qualityScore = v2Quality?.quality_score ?? 5;
+        const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset);
+        const simInputs = activePreset ? activePreset.modify(baseInputs) : baseInputs;
+        const simResult = simulateScore(simInputs, qualityScore);
+        const scoreDelta = simResult.overall_score - score;
+        const runwayDays = Math.round(record.income_continuity_months * 30);
+        const target90Days = 90 - runwayDays;
+        const persistenceNeeded = Math.max(0, Math.round((90 / 30 - record.income_continuity_months) / 0.03));
+
+        return (
+          <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
+
+            {/* Score Simulator */}
+            <Overline large>What If? Score Simulator</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              Click a scenario to see how it would change your score in real time.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+              {SIMULATOR_PRESETS.map((preset) => {
+                const isActive = simPreset === preset.id;
+                return (
+                  <button key={preset.id} onClick={() => setSimPreset(isActive ? null : preset.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${isActive ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms ease", backgroundColor: isActive ? "rgba(75,63,174,0.08)" : "#fff", color: isActive ? B.purple : B.navy }}>
+                    {preset.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ display: "flex", gap: 16, marginBottom: 16, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT SCORE</div>
+                <div style={{ ...T.cardHero, color: B.navy }}>{score}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{record.stability_band}</div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{simPreset ? "SIMULATED" : "SELECT A SCENARIO"}</div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
+              </div>
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IMPACT</div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.muted }}>
+                  {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta === 0 ? "—" : String(scoreDelta)}
+                </div>
+                <div style={{ ...T.meta, color: B.muted }}>Fragility: {simResult.fragility_class}</div>
+              </div>
+            </div>
+            {activePreset && (
+              <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 16 }}>
+                <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{activePreset.label}</div>
+                <p style={{ ...T.small, color: B.muted, margin: 0 }}>{activePreset.description}</p>
+                {scoreDelta !== 0 && (
+                  <p style={{ ...T.small, color: scoreDelta > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>
+                    {scoreDelta > 0 ? `This move would improve your score by ${scoreDelta} points${simResult.band !== record.stability_band ? ` and move you to ${simResult.band}` : ""}.` : `This would drop your score by ${Math.abs(scoreDelta)} points${simResult.band !== record.stability_band ? ` — dropping you to ${simResult.band}` : ""}.`}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Income Runway Calculator */}
+            <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />
+            <Overline large>Income Runway Calculator</Overline>
+            <div style={{ display: "flex", gap: 12, marginBottom: 8 }}>
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
+                <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
+                <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
+                <p style={{ ...T.meta, color: B.muted, marginTop: 8, lineHeight: 1.5 }}>
+                  {runwayDays < 14 ? "Crisis-level runway. Any disruption becomes an emergency." : runwayDays < 30 ? "Less than one month. A single slow period could force difficult decisions." : runwayDays < 90 ? "Moderate runway, but not enough for a real transition or recovery." : "Strong runway. You could handle a significant disruption."}
+                </p>
+              </div>
+              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
+                {runwayDays >= 90 ? (
+                  <>
+                  <div style={{ ...T.cardHero, color: B.teal, marginBottom: 8 }}>Already there</div>
+                  <p style={{ ...T.small, color: B.muted, margin: 0 }}>You have 90+ days of income runway. Focus on maintaining this buffer.</p>
+                  </>
+                ) : (
+                  <>
+                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>You need {target90Days} more days</div>
+                  <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                    Increase recurring revenue by ~{Math.min(persistenceNeeded, 100 - baseInputs.income_persistence_pct)}% to close the gap. This means converting {Math.ceil(persistenceNeeded / 15)} more client{Math.ceil(persistenceNeeded / 15) > 1 ? "s" : ""} to retainers or building {Math.ceil(persistenceNeeded / 20)} passive income stream{Math.ceil(persistenceNeeded / 20) > 1 ? "s" : ""}.
+                  </p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
 
       {/* ════════════════════════════════════════════════════════
           PAGE 2 — HOW YOUR INCOME IS BUILT (Understand: the x-ray)
@@ -1358,6 +1460,49 @@ export default function ReviewPage() {
           </>
         )}
 
+        {/* Income System Map — static, included in PDF */}
+        {v2NormalizedInputs && (() => {
+          const ni = v2NormalizedInputs;
+          const riskColor = (val: number, threshold: number) => val >= threshold ? B.bandLimited : val >= threshold * 0.6 ? B.bandDeveloping : B.teal;
+          return (
+            <>
+            <SectionDivider />
+            <Overline large>Your Income System Map</Overline>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 16 }}>
+              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 8 }}>
+                {Array.from({ length: Math.min(6, ni.source_diversity_count) }, (_, i) => (
+                  <div key={i} style={{ width: 60, height: 36, borderRadius: 4, backgroundColor: i === 0 ? riskColor(ni.largest_source_pct, 60) : B.teal, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(14,26,43,0.08)" }}>
+                    <span style={{ ...T.meta, color: "#fff", fontWeight: 600 }}>{i === 0 ? `${ni.largest_source_pct}%` : ""}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ textAlign: "center", ...T.meta, color: B.taupe, marginBottom: 8 }}>{ni.source_diversity_count} income source{ni.source_diversity_count !== 1 ? "s" : ""} — {ni.largest_source_pct}% from largest</div>
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 8 }}>
+                {[
+                  { label: "Recurring", value: `${ni.income_persistence_pct}%`, color: riskColor(100 - ni.income_persistence_pct, 70) },
+                  { label: "Forward", value: `${ni.forward_secured_pct}%`, color: riskColor(100 - ni.forward_secured_pct, 70) },
+                  { label: "Passive", value: `${100 - ni.labor_dependence_pct}%`, color: riskColor(ni.labor_dependence_pct, 70) },
+                ].map((item) => (
+                  <div key={item.label} style={{ textAlign: "center", padding: "6px 14px", borderRadius: 4, backgroundColor: B.bone, border: `2px solid ${item.color}`, minWidth: 70 }}>
+                    <div style={{ ...T.sectionLabel, color: item.color }}>{item.value}</div>
+                    <div style={{ ...T.meta, color: B.muted }}>{item.label}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
+                {[
+                  { label: "Concentration Risk", active: ni.largest_source_pct >= 50 },
+                  { label: "Labor Risk", active: ni.labor_dependence_pct >= 70 },
+                  { label: "Visibility Risk", active: ni.forward_secured_pct <= 20 },
+                ].filter(r => r.active).map((risk) => (
+                  <span key={risk.label} style={{ ...T.micro, color: B.bandLimited, padding: "3px 8px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.06)", border: "1px solid rgba(155,44,44,0.12)" }}>{risk.label}</span>
+                ))}
+              </div>
+            </div>
+            </>
+          );
+        })()}
+
         {/* Common patterns in your peer group */}
         {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
           <>
@@ -1471,6 +1616,44 @@ export default function ReviewPage() {
               );
             })}
           </div>
+        )}
+
+        {/* Predictive Warnings — static, in PDF */}
+        {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What You Are Likely to Do Wrong Next</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Based on your structure, these are the mistakes people in your position typically make.
+          </p>
+          {v2PredictiveWarnings.map((w, i) => (
+            <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "14px 18px", marginBottom: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy }}>{w.headline}</div>
+                <span style={{ ...T.micro, color: B.bandLimited }}>{w.timeframe}</span>
+              </div>
+              <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{w.explanation}</p>
+            </div>
+          ))}
+          </>
+        )}
+
+        {/* Behavioral Insights — static, in PDF */}
+        {v2BehavioralInsights && v2BehavioralInsights.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What Your Structure Says About Your Decisions</Overline>
+          {v2BehavioralInsights.map((b, i) => (
+            <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 10 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{b.pattern}</div>
+              <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{b.consequence}</p>
+              <div style={{ borderTop: `1px solid ${B.stone}`, paddingTop: 8 }}>
+                <div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 2 }}>HOW TO REFRAME</div>
+                <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>{b.reframe}</p>
+              </div>
+            </div>
+          ))}
+          </>
         )}
 
         {/* Urgency */}
@@ -1905,6 +2088,72 @@ export default function ReviewPage() {
           ))}
         </div>
 
+        {/* Score Progression Roadmap — static, in PDF */}
+        {v2NormalizedInputs && (() => {
+          const baseInputs: CanonicalInput = {
+            income_persistence_pct: v2NormalizedInputs.income_persistence_pct,
+            largest_source_pct: v2NormalizedInputs.largest_source_pct,
+            source_diversity_count: v2NormalizedInputs.source_diversity_count,
+            forward_secured_pct: v2NormalizedInputs.forward_secured_pct,
+            income_variability_level: v2NormalizedInputs.income_variability_level as "low" | "moderate" | "high" | "extreme",
+            labor_dependence_pct: v2NormalizedInputs.labor_dependence_pct,
+          };
+          const progressionTiers = computeProgressionTiers(score, baseInputs, v2Quality?.quality_score ?? 5);
+          if (progressionTiers.length === 0) return null;
+          return (
+            <>
+            <SectionDivider />
+            <Overline large>Score Progression Roadmap</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              What it takes to reach each level — and the maximum score possible with your income model.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+              {progressionTiers.map((tier) => {
+                const tierColor = tier.target_score >= 75 ? B.bandHigh : tier.target_score >= 50 ? B.bandEstablished : tier.target_score >= 30 ? B.bandDeveloping : B.bandLimited;
+                return (
+                  <div key={tier.target_score} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 14px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tierColor}`, borderRadius: 4 }}>
+                    <div style={{ minWidth: 44, textAlign: "center" }}>
+                      <div style={{ ...T.cardHeading, color: tierColor }}>{tier.target_score}</div>
+                      <div style={{ ...T.meta, color: B.muted }}>+{tier.current_gap}</div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{tier.target_band}</div>
+                      <p style={{ ...T.small, color: B.muted, margin: 0 }}>{tier.what_to_do}</p>
+                      {tier.achievable && <span style={{ ...T.meta, color: B.teal, fontWeight: 600 }}>Achievable with focused effort</span>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            </>
+          );
+        })()}
+
+        {/* 6-Week Execution Roadmap — static, in PDF */}
+        {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Your 6-Week Execution Plan</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Exactly what to do for the next 6 weeks. Each step builds on the last.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 16 }}>
+            {v2ExecutionRoadmap.map((week, i) => (
+              <div key={i} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: i < v2ExecutionRoadmap.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                <div style={{ minWidth: 70, flexShrink: 0 }}>
+                  <div style={{ ...T.sectionLabel, color: B.purple }}>{week.week}</div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{week.action}</div>
+                  <p style={{ ...T.small, color: B.muted, margin: "0 0 4px", lineHeight: 1.55 }}>{week.detail}</p>
+                  <div style={{ ...T.meta, color: B.teal, fontWeight: 500 }}>Success metric: {week.success_metric}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          </>
+        )}
+
         {/* Tradeoffs & Strategy — RP-2.1 */}
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -1974,6 +2223,39 @@ export default function ReviewPage() {
           </>
         )}
 
+        {/* Scripts — browser-only (copy-to-clipboard doesn't work in PDF) */}
+        {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
+          <div className="no-print">
+          <SectionDivider />
+          <Overline large>Ready-to-Use Scripts</Overline>
+          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+            Do not just know what to do — have the words to do it. Copy, customize, and send.
+          </p>
+          {v2ScriptTemplates.map((script) => {
+            const isExpanded = expandedScript === script.id;
+            return (
+              <div key={script.id} style={{ marginBottom: 8, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.04)" : B.bone, transition: "background-color 150ms ease" }}>
+                  <div style={{ textAlign: "left" }}>
+                    <div style={{ ...T.sectionLabel, color: B.navy }}>{script.title}</div>
+                    <div style={{ ...T.meta, color: B.muted }}>{script.context}</div>
+                  </div>
+                  <span style={{ ...T.sectionLabel, color: B.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
+                </button>
+                {isExpanded && (
+                  <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
+                    <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
+                    <button onClick={() => navigator.clipboard.writeText(script.script)} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: B.purple, borderRadius: 6, border: `1px solid ${B.purple}`, cursor: "pointer", backgroundColor: "rgba(75,63,174,0.04)" }}>
+                      Copy to clipboard
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          </div>
+        )}
+
         {/* How to Evaluate Your Income Going Forward — Reusable Framework (RP-2.1) */}
         {v2ReusableFramework && v2ReusableFramework.length > 0 && (
           <>
@@ -2029,30 +2311,9 @@ export default function ReviewPage() {
       </ReportPage>
 
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 6 — INTERACTIVE TOOLS (Simulator, Runway, Roadmap, Scripts)
-          This page is app-only — excluded from PDF capture.
-          ════════════════════════════════════════════════════════ */}
-      <div className="interactive-tools-page no-print" style={{
-        width: PDF.captureW,
-        maxWidth: "100%",
-        backgroundColor: B.sand,
-        border: "none",
-        borderRadius: 0,
-        padding: R.pagePad,
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "visible",
-        position: "relative",
-      }}>
-        {/* Top accent line */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Interactive Tools</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          These tools let you explore scenarios, plan your next moves, and take action. Use them repeatedly — this is not a one-time report, it is a decision-making system.
-        </p>
+      {/* Old Page 6 removed — all content redistributed into Pages 1-5 inline */}
+      {false && (
+      <div>
 
         {/* ── LIVE SIMULATOR ── */}
         {v2NormalizedInputs && (() => {
@@ -2367,8 +2628,8 @@ export default function ReviewPage() {
           </>
         )}
 
-        <PageFooter section="Interactive Tools" page={6} />
       </div>
+      )}
 
 
       {/* ================================================================
