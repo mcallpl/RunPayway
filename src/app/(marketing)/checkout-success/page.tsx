@@ -14,8 +14,8 @@ const B = {
 };
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
-  monitoring: { title: "Annual Monitoring", price: "$99" },
-  single: { title: "Single Assessment", price: "$39" },
+  monitoring: { title: "Annual Monitoring", price: "$199" },
+  single: { title: "Complete Assessment", price: "$99" },
 };
 
 function CheckoutSuccessContent() {
@@ -33,7 +33,7 @@ function CheckoutSuccessContent() {
     const planKey = plan === "monitoring" ? "annual_monitoring" : "single_assessment";
     const session = {
       plan_key: planKey,
-      price_cents: plan === "monitoring" ? 9900 : 3900,
+      price_cents: plan === "monitoring" ? 19900 : 9900,
       currency: "USD",
       intended_assessment_count: plan === "monitoring" ? 3 : 1,
       status: "paid",
