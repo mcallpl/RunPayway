@@ -225,7 +225,7 @@ function Hero() {
               marginBottom: 16,
             }}
           >
-            Preview
+            Sample Report
           </div>
           <h1
             style={{
@@ -238,7 +238,7 @@ function Hero() {
               marginBottom: 16,
             }}
           >
-            Sample Assessment Report
+            This is what you get. All five pages.
           </h1>
           <p
             style={{
@@ -250,20 +250,7 @@ function Hero() {
               marginRight: "auto",
             }}
           >
-            A sample Income Stability Score&#8482; report for a professional services profile scoring 78 out of 100. Your report will be personalized to your name, industry, and income structure.
-          </p>
-          <p
-            style={{
-              fontSize: mobile ? 13 : 14,
-              color: "rgba(244,241,234,0.45)",
-              lineHeight: 1.6,
-              maxWidth: 480,
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginTop: 16,
-            }}
-          >
-            Every report uses your actual numbers &#8212; your continuity percentage, your stress test drop, your peer comparison, your industry benchmarks. No two reports are the same.
+            This sample shows a professional services profile scoring 78. Your report will use your real numbers, your industry, and your income structure. No two reports are the same.
           </p>
         </div>
       </div>
@@ -280,9 +267,9 @@ function Page1Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="1" title="Your Score" question="What is my score?"
-        description="The first page delivers your result immediately — your score, your stability band, where you land relative to peers, and the single most important thing holding the structure back."
-        bullets={["Your 0–100 Income Stability Score™ with band classification", "A plain-English summary calibrated to your score severity", "Four structural metrics: continuity, stress test, main constraint, and overall durability"]}
+        pageNum="1" title="Your Score" question="Where do I stand?"
+        description="You will know your exact number, your stability band, how you rank against peers in your industry, and the one thing holding you back."
+        bullets={["Your 0–100 Income Stability Score™ with band classification", "Score breakdown: Structure + Stability + Quality = your score", "Peer percentile with actual peer average number"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
@@ -354,20 +341,36 @@ function Page2Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="2" title="What This Score Means" question="What does it mean?"
-        description="This page translates your score into plain English. You will see what is already working, what is still vulnerable, and a clear bottom-line interpretation."
-        bullets={["What parts of your income structure are already supporting stability", "Where the structure is still exposed to disruption", "A plain-English interpretation you can understand immediately"]}
+        pageNum="2" title="How Your Income Is Built" question="Why this score?"
+        description="You will see how your income is structured, where your biggest weakness is, and how you compare to peers — with actual numbers, not vague labels."
+        bullets={["Income structure bar: active work vs. repeatable vs. passive", "Stress test: what happens if your biggest source disappears", "Peer comparison: your score vs. actual industry averages"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
             <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8 }}>What This Score Means</h3>
-          <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.6, marginBottom: 16 }}>Sample Professional Services scored 78 out of 100. This is a strong score. The structure already has substantial protection.</p>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>WHAT IS ALREADY WORKING</div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>The structure is already strong</div>
-          <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Protection is already substantial. The focus is refinement rather than repair.</p>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8 }}>How Your Income Is Built</h3>
+          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8, borderRadius: 2, overflow: "hidden" }}>
+            <div style={{ width: "26%", backgroundColor: B.navy }} />
+            <div style={{ width: "22%", backgroundColor: B.light }} />
+            <div style={{ width: "52%", backgroundColor: B.teal }} />
+          </div>
+          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            <span style={{ fontSize: 10, color: B.navy }}>Active 26%</span>
+            <span style={{ fontSize: 10, color: B.light }}>Repeatable 22%</span>
+            <span style={{ fontSize: 10, color: B.teal }}>Passive 52%</span>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>WHAT IS WORKING</div>
+              <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Strong recurring base. Focus: refinement.</p>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>BIGGEST WEAKNESS</div>
+              <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Source concentration still too high.</p>
+            </div>
+          </div>
         </>}
       />
     </div>
@@ -380,28 +383,38 @@ function Page3Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="3" title="Your Biggest Risks" question="What could hurt it?"
-        description="This page shows what would happen if conditions changed — like losing your biggest client or being unable to work. Real scenarios, real consequences."
-        bullets={["What would happen if your largest income source disappeared", "How long your income would continue if you stopped working", "How your structure compares to others in your industry"]}
+        pageNum="3" title="Your Income Deep Dive" question="How deep does it go?"
+        description="Six dimensions scored, fragility classified, confidence rated, and every cross-factor penalty explained. This is the page that shows you things you did not know."
+        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Fragility: Brittle, Thin, Uneven, Supported, or Resilient", "Cross-factor effects: how your weaknesses compound each other"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
             <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8 }}>Your Biggest Risks</h3>
-          <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
-            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "10px 12px" }}>
-              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>IF LARGEST SOURCE DISAPPEARED</div>
-              <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>78 <span style={{ color: B.light, fontWeight: 400 }}>&rarr;</span> <span style={{ color: B.bandLimited }}>56</span></div>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Income Deep Dive</h3>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
+          {[{ label: "Income That Keeps Coming", pct: 82, color: B.teal }, { label: "Not Too Dependent on One Source", pct: 55, color: B.light }, { label: "Locked In Ahead of Time", pct: 71, color: B.teal }].map((ind) => (
+            <div key={ind.label} style={{ marginBottom: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                <span style={{ fontSize: 10, fontWeight: 600, color: B.navy }}>{ind.label}</span>
+                <span style={{ fontSize: 9, fontWeight: 600, color: ind.pct >= 60 ? B.teal : B.bandDeveloping }}>{ind.pct}/100</span>
+              </div>
+              <div style={{ height: 4, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${ind.pct}%`, backgroundColor: ind.color, borderRadius: 2 }} />
+              </div>
             </div>
-            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "10px 12px" }}>
-              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>INCOME CONTINUITY</div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>8.2 months</div>
+          ))}
+          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
+              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>FRAGILITY</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Supported</div>
+            </div>
+            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
+              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>CONFIDENCE</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>High</div>
             </div>
           </div>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 8 }}>WHAT COULD HURT YOUR SCORE MOST</div>
-          <div style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>You are unable to work for an extended period</div>
         </>}
       />
     </div>
@@ -414,24 +427,24 @@ function Page4Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="4" title="How to Raise Your Score" question="How can I improve it?"
-        description="This page shows the specific changes that would raise your score the most, with projected point gains and clear priority actions."
-        bullets={["The top 3 changes ranked by impact on your score", "Projected score improvement for each change", "Four prioritized action steps tailored to your structure"]}
+        pageNum="4" title="Your Biggest Risks" question="What could go wrong?"
+        description="You will know what happens if your biggest client leaves, if you cannot work for 90 days, or if your industry contracts. Each scenario scored by severity."
+        bullets={["Top 3 risk scenarios ranked by score impact", "Severity tags: Severe, High, Moderate, Low", "Band shift warnings when a scenario would drop you a level"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
             <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>How to Raise Your Score</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
-          {[{ n: "1", t: "Secure more income ahead of time", pts: "+8" }, { n: "2", t: "Reduce reliance on largest source", pts: "+5" }, { n: "3", t: "Build more repeatable income", pts: "+3" }].map((r) => (
-            <div key={r.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Biggest Risks</h3>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
+          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78 → 56" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78 → 62" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78 → 72" }].map((r) => (
+            <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.purple }}>{r.n}</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
                 <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
               </div>
-              <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>{r.pts}</span>
+              <span style={{ fontSize: 10, color: B.muted }}>{r.drop}</span>
             </div>
           ))}
         </>}
@@ -446,34 +459,28 @@ function Page5Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="5" title="What to Do Next" question="What should I do next?"
-        description="This page gives you a practical action plan — what to do first, what not to prioritize yet, a 90-day checklist, and when to reassess."
-        bullets={["Five prioritized next steps based on your dominant weakness", "A 90-day action checklist with specific structural changes", "When to reassess and how you compare to your peer benchmark"]}
+        pageNum="5" title="Your Action Plan" question="What do I do about it?"
+        description="Industry-specific priorities, projected score improvements, an advisor discussion guide you can share with your accountant or lender, and your reassessment date."
+        bullets={["Lift scenarios: exactly how many points each change is worth", "Priority actions tailored to your industry and income model", "Advisor discussion guide with talking points and red flags"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
             <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>What to Do Next</h3>
-          <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 6 }}>What to do next</div>
-              {["Lock in committed income", "Reduce largest source reliance", "Build repeatable income"].map((item, i) => (
-                <div key={i} style={{ fontSize: 10, color: B.navy, display: "flex", gap: 6, marginBottom: 4 }}>
-                  <span style={{ color: B.purple, fontWeight: 600 }}>{i + 1}.</span>{item}
-                </div>
-              ))}
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Action Plan</h3>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
+          {[{ n: "1", t: "Secure more income ahead of time", pts: "+8 pts → 86" }, { n: "2", t: "Reduce reliance on largest source", pts: "+5 pts → 83" }, { n: "3", t: "Build more repeatable income", pts: "+3 pts → 81" }].map((r) => (
+            <div key={r.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{r.n}</span>
+                <span style={{ fontSize: 10, fontWeight: 600, color: B.navy }}>{r.t}</span>
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 600, color: B.teal }}>{r.pts}</span>
             </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 6 }}>What not to prioritize</div>
-              {["Working more without structure", "Temporary spikes"].map((item) => (
-                <div key={item} style={{ fontSize: 10, color: B.muted, display: "flex", gap: 6, marginBottom: 4 }}>
-                  <span style={{ color: B.light }}>&mdash;</span>{item}
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginTop: 12, marginBottom: 6 }}>SHARE WITH YOUR ADVISOR</div>
+          <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Talking points, questions, and red flags — ready to share.</p>
         </>}
       />
     </div>
@@ -543,25 +550,36 @@ function CtaSection() {
               marginBottom: 20,
             }}
           >
-            Get your Income Stability Score&#8482;
+            This is what $99 gets you.
           </h2>
           <p
             style={{
               fontSize: 16,
               color: "rgba(244,241,234,0.60)",
               lineHeight: 1.65,
+              marginBottom: 12,
+              maxWidth: 440,
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Your free score shows where you stand. The full report shows what to do about it.
+          </p>
+          <p
+            style={{
+              fontSize: 13,
+              color: "rgba(244,241,234,0.40)",
+              lineHeight: 1.6,
               marginBottom: 32,
               maxWidth: 440,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            Under two minutes. Five-page diagnostic report. Instant delivery.
+            If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
           </p>
           <a
-            href={STRIPE_SINGLE}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/diagnostic-portal"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
@@ -595,7 +613,7 @@ function CtaSection() {
               letterSpacing: "0.02em",
             }}
           >
-            Model RP-2.0 &#183; Under 2 minutes &#183; Private by default
+            Free to start &#183; Under 2 minutes &#183; No bank connection
           </div>
         </div>
       </div>
