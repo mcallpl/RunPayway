@@ -298,20 +298,29 @@ function Page1Preview() {
 /* ================================================================== */
 /* PAGES 2-5: EDITORIAL LAYOUT WITH TRUNCATED PREVIEWS                 */
 /* ================================================================== */
-function PagePreview({ pageNum, title, question, description, bullets, cardContent, alignRight, visible, mobile }: {
-  pageNum: string; title: string; question: string; description: string; bullets: string[]; cardContent: React.ReactNode; alignRight: boolean; visible: boolean; mobile: boolean;
+function PagePreview({ pageNum, title, question, description, bullets, cardContent, alignRight, visible, mobile, dark }: {
+  pageNum: string; title: string; question: string; description: string; bullets: string[]; cardContent: React.ReactNode; alignRight: boolean; visible: boolean; mobile: boolean; dark?: boolean;
 }) {
+  const textColor = dark ? "#F4F1EA" : B.navy;
+  const mutedColor = dark ? "rgba(244,241,234,0.65)" : "rgba(14,26,43,0.55)";
+  const bulletColor = dark ? "rgba(244,241,234,0.50)" : "rgba(14,26,43,0.50)";
+  const dotColor = dark ? B.teal : B.teal;
+  const labelColor = dark ? "rgba(244,241,234,0.50)" : B.teal;
+
   const content = (
     <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-      <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: B.teal, marginBottom: 12 }}>PAGE {pageNum}</div>
-      <div style={{ fontSize: 15, color: B.muted, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
-      <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
-      <p style={{ fontSize: 15, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
+        <span style={{ fontSize: mobile ? 36 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: dark ? "rgba(244,241,234,0.15)" : "rgba(14,26,43,0.06)", lineHeight: 1 }}>{pageNum}</span>
+        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: labelColor }}>PAGE {pageNum}</span>
+      </div>
+      <div style={{ fontSize: 15, color: mutedColor, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
+      <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: textColor, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
+      <p style={{ fontSize: 15, color: mutedColor, lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {bullets.map((b) => (
           <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
-            <span style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.6 }}>{b}</span>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: dotColor, marginTop: 7, flexShrink: 0 }} />
+            <span style={{ fontSize: 14, color: bulletColor, lineHeight: 1.6 }}>{b}</span>
           </div>
         ))}
       </div>
@@ -326,8 +335,12 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
     </div>
   );
 
+  const bg = dark ? B.navy : undefined;
+  const sectionBgs = ["#F8F6F2", "#FFFFFF", "#F8F6F2", "#FFFFFF", "#F8F6F2"];
+  const sectionBg = bg || sectionBgs[parseInt(pageNum) - 1] || "#F8F6F2";
+
   return (
-    <section style={{ backgroundColor: "#F8F6F2", paddingTop: mobile ? 48 : 80, paddingBottom: mobile ? 48 : 80, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 56 : 96, paddingBottom: mobile ? 56 : 96, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
         {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 36 : 0 }} />{card}</> : <>{card}<div style={{ width: 64 }} />{content}</>}
       </div>
@@ -346,11 +359,7 @@ function Page2Preview() {
         bullets={["Income structure bar: active work vs. repeatable vs. passive", "Stress test: what happens if your biggest source disappears", "Peer comparison: your score vs. actual industry averages"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
-            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
-          </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8 }}>How Your Income Is Built</h3>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8, marginTop: 8 }}>How Your Income Is Built</h3>
           <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8, borderRadius: 2, overflow: "hidden" }}>
             <div style={{ width: "26%", backgroundColor: B.navy }} />
             <div style={{ width: "22%", backgroundColor: B.light }} />
@@ -386,13 +395,9 @@ function Page3Preview() {
         pageNum="3" title="Your Income Deep Dive" question="How deep does it go?"
         description="Six dimensions scored, fragility classified, confidence rated, and every cross-factor penalty explained. This is the page that shows you things you did not know."
         bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Fragility: Brittle, Thin, Uneven, Supported, or Resilient", "Cross-factor effects: how your weaknesses compound each other"]}
-        alignRight={true} visible={visible} mobile={mobile}
+        alignRight={true} visible={visible} mobile={mobile} dark
         cardContent={<>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
-            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
-          </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Income Deep Dive</h3>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>
           <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
           {[{ label: "Income That Keeps Coming", pct: 82, color: B.teal }, { label: "Not Too Dependent on One Source", pct: 55, color: B.light }, { label: "Locked In Ahead of Time", pct: 71, color: B.teal }].map((ind) => (
             <div key={ind.label} style={{ marginBottom: 10 }}>
@@ -432,11 +437,7 @@ function Page4Preview() {
         bullets={["Top 3 risk scenarios ranked by score impact", "Severity tags: Severe, High, Moderate, Low", "Band shift warnings when a scenario would drop you a level"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
-            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
-          </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Biggest Risks</h3>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
           <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
           {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78 → 56" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78 → 62" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78 → 72" }].map((r) => (
             <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
@@ -464,11 +465,7 @@ function Page5Preview() {
         bullets={["Lift scenarios: exactly how many points each change is worth", "Priority actions tailored to your industry and income model", "Advisor discussion guide with talking points and red flags"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
-            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
-          </div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Action Plan</h3>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Action Plan</h3>
           <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
           {[{ n: "1", t: "Secure more income ahead of time", pts: "+8 pts → 86" }, { n: "2", t: "Reduce reliance on largest source", pts: "+5 pts → 83" }, { n: "3", t: "Build more repeatable income", pts: "+3 pts → 81" }].map((r) => (
             <div key={r.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
@@ -621,10 +618,23 @@ function CtaSection() {
   );
 }
 
+function BridgeLine() {
+  const mobile = useMobile();
+  return (
+    <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, textAlign: "center" }}>
+      <p style={{ fontSize: mobile ? 16 : 20, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.45, maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
+        Five pages. Each one answers a question you need answered before something goes wrong.
+      </p>
+      <div style={{ width: 40, height: 2, backgroundColor: B.teal, margin: "24px auto 0", borderRadius: 1 }} />
+    </section>
+  );
+}
+
 export default function SampleReportPage() {
   return (
     <div style={{ backgroundColor: "#F8F6F2" }}>
       <Hero />
+      <BridgeLine />
       <Page1Preview />
       <Page2Preview />
       <Page3Preview />
