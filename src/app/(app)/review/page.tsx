@@ -790,6 +790,10 @@ export default function ReviewPage() {
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
   const olBenchmark = ol?.benchmark_context_layer ?? null;
 
+  // ── Deep engine data for rich personalization ──
+  const v2Explainability = v2?.explainability as { why_this_score?: string; why_not_higher?: string; strongest_supports?: string[]; strongest_suppressors?: string[]; best_lift_explanation?: string; fragility_explanation?: string } | undefined;
+  const olSelectedScenarios = ol?.selected_scenarios as Array<{ scenario_id: string; label: string; description: string; severity: string; why_it_matters: string }> | undefined;
+
   // ── Outcome layer explanations override profileConstraintAdvice when available ──
   if (olExplanations) {
     const constraintKeyMap: Record<string, string> = {
@@ -1135,6 +1139,13 @@ export default function ReviewPage() {
           </p>
         </div>
 
+        {/* Why this score — deep explainability */}
+        {v2Explainability?.why_not_higher && (
+          <p style={{ ...T.small, color: B.muted, marginBottom: 16, maxWidth: 540 }}>
+            {v2Explainability.why_not_higher}
+          </p>
+        )}
+
         {/* One key insight */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
@@ -1294,6 +1305,32 @@ export default function ReviewPage() {
           </div>
         )}
 
+        {/* Common patterns in your peer group */}
+        {olBenchmark && (olBenchmark.common_strengths?.length > 0 || olBenchmark.common_weaknesses?.length > 0) && (
+          <>
+          <SectionDivider />
+          <Overline large>{isHighScorer ? "How You Compare to Your Peers" : `Common Patterns Among ${industrySector} Professionals`}</Overline>
+          <div style={{ display: "flex", gap: 20, marginBottom: 16 }}>
+            {olBenchmark.common_strengths?.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>Typical strengths</div>
+                {olBenchmark.common_strengths.slice(0, 3).map((s) => (
+                  <div key={s} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {s}</div>
+                ))}
+              </div>
+            )}
+            {olBenchmark.common_weaknesses?.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>Typical gaps</div>
+                {olBenchmark.common_weaknesses.slice(0, 3).map((w) => (
+                  <div key={w} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {w}</div>
+                ))}
+              </div>
+            )}
+          </div>
+          </>
+        )}
+
         <PageFooter section="How Your Income Is Built" page={2} />
       </ReportPage>
 
@@ -1364,13 +1401,19 @@ export default function ReviewPage() {
                       {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
                     </span>
                   </div>
-                  {s.band_shift && (
-                  <div style={{ paddingLeft: 70 }}>
-                    <p style={{ ...T.meta, color: B.bandLimited, margin: 0, fontWeight: 500 }}>
-                      Would drop to {s.scenario_band} band.
-                    </p>
-                  </div>
-                  )}
+                  {/* Why this risk matters — from outcome layer */}
+                  {(() => {
+                    const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
+                    return olMatch?.why_it_matters ? (
+                      <div style={{ paddingLeft: 70 }}>
+                        <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{olMatch.why_it_matters}</p>
+                      </div>
+                    ) : s.band_shift ? (
+                      <div style={{ paddingLeft: 70 }}>
+                        <p style={{ ...T.meta, color: B.bandLimited, margin: 0, fontWeight: 500 }}>Would drop to {s.scenario_band} band.</p>
+                      </div>
+                    ) : null;
+                  })()}
                 </div>
               );
             })}
@@ -1487,6 +1530,37 @@ export default function ReviewPage() {
                 <div style={{ ...T.meta, color: B.muted }}>
                   Quality: {v2Quality.quality_score}/100 ({v2Quality.quality_score >= 70 ? "strong" : v2Quality.quality_score >= 40 ? "moderate" : "weak"})
                 </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* What's helping and what's hurting — from explainability engine */}
+        {v2Explainability && (v2Explainability.strongest_supports?.length || v2Explainability.strongest_suppressors?.length) && (
+          <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
+            {v2Explainability.strongest_supports && v2Explainability.strongest_supports.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>What is helping your score</div>
+                {v2Explainability.strongest_supports.slice(0, 3).map((s, i) => (
+                  <div key={i} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {s}</div>
+                ))}
+              </div>
+            )}
+            {v2Explainability.strongest_suppressors && v2Explainability.strongest_suppressors.length > 0 && (
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What is holding it back</div>
+                {v2Explainability.strongest_suppressors.slice(0, 3).map((s, i) => {
+                  const suppressorLabels: Record<string, string> = {
+                    weak_forward_visibility: "Not enough income locked in ahead of time",
+                    high_labor_dependence: "Too much income depends on daily work",
+                    high_concentration: "Too dependent on one source",
+                    low_persistence: "Not enough income repeats automatically",
+                    high_variability: "Income swings too much month to month",
+                    weak_durability: "Income quality is fragile",
+                    shallow_continuity: "Income would stop too quickly if work paused",
+                  };
+                  return <div key={i} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {suppressorLabels[s] ?? s}</div>;
+                })}
               </div>
             )}
           </div>
@@ -1726,6 +1800,7 @@ export default function ReviewPage() {
                 title: a.label,
                 copy: a.description,
                 why: a.why_now,
+                effect: a.expected_effect,
               }))
             : (() => {
                 const priorities = isHighScorer ? [
@@ -1743,7 +1818,7 @@ export default function ReviewPage() {
                   ...priorities.filter(p => p.key === dominantConstraint),
                   ...priorities.filter(p => p.key !== dominantConstraint),
                 ];
-                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "" }));
+                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "", effect: "" }));
               })()
           ).map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
@@ -1751,10 +1826,38 @@ export default function ReviewPage() {
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
+                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
+                {(action as Record<string, string>).effect && <p style={{ ...T.meta, color: B.muted, margin: "2px 0 0" }}>Expected effect: {(action as Record<string, string>).effect}</p>}
               </div>
             </div>
           ))}
         </div>
+
+        {/* What NOT to do — from avoid_actions */}
+        {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to avoid</div>
+            {(v2AvoidActions ?? []).slice(0, 2).map((a) => (
+              <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
+            ))}
+            {(olAvoid ?? []).slice(0, 2).map((text) => (
+              <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {text}</div>
+            ))}
+          </div>
+        )}
+
+        {/* Industry-specific reassessment triggers */}
+        {olTriggers && olTriggers.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>When to reassess</div>
+            {olTriggers.slice(0, 3).map((t) => (
+              <div key={t.trigger_id} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
+                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, marginTop: 6, flexShrink: 0 }} />
+                {t.display_text}
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Advisor Discussion Guide — compact */}
         {advisorGuide && advisorGuide.talking_points.length > 0 && (
