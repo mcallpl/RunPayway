@@ -398,8 +398,9 @@ async function downloadPDF(record: AssessmentRecord) {
     return;
   }
 
-  const pages = document.querySelectorAll(".report-page");
-  if (!pages.length) return;
+  // Capture entire report as one continuous flow — no artificial page breaks
+  const reportContainer = document.getElementById("report-container");
+  if (!reportContainer) return;
 
   const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
   pdf.setProperties({
@@ -407,80 +408,84 @@ async function downloadPDF(record: AssessmentRecord) {
     author: "RunPayway",
     subject: "Income Stability Score Report",
     keywords: "income stability, assessment, RunPayway, income analysis",
-    creator: `RunPayway Model ${record.model_version || "RP-1.0"}`,
+    creator: `RunPayway Model ${record.model_version || "RP-2.0"}`,
   });
 
   const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, canvasW, pxPerInch, sliceH } = PDF;
 
-  let pdfPageCount = 0;
+  // Hide all HTML page footers (PDF adds its own)
+  const htmlFooters = reportContainer.querySelectorAll(".report-page-footer") as NodeListOf<HTMLElement>;
+  htmlFooters.forEach((f) => { f.style.display = "none"; });
 
-  for (let i = 0; i < pages.length; i++) {
-    const el = pages[i] as HTMLElement;
+  // Temporarily style for capture
+  const savedContainerStyle = {
+    maxWidth: reportContainer.style.maxWidth,
+    gap: (reportContainer as HTMLElement).style.gap,
+  };
+  reportContainer.style.maxWidth = `${captureW}px`;
+  (reportContainer as HTMLElement).style.gap = "0px";
 
-    const saved = {
-      width: el.style.width,
-      maxWidth: el.style.maxWidth,
-      border: el.style.border,
-      borderRadius: el.style.borderRadius,
-      boxSizing: el.style.boxSizing,
-      overflow: el.style.overflow,
-    };
+  const pages = reportContainer.querySelectorAll(".report-page") as NodeListOf<HTMLElement>;
+  const savedPageStyles: Array<Record<string, string>> = [];
+  pages.forEach((el, i) => {
+    savedPageStyles[i] = { width: el.style.width, maxWidth: el.style.maxWidth, border: el.style.border, borderRadius: el.style.borderRadius, boxSizing: el.style.boxSizing, overflow: el.style.overflow };
     el.style.width = `${captureW}px`;
     el.style.maxWidth = `${captureW}px`;
     el.style.boxSizing = "border-box";
     el.style.border = "none";
     el.style.borderRadius = "0";
     el.style.overflow = "visible";
+  });
 
-    const htmlFooter = el.querySelector(".report-page-footer") as HTMLElement | null;
-    if (htmlFooter) htmlFooter.style.display = "none";
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const canvas = await html2canvas(reportContainer as HTMLElement, {
+    scale: S,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    logging: false,
+    width: captureW,
+    height: reportContainer.scrollHeight,
+    windowWidth: captureW,
+  });
 
-    const canvas = await html2canvas(el, {
-      scale: S,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      width: captureW,
-      height: el.scrollHeight,
-      windowWidth: captureW,
-    });
+  // Restore styles
+  pages.forEach((el, i) => { Object.assign(el.style, savedPageStyles[i]); });
+  htmlFooters.forEach((f) => { f.style.display = ""; });
+  reportContainer.style.maxWidth = savedContainerStyle.maxWidth;
+  (reportContainer as HTMLElement).style.gap = savedContainerStyle.gap;
 
-    Object.assign(el.style, saved);
-    if (htmlFooter) htmlFooter.style.display = "";
+  const totalCanvasH = canvas.height;
+  let currentY = 0;
+  let pdfPageCount = 0;
 
-    const totalCanvasH = canvas.height;
-    let currentY = 0;
+  while (currentY < totalCanvasH) {
+    if (pdfPageCount > 0) pdf.addPage();
+    pdfPageCount++;
 
-    while (currentY < totalCanvasH) {
-      if (pdfPageCount > 0) pdf.addPage();
-      pdfPageCount++;
+    let cutY: number;
+    const idealCutY = currentY + sliceH;
 
-      let cutY: number;
-      const idealCutY = currentY + sliceH;
-
-      if (idealCutY >= totalCanvasH) {
-        cutY = totalCanvasH;
-      } else {
-        cutY = findSafeCutRow(canvas, idealCutY, 200);
-      }
-
-      const srcH = Math.max(1, cutY - currentY);
-
-      const strip = document.createElement("canvas");
-      strip.width = canvasW;
-      strip.height = srcH;
-      const ctx = strip.getContext("2d")!;
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvasW, srcH);
-      ctx.drawImage(canvas, 0, currentY, canvasW, srcH, 0, 0, canvasW, srcH);
-
-      const imgH = srcH / pxPerInch;
-      pdf.addImage(strip.toDataURL("image/png"), "PNG", M, M, CW, imgH);
-
-      currentY = cutY;
+    if (idealCutY >= totalCanvasH) {
+      cutY = totalCanvasH;
+    } else {
+      cutY = findSafeCutRow(canvas, idealCutY, 200);
     }
+
+    const srcH = Math.max(1, cutY - currentY);
+
+    const strip = document.createElement("canvas");
+    strip.width = canvasW;
+    strip.height = srcH;
+    const ctx = strip.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvasW, srcH);
+    ctx.drawImage(canvas, 0, currentY, canvasW, srcH, 0, 0, canvasW, srcH);
+
+    const imgH = srcH / pxPerInch;
+    pdf.addImage(strip.toDataURL("image/png"), "PNG", M, M, CW, imgH);
+
+    currentY = cutY;
   }
 
   for (let p = 1; p <= pdfPageCount; p++) {
@@ -1044,7 +1049,7 @@ export default function ReviewPage() {
 
   return (
     <ReportErrorBoundary>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
+    <div id="report-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
 
       {/* ════════════════════════════════════════════════════════
           PAGE 1 — YOUR SCORE (Anchor: clean, confident, contextual)
