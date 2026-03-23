@@ -84,6 +84,7 @@ export default function FreeScorePage() {
   const mobile = useMobile();
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [animatedScore, setAnimatedScore] = useState(0);
+  const [downloading, setDownloading] = useState(false);
   const scoreAnimated = useRef(false);
 
   const pad = mobile ? SP.pad.mobile : SP.pad.desktop;
@@ -128,8 +129,6 @@ export default function FreeScorePage() {
   const tier: "limited" | "developing" | "established" | "high" =
     score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
   const bandColor = tier === "high" ? B.bandHigh : tier === "established" ? B.bandEstablished : tier === "developing" ? B.bandDeveloping : B.bandLimited;
-
-  const [downloading, setDownloading] = useState(false);
 
   const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
   const v2Constraints = v2?.constraints as { root_constraint: string } | undefined;
