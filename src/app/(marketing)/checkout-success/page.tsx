@@ -78,7 +78,7 @@ function CheckoutSuccessContent() {
     if (!ready) return;
     const timer = setTimeout(() => {
       router.push(plan === "monitoring" ? "/create-account" : "/diagnostic-portal");
-    }, 3000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [ready, router, plan]);
 
