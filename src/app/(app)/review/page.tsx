@@ -1627,8 +1627,20 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* Advisor guide removed from Page 5 to reduce density.
-            Data still available in the record for future use. */}
+        {/* Advisor Discussion Guide — compact */}
+        {advisorGuide && advisorGuide.talking_points.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>Share With Your Advisor</Overline>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+            {advisorGuide.talking_points.slice(0, 3).map((tp, i) => (
+              <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8 }}>
+                <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
+              </div>
+            ))}
+          </div>
+          </>
+        )}
 
         {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
