@@ -248,7 +248,7 @@ function ReportHeader() {
 function Overline({ children, large }: { children: React.ReactNode; large?: boolean }) {
   return large
     ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: R.labelMb }}>{children}</div>
-    : <div style={{ ...T.overline, color: B.teal, marginBottom: 4 }}>{children}</div>;
+    : <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>{children}</div>;
 }
 
 function SectionDivider() {
@@ -270,7 +270,7 @@ function MetricCard({ label, value, explanation }: { label: string; value: React
   return (
     <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
       <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>{label}</div>
-      <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{value}</div>
+      <div style={{ ...T.sectionTitle, marginBottom: 6 }}>{value}</div>
       <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
     </div>
   );
@@ -1072,7 +1072,7 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
 
         <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.score, color: B.navy, marginBottom: 10 }}>{animatedScore}</div>
+          <div style={{ ...T.score, color: B.navy, marginBottom: 12 }}>{animatedScore}</div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
@@ -1087,7 +1087,7 @@ export default function ReviewPage() {
         {/* Band scale */}
         <div style={{ marginBottom: 20 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHERE YOU LAND</div>
-          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 10 }}>
+          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
             {[
               { w: 30, color: B.bandLimited },
               { w: 20, color: B.bandDeveloping },
@@ -1211,7 +1211,7 @@ export default function ReviewPage() {
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
         </div>
-        <div style={{ display: "flex", gap: 24, marginBottom: 10 }}>
+        <div style={{ display: "flex", gap: 24, marginBottom: 12 }}>
           {[
             { label: "Requires your daily work", pct: record.active_income_level, color: B.ink },
             { label: "Comes back on its own", pct: record.semi_persistent_income_level, color: B.taupe },
@@ -1268,12 +1268,12 @@ export default function ReviewPage() {
 
         {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
-          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 4 }}>
+          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer ? `YOU OUTPERFORM ${100 - (peerPercentileValue ?? 50)}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, fontSize: 14 }}>{score}</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, fontSize: 14, color: B.navy }}>{v2Benchmarks.cluster_average_score}</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, fontSize: 14, color: B.teal }}>{v2Benchmarks.top_20_threshold}</span></div>
+              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}</span></div>
             </div>
             {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
               const peerLabel: Record<string, string> = {
@@ -1484,8 +1484,8 @@ export default function ReviewPage() {
           <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
             {v2Fragility && (
               <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>HOW EASILY IT COULD BREAK</div>
-                <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 4 }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW EASILY IT COULD BREAK</div>
+                <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
                   {(v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1)}
                 </div>
                 <div style={{ ...T.meta, color: B.muted }}>
@@ -1511,8 +1511,8 @@ export default function ReviewPage() {
             )}
             {v2Confidence && (
               <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>HOW RELIABLE THIS SCORE IS</div>
-                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "low" ? B.bandLimited : B.navy, marginBottom: 4 }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW RELIABLE THIS SCORE IS</div>
+                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "low" ? B.bandLimited : B.navy, marginBottom: 6 }}>
                   {(v2Confidence.confidence_level || "").charAt(0).toUpperCase() + (v2Confidence.confidence_level || "").slice(1)} Confidence
                 </div>
                 <div style={{ ...T.meta, color: B.muted }}>
@@ -1525,8 +1525,8 @@ export default function ReviewPage() {
             )}
             {v2Quality && (
               <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>HOW WELL-BUILT IT IS</div>
-                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 4 }}>{v2Quality.durability_grade}</div>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW WELL-BUILT IT IS</div>
+                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{v2Quality.durability_grade}</div>
                 <div style={{ ...T.meta, color: B.muted }}>
                   Quality: {v2Quality.quality_score}/100 ({v2Quality.quality_score >= 70 ? "strong" : v2Quality.quality_score >= 40 ? "moderate" : "weak"})
                 </div>
@@ -1608,15 +1608,15 @@ export default function ReviewPage() {
           <Overline large>{score >= (v2Benchmarks.top_20_threshold ?? 65) ? "Why You Are in the Top 20%" : "What Separates You From the Top 20%"}</Overline>
           <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
             <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>YOUR SCORE</div>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>YOUR SCORE</div>
               <div style={{ ...T.cardHero, color: B.navy }}>{score}</div>
             </div>
             <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>PEER AVERAGE</div>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>PEER AVERAGE</div>
               <div style={{ ...T.cardHero, color: B.muted }}>{v2Benchmarks.cluster_average_score}</div>
             </div>
             <div style={{ flex: 1, backgroundColor: B.bone, borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
-              <div style={{ ...T.overline, color: B.taupe, marginBottom: 4 }}>TOP 20%</div>
+              <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>TOP 20%</div>
               <div style={{ ...T.cardHero, color: B.teal }}>{v2Benchmarks.top_20_threshold}</div>
             </div>
           </div>
@@ -1822,7 +1822,7 @@ export default function ReviewPage() {
               })()
           ).map((action) => (
             <div key={action.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <span style={{ fontSize: 14, fontWeight: 600, color: B.purple, minWidth: 18 }}>{action.rank}.</span>
+              <span style={{ ...T.sectionLabel, color: B.purple, minWidth: 18 }}>{action.rank}.</span>
               <div>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
@@ -1879,7 +1879,7 @@ export default function ReviewPage() {
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
+            <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
             <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{copy.p5_reassess}</p>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
