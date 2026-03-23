@@ -28,6 +28,7 @@ function CheckoutSuccessContent() {
   const customerEmail = searchParams.get("email") || searchParams.get("customer_email") || "";
   const [ready, setReady] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [hasExistingRecord, setHasExistingRecord] = useState(false);
 
   const info = PLAN_INFO[plan] || PLAN_INFO.single;
 
@@ -66,21 +67,30 @@ function CheckoutSuccessContent() {
         }
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        // Check if customer already completed a free assessment
+        const existingRecord = sessionStorage.getItem("rp_record");
+        if (existingRecord) setHasExistingRecord(true);
         setReady(true);
       })
       .catch(() => {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        const existingRecord = sessionStorage.getItem("rp_record");
+        if (existingRecord) setHasExistingRecord(true);
         setReady(true);
       });
   }, [plan, stripeSessionId, customerEmail]);
 
   // No auto-redirect — user clicks "Begin Assessment" when ready
 
-  const steps = [
-    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}` },
-    { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure." },
-    { num: "3", title: "Take the assessment", desc: "Six questions, then your full 5-page report." },
+  const steps = hasExistingRecord ? [
+    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
+    { num: "2", title: "Assessment already completed", desc: "Your answers are saved. No need to retake.", done: true },
+    { num: "3", title: "View your full report", desc: "All 5 pages, unlocked instantly.", done: false },
+  ] : [
+    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
+    { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure.", done: false },
+    { num: "3", title: "Take the assessment", desc: "Six questions, then your full 5-page report.", done: false },
   ];
 
   return (
@@ -129,7 +139,7 @@ function CheckoutSuccessContent() {
 
         {/* Headline */}
         <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.cream, marginBottom: 36 }}>
-          Your full assessment is ready to begin.
+          {hasExistingRecord ? "Your full report is ready." : "Your full assessment is ready to begin."}
         </h1>
 
         {/* Steps */}
@@ -165,7 +175,7 @@ function CheckoutSuccessContent() {
         {/* CTA — user clicks when ready */}
         {ready ? (
           <Link
-            href={plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
+            href={hasExistingRecord ? "/review" : plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -186,7 +196,7 @@ function CheckoutSuccessContent() {
             onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
           >
-            Begin Assessment
+            {hasExistingRecord ? "View Full Report" : "Begin Assessment"}
           </Link>
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
