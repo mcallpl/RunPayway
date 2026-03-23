@@ -313,18 +313,20 @@ export default function FreeScorePage() {
 
             <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score™</div>
 
-            <div style={{ fontSize: mobile ? 80 : 96, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>{animatedScore}</div>
+            {/* Score out of 100 */}
+            <div style={{ fontSize: mobile ? 80 : 96, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 4 }}>{animatedScore}</div>
+            <div style={{ ...F.small, color: B.muted, marginBottom: 16 }}>out of 100</div>
 
+            {/* Stability band */}
             <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
               <div style={{ width: 12, height: 12, borderRadius: 3, backgroundColor: bandColor }} />
               <span style={{ ...F.h3, fontSize: mobile ? 18 : 20, color: bandColor }}>{band}</span>
             </div>
 
-            {percentileLabel && (
-              <div style={{ ...F.body, color: B.muted, marginBottom: 8 }}>
-                {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
-              </div>
-            )}
+            {/* Peer percentile */}
+            <div style={{ ...F.body, color: B.muted, marginBottom: 8 }}>
+              {percentileLabel ? `${percentileLabel} percentile among ${industrySector} professionals` : `Assessed in ${industrySector}`}{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
+            </div>
 
             <button
               onClick={handleDownload}
