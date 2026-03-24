@@ -1496,9 +1496,30 @@ function HowItWorksSection() {
   const mobile = useMobile();
 
   const steps = [
-    { num: "1", title: "Take the assessment", desc: "A short diagnostic about how your income is structured today. Under two minutes." },
-    { num: "2", title: "Get your free score", desc: "See your score, stability band, peer percentile, and one key insight — instantly, at no cost." },
-    { num: "3", title: "Unlock the full report — $99", desc: "Interactive simulator, income runway, risk scenarios, action plan with scripts, tradeoff analysis, and predictive warnings. If it does not reveal something new, full refund." },
+    {
+      num: "01",
+      time: "2 min",
+      title: "Answer 6 questions",
+      hook: "No bank connection. No credit pull. No login.",
+      desc: "Six structural questions about how your income works — recurrence, concentration, visibility, labor dependence, variability, and continuity. That is all we need.",
+      color: B.teal,
+    },
+    {
+      num: "02",
+      time: "Instant",
+      title: "See your score",
+      hook: "Free. Right now. No strings.",
+      desc: "Your Income Stability Score out of 100, your stability band, your peer percentile, and the single biggest thing holding your income back.",
+      color: B.purple,
+    },
+    {
+      num: "03",
+      time: "$99",
+      title: "Unlock the decision engine",
+      hook: "If it doesn\u2019t reveal something new, full refund.",
+      desc: "An interactive simulator you play with. Scripts you send tomorrow. Risk scenarios with exact score drops. Actions with specific targets and timelines. This is not a PDF — it is a system.",
+      color: B.navy,
+    },
   ];
 
   return (
@@ -1511,150 +1532,78 @@ function HowItWorksSection() {
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      {/* Subtle texture */}
-      <div style={{
-        position: "absolute",
-        inset: 0,
-        opacity: 0.03,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        backgroundSize: "128px 128px",
-        pointerEvents: "none",
-      }} />
-      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        <h2
-          className="font-semibold text-center"
-          style={{
-            fontSize: mobile ? 32 : 48,
-            color: B.navy,
-            lineHeight: S.lhHeading,
-            letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT, fontWeight: 400,
-            marginBottom: S.h2mb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        {/* Header */}
+        <div style={{ maxWidth: 600, marginBottom: mobile ? 48 : 64 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+            How It Works
+          </div>
+          <h2 style={{
+            fontSize: mobile ? 32 : 48, color: B.navy, lineHeight: S.lhHeading,
+            letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400,
+            marginBottom: 16,
+            opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
-          }}
-        >
-          How it works
-        </h2>
+          }}>
+            Three steps. Under two minutes.<br />No financial data required.
+          </h2>
+          <p style={{
+            fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
+            opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms",
+          }}>
+            We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
+          </p>
+        </div>
 
-        <p
-          className="text-center"
-          style={{
-            fontSize: mobile ? 16 : 18,
-            color: B.muted,
-            lineHeight: S.lhBody,
-            marginBottom: mobile ? 40 : 56,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
-          }}
-        >
-          Under two minutes. Full structural diagnosis.
-        </p>
-
-        {/* Steps grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
-            gap: S.gridGap,
-            position: "relative",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
-          }}
-        >
-          {/* Connecting line between cards (desktop only) */}
-          {!mobile && (
-            <div
-              style={{
-                position: "absolute",
-                top: 58,
-                left: "calc(33.333% + 12px)",
-                right: "calc(33.333% + 12px)",
-                height: 1,
-                borderTop: "1px dashed rgba(14,26,43,0.10)",
-                pointerEvents: "none",
-                zIndex: 0,
-              }}
-            />
-          )}
-
+        {/* Steps — left-aligned, horizontal with connecting line */}
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 0 }}>
           {steps.map((step, i) => (
             <div
               key={step.num}
               style={{
-                background: "#FFFFFF",
-                borderRadius: S.cardRadius,
-                border: "1px solid rgba(14,26,43,0.06)",
-                boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)",
-                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-                textAlign: "center",
+                flex: 1,
                 position: "relative",
-                zIndex: 1,
-                transition: "transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(14,26,43,0.06), 0 16px 40px rgba(14,26,43,0.06)";
-                e.currentTarget.style.borderColor = "rgba(75,63,174,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.03)";
-                e.currentTarget.style.borderColor = "rgba(14,26,43,0.06)";
+                paddingLeft: mobile ? 0 : i === 0 ? 0 : 32,
+                paddingRight: mobile ? 0 : i === 2 ? 0 : 32,
+                paddingTop: mobile ? (i === 0 ? 0 : 32) : 0,
+                paddingBottom: mobile ? (i === 2 ? 0 : 32) : 0,
+                borderLeft: !mobile && i > 0 ? "1px solid rgba(14,26,43,0.08)" : "none",
+                borderTop: mobile && i > 0 ? "1px solid rgba(14,26,43,0.08)" : "none",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 500ms ease-out ${150 + i * 120}ms, transform 500ms ease-out ${150 + i * 120}ms`,
               }}
             >
-              {/* Step number badge */}
-              <div
-                style={{
-                  width: 44, height: 44,
-                  borderRadius: 12,
-                  backgroundColor: B.purple,
-                  color: "#FFFFFF",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 18,
-                  fontWeight: 600,
-                  marginBottom: 20,
-                  boxShadow: "0 4px 12px rgba(75,63,174,0.25)",
-                }}
-              >
-                {step.num}
+              {/* Top row: number + time */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                <div style={{
+                  fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: step.color,
+                  padding: "4px 10px", borderRadius: 4,
+                  backgroundColor: step.color === B.navy ? "rgba(14,26,43,0.06)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(31,109,122,0.08)",
+                }}>
+                  STEP {step.num}
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: B.light }}>{step.time}</span>
               </div>
 
-              <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 8 }}>
+              {/* Title */}
+              <h3 style={{ fontSize: mobile ? 20 : 22, fontWeight: 600, color: B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
                 {step.title}
-              </div>
-              <p style={{ fontSize: 15, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+              </h3>
+
+              {/* Hook — the line that sells */}
+              <p style={{ fontSize: 14, fontWeight: 600, color: step.color, marginBottom: 12, lineHeight: 1.4 }}>
+                {step.hook}
+              </p>
+
+              {/* Description */}
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, margin: 0 }}>
                 {step.desc}
               </p>
             </div>
           ))}
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 40,
-            fontSize: 12,
-            fontWeight: 500,
-            textTransform: "uppercase",
-            letterSpacing: S.lsLabel,
-            color: B.light,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease-out 400ms",
-          }}
-        >
-          Powered by Model RP-2.0
         </div>
       </div>
     </section>
