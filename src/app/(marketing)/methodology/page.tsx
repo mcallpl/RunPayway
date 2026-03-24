@@ -174,7 +174,7 @@ function Hero() {
             The Income Stability Score&#8482; is a deterministic structural assessment. Every rule is fixed, every result is reproducible. Same inputs always produce the same score.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" as const }}>
-            {["20-engine pipeline", "Deterministic", "Fixed rules", "Versioned"].map((t) => (
+            {["Deterministic", "Fixed rules", "Versioned", "Reproducible"].map((t) => (
               <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
@@ -360,7 +360,7 @@ function ScoringFramework() {
               Two blocks. One score. Zero subjectivity.
             </h2>
             <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
-              The 20-engine pipeline evaluates your income across two structural blocks, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
+              The scoring model evaluates your income across six structural dimensions, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
             </p>
           </div>
 
@@ -370,8 +370,8 @@ function ScoringFramework() {
             <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.teal }} />
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal }}>Structure Block</span>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>60 of 100</span>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal }}>Structure Analysis</span>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>Primary weight</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                 {["Recurring revenue", "Source diversification", "Forward visibility", "Concentration resilience"].map((f) => (
@@ -387,8 +387,8 @@ function ScoringFramework() {
             <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.purple }} />
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple }}>Stability Block</span>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>40 of 100</span>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple }}>Stability Analysis</span>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>Secondary weight</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                 {["Labor independence", "Earnings stability", "Income continuity", "Quality adjustment"].map((f) => (
@@ -420,10 +420,10 @@ function InteractionEffects() {
   const mobile = useMobile();
 
   const effects = [
-    { type: "PENALTY", label: "High concentration + low visibility", desc: "If your top source is 70%+ AND less than 20% is secured ahead of time, both weaknesses compound. The combined risk is worse than the sum.", points: "-8", color: B.bandLimited },
-    { type: "PENALTY", label: "High labor + low persistence", desc: "If 75%+ requires daily work AND less than 25% recurs, your income has no safety net. A single disruption cascades.", points: "-7", color: B.bandLimited },
-    { type: "BONUS", label: "High persistence + low labor", desc: "If 60%+ recurs AND less than 35% requires daily work, your income compounds. You have real structural independence.", points: "+4", color: B.teal },
-    { type: "BONUS", label: "Strong visibility + low concentration", desc: "If 45%+ is committed ahead AND no source exceeds 35%, your income is both predictable and diversified.", points: "+3", color: B.teal },
+    { type: "PENALTY", label: "High concentration + low visibility", desc: "When too much income depends on a single source and too little is secured ahead of time, both weaknesses compound. The combined risk is worse than the sum.", points: "penalty", color: B.bandLimited },
+    { type: "PENALTY", label: "High labor + low persistence", desc: "When most income requires daily effort and very little recurs automatically, there is no safety net. A single disruption cascades.", points: "penalty", color: B.bandLimited },
+    { type: "BONUS", label: "High persistence + low labor", desc: "When a strong share of income recurs without new acquisition and relatively little requires daily work, the structure compounds. Real structural independence.", points: "bonus", color: B.teal },
+    { type: "BONUS", label: "Strong visibility + low concentration", desc: "When income is committed well ahead of time and no single source dominates, the structure is both predictable and diversified.", points: "bonus", color: B.teal },
   ];
 
   return (
@@ -751,7 +751,7 @@ function Integrity() {
       dotColor: B.teal,
       items: [
         "Same inputs always produce the same score — no variability, no subjective interpretation",
-        "20-engine pipeline with fixed scoring rules under Model RP-2.0",
+        "Fixed scoring rules under Model RP-2.0",
         "Cross-factor interaction rules are versioned and documented",
         "Any change to the framework creates a new model version — prior scores remain valid under their original model",
       ],
@@ -812,7 +812,7 @@ function Integrity() {
               Every score is verifiable.<br />Every rule is fixed.
             </h2>
             <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
-              No subjective judgment. No probabilistic modeling. The 20-engine pipeline produces identical results for identical inputs — and every assessment is cryptographically stamped.
+              No subjective judgment. No probabilistic modeling. The scoring model produces identical results for identical inputs — and every assessment is cryptographically stamped.
             </p>
           </div>
 

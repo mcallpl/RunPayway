@@ -753,7 +753,7 @@ function Faq() {
     },
     {
       q: "How is the score calculated?",
-      a: "The scoring engine evaluates six structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 through a deterministic 20-engine pipeline. Same inputs always produce the same score. Full methodology at runpayway.com/methodology.",
+      a: "The scoring model evaluates six structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic, fixed rules under Model RP-2.0. Same inputs always produce the same score.",
     },
     {
       q: "Can I retake the assessment?",

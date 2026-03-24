@@ -480,7 +480,7 @@ function ModelBadge() {
         <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 24, flexWrap: "wrap" }}>
           {[
             { label: "Model RP-2.0", sub: "Current version" },
-            { label: "20 Engines", sub: "Deterministic pipeline" },
+            { label: "Deterministic", sub: "Fixed scoring rules" },
             { label: "19 Industries", sub: "Full sector coverage" },
             { label: "6 Dimensions", sub: "Structural analysis" },
           ].map((item) => (
