@@ -699,15 +699,10 @@ export default function MarketingLayout({
                     {link.label}
                   </Link>
                 ))}
-                <Link
-                  href="/simulator?p=73&c=40&src=4&f=71&v=low&l=37&q=7&s=78&b=High%20Stability&n=Sample%20Profile"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#1A7A6D", lineHeight: 1.4, transition: "color 160ms ease" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#4B3FAE"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#1A7A6D"; }}
-                >
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#1A7A6D", lineHeight: 1.4 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#1A7A6D", flexShrink: 0 }} />
-                  Score Simulator
-                </Link>
+                  Score Simulator <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(14,26,43,0.35)" }}>included with report</span>
+                </span>
               </div>
             </div>
 

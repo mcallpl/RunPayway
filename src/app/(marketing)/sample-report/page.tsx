@@ -580,14 +580,9 @@ function SimulatorPreview() {
               </div>
             ))}
           </div>
-          <a
-            href="/simulator?p=73&c=40&src=4&f=71&v=low&l=37&q=7&s=78&b=High%20Stability&n=Sample%20Profile"
-            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", marginTop: 24, height: 44, padding: "0 28px", borderRadius: 8, border: "1px solid rgba(244,241,234,0.20)", color: "#F4F1EA", fontSize: 14, fontWeight: 600, textDecoration: "none", transition: "all 200ms ease" }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.08)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.30)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.20)"; }}
-          >
-            Try it with sample data &#8594;
-          </a>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 20, fontStyle: "italic" }}>
+            Included with every $99 report. Loads automatically with your data.
+          </p>
         </div>
         <div style={{ flex: 1, maxWidth: mobile ? undefined : 400, marginTop: mobile ? 36 : 0 }}>
           <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={320}>

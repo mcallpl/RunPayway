@@ -1110,19 +1110,6 @@ function WhatYourReportSection() {
             </p>
           </div>
           <div style={{ display: "flex", gap: 12 }}>
-            <a
-              href="/simulator?p=73&c=40&src=4&f=71&v=low&l=37&q=7&s=78&b=High%20Stability&n=Sample%20Profile"
-              style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
-                color: B.navy, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)",
-                textDecoration: "none", whiteSpace: "nowrap" as const,
-                boxShadow: "0 4px 16px rgba(0,0,0,0.20)",
-                transition: "all 200ms ease",
-              }}
-            >
-              Try the simulator &#8594;
-            </a>
             <Link
               href="/sample-report"
               style={{
