@@ -398,13 +398,16 @@ function generateScriptTemplates(
   const scripts: ScriptTemplate[] = [];
   const root = constraints.root_constraint;
 
+  const industryLabel = profile.profile_archetype || "your field";
+  const modelLabel = profile.primary_income_model.replace(/_/g, " ");
+
   // Always include retainer pitch if relevant
   if (root === "weak_forward_visibility" || root === "low_persistence" || n.forward_secured_pct <= 30) {
     scripts.push({
       id: "SCRIPT-RETAINER",
       title: "Retainer Conversion Pitch",
-      context: "Use this when proposing to convert a project-based client to a monthly retainer or ongoing commitment.",
-      script: `"I have enjoyed working on [project name] and I think there is an opportunity to make this work better for both of us. Instead of scoping each project individually, I would like to propose a monthly arrangement where you get [X hours / deliverables] per month at a [5-10]% preferred rate. This gives you guaranteed priority access and predictable costs. For me, it means I can plan around your needs instead of scrambling between projects. Would you be open to trying this for 3 months?"`,
+      context: `Your forward visibility is ${n.forward_secured_pct}%. Use this to convert your best project-based client to a monthly commitment.`,
+      script: `"I have enjoyed working on [project name] together. I would like to propose something that works better for both of us.\n\nInstead of scoping each engagement individually, I am proposing a monthly arrangement — [X hours or deliverables] per month at a 5-10% preferred rate.\n\nFor you: guaranteed priority access, predictable costs, and no gaps between projects.\nFor me: the ability to plan around your needs and deliver better results.\n\nI am offering this to my top ${Math.max(1, Math.min(3, n.source_diversity_count))} clients first. Would you be open to a 3-month trial starting next month?"`,
     });
   }
 
@@ -413,8 +416,8 @@ function generateScriptTemplates(
     scripts.push({
       id: "SCRIPT-OUTREACH",
       title: "New Client Outreach Message",
-      context: `Use this to reach prospects who could become meaningful income sources (target: 10-15% of total revenue each).`,
-      script: `"Hi [Name], I have been doing [specific work] for [industry/clients like them] and wanted to reach out because [specific reason this prospect is a fit]. I specialize in [your core offering] and typically work with clients on a [retainer / project / ongoing] basis. Would you have 15 minutes this week to explore whether there is a fit? I am currently taking on [1-2] new ongoing clients."`,
+      context: `Your top source is ${n.largest_source_pct}% of revenue. You need 1-2 new clients at 10-15% each to reduce concentration risk.`,
+      script: `"Hi [Name],\n\nI specialize in ${modelLabel} work in ${industryLabel} and wanted to reach out because [specific reason this prospect is a fit].\n\nI typically work with clients on a [retainer / ongoing] basis — my current clients get [key deliverable] on a predictable monthly schedule.\n\nI am taking on ${Math.max(1, 3 - n.source_diversity_count)} new ongoing client${3 - n.source_diversity_count > 1 ? "s" : ""} this quarter. Would you have 15 minutes this week to see if there is a fit?"`,
     });
   }
 
@@ -423,7 +426,7 @@ function generateScriptTemplates(
     scripts.push({
       id: "SCRIPT-PRICING",
       title: "Pricing Restructure Conversation",
-      context: "Use this when proposing to restructure variable or project-based pricing into a predictable monthly arrangement.",
+      context: `Your recurring revenue is only ${n.income_persistence_pct}%. Use this to convert variable pricing to predictable monthly revenue.`,
       script: `"I have noticed that our work together tends to fluctuate month to month, which makes it harder for both of us to plan. I would like to propose a fixed monthly arrangement at [$X/month] that covers [scope]. This gives you budget predictability and gives me the stability to prioritize your work. If we try it for 3 months, I am confident we will both prefer it."`,
     });
   }
@@ -433,8 +436,8 @@ function generateScriptTemplates(
     scripts.push({
       id: "SCRIPT-PRODUCTIZE",
       title: "Productized Offering Framework",
-      context: "Use this framework to design your first non-labor-dependent revenue stream.",
-      script: `Step 1: Identify your most repeated deliverable — the thing you do most often for clients.\nStep 2: Package it at a fixed price with a defined scope (e.g., "[Service] Package — $[X]/month, includes [deliverables]").\nStep 3: Price it at 70-80% of your custom rate. The margin comes from efficiency, not higher pricing.\nStep 4: Offer it first to existing clients: "I have created a streamlined version of [service] that I think would work well for you at a lower price point."\nStep 5: Target: 2-3 clients on this package within 60 days = 15-20% of revenue on a lower-effort model.`,
+      context: `${n.labor_dependence_pct}% of your income requires daily work. Use this to build your first non-labor stream targeting 10-15% of revenue.`,
+      script: `Step 1: Identify your most repeated deliverable — the thing you do most often for ${modelLabel} clients.\n\nStep 2: Package it at a fixed price with a defined scope.\nExample: "[Your Service] Package — $[X]/month, includes [deliverables]"\n\nStep 3: Price it at 70-80% of your custom rate. The margin comes from efficiency.\n\nStep 4: Offer it to your existing clients first:\n"I have created a streamlined version of [service] that gives you the same result at a lower price point. Would you like to try it?"\n\nStep 5: Target — ${Math.max(1, Math.ceil((15 / 100) * n.source_diversity_count))} client${Math.ceil((15 / 100) * n.source_diversity_count) > 1 ? "s" : ""} on this package within 60 days.\nThis would move ~15% of your revenue off daily labor.`,
     });
   }
 

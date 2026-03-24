@@ -549,6 +549,7 @@ export default function ReviewPage() {
   const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
   const [simPreset, setSimPreset] = useState<string | null>(null);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
+  const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const monitoringTracked = useRef(false);
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
@@ -1813,10 +1814,13 @@ export default function ReviewPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span style={{ ...T.sectionTitle, color: B.purple, minWidth: 20 }}>{i + 1}</span>
-                      <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
+                      <div>
+                        <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
+                        {s.change_description && <div style={{ ...T.meta, color: B.muted }}>{s.change_description}{s.band_shift ? ` — moves you to ${s.projected_band}` : ""}</div>}
+                      </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>+{s.lift} points</span>
+                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>+{s.lift} pts</span>
                       <span style={{ ...T.meta, color: B.muted }}>→ {s.projected_score}</span>
                     </div>
                   </div>
@@ -1855,16 +1859,20 @@ export default function ReviewPage() {
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
           {(olActions && olActions.length > 0
-            ? olActions.slice(0, 3).map((a, i) => ({
-                rank: `${i + 1}`,
-                title: a.label,
-                copy: a.description,
-                why: a.why_now,
-                effect: a.expected_effect,
-                timeframe: "",
-                target: "",
-                tradeoff: "",
-              }))
+            ? olActions.slice(0, 3).map((a, i) => {
+                // Blend OL narrative with v2 engine specifics (timeframe/target/tradeoff)
+                const v2Match = v2?.recommended_actions?.find(ra => ra.category === a.action_id || ra.label.toLowerCase().includes(a.label.toLowerCase().split(" ")[0]));
+                return {
+                  rank: `${i + 1}`,
+                  title: a.label,
+                  copy: a.description,
+                  why: a.why_now,
+                  effect: a.expected_effect,
+                  timeframe: (v2Match as Record<string, string>)?.timeframe ?? "",
+                  target: (v2Match as Record<string, string>)?.target ?? "",
+                  tradeoff: (v2Match as Record<string, string>)?.tradeoff ?? "",
+                };
+              })
             : (v2?.recommended_actions && v2.recommended_actions.length > 0)
             ? v2.recommended_actions.slice(0, 4).map((a, i) => ({
                 rank: `${i + 1}`,
@@ -2003,8 +2011,8 @@ export default function ReviewPage() {
                 {isExpanded && (
                   <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
                     <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
-                    <button onClick={() => navigator.clipboard.writeText(script.script)} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: B.purple, borderRadius: 6, border: `1px solid ${B.purple}`, cursor: "pointer", backgroundColor: "rgba(75,63,174,0.04)" }}>
-                      Copy to clipboard
+                    <button onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: scriptCopied === script.id ? B.teal : B.purple, borderRadius: 6, border: `1px solid ${scriptCopied === script.id ? B.teal : B.purple}`, cursor: "pointer", backgroundColor: scriptCopied === script.id ? "rgba(31,109,122,0.06)" : "rgba(75,63,174,0.04)", transition: "all 150ms ease" }}>
+                      {scriptCopied === script.id ? "Copied" : "Copy to clipboard"}
                     </button>
                   </div>
                 )}
