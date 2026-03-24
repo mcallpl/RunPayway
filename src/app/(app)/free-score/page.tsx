@@ -132,8 +132,7 @@ export default function FreeScorePage() {
 
   const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
   const v2Constraints = v2?.constraints as { root_constraint: string } | undefined;
-  const v2Benchmarks = v2?.benchmarks as { cluster_average_score: number } | undefined;
-  const v2Scores = v2?.scores as { structure_score: number; stability_score: number; quality_adjustment: number } | undefined;
+  // Peer average and score breakdown are paid-tier only — not extracted here
 
   const constraintPlain: Record<string, string> = {
     high_concentration: "Too much of your income depends on one source.",
@@ -217,7 +216,7 @@ export default function FreeScorePage() {
             </div>
             {percentileLabel && (
               <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 8 }}>
-                {percentileLabel} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
+                {percentileLabel} percentile among {industrySector} professionals
               </div>
             )}
           </div>
@@ -302,7 +301,7 @@ export default function FreeScorePage() {
 
             {/* Peer percentile */}
             <div style={{ ...F.body, color: B.muted, marginBottom: 8 }}>
-              {percentileLabel ? `${percentileLabel} percentile among ${industrySector} professionals` : `Assessed in ${industrySector}`}{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
+              {percentileLabel ? `${percentileLabel} percentile among ${industrySector} professionals` : `Assessed in ${industrySector}`}
             </div>
 
             <button
