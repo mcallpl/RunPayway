@@ -113,13 +113,13 @@ function SimulatorContent() {
         <div style={{ textAlign: "center", maxWidth: 400, padding: 40 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>Score Simulator</div>
           <h1 style={{ fontSize: 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 16 }}>
-            Scan your report to begin.
+            This tool is included with your report.
           </h1>
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32 }}>
-            The QR code on your report loads your data into this simulator. Or take the assessment first.
+            Tap the QR code on your report to load your data. The simulator is part of the $99 complete assessment.
           </p>
           <a href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 48, padding: "0 32px", borderRadius: 8, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em" }}>
-            Get Your Score
+            Get the Full Report
           </a>
         </div>
       </div>
