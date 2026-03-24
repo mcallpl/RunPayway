@@ -534,48 +534,39 @@ function BridgeSection() {
       ref={ref}
       aria-label="Why this matters"
       style={{
-        background: "#FFFFFF",
-        paddingTop: mobile ? 56 : 80,
-        paddingBottom: mobile ? 56 : 80,
+        background: B.sand,
+        paddingTop: mobile ? 40 : 56,
+        paddingBottom: mobile ? 40 : 56,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        borderTop: "1px solid rgba(14,26,43,0.06)",
+        borderBottom: "1px solid rgba(14,26,43,0.06)",
       }}
     >
       <div
-        className="mx-auto"
         style={{
-          maxWidth: 720,
+          maxWidth: 680,
+          margin: "0 auto",
           textAlign: "center",
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transform: visible ? "translateY(0)" : "translateY(12px)",
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
         }}
       >
         <p
           style={{
-            fontSize: mobile ? 18 : 24,
+            fontSize: mobile ? 18 : 22,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
             lineHeight: 1.45,
-            letterSpacing: "-0.01em",
+            letterSpacing: "-0.015em",
             margin: 0,
           }}
         >
           The average self-employed professional has less than 30 days of income protection.
           Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
         </p>
-        <div
-          style={{
-            width: 40,
-            height: 2,
-            backgroundColor: B.teal,
-            margin: "28px auto 0",
-            borderRadius: 1,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease-out 400ms",
-          }}
-        />
       </div>
     </section>
   );
@@ -595,28 +586,24 @@ function FourFactorsSection() {
       label: "Recurrence",
       question: "Do you rebuild your income from scratch every month?",
       description: "No retainers, no subscriptions, no recurring contracts means you start at zero every month.",
-      accent: B.purple,
     },
     {
       num: "02",
       label: "Concentration",
       question: "Would losing one client wipe out half your income?",
       description: "One lost contract or one client decision can collapse your entire income structure.",
-      accent: B.teal,
     },
     {
       num: "03",
       label: "Visibility",
       question: "Do you know what you will earn next month?",
       description: "If your income is not already committed — booked, contracted, locked in — you are guessing.",
-      accent: B.purple,
     },
     {
       num: "04",
       label: "Passivity",
       question: "If you stopped working today, when does the money stop?",
       description: "If 100% requires your daily effort, any disruption immediately threatens everything.",
-      accent: B.teal,
     },
   ];
 
@@ -626,91 +613,58 @@ function FourFactorsSection() {
       aria-label="What RunPayway™ Measures"
       style={{
         background: "#FFFFFF",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingTop: mobile ? 64 : 96,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        {/* Section header */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: mobile ? 40 : 56,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out, transform 600ms ease-out",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-              letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
-            }}
-          >
-            Why income disappears
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        {/* Section header — left-aligned */}
+        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 48 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+            What We Measure
           </div>
-          <h2
-            style={{
-              fontSize: mobile ? 28 : 44,
-              color: B.navy,
-              lineHeight: 1.12,
-              letterSpacing: "-0.025em",
-              fontFamily: DISPLAY_FONT, fontWeight: 400,
-              marginBottom: S.h2mb,
-            }}
-          >
-            The four reasons income falls apart
+          <h2 style={{
+            fontSize: mobile ? 28 : 44, color: B.navy, lineHeight: 1.12,
+            letterSpacing: "-0.025em", fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16,
+            opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 600ms ease-out, transform 600ms ease-out",
+          }}>
+            The four structural risks that determine your score
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.65, maxWidth: S.subtextMaxW, margin: "0 auto" }}>
-            Your Income Stability Score&#8482; measures these four structural risks. If any one is weak, your income is exposed.
+          <p style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
+            If any one is weak, your income is exposed. The score quantifies exactly how much.
           </p>
         </div>
 
-        {/* 2x2 card grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: mobile ? 16 : 20,
-            maxWidth: 880,
-            margin: "0 auto",
-          }}
-        >
+        {/* 4 cards — clean white on subtle bg, left-aligned content */}
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 12 : 16 }}>
           {factors.map((f, i) => (
             <div
               key={f.label}
               style={{
-                backgroundColor: B.navy,
-                borderRadius: S.cardRadius,
-                padding: mobile ? "28px 24px" : "32px 28px",
-                position: "relative",
-                overflow: "hidden",
-                boxShadow: "0 8px 32px rgba(14,26,43,0.12)",
+                background: B.navy,
+                borderRadius: 8,
+                padding: mobile ? "28px 24px" : "32px 32px",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 500ms ease-out ${200 + i * 100}ms, transform 500ms ease-out ${200 + i * 100}ms`,
+                transition: `opacity 500ms ease-out ${150 + i * 80}ms, transform 500ms ease-out ${150 + i * 80}ms`,
               }}
             >
-              {/* Large watermark number */}
-              <div style={{ position: "absolute", top: -8, right: 12, fontSize: 80, fontWeight: 700, color: "rgba(255,255,255,0.04)", lineHeight: 1, pointerEvents: "none" }}>
-                {f.num}
+              {/* Number + label row */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.06em" }}>{f.num}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{f.label}</span>
               </div>
 
-              {/* Accent dot + label */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: f.accent }} />
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)" }}>{f.label}</span>
-              </div>
-
-              {/* Question */}
-              <div style={{ fontSize: mobile ? 18 : 20, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.01em", marginBottom: 12 }}>
+              {/* Question — the hook */}
+              <h3 style={{ fontSize: mobile ? 19 : 22, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.015em", marginBottom: 12 }}>
                 {f.question}
-              </div>
+              </h3>
 
               {/* Description */}
-              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, margin: 0 }}>
                 {f.description}
               </p>
             </div>
