@@ -540,65 +540,51 @@ function BridgeSection() {
     >
       <div
         style={{
-          maxWidth: 720,
+          maxWidth: 680,
           margin: "0 auto",
           textAlign: "center",
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
-          backgroundColor: "#FFFFFF",
-          borderRadius: 16,
-          padding: mobile ? "28px 24px" : "40px 48px",
-          boxShadow: "0 8px 40px rgba(14,26,43,0.10), 0 1px 3px rgba(14,26,43,0.06)",
-          border: "1px solid rgba(14,26,43,0.06)",
+          backgroundColor: "rgba(255,255,255,0.95)",
+          backdropFilter: "blur(12px)",
+          borderRadius: 14,
+          padding: mobile ? "24px 20px 20px" : "32px 40px 24px",
+          boxShadow: "0 4px 24px rgba(14,26,43,0.08), 0 1px 2px rgba(14,26,43,0.04)",
+          border: "1px solid rgba(14,26,43,0.05)",
         }}
       >
         <p
           style={{
-            fontSize: mobile ? 18 : 22,
+            fontSize: mobile ? 17 : 20,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
             lineHeight: 1.35,
             letterSpacing: S.lsHeading,
-            margin: "0 0 8px",
+            margin: "0 0 6px",
           }}
         >
-          The average self-employed professional has less than 30 days of income protection.
+          Less than 30 days of income protection.
         </p>
         <p
           style={{
-            fontSize: mobile ? 13 : 15,
+            fontSize: mobile ? 12 : 14,
             color: B.muted,
-            lineHeight: 1.6,
-            margin: "0 0 20px",
+            lineHeight: 1.55,
+            margin: "0 0 18px",
           }}
         >
-          Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
+          That&#8217;s the average for self-employed professionals. Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
         </p>
 
         {/* Industry icons */}
-        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 24, flexWrap: "wrap" as const, marginBottom: 16 }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 12 : 20, flexWrap: "wrap" as const }}>
           {[
-            { label: "Consulting", icon: "\u2691" },
-            { label: "Real Estate", icon: "\u2302" },
-            { label: "Creative", icon: "\u2605" },
-            { label: "Technology", icon: "\u2699" },
-            { label: "Healthcare", icon: "\u2695" },
-            { label: "Finance", icon: "\u2696" },
-          ].map(ind => (
-            <div key={ind.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ fontSize: 13, opacity: 0.35 }}>{ind.icon}</span>
-              <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>{ind.label}</span>
-            </div>
+            "Consulting", "Real Estate", "Creative", "Technology", "Healthcare", "Finance",
+          ].map(label => (
+            <span key={label} style={{ fontSize: 11, color: B.light, fontWeight: 500, letterSpacing: "0.01em" }}>{label}</span>
           ))}
-        </div>
-
-        {/* Trust line */}
-        <div style={{ borderTop: "1px solid rgba(14,26,43,0.06)", paddingTop: 14 }}>
-          <p style={{ fontSize: 12, color: B.light, margin: 0, letterSpacing: "0.01em" }}>
-            Built for independent professionals across every industry. Deterministic scoring — no AI, no estimates.
-          </p>
         </div>
       </div>
     </section>
