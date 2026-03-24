@@ -493,11 +493,6 @@ input[type="range"]::-webkit-slider-thumb {
 
       </div>
 
-      {/* Bottom fade — smooth transition to bridge */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{ height: 160, background: `linear-gradient(to bottom, ${B.navy} 0%, ${B.sand} 100%)` }}
-      />
 
     </section>
   );
