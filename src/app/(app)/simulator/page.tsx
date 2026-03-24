@@ -90,9 +90,9 @@ function SectionLabel({ children, color, sub }: { children: string; color?: stri
 /* ------------------------------------------------------------------ */
 /*  Card wrapper                                                       */
 /* ------------------------------------------------------------------ */
-function Card({ children, glow, style }: { children: React.ReactNode; glow?: string; style?: React.CSSProperties }) {
+function Card({ children, glow, style, className }: { children: React.ReactNode; glow?: string; style?: React.CSSProperties; className?: string }) {
   return (
-    <div style={{
+    <div className={className} style={{
       backgroundColor: B.whisper,
       border: `1px solid ${B.ghost}`,
       borderRadius: 12,
@@ -167,7 +167,7 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
       </div>
 
       {/* Band cards — active one lit, others greyed */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+      <div className="sim-bands" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
         {bands.map(b => {
           const isActive = b.name === currentBand;
           return (
@@ -222,7 +222,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
 
   return (
     <Card glow={isPositive ? "rgba(26,122,109,0.12)" : "rgba(220,74,74,0.08)"} style={{ marginBottom: 32 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+      <div className="sim-tl-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
         <div>
           <SectionLabel color={B.purple}>Income Timeline</SectionLabel>
           <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 460, lineHeight: 1.5 }}>
@@ -293,7 +293,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
       </div>
 
       {/* Timeline milestones */}
-      <div style={{ display: "flex", gap: 12 }}>
+      <div className="sim-timeline-ms" style={{ display: "flex", gap: 12 }}>
         {timeline.map((pt) => (
           <div key={pt.month} style={{ flex: 1, padding: "14px 16px", backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, borderRadius: 8 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
@@ -525,7 +525,7 @@ function BriefGenerator({
       </div>
 
       <Card glow="rgba(75,63,174,0.10)" style={{ borderTop: `2px solid ${B.purple}33` }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+        <div className="sim-brief-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
           <div>
             <SectionLabel color={B.purple}>Stability Brief Generator&#8482;</SectionLabel>
             <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 520, lineHeight: 1.5 }}>
@@ -538,13 +538,13 @@ function BriefGenerator({
         </div>
 
         {/* Purpose selector */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <div className="sim-step-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint }}>
             STEP 1 — WHO IS THIS FOR?
           </div>
           <div style={{ fontSize: 10, color: B.faint }}>Select one, then generate</div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
+        <div className="sim-purposes" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
           {BRIEF_PURPOSES.map(bp => {
             const isActive = purpose === bp.id;
             return (
@@ -578,6 +578,7 @@ function BriefGenerator({
           <>
             <div
               ref={briefRef}
+              className="sim-brief-preview"
               style={{
                 backgroundColor: "#FFFFFF", borderRadius: 8, padding: "48px 44px",
                 color: "#1A1A1A", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
@@ -586,7 +587,7 @@ function BriefGenerator({
             >
               {/* Brief header */}
               <div style={{ borderBottom: "2px solid #0E1A2B", paddingBottom: 20, marginBottom: 28 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div className="sim-brief-hdr" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div>
                     <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 6 }}>RUNPAYWAY&#8482;</div>
                     <div style={{ fontSize: 20, fontWeight: 700, color: "#0E1A2B", letterSpacing: "-0.02em" }}>{generated.title}</div>
@@ -646,7 +647,7 @@ function BriefGenerator({
             <p style={{ fontSize: 12, color: B.dim, marginBottom: 14, marginTop: 0, textAlign: "center" }}>
               Your Stability Brief&#8482; is ready. Download it and attach to your application, email it to your contact, or print a copy.
             </p>
-            <div style={{ display: "flex", gap: 12 }}>
+            <div className="sim-brief-actions" style={{ display: "flex", gap: 12 }}>
               <button onClick={handleDownload} disabled={downloading} style={{
                 flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", cursor: downloading ? "wait" : "pointer",
                 background: `linear-gradient(135deg, ${B.bone}, #E8E5DD)`,
@@ -810,7 +811,39 @@ function SimulatorContent() {
 
   return (
     <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 30%, #0B1520 100%)`, fontFamily: INTER }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap'); body{margin:0;} *{box-sizing:border-box;}`}</style>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+        body{margin:0;} *{box-sizing:border-box;}
+        @media(max-width:680px){
+          .sim-orient{flex-direction:column!important;gap:10px!important;}
+          .sim-triptych{flex-direction:column!important;}
+          .sim-triptych>div{border-right:none!important;border-bottom:1px solid rgba(244,241,234,0.06);}
+          .sim-triptych>div:last-child{border-bottom:none!important;}
+          .sim-bands{grid-template-columns:repeat(2,1fr)!important;}
+          .sim-timeline-ms{flex-direction:column!important;}
+          .sim-presets{grid-template-columns:repeat(2,1fr)!important;}
+          .sim-advanced{grid-template-columns:1fr!important;gap:24px!important;}
+          .sim-brief-head{flex-direction:column!important;gap:12px!important;}
+          .sim-brief-head>div:last-child{align-self:flex-start!important;}
+          .sim-purposes{grid-template-columns:repeat(2,1fr)!important;}
+          .sim-brief-preview{padding:28px 20px!important;}
+          .sim-brief-hdr{flex-direction:column!important;gap:8px!important;}
+          .sim-brief-hdr>div:last-child{text-align:left!important;}
+          .sim-brief-actions{flex-direction:column!important;}
+          .sim-profile{flex-direction:column!important;text-align:center!important;gap:12px!important;}
+          .sim-profile>div:last-child{text-align:center!important;}
+          .sim-step-label{flex-direction:column!important;gap:4px!important;align-items:flex-start!important;}
+          .sim-tl-header{flex-direction:column!important;gap:12px!important;}
+          .sim-tl-header>div:last-child{text-align:left!important;margin-left:0!important;}
+          .sim-container{padding:28px 16px 60px!important;}
+          .sim-score-hero h1{font-size:26px!important;}
+          .sim-triptych>div{padding:20px 16px!important;}
+          .sim-triptych .sim-score-num{font-size:34px!important;}
+          .sim-footer{flex-direction:column!important;gap:4px!important;text-align:center!important;padding:14px 16px!important;}
+          .sim-mode-toggle{flex-direction:column!important;}
+          .sim-mode-toggle button{border-bottom:none!important;}
+        }
+      `}</style>
 
       {/* ══════════ HEADER ══════════ */}
       <header style={{ borderBottom: `1px solid ${B.ghost}`, padding: "14px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", backdropFilter: "blur(12px)", backgroundColor: "rgba(7,15,25,0.6)" }}>
@@ -822,11 +855,11 @@ function SimulatorContent() {
         <span style={{ fontSize: 11, color: B.dim }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
       </header>
 
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
+      <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
         {/* ══════════ ORIENTATION STRIP ══════════ */}
         {!isModified && (
-          <div style={{ display: "flex", gap: 6, marginBottom: 32, padding: "16px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`, backgroundColor: B.whisper }}>
+          <div className="sim-orient" style={{ display: "flex", gap: 6, marginBottom: 32, padding: "16px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`, backgroundColor: B.whisper }}>
             {[
               { num: "1", text: "Choose a scenario or build your own" },
               { num: "2", text: "See how your score changes over time" },
@@ -843,7 +876,7 @@ function SimulatorContent() {
         )}
 
         {/* ══════════ SCORE HERO ══════════ */}
-        <div style={{ marginBottom: 32 }}>
+        <div className="sim-score-hero" style={{ marginBottom: 32 }}>
           {/* Headline */}
           <div style={{ marginBottom: 28 }}>
             <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: B.bone, lineHeight: 1.1, letterSpacing: "-0.025em", margin: "0 0 8px" }}>
@@ -857,11 +890,11 @@ function SimulatorContent() {
           </div>
 
           {/* Score triptych */}
-          <div style={{ display: "flex", gap: 2, borderRadius: 12, overflow: "hidden" }}>
+          <div className="sim-triptych" style={{ display: "flex", gap: 2, borderRadius: 12, overflow: "hidden" }}>
             {/* Current */}
             <div style={{ flex: 1, background: "rgba(244,241,234,0.03)", padding: "28px 24px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim, marginBottom: 10 }}>CURRENT</div>
-              <div style={{ fontSize: 42, fontWeight: 300, color: B.bone, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
+              <div className="sim-score-num" style={{ fontSize: 42, fontWeight: 300, color: B.bone, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
               <div style={{ fontSize: 11, color: bandColor(base.band), fontWeight: 600, marginTop: 8 }}>{base.band}</div>
             </div>
 
@@ -875,7 +908,7 @@ function SimulatorContent() {
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim, marginBottom: 10 }}>
                 {isModified ? "SIMULATED" : "BASELINE"}
               </div>
-              <div style={{
+              <div className="sim-score-num" style={{
                 fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: isModified ? (delta > 0 ? B.teal : delta < 0 ? B.bandLimited : B.bone) : B.bone,
               }}>
@@ -887,7 +920,7 @@ function SimulatorContent() {
             {/* Impact */}
             <div style={{ flex: 1, background: "rgba(244,241,234,0.03)", padding: "28px 24px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim, marginBottom: 10 }}>IMPACT</div>
-              <div style={{
+              <div className="sim-score-num" style={{
                 fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: delta > 0 ? B.teal : delta < 0 ? B.bandLimited : B.faint,
               }}>
@@ -907,7 +940,7 @@ function SimulatorContent() {
         )}
 
         {/* ══════════ MODE TOGGLE ══════════ */}
-        <div style={{ display: "flex", gap: 2, marginBottom: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${B.ghost}` }}>
+        <div className="sim-mode-toggle" style={{ display: "flex", gap: 2, marginBottom: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${B.ghost}` }}>
           {(["presets", "advanced"] as const).map((mode) => (
             <button key={mode} onClick={() => {
               setSimMode(mode);
@@ -931,7 +964,7 @@ function SimulatorContent() {
               What-If Scenarios
             </SectionLabel>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
+            <div className="sim-presets" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
               {SIMULATOR_PRESETS.map((preset) => {
                 const ia = simPreset === preset.id;
                 const previewDelta = simulateScore(preset.modify(baseInputs), qualityScore).overall_score - base.overall_score;
@@ -979,7 +1012,7 @@ function SimulatorContent() {
 
         {/* ══════════ ADVANCED SLIDERS ══════════ */}
         {simMode === "advanced" && sliders && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 32 }}>
+          <div className="sim-advanced" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 32 }}>
             {/* Left: sliders */}
             <div>
               <SectionLabel color={B.purple} sub="Adjust each structural factor to model a custom scenario.">
@@ -1085,7 +1118,7 @@ function SimulatorContent() {
 
         {/* ══════════ PROFILE CARD ══════════ */}
         {(userName || industry || incomeModel) && (
-          <div style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 32, padding: "16px 20px", background: B.whisper, border: `1px solid ${B.ghost}`, borderRadius: 10 }}>
+          <div className="sim-profile" style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 32, padding: "16px 20px", background: B.whisper, border: `1px solid ${B.ghost}`, borderRadius: 10 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${B.purple}22, ${B.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", border: `1px solid ${B.ghost}` }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: B.bone }}>{(userName || "?")[0].toUpperCase()}</span>
             </div>
@@ -1106,7 +1139,7 @@ function SimulatorContent() {
       </div>
 
       {/* ══════════ FOOTER ══════════ */}
-      <footer style={{ borderTop: `1px solid ${B.ghost}`, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <footer className="sim-footer" style={{ borderTop: `1px solid ${B.ghost}`, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 10, color: B.faint }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
         <span style={{ fontSize: 10, color: B.faint }}>Deterministic &middot; Fixed Rules &middot; No AI</span>
       </footer>
