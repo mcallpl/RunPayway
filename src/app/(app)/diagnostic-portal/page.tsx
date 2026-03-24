@@ -191,8 +191,13 @@ export default function InitializationPage() {
     recipient_email: "",
   });
 
-  // Portal entrance animation
+  // Portal entrance animation + clear stale diagnostic state
   useEffect(() => {
+    // Clear any previous diagnostic answers so a new assessment starts fresh
+    try {
+      localStorage.removeItem("runpayway_diagnostic_state");
+      sessionStorage.removeItem("rp_record");
+    } catch { /* ignore */ }
     const t = setTimeout(() => setPortalRevealed(true), 100);
     return () => clearTimeout(t);
   }, []);

@@ -311,18 +311,9 @@ export async function executeClientEngineV2(submission: {
   const benchmarks = computeBenchmarks(scores, resolvedProfile, indicators);
   reason_codes.push(REASON_CODES["BNK-001"]);
 
-  // Outcome layer (industry + family personalization)
-  let outcome_layer = null;
-  try {
-    const { executeOutcomeLayer } = await import("./engine/v2/outcome/index");
-    const coreRecord = {
-      profile_context: validatedProfile,
-      fragility: { fragility_class: fragility.fragility_class },
-    };
-    outcome_layer = executeOutcomeLayer(coreRecord as Parameters<typeof executeOutcomeLayer>[0]);
-  } catch {
-    // Outcome layer failed — continue without it
-  }
+  // Outcome layer — requires full AssessmentRecord, so we run it after
+  // the record is assembled (same pattern as server engine index.ts)
+  const outcome_layer = null;
 
   // Integrity (browser-compatible hashes)
   const assessmentId = crypto.randomUUID();
@@ -346,7 +337,7 @@ export async function executeClientEngineV2(submission: {
   );
   const record_hash = await sha256(input_hash + output_hash + manifest_hash + assessmentId);
 
-  return {
+  const record: AssessmentRecord = {
     assessment_id: assessmentId,
     created_at: new Date().toISOString(),
     model_manifest: {
@@ -391,4 +382,14 @@ export async function executeClientEngineV2(submission: {
     reason_codes,
     integrity: { input_hash, output_hash, manifest_hash, record_hash },
   };
+
+  // Run outcome layer with the complete record
+  try {
+    const { executeOutcomeLayer } = await import("./engine/v2/outcome/index");
+    record.outcome_layer = executeOutcomeLayer(record);
+  } catch {
+    // Outcome layer unavailable in this environment — continue without it
+  }
+
+  return record;
 }
