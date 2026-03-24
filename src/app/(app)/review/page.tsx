@@ -1108,7 +1108,7 @@ export default function ReviewPage() {
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
 
         <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.score, color: B.navy, marginBottom: 12 }}>{animatedScore}</div>
+          <div style={{ marginBottom: 12 }}><span style={{ ...T.score, color: B.navy }}>{animatedScore}</span><span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span></div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
@@ -1259,12 +1259,12 @@ export default function ReviewPage() {
           <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
             <Overline>IF YOUR BIGGEST SOURCE DISAPPEARED</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
-              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}</span>
+              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></span>
               <span style={{ ...T.sectionLabel, color: B.taupe }}>→</span>
-              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
+              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.risk_scenario_drop}-point drop.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
+              {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
             </p>
           </div>
           <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
@@ -1289,9 +1289,9 @@ export default function ReviewPage() {
           <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer ? `YOU OUTPERFORM ${100 - (peerPercentileValue ?? 50)}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}</span></div>
+              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
             </div>
             {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
               const peerLabel: Record<string, string> = {
@@ -1313,8 +1313,8 @@ export default function ReviewPage() {
                 <div key={d.factor} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0 0 6px" }}>
                   <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{label}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ ...T.meta, color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}</span></span>
-                    <span style={{ ...T.meta, color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}</span></span>
+                    <span style={{ ...T.meta, color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}/100</span></span>
+                    <span style={{ ...T.meta, color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}/100</span></span>
                     <span style={{ ...T.micro, color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{d.direction === "above" ? "▲" : "▼"} {d.direction}</span>
                   </div>
                 </div>
@@ -1441,13 +1441,13 @@ export default function ReviewPage() {
             <div style={{ display: "flex", gap: 16, marginBottom: 20, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div>
-                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}</div>
+                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></div>
                 <div style={{ ...T.meta, color: B.muted }}>{baseResult.band}</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isModified ? "SIMULATED" : "BASELINE"}</div>
-                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}</div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></div>
                 <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
               </div>
               <div style={{ flex: 1, textAlign: "center" }}>
@@ -1541,11 +1541,11 @@ export default function ReviewPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
                       <span style={{ ...T.small, color: B.navy }}>Lose top client</span>
-                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score} → {stressLoseClient.overall_score}</span>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score}/100 → {stressLoseClient.overall_score}/100</span>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
                       <span style={{ ...T.small, color: B.navy }}>Unable to work 90 days</span>
-                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score} → {stressNoWork.overall_score}</span>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score}/100 → {stressNoWork.overall_score}/100</span>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
                       <span style={{ ...T.small, color: B.navy }}>Income runway</span>
@@ -1668,7 +1668,7 @@ export default function ReviewPage() {
                       <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
                     </div>
                     <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
-                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
+                      {s.original_score}/100 → <span style={{ color: B.bandLimited }}>{s.scenario_score}/100</span>
                     </span>
                   </div>
                   {/* Why this risk matters — from outcome layer */}
@@ -1848,14 +1848,14 @@ export default function ReviewPage() {
                 <div key={e.code} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", backgroundColor: e.type === "bonus" ? "rgba(31,109,122,0.06)" : "rgba(155,44,44,0.04)", borderRadius: 4 }}>
                   <span style={{ ...T.small, color: B.navy }}>{effectLabel[e.code] ?? e.trigger_condition}</span>
                   <span style={{ ...T.sectionLabel, color: e.points > 0 ? B.teal : B.bandLimited }}>
-                    {e.points > 0 ? "+" : ""}{e.points} pts
+                    {e.points > 0 ? "+" : ""}{e.points} score pts
                   </span>
                 </div>
               );
             })}
           </div>
           <div style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
-            Net: <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment >= 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</span>
+            Net effect on your score: <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment >= 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} of 100</span>
           </div>
           </>
         )}
@@ -1968,7 +1968,7 @@ export default function ReviewPage() {
         <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "16px 20px" }}>
             <Overline>CURRENT BAND</Overline>
-            <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}</div>
+            <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}/100</div>
           </div>
           <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "16px 20px" }}>
             <Overline>NEXT TARGET BAND</Overline>
@@ -2013,8 +2013,8 @@ export default function ReviewPage() {
                       </div>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>+{s.lift} pts</span>
-                      <span style={{ ...T.meta, color: B.muted }}>→ {s.projected_score}</span>
+                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>+{s.lift}</span>
+                      <span style={{ ...T.meta, color: B.muted }}>→ {s.projected_score}/100</span>
                     </div>
                   </div>
                 </div>
@@ -2027,14 +2027,14 @@ export default function ReviewPage() {
                 <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
                   <div style={{ height: "100%", width: `${record.final_score}%`, backgroundColor: B.navy, borderRadius: 4 }} />
                 </div>
-                <span style={{ ...T.meta, color: B.navy, fontWeight: 600, minWidth: 24, textAlign: "right" }}>{record.final_score}</span>
+                <span style={{ ...T.meta, color: B.navy, fontWeight: 600, minWidth: 36, textAlign: "right" }}>{record.final_score}/100</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>After</span>
                 <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
                   <div style={{ height: "100%", width: `${Math.min(100, v2Lift.combined_top_two.projected_score)}%`, backgroundColor: B.teal, borderRadius: 4 }} />
                 </div>
-                <span style={{ ...T.meta, color: B.teal, fontWeight: 600, minWidth: 24, textAlign: "right" }}>{v2Lift.combined_top_two.projected_score}</span>
+                <span style={{ ...T.meta, color: B.teal, fontWeight: 600, minWidth: 36, textAlign: "right" }}>{v2Lift.combined_top_two.projected_score}/100</span>
               </div>
             </div>
             )}
