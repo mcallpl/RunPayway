@@ -190,7 +190,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            Under 2 minutes. See your score free — or get the full 5-page report with your structural breakdown, risk scenarios, and personalized action plan.
+            Under 2 minutes. See your score free — or get the full report with an interactive score simulator, income runway calculator, risk scenarios, action plan with scripts you can send tomorrow, and tradeoff analysis.
           </p>
         </div>
       </div>
@@ -285,14 +285,14 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
 
   const features = [
     "Everything in Free, plus:",
-    "Full 5-page diagnostic report",
-    "6 structural indicators with scores",
-    "Fragility, confidence, and durability grades",
-    "Cross-factor interaction effects",
-    "Industry-specific risk scenarios",
-    "Personalized action plan with priorities",
-    "Advisor discussion guide",
-    "Peer comparison with actual numbers",
+    "Interactive score simulator — model scenarios in real time",
+    "Income runway calculator — days of income if you stop working",
+    "Risk scenarios with score-drop projections",
+    "Action plan with specific timeframes, targets, and tradeoffs",
+    "Ready-to-use scripts (retainer pitch, client outreach, pricing restructure)",
+    "Predictive warnings — mistakes you are likely to make next",
+    "6 structural indicators, fragility, and cross-factor effects",
+    "Peer comparison with actual numbers + advisor discussion guide",
   ];
 
   return (
@@ -424,31 +424,31 @@ function WhatsIncluded() {
     {
       num: "01",
       title: "Your Score",
-      desc: "Your score, stability band, peer percentile, and a breakdown showing exactly how your score is calculated.",
+      desc: "Your score, stability band, the single most important thing to fix, and what it means in plain English — with your actual numbers, not vague labels.",
       accent: B.purple,
     },
     {
       num: "02",
       title: "How Your Income Is Built",
-      desc: "Income structure breakdown, stress test, continuity window, peer comparison with actual numbers, and your biggest weakness.",
+      desc: "Income structure breakdown (active vs. recurring vs. passive), stress test, continuity window, and peer comparison with actual industry numbers.",
       accent: B.teal,
     },
     {
       num: "03",
-      title: "Your Income Deep Dive",
-      desc: "Six structural indicators with scores, fragility classification, confidence level, durability grade, and cross-factor effects.",
+      title: "Your Biggest Risks",
+      desc: "The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.",
       accent: B.purple,
     },
     {
       num: "04",
-      title: "Your Biggest Risks",
-      desc: "The specific scenarios that would hurt your score most, ranked by severity with projected score impact.",
+      title: "Your Income Deep Dive",
+      desc: "Six structural indicators scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
       accent: B.teal,
     },
     {
       num: "05",
       title: "Your Action Plan",
-      desc: "Industry-specific priorities, projected score improvements, an advisor discussion guide, and your reassessment date.",
+      desc: "Prioritized actions with specific timeframes and targets, tradeoff analysis for each move, ready-to-use scripts, and your reassessment date.",
       accent: B.purple,
     },
   ];
@@ -504,7 +504,7 @@ function WhatsIncluded() {
               marginRight: "auto",
             }}
           >
-            Every assessment delivers the full 5-page report. Nothing is withheld.
+            Every assessment delivers the full report, interactive simulator, and ready-to-use action tools. Nothing is withheld.
           </p>
         </div>
 
@@ -697,7 +697,7 @@ function Faq() {
   const faqs = [
     {
       q: "What's the difference between Free and the Full Report?",
-      a: "Free gives you your score, stability band, peer percentile, and one key insight. The $99 Full Report adds a 5-page breakdown with 6 structural indicators, cross-factor effects, fragility classification, industry-specific risk scenarios, a personalized action plan, and an advisor discussion guide.",
+      a: "Free gives you your score, stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator, income runway calculator, risk scenarios with score drops, an action plan with specific targets and timelines, ready-to-use scripts (retainer pitch, client outreach), tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
     },
     {
       q: "What if the report doesn't tell me anything new?",

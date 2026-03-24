@@ -332,7 +332,7 @@ export default function ComingSoonPage() {
         <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
           <h2 style={{ ...F.h2, fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, color: B.navy, marginBottom: 16 }}>Available right now</h2>
           <p style={{ ...F.body, color: B.muted, maxWidth: 480, margin: "0 auto 36px" }}>
-            Get your Income Stability Score™ today — free. Upgrade to the full 5-page report for $99.
+            Get your Income Stability Score\u2122 today — free. Upgrade to the full report with simulator, scripts, and action plan for $99.
           </p>
           <a
             href="/begin"

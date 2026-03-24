@@ -115,11 +115,11 @@ function CheckoutSuccessContent() {
   const steps = hasExistingRecord ? [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Assessment already completed", desc: "Your answers are saved. No need to retake.", done: true },
-    { num: "3", title: "View your full report", desc: "All 5 pages, unlocked instantly.", done: false },
+    { num: "3", title: "View your full report", desc: "Report, simulator, and action tools — unlocked instantly.", done: false },
   ] : [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure.", done: false },
-    { num: "3", title: "Take the assessment", desc: "Under two minutes, then your full 5-page report.", done: false },
+    { num: "3", title: "Take the assessment", desc: "Under two minutes, then your full report with simulator and action plan.", done: false },
   ];
 
   return (

@@ -227,7 +227,7 @@ function ThreeSteps() {
       num: "3",
       title: "Get your free score",
       subtitle: "Upgrade to the full report for $99",
-      body: "Your score, stability band, peer percentile, and one key insight \u2014 free and instant. The full 5-page report adds structural indicators, risk scenarios, cross-factor effects, and a personalized action plan.",
+      body: "Your score, stability band, peer percentile, and one key insight \u2014 free and instant. The full report adds an interactive score simulator, income runway calculator, risk scenarios, action plan with ready-to-use scripts, tradeoff analysis, and predictive warnings.",
     },
   ];
 
@@ -474,7 +474,7 @@ function ReportCovers() {
       num: "05",
       title: "What to Do Next",
       question: "What should I do next?",
-      desc: "A clear action plan, a 90-day checklist, when to reassess, and how your score compares to the benchmark.",
+      desc: "Prioritized actions with specific timeframes and targets, tradeoff analysis for each move, ready-to-use scripts, and your reassessment date.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
       accent: B.navy,
     },

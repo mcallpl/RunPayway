@@ -66,7 +66,7 @@ export default function UnlockPage() {
         </div>
 
         <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>
-          Building your 5-page diagnostic...
+          Building your full diagnostic report...
         </div>
 
         {/* Progress dots */}

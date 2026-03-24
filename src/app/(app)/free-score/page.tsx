@@ -147,14 +147,14 @@ export default function FreeScorePage() {
   const insightText = constraintPlain[rootConstraint] || "Your income structure has room to improve.";
 
   const features = [
-    { title: "Score Breakdown", desc: "See exactly how Structure + Stability + Quality combine into your score." },
-    { title: "6 Structural Indicators", desc: "Each dimension scored out of 100 with a progress bar and level." },
-    { title: "Cross-Factor Effects", desc: "See exactly which penalties and bonuses apply — and how many points each costs." },
-    { title: "Fragility Classification", desc: "Brittle, Thin, Uneven, Supported, or Resilient. Know how easily your income could break." },
-    { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you can't work for 90 days? Each scenario scored." },
-    { title: "Industry-Specific Action Plan", desc: "Specific steps for your industry, income model, and operating structure." },
-    { title: "Advisor Discussion Guide", desc: "Talking points to share with your financial advisor, lender, or business partner." },
-    { title: "Peer Comparison", desc: "Your score vs. actual peer averages — with numbers, not vague labels." },
+    { title: "Interactive Score Simulator", desc: "Model scenarios in real time — add a client, lose your top source, convert to retainers. See the score change instantly." },
+    { title: "Income Runway Calculator", desc: "How many days your income lasts if you stop working today — and exactly what to change to reach 90 days." },
+    { title: "Ready-to-Use Scripts", desc: "Retainer pitch, client outreach, pricing restructure — copy, customize, and send tomorrow." },
+    { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you cannot work for 90 days? Each scenario scored with exact drops." },
+    { title: "Action Plan with Targets", desc: "Specific actions with timeframes, numeric targets, and tradeoff analysis — not generic advice." },
+    { title: "Predictive Warnings", desc: "The mistakes people in your position typically make next — and how to avoid them." },
+    { title: "6 Structural Indicators", desc: "Each dimension scored out of 100 — plus fragility classification, cross-factor effects, and surprising insights." },
+    { title: "Peer Comparison + Advisor Guide", desc: "Your numbers vs. actual industry peers, plus a summary you can share with your advisor or lender." },
   ];
 
   const issuedDate = ((record.issued_timestamp_utc as string) || (record.assessment_date_utc as string) || "").split("T")[0];
@@ -270,8 +270,8 @@ export default function FreeScorePage() {
 
           {/* Upgrade CTA */}
           <div style={{ textAlign: "center", padding: "20px 24px", backgroundColor: B.navy, borderRadius: 8 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full 5-page report — $99</div>
-            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Structural indicators, risk scenarios, cross-factor effects, action plan, and advisor guide.</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full report — $99</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Score simulator, runway calculator, risk scenarios, action plan with scripts, tradeoff analysis, and advisor guide.</div>
           </div>
 
           {/* Disclaimer */}

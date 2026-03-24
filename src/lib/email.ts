@@ -178,7 +178,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                     <p style="font-size:13px; font-weight:600; color:${brandNavy}; margin:0 0 6px;">Your full report is ready</p>
                     ${data.primaryConstraintLabel ? `<p style="font-size:12px; color:${brandNavy}; line-height:1.6; margin:0 0 12px; font-weight:500;">Your biggest opportunity: ${data.primaryConstraintLabel.toLowerCase()}. See your full report for the specific changes that would raise your score the most.</p>` : ""}
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
-                      Your 5-page diagnostic report includes your score interpretation, biggest risks, projected improvements, and a personalized 90-day action plan.
+                      Your diagnostic report includes an interactive score simulator, risk scenarios, projected improvements, an action plan with specific targets and ready-to-use scripts, and tradeoff analysis.
                     </p>
                     <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
                   </td>

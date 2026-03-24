@@ -268,8 +268,8 @@ function Page1Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="1" title="Your Score" question="Where do I stand?"
-        description="You will know your exact number, your stability band, how you rank against peers in your industry, and the one thing holding you back."
-        bullets={["Your 0–100 Income Stability Score™ with band classification", "Score breakdown: Structure + Stability + Quality = your score", "Peer percentile with actual peer average number"]}
+        description="Your exact number, your stability band, what it means for your daily life with your actual data points, and the single most important thing to fix — with projected score gain."
+        bullets={["Your 0–100 Income Stability Score\u2122 with band classification", "Plain-English consequence framing with your actual numbers", "The One Thing That Matters Most — your highest-leverage fix"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
@@ -354,9 +354,9 @@ function Page2Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="2" title="How Your Income Is Built" question="Why this score?"
-        description="You will see how your income is structured, where your biggest weakness is, and how you compare to peers — with actual numbers, not vague labels."
-        bullets={["Income structure bar: active work vs. repeatable vs. passive", "Stress test: what happens if your biggest source disappears", "Peer comparison: your score vs. actual industry averages"]}
+        pageNum="2" title="How Your Income Is Built" question="How is my income structured?"
+        description="Your income composition (active vs. recurring vs. passive), stress test impact, continuity window, and how you compare to actual industry peers."
+        bullets={["Income structure bar: what percentage requires your daily work", "Stress test: exact score drop if your biggest source disappears", "Peer comparison: your score vs. actual industry averages with outlier dimensions"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8, marginTop: 8 }}>How Your Income Is Built</h3>
@@ -392,9 +392,9 @@ function Page3Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="3" title="Your Income Deep Dive" question="How deep does it go?"
-        description="Six dimensions scored, fragility classified, confidence rated, and every cross-factor penalty explained. This is the page that shows you things you did not know."
-        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Fragility: Brittle, Thin, Uneven, Supported, or Resilient", "Cross-factor effects: how your weaknesses compound each other"]}
+        pageNum="3" title="Your Biggest Risks" question="What could go wrong?"
+        description="The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next."
+        bullets={["Top 3 stress scenarios ranked by severity with score-drop projections", "Predictive warnings: what people in your position typically do wrong next", "Urgency framing with your actual runway and stress test numbers"]}
         alignRight={true} visible={visible} mobile={mobile} dark
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>
@@ -432,9 +432,9 @@ function Page4Preview() {
   return (
     <div ref={ref}>
       <PagePreview
-        pageNum="4" title="Your Biggest Risks" question="What could go wrong?"
-        description="You will know what happens if your biggest client leaves, if you cannot work for 90 days, or if your industry contracts. Each scenario scored by severity."
-        bullets={["Top 3 risk scenarios ranked by score impact", "Severity tags: Severe, High, Moderate, Low", "Band shift warnings when a scenario would drop you a level"]}
+        pageNum="4" title="Your Income Deep Dive" question="How deep does it go?"
+        description="Six dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
+        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
@@ -461,8 +461,8 @@ function Page5Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="5" title="Your Action Plan" question="What do I do about it?"
-        description="Industry-specific priorities, projected score improvements, an advisor discussion guide you can share with your accountant or lender, and your reassessment date."
-        bullets={["Lift scenarios: exactly how many points each change is worth", "Priority actions tailored to your industry and income model", "Advisor discussion guide with talking points and red flags"]}
+        description="Prioritized actions with specific timeframes and targets, tradeoff analysis showing the real cost of each move, ready-to-use scripts, and your reassessment date."
+        bullets={["Lift scenarios: exactly how many points each change is worth", "Action plan with timelines, numeric targets, and tradeoff warnings", "Ready-to-use scripts: retainer pitch, client outreach, pricing restructure"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Action Plan</h3>

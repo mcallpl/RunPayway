@@ -1043,11 +1043,11 @@ function WhatYourReportSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   const pages = [
-    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "You will know your exact number — and whether you should be worried.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", question: "Why this score?", desc: "You will see the one structural weakness most likely to cost you — and how you compare to peers in your industry with actual numbers.", color: B.teal },
-    { num: "03", title: "Your Income Deep Dive", question: "How deep does it go?", desc: "You will understand exactly why your income is vulnerable — six dimensions scored, fragility classified, and every cross-factor penalty explained.", color: B.navy },
-    { num: "04", title: "Your Biggest Risks", question: "What could go wrong?", desc: "You will know what happens if your biggest client leaves tomorrow, if you cannot work for 90 days, or if your industry contracts — each scenario scored.", color: B.purple },
-    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "You will have 3 specific things to do this quarter — tailored to your industry, income model, and operating structure. Plus an advisor discussion guide you can share.", color: B.teal },
+    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Your exact number, what it means for your daily life with your actual data points, and the single most important thing to fix.", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", question: "How is it structured?", desc: "Your income composition, stress test impact, continuity window, and peer comparison with actual industry numbers.", color: B.teal },
+    { num: "03", title: "Your Biggest Risks", question: "What could go wrong?", desc: "The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.", color: B.navy },
+    { num: "04", title: "Your Income Deep Dive", question: "How deep does it go?", desc: "Six dimensions scored, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.", color: B.purple },
+    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "Specific actions with timeframes and targets, tradeoff analysis, ready-to-use scripts (retainer pitch, client outreach), and your reassessment date.", color: B.teal },
   ];
 
   return (
@@ -1551,7 +1551,7 @@ function HowItWorksSection() {
   const steps = [
     { num: "1", title: "Take the assessment", desc: "A short diagnostic about how your income is structured today. Under two minutes." },
     { num: "2", title: "Get your free score", desc: "See your score, stability band, peer percentile, and one key insight — instantly, at no cost." },
-    { num: "3", title: "Unlock the full report — $99", desc: "Get the complete 5-page breakdown: what is weak, what would break, and exactly what to do about it. If it does not reveal something new, full refund." },
+    { num: "3", title: "Unlock the full report — $99", desc: "Interactive simulator, income runway, risk scenarios, action plan with scripts, tradeoff analysis, and predictive warnings. If it does not reveal something new, full refund." },
   ];
 
   return (
@@ -2177,7 +2177,7 @@ function PricingSection() {
               $99
             </div>
             <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Full 5-page report &#183; All engine data &#183; Advisor guide
+              Full report &#183; Score simulator &#183; Scripts &#183; Action plan
             </p>
             <a
               href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
@@ -2551,7 +2551,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What does the $99 full report include?",
-      a: "A 5-page report with your score breakdown, six structural indicators, fragility and confidence classification, cross-factor interaction effects, industry-specific risk scenarios, a personalized action plan, and an advisor discussion guide.",
+      a: "An interactive score simulator, income runway calculator, risk scenarios with exact score drops, an action plan with specific timeframes and targets, ready-to-use scripts (retainer pitch, client outreach, pricing restructure), tradeoff analysis, predictive warnings, six structural indicators, and an advisor discussion guide.",
     },
     {
       q: "What if the report doesn\u2019t tell me anything new?",
