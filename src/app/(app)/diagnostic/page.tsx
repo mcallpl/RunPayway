@@ -30,7 +30,7 @@ const ANSWER_MAP: Record<string, number> = {
 };
 
 const STORAGE_KEY = "runpayway_diagnostic_state";
-const STORAGE_EXPIRY_DAYS = 7;
+// sessionStorage: survives refresh (connection loss safety), clears on tab close (fresh every time)
 
 interface Question {
   number: number;
@@ -148,21 +148,14 @@ const PROCESSING_STEPS = [
 /* ------------------------------------------------------------------ */
 
 function saveAnswersToStorage(answers: (string | null)[]) {
-  const data = { answers, timestamp: Date.now() };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ answers }));
 }
 
 function loadAnswersFromStorage(): (string | null)[] | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const data = JSON.parse(raw);
-    const age = Date.now() - data.timestamp;
-    if (age > STORAGE_EXPIRY_DAYS * 24 * 60 * 60 * 1000) {
-      localStorage.removeItem(STORAGE_KEY);
-      return null;
-    }
-    return data.answers;
+    return JSON.parse(raw).answers;
   } catch {
     return null;
   }
@@ -382,7 +375,7 @@ export default function DiagnosticPage() {
       });
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
-      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(STORAGE_KEY);
       setAssessmentTitle(profile.assessment_title || "");
       setShowLoading(true);
       // Route based on plan type
