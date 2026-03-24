@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -500,7 +501,7 @@ function CtaSection() {
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32, maxWidth: 440, margin: "0 auto 32px" }}>
             This was a sample. Your report uses your real data, your industry, and your income structure. Full refund if it does not reveal something new.
           </p>
-          <a
+          <Link
             href="/pricing"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
@@ -526,7 +527,7 @@ function CtaSection() {
             }}
           >
             Get My Free Score
-          </a>
+          </Link>
           <div
             style={{
               marginTop: 20,
