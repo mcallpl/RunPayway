@@ -207,7 +207,7 @@ function Hero() {
             This is what your report looks like.
           </h1>
           <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
-            Six pages. Interactive simulator. Ready-to-send scripts. Every number is yours.
+            Five pages. Interactive simulator. Ready-to-send scripts. Every number is yours.
           </p>
 
           {/* Scroll indicator */}
@@ -550,7 +550,7 @@ function BridgeLine() {
   return (
     <section style={{ backgroundColor: B.sand, paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48, borderTop: `1px solid ${B.border}`, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 720, margin: "0 auto", display: mobile ? "block" : "flex", justifyContent: "center", gap: 32, textAlign: "center" }}>
-        {["6 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
+        {["5 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
           <span key={t} style={{ fontSize: 13, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
         ))}
       </div>

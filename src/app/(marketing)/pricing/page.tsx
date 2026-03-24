@@ -411,7 +411,7 @@ function PricingCards() {
           opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out",
         }}>
           <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-            Trusted by freelancers, contractors, and business owners across 18 industries.
+            Trusted by freelancers, contractors, and business owners across 19 industries.
             <span style={{ color: B.teal, fontWeight: 600 }}> Average assessment time: 1 minute 47 seconds.</span>
           </p>
         </div>

@@ -278,10 +278,10 @@ export async function executeIncomeStabilityEngine(
     peer_benchmark_text: sectorData.peer_benchmark_text,
     peer_distribution_payload: JSON.stringify({
       bands: [
-        { band: "High Stability", range: "80-100" },
-        { band: "Established Stability", range: "60-79" },
-        { band: "Developing Stability", range: "40-59" },
-        { band: "Limited Stability", range: "0-39" },
+        { band: "High Stability", range: "75-100" },
+        { band: "Established Stability", range: "50-74" },
+        { band: "Developing Stability", range: "30-49" },
+        { band: "Limited Stability", range: "0-29" },
       ],
       active_band: scoringResult.stability_band,
     }),
