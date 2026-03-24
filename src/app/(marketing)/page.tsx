@@ -346,81 +346,51 @@ input[type="range"]::-webkit-slider-thumb {
           {/* LEFT SIDE — Text content */}
           <div style={{ flex: 1, textAlign: mobile ? "center" : "left" }}>
             <div
-              className="font-medium uppercase text-[11px] md:text-[12px]"
               style={{
-                letterSpacing: S.lsLabel,
-                color: B.teal,
-                marginBottom: S.h2mb,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(8px)",
                 transition: "opacity 500ms ease-out, transform 500ms ease-out",
+                fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const,
+                color: B.teal, marginBottom: 24,
               }}
             >
               Income Stability Score&#8482;
             </div>
 
-            <p
-              style={{
-                fontSize: mobile ? 13 : 15,
-                color: "rgba(244,241,234,0.50)",
-                lineHeight: 1.6,
-                marginBottom: mobile ? 16 : 20,
-                opacity: visible ? 1 : 0,
-                transition: "opacity 500ms ease-out 100ms",
-              }}
-            >
-              For freelancers, contractors, business owners, and anyone whose income doesn&#8217;t come from a single paycheck.
-            </p>
-
             <h1
               style={{
-                fontSize: mobile ? 34 : 56,
+                fontSize: mobile ? 36 : 58,
                 fontWeight: 400,
                 color: "#F4F1EA",
-                lineHeight: 1.06,
+                lineHeight: 1.04,
                 letterSpacing: S.lsHero,
-                marginBottom: S.h1mb,
-                maxWidth: mobile ? undefined : 600,
+                marginBottom: 28,
+                maxWidth: mobile ? undefined : 560,
                 fontFamily: DISPLAY_FONT,
               }}
             >
-              <RevealText text="Could your income survive the next 60 days?" visible={visible} baseDelay={200} />
+              <RevealText text="Could your income survive the next 60 days?" visible={visible} baseDelay={150} />
             </h1>
 
             <p
               style={{
-                fontSize: mobile ? 15 : 16,
-                color: "rgba(244,241,234,0.60)",
-                lineHeight: S.lhBody,
-                marginBottom: S.paraMb,
-                maxWidth: mobile ? undefined : 500,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
-              }}
-            >
-              Most people don&#8217;t know until it&#8217;s too late. Get your score in under 2 minutes. See exactly where your income is vulnerable.
-            </p>
-
-            <p
-              style={{
-                fontSize: mobile ? 13 : 14,
-                color: "rgba(244,241,234,0.35)",
-                lineHeight: S.lhDense,
-                marginBottom: 32,
-                maxWidth: mobile ? undefined : 500,
+                fontSize: mobile ? 15 : 17,
+                color: "rgba(244,241,234,0.50)",
+                lineHeight: 1.55,
+                marginBottom: 36,
+                maxWidth: mobile ? undefined : 440,
                 opacity: visible ? 1 : 0,
                 transition: "opacity 600ms ease-out 300ms",
               }}
             >
-              No bank connection. No credit pull. Free to start.
+              Get your score in under 2 minutes. See exactly where your income is vulnerable.
             </p>
 
             <div
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
-                transition: "opacity 500ms ease-out 350ms, transform 500ms ease-out 350ms",
+                transition: "opacity 500ms ease-out 400ms, transform 500ms ease-out 400ms",
               }}
             >
               <Link
@@ -429,8 +399,8 @@ input[type="range"]::-webkit-slider-thumb {
                 style={{
                   height: S.ctaH,
                   width: mobile ? "100%" : "auto",
-                  paddingLeft: S.cardPad.desktop,
-                  paddingRight: S.cardPad.desktop,
+                  paddingLeft: 36,
+                  paddingRight: 36,
                   borderRadius: S.ctaRadius,
                   background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
                   color: B.navy,
@@ -459,7 +429,7 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.01em" }}>
+              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
                 What happens to your score if your biggest client leaves tomorrow?
               </p>
             </div>
@@ -478,33 +448,7 @@ input[type="range"]::-webkit-slider-thumb {
               transition: "opacity 800ms ease-out 400ms",
             }}
           >
-            <div
-              style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-                letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)",
-                marginBottom: 16, textAlign: "center",
-              }}
-            >
-              Sample Score
-            </div>
             <AnimatedScoreRing visible={visible} mobile={mobile} />
-            {/* Score context */}
-            <div style={{
-              marginTop: 20, display: "flex", gap: 16, justifyContent: "center",
-              opacity: visible ? 1 : 0,
-              transition: "opacity 600ms ease-out 1800ms",
-            }}>
-              {[
-                { label: "Recurring", value: "62%" },
-                { label: "Diversified", value: "4 sources" },
-                { label: "Forward", value: "3.2 mo" },
-              ].map(stat => (
-                <div key={stat.label} style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.70)", fontVariantNumeric: "tabular-nums" }}>{stat.value}</div>
-                  <div style={{ fontSize: 9, color: "rgba(244,241,234,0.30)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
 
@@ -546,46 +490,27 @@ function BridgeSection() {
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
-          backgroundColor: "rgba(255,255,255,0.95)",
+          backgroundColor: "rgba(255,255,255,0.96)",
           backdropFilter: "blur(12px)",
-          borderRadius: 14,
-          padding: mobile ? "24px 20px 20px" : "32px 40px 24px",
-          boxShadow: "0 4px 24px rgba(14,26,43,0.08), 0 1px 2px rgba(14,26,43,0.04)",
-          border: "1px solid rgba(14,26,43,0.05)",
+          borderRadius: 12,
+          padding: mobile ? "24px 24px" : "28px 40px",
+          boxShadow: "0 2px 16px rgba(14,26,43,0.06)",
+          border: "1px solid rgba(14,26,43,0.04)",
         }}
       >
         <p
           style={{
-            fontSize: mobile ? 17 : 20,
+            fontSize: mobile ? 16 : 19,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
-            lineHeight: 1.35,
+            lineHeight: 1.4,
             letterSpacing: S.lsHeading,
-            margin: "0 0 6px",
+            margin: 0,
           }}
         >
-          Less than 30 days of income protection.
+          The average self-employed professional has less than 30 days of income protection.
         </p>
-        <p
-          style={{
-            fontSize: mobile ? 12 : 14,
-            color: B.muted,
-            lineHeight: 1.55,
-            margin: "0 0 18px",
-          }}
-        >
-          That&#8217;s the average for self-employed professionals. Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
-        </p>
-
-        {/* Industry icons */}
-        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 12 : 20, flexWrap: "wrap" as const }}>
-          {[
-            "Consulting", "Real Estate", "Creative", "Technology", "Healthcare", "Finance",
-          ].map(label => (
-            <span key={label} style={{ fontSize: 11, color: B.light, fontWeight: 500, letterSpacing: "0.01em" }}>{label}</span>
-          ))}
-        </div>
       </div>
     </section>
   );
