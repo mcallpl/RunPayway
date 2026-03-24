@@ -270,7 +270,8 @@ export default function DiagnosticPage() {
   const allAnswered = answers.every((a) => a !== null);
 
   const selectAnswer = useCallback((letter: string) => {
-    if (transitioning) return; // Guard against accidental selection during transition
+    if (transitioning) return;
+    setTransitioning(true); // Lock immediately to block ghost taps
     setError(null);
     setAnswers((prev) => {
       const next = [...prev];
@@ -279,15 +280,15 @@ export default function DiagnosticPage() {
       return next;
     });
 
-    // Auto-advance after selection (except last question)
     if (currentQuestion < 5) {
+      // Auto-advance after selection (except last question)
       setTimeout(() => {
-        setTransitioning(true);
-        setTimeout(() => {
-          setCurrentQuestion((prev) => Math.min(5, prev + 1));
-          setTimeout(() => setTransitioning(false), 100); // Extra guard after render
-        }, 300);
-      }, 500); // Longer delay on mobile to prevent ghost taps
+        setCurrentQuestion((prev) => Math.min(5, prev + 1));
+        setTimeout(() => setTransitioning(false), 400); // Unlock after new question renders
+      }, 600);
+    } else {
+      // Last question — unlock after brief delay
+      setTimeout(() => setTransitioning(false), 400);
     }
   }, [currentQuestion, transitioning]);
 
@@ -748,6 +749,9 @@ export default function DiagnosticPage() {
                   transform: isSelected ? "scale(1)" : "scale(1)",
                   width: "100%",
                   pointerEvents: transitioning ? "none" : "auto",
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
+                  userSelect: "none",
                 }}
               >
                 {/* Selection indicator */}
