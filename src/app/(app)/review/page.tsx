@@ -1963,20 +1963,20 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Advisor Discussion Guide — compact */}
-        {advisorGuide && advisorGuide.talking_points.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>Share With Your Advisor</Overline>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-            {advisorGuide.talking_points.slice(0, 3).map((tp, i) => (
-              <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8 }}>
-                <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
-              </div>
-            ))}
-          </div>
-          </>
-        )}
+        {/* Advisor Discussion Guide — plain language */}
+        <SectionDivider />
+        <Overline large>Share With Your Advisor</Overline>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+          {[
+            `Score: ${score}/100 (${record.stability_band}). ${peerPercentileValue ? `${record.peer_stability_percentile_label} percentile in ${industrySector}.` : ""}`,
+            `Primary risk: ${dominantConstraintPlain[dominantConstraint]}. Stress test shows a ${record.risk_scenario_drop}-point drop if the biggest source is lost.`,
+            `Income runway: ${continuityDisplay} without active work. ${record.active_income_level}% of income requires daily effort.`,
+          ].map((tp, i) => (
+            <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8 }}>
+              <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
+            </div>
+          ))}
+        </div>
 
         {/* Scripts — browser-only (copy-to-clipboard doesn't work in PDF) */}
         {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (

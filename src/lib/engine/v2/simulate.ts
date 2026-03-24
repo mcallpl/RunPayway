@@ -173,13 +173,23 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   {
     id: "lose_top_client",
     label: "Lose your top client",
-    description: "Your single biggest income source disappears",
-    modify: (base) => ({
-      ...base,
-      largest_source_pct: 0,
-      source_diversity_count: Math.max(1, base.source_diversity_count - 1),
-      income_persistence_pct: Math.max(0, Math.round(base.income_persistence_pct * (1 - base.largest_source_pct / 100))),
-    }),
+    description: "Your single biggest income source disappears — along with its revenue",
+    modify: (base) => {
+      // Losing your top client means losing that share of ALL income metrics
+      const lossFactor = base.largest_source_pct / 100;
+      // Remaining concentration: second-largest source becomes largest
+      // Approximate: if you had 60% from #1, remainder split among others
+      const remainingSourceCount = Math.max(1, base.source_diversity_count - 1);
+      const newLargest = remainingSourceCount <= 1 ? 100 : Math.min(100, Math.round((100 - base.largest_source_pct) / remainingSourceCount * 1.5));
+      return {
+        ...base,
+        largest_source_pct: newLargest,
+        source_diversity_count: remainingSourceCount,
+        income_persistence_pct: Math.max(0, Math.round(base.income_persistence_pct * (1 - lossFactor))),
+        forward_secured_pct: Math.max(0, Math.round(base.forward_secured_pct * (1 - lossFactor * 0.7))),
+        income_variability_level: (base.income_variability_level === "low" ? "moderate" : base.income_variability_level === "moderate" ? "high" : "extreme") as CanonicalInput["income_variability_level"],
+      };
+    },
   },
   {
     id: "build_passive",
