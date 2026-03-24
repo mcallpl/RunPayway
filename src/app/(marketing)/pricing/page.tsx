@@ -411,8 +411,8 @@ function PricingCards() {
           opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out",
         }}>
           <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-            Trusted by freelancers, contractors, and business owners across 19 industries.
-            <span style={{ color: B.teal, fontWeight: 600 }}> Average assessment time: 1 minute 47 seconds.</span>
+            Built for freelancers, contractors, and business owners across 19 industries.
+            <span style={{ color: B.teal, fontWeight: 600 }}> Typical assessment time: under 2 minutes.</span>
           </p>
         </div>
 
@@ -729,11 +729,11 @@ function Faq() {
   const faqs = [
     {
       q: "What\u2019s the difference between Free and the Full Report?",
-      a: "Free gives you your score out of 100, your stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator with 5 sliders, income runway calculator, risk scenarios with exact score drops, an action plan with specific targets and timelines, ready-to-use scripts you can send tomorrow, tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
+      a: "Free gives you your score out of 100, your stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator with 5 sliders, income runway estimate, risk scenarios with exact score drops, an action plan with specific targets and timelines, ready-to-use scripts you can send tomorrow, tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
     },
     {
       q: "What is your refund policy?",
-      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Visit our contact page with your record ID. No questions asked. Refunds are processed within 3 business days to the original payment method.",
+      a: "Full refund within 30 days — no questions asked. Contact us with your record ID. Refunds are processed within 3 business days to the original payment method.",
     },
     {
       q: "Is my information confidential?",

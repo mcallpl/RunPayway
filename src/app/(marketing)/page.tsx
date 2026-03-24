@@ -510,7 +510,10 @@ function BridgeSection() {
             margin: 0,
           }}
         >
-          The average self-employed professional has less than 30 days of income protection.
+          The median small business holds just 27 days of cash buffer.*
+        </p>
+        <p style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginTop: 8, fontStyle: "italic" }}>
+          *JPMorgan Chase Institute, &ldquo;Cash is King: Flows, Balances, and Buffer Days,&rdquo; September 2016
         </p>
       </div>
     </section>
@@ -2389,11 +2392,11 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What does the $99 full report include?",
-      a: "An interactive score simulator, income runway calculator, risk scenarios with exact score drops, an action plan with specific timeframes and targets, ready-to-use scripts (retainer pitch, client outreach, pricing restructure), tradeoff analysis, predictive warnings, six structural indicators, and an advisor discussion guide.",
+      a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with specific timeframes and targets, ready-to-use scripts (retainer pitch, client outreach, pricing restructure), tradeoff analysis, predictive warnings, six structural indicators, and an advisor discussion guide.",
     },
     {
       q: "What is your refund policy?",
-      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Visit our contact page with your record ID. No questions asked. Refunds processed within 3 business days.",
+      a: "Full refund within 30 days — no questions asked. Contact us with your record ID. Refunds processed within 3 business days.",
     },
     {
       q: "Is my information confidential?",
