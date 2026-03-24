@@ -525,28 +525,42 @@ function FourFactorsSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
   const factors = [
     {
       num: "01",
       label: "Recurrence",
+      accent: B.teal,
+      metric: "0%",
+      metricLabel: "recurring",
       question: "Do you rebuild your income from scratch every month?",
       description: "No retainers, no subscriptions, no recurring contracts means you start at zero every month.",
     },
     {
       num: "02",
       label: "Concentration",
+      accent: B.purple,
+      metric: "55%",
+      metricLabel: "one client",
       question: "Would losing one client wipe out half your income?",
       description: "One lost contract or one client decision can collapse your entire income structure.",
     },
     {
       num: "03",
       label: "Visibility",
+      accent: "#D4940A",
+      metric: "<30",
+      metricLabel: "days booked",
       question: "Do you know what you will earn next month?",
       description: "If your income is not already committed — booked, contracted, locked in — you are guessing.",
     },
     {
       num: "04",
       label: "Passivity",
+      accent: "#DC4A4A",
+      metric: "100%",
+      metricLabel: "labor",
       question: "If you stopped working today, when does the money stop?",
       description: "If 100% requires your daily effort, any disruption immediately threatens everything.",
     },
@@ -565,8 +579,8 @@ function FourFactorsSection() {
       }}
     >
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
-        {/* Section header — left-aligned */}
-        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 48 }}>
+        {/* Section header */}
+        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 56 }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             What We Measure
           </div>
@@ -583,37 +597,64 @@ function FourFactorsSection() {
           </p>
         </div>
 
-        {/* 4 cards — clean white on subtle bg, left-aligned content */}
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 12 : 16 }}>
-          {factors.map((f, i) => (
-            <div
-              key={f.label}
-              style={{
-                background: B.navy,
-                borderRadius: 8,
-                padding: mobile ? "28px 24px" : "32px 32px",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 500ms ease-out ${150 + i * 80}ms, transform 500ms ease-out ${150 + i * 80}ms`,
-              }}
-            >
-              {/* Number + label row */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.06em" }}>{f.num}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{f.label}</span>
+        {/* 4 cards — staggered, accented, with metrics */}
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 16 : 20 }}>
+          {factors.map((f, i) => {
+            const isHovered = hoverIdx === i;
+            const stagger = !mobile && i % 2 === 1 ? 24 : 0;
+            return (
+              <div
+                key={f.label}
+                onMouseEnter={() => canHover() && setHoverIdx(i)}
+                onMouseLeave={() => setHoverIdx(null)}
+                style={{
+                  background: B.navy,
+                  borderRadius: 12,
+                  padding: mobile ? "28px 24px" : "32px 32px",
+                  position: "relative",
+                  overflow: "hidden",
+                  marginTop: stagger,
+                  transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+                  boxShadow: isHovered ? "0 12px 40px rgba(14,26,43,0.25)" : "0 4px 16px rgba(14,26,43,0.10)",
+                  transition: "transform 250ms ease, box-shadow 250ms ease",
+                  opacity: visible ? 1 : 0,
+                  ...(visible ? {} : { transform: "translateY(20px)" }),
+                  transitionDelay: `${150 + i * 80}ms`,
+                  transitionDuration: "500ms",
+                  transitionTimingFunction: "ease-out",
+                  transitionProperty: "opacity, transform, box-shadow",
+                }}
+              >
+                {/* Colored top accent bar */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: f.accent, opacity: isHovered ? 1 : 0.6, transition: "opacity 250ms" }} />
+
+                {/* Ambient glow */}
+                <div style={{ position: "absolute", top: -30, right: -30, width: 100, height: 100, background: `radial-gradient(circle, ${f.accent}15 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+                  {/* Number + label */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 20, fontWeight: 700, color: f.accent, letterSpacing: "-0.02em", fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{f.num}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)" }}>{f.label}</span>
+                  </div>
+
+                  {/* Risk metric */}
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: f.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{f.metric}</div>
+                    <div style={{ fontSize: 9, color: "rgba(244,241,234,0.30)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginTop: 2 }}>{f.metricLabel}</div>
+                  </div>
+                </div>
+
+                <h3 style={{ fontSize: mobile ? 18 : 21, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.015em", marginBottom: 10 }}>
+                  {f.question}
+                </h3>
+
+                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, margin: 0 }}>
+                  {f.description}
+                </p>
               </div>
-
-              {/* Question — the hook */}
-              <h3 style={{ fontSize: mobile ? 19 : 22, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.015em", marginBottom: 12 }}>
-                {f.question}
-              </h3>
-
-              {/* Description */}
-              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, margin: 0 }}>
-                {f.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
