@@ -2107,7 +2107,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
       items: [
         "Fixed scoring framework under Model RP-2.0",
         "The same answers produce the same result",
-        "AI does not determine assessment results",
+        "Fixed deterministic rules — same inputs, same score",
         "Framework changes create a new model version",
       ],
     },

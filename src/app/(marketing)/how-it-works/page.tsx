@@ -220,8 +220,8 @@ function ThreeSteps() {
     {
       num: "2",
       title: "The model scores",
-      subtitle: "Fixed rules, no AI",
-      body: "Model RP-2.0 calculates your score using fixed, deterministic rules. The same answers always produce the same result. No AI, no subjective judgment, no variability.",
+      subtitle: "Fixed rules, deterministic",
+      body: "Model RP-2.0 calculates your score using fixed, deterministic rules. The same answers always produce the same result. No subjective judgment. No variability.",
     },
     {
       num: "3",

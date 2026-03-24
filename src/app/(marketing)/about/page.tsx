@@ -145,7 +145,7 @@ function Hero() {
           <p
             style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
-            RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. No AI. No opinions. Just the math.
+            RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. Fixed rules. No opinions. Just the math.
           </p>
         </div>
       </div>
@@ -301,7 +301,7 @@ function HowCalculated() {
             How the score is calculated
           </h2>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Model RP-2.0 is entirely deterministic. There is no machine learning, no AI, no probabilistic modeling, and no human judgment in the scoring process. The same six inputs always produce the same score.
+            Model RP-2.0 is entirely deterministic. There is no probabilistic modeling, no adaptive learning, and no human judgment in the scoring process. The same inputs always produce the same score.
           </p>
           <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             The model evaluates your income across six dimensions using fixed, versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
