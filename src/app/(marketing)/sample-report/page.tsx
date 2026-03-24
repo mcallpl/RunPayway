@@ -563,16 +563,16 @@ function SimulatorPreview() {
     <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 72 : 96, paddingBottom: mobile ? 72 : 96, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
         <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INTERACTIVE TOOL</div>
-          <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>Score Simulator</h3>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
+          <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>What happens if things change?</h3>
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.65)", lineHeight: 1.7, marginBottom: 28 }}>
-            Model your income structure in real time. Drag 5 sliders — recurring revenue, top client share, income sources, months booked, passive income — and watch your score recalculate instantly.
+            This user&#8217;s top client is 40% of revenue. If that client left, their score drops from 78 to 61. The simulator showed them exactly what to fix — and how many points each change is worth.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {["6 preset scenarios: add a client, lose your top source, convert to retainers, build passive income, lock forward revenue, 90-day work stoppage",
-              "Custom mode with 5 structural sliders and live stress tests",
-              "Path to +10: the exact changes needed to gain 10 points from your current score",
-              "Income Runway: how many days your income lasts if you stop working today",
+            {["What if you lost your biggest client? See the exact score drop.",
+              "What if you converted to retainers? See the score jump instantly.",
+              "What if you couldn\u2019t work for 90 days? See how long your income lasts.",
+              "The tool calculates the fastest path to your next stability band.",
             ].map((b) => (
               <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
@@ -581,7 +581,7 @@ function SimulatorPreview() {
             ))}
           </div>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 20, fontStyle: "italic" }}>
-            Included with every $99 report. Loads automatically with your data.
+            Loads automatically with your data. Accessible through the QR code on your report.
           </p>
         </div>
         <div style={{ flex: 1, maxWidth: mobile ? undefined : 400, marginTop: mobile ? 36 : 0 }}>

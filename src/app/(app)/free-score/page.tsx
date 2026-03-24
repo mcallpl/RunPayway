@@ -329,7 +329,7 @@ export default function FreeScorePage() {
               The full report explains exactly why, shows how it interacts with your other structural factors, and gives you a step-by-step plan to fix it.
             </p>
             <p style={{ ...F.small, color: "rgba(244,241,234,0.35)", margin: 0, fontStyle: "italic" }}>
-              Your data is ready for the interactive simulator. Upgrade to play with it.
+              You scored {score}. But what happens if {insightText.toLowerCase().replace(/\.$/, "")} gets worse? The simulator shows you — with your real numbers. Included in the full report.
             </p>
           </div>
         </section>

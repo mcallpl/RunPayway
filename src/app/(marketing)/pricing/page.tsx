@@ -276,7 +276,7 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
 
   const features = [
     "Everything in Free, plus:",
-    "Interactive score simulator — model scenarios in real time",
+    "What happens if things change? — answer that question with your real numbers, in real time",
     "Income runway calculator — days of income if you stop working",
     "Risk scenarios with score-drop projections",
     "Action plan with specific timeframes, targets, and tradeoffs",

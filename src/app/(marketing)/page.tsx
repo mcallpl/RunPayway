@@ -488,7 +488,7 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
               <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.01em" }}>
-                Includes an interactive simulator — model your income in real time.
+                What happens to your score if your biggest client leaves tomorrow?
               </p>
             </div>
           </div>
@@ -1104,9 +1104,9 @@ function WhatYourReportSection() {
           transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
         }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Interactive Score Simulator</div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>What if you added one more client?</div>
             <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
-              5 structural sliders. 6 preset scenarios. Real-time score recalculation. A &ldquo;Path to +10&rdquo; goal engine that shows exactly how to gain 10 points.
+              What if you converted to retainers? What if you couldn&#8217;t work for 90 days? The full report includes a tool that answers these questions — with your actual numbers, in real time.
             </p>
           </div>
           <div style={{ display: "flex", gap: 12 }}>
