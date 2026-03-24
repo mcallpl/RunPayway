@@ -488,6 +488,23 @@ input[type="range"]::-webkit-slider-thumb {
               Sample Score
             </div>
             <AnimatedScoreRing visible={visible} mobile={mobile} />
+            {/* Score context */}
+            <div style={{
+              marginTop: 20, display: "flex", gap: 16, justifyContent: "center",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 600ms ease-out 1800ms",
+            }}>
+              {[
+                { label: "Recurring", value: "62%" },
+                { label: "Diversified", value: "4 sources" },
+                { label: "Forward", value: "3.2 mo" },
+              ].map(stat => (
+                <div key={stat.label} style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.70)", fontVariantNumeric: "tabular-nums" }}>{stat.value}</div>
+                  <div style={{ fontSize: 9, color: "rgba(244,241,234,0.30)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -538,18 +555,51 @@ function BridgeSection() {
       >
         <p
           style={{
-            fontSize: mobile ? 17 : 21,
+            fontSize: mobile ? 18 : 22,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
-            lineHeight: 1.4,
+            lineHeight: 1.35,
             letterSpacing: S.lsHeading,
-            margin: 0,
+            margin: "0 0 8px",
           }}
         >
           The average self-employed professional has less than 30 days of income protection.
+        </p>
+        <p
+          style={{
+            fontSize: mobile ? 13 : 15,
+            color: B.muted,
+            lineHeight: 1.6,
+            margin: "0 0 20px",
+          }}
+        >
           Most don&#8217;t find out until a client leaves, a contract ends, or they can&#8217;t work.
         </p>
+
+        {/* Industry icons */}
+        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 24, flexWrap: "wrap" as const, marginBottom: 16 }}>
+          {[
+            { label: "Consulting", icon: "\u2691" },
+            { label: "Real Estate", icon: "\u2302" },
+            { label: "Creative", icon: "\u2605" },
+            { label: "Technology", icon: "\u2699" },
+            { label: "Healthcare", icon: "\u2695" },
+            { label: "Finance", icon: "\u2696" },
+          ].map(ind => (
+            <div key={ind.label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <span style={{ fontSize: 13, opacity: 0.35 }}>{ind.icon}</span>
+              <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>{ind.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Trust line */}
+        <div style={{ borderTop: "1px solid rgba(14,26,43,0.06)", paddingTop: 14 }}>
+          <p style={{ fontSize: 12, color: B.light, margin: 0, letterSpacing: "0.01em" }}>
+            Built for independent professionals across every industry. Deterministic scoring — no AI, no estimates.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -2723,16 +2773,119 @@ function SocialProof() {
 /* ================================================================== */
 /* MAIN EXPORT                                                         */
 /* ================================================================== */
+/* ================================================================== */
+/* STICKY NAV                                                          */
+/* ================================================================== */
+function StickyNav() {
+  const mobile = useMobile();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      backdropFilter: "blur(16px)",
+      backgroundColor: scrolled ? "rgba(14,26,43,0.85)" : "rgba(14,26,43,0.4)",
+      borderBottom: scrolled ? "1px solid rgba(244,241,234,0.08)" : "1px solid transparent",
+      transition: "background-color 300ms, border-color 300ms",
+      padding: mobile ? "10px 20px" : "10px 40px",
+    }}>
+      <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#F4F1EA", letterSpacing: "-0.02em" }}>RunPayway</span>
+          <span style={{ fontSize: 9, color: "rgba(244,241,234,0.35)", fontWeight: 600, letterSpacing: "0.06em" }}>&#8482;</span>
+        </div>
+        {!mobile && (
+          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
+            {[
+              { label: "Methodology", href: "/methodology" },
+              { label: "Sample Report", href: "/sample-report" },
+              { label: "Pricing", href: "/pricing" },
+            ].map(link => (
+              <Link key={link.href} href={link.href} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", textDecoration: "none", fontWeight: 500, letterSpacing: "-0.01em", transition: "color 200ms" }}
+                onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.color = "#F4F1EA"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+              >{link.label}</Link>
+            ))}
+            <Link href="/pricing" style={{
+              fontSize: 12, fontWeight: 600, color: B.navy, textDecoration: "none",
+              padding: "7px 18px", borderRadius: 6,
+              background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+            }}>Get Started</Link>
+          </div>
+        )}
+        {mobile && (
+          <Link href="/pricing" style={{
+            fontSize: 12, fontWeight: 600, color: B.navy, textDecoration: "none",
+            padding: "7px 16px", borderRadius: 6,
+            background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
+          }}>Get Started</Link>
+        )}
+      </div>
+    </nav>
+  );
+}
+
+/* ================================================================== */
+/* MID-PAGE CTA                                                        */
+/* ================================================================== */
+function MidPageCta() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section ref={ref} style={{
+      background: B.navy,
+      padding: mobile ? "48px 28px" : "64px 56px",
+      textAlign: "center",
+    }}>
+      <div style={{
+        maxWidth: 600, margin: "0 auto",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(12px)",
+        transition: "opacity 600ms ease-out, transform 600ms ease-out",
+      }}>
+        <p style={{ fontSize: mobile ? 11 : 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+          Ready to see your score?
+        </p>
+        <h2 style={{ fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
+          Find out where your income is vulnerable — in under 2 minutes.
+        </h2>
+        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 32, lineHeight: 1.6 }}>
+          No bank connection. No credit pull. Your data stays on your device.
+        </p>
+        <Link href="/pricing" style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          height: 48, padding: "0 32px", borderRadius: 10,
+          background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
+          color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.20)",
+        }}>
+          Get My Free Score
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="overflow-x-hidden">
+      <StickyNav />
       <HeroSection />
       <BridgeSection />
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
+      <MidPageCta />
       <TestimonialsSection />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
