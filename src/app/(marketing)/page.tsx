@@ -330,7 +330,7 @@ input[type="range"]::-webkit-slider-thumb {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? 96 : 160,
+          paddingTop: mobile ? 108 : 160,
           paddingBottom: mobile ? 72 : 120,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,

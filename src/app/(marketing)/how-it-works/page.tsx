@@ -1114,11 +1114,11 @@ export default function HowItWorksPage() {
       <Hero />
       <ThreeSteps />
       {/* Simulator teaser */}
-      <section style={{ background: "#F4F1EA", paddingTop: 56, paddingBottom: 56, paddingLeft: 28, paddingRight: 28 }}>
+      <section style={{ background: "#F4F1EA", paddingTop: 48, paddingBottom: 48, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 520, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 24 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Then Model Scenarios</div>
-            <h2 style={{ fontSize: 24, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
+            <h2 style={{ fontSize: 22, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
               What happens to your score if things change?
             </h2>
           </div>

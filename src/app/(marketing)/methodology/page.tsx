@@ -1102,11 +1102,11 @@ export default function MethodologyPage() {
       <ScoringFramework />
       <InteractionEffects />
       {/* Simulator teaser — bridge from theory to practice */}
-      <section style={{ background: B.sand, paddingTop: 64, paddingBottom: 64, paddingLeft: 56, paddingRight: 56 }}>
+      <section style={{ background: B.sand, paddingTop: 48, paddingBottom: 48, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 520, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 24 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 10 }}>See It In Action</div>
-            <h2 style={{ fontSize: 26, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
+            <h2 style={{ fontSize: 24, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
               Test how your factors interact — in real time.
             </h2>
           </div>
