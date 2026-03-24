@@ -292,6 +292,14 @@ export async function executeClientEngineV2(submission: {
   const confidence = computeConfidence(normalized, validatedExtended, resolvedProfile, sensitivity);
   reason_codes.push(REASON_CODES["CNF-001"]);
 
+  // Benchmarks (must run before explainability which needs it)
+  const benchmarks = computeBenchmarks(scores, resolvedProfile, indicators);
+  reason_codes.push(REASON_CODES["BNK-001"]);
+
+  // Reassessment triggers
+  const reassessmentTriggers = computeReassessmentTriggers(normalized, quality);
+  reason_codes.push(REASON_CODES["RSA-001"]);
+
   // Explainability
   const explainability = generateExplainability(
     scores, bands, constraints, interactions, sensitivity, fragility, quality,
@@ -302,14 +310,6 @@ export async function executeClientEngineV2(submission: {
   // Actions
   const actions = prioritizeActions(constraints, fragility, sensitivity, resolvedProfile, normalized);
   reason_codes.push(REASON_CODES["ACT-001"]);
-
-  // Reassessment triggers
-  const reassessmentTriggers = computeReassessmentTriggers(normalized, quality);
-  reason_codes.push(REASON_CODES["RSA-001"]);
-
-  // Benchmarks
-  const benchmarks = computeBenchmarks(scores, resolvedProfile, indicators);
-  reason_codes.push(REASON_CODES["BNK-001"]);
 
   // Outcome layer — skipped in client engine. The outcome layer has complex
   // module dependencies that cause TDZ errors in browser bundles.
