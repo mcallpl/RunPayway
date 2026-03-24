@@ -311,9 +311,10 @@ export async function executeClientEngineV2(submission: {
   const benchmarks = computeBenchmarks(scores, resolvedProfile, indicators);
   reason_codes.push(REASON_CODES["BNK-001"]);
 
-  // Outcome layer — requires full AssessmentRecord, so we run it after
-  // the record is assembled (same pattern as server engine index.ts)
-  const outcome_layer = null;
+  // Outcome layer — skipped in client engine. The outcome layer has complex
+  // module dependencies that cause TDZ errors in browser bundles.
+  // Server engine (index.ts) runs it; client engine returns null.
+  const outcome_layer = undefined;
 
   // Integrity (browser-compatible hashes)
   const assessmentId = crypto.randomUUID();
@@ -382,14 +383,6 @@ export async function executeClientEngineV2(submission: {
     reason_codes,
     integrity: { input_hash, output_hash, manifest_hash, record_hash },
   };
-
-  // Run outcome layer with the complete record
-  try {
-    const { executeOutcomeLayer } = await import("./engine/v2/outcome/index");
-    record.outcome_layer = executeOutcomeLayer(record);
-  } catch {
-    // Outcome layer unavailable in this environment — continue without it
-  }
 
   return record;
 }

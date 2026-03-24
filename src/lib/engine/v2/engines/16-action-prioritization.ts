@@ -296,6 +296,18 @@ function personalizeTarget(
   }
 }
 
+// ─── CONSTRAINT LABEL HELPERS ─────────────────────────────
+
+const CONSTRAINT_LABELS_PLAIN: Record<string, string> = {
+  weak_forward_visibility: "forward visibility",
+  high_labor_dependence: "labor dependence",
+  high_concentration: "client concentration",
+  low_persistence: "recurring revenue",
+  high_variability: "earnings variability",
+  weak_durability: "revenue durability",
+  shallow_continuity: "income continuity",
+};
+
 // ─── EXECUTION ROADMAP ───────────────────────────────────
 
 function generateExecutionRoadmap(
@@ -375,16 +387,6 @@ function generateExecutionRoadmap(
 
   return weeks;
 }
-
-const CONSTRAINT_LABELS_PLAIN: Record<string, string> = {
-  weak_forward_visibility: "forward visibility",
-  high_labor_dependence: "labor dependence",
-  high_concentration: "client concentration",
-  low_persistence: "recurring revenue",
-  high_variability: "earnings variability",
-  weak_durability: "revenue durability",
-  shallow_continuity: "income continuity",
-};
 
 // ─── SCRIPT TEMPLATES ────────────────────────────────────
 
