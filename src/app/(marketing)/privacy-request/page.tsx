@@ -347,9 +347,9 @@ export default function PrivacyRequestPage() {
                 <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, margin: 0 }}>
                   Your email client should have opened with the pre-filled request.
                   If it did not, please submit your request through our{" "}
-                  <a href="/contact" style={{ color: B.purple, textDecoration: "none", fontWeight: 600 }}>
+                  <Link href="/contact" style={{ color: B.purple, textDecoration: "none", fontWeight: 600 }}>
                     contact page
-                  </a>.
+                  </Link>.
                 </p>
               </div>
             ) : (

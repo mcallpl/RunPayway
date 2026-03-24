@@ -704,7 +704,7 @@ function TrustStrip() {
             transition: "opacity 0.5s ease-out 200ms",
           }}
         >
-          If the report doesn&#8217;t tell you something you didn&#8217;t already know, <a href="/contact" style={{ color: B.teal, textDecoration: "underline", textUnderlineOffset: 3 }}>contact us</a> for a full refund.
+          If the report doesn&#8217;t tell you something you didn&#8217;t already know, <Link href="/contact" style={{ color: B.teal, textDecoration: "underline", textUnderlineOffset: 3 }}>contact us</Link> for a full refund.
         </p>
       </div>
     </section>
@@ -954,7 +954,7 @@ function FinalCta() {
             Under two minutes. Full structural diagnosis. Instant delivery.
           </p>
 
-          <a
+          <Link
             href="/begin"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
@@ -980,7 +980,7 @@ function FinalCta() {
             }}
           >
             Get My Free Score
-          </a>
+          </Link>
 
           <p
             style={{

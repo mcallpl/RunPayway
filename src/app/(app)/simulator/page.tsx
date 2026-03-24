@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import logoImg from "../../../../public/runpayway-logo.png";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
@@ -118,9 +119,9 @@ function SimulatorContent() {
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32 }}>
             Tap the QR code on your report to load your data. The simulator is part of the $99 complete assessment.
           </p>
-          <a href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 48, padding: "0 32px", borderRadius: 8, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em" }}>
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 48, padding: "0 32px", borderRadius: 8, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em" }}>
             Get the Full Report
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -287,7 +288,7 @@ function SimulatorContent() {
       {/* ── FOOTER ── */}
       <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
-        <a href="/pricing" style={{ fontSize: 13, fontWeight: 600, color: B.teal, textDecoration: "none" }}>Get your score &#8594;</a>
+        <Link href="/pricing" style={{ fontSize: 13, fontWeight: 600, color: B.teal, textDecoration: "none" }}>Get your score &#8594;</Link>
       </div>
     </div>
   );
