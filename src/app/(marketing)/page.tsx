@@ -511,12 +511,12 @@ function BridgeSection() {
       ref={ref}
       aria-label="Why this matters"
       style={{
-        background: B.sand,
+        background: B.navy,
         paddingTop: mobile ? 32 : 48,
         paddingBottom: mobile ? 32 : 48,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        borderBottom: "1px solid rgba(14,26,43,0.06)",
+        borderBottom: "1px solid rgba(244,241,234,0.06)",
       }}
     >
       <div
@@ -534,7 +534,7 @@ function BridgeSection() {
             fontSize: mobile ? 17 : 21,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
-            color: B.navy,
+            color: "rgba(244,241,234,0.75)",
             lineHeight: 1.4,
             letterSpacing: S.lsHeading,
             margin: 0,
