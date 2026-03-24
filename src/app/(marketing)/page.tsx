@@ -1479,7 +1479,7 @@ function HowItWorksSection() {
       time: "$99",
       title: "Unlock the decision engine",
       hook: "If it doesn\u2019t reveal something new, full refund.",
-      desc: "An interactive simulator you play with. Scripts you send tomorrow. Risk scenarios with exact score drops. Actions with specific targets and timelines. This is not a PDF — it is a system.",
+      desc: "An interactive simulator you play with. Scripts you send tomorrow. Risk scenarios with exact score drops. Actions with specific targets and timelines. This is not a static document — it is a system.",
       color: B.navy,
     },
   ];

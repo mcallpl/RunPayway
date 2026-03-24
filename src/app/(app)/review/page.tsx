@@ -392,7 +392,7 @@ async function downloadPDF(record: AssessmentRecord) {
     html2canvas = (await import("html2canvas")).default;
     jsPDF = (await import("jspdf")).jsPDF;
   } catch {
-    alert("PDF generation libraries failed to load. Please check your connection and try again.");
+    alert("Download libraries failed to load. Please check your connection and try again.");
     return;
   }
 
@@ -1880,7 +1880,7 @@ export default function ReviewPage() {
             style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease, transform 180ms ease", flex: 1, minWidth: 180, boxShadow: "0 4px 12px rgba(14,26,43,0.15)" }}
             onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
             onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
-            {downloading ? "Generating PDF…" : "Download Report"}
+            {downloading ? "Generating…" : "Download Report"}
           </button>
 
           <button
@@ -2061,7 +2061,7 @@ export default function ReviewPage() {
 
         {downloadError && (
           <div style={{ padding: "10px 16px", borderRadius: 10, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
-            <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>PDF download failed: {downloadError}. Try refreshing the page.</p>
+            <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>Download failed: {downloadError}. Try refreshing the page.</p>
           </div>
         )}
 
@@ -2082,7 +2082,7 @@ export default function ReviewPage() {
           {emailStatus === "error" && (
             <>
               <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.muted }} />
-              <span style={{ fontSize: 13, color: B.muted }}>Email delivery unavailable — download PDF above</span>
+              <span style={{ fontSize: 13, color: B.muted }}>Email delivery unavailable — download your report above</span>
             </>
           )}
         </div>

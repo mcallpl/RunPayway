@@ -35,7 +35,7 @@ function DownloadContent() {
         Assessment Download
       </h1>
       <p className="text-sm text-neutral-600">
-        Your assessment PDF is being prepared for download.
+        Your assessment report is being prepared for download.
       </p>
       <p className="text-xs text-neutral-400">Record ID: {recordId}</p>
     </div>

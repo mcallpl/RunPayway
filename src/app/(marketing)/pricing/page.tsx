@@ -751,7 +751,7 @@ function Faq() {
     },
     {
       q: "Can I share the report with my advisor or lender?",
-      a: "Yes. Every report includes a QR-verified record ID, model version stamp, and a shareable score card. You can download the PDF, copy the verification link, or email it directly to anyone from within the report.",
+      a: "Yes. Every report includes a QR-verified record ID, model version stamp, and a shareable score card. You can download your report, copy the verification link, or email it directly to anyone from within the report.",
     },
   ];
 

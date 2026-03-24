@@ -179,7 +179,7 @@ export default function FreeScorePage() {
 
       pdf.save(`RunPayway-Score-Card-${recordId}.pdf`);
     } catch {
-      alert("PDF generation failed. Please try again.");
+      alert("Download failed. Please try again.");
     } finally {
       setDownloading(false);
     }
@@ -311,7 +311,7 @@ export default function FreeScorePage() {
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.navy; e.currentTarget.style.color = B.navy; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = B.border; e.currentTarget.style.color = B.muted; }}
             >
-              {downloading ? "Generating..." : "Download Score Card (PDF)"}
+              {downloading ? "Generating..." : "Download Score Card"}
             </button>
           </div>
         </section>
