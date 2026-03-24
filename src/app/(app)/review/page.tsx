@@ -26,16 +26,16 @@ class ReportErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: 40, textAlign: "center" }}>
-          <h2 style={{ fontSize: 20, fontWeight: 600, color: "#0E1A2B", marginBottom: 12 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: R.paraMb }}>
             Something went wrong loading your report
           </h2>
-          <p style={{ fontSize: 14, color: "#6B7280", marginBottom: 24, maxWidth: 400 }}>
+          <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap, maxWidth: 400 }}>
             Your assessment was saved. Please try refreshing the page. If the problem persists, contact support@runpayway.com.
           </p>
-          <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 24 }}>{this.state.error}</p>
+          <p style={{ ...T.meta, color: B.taupe, marginBottom: R.sectionGap }}>{this.state.error}</p>
           <button
             onClick={() => window.location.reload()}
-            style={{ padding: "10px 24px", fontSize: 14, fontWeight: 500, color: "#fff", backgroundColor: "#0E1A2B", border: "none", borderRadius: 10, cursor: "pointer" }}
+            style={{ padding: "10px 24px", ...T.body, fontWeight: 500, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 4, cursor: "pointer" }}
           >
             Refresh Page
           </button>
@@ -201,18 +201,33 @@ const R = {
   pagePad: 40,
   headerMb: 16,
   sectionGap: 24,
+  sectionMb: 20,
+  cardMb: 16,
   labelMb: 8,
   paraMb: 12,
   itemGap: 12,
+  cardGap: 12,
+  rowGap: 16,
   dividerMy: 20,
   footerMt: 16,
+  cardPad: "16px 20px" as string,
 };
+
+// ── Reusable card style ──
+const cardStyle: React.CSSProperties = {
+  backgroundColor: B.bone,
+  border: "1px solid rgba(14,26,43,0.06)",
+  borderRadius: 4,
+  padding: R.cardPad,
+};
+
+const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 
 // ── Typography: 7-step scale optimized for print clarity ──
 const T = {
   score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },                                          // The big number
-  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: "#0E1A2B" },                  // Page titles
-  sectionTitle: { fontSize: 15, fontWeight: 600, lineHeight: 1.3, color: "#0E1A2B" },               // Major section headers (H2)
+  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: B.navy },                     // Page titles
+  sectionTitle: { fontSize: 15, fontWeight: 600, lineHeight: 1.3, color: B.navy },                  // Major section headers (H2)
   classification: { fontSize: 16, fontWeight: 500, lineHeight: 1.3 },                               // Band label
   overline: { fontSize: 9.5, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },  // Card/metadata labels
   sectionLabel: { fontSize: 12, fontWeight: 600, lineHeight: 1.4 },                                 // Bold inline labels
@@ -277,35 +292,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   );
 }
 
-function MetricCard({ label, value, explanation }: { label: string; value: React.ReactNode; explanation: string; accent?: string }) {
-  return (
-    <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-      <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>{label}</div>
-      <div style={{ ...T.sectionTitle, marginBottom: 6 }}>{value}</div>
-      <div style={{ ...T.small, color: B.muted, lineHeight: 1.55 }}>{explanation}</div>
-    </div>
-  );
-}
-
-function DiagnosisBlock({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "18px 22px" }}>
-      {children}
-    </div>
-  );
-}
-
-function SimpleTermsBox({ title, copy, takeaway }: { title: string; copy: string; takeaway: string }) {
-  return (
-    <div style={{ backgroundColor: B.sand, borderTop: `1px solid ${B.stone}`, borderBottom: `1px solid ${B.stone}`, padding: "16px 20px", marginTop: 12, marginBottom: 12 }}>
-      <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{title}</div>
-      <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", maxWidth: 520, lineHeight: 1.55 }}>{copy}</p>
-      <p style={{ ...T.small, color: B.muted, margin: 0, fontStyle: "italic" }}>{takeaway}</p>
-    </div>
-  );
-}
-
-function ReportPage({ children, noPad }: { record: AssessmentRecord; children: React.ReactNode; noPad?: boolean }) {
+function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: React.ReactNode; noPad?: boolean }) {
   return (
     <div className="report-page" style={{
       width: PDF.captureW,
@@ -321,7 +308,7 @@ function ReportPage({ children, noPad }: { record: AssessmentRecord; children: R
       position: "relative",
     }}>
       {/* Top accent line */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 100%)" }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: accentGradient }} />
       {children}
     </div>
   );
@@ -1055,7 +1042,7 @@ export default function ReviewPage() {
         </p>
 
         {/* What this score means for your daily life */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
+        <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT THIS MEANS FOR YOU</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
             {isHighScorer ? ({
@@ -1090,7 +1077,7 @@ export default function ReviewPage() {
             const last = previous[0];
             const diff = record.final_score - last.final_score;
             return (
-              <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 12 }}>
+              <div style={{ ...cardStyle, marginBottom: 12 }}>
                 <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>SCORE TREND</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                   <span style={{ ...T.sectionLabel, color: B.navy }}>{last.final_score}</span>
@@ -1158,18 +1145,18 @@ export default function ReviewPage() {
 
         {/* Stress Test + Continuity cards */}
         <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 3, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+          <div style={{ flex: 3, ...cardStyle }}>
             <Overline>IF YOUR BIGGEST SOURCE DISAPPEARED</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
-              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></span>
+              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
               <span style={{ ...T.sectionLabel, color: B.taupe }}>→</span>
-              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></span>
+              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
               {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
             </p>
           </div>
-          <div style={{ flex: 2, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+          <div style={{ flex: 2, ...cardStyle }}>
             <Overline>HOW LONG INCOME LASTS WITHOUT WORK</Overline>
             <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
@@ -1188,7 +1175,7 @@ export default function ReviewPage() {
 
         {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
-          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer ? `YOU OUTPERFORM ${100 - (peerPercentileValue ?? 50)}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
@@ -1340,16 +1327,16 @@ export default function ReviewPage() {
           <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
 
             {/* Score display — always visible */}
-            <div style={{ display: "flex", gap: 16, marginBottom: 20, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
+            <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div>
-                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></div>
+                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div>
                 <div style={{ ...T.meta, color: B.muted }}>{baseResult.band}</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isModified ? "SIMULATED" : "BASELINE"}</div>
-                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}<span style={{ fontSize: 11, fontWeight: 400, color: B.taupe }}>/100</span></div>
+                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div>
                 <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
               </div>
               <div style={{ flex: 1, textAlign: "center" }}>
@@ -1486,12 +1473,12 @@ export default function ReviewPage() {
               const target90 = Math.max(0, 90 - runwayDays);
               return (
                 <div style={{ display: "flex", gap: 12 }}>
-                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+                  <div style={{ flex: 1, ...cardStyle, textAlign: "center" }}>
                     <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
                     <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
                     <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
                   </div>
-                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+                  <div style={{ flex: 1, ...cardStyle }}>
                     <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
                     {runwayDays >= 90 ? (
                       <div style={{ ...T.cardHeading, color: B.teal }}>Already there</div>
@@ -1610,7 +1597,7 @@ export default function ReviewPage() {
             Based on your structure, these are the mistakes people in your position typically make.
           </p>
           {v2PredictiveWarnings.map((w, i) => (
-            <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "14px 18px", marginBottom: 8 }}>
+            <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: R.cardPad, marginBottom: 8 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy }}>{w.headline}</div>
                 <span style={{ ...T.micro, color: B.bandLimited }}>{w.timeframe}</span>
@@ -1655,7 +1642,7 @@ export default function ReviewPage() {
                 exposure_concentration: "Source Independence",
               };
               return (
-                <div key={ind.key} style={{ flex: "1 1 calc(33.33% - 8px)", minWidth: 190, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+                <div key={ind.key} style={{ flex: "1 1 calc(33.33% - 8px)", minWidth: 190, ...cardStyle }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <span style={{ ...T.small, fontWeight: 600, color: B.navy, flex: 1, lineHeight: 1.3 }}>{indicatorLabel[ind.key] ?? ind.label}</span>
                     <span style={{ ...T.micro, color: levelColor, flexShrink: 0 }}>{ind.level.toUpperCase()}</span>
@@ -1675,7 +1662,7 @@ export default function ReviewPage() {
         {(v2Fragility || v2Confidence || v2Quality) && (
           <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
             {v2Fragility && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+              <div style={{ flex: 1, ...cardStyle }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW EASILY IT COULD BREAK</div>
                 <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
                   {(v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1)}
@@ -1702,7 +1689,7 @@ export default function ReviewPage() {
               </div>
             )}
             {v2Confidence && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+              <div style={{ flex: 1, ...cardStyle }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW RELIABLE THIS SCORE IS</div>
                 <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "low" ? B.bandLimited : B.navy, marginBottom: 6 }}>
                   {(v2Confidence.confidence_level || "").charAt(0).toUpperCase() + (v2Confidence.confidence_level || "").slice(1)} Confidence
@@ -1716,7 +1703,7 @@ export default function ReviewPage() {
               </div>
             )}
             {v2Quality && (
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+              <div style={{ flex: 1, ...cardStyle }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW WELL-BUILT IT IS</div>
                 <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{(v2Quality.durability_grade || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}</div>
                 <div style={{ ...T.meta, color: B.muted }}>
@@ -2023,7 +2010,7 @@ export default function ReviewPage() {
               Real strategy means understanding consequences, not just following suggestions. Here is what each move actually costs — and why it is still worth it.
             </p>
             {v2TradeoffNarratives.map((t, i) => (
-              <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "14px 18px", marginBottom: 8 }}>
+              <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
                 <div style={{ display: "flex", gap: 16 }}>
                   <div style={{ flex: 1 }}>
@@ -2119,13 +2106,13 @@ export default function ReviewPage() {
 
         {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+          <div style={{ flex: 1, ...cardStyle }}>
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
             <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{copy.p5_reassess}</p>
           </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+          <div style={{ flex: 1, ...cardStyle }}>
             <Overline>VERIFICATION</Overline>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
