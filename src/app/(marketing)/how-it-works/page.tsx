@@ -227,7 +227,7 @@ function ThreeSteps() {
       num: "3",
       title: "Get your free score",
       subtitle: "Upgrade to the full report for $99",
-      body: "Your score, stability band, peer percentile, and one key insight \u2014 free and instant. The full report adds an interactive score simulator, income runway calculator, risk scenarios, action plan with ready-to-use scripts, tradeoff analysis, and predictive warnings.",
+      body: "Your score, stability band, peer percentile, and one key insight \u2014 free and instant. The full report adds an interactive score simulator you can use forever, risk scenarios, an action plan with ready-to-use scripts, and predictive warnings.",
     },
   ];
 

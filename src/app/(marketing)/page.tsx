@@ -487,7 +487,9 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
-
+              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.01em" }}>
+                Includes an interactive simulator — model your income in real time.
+              </p>
             </div>
           </div>
 
@@ -1107,18 +1109,33 @@ function WhatYourReportSection() {
               5 structural sliders. 6 preset scenarios. Real-time score recalculation. A &ldquo;Path to +10&rdquo; goal engine that shows exactly how to gain 10 points.
             </p>
           </div>
-          <Link
-            href="/sample-report"
-            style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
-              color: "#F4F1EA", border: "1px solid rgba(244,241,234,0.20)",
-              textDecoration: "none", whiteSpace: "nowrap" as const,
-              transition: "border-color 200ms ease",
-            }}
-          >
-            View the sample report &#8594;
-          </Link>
+          <div style={{ display: "flex", gap: 12 }}>
+            <a
+              href="/simulator?p=73&c=40&src=4&f=71&v=low&l=37&q=7&s=78&b=High%20Stability&n=Sample%20Profile"
+              style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
+                color: B.navy, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)",
+                textDecoration: "none", whiteSpace: "nowrap" as const,
+                boxShadow: "0 4px 16px rgba(0,0,0,0.20)",
+                transition: "all 200ms ease",
+              }}
+            >
+              Try the simulator &#8594;
+            </a>
+            <Link
+              href="/sample-report"
+              style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
+                color: "#F4F1EA", border: "1px solid rgba(244,241,234,0.20)",
+                textDecoration: "none", whiteSpace: "nowrap" as const,
+                transition: "border-color 200ms ease",
+              }}
+            >
+              View sample report
+            </Link>
+          </div>
         </div>
       </div>
     </section>

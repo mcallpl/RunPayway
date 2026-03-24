@@ -325,8 +325,11 @@ export default function FreeScorePage() {
             <p style={{ fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", color: "#F4F1EA", lineHeight: 1.35, margin: "0 0 20px" }}>
               {insightText}
             </p>
-            <p style={{ ...F.body, color: "rgba(244,241,234,0.50)", margin: 0 }}>
+            <p style={{ ...F.body, color: "rgba(244,241,234,0.50)", margin: "0 0 20px" }}>
               The full report explains exactly why, shows how it interacts with your other structural factors, and gives you a step-by-step plan to fix it.
+            </p>
+            <p style={{ ...F.small, color: "rgba(244,241,234,0.35)", margin: 0, fontStyle: "italic" }}>
+              Your data is ready for the interactive simulator. Upgrade to play with it.
             </p>
           </div>
         </section>
