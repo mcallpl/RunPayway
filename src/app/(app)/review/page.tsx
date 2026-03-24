@@ -2002,6 +2002,17 @@ export default function ReviewPage() {
           ))}
         </div>
 
+        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
+      </ReportPage>
+
+
+      {/* ════════════════════════════════════════════════════════
+          PAGE 6 — TRADEOFFS, ADVISOR, VERIFICATION
+          Split from Page 5 for PDF page sizing.
+          ════════════════════════════════════════════════════════ */}
+      <ReportPage>
+        <ReportHeader />
+
         {/* Tradeoffs & Strategy — RP-2.1 */}
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -2127,7 +2138,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
-        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
+        <PageFooter section="Strategy &amp; Verification" page={6} />
       </ReportPage>
 
 
