@@ -548,6 +548,14 @@ export default function ReviewPage() {
   const [animatedScore, setAnimatedScore] = useState(0);
   const [collapsed, setCollapsed] = useState<Record<number, boolean>>({});
   const [simPreset, setSimPreset] = useState<string | null>(null);
+  const [simMode, setSimMode] = useState<"presets" | "advanced">("presets");
+  const [simSliders, setSimSliders] = useState<{
+    recurrence: number;
+    topClient: number;
+    sources: number;
+    monthsBooked: number;
+    passive: number;
+  } | null>(null);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const monitoringTracked = useRef(false);
@@ -1318,53 +1326,127 @@ export default function ReviewPage() {
         <PageFooter section="How Your Income Is Built" page={2} />
       </ReportPage>
 
-      {/* ── SIMULATOR + RUNWAY — after structure is understood ── */}
+      {/* ── INCOME DECISION ENGINE — full interactive simulator ── */}
       {v2NormalizedInputs && (() => {
+        const ni = v2NormalizedInputs;
         const baseInputs: CanonicalInput = {
-          income_persistence_pct: v2NormalizedInputs.income_persistence_pct,
-          largest_source_pct: v2NormalizedInputs.largest_source_pct,
-          source_diversity_count: v2NormalizedInputs.source_diversity_count,
-          forward_secured_pct: v2NormalizedInputs.forward_secured_pct,
-          income_variability_level: v2NormalizedInputs.income_variability_level as "low" | "moderate" | "high" | "extreme",
-          labor_dependence_pct: v2NormalizedInputs.labor_dependence_pct,
+          income_persistence_pct: ni.income_persistence_pct,
+          largest_source_pct: ni.largest_source_pct,
+          source_diversity_count: ni.source_diversity_count,
+          forward_secured_pct: ni.forward_secured_pct,
+          income_variability_level: ni.income_variability_level as "low" | "moderate" | "high" | "extreme",
+          labor_dependence_pct: ni.labor_dependence_pct,
         };
         const qualityScore = v2Quality?.quality_score ?? 5;
-        const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset);
-        const simInputs = activePreset ? activePreset.modify(baseInputs) : baseInputs;
+
+        // Initialize sliders from base on first render
+        const sl = simSliders ?? {
+          recurrence: ni.income_persistence_pct,
+          topClient: ni.largest_source_pct,
+          sources: ni.source_diversity_count,
+          monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2,
+          passive: 100 - ni.labor_dependence_pct,
+        };
+
+        // Build simulated inputs depending on mode
+        let simInputs: CanonicalInput;
+        if (simMode === "advanced" && simSliders) {
+          // Guardrails
+          const guardedTopClient = sl.sources <= 1 ? 100 : Math.max(Math.round(100 / sl.sources), sl.topClient);
+          simInputs = {
+            income_persistence_pct: sl.recurrence,
+            largest_source_pct: guardedTopClient,
+            source_diversity_count: sl.sources,
+            forward_secured_pct: Math.min(100, Math.round(sl.monthsBooked / 6 * 100)),
+            income_variability_level: baseInputs.income_variability_level,
+            labor_dependence_pct: Math.max(0, 100 - sl.passive),
+          };
+        } else {
+          const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset);
+          simInputs = activePreset ? activePreset.modify(baseInputs) : baseInputs;
+        }
+
+        const baseResult = simulateScore(baseInputs, qualityScore);
         const simResult = simulateScore(simInputs, qualityScore);
-        const scoreDelta = simResult.overall_score - score;
-        const runwayDays = Math.round(record.income_continuity_months * 30);
-        const target90Days = Math.max(0, 90 - runwayDays);
-        // How to close the gap: persistence adds 0.9 days per %, forward adds 1.2 days per %
-        const gapMonths = Math.max(0, 3 - record.income_continuity_months);
-        const persistenceGapPct = Math.min(Math.round(gapMonths / 0.03), 100 - baseInputs.income_persistence_pct);
-        const clientsToConvert = Math.max(1, Math.ceil(persistenceGapPct / 15));
+        const scoreDelta = simResult.overall_score - baseResult.overall_score;
+        const isModified = simMode === "advanced" ? !!simSliders : !!simPreset;
+
+        // Stress tests — auto-run on current simulated inputs
+        const stressLoseClient = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(simInputs), qualityScore);
+        const stressNoWork = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(simInputs), qualityScore);
+
+        // Income runway from simulated state
+        const simRunwayDays = Math.round(simResult.continuity_months * 30);
+
+        // Dynamic insights based on slider changes
+        const insights: string[] = [];
+        if (simMode === "advanced" && simSliders) {
+          const recDelta = sl.recurrence - ni.income_persistence_pct;
+          const concDelta = sl.topClient - ni.largest_source_pct;
+          const passDelta = sl.passive - (100 - ni.labor_dependence_pct);
+          if (recDelta >= 15) insights.push(`+${recDelta}% recurring revenue adds ${Math.round(recDelta * 0.03 * 30)} days of runway`);
+          if (concDelta <= -15) insights.push(`Reducing top client from ${ni.largest_source_pct}% to ${sl.topClient}% increases resilience by +${Math.abs(Math.round(concDelta * 0.15))} points`);
+          if (passDelta >= 15) insights.push(`+${passDelta}% passive income means ${sl.passive}% continues if you stop working`);
+          if (simResult.band !== baseResult.band) insights.push(`You have crossed into ${simResult.band}`);
+          if (stressLoseClient.overall_score > stressNoWork.overall_score) insights.push(`Your biggest risk is now work stoppage, not client loss`);
+        }
+
+        // Path to +10
+        const targetScore = baseResult.overall_score + 10;
+        const pathSteps: string[] = [];
+        if (baseResult.overall_score < 90) {
+          // Try each factor change individually, find cheapest path
+          const tries = [
+            { label: "recurring", field: "income_persistence_pct" as const, step: 5, dir: 1 },
+            { label: "top client", field: "largest_source_pct" as const, step: -5, dir: -1 },
+            { label: "forward visibility", field: "forward_secured_pct" as const, step: 5, dir: 1 },
+            { label: "labor dependence", field: "labor_dependence_pct" as const, step: -5, dir: -1 },
+          ];
+          let remaining = 10;
+          for (const t of tries) {
+            if (remaining <= 0) break;
+            const test = { ...baseInputs, [t.field]: Math.max(0, Math.min(100, (baseInputs[t.field] as number) + t.step * 3)) };
+            const testResult = simulateScore(test, qualityScore);
+            const lift = testResult.overall_score - baseResult.overall_score;
+            if (lift > 0) {
+              const needed = Math.min(lift, remaining);
+              const change = Math.abs(t.step * 3);
+              const fromVal = baseInputs[t.field] as number;
+              const toVal = Math.max(0, Math.min(100, fromVal + t.step * 3));
+              pathSteps.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${fromVal}% to ${toVal}% (+${needed} pts)`);
+              remaining -= needed;
+            }
+          }
+        }
+
+        // Slider component helper
+        const Slider = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+              <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
+              <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
+            </div>
+            <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ width: "100%", accentColor: B.purple, cursor: "pointer" }} />
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span style={{ ...T.meta, color: B.light }}>{min}{unit}</span>
+              <span style={{ ...T.meta, color: B.light }}>{max}{unit}</span>
+            </div>
+          </div>
+        );
 
         return (
           <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
-            <Overline large>What If? Score Simulator</Overline>
-            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-              Now that you understand your structure — explore what happens if things change.
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
-              {SIMULATOR_PRESETS.map((preset) => {
-                const isActive = simPreset === preset.id;
-                return (
-                  <button key={preset.id} onClick={() => setSimPreset(isActive ? null : preset.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${isActive ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms ease", backgroundColor: isActive ? "rgba(75,63,174,0.08)" : "#fff", color: isActive ? B.purple : B.navy }}>
-                    {preset.label}
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{ display: "flex", gap: 16, marginBottom: 16, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
+
+            {/* Score display — always visible */}
+            <div style={{ display: "flex", gap: 16, marginBottom: 20, padding: "20px 24px", backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4 }}>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div>
-                <div style={{ ...T.cardHero, color: B.navy }}>{score}</div>
-                <div style={{ ...T.meta, color: B.muted }}>{record.stability_band}</div>
+                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{baseResult.band}</div>
               </div>
               <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
               <div style={{ flex: 1, textAlign: "center" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{simPreset ? "SIMULATED" : "SELECT A SCENARIO"}</div>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isModified ? "SIMULATED" : "BASELINE"}</div>
                 <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}</div>
                 <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
               </div>
@@ -1373,40 +1455,151 @@ export default function ReviewPage() {
                 <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.muted }}>
                   {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta === 0 ? "—" : String(scoreDelta)}
                 </div>
-                <div style={{ ...T.meta, color: B.muted }}>Fragility: {simResult.fragility_class}</div>
+                <div style={{ ...T.meta, color: B.muted }}>{simRunwayDays} days runway</div>
               </div>
             </div>
-            {activePreset && (
-              <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 16 }}>
-                <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{activePreset.label}</div>
-                <p style={{ ...T.small, color: B.muted, margin: 0 }}>{activePreset.description}</p>
-                {scoreDelta !== 0 && (
-                  <p style={{ ...T.small, color: scoreDelta > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>
-                    {scoreDelta > 0 ? `This move would improve your score by ${scoreDelta} points${simResult.band !== record.stability_band ? ` and move you to ${simResult.band}` : ""}.` : `This would drop your score by ${Math.abs(scoreDelta)} points${simResult.band !== record.stability_band ? ` — dropping you to ${simResult.band}` : ""}.`}
-                  </p>
-                )}
+
+            {/* Mode toggle */}
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              <button onClick={() => { setSimMode("presets"); setSimSliders(null); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "presets" ? B.purple : B.stone}`, backgroundColor: simMode === "presets" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "presets" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>
+                Quick Scenarios
+              </button>
+              <button onClick={() => { setSimMode("advanced"); setSimPreset(null); if (!simSliders) setSimSliders({ recurrence: ni.income_persistence_pct, topClient: ni.largest_source_pct, sources: ni.source_diversity_count, monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni.labor_dependence_pct }); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "advanced" ? B.purple : B.stone}`, backgroundColor: simMode === "advanced" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "advanced" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>
+                Customize Your Scenario
+              </button>
+            </div>
+
+            {/* PRESETS MODE */}
+            {simMode === "presets" && (
+              <>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
+                {SIMULATOR_PRESETS.map((preset) => {
+                  const isActive = simPreset === preset.id;
+                  return (
+                    <button key={preset.id} onClick={() => setSimPreset(isActive ? null : preset.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${isActive ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms", backgroundColor: isActive ? "rgba(75,63,174,0.08)" : "#fff", color: isActive ? B.purple : B.navy }}>
+                      {preset.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {simPreset && (() => {
+                const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset)!;
+                return (
+                  <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}>
+                    <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{activePreset.label}</div>
+                    <p style={{ ...T.small, color: B.muted, margin: 0 }}>{activePreset.description}</p>
+                    {scoreDelta !== 0 && (
+                      <p style={{ ...T.small, color: scoreDelta > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>
+                        {scoreDelta > 0 ? `+${scoreDelta} points${simResult.band !== baseResult.band ? ` — moves to ${simResult.band}` : ""}` : `${scoreDelta} points${simResult.band !== baseResult.band ? ` — drops to ${simResult.band}` : ""}`}
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
+              </>
+            )}
+
+            {/* ADVANCED SLIDER MODE */}
+            {simMode === "advanced" && simSliders && (
+              <div style={{ display: "flex", gap: 24 }}>
+                {/* Left: Sliders */}
+                <div style={{ flex: 1 }}>
+                  <div style={{ ...T.overline, color: B.teal, marginBottom: 12 }}>ADJUST YOUR INCOME STRUCTURE</div>
+
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 8 }}>INCOME STRUCTURE</div>
+                  <Slider label="Recurring revenue" value={sl.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, recurrence: v })} />
+                  <Slider label="Top client share" value={sl.topClient} min={sl.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, topClient: v })} />
+                  <Slider label="Income sources" value={sl.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSimSliders({ ...sl, sources: v, topClient: v <= 1 ? 100 : Math.min(sl.topClient, 100) })} />
+
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>PREDICTABILITY</div>
+                  <Slider label="Months booked ahead" value={sl.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSimSliders({ ...sl, monthsBooked: v })} />
+
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>RESILIENCE</div>
+                  <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, passive: v })} />
+
+                  <button onClick={() => setSimSliders({ recurrence: ni.income_persistence_pct, topClient: ni.largest_source_pct, sources: ni.source_diversity_count, monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni.labor_dependence_pct })} style={{ ...T.meta, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>
+                    Reset to current
+                  </button>
+                </div>
+
+                {/* Right: Live results */}
+                <div style={{ flex: 1 }}>
+                  {/* Dynamic insights */}
+                  {insights.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                      <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>WHAT CHANGED</div>
+                      {insights.map((ins, i) => (
+                        <div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4, padding: "6px 10px", backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4 }}>
+                          {ins}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Stress tests — auto-updating */}
+                  <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>STRESS TESTS ON SIMULATED STATE</div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
+                      <span style={{ ...T.small, color: B.navy }}>Lose top client</span>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score} → {stressLoseClient.overall_score}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
+                      <span style={{ ...T.small, color: B.navy }}>Unable to work 90 days</span>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score} → {stressNoWork.overall_score}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
+                      <span style={{ ...T.small, color: B.navy }}>Income runway</span>
+                      <span style={{ ...T.small, fontWeight: 600, color: simRunwayDays < 30 ? B.bandLimited : simRunwayDays < 90 ? B.bandDeveloping : B.teal }}>{simRunwayDays} days</span>
+                    </div>
+                  </div>
+
+                  {/* Fragility */}
+                  <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4, marginBottom: 16 }}>
+                    <span style={{ ...T.small, color: B.navy }}>Fragility</span>
+                    <span style={{ ...T.small, fontWeight: 600, color: simResult.fragility_class === "brittle" || simResult.fragility_class === "thin" ? B.bandLimited : B.teal }}>{simResult.fragility_class}</span>
+                  </div>
+                </div>
               </div>
             )}
+
+            {/* PATH TO +10 — always visible */}
+            {pathSteps.length > 0 && (
+              <>
+              <SectionDivider />
+              <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.teal}`, borderRadius: 4, padding: "16px 20px" }}>
+                <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>PATH TO {baseResult.overall_score + 10}</div>
+                <p style={{ ...T.small, color: B.muted, marginBottom: 10 }}>The most efficient changes to gain 10 points from your current {baseResult.overall_score}:</p>
+                {pathSteps.map((step, i) => (
+                  <div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4 }}>{i + 1}. {step}</div>
+                ))}
+              </div>
+              </>
+            )}
+
+            {/* Income Runway */}
             <SectionDivider />
             <Overline large>Income Runway</Overline>
-            <div style={{ display: "flex", gap: 12 }}>
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
-                <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
-                <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
-                <p style={{ ...T.meta, color: B.muted, marginTop: 8, lineHeight: 1.5 }}>
-                  {runwayDays < 14 ? "Crisis-level. Any disruption becomes an emergency." : runwayDays < 30 ? "Less than one month of runway." : runwayDays < 90 ? "Moderate — not enough for a real transition." : "Strong runway."}
-                </p>
-              </div>
-              <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
-                {runwayDays >= 90 ? (
-                  <><div style={{ ...T.cardHero, color: B.teal, marginBottom: 8 }}>Already there</div><p style={{ ...T.small, color: B.muted, margin: 0 }}>Focus on maintaining this buffer.</p></>
-                ) : (
-                  <><div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>You need {target90Days} more days</div><p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{persistenceGapPct > 0 ? `Increase recurring revenue by ~${persistenceGapPct}% (convert ${clientsToConvert} client${clientsToConvert > 1 ? "s" : ""} to retainers) or lock in ${Math.round(gapMonths / 0.04)}% more forward revenue.` : "Reduce labor dependence and extend contract terms to close the gap."}</p></>
-                )}
-              </div>
-            </div>
+            {(() => {
+              const runwayDays = simMode === "advanced" && simSliders ? simRunwayDays : Math.round(record.income_continuity_months * 30);
+              const target90 = Math.max(0, 90 - runwayDays);
+              return (
+                <div style={{ display: "flex", gap: 12 }}>
+                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", textAlign: "center" }}>
+                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
+                    <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
+                    <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
+                  </div>
+                  <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px" }}>
+                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
+                    {runwayDays >= 90 ? (
+                      <div style={{ ...T.cardHeading, color: B.teal }}>Already there</div>
+                    ) : (
+                      <div style={{ ...T.sectionLabel, color: B.navy }}>You need {target90} more days</div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         );
       })()}
