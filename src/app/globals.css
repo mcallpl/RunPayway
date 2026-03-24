@@ -383,15 +383,10 @@ html, body {
    ============================================ */
 @media (max-width: 768px) {
 
-  /* --- Global Layout --- */
+  /* --- Global Layout — ensure minimum 24px inset on all sections --- */
   section {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-  section > .mx-auto,
-  section > div > .mx-auto {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
   }
 
   /* --- Header / Nav --- */
@@ -411,18 +406,18 @@ html, body {
 
   /* --- Hero Sections — all pages use similar pattern --- */
   section h1 {
-    font-size: 28px !important;
-    line-height: 1.2 !important;
+    font-size: 32px !important;
+    line-height: 1.15 !important;
     letter-spacing: -0.02em !important;
   }
 
   /* --- Typography scaling --- */
   section h2 {
-    font-size: 24px !important;
-    line-height: 1.2 !important;
+    font-size: 26px !important;
+    line-height: 1.18 !important;
   }
   section h3 {
-    font-size: 18px !important;
+    font-size: 17px !important;
   }
 
   /* --- Grid layouts — stack on mobile --- */
@@ -439,7 +434,7 @@ html, body {
 
   /* --- Footer --- */
   footer .mx-auto {
-    padding: 36px 20px 28px !important;
+    padding: 36px 24px 28px !important;
   }
   footer nav[aria-label="Footer navigation"] {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -526,15 +521,15 @@ html, body {
   section[aria-label="Global Disclaimer"] > div:nth-child(2) {
     padding-top: 48px !important;
     padding-bottom: 48px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
   }
 
   section[aria-label="Get Your Income Stability Score"] > div:last-of-type {
     padding-top: 80px !important;
     padding-bottom: 80px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
   }
   section[aria-label="Get Your Income Stability Score"] a {
     min-width: 0 !important;
