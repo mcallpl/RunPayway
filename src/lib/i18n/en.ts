@@ -167,7 +167,7 @@ export const en: Translations = {
     scoreLabel: "Income Stability Score™",
     assessmentId: "Assessment ID:",
     generated: "Generated:",
-    model: "Model: RP-1.0",
+    model: "Model: RP-2.0",
     limited: "Limited",
     developing: "Developing",
     established: "Established",

@@ -209,7 +209,7 @@ export default function SignInPage() {
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Structural Stability Model RP-1.0
+            Structural Stability Model RP-2.0
           </p>
         </div>
       </section>
@@ -631,7 +631,7 @@ export default function SignInPage() {
               The RunPayway™ Monitoring Portal is designed for subscribers who are tracking structural income stability over time.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
-              Assessments issued through the portal are generated using fixed scoring criteria defined under Structural Stability Model RP-1.0.
+              Assessments issued through the portal are generated using fixed scoring criteria defined under Structural Stability Model RP-2.0.
             </p>
           </div>
         </div>
@@ -648,7 +648,7 @@ export default function SignInPage() {
         }}
       >
         <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.02em" }}>
-          Powered by Structural Stability Model RP-1.0
+          Powered by Structural Stability Model RP-2.0
         </span>
       </div>
     </div>

@@ -1,5 +1,5 @@
 // RUNPAYWAY™ Income Stability Score™ Diagnostic System
-// Model RP-1.0 | Version 1.0 — Interpretation Selection
+// Model RP-2.0 | Version 1.0 — Interpretation Selection
 
 import type {
   CanonicalKey,
@@ -21,19 +21,19 @@ const BAND_INTERPRETATIONS: Record<
 > = {
   "Limited Stability": {
     key: "limited_stability",
-    text: `Stability Classification: Limited Stability Determination under Model RP-1.0 stability methodology. Income structure is in an early stage of stability. Revenue continuity may rely primarily on active work or a limited number of income sources. Building recurring or built-in income may strengthen the durability and persistence of income over time. Income within this band represent developing foundations for long-term income continuity under Model RP-1.0.`,
+    text: `Stability Classification: Limited Stability Determination under Model RP-2.0 stability methodology. Income structure is in an early stage of stability. Revenue continuity may rely primarily on active work or a limited number of income sources. Building recurring or built-in income may strengthen the durability and persistence of income over time. Income within this band represent developing foundations for long-term income continuity under Model RP-2.0.`,
   },
   "Developing Stability": {
     key: "developing_stability",
-    text: `Stability Classification: Developing Stability Determination under Model RP-1.0 stability methodology. Income structure demonstrates emerging stability. Elements such as diversification, recurring revenue, or forward visibility may be present but remain in the process of strengthening. Income within this band show measurable progress toward durable income continuity under typical market conditions.`,
+    text: `Stability Classification: Developing Stability Determination under Model RP-2.0 stability methodology. Income structure demonstrates emerging stability. Elements such as diversification, recurring revenue, or forward visibility may be present but remain in the process of strengthening. Income within this band show measurable progress toward durable income continuity under typical market conditions.`,
   },
   "Established Stability": {
     key: "established_stability",
-    text: `Stability Classification: Established Stability Determination under Model RP-1.0 stability methodology. Income demonstrates durable continuity under disruption. Revenue typically reflects multiple contributing sources and may include recurring characteristics or forward contractual visibility. Income within this band represents stable income with opportunities to further strengthen persistence and durability.`,
+    text: `Stability Classification: Established Stability Determination under Model RP-2.0 stability methodology. Income demonstrates durable continuity under disruption. Revenue typically reflects multiple contributing sources and may include recurring characteristics or forward contractual visibility. Income within this band represents stable income with opportunities to further strengthen persistence and durability.`,
   },
   "High Stability": {
     key: "high_stability",
-    text: `Stability Classification: High Stability Determination under Model RP-1.0 stability methodology. Income demonstrates strong persistence and resilience. Revenue continuity is supported by diversified income sources, forward revenue visibility, and meaningful income persistence beyond immediate operational activity. Income within this band represents the upper tier of income durability under Model RP-1.0.`,
+    text: `Stability Classification: High Stability Determination under Model RP-2.0 stability methodology. Income demonstrates strong persistence and resilience. Revenue continuity is supported by diversified income sources, forward revenue visibility, and meaningful income persistence beyond immediate operational activity. Income within this band represents the upper tier of income durability under Model RP-2.0.`,
   },
 };
 

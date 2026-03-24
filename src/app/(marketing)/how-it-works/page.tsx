@@ -1114,7 +1114,7 @@ export default function HowItWorksPage() {
     <div>
       <Hero />
       <ThreeSteps />
-      {/* Simulator + Script Generator teaser */}
+      {/* Simulator + Scripts teaser */}
       <section style={{ background: "#F4F1EA", paddingTop: 64, paddingBottom: 64, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 580, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
@@ -1123,7 +1123,7 @@ export default function HowItWorksPage() {
               Simulate changes. Get the scripts to make them.
             </h2>
             <p style={{ fontSize: 15, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
-              The interactive Score Simulator lets you drag five sliders to model real scenarios &mdash; see exactly how each change moves your score. The Script Generator gives you ready-to-use language for retainer pitches, client outreach, and pricing restructures you can copy and send tomorrow.
+              The interactive Score Simulator lets you drag five sliders to model real scenarios &mdash; see exactly how each change moves your score. Your report includes personalized, ready-to-use scripts for retainer pitches, client outreach, and pricing restructures — generated from your actual results, ready to copy and send.
             </p>
           </div>
           <SimulatorTeaser variant="dark-on-light" />

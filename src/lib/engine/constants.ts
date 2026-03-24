@@ -6,9 +6,9 @@ import type { CanonicalKey, StabilityBand } from "./types";
 // Model identity
 export const MODEL_NAME = "Income Stability Score";
 export const MODEL_ISSUER = "RunPayway";
-export const MODEL_CODE = "RP-1.0";
-export const MODEL_DISPLAY_VERSION = "Version 1.0";
-export const MODEL_VERSION_FULL = "RP-1.0 | Version 1.0";
+export const MODEL_CODE = "RP-2.0";
+export const MODEL_DISPLAY_VERSION = "Version 2.0";
+export const MODEL_VERSION_FULL = "RP-2.0 | Version 2.0";
 export const MANIFEST_ID = "RP1-2026-001";
 export const INTERPRETATION_VERSION = "RP1-INT-1.0";
 export const APPLICATION_VERSION = "1.0.0";

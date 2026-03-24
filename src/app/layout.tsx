@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "RunPayway™ Income Stability Assessment",
   description:
-    "Income Stability Score™ Structural Income Classification — Model RP-1.0 | Version 1.0",
+    "Income Stability Score™ Structural Income Classification — Model RP-2.0 | Version 2.0",
 };
 
 export default function RootLayout({

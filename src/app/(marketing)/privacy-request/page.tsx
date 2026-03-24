@@ -382,7 +382,7 @@ export default function PrivacyRequestPage() {
 
                   const bodyEncoded = encodeURIComponent(bodyParts.join("\n"));
 
-                  window.location.href = `/contact`;
+                  window.location.href = `mailto:privacy@peoplestar.com?subject=${subject}&body=${bodyEncoded}`;
                   setSubmitted(true);
                 }}
                 onMouseEnter={() => canHover() && setBtnHovered(true)}
@@ -536,7 +536,7 @@ export default function PrivacyRequestPage() {
       {/* ============================================================ */}
       <div style={{ background: B.gradient, padding: "16px 0", textAlign: "center" }}>
         <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.02em" }}>
-          Powered by Structural Stability Model RP-1.0
+          Powered by Structural Stability Model RP-2.0
         </span>
       </div>
     </div>

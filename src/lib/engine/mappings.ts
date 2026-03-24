@@ -662,7 +662,7 @@ export function generatePageInsights(
           : `in the early stages of development, which is common in the ${industrySector} sector where income often starts as highly active and transaction-driven`;
 
   return {
-    page_1: `This income scores ${finalScore} under Model RP-1.0, placing it ${bandContext}. The score reflects how income is built — not total earnings or financial health — and measures how well it would hold up if active work were reduced.`,
+    page_1: `This income scores ${finalScore} under Model RP-2.0, placing it ${bandContext}. The score reflects how income is built — not total earnings or financial health — and measures how well it would hold up if active work were reduced.`,
     page_2: `Classified as ${laborAssetLabel} on the labor-asset spectrum, this income in the ${industrySector} sector derives its revenue from a specific mix of active work, recurring arrangements, and ongoing income. The indicators below reveal where stability is strong and where it depends on continued personal effort.`,
     page_3: `The income map shows how revenue is distributed across active, recurring, and built-in categories — a pattern shaped by the typical structures available in the ${industrySector} sector. Combined with the key indicators, this reveals the operational reality behind the score.`,
     page_4: `Within the ${industrySector} peer group, this income falls in the ${band} band. The benchmark comparison below shows how this score compares to the sector average and the threshold for the top 20% of ${industrySector} income profiles.`,
