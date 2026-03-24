@@ -8,19 +8,17 @@ import { useState, useEffect, useRef } from "react";
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  offWhite: "#FFFFFF",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  border: "rgba(14,26,43,0.12)",
-  gradient:
-    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  teal: "#1A7A6D",
+  sand: "#F5F2EC",
+  offWhite: "#FAFAF8",
+  muted: "rgba(14,26,43,0.55)",
+  light: "rgba(14,26,43,0.38)",
+  border: "rgba(14,26,43,0.08)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
+  bandHigh: "#1A7A6D",
 };
 
 const STRIPE_SINGLE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
@@ -170,88 +168,48 @@ function Hero() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
+  const animatedScore = useAnimatedCounter(78, visible, 1800);
+
   return (
     <section
       ref={ref}
       aria-label="Sample Report Hero"
       style={{
-        background: B.gradient,
+        background: B.navy,
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? 80 : 100,
-        paddingBottom: mobile ? 60 : 72,
+        minHeight: mobile ? "70vh" : "80vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
-      <div
-        style={{
-          position: "absolute",
-          top: "30%",
-          left: "50%",
-          width: 600,
-          height: 600,
-          transform: "translate(-50%, -50%)",
-          background:
-            "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          maxWidth: 800,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? 24 : 48,
-          paddingRight: mobile ? 24 : 48,
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "rgba(244,241,234,0.50)",
-              marginBottom: 16,
-            }}
-          >
-            Sample Report
+      <style>{FONT_IMPORT}</style>
+      {/* Atmospheric glows */}
+      <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 500 : 900, height: mobile ? 500 : 900, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-15%", right: "-10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 800, margin: "0 auto", padding: `0 ${mobile ? 28 : 48}px`, textAlign: "center" }}>
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 1s ease-out, transform 1s ease-out" }}>
+          <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 32 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>Sample Report &#183; Consulting Profile</span>
           </div>
-          <h1
-            style={{
-              fontSize: mobile ? 28 : 38,
-              color: "#F4F1EA",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: "-0.025em",
-              lineHeight: 1.15,
-              marginBottom: 16,
-            }}
-          >
-            Not a report. A decision engine.
+
+          {/* Animated score */}
+          <div style={{ fontSize: mobile ? 72 : 96, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 8, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em" }}>
+            {animatedScore}
+          </div>
+          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 32 }}>out of 100 &middot; High Stability</div>
+
+          <h1 style={{ fontSize: mobile ? 28 : 42, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.025em", marginBottom: 16 }}>
+            This is what your report looks like.
           </h1>
-          <p
-            style={{
-              fontSize: mobile ? 14 : 16,
-              color: "rgba(244,241,234,0.60)",
-              lineHeight: 1.65,
-              maxWidth: 520,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Six pages of structural analysis. An interactive simulator with 5 sliders. Ready-to-send scripts. Every number is yours. This sample shows a consulting profile scoring 78/100.
+          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
+            Six pages. Interactive simulator. Ready-to-send scripts. Every number is yours.
           </p>
+
+          {/* Scroll indicator */}
+          <div style={{ width: 1, height: 48, background: "linear-gradient(180deg, rgba(244,241,234,0.20) 0%, transparent 100%)", margin: "0 auto", opacity: visible ? 1 : 0, transition: "opacity 1.5s ease-out 800ms" }} />
         </div>
       </div>
     </section>
@@ -340,7 +298,7 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
   const sectionBg = bg || sectionBgs[parseInt(pageNum) - 1] || "#F8F6F2";
 
   return (
-    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 56 : 96, paddingBottom: mobile ? 56 : 96, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 56 : 96, paddingBottom: mobile ? 56 : 96, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
         {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 36 : 0 }} />{card}</> : <>{card}<div style={{ width: 64 }} />{content}</>}
       </div>
@@ -536,44 +494,11 @@ function CtaSection() {
             transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <h2
-            className="text-[28px] md:text-[40px]"
-            style={{
-              color: "#F4F1EA",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              marginBottom: 20,
-            }}
-          >
-            This is what $99 gets you.
+          <h2 style={{ fontSize: mobile ? 28 : 42, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
+            See your own numbers.
           </h2>
-          <p
-            style={{
-              fontSize: 16,
-              color: "rgba(244,241,234,0.60)",
-              lineHeight: 1.65,
-              marginBottom: 12,
-              maxWidth: 440,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Your free score shows where you stand. The full report shows what to do about it.
-          </p>
-          <p
-            style={{
-              fontSize: 13,
-              color: "rgba(244,241,234,0.40)",
-              lineHeight: 1.6,
-              marginBottom: 32,
-              maxWidth: 440,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
+          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32, maxWidth: 440, margin: "0 auto 32px" }}>
+            This was a sample. Your report uses your real data, your industry, and your income structure. Full refund if it does not reveal something new.
           </p>
           <a
             href="/pricing"
@@ -621,11 +546,12 @@ function CtaSection() {
 function BridgeLine() {
   const mobile = useMobile();
   return (
-    <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, textAlign: "center" }}>
-      <p style={{ fontSize: mobile ? 16 : 20, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.45, maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
-        Six pages of analysis. An interactive simulator. Scripts you can send tomorrow. Here is what each section delivers.
-      </p>
-      <div style={{ width: 40, height: 2, backgroundColor: B.teal, margin: "24px auto 0", borderRadius: 1 }} />
+    <section style={{ backgroundColor: B.sand, paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48, borderTop: `1px solid ${B.border}`, borderBottom: `1px solid ${B.border}` }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", display: mobile ? "block" : "flex", justifyContent: "center", gap: 32, textAlign: "center" }}>
+        {["6 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
+          <span key={t} style={{ fontSize: 13, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
+        ))}
+      </div>
     </section>
   );
 }
@@ -634,7 +560,7 @@ function SimulatorPreview() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
   return (
-    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 56 : 80, paddingBottom: mobile ? 56 : 80, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 72 : 96, paddingBottom: mobile ? 72 : 96, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
         <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
           <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INTERACTIVE TOOL</div>
