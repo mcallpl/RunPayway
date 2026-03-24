@@ -86,42 +86,50 @@ function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  offWhite: "#FFFFFF",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  border: "#E6E9EF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  teal: "#1A7A6D",               // warmer, richer — higher contrast on dark bg
+  sand: "#F5F2EC",               // slightly warmer than before
+  offWhite: "#FAFAF8",           // not pure white — reduces glare
+  muted: "rgba(14,26,43,0.55)",  // slightly softer for body text
+  light: "rgba(14,26,43,0.38)",  // metadata / tertiary
+  border: "rgba(14,26,43,0.08)", // unified border token
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
 };
 
+// ── SPACING SCALE: 4px base, powers of 2 ──
+// 4, 8, 12, 16, 24, 32, 48, 64, 80, 96, 120, 160
 const S = {
-  sectionY:     { desktop: 140, mobile: 80 },
-  sectionYlg:   { desktop: 160, mobile: 88 },
-  sectionYsm:   { desktop: 100, mobile: 64 },
-  transitionY:  { desktop: 56, mobile: 40 },
+  // Section vertical rhythm
+  sectionY:     { desktop: 120, mobile: 72 },
+  sectionYlg:   { desktop: 144, mobile: 80 },
+  sectionYsm:   { desktop: 80, mobile: 48 },
+  transitionY:  { desktop: 48, mobile: 32 },
+  // Layout
   maxW:         1100,
-  subtextMaxW:  540,
+  subtextMaxW:  520,
   padX:         { desktop: 56, mobile: 24 },
+  // Vertical gaps (strict 4px grid)
   h1mb:         24,
-  h2mb:         20,
+  h2mb:         16,
   subtextMb:    48,
-  paraMb:       20,
-  labelMb:      14,
-  cardPad:      { desktop: 36, mobile: 24 },
-  cardRadius:   12,
-  panelRadius:  16,
-  gridGap:      24,
-  gridGapSm:    16,
+  paraMb:       16,
+  labelMb:      12,
+  sectionHeaderMb: { desktop: 48, mobile: 32 },
+  // Cards
+  cardPad:      { desktop: 32, mobile: 24 },
+  cardRadius:   8,
+  panelRadius:  12,
+  gridGap:      16,
+  gridGapSm:    12,
+  // CTA
   ctaH:         52,
   ctaHsm:       44,
   ctaPadX:      32,
-  ctaRadius:    12,
-  lhHeading:    1.1,
-  lhBody:       1.65,
-  lhDense:      1.5,
-  lsHeading:    "-0.02em",
+  ctaRadius:    10,
+  // Typography
+  lhHeading:    1.08,
+  lhBody:       1.6,
+  lhDense:      1.45,
+  lsHeading:    "-0.025em",
   lsHero:       "-0.03em",
   lsLabel:      "0.10em",
 };
@@ -349,8 +357,8 @@ input[type="range"]::-webkit-slider-thumb {
         className="relative mx-auto"
         style={{
           maxWidth: S.maxW,
-          paddingTop: mobile ? 100 : 180,
-          paddingBottom: mobile ? 80 : 160,
+          paddingTop: mobile ? 96 : 160,
+          paddingBottom: mobile ? 72 : 120,
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         }}
@@ -394,11 +402,11 @@ input[type="range"]::-webkit-slider-thumb {
 
             <h1
               style={{
-                fontSize: mobile ? 36 : 64,
+                fontSize: mobile ? 34 : 56,
                 fontWeight: 400,
                 color: "#F4F1EA",
-                lineHeight: 1.05,
-                letterSpacing: "-0.025em",
+                lineHeight: 1.06,
+                letterSpacing: S.lsHero,
                 marginBottom: S.h1mb,
                 maxWidth: mobile ? undefined : 600,
                 fontFamily: DISPLAY_FONT,
@@ -409,10 +417,10 @@ input[type="range"]::-webkit-slider-thumb {
 
             <p
               style={{
-                fontSize: mobile ? 15 : 18,
-                color: "rgba(244,241,234,0.65)",
-                lineHeight: 1.7,
-                marginBottom: 12,
+                fontSize: mobile ? 15 : 16,
+                color: "rgba(244,241,234,0.60)",
+                lineHeight: S.lhBody,
+                marginBottom: S.paraMb,
                 maxWidth: mobile ? undefined : 500,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
@@ -425,9 +433,9 @@ input[type="range"]::-webkit-slider-thumb {
             <p
               style={{
                 fontSize: mobile ? 13 : 14,
-                color: "rgba(244,241,234,0.40)",
-                lineHeight: 1.6,
-                marginBottom: 36,
+                color: "rgba(244,241,234,0.35)",
+                lineHeight: S.lhDense,
+                marginBottom: 32,
                 maxWidth: mobile ? undefined : 500,
                 opacity: visible ? 1 : 0,
                 transition: "opacity 600ms ease-out 300ms",
@@ -535,8 +543,8 @@ function BridgeSection() {
       aria-label="Why this matters"
       style={{
         background: B.sand,
-        paddingTop: mobile ? 40 : 56,
-        paddingBottom: mobile ? 40 : 56,
+        paddingTop: mobile ? 32 : 48,
+        paddingBottom: mobile ? 32 : 48,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         borderTop: "1px solid rgba(14,26,43,0.06)",
@@ -555,12 +563,12 @@ function BridgeSection() {
       >
         <p
           style={{
-            fontSize: mobile ? 18 : 22,
+            fontSize: mobile ? 17 : 21,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
-            lineHeight: 1.45,
-            letterSpacing: "-0.015em",
+            lineHeight: 1.4,
+            letterSpacing: S.lsHeading,
             margin: 0,
           }}
         >
@@ -613,7 +621,7 @@ function FourFactorsSection() {
       aria-label="What RunPayway™ Measures"
       style={{
         background: "#FFFFFF",
-        paddingTop: mobile ? 64 : 96,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
@@ -626,14 +634,14 @@ function FourFactorsSection() {
             What We Measure
           </div>
           <h2 style={{
-            fontSize: mobile ? 28 : 44, color: B.navy, lineHeight: 1.12,
+            fontSize: mobile ? 28 : 42, color: B.navy, lineHeight: 1.12,
             letterSpacing: "-0.025em", fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16,
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
             The four structural risks that determine your score
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
+          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
             If any one is weak, your income is exposed. The score quantifies exactly how much.
           </p>
         </div>
@@ -757,7 +765,7 @@ function IncomePatterns() {
       aria-label="Income Patterns"
       style={{
         background: "linear-gradient(180deg, #F8F6F2 0%, #F4F1EA 100%)",
-        paddingTop: mobile ? 80 : 120,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? 80 : 120,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
@@ -787,7 +795,7 @@ function IncomePatterns() {
             </div>
             <h2
               style={{
-                fontSize: mobile ? 32 : 48,
+                fontSize: mobile ? 28 : 42,
                 color: B.navy,
                 lineHeight: S.lhHeading,
                 letterSpacing: S.lsHeading,
@@ -1022,7 +1030,7 @@ function WhatYourReportSection() {
           </div>
           <h2
             style={{
-              fontSize: mobile ? 32 : 48,
+              fontSize: mobile ? 28 : 42,
               color: "#F4F1EA",
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
@@ -1037,7 +1045,7 @@ function WhatYourReportSection() {
           </h2>
           <p
             style={{
-              fontSize: mobile ? 15 : 17,
+              fontSize: mobile ? 15 : 16,
               color: "rgba(244,241,234,0.55)",
               lineHeight: S.lhBody,
               maxWidth: 520,
@@ -1058,7 +1066,7 @@ function WhatYourReportSection() {
               style={{
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 12,
+                borderRadius: S.panelRadius,
                 padding: mobile ? "20px 20px" : "28px 20px",
                 position: "relative",
                 overflow: "hidden",
@@ -1084,7 +1092,7 @@ function WhatYourReportSection() {
           padding: mobile ? "24px 20px" : "28px 32px",
           background: "rgba(75,63,174,0.25)",
           border: "1px solid rgba(75,63,174,0.40)",
-          borderRadius: 12,
+          borderRadius: S.panelRadius,
           display: "flex",
           alignItems: mobile ? "flex-start" : "center",
           flexDirection: mobile ? "column" : "row",
@@ -1181,7 +1189,7 @@ function SampleResultSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 32 : 48,
+            fontSize: mobile ? 28 : 42,
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1198,7 +1206,7 @@ function SampleResultSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 16 : 18,
+            fontSize: mobile ? 15 : 16,
             color: "rgba(244,241,234,0.60)",
             lineHeight: S.lhBody,
             maxWidth: S.subtextMaxW,
@@ -1229,7 +1237,7 @@ function SampleResultSection() {
               maxWidth: S.subtextMaxW,
               width: "100%",
               background: "#FFFFFF",
-              borderRadius: 12,
+              borderRadius: S.panelRadius,
               border: "1px solid rgba(14,26,43,0.08)",
               boxShadow: "0 24px 80px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
               overflow: "hidden",
@@ -1495,7 +1503,7 @@ function HowItWorksSection() {
             How It Works
           </div>
           <h2 style={{
-            fontSize: mobile ? 32 : 48, color: B.navy, lineHeight: S.lhHeading,
+            fontSize: mobile ? 28 : 42, color: B.navy, lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: 16,
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1504,7 +1512,7 @@ function HowItWorksSection() {
             Three steps. Under two minutes.<br />No financial data required.
           </h2>
           <p style={{
-            fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
+            fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
             opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms",
           }}>
             We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
@@ -1597,7 +1605,7 @@ function WhatItMeasuresSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 32 : 48,
+            fontSize: mobile ? 28 : 42,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1614,7 +1622,7 @@ function WhatItMeasuresSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 16 : 18,
+            fontSize: mobile ? 15 : 16,
             color: B.muted,
             lineHeight: S.lhBody,
             maxWidth: 640,
@@ -1644,7 +1652,7 @@ function WhatItMeasuresSection() {
               style={{
                 background: "#FFFFFF",
                 border: "1px solid rgba(14,26,43,0.06)",
-                borderRadius: 12,
+                borderRadius: S.panelRadius,
                 padding: 28,
                 position: "relative",
                 borderLeft: `3px solid ${dim.color}`,
@@ -1750,7 +1758,7 @@ function TestimonialsSection() {
           </div>
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 28 : 42,
               color: "#F4F1EA",
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
@@ -1859,7 +1867,7 @@ function PricingSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 30 : 44,
+            fontSize: mobile ? 28 : 42,
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1876,7 +1884,7 @@ function PricingSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 16 : 18,
+            fontSize: mobile ? 15 : 16,
             color: "rgba(244,241,234,0.80)",
             lineHeight: S.lhBody,
             maxWidth: S.subtextMaxW,
@@ -1931,7 +1939,7 @@ function PricingSection() {
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: 12,
+              borderRadius: S.panelRadius,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
               border: "1px solid rgba(255,255,255,0.15)",
               boxShadow: "0 16px 48px rgba(0,0,0,0.20), 0 4px 12px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.8)",
@@ -1989,7 +1997,7 @@ function PricingSection() {
           <div
             style={{
               background: "#FFFFFF",
-              borderRadius: 12,
+              borderRadius: S.panelRadius,
               padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
               border: "1px solid rgba(75,63,174,0.20)",
               boxShadow: "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)",
@@ -2070,7 +2078,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 400ms",
           }}
         >
-          <div style={{ display: "inline-block", padding: "16px 32px", borderRadius: 12, border: "1px solid rgba(244,241,234,0.12)", marginBottom: 20 }}>
+          <div style={{ display: "inline-block", padding: "16px 32px", borderRadius: S.panelRadius, border: "1px solid rgba(244,241,234,0.12)", marginBottom: 20 }}>
             <p style={{ fontSize: 15, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
               If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
             </p>
@@ -2152,7 +2160,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 32 : 48,
+            fontSize: mobile ? 28 : 42,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2181,7 +2189,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
                 key={panel.title}
                 style={{
                   background: "#FFFFFF",
-                  borderRadius: 12,
+                  borderRadius: S.panelRadius,
                   border: "1px solid rgba(14,26,43,0.06)",
                   marginBottom: 12,
                   overflow: "hidden",
@@ -2289,7 +2297,7 @@ function ClassificationSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 32 : 48,
+            fontSize: mobile ? 28 : 42,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2306,7 +2314,7 @@ function ClassificationSection() {
         <p
           className="text-center"
           style={{
-            fontSize: mobile ? 16 : 18,
+            fontSize: mobile ? 15 : 16,
             color: B.muted,
             lineHeight: S.lhBody,
             marginBottom: mobile ? 40 : 56,
@@ -2437,7 +2445,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 32 : 48,
+            fontSize: mobile ? 28 : 42,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2552,7 +2560,7 @@ function ShareableScoreSection() {
     <section
       style={{
         background: "#FFFFFF",
-        paddingTop: mobile ? 80 : 100,
+        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
         paddingBottom: mobile ? 80 : 100,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
@@ -2577,7 +2585,7 @@ function ShareableScoreSection() {
             </div>
             <h2
               style={{
-                fontSize: mobile ? 28 : 40,
+                fontSize: mobile ? 28 : 42,
                 color: B.navy,
                 lineHeight: 1.2,
                 letterSpacing: "-0.02em",
@@ -2601,7 +2609,7 @@ function ShareableScoreSection() {
           </div>
           <div style={{ flex: 1, maxWidth: 400 }}>
             {/* Preview of shareable score card */}
-            <div style={{ borderRadius: 12, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.06)" }}>
+            <div style={{ borderRadius: S.panelRadius, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.06)" }}>
               <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "24px 24px 20px" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>INCOME STABILITY SCORE&#8482;</div>
                 <div style={{ fontSize: 40, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>72</div>
