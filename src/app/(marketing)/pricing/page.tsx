@@ -54,35 +54,34 @@ function useMobile(breakpoint = 768) {
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  offWhite: "#FFFFFF",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  border: "rgba(14,26,43,0.12)",
-  gradient:
-    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  teal: "#1A7A6D",
+  sand: "#F5F2EC",
+  offWhite: "#FAFAF8",
+  muted: "rgba(14,26,43,0.55)",
+  light: "rgba(14,26,43,0.38)",
+  border: "rgba(14,26,43,0.08)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
   cream: "#F4F1EA",
 };
 
 const S = {
-  sectionY: { desktop: 120, mobile: 80 },
-  sectionYsm: { desktop: 100, mobile: 64 },
+  sectionY: { desktop: 120, mobile: 72 },
+  sectionYsm: { desktop: 80, mobile: 48 },
   maxW: 1060,
   padX: { desktop: 48, mobile: 24 },
   h1mb: 20,
-  h2mb: 20,
-  subtextMb: 44,
-  cardRadius: 12,
+  h2mb: 16,
+  subtextMb: 48,
+  cardRadius: 8,
+  panelRadius: 12,
   ctaH: 52,
   ctaHsm: 44,
-  ctaRadius: 12,
-  lhHeading: 1.12,
-  lhBody: 1.65,
-  lsHeading: "-0.02em",
+  ctaRadius: 10,
+  lhHeading: 1.08,
+  lhBody: 1.6,
+  lsHeading: "-0.025em",
   lsHero: "-0.03em",
-  lsLabel: "0.12em",
+  lsLabel: "0.10em",
 };
 
 /* ------------------------------------------------------------------ */
@@ -111,27 +110,15 @@ function Hero() {
       style={{
         position: "relative",
         background: B.gradient,
-        paddingTop: mobile ? 100 : 140,
-        paddingBottom: mobile ? 64 : 96,
+        paddingTop: mobile ? 96 : 160,
+        paddingBottom: mobile ? 72 : 120,
         overflow: "hidden",
       }}
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
-      {/* Radial glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: "40%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: mobile ? 400 : 700,
-          height: mobile ? 400 : 700,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(75,63,174,0.25) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
+      {/* Atmospheric glows */}
+      <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 500 : 900, height: mobile ? 500 : 900, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.10) 0%, transparent 60%)", pointerEvents: "none" }} />
 
       <div
         style={{
@@ -167,7 +154,7 @@ function Hero() {
 
           <h1
             style={{
-              fontSize: mobile ? 32 : 48,
+              fontSize: mobile ? 32 : 52,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHero,
@@ -176,22 +163,26 @@ function Hero() {
               marginBottom: S.h1mb,
             }}
           >
-            Find out before it&apos;s too late.
+            Know your number.<br />Then change it.
           </h1>
 
           <p
             style={{
-              fontSize: 17,
+              fontSize: mobile ? 15 : 17,
               lineHeight: S.lhBody,
-              color: "rgba(244,241,234,0.75)",
-              maxWidth: 560,
-              marginLeft: "auto",
-              marginRight: "auto",
-              margin: "0 auto",
+              color: "rgba(244,241,234,0.60)",
+              maxWidth: 480,
+              margin: "0 auto 32px",
             }}
           >
-            Under 2 minutes. See your score free — or get the full report with an interactive score simulator, income runway calculator, risk scenarios, action plan with scripts you can send tomorrow, and tradeoff analysis.
+            Your Income Stability Score tells you how protected your income actually is. The full report shows you exactly what to do about it — with an interactive simulator, ready-to-send scripts, and tradeoff analysis.
           </p>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" as const }}>
+            {["Under 2 minutes", "No bank connection", "Full refund guarantee"].map((t) => (
+              <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>{t}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -301,42 +292,49 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
       onMouseLeave={() => setHovered(false)}
       style={{
         position: "relative",
-        background: "#FFFFFF",
-        borderRadius: S.cardRadius,
-        border: "1px solid rgba(75,63,174,0.15)",
-        padding: mobile ? "32px 28px" : "40px",
+        background: B.navy,
+        borderRadius: S.panelRadius,
+        padding: mobile ? "36px 28px" : "48px 40px",
         boxShadow: hovered
-          ? "0 20px 48px rgba(75,63,174,0.14), 0 4px 12px rgba(14,26,43,0.04)"
-          : "0 8px 32px rgba(75,63,174,0.10), 0 2px 8px rgba(14,26,43,0.04)",
+          ? "0 24px 56px rgba(14,26,43,0.30), 0 4px 12px rgba(14,26,43,0.10)"
+          : "0 12px 40px rgba(14,26,43,0.20), 0 2px 8px rgba(14,26,43,0.08)",
         transition: "opacity 700ms ease, transform 700ms ease, box-shadow 260ms ease",
         opacity: visible ? 1 : 0,
         transform: visible ? hovered ? "translateY(-4px)" : "translateY(0)" : "translateY(28px)",
         transitionDelay: `${delay}ms`,
         display: "flex",
         flexDirection: "column" as const,
+        overflow: "hidden",
       }}
     >
+      {/* Ambient glow inside card */}
+      <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+
       {/* Recommended badge */}
-      <div style={{ position: "absolute", top: -14, left: "50%", transform: "translateX(-50%)", padding: "6px 20px", borderRadius: 100, background: B.purple, color: "#FFFFFF", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>
-        Full Report
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.purple}, ${B.teal})` }} />
+
+      <div style={{ position: "relative" }}>
+        <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.20)", marginBottom: 16 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Most Popular</span>
+        </div>
+
+        <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>
+          Complete Assessment
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+          <span style={{ fontSize: 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$99</span>
+          <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>one-time</span>
+        </div>
       </div>
 
-      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: B.teal, marginBottom: 20 }}>
-        Complete Assessment
-      </div>
+      <div style={{ height: 1, background: "rgba(244,241,234,0.08)", margin: "24px 0", position: "relative" }} />
 
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-        <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$99</span>
-        <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
-      </div>
-
-      <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0" }} />
-
-      <div style={{ flex: 1, marginBottom: 32 }}>
+      <div style={{ flex: 1, marginBottom: 32, position: "relative" }}>
         {features.map((f, i) => (
-          <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: i === 0 ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
-            <span style={{ fontSize: 14, color: i === 0 ? B.navy : B.muted, lineHeight: 1.6, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
+          <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
+            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: i === 0 ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
+            <span style={{ fontSize: 14, color: i === 0 ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
           </div>
         ))}
       </div>
@@ -351,21 +349,22 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
           justifyContent: "center",
           height: S.ctaH,
           borderRadius: S.ctaRadius,
-          background: "linear-gradient(135deg, #4B3FAE 0%, #3A2F8E 100%)",
-          color: "#ffffff",
+          background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)",
+          color: B.navy,
           fontSize: 15,
           fontWeight: 600,
           textDecoration: "none",
-          letterSpacing: "0.01em",
-          boxShadow: hovered ? "0 12px 28px rgba(75,63,174,0.30)" : "0 4px 16px rgba(75,63,174,0.20)",
+          letterSpacing: "-0.01em",
+          boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.30)" : "0 8px 24px rgba(0,0,0,0.20)",
           transition: "box-shadow 260ms ease, transform 200ms ease",
-          transform: hovered ? "translateY(-1px)" : "translateY(0)",
+          transform: hovered ? "translateY(-2px)" : "translateY(0)",
+          position: "relative",
         }}
       >
         Get Full Report — $99
       </a>
 
-      <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+      <p style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 14, marginBottom: 0, position: "relative" }}>
         If it doesn&apos;t reveal something new, full refund. No questions.
       </p>
     </div>
@@ -381,11 +380,15 @@ function PricingCards() {
       ref={ref}
       aria-label="Pricing Plans"
       style={{
-        backgroundColor: "#FFFFFF",
+        background: B.offWhite,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        position: "relative",
       }}
     >
+      {/* Subtle top gradient bleed from hero */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0.03) 0%, transparent 100%)", pointerEvents: "none" }} />
+
       <div
         style={{
           maxWidth: S.maxW,
@@ -393,19 +396,42 @@ function PricingCards() {
           marginRight: "auto",
           paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
           paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+          position: "relative",
         }}
       >
+        {/* Social proof strip */}
+        <div style={{
+          textAlign: "center", marginBottom: mobile ? 32 : 48,
+          opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out",
+        }}>
+          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
+            Trusted by freelancers, contractors, and business owners across 18 industries.
+            <span style={{ color: B.teal, fontWeight: 600 }}> Average assessment time: 1 minute 47 seconds.</span>
+          </p>
+        </div>
+
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: 32,
-            maxWidth: 780,
+            gridTemplateColumns: mobile ? "1fr" : "5fr 7fr",
+            gap: mobile ? 16 : 24,
+            maxWidth: 820,
             margin: "0 auto",
+            alignItems: "start",
           }}
         >
           <FreeCard visible={visible} mobile={mobile} delay={0} />
           <FullReportCard visible={visible} mobile={mobile} delay={120} />
+        </div>
+
+        {/* Urgency + scarcity — psychological conversion */}
+        <div style={{
+          textAlign: "center", marginTop: mobile ? 32 : 48,
+          opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms",
+        }}>
+          <p style={{ fontSize: 13, color: B.light, margin: 0 }}>
+            Your score is calculated the moment you finish. No waiting. No follow-up calls. Instant results.
+          </p>
         </div>
       </div>
     </section>
