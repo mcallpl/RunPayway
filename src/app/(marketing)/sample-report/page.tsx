@@ -238,7 +238,7 @@ function Hero() {
               marginBottom: 16,
             }}
           >
-            This is what you get. All five pages.
+            Not a report. A decision engine.
           </h1>
           <p
             style={{
@@ -250,7 +250,7 @@ function Hero() {
               marginRight: "auto",
             }}
           >
-            This sample shows a professional services profile scoring 78. Your report will use your real numbers, your industry, and your income structure. No two reports are the same.
+            Six pages of structural analysis. An interactive simulator with 5 sliders. Ready-to-send scripts. Every number is yours. This sample shows a consulting profile scoring 78/100.
           </p>
         </div>
       </div>
@@ -397,9 +397,37 @@ function Page3Preview() {
         bullets={["Top 3 stress scenarios ranked by severity with score-drop projections", "Predictive warnings: what people in your position typically do wrong next", "Urgency framing with your actual runway and stress test numbers"]}
         alignRight={true} visible={visible} mobile={mobile} dark
         cardContent={<>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
+          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78/100 → 56/100" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78/100 → 62/100" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78/100 → 72/100" }].map((r) => (
+            <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 9, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
+              </div>
+              <span style={{ fontSize: 10, color: B.muted }}>{r.drop}</span>
+            </div>
+          ))}
+        </>}
+      />
+    </div>
+  );
+}
+
+function Page4Preview() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+  return (
+    <div ref={ref}>
+      <PagePreview
+        pageNum="4" title="Your Income Deep Dive" question="How deep does it go?"
+        description="Six dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
+        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
+        alignRight={false} visible={visible} mobile={mobile}
+        cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>
           <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
-          {[{ label: "Income That Keeps Coming", pct: 82, color: B.teal }, { label: "Not Too Dependent on One Source", pct: 55, color: B.light }, { label: "Locked In Ahead of Time", pct: 71, color: B.teal }].map((ind) => (
+          {[{ label: "Income Persistence", pct: 82, color: B.teal }, { label: "Source Independence", pct: 55, color: B.light }, { label: "Forward Visibility", pct: 71, color: B.teal }].map((ind) => (
             <div key={ind.label} style={{ marginBottom: 10 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
                 <span style={{ fontSize: 10, fontWeight: 600, color: B.navy }}>{ind.label}</span>
@@ -420,34 +448,6 @@ function Page3Preview() {
               <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>High</div>
             </div>
           </div>
-        </>}
-      />
-    </div>
-  );
-}
-
-function Page4Preview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="4" title="Your Income Deep Dive" question="How deep does it go?"
-        description="Six dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
-        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
-        alignRight={false} visible={visible} mobile={mobile}
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
-          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78 → 56" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78 → 62" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78 → 72" }].map((r) => (
-            <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 9, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
-              </div>
-              <span style={{ fontSize: 10, color: B.muted }}>{r.drop}</span>
-            </div>
-          ))}
         </>}
       />
     </div>
@@ -623,10 +623,88 @@ function BridgeLine() {
   return (
     <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, textAlign: "center" }}>
       <p style={{ fontSize: mobile ? 16 : 20, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.45, maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
-        Five pages. Each one answers a question you need answered before something goes wrong.
+        Six pages of analysis. An interactive simulator. Scripts you can send tomorrow. Here is what each section delivers.
       </p>
       <div style={{ width: 40, height: 2, backgroundColor: B.teal, margin: "24px auto 0", borderRadius: 1 }} />
     </section>
+  );
+}
+
+function SimulatorPreview() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+  return (
+    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 56 : 80, paddingBottom: mobile ? 56 : 80, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
+        <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INTERACTIVE TOOL</div>
+          <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>Score Simulator</h3>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.65)", lineHeight: 1.7, marginBottom: 28 }}>
+            Model your income structure in real time. Drag 5 sliders — recurring revenue, top client share, income sources, months booked, passive income — and watch your score recalculate instantly.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {["6 preset scenarios: add a client, lose your top source, convert to retainers, build passive income, lock forward revenue, 90-day work stoppage",
+              "Custom mode with 5 structural sliders and live stress tests",
+              "Path to +10: the exact changes needed to gain 10 points from your current score",
+              "Income Runway: how many days your income lasts if you stop working today",
+            ].map((b) => (
+              <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>{b}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ flex: 1, maxWidth: mobile ? undefined : 400, marginTop: mobile ? 36 : 0 }}>
+          <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={320}>
+            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10, marginTop: 8 }}>SCORE SIMULATOR</div>
+            <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>CURRENT</div><div style={{ fontSize: 22, fontWeight: 600, color: B.navy }}>78</div><div style={{ fontSize: 9, color: B.light }}>High Stability</div></div>
+              <div style={{ display: "flex", alignItems: "center", color: B.light }}>→</div>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>SIMULATED</div><div style={{ fontSize: 22, fontWeight: 600, color: B.bandLimited }}>61</div><div style={{ fontSize: 9, color: B.light }}>Established</div></div>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>IMPACT</div><div style={{ fontSize: 22, fontWeight: 600, color: B.bandLimited }}>-17</div></div>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 4, marginBottom: 12 }}>
+              {["Add client", "Retainer", "Lose top", "Passive", "Forward", "90-day"].map((p, i) => (
+                <span key={p} style={{ fontSize: 9, padding: "3px 8px", borderRadius: 4, border: `1px solid ${i === 2 ? B.purple : "rgba(14,26,43,0.10)"}`, backgroundColor: i === 2 ? "rgba(75,63,174,0.06)" : "#fff", color: i === 2 ? B.purple : B.navy, fontWeight: i === 2 ? 600 : 400 }}>{p}</span>
+              ))}
+            </div>
+            <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "8px 10px" }}>
+              <div style={{ fontSize: 9, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Lose your top client</div>
+              <div style={{ fontSize: 9, color: B.muted }}>Score drops 17 points. Band shifts to Established.</div>
+            </div>
+          </ReportCard>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Page6Preview() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+  return (
+    <div ref={ref}>
+      <PagePreview
+        pageNum="6" title="Strategy and Next Steps" question="What are the tradeoffs?"
+        description="Every recommended action comes with an honest cost-benefit analysis. Plus reassessment triggers, verification, and ready-to-use scripts you can copy and send."
+        bullets={["Tradeoff analysis: the upside, the cost, and the net recommendation for each move", "Ready-to-use scripts: retainer pitch, client outreach, pricing restructure — personalized to your data", "Reassessment date, verification stamp, and record ID for sharing with advisors or lenders"]}
+        alignRight={false} visible={visible} mobile={mobile}
+        cardContent={<>
+          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Strategy and Next Steps</h3>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>TRADEOFFS TO UNDERSTAND</div>
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Reduce client concentration</div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1 }}><div style={{ fontSize: 8, fontWeight: 600, color: B.teal }}>UPSIDE</div><div style={{ fontSize: 9, color: B.muted }}>Removes single point of failure</div></div>
+              <div style={{ flex: 1 }}><div style={{ fontSize: 8, fontWeight: 600, color: B.bandDeveloping }}>COST</div><div style={{ fontSize: 9, color: B.muted }}>Short-term income volatility</div></div>
+            </div>
+          </div>
+          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>READY-TO-USE SCRIPTS</div>
+          <div style={{ fontSize: 10, color: B.muted, lineHeight: 1.5 }}>Retainer pitch &#183; Client outreach &#183; Pricing restructure</div>
+        </>}
+      />
+    </div>
   );
 }
 
@@ -636,10 +714,12 @@ export default function SampleReportPage() {
       <Hero />
       <BridgeLine />
       <Page1Preview />
+      <SimulatorPreview />
       <Page2Preview />
       <Page3Preview />
       <Page4Preview />
       <Page5Preview />
+      <Page6Preview />
       <CtaSection />
     </div>
   );
