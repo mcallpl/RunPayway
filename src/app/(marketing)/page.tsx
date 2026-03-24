@@ -306,7 +306,7 @@ function HeroSection() {
       ref={ref}
       aria-label="Hero"
       className="relative overflow-hidden"
-      style={{ background: B.gradient }}
+      style={{ background: B.navy }}
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
 input[type="range"]::-webkit-slider-thumb {
@@ -324,16 +324,6 @@ input[type="range"]::-webkit-slider-thumb {
   50% { opacity: 0.8; }
 }
 `}</style>
-      {/* Soft gradient mesh — subtle color depth, no noise or shimmer */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 60% at 65% 20%, rgba(75,63,174,0.12) 0%, transparent 65%),
-            radial-gradient(ellipse 60% 50% at 25% 75%, rgba(31,109,122,0.08) 0%, transparent 60%)
-          `,
-        }}
-      />
 
       <div
         className="relative mx-auto"
@@ -506,7 +496,7 @@ input[type="range"]::-webkit-slider-thumb {
       {/* Bottom fade — smooth transition to bridge */}
       <div
         className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{ height: 240, background: `linear-gradient(to bottom, transparent 0%, rgba(14,26,43,0.15) 40%, rgba(30,28,40,0.3) 60%, rgba(100,90,80,0.15) 80%, ${B.sand} 100%)` }}
+        style={{ height: 160, background: `linear-gradient(to bottom, ${B.navy} 0%, ${B.sand} 100%)` }}
       />
 
     </section>
