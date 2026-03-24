@@ -754,21 +754,6 @@ export default function ReviewPage() {
       : "Your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
   };
 
-  // ── Tier-aware copy ──
-  const copy = {
-    p1_headline: ({
-      A1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Most of the income protection you need is not in place yet. This report shows you exactly where you are exposed and what to do first.`,
-      A2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is active but not protected. If conditions change, you have very little cushion.`,
-      A3: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You have some early protection, but you are still below a stable range. This report shows you what to fix first.`,
-      B1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is developing but not yet protected enough. The next gains come from building protection, not earning more.`,
-      B2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You are making progress, but your income still needs stronger protection before it can handle disruption.`,
-      C1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. You have real stability. This report shows the remaining gaps and how to close them.`,
-      C2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is established and relatively stable. This report shows where to refine.`,
-      D1: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is strong with substantial protection in place. This report shows how to maintain it.`,
-      D2: `You scored ${score} out of 100 as a ${structureDesc} in ${industrySector}. Your income is exceptionally well-protected. This report shows how to keep it that way.`,
-    })[subTier],
-    p5_reassess: "Retake after real structural improvement is active, not after a short-term earnings spike.",
-  };
 
   // ── V2 engine data (must be before band-sensitive copy) ──
   const v2 = record._v2;
@@ -882,32 +867,6 @@ export default function ReviewPage() {
     D1: `Strong ${incomeModelDesc} structure with ${record.persistent_income_level}% persistent income. Here is the full composition.`,
     D2: `Exceptionally well-built. Here is the structural detail behind the ${score}/100 score.`,
   };
-
-  const p2Interpretation: Record<string, string> = {
-    A1: `The main issue: ${dominantConstraintPlain[dominantConstraint]}. With ${record.income_continuity_pct}% continuity and a ${record.risk_scenario_drop}-point stress test drop, the ${incomeModelDesc} structure could collapse quickly under pressure.`,
-    A2: `The main issue — ${dominantConstraintPlain[dominantConstraint]} — must be addressed before anything else. As a ${structureDesc}, this is the priority.`,
-    A3: `Some structure is forming, but the ${incomeModelDesc} setup is still below stable. Focus: strengthen continuity and balance.`,
-    B1: `The main issue — ${dominantConstraintPlain[dominantConstraint]} — still limits protection. As a ${structureDesc} in ${industrySector}, the next step is turning progress into durability.`,
-    B2: `Stronger protection is needed. The ${record.risk_scenario_drop}-point stress test drop and ${record.income_continuity_pct}% continuity show where the ${incomeModelDesc} structure is still exposed.`,
-    C1: `${dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)} still limits full protection. The ${record.risk_scenario_drop}-point stress test drop shows remaining exposure in this ${incomeModelDesc} structure.`,
-    C2: `The structure is established. Remaining gains come from reducing concentration risk and extending continuity in this ${incomeModelDesc} setup.`,
-    D1: `Well-protected. Focus on preserving strength and reducing the remaining ${record.risk_scenario_drop}-point stress test exposure.`,
-    D2: `Exceptionally strong. Maintain discipline and avoid unnecessary fragility in this ${incomeModelDesc} structure.`,
-  };
-
-  const p2BottomLine: Record<string, string> = {
-    A1: `${name} needs protection first, not more output. As a ${structureDesc}, build structural safeguards before scaling.`,
-    A2: `${name} needs stronger protection. The ${incomeModelDesc} structure cannot absorb disruption yet.`,
-    A3: `${name} has a starting structure. Turn it into something stable by addressing ${dominantConstraintPlain[dominantConstraint]}.`,
-    B1: `${name} is developing. The next gains come from protection, not more output.`,
-    B2: `${name} is progressing. Strengthen the structure so the ${incomeModelDesc} income holds up under pressure.`,
-    C1: `${name} has real stability. Strengthen protection to lock it in.`,
-    C2: `${name} is established. Refine and harden what is already working.`,
-    D1: `${name} is strong. Preserve resilience and close the remaining gaps.`,
-    D2: `${name} is exceptionally strong. Maintain discipline.`,
-  };
-
-  const p2WorkingBody: string = ["A1", "A2"].includes(subTier) ? `Not starting from zero. As a ${structureDesc} with ${incomeModelDesc} income, this is an early base to build from.` : ["A3"].includes(subTier) ? `A base exists in the ${incomeModelDesc} structure, but still below a stable range.` : subTier === "B1" ? `The ${incomeModelDesc} structure is building, but important weaknesses remain.` : subTier === "B2" ? `Parts of the ${incomeModelDesc} structure support stability. Stronger protection is still needed.` : ["C1", "C2"].includes(subTier) ? `The ${incomeModelDesc} structure is working. Next gains come from strengthening what exists.` : `Protection is substantial in this ${incomeModelDesc} structure. Focus: refinement.`;
 
   const p3Intro: Record<string, string> = {
     A1: `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, these are the biggest threats to your structure right now.`,
@@ -1033,15 +992,7 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Score breakdown removed from Page 1 — math doesn't add up without
-            showing interaction penalties. Full breakdown shown on Page 3 where
-            cross-factor effects are explained in context. */}
-
-        <p style={{ ...T.body, color: B.muted, marginBottom: 12, maxWidth: 540 }}>
-          {copy.p1_headline}
-        </p>
-
-        {/* What this score means for your daily life */}
+        {/* What this score means — with your actual numbers */}
         <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT THIS MEANS FOR YOU</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
@@ -1099,10 +1050,6 @@ export default function ReviewPage() {
             </div>
           ))}
         </div>
-
-        <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes.
-        </p>
 
         <PageFooter section="Your Score" page={1} />
       </ReportPage>
@@ -1166,12 +1113,6 @@ export default function ReviewPage() {
         </div>
 
         <SectionDivider />
-
-        {/* What's working — single column (biggest weakness already on Page 1) */}
-        <div style={{ marginBottom: 20 }}>
-          <Overline large>What Is Working</Overline>
-          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
-        </div>
 
         {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
@@ -1579,23 +1520,11 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Urgency — right after scenarios while fear is fresh */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
-            {isHighScorer
-              ? `Your ${record.risk_scenario_drop}-point stress test exposure does not fix itself. The structural advantages you have today erode if you stop maintaining them.`
-              : `If nothing changes in 90 days, these risks remain. Your ${continuityDisplay} runway does not grow on its own. Every month without a structural change is a month where one disruption could set you back.`}
-          </p>
-        </div>
-
         {/* Predictive Warnings — static, in PDF */}
         {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
           <>
           <SectionDivider />
           <Overline large>What You Are Likely to Do Wrong Next</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            Based on your structure, these are the mistakes people in your position typically make.
-          </p>
           {v2PredictiveWarnings.map((w, i) => (
             <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: R.cardPad, marginBottom: 8 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
@@ -1617,10 +1546,7 @@ export default function ReviewPage() {
           ════════════════════════════════════════════════════════ */}
       <ReportPage record={record}>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Income Deep Dive</h1>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          Your score is built from six things we measure about your income. Here is how each one looks, plus how strong, reliable, and well-built your income is overall.
-        </p>
+        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Your Income Deep Dive</h1>
 
         {/* Structural Indicators — 6 dimensions */}
         {v2?.indicators && v2.indicators.length > 0 && (
@@ -1826,17 +1752,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Bottom line */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px" }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>BOTTOM LINE</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 8px", fontWeight: 500 }}>
-            {p2BottomLine[subTier]}
-          </p>
-          <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-            {p2Interpretation[subTier]}
-          </p>
-        </div>
-
         <PageFooter section="Your Income Deep Dive" page={4} />
       </ReportPage>
 
@@ -2017,9 +1932,6 @@ export default function ReviewPage() {
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <Overline large>Tradeoffs to Understand</Overline>
-            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-              Real strategy means understanding consequences, not just following suggestions. Here is what each move actually costs — and why it is still worth it.
-            </p>
             {v2TradeoffNarratives.map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
@@ -2067,21 +1979,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Advisor Discussion Guide — plain language */}
-        <SectionDivider />
-        <Overline large>Share With Your Advisor</Overline>
-        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-          {[
-            `Score: ${score}/100 (${record.stability_band}). ${peerPercentileValue ? `${record.peer_stability_percentile_label} percentile in ${industrySector}.` : ""}`,
-            `Primary risk: ${dominantConstraintPlain[dominantConstraint]}. Stress test shows a ${record.risk_scenario_drop}-point drop if the biggest source is lost.`,
-            `Income runway: ${continuityDisplay} without active work. ${record.active_income_level}% of income requires daily effort.`,
-          ].map((tp, i) => (
-            <div key={i} style={{ ...T.small, color: B.muted, display: "flex", gap: 8 }}>
-              <span style={{ color: B.purple, fontWeight: 600, flexShrink: 0 }}>{i + 1}.</span>{tp}
-            </div>
-          ))}
-        </div>
-
         {/* Scripts — browser-only (copy-to-clipboard doesn't work in PDF) */}
         {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
           <div className="no-print">
@@ -2121,7 +2018,7 @@ export default function ReviewPage() {
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{copy.p5_reassess}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake after real structural improvement is active, not after a short-term earnings spike.</p>
           </div>
           <div style={{ flex: 1, ...cardStyle }}>
             <Overline>VERIFICATION</Overline>
