@@ -1741,41 +1741,51 @@ export default function ReviewPage() {
         {/* Income System Map — visual summary of the six normalized inputs */}
         {v2NormalizedInputs && (() => {
           const ni = v2NormalizedInputs;
-          const riskColor = (val: number, threshold: number) => val >= threshold ? B.bandLimited : val >= threshold * 0.6 ? B.bandDeveloping : B.teal;
+          const strengthColor = (pct: number) => pct >= 60 ? B.teal : pct >= 30 ? B.navy : B.bandLimited;
           return (
             <>
             <SectionDivider />
             <Overline large>Your Income System Map</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, marginBottom: 16 }}>
-              <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 8 }}>
+            <p style={{ ...T.meta, color: B.muted, marginBottom: 12 }}>These are independent structural dimensions — not slices of a pie. A single dollar of income can be recurring, forward-secured, and passive simultaneously.</p>
+
+            {/* Sources row */}
+            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
+              <div style={{ ...T.small, fontWeight: 600, color: B.navy, minWidth: 100 }}>Sources</div>
+              <div style={{ flex: 1, display: "flex", gap: 4 }}>
                 {Array.from({ length: Math.min(6, ni.source_diversity_count) }, (_, i) => (
-                  <div key={i} style={{ width: 60, height: 36, borderRadius: 4, backgroundColor: i === 0 ? riskColor(ni.largest_source_pct, 60) : B.teal, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(14,26,43,0.08)" }}>
-                    <span style={{ ...T.meta, color: "#fff", fontWeight: 600 }}>{i === 0 ? `${ni.largest_source_pct}%` : ""}</span>
-                  </div>
+                  <div key={i} style={{ height: 24, flex: i === 0 ? ni.largest_source_pct : Math.round((100 - ni.largest_source_pct) / Math.max(1, ni.source_diversity_count - 1)), borderRadius: 3, backgroundColor: i === 0 ? (ni.largest_source_pct >= 60 ? B.bandLimited : B.navy) : B.teal, minWidth: 20 }} />
                 ))}
               </div>
-              <div style={{ textAlign: "center", ...T.meta, color: B.taupe, marginBottom: 8 }}>{ni.source_diversity_count} source{ni.source_diversity_count !== 1 ? "s" : ""} — {ni.largest_source_pct}% from largest</div>
-              <div style={{ display: "flex", gap: 12, justifyContent: "center", marginBottom: 8 }}>
-                {[
-                  { label: "Recurring", value: `${ni.income_persistence_pct}%`, color: riskColor(100 - ni.income_persistence_pct, 70) },
-                  { label: "Forward", value: `${ni.forward_secured_pct}%`, color: riskColor(100 - ni.forward_secured_pct, 70) },
-                  { label: "Passive", value: `${100 - ni.labor_dependence_pct}%`, color: riskColor(ni.labor_dependence_pct, 70) },
-                ].map((item) => (
-                  <div key={item.label} style={{ textAlign: "center", padding: "6px 14px", borderRadius: 4, backgroundColor: B.bone, border: `2px solid ${item.color}`, minWidth: 70 }}>
-                    <div style={{ ...T.sectionLabel, color: item.color }}>{item.value}</div>
-                    <div style={{ ...T.meta, color: B.muted }}>{item.label}</div>
-                  </div>
-                ))}
+              <div style={{ ...T.small, color: B.muted, minWidth: 100, textAlign: "right" }}>{ni.source_diversity_count} source{ni.source_diversity_count !== 1 ? "s" : ""}</div>
+            </div>
+
+            {/* Three structural strength bars */}
+            {[
+              { label: "Recurring", pct: ni.income_persistence_pct, desc: "repeats without re-selling" },
+              { label: "Forward-secured", pct: ni.forward_secured_pct, desc: "committed before month starts" },
+              { label: "Passive", pct: 100 - ni.labor_dependence_pct, desc: "continues without daily work" },
+            ].map((dim) => (
+              <div key={dim.label} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
+                <div style={{ ...T.small, fontWeight: 600, color: B.navy, minWidth: 100 }}>{dim.label}</div>
+                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${dim.pct}%`, backgroundColor: strengthColor(dim.pct), borderRadius: 4, transition: "width 300ms ease" }} />
+                </div>
+                <div style={{ ...T.small, color: strengthColor(dim.pct), fontWeight: 600, minWidth: 40, textAlign: "right" }}>{dim.pct}%</div>
               </div>
-              <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
-                {[
-                  { label: "Concentration Risk", active: ni.largest_source_pct >= 50 },
-                  { label: "Labor Risk", active: ni.labor_dependence_pct >= 70 },
-                  { label: "Visibility Risk", active: ni.forward_secured_pct <= 20 },
-                ].filter(r => r.active).map((risk) => (
-                  <span key={risk.label} style={{ ...T.micro, color: B.bandLimited, padding: "3px 8px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.06)", border: "1px solid rgba(155,44,44,0.12)" }}>{risk.label}</span>
-                ))}
-              </div>
+            ))}
+            <div style={{ ...T.meta, color: B.taupe, marginTop: 4, marginBottom: 12 }}>
+              {ni.largest_source_pct >= 60 ? `${ni.largest_source_pct}% from your largest source — high concentration risk.` : `Largest source at ${ni.largest_source_pct}% — reasonably distributed.`}
+            </div>
+
+            {/* Risk flags */}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {[
+                { label: "Concentration Risk", active: ni.largest_source_pct >= 50 },
+                { label: "Labor Risk", active: ni.labor_dependence_pct >= 70 },
+                { label: "Visibility Risk", active: ni.forward_secured_pct <= 20 },
+              ].filter(r => r.active).map((risk) => (
+                <span key={risk.label} style={{ ...T.micro, color: B.bandLimited, padding: "3px 8px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.06)", border: "1px solid rgba(155,44,44,0.12)" }}>{risk.label}</span>
+              ))}
             </div>
             </>
           );
