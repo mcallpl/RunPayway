@@ -1333,8 +1333,11 @@ export default function ReviewPage() {
         const simResult = simulateScore(simInputs, qualityScore);
         const scoreDelta = simResult.overall_score - score;
         const runwayDays = Math.round(record.income_continuity_months * 30);
-        const target90Days = 90 - runwayDays;
-        const persistenceNeeded = Math.max(0, Math.round((90 / 30 - record.income_continuity_months) / 0.03));
+        const target90Days = Math.max(0, 90 - runwayDays);
+        // How to close the gap: persistence adds 0.9 days per %, forward adds 1.2 days per %
+        const gapMonths = Math.max(0, 3 - record.income_continuity_months);
+        const persistenceGapPct = Math.min(Math.round(gapMonths / 0.03), 100 - baseInputs.income_persistence_pct);
+        const clientsToConvert = Math.max(1, Math.ceil(persistenceGapPct / 15));
 
         return (
           <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
@@ -1399,7 +1402,7 @@ export default function ReviewPage() {
                 {runwayDays >= 90 ? (
                   <><div style={{ ...T.cardHero, color: B.teal, marginBottom: 8 }}>Already there</div><p style={{ ...T.small, color: B.muted, margin: 0 }}>Focus on maintaining this buffer.</p></>
                 ) : (
-                  <><div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>You need {target90Days} more days</div><p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>Increase recurring revenue by ~{Math.min(persistenceNeeded, 100 - baseInputs.income_persistence_pct)}% — convert {Math.ceil(persistenceNeeded / 15)} more client{Math.ceil(persistenceNeeded / 15) > 1 ? "s" : ""} to retainers.</p></>
+                  <><div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>You need {target90Days} more days</div><p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{persistenceGapPct > 0 ? `Increase recurring revenue by ~${persistenceGapPct}% (convert ${clientsToConvert} client${clientsToConvert > 1 ? "s" : ""} to retainers) or lock in ${Math.round(gapMonths / 0.04)}% more forward revenue.` : "Reduce labor dependence and extend contract terms to close the gap."}</p></>
                 )}
               </div>
             </div>

@@ -110,14 +110,24 @@ export function simulateScore(inputs: CanonicalInput, qualityScore?: number): Si
     }
   }
 
-  // Fragility (simplified)
+  // Fragility — expanded rules for realistic assessment
   let fragScore = FRAGILITY_BASE;
+  // Core rules (from engine 10)
   if (inputs.largest_source_pct >= 70) fragScore -= 25;
   if (inputs.labor_dependence_pct >= 80) fragScore -= 20;
   if (inputs.forward_secured_pct <= 10) fragScore -= 20;
   if (inputs.income_variability_level === "high") fragScore -= 10;
   if (inputs.income_variability_level === "extreme") fragScore -= 20;
   if (continuity_months < 1) fragScore -= 15;
+  // Extended rules — catch mid-range vulnerabilities
+  if (inputs.source_diversity_count <= 1) fragScore -= 20;
+  else if (inputs.source_diversity_count <= 2) fragScore -= 12;
+  if (inputs.income_persistence_pct <= 10) fragScore -= 15;
+  else if (inputs.income_persistence_pct <= 25) fragScore -= 10;
+  if (inputs.largest_source_pct >= 50 && inputs.largest_source_pct < 70) fragScore -= 12;
+  if (inputs.forward_secured_pct <= 25 && inputs.forward_secured_pct > 10) fragScore -= 10;
+  if (inputs.labor_dependence_pct >= 60 && inputs.labor_dependence_pct < 80) fragScore -= 10;
+  if (continuity_months < 2 && continuity_months >= 1) fragScore -= 8;
   fragScore = Math.max(0, Math.min(100, fragScore));
 
   let fragility_class = "resilient";
