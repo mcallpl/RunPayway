@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef, useContext, createContext, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -83,6 +83,9 @@ const B = {
   bandEstablished: BRAND.bandEstablished, bandHigh: BRAND.bandHigh,
 };
 
+const ThemeCtx = createContext<ThemeColors>(DARK);
+function useTheme() { return useContext(ThemeCtx); }
+
 const DISPLAY = "'DM Serif Display', Georgia, serif";
 const INTER = "'Inter', system-ui, -apple-system, sans-serif";
 
@@ -103,23 +106,24 @@ const fmt = (n: number) => n > 0 ? `+${n}` : String(n);
 function Slider({ label, value, min, max, step, unit, onChange, accent }: {
   label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void; accent?: string;
 }) {
+  const T = useTheme();
   const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-  const c = accent || B.teal;
+  const c = accent || BRAND.teal;
   return (
     <div style={{ marginBottom: 28 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: B.bone, letterSpacing: "-0.01em" }}>{label}</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: T.text, letterSpacing: "-0.01em" }}>{label}</span>
         <span style={{ fontSize: 15, fontWeight: 700, color: c, fontVariantNumeric: "tabular-nums" }}>{value}{unit}</span>
       </div>
       <div style={{ position: "relative", height: 28 }}>
-        <div style={{ position: "absolute", top: 12, left: 0, right: 0, height: 4, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 2 }} />
+        <div style={{ position: "absolute", top: 12, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
         <div style={{ position: "absolute", top: 12, left: 0, width: `${pct}%`, height: 4, background: `linear-gradient(90deg, ${c}88, ${c})`, borderRadius: 2 }} />
-        <div style={{ position: "absolute", top: 6, left: `${pct}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", backgroundColor: c, border: `3px solid ${B.bone}`, boxShadow: `0 2px 8px rgba(0,0,0,0.3), 0 0 12px ${c}44` }} />
+        <div style={{ position: "absolute", top: 6, left: `${pct}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", backgroundColor: c, border: `3px solid ${T.text}`, boxShadow: `0 2px 8px rgba(0,0,0,0.2), 0 0 12px ${c}44` }} />
         <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 28, opacity: 0, cursor: "pointer", margin: 0 }} />
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-        <span style={{ fontSize: 10, color: B.faint }}>{min}{unit}</span>
-        <span style={{ fontSize: 10, color: B.faint }}>{max}{unit}</span>
+        <span style={{ fontSize: 10, color: T.textFaint }}>{min}{unit}</span>
+        <span style={{ fontSize: 10, color: T.textFaint }}>{max}{unit}</span>
       </div>
     </div>
   );
@@ -129,10 +133,11 @@ function Slider({ label, value, min, max, step, unit, onChange, accent }: {
 /*  Section header                                                     */
 /* ------------------------------------------------------------------ */
 function SectionLabel({ children, color, sub }: { children: string; color?: string; sub?: string }) {
+  const T = useTheme();
   return (
     <div style={{ marginBottom: sub ? 8 : 16 }}>
-      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || B.teal }}>{children}</div>
-      {sub && <p style={{ fontSize: 13, color: B.muted, margin: "6px 0 0", lineHeight: 1.5 }}>{sub}</p>}
+      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || BRAND.teal }}>{children}</div>
+      {sub && <p style={{ fontSize: 13, color: T.textSecondary, margin: "6px 0 0", lineHeight: 1.5 }}>{sub}</p>}
     </div>
   );
 }
@@ -141,14 +146,16 @@ function SectionLabel({ children, color, sub }: { children: string; color?: stri
 /*  Card wrapper                                                       */
 /* ------------------------------------------------------------------ */
 function Card({ children, glow, style, className }: { children: React.ReactNode; glow?: string; style?: React.CSSProperties; className?: string }) {
+  const T = useTheme();
   return (
     <div className={className} style={{
-      backgroundColor: B.whisper,
-      border: `1px solid ${B.ghost}`,
+      backgroundColor: T.surface,
+      border: `1px solid ${T.border}`,
       borderRadius: 12,
       padding: "24px 28px",
       position: "relative",
       overflow: "hidden",
+      transition: "background-color 400ms, border-color 400ms",
       ...style,
     }}>
       {glow && <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`, pointerEvents: "none" }} />}
@@ -162,26 +169,25 @@ function Card({ children, glow, style, className }: { children: React.ReactNode;
 /*  Active band lights up, others are greyed out.                      */
 /* ------------------------------------------------------------------ */
 function ClassificationScale({ currentBand, currentScore }: { currentBand: string; currentScore: number }) {
+  const T = useTheme();
   const bands = [
-    { name: "Limited Stability", min: 0, max: 29, range: "0–29", color: B.bandLimited, desc: "High dependence on single sources or labor with minimal forward visibility." },
-    { name: "Developing Stability", min: 30, max: 49, range: "30–49", color: B.bandDeveloping, desc: "Foundational structure in place. Gaps remain in recurring revenue or predictability." },
-    { name: "Established Stability", min: 50, max: 74, range: "50–74", color: B.bandEstablished, desc: "Solid foundation. Multiple sources with meaningful recurring revenue." },
-    { name: "High Stability", min: 75, max: 100, range: "75–100", color: B.bandHigh, desc: "Elite structure. Strong recurring, diversified, high visibility, low labor dependence." },
+    { name: "Limited Stability", min: 0, max: 29, range: "0–29", color: BRAND.bandLimited, desc: "High dependence on single sources or labor with minimal forward visibility." },
+    { name: "Developing Stability", min: 30, max: 49, range: "30–49", color: BRAND.bandDeveloping, desc: "Foundational structure in place. Gaps remain in recurring revenue or predictability." },
+    { name: "Established Stability", min: 50, max: 74, range: "50–74", color: BRAND.bandEstablished, desc: "Solid foundation. Multiple sources with meaningful recurring revenue." },
+    { name: "High Stability", min: 75, max: 100, range: "75–100", color: BRAND.bandHigh, desc: "Elite structure. Strong recurring, diversified, high visibility, low labor dependence." },
   ];
 
-  // Position indicator on the full-width bar (0–100 mapped to 0–100%)
   const indicatorPct = Math.max(0, Math.min(100, currentScore));
 
   return (
     <div style={{ marginBottom: 32 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted }}>
           INCOME STABILITY CLASSIFICATION
         </div>
-        <div style={{ fontSize: 10, color: B.faint }}>Updates as you adjust scenarios</div>
+        <div style={{ fontSize: 10, color: T.textFaint }}>Updates as you adjust scenarios</div>
       </div>
 
-      {/* Full-width color bar with position indicator */}
       <div style={{ position: "relative", display: "flex", height: 8, borderRadius: 4, overflow: "visible", marginBottom: 20 }}>
         {bands.map((b, i) => {
           const isActive = b.name === currentBand;
@@ -194,29 +200,26 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
             }} />
           );
         })}
-        {/* Score indicator dot */}
         <div style={{
           position: "absolute", top: "50%", left: `${indicatorPct}%`,
           transform: "translate(-50%, -50%)", zIndex: 2,
           width: 14, height: 14, borderRadius: "50%",
-          backgroundColor: B.white,
-          border: `3px solid ${bands.find(b => b.name === currentBand)?.color || B.bone}`,
-          boxShadow: `0 0 10px ${bands.find(b => b.name === currentBand)?.color || B.bone}66, 0 2px 4px rgba(0,0,0,0.3)`,
-          transition: "left 400ms ease-out",
+          backgroundColor: T.bg,
+          border: `3px solid ${bands.find(b => b.name === currentBand)?.color || BRAND.teal}`,
+          boxShadow: `0 0 10px ${bands.find(b => b.name === currentBand)?.color || BRAND.teal}66, 0 2px 4px rgba(0,0,0,0.2)`,
+          transition: "left 400ms ease-out, background-color 400ms",
         }} />
-        {/* Score number label */}
         <div style={{
           position: "absolute", top: -22, left: `${indicatorPct}%`,
           transform: "translateX(-50%)",
-          fontSize: 11, fontWeight: 700, color: B.bone,
+          fontSize: 11, fontWeight: 700, color: T.text,
           fontVariantNumeric: "tabular-nums",
-          transition: "left 400ms ease-out",
+          transition: "left 400ms ease-out, color 400ms",
         }}>
           {currentScore}
         </div>
       </div>
 
-      {/* Band cards — active one lit, others greyed */}
       <div className="sim-bands" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
         {bands.map(b => {
           const isActive = b.name === currentBand;
@@ -224,14 +227,13 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
             <div key={b.name} style={{
               padding: "14px 14px 12px",
               borderRadius: 10,
-              border: `1px solid ${isActive ? `${b.color}44` : B.ghost}`,
-              backgroundColor: isActive ? `${b.color}0D` : B.whisper,
+              border: `1px solid ${isActive ? `${b.color}44` : T.border}`,
+              backgroundColor: isActive ? `${b.color}0D` : T.surface,
               opacity: isActive ? 1 : 0.4,
               transition: "all 400ms ease-out",
               position: "relative",
               overflow: "hidden",
             }}>
-              {/* Glow on active */}
               {isActive && (
                 <div style={{ position: "absolute", top: -20, right: -20, width: 60, height: 60, background: `radial-gradient(circle, ${b.color}22 0%, transparent 70%)`, pointerEvents: "none" }} />
               )}
@@ -242,10 +244,10 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
                   boxShadow: isActive ? `0 0 8px ${b.color}88` : "none",
                   transition: "box-shadow 400ms",
                 }} />
-                <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? B.bone : B.muted, letterSpacing: "-0.01em" }}>{b.name}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? T.text : T.textSecondary, letterSpacing: "-0.01em" }}>{b.name}</span>
               </div>
               <div style={{ fontSize: 10, fontWeight: 600, color: b.color, marginBottom: 4, fontVariantNumeric: "tabular-nums" }}>{b.range}</div>
-              <p style={{ fontSize: 10, color: isActive ? B.dim : B.faint, margin: 0, lineHeight: 1.4 }}>{b.desc}</p>
+              <p style={{ fontSize: 10, color: isActive ? T.textMuted : T.textFaint, margin: 0, lineHeight: 1.4 }}>{b.desc}</p>
             </div>
           );
         })}
@@ -258,6 +260,7 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
 /*  Income Timeline visualization                                      */
 /* ------------------------------------------------------------------ */
 function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; baseScore: number }) {
+  const T = useTheme();
   if (timeline.length === 0) return null;
 
   const allScores = [baseScore, ...timeline.map(t => t.score)];
@@ -268,14 +271,14 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
   const getY = (score: number) => 100 - ((score - minScore) / range) * 100;
 
   const isPositive = timeline[timeline.length - 1].delta >= 0;
-  const accentColor = isPositive ? B.teal : B.bandLimited;
+  const accentColor = isPositive ? BRAND.teal : BRAND.bandLimited;
 
   return (
     <Card glow={isPositive ? "rgba(26,122,109,0.12)" : "rgba(220,74,74,0.08)"} style={{ marginBottom: 32 }}>
       <div className="sim-tl-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
         <div>
           <SectionLabel color={B.purple}>Income Timeline</SectionLabel>
-          <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 460, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 13, color: T.textSecondary, margin: 0, maxWidth: 460, lineHeight: 1.5 }}>
             Your projected score at 3, 6, and 12 months if you make this change today. Structural improvements compound — early gains unlock interaction bonuses that accelerate over time.
           </p>
         </div>
@@ -283,7 +286,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
           <div style={{ fontSize: 24, fontWeight: 700, color: accentColor, lineHeight: 1, fontFamily: DISPLAY }}>
             {fmt(timeline[timeline.length - 1].delta)}
           </div>
-          <div style={{ fontSize: 10, fontWeight: 600, color: B.dim, marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>12-MONTH</div>
+          <div style={{ fontSize: 10, fontWeight: 600, color: T.textMuted, marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>12-MONTH</div>
         </div>
       </div>
 
@@ -320,7 +323,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
           />
 
           {/* Now dot */}
-          <circle cx="20" cy={getY(baseScore) * 1.2} r="4" fill={B.bone} stroke={B.navy} strokeWidth="2" />
+          <circle cx="20" cy={getY(baseScore) * 1.2} r="4" fill={T.text} stroke={T.bg} strokeWidth="2" />
 
           {/* Timeline dots */}
           {[
@@ -329,31 +332,31 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
             { x: 380, pt: timeline[2] },
           ].map(({ x, pt }) => (
             <g key={pt.month}>
-              <circle cx={x} cy={getY(pt.score) * 1.2} r="5" fill={accentColor} stroke={B.navy} strokeWidth="2" />
+              <circle cx={x} cy={getY(pt.score) * 1.2} r="5" fill={accentColor} stroke={T.bg} strokeWidth="2" />
               <circle cx={x} cy={getY(pt.score) * 1.2} r="8" fill={accentColor} fillOpacity="0.15" />
             </g>
           ))}
         </svg>
 
         {/* Labels */}
-        <div style={{ position: "absolute", bottom: -4, left: "5%", fontSize: 10, color: B.dim, fontWeight: 600 }}>NOW</div>
-        <div style={{ position: "absolute", bottom: -4, left: "30%", transform: "translateX(-50%)", fontSize: 10, color: B.dim }}>3 MO</div>
-        <div style={{ position: "absolute", bottom: -4, left: "62.5%", transform: "translateX(-50%)", fontSize: 10, color: B.dim }}>6 MO</div>
-        <div style={{ position: "absolute", bottom: -4, right: "5%", fontSize: 10, color: B.dim }}>12 MO</div>
+        <div style={{ position: "absolute", bottom: -4, left: "5%", fontSize: 10, color: T.textMuted, fontWeight: 600 }}>NOW</div>
+        <div style={{ position: "absolute", bottom: -4, left: "30%", transform: "translateX(-50%)", fontSize: 10, color: T.textMuted }}>3 MO</div>
+        <div style={{ position: "absolute", bottom: -4, left: "62.5%", transform: "translateX(-50%)", fontSize: 10, color: T.textMuted }}>6 MO</div>
+        <div style={{ position: "absolute", bottom: -4, right: "5%", fontSize: 10, color: T.textMuted }}>12 MO</div>
       </div>
 
       {/* Timeline milestones */}
       <div className="sim-timeline-ms" style={{ display: "flex", gap: 12 }}>
         {timeline.map((pt) => (
-          <div key={pt.month} style={{ flex: 1, padding: "14px 16px", backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, borderRadius: 8 }}>
+          <div key={pt.month} style={{ flex: 1, padding: "14px 16px", backgroundColor: T.surface, border: `1px solid ${T.border}`, borderRadius: 8 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: B.dim, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>{pt.label}</span>
-              <span style={{ fontSize: 16, fontWeight: 700, color: pt.delta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums" }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: T.textMuted, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>{pt.label}</span>
+              <span style={{ fontSize: 16, fontWeight: 700, color: pt.delta >= 0 ? BRAND.teal : BRAND.bandLimited, fontVariantNumeric: "tabular-nums" }}>
                 {pt.score}
               </span>
             </div>
             <div style={{ fontSize: 11, color: bandColor(pt.band), fontWeight: 600, marginBottom: 6 }}>{pt.band}</div>
-            <p style={{ fontSize: 11, color: B.dim, margin: 0, lineHeight: 1.45 }}>{pt.narrative}</p>
+            <p style={{ fontSize: 11, color: T.textMuted, margin: 0, lineHeight: 1.45 }}>{pt.narrative}</p>
           </div>
         ))}
       </div>
@@ -504,6 +507,7 @@ function BriefGenerator({
   name: string; industry: string; incomeModel: string;
   fragility: string; continuityMonths: number; recordId: string;
 }) {
+  const T = useTheme();
   const [purpose, setPurpose] = useState<BriefPurpose | null>(null);
   const [generated, setGenerated] = useState<BriefData | null>(null);
   const [downloading, setDownloading] = useState(false);
@@ -569,30 +573,30 @@ function BriefGenerator({
     <div style={{ marginTop: 48 }}>
       {/* Section divider */}
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
-        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${B.ghost}, transparent)` }} />
-        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.faint }}>TOOLS</span>
-        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${B.ghost}, transparent)` }} />
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint }}>TOOLS</span>
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
       </div>
 
       <Card glow="rgba(75,63,174,0.10)" style={{ borderTop: `2px solid ${B.purple}33` }}>
         <div className="sim-brief-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
           <div>
             <SectionLabel color={B.purple}>Stability Brief Generator&#8482;</SectionLabel>
-            <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 520, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 13, color: T.textSecondary, margin: 0, maxWidth: 520, lineHeight: 1.5 }}>
               Generate a professional Stability Brief&#8482; built from your actual assessment data. Select who the brief is for, and we produce a document you can download and hand directly to a lender, landlord, partner, or client.
             </p>
           </div>
-          <div style={{ fontSize: 11, color: B.dim, padding: "6px 12px", borderRadius: 6, backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
+          <div style={{ fontSize: 11, color: T.textMuted, padding: "6px 12px", borderRadius: 6, backgroundColor: T.surface, border: `1px solid ${T.border}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
             Record {recordId}
           </div>
         </div>
 
         {/* Purpose selector */}
         <div className="sim-step-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint }}>
             STEP 1 — WHO IS THIS FOR?
           </div>
-          <div style={{ fontSize: 10, color: B.faint }}>Select one, then generate</div>
+          <div style={{ fontSize: 10, color: T.textFaint }}>Select one, then generate</div>
         </div>
         <div className="sim-purposes" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
           {BRIEF_PURPOSES.map(bp => {
@@ -600,12 +604,12 @@ function BriefGenerator({
             return (
               <button key={bp.id} onClick={() => { setPurpose(bp.id); setGenerated(null); }} style={{
                 padding: "14px 12px", textAlign: "center", borderRadius: 10, cursor: "pointer", transition: "all 200ms",
-                border: `1px solid ${isActive ? B.purple + "44" : B.ghost}`,
-                backgroundColor: isActive ? B.purpleGlow : B.whisper,
+                border: `1px solid ${isActive ? BRAND.purple + "44" : T.border}`,
+                backgroundColor: isActive ? BRAND.purpleGlow : T.surface,
               }}>
                 <div style={{ fontSize: 16, marginBottom: 6 }}>{bp.icon}</div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: isActive ? B.bone : B.muted, marginBottom: 4 }}>{bp.label}</div>
-                <div style={{ fontSize: 10, color: B.dim, lineHeight: 1.3 }}>{bp.desc}</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: isActive ? T.text : T.textSecondary, marginBottom: 4 }}>{bp.label}</div>
+                <div style={{ fontSize: 10, color: T.textMuted, lineHeight: 1.3 }}>{bp.desc}</div>
               </button>
             );
           })}
@@ -694,21 +698,21 @@ function BriefGenerator({
             </div>
 
             {/* Actions */}
-            <p style={{ fontSize: 12, color: B.dim, marginBottom: 14, marginTop: 0, textAlign: "center" }}>
+            <p style={{ fontSize: 12, color: T.textMuted, marginBottom: 14, marginTop: 0, textAlign: "center" }}>
               Your Stability Brief&#8482; is ready. Download it and attach to your application, email it to your contact, or print a copy.
             </p>
             <div className="sim-brief-actions" style={{ display: "flex", gap: 12 }}>
               <button onClick={handleDownload} disabled={downloading} style={{
                 flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", cursor: downloading ? "wait" : "pointer",
-                background: `linear-gradient(135deg, ${B.bone}, #E8E5DD)`,
-                color: B.navy, fontSize: 14, fontWeight: 600,
+                background: `linear-gradient(135deg, #F4F1EA, #E8E5DD)`,
+                color: "#0E1A2B", fontSize: 14, fontWeight: 600,
                 opacity: downloading ? 0.7 : 1,
               }}>
                 {downloading ? "Generating..." : "Download Stability Brief\u2122"}
               </button>
               <button onClick={() => { setGenerated(null); setPurpose(null); }} style={{
-                padding: "14px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`,
-                backgroundColor: "transparent", color: B.dim, fontSize: 13, fontWeight: 500, cursor: "pointer",
+                padding: "14px 20px", borderRadius: 10, border: `1px solid ${T.border}`,
+                backgroundColor: "transparent", color: T.textMuted, fontSize: 13, fontWeight: 500, cursor: "pointer",
               }}>
                 New Brief
               </button>
@@ -787,17 +791,17 @@ function SimulatorContent() {
       <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 40%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');`}</style>
         <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg, ${B.purple}22, ${B.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", border: `1px solid ${B.ghost}` }}>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg, ${BRAND.purple}22, ${BRAND.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", border: "1px solid rgba(244,241,234,0.08)" }}>
             <span style={{ fontSize: 20 }}>&#9672;</span>
           </div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Score Simulator</div>
-          <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: B.bone, lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 16 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>Score Simulator</div>
+          <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 16 }}>
             This tool is included<br />with your report.
           </h1>
-          <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.65, marginBottom: 36 }}>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 36 }}>
             Tap the QR code on your report to load your data and model scenarios against your actual income structure.
           </p>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: `linear-gradient(135deg, ${B.bone} 0%, #E8E5DD 100%)`, color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)" }}>
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)" }}>
             Get the Full Report
           </Link>
         </div>
@@ -862,6 +866,7 @@ function SimulatorContent() {
   }
 
   return (
+    <ThemeCtx.Provider value={T}>
     <div style={{ minHeight: "100vh", background: T.bgGradient, fontFamily: INTER, transition: "background 400ms ease" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
@@ -1052,16 +1057,16 @@ function SimulatorContent() {
                 return (
                   <button key={preset.id} onClick={() => setSimPreset(ia ? null : preset.id)} style={{
                     padding: "16px 18px", textAlign: "left", borderRadius: 10, cursor: "pointer", transition: "all 200ms",
-                    border: `1px solid ${ia ? (isNeg ? B.bandLimited : B.purple) + "44" : B.ghost}`,
-                    backgroundColor: ia ? (isNeg ? "rgba(220,74,74,0.06)" : B.purpleGlow) : B.whisper,
+                    border: `1px solid ${ia ? (isNeg ? BRAND.bandLimited : BRAND.purple) + "44" : T.border}`,
+                    backgroundColor: ia ? (isNeg ? "rgba(220,74,74,0.06)" : BRAND.purpleGlow) : T.surface,
                   }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: ia ? B.bone : B.muted }}>{preset.label}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: ia ? T.text : T.textSecondary }}>{preset.label}</span>
                       <span style={{ fontSize: 13, fontWeight: 700, color: previewDelta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums" }}>
                         {fmt(previewDelta)}
                       </span>
                     </div>
-                    <p style={{ fontSize: 11, color: B.dim, margin: 0, lineHeight: 1.4 }}>{preset.description}</p>
+                    <p style={{ fontSize: 11, color: T.textMuted, margin: 0, lineHeight: 1.4 }}>{preset.description}</p>
                   </button>
                 );
               })}
@@ -1071,8 +1076,8 @@ function SimulatorContent() {
               const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset)!;
               return (
                 <Card glow={delta > 0 ? "rgba(75,63,174,0.10)" : "rgba(220,74,74,0.06)"}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: B.bone, marginBottom: 6 }}>{ap.label}</div>
-                  <p style={{ fontSize: 13, color: B.muted, margin: "0 0 10px" }}>{ap.description}</p>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 6 }}>{ap.label}</div>
+                  <p style={{ fontSize: 13, color: T.textSecondary, margin: "0 0 10px" }}>{ap.description}</p>
                   {delta !== 0 && (
                     <p style={{ fontSize: 14, color: delta > 0 ? B.teal : B.bandLimited, margin: 0, fontWeight: 600 }}>
                       {delta > 0 ? `+${delta} points` : `${delta} points`}
@@ -1080,7 +1085,7 @@ function SimulatorContent() {
                     </p>
                   )}
                   {industry && delta < 0 && (
-                    <p style={{ fontSize: 12, color: B.dim, margin: "8px 0 0", fontStyle: "italic" }}>
+                    <p style={{ fontSize: 12, color: T.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
                       In {industry}, {incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} with similar structure average a {Math.max(Math.abs(delta) - 2, Math.abs(delta) + 3)}-point drop in this scenario.
                     </p>
                   )}
@@ -1100,23 +1105,23 @@ function SimulatorContent() {
               </SectionLabel>
 
               <Card style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint, marginBottom: 20 }}>INCOME STRUCTURE</div>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>INCOME STRUCTURE</div>
                 <Slider label="Recurring revenue" value={sl.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, recurrence: v })} />
                 <Slider label="Top client share" value={sl.topClient} min={sl.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, topClient: v })} accent={B.bandDeveloping} />
                 <Slider label="Income sources" value={sl.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSliders({ ...sl, sources: v, topClient: v <= 1 ? 100 : Math.min(sl.topClient, 100) })} />
               </Card>
 
               <Card style={{ marginBottom: 20 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint, marginBottom: 20 }}>PREDICTABILITY</div>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>PREDICTABILITY</div>
                 <Slider label="Months booked ahead" value={sl.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSliders({ ...sl, monthsBooked: v })} accent={B.bandEstablished} />
               </Card>
 
               <Card>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint, marginBottom: 20 }}>RESILIENCE</div>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>RESILIENCE</div>
                 <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, passive: v })} accent={B.purple} />
               </Card>
 
-              <button onClick={() => setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct })} style={{ fontSize: 11, color: B.dim, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
+              <button onClick={() => setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct })} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
                 Reset to current
               </button>
             </div>
@@ -1127,7 +1132,7 @@ function SimulatorContent() {
                 <div style={{ marginBottom: 28 }}>
                   <SectionLabel color={B.purple}>What Changed</SectionLabel>
                   {insights.map((ins, i) => (
-                    <div key={i} style={{ fontSize: 13, color: B.bone, fontWeight: 500, marginBottom: 8, padding: "12px 16px", backgroundColor: B.purpleGlow, borderRadius: 8, border: `1px solid rgba(75,63,174,0.12)` }}>{ins}</div>
+                    <div key={i} style={{ fontSize: 13, color: T.text, fontWeight: 500, marginBottom: 8, padding: "12px 16px", backgroundColor: B.purpleGlow, borderRadius: 8, border: `1px solid rgba(75,63,174,0.12)` }}>{ins}</div>
                   ))}
                 </div>
               )}
@@ -1142,11 +1147,11 @@ function SimulatorContent() {
                   { label: "Income runway", value: `${runway} days`, sub: runway < 30 ? "Critical" : runway < 90 ? "Limited" : "Healthy", color: runway < 30 ? B.bandLimited : runway < 90 ? B.bandDeveloping : B.teal },
                   { label: "Fragility class", value: sim.fragility_class.charAt(0).toUpperCase() + sim.fragility_class.slice(1), sub: "", color: sim.fragility_class === "brittle" || sim.fragility_class === "thin" ? B.bandLimited : sim.fragility_class === "moderate" ? B.bandDeveloping : B.teal },
                 ].map((row) => (
-                  <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 18px", backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, borderRadius: 8, marginBottom: 8 }}>
-                    <span style={{ fontSize: 13, color: B.muted }}>{row.label}</span>
+                  <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 18px", backgroundColor: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, color: T.textSecondary }}>{row.label}</span>
                     <div style={{ textAlign: "right" }}>
                       <span style={{ fontSize: 14, fontWeight: 600, color: row.color }}>{row.value}</span>
-                      {row.sub && <div style={{ fontSize: 10, color: B.dim }}>{row.sub}</div>}
+                      {row.sub && <div style={{ fontSize: 10, color: T.textMuted }}>{row.sub}</div>}
                     </div>
                   </div>
                 ))}
@@ -1161,7 +1166,7 @@ function SimulatorContent() {
             <SectionLabel color={B.teal}>
               {`Path to ${base.overall_score + 10}/100${industry ? ` in ${industry}` : ""}`}
             </SectionLabel>
-            <p style={{ fontSize: 13, color: B.muted, marginBottom: 16, marginTop: 0 }}>
+            <p style={{ fontSize: 13, color: T.textSecondary, marginBottom: 16, marginTop: 0 }}>
               {industry && incomeModel
                 ? `For ${incomeModel.toLowerCase()} professionals in ${industry}, the fastest path to gain 10 points:`
                 : "The most efficient structural changes to gain 10 points:"}
@@ -1171,11 +1176,11 @@ function SimulatorContent() {
                 <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: B.teal }}>{i + 1}</span>
                 </div>
-                <span style={{ fontSize: 13, color: B.bone, fontWeight: 500, lineHeight: 1.5 }}>{step}</span>
+                <span style={{ fontSize: 13, color: T.text, fontWeight: 500, lineHeight: 1.5 }}>{step}</span>
               </div>
             ))}
             {industry && (
-              <p style={{ fontSize: 12, color: B.dim, marginTop: 16, marginBottom: 0, fontStyle: "italic", paddingLeft: 34 }}>
+              <p style={{ fontSize: 12, color: T.textMuted, marginTop: 16, marginBottom: 0, fontStyle: "italic", paddingLeft: 34 }}>
                 Top 20% of {industry} professionals typically have 60%+ recurring revenue and less than 35% from any single source.
               </p>
             )}
@@ -1224,6 +1229,7 @@ function SimulatorContent() {
         <span style={{ fontSize: 10, color: T.textFaint, transition: "color 400ms" }}>Deterministic &middot; Fixed Rules &middot; No AI</span>
       </footer>
     </div>
+    </ThemeCtx.Provider>
   );
 }
 
