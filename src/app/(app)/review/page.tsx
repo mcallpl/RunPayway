@@ -963,8 +963,8 @@ export default function ReviewPage() {
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
           <div style={{ flexShrink: 0, textAlign: "center", maxWidth: 120 }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>YOUR SCORE SIMULATOR</div>
-            <div style={{ ...T.meta, color: B.muted, marginTop: 2, lineHeight: 1.4 }}>Tap or scan to model scenarios with your data</div>
+            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>SIMULATOR &amp; STABILITY BRIEF&#8482;</div>
+            <div style={{ ...T.meta, color: B.muted, marginTop: 2, lineHeight: 1.4 }}>Tap or scan to model scenarios and generate briefs</div>
           </div>
         </div>
 
