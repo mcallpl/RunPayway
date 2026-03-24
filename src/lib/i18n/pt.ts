@@ -40,7 +40,7 @@ export const pt: Translations = {
 
   // ── Consentimento de Cookies ──
   cookie: {
-    mainText: "A RunPayway utiliza cookies essenciais para a funcionalidade da plataforma. Nenhum cookie de rastreamento ou publicidade é utilizado.",
+    mainText: "A RunPayway\u2122 utiliza cookies essenciais para a funcionalidade da plataforma. Nenhum cookie de rastreamento ou publicidade é utilizado.",
     whatWeStore: "O que armazenamos:",
     whatWeStoreDetail: "O progresso da avaliação é salvo no armazenamento de sessão do seu navegador para que você não perca seu trabalho se navegar para outra página. A preferência de consentimento de cookies é salva no armazenamento local. Nenhuma informação pessoal é armazenada em cookies.",
     whatWeDontDo: "O que não fazemos:",
@@ -233,7 +233,7 @@ export const pt: Translations = {
     methodologyLabel: "Metodologia",
     methodologyText: "O Income Stability Score™ avalia a estabilidade da renda em um ponto específico no tempo. Seis fatores-chave são avaliados sob o Model RP-1.0 usando critérios de pontuação fixos e determinísticos. O modelo não avalia desempenho de investimentos, capacidade de crédito ou resultados financeiros futuros.",
     disclosure: "Divulgação",
-    disclosureText: "Este relatório é criado por um modelo de classificação fixo. Não é consultoria financeira. O Income Stability Score não é uma pontuação de crédito, não é uma medida de patrimônio líquido e não é uma previsão de renda futura.",
+    disclosureText: "Este relatório é criado por um modelo de classificação fixo. Não é consultoria financeira. O Income Stability Score\u2122 não é uma pontuação de crédito, não é uma medida de patrimônio líquido e não é uma previsão de renda futura.",
     officialRecord: "Detalhes do Relat\u00f3rio",
     recordId: "Record ID",
     modelLabel: "Modelo",
@@ -569,7 +569,7 @@ export const pt: Translations = {
     s3P2: "O que acontece se você não puder trabalhar por 90 dias? Quanto da sua renda sobrevive sem você? Quão dependente você é de uma única fonte? A avaliação dá uma pontuação, um diagnóstico completo e uma resposta clara.",
     s3P3: "Se você assessora clientes sobre finanças, seguros ou estratégia empresarial, o relatório mostra a estrutura de renda, exposição ao risco e pontos de conversa prontos para usar \u2014 antes da reunião começar.",
     s3P4: "Se sua empresa avalia a resiliência de parceiros, clientes ou empresas do portfólio, a plataforma substitui intuição por uma métrica padronizada e verificável.",
-    s3P5: "Disponível em RunPayway.com ou como plataforma white-label sob sua própria marca.",
+    s3P5: "Disponível em RunPayway\u2122.com ou como plataforma white-label sob sua própria marca.",
     s4Title: "Governança do Modelo",
     s4P1: "As avaliações são geradas usando uma estrutura de pontuação determinística governada por um sistema de modelos controlado por versão.",
     s4P2: "Cada avaliação aplica regras de pontuação fixas definidas sob a versão ativa do modelo. Dados idênticos sob a mesma versão do modelo sempre produzem resultados idênticos.",
@@ -622,7 +622,7 @@ export const pt: Translations = {
     responseP3: "Se sua pergunta estiver relacionada a uma avaliação específica, por favor inclua seu Record ID, se disponível.",
     resourcesTag: "Recursos Alternativos",
     resourcesDesc: "Muitas perguntas frequentes são respondidas nos seguintes recursos:",
-    resourcesNote: "Essas seções fornecem informações detalhadas sobre o Income Stability Score™, o processo de avaliação da RunPayway e a verificação de avaliações.",
+    resourcesNote: "Essas seções fornecem informações detalhadas sobre o Income Stability Score™, o processo de avaliação da RunPayway\u2122 e a verificação de avaliações.",
     securityTag: "Aviso de Segurança",
     securityP1: "Não inclua informações financeiras confidenciais em sua mensagem.",
     securityP2: "O formulário de contato é destinado a consultas gerais sobre a plataforma e perguntas de suporte.",

@@ -40,7 +40,7 @@ export const es: Translations = {
 
   // ── Consentimiento de cookies ──
   cookie: {
-    mainText: "RunPayway utiliza cookies esenciales para la funcionalidad de la plataforma. No se utilizan cookies de seguimiento ni de publicidad.",
+    mainText: "RunPayway\u2122 utiliza cookies esenciales para la funcionalidad de la plataforma. No se utilizan cookies de seguimiento ni de publicidad.",
     whatWeStore: "Lo que almacenamos:",
     whatWeStoreDetail: "El progreso de la evaluación se guarda en el almacenamiento de sesión de su navegador para que no pierda su trabajo si navega a otra página. La preferencia de consentimiento de cookies se guarda en el almacenamiento local. No se almacena información personal en las cookies.",
     whatWeDontDo: "Lo que no hacemos:",
@@ -233,7 +233,7 @@ export const es: Translations = {
     methodologyLabel: "Metodología",
     methodologyText: "El Income Stability Score™ evalúa la estabilidad de los ingresos en un momento específico. Seis factores clave son evaluados bajo el Modelo RP-1.0 utilizando criterios de puntuación fijos y determinísticos. El modelo no evalúa el rendimiento de inversiones, solvencia crediticia ni resultados financieros futuros.",
     disclosure: "Divulgación",
-    disclosureText: "Este informe es creado por un modelo de clasificación fijo. No constituye asesoramiento financiero. El Income Stability Score no es una puntuación crediticia, no es una medida de patrimonio neto y no es una predicción de ingresos futuros.",
+    disclosureText: "Este informe es creado por un modelo de clasificación fijo. No constituye asesoramiento financiero. El Income Stability Score\u2122 no es una puntuación crediticia, no es una medida de patrimonio neto y no es una predicción de ingresos futuros.",
     officialRecord: "Detalles del Informe",
     recordId: "ID de Registro",
     modelLabel: "Modelo",
@@ -569,7 +569,7 @@ export const es: Translations = {
     s3P2: "\u00bfQué pasa si no puede trabajar por 90 días? \u00bfCuánto de sus ingresos sobrevive sin usted? \u00bfQué tan dependiente es de una sola fuente? La evaluación le da un puntaje, un diagnóstico completo y una respuesta clara.",
     s3P3: "Si usted asesora a clientes sobre sus finanzas, seguros o estrategia empresarial, el informe le muestra su estructura de ingresos, exposición al riesgo y puntos de conversación listos para usar \u2014 antes de que comience la reunión.",
     s3P4: "Si su firma evalúa la resiliencia de socios, clientes o empresas de portafolio, la plataforma reemplaza la intuición con una métrica estandarizada y verificable.",
-    s3P5: "Disponible en RunPayway.com o como plataforma de marca blanca bajo su propia marca.",
+    s3P5: "Disponible en RunPayway\u2122.com o como plataforma de marca blanca bajo su propia marca.",
     s4Title: "Gobernanza del Modelo",
     s4P1: "Las evaluaciones se generan usando un marco de puntuación determinístico gobernado por un sistema de modelos controlado por versiones.",
     s4P2: "Cada evaluación aplica reglas de puntuación fijas definidas bajo la versión activa del modelo. Datos idénticos bajo la misma versión del modelo siempre producen resultados idénticos.",
@@ -622,7 +622,7 @@ export const es: Translations = {
     responseP3: "Si su pregunta se relaciona con una evaluación específica, incluya su Record ID si está disponible.",
     resourcesTag: "Recursos Alternativos",
     resourcesDesc: "Muchas preguntas comunes se responden en los siguientes recursos:",
-    resourcesNote: "Estas secciones proporcionan información detallada sobre el Income Stability Score™, el proceso de evaluación de RunPayway y la verificación de evaluaciones.",
+    resourcesNote: "Estas secciones proporcionan información detallada sobre el Income Stability Score™, el proceso de evaluación de RunPayway\u2122 y la verificación de evaluaciones.",
     securityTag: "Aviso de Seguridad",
     securityP1: "No incluya información financiera sensible en su mensaje.",
     securityP2: "El formulario de contacto está destinado a consultas generales de la plataforma y preguntas de soporte.",

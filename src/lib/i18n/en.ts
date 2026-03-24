@@ -40,7 +40,7 @@ export const en: Translations = {
 
   // ── Cookie Consent ──
   cookie: {
-    mainText: "RunPayway uses essential cookies for platform functionality. No tracking or advertising cookies are used.",
+    mainText: "RunPayway\u2122 uses essential cookies for platform functionality. No tracking or advertising cookies are used.",
     whatWeStore: "What we store:",
     whatWeStoreDetail: "Assessment progress is saved in your browser's session storage so you don't lose your work if you navigate away. Cookie consent preference is saved in local storage. No personal information is stored in cookies.",
     whatWeDontDo: "What we don't do:",
@@ -233,7 +233,7 @@ export const en: Translations = {
     methodologyLabel: "Methodology",
     methodologyText: "The Income Stability Score\u2122 evaluates income stability at a specific point in time. Six key factors are assessed under Model RP-2.0 using fixed, deterministic scoring criteria. The model does not evaluate investment performance, creditworthiness, or future financial outcomes.",
     disclosure: "Disclosure",
-    disclosureText: "This report is created by a fixed classification model. It is not financial advice. The Income Stability Score is not a credit score, not a measure of net worth, and not a prediction of future income.",
+    disclosureText: "This report is created by a fixed classification model. It is not financial advice. The Income Stability Score\u2122 is not a credit score, not a measure of net worth, and not a prediction of future income.",
     officialRecord: "Report Details",
     recordId: "Record ID",
     modelLabel: "Model",
@@ -570,7 +570,7 @@ export const en: Translations = {
     s3P2: "What happens if you can\u2019t work for 90 days? How much of your income survives without you? How dependent are you on a single source? The assessment gives you a score, a full diagnostic, and a clear answer.",
     s3P3: "If you advise clients on their finances, insurance, or business strategy, the report shows you their income structure, risk exposure, and ready-to-use talking points \u2014 before the meeting starts.",
     s3P4: "If your firm evaluates the resilience of partners, clients, or portfolio companies, the platform replaces gut feel with a standardized, verifiable metric.",
-    s3P5: "Available at RunPayway.com or as a white-label platform under your own brand.",
+    s3P5: "Available at RunPayway\u2122.com or as a white-label platform under your own brand.",
     s4Title: "Model Governance",
     s4P1: "Assessments are generated using a deterministic scoring framework governed by a version-controlled model system.",
     s4P2: "Each assessment applies fixed scoring rules defined under the active model version. Identical inputs under the same model version always produce identical outputs.",
@@ -623,7 +623,7 @@ export const en: Translations = {
     responseP3: "If your question relates to a specific assessment, please include your Record ID if available.",
     resourcesTag: "Alternative Resources",
     resourcesDesc: "Many common questions are answered in the following resources:",
-    resourcesNote: "These sections provide detailed information about the Income Stability Score™, the RunPayway assessment process, and assessment verification.",
+    resourcesNote: "These sections provide detailed information about the Income Stability Score™, the RunPayway\u2122 assessment process, and assessment verification.",
     securityTag: "Security Notice",
     securityP1: "Do not include sensitive financial information in your message.",
     securityP2: "The contact form is intended for general platform inquiries and support questions.",
