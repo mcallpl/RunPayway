@@ -67,6 +67,8 @@ function SimulatorContent() {
   const [baseInputs, setBaseInputs] = useState<CanonicalInput | null>(null);
   const [qualityScore, setQualityScore] = useState(5);
   const [userName, setUserName] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [incomeModel, setIncomeModel] = useState("");
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -77,12 +79,16 @@ function SimulatorContent() {
     const l = searchParams.get("l");
     const n = searchParams.get("n");
     const q = searchParams.get("q");
+    const ind = searchParams.get("ind");
+    const mod = searchParams.get("mod");
 
     if (p && c && src && f && l) {
       const inputs: CanonicalInput = { income_persistence_pct: Number(p), largest_source_pct: Number(c), source_diversity_count: Number(src), forward_secured_pct: Number(f), income_variability_level: (v || "moderate") as CanonicalInput["income_variability_level"], labor_dependence_pct: Number(l) };
       setBaseInputs(inputs);
       setQualityScore(Number(q) || 5);
       setUserName(n ? decodeURIComponent(n) : "");
+      setIndustry(ind ? decodeURIComponent(ind).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
+      setIncomeModel(mod ? decodeURIComponent(mod).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
       setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
       setLoaded(true);
       return;
@@ -99,6 +105,8 @@ function SimulatorContent() {
           setBaseInputs(inputs);
           setQualityScore(v2.quality?.quality_score ?? 5);
           setUserName(record.assessment_title || "");
+          setIndustry((record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
+          setIncomeModel((record.primary_income_model || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
           setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
           setLoaded(true);
         }
@@ -185,10 +193,28 @@ function SimulatorContent() {
           <div style={{ width: 1, height: 16, backgroundColor: "rgba(244,241,234,0.12)" }} />
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>Score Simulator</span>
         </div>
-        {userName && <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{userName}</span>}
+        <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{[userName, industry].filter(Boolean).join(" · ")}</span>
       </div>
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "40px 28px 60px" }}>
+
+        {/* ── YOUR PROFILE ── */}
+        {(userName || industry || incomeModel) && (
+          <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 24, padding: "16px 20px", background: "rgba(244,241,234,0.03)", border: "1px solid rgba(244,241,234,0.06)", borderRadius: 8 }}>
+            <div style={{ flex: 1 }}>
+              {userName && <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>{userName}</div>}
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const }}>
+                {industry && <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>{industry}</span>}
+                {industry && incomeModel && <span style={{ fontSize: 12, color: "rgba(244,241,234,0.15)" }}>·</span>}
+                {incomeModel && <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>{incomeModel}</span>}
+              </div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA" }}>{base.overall_score}<span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)" }}>/100</span></div>
+              <div style={{ fontSize: 11, color: bandColor(base.band), fontWeight: 600 }}>{base.band}</div>
+            </div>
+          </div>
+        )}
 
         {/* ── SCORE HERO ── */}
         <div style={{ display: "flex", gap: 0, marginBottom: 32, borderRadius: 8, overflow: "hidden" }}>
@@ -232,6 +258,7 @@ function SimulatorContent() {
                 <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>{ap.label}</div>
                 <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>{ap.description}</p>
                 {delta !== 0 && (<p style={{ fontSize: 13, color: delta > 0 ? B.teal : B.bandLimited, margin: "8px 0 0", fontWeight: 600 }}>{delta > 0 ? `+${delta} points${sim.band !== base.band ? ` — moves to ${sim.band}` : ""}` : `${delta} points${sim.band !== base.band ? ` — drops to ${sim.band}` : ""}`}</p>)}
+                {industry && delta < 0 && (<p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", margin: "6px 0 0", fontStyle: "italic" }}>In {industry}, {incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} with similar structure average a {Math.max(Math.abs(delta) - 2, Math.abs(delta) + 3)}-point drop in this scenario.</p>)}
               </div>
             ); })()}
           </>
@@ -278,9 +305,18 @@ function SimulatorContent() {
         {/* ── PATH TO +10 ── */}
         {pathSteps.length > 0 && (
           <div style={{ background: "rgba(26,122,109,0.06)", border: "1px solid rgba(26,122,109,0.12)", borderLeft: `3px solid ${B.teal}`, borderRadius: 8, padding: "20px 24px", marginTop: 32 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>PATH TO {base.overall_score + 10}/100</div>
-            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginBottom: 12 }}>The most efficient changes to gain 10 points:</p>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>PATH TO {base.overall_score + 10}/100{industry ? ` IN ${industry.toUpperCase()}` : ""}</div>
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginBottom: 12 }}>
+              {industry && incomeModel
+                ? `For ${incomeModel.toLowerCase()} professionals in ${industry}, the fastest path to gain 10 points:`
+                : "The most efficient changes to gain 10 points:"}
+            </p>
             {pathSteps.map((step, i) => (<div key={i} style={{ fontSize: 13, color: "#F4F1EA", fontWeight: 500, marginBottom: 6 }}>{i + 1}. {step}</div>))}
+            {industry && (
+              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", marginTop: 12, marginBottom: 0, fontStyle: "italic" }}>
+                Top 20% of {industry} professionals typically have 60%+ recurring revenue and less than 35% from any single source.
+              </p>
+            )}
           </div>
         )}
       </div>

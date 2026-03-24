@@ -340,6 +340,8 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
         if (score !== undefined) params.set("s", String(score));
         if (band) params.set("b", band);
         if (rec.assessment_title) params.set("n", encodeURIComponent(rec.assessment_title));
+        if (rec.industry_sector) params.set("ind", encodeURIComponent(rec.industry_sector));
+        if (rec.primary_income_model) params.set("mod", encodeURIComponent(rec.primary_income_model));
       }
     } catch { /* fallback */ }
     params.set("id", recordId);
