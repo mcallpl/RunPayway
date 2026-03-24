@@ -1040,14 +1040,13 @@ function IncomePatterns() {
 function WhatYourReportSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
-  const [activeTab, setActiveTab] = useState(0);
 
   const pages = [
-    { num: "01", title: "Your Score", question: "Where do I stand?", desc: "Your exact number, what it means for your daily life with your actual data points, and the single most important thing to fix.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", question: "How is it structured?", desc: "Your income composition, stress test impact, continuity window, and peer comparison with actual industry numbers.", color: B.teal },
-    { num: "03", title: "Your Biggest Risks", question: "What could go wrong?", desc: "The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.", color: B.navy },
-    { num: "04", title: "Your Income Deep Dive", question: "How deep does it go?", desc: "Six dimensions scored, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.", color: B.purple },
-    { num: "05", title: "Your Action Plan", question: "What do I do about it?", desc: "Specific actions with timeframes and targets, tradeoff analysis, ready-to-use scripts (retainer pitch, client outreach), and your reassessment date.", color: B.teal },
+    { num: "01", title: "Your Score", value: "42/100", detail: "Your exact number, what it means for your daily life, and the single most important thing to fix.", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", value: "63% active", detail: "Income composition, stress test drop, continuity window, and peer comparison with actual industry numbers.", color: B.teal },
+    { num: "03", title: "Your Biggest Risks", value: "3 scenarios", detail: "Ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.", color: "#9B2C2C" },
+    { num: "04", title: "Your Income Deep Dive", value: "6 dimensions", detail: "Cross-factor effects, surprising insights, fragility classification, and your income system mapped visually.", color: B.navy },
+    { num: "05", title: "Your Action Plan", value: "3 priorities", detail: "Specific actions with timeframes, targets, tradeoff analysis, and ready-to-use scripts you can send tomorrow.", color: B.teal },
   ];
 
   return (
@@ -1055,157 +1054,105 @@ function WhatYourReportSection() {
       ref={ref}
       aria-label="What your report includes"
       style={{
-        background: "#FFFFFF",
+        background: B.navy,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      <div className="mx-auto" style={{ maxWidth: S.maxW }}>
-        <h2
-          className="font-semibold text-center"
-          style={{
-            fontSize: mobile ? 32 : 48,
-            color: B.navy,
-            lineHeight: S.lhHeading,
-            letterSpacing: S.lsHeading,
-            fontFamily: DISPLAY_FONT, fontWeight: 400,
-            marginBottom: S.h2mb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out, transform 600ms ease-out",
-          }}
-        >
-          What the report tells you
-        </h2>
-
-        <p
-          className="text-center mx-auto"
-          style={{
-            fontSize: mobile ? 16 : 18,
-            color: B.muted,
-            lineHeight: S.lhBody,
-            maxWidth: 640,
-            marginBottom: mobile ? 40 : 56,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
-          }}
-        >
-          Five pages. Each one answers a question you need answered before something goes wrong.
-        </p>
-
-        {/* Tab navigation */}
-        <div
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
-          }}
-        >
-          <div style={{
-            display: "flex",
-            gap: 0,
-            maxWidth: 700,
-            margin: "0 auto 32px",
-            borderBottom: `2px solid ${B.border}`,
-          }}>
-            {pages.map((page, i) => (
-              <button
-                key={page.num}
-                onClick={() => setActiveTab(i)}
-                style={{
-                  flex: 1,
-                  padding: "14px 8px",
-                  background: "none",
-                  border: "none",
-                  borderBottom: activeTab === i ? `2px solid ${B.purple}` : "2px solid transparent",
-                  marginBottom: -2,
-                  cursor: "pointer",
-                  transition: "all 200ms ease",
-                  color: activeTab === i ? B.navy : B.light,
-                  fontSize: 13,
-                  fontWeight: activeTab === i ? 700 : 500,
-                  letterSpacing: "0.01em",
-                }}
-              >
-                {page.num}. {page.title}
-              </button>
-            ))}
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: mobile ? 48 : 64 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+            What You Get
           </div>
-
-          {/* Tab content — preview card */}
-          <div style={{
-            maxWidth: 700,
-            margin: "0 auto",
-            backgroundColor: "#ffffff",
-            borderRadius: 16,
-            border: "1px solid rgba(14,26,43,0.06)",
-            boxShadow: "0 8px 32px rgba(14,26,43,0.06), 0 2px 8px rgba(14,26,43,0.03)",
-            padding: mobile ? 24 : 36,
-            position: "relative",
-            overflow: "hidden",
-            minHeight: 200,
-          }}>
-            {/* Top accent bar */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${pages[activeTab].color}, ${B.teal})` }} />
-
-            <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>
-              <span style={{
-                fontSize: 48,
-                fontWeight: 800,
-                color: "rgba(14,26,43,0.05)",
-                lineHeight: 1,
-                flexShrink: 0,
-              }}>
-                {pages[activeTab].num}
-              </span>
-              <div style={{ flex: 1 }}>
-                <h3 style={{
-                  fontSize: 20,
-                  fontWeight: 600,
-                  color: B.navy,
-                  marginBottom: 8,
-                  letterSpacing: "-0.02em",
-                }}>
-                  {pages[activeTab].title}
-                </h3>
-                <p style={{
-                  fontSize: 14,
-                  color: B.muted,
-                  lineHeight: 1.7,
-                  marginBottom: 16,
-                }}>
-                  {pages[activeTab].question}
-                </p>
-                <p style={{
-                  fontSize: 15,
-                  color: "rgba(14,26,43,0.70)",
-                  lineHeight: 1.7,
-                  margin: 0,
-                }}>
-                  {pages[activeTab].desc}
-                </p>
-              </div>
-            </div>
-          </div>
+          <h2
+            style={{
+              fontSize: mobile ? 32 : 48,
+              color: "#F4F1EA",
+              lineHeight: S.lhHeading,
+              letterSpacing: S.lsHeading,
+              fontFamily: DISPLAY_FONT, fontWeight: 400,
+              marginBottom: S.h2mb,
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(16px)",
+              transition: "opacity 600ms ease-out, transform 600ms ease-out",
+            }}
+          >
+            Not a report you read once.<br />A system you use.
+          </h2>
+          <p
+            style={{
+              fontSize: mobile ? 15 : 17,
+              color: "rgba(244,241,234,0.55)",
+              lineHeight: S.lhBody,
+              maxWidth: 520,
+              margin: "0 auto",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 600ms ease-out 100ms",
+            }}
+          >
+            Five pages of analysis. An interactive simulator. Ready-to-send scripts. Every number is yours.
+          </p>
         </div>
 
-        {/* Sample report link */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 40,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease-out 400ms",
-          }}
-        >
+        {/* 5 cards — all visible at once */}
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: mobile ? 12 : 16 }}>
+          {pages.map((page, i) => (
+            <div
+              key={page.num}
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 12,
+                padding: mobile ? "20px 20px" : "28px 20px",
+                position: "relative",
+                overflow: "hidden",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 500ms ease-out ${150 + i * 80}ms, transform 500ms ease-out ${150 + i * 80}ms`,
+              }}
+            >
+              {/* Top accent line */}
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color }} />
+
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>{page.num}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 4, letterSpacing: "-0.01em" }}>{page.title}</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: page.color === B.navy ? B.teal : page.color, marginBottom: 12, letterSpacing: "-0.02em" }}>{page.value}</div>
+              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{page.detail}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Simulator callout — the differentiator */}
+        <div style={{
+          marginTop: mobile ? 24 : 32,
+          padding: mobile ? "24px 20px" : "28px 32px",
+          background: "rgba(75,63,174,0.08)",
+          border: "1px solid rgba(75,63,174,0.20)",
+          borderRadius: 12,
+          display: "flex",
+          alignItems: mobile ? "flex-start" : "center",
+          flexDirection: mobile ? "column" : "row",
+          gap: mobile ? 16 : 32,
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Interactive Score Simulator</div>
+            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
+              5 structural sliders. 6 preset scenarios. Real-time score recalculation. A &ldquo;Path to +10&rdquo; goal engine that shows exactly how to gain 10 points.
+            </p>
+          </div>
           <Link
             href="/sample-report"
             style={{
-              fontSize: 15, color: B.purple, fontWeight: 500,
-              textDecoration: "underline", textUnderlineOffset: 4,
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
+              color: "#F4F1EA", border: "1px solid rgba(244,241,234,0.20)",
+              textDecoration: "none", whiteSpace: "nowrap" as const,
+              transition: "border-color 200ms ease",
             }}
           >
             View the sample report &#8594;
