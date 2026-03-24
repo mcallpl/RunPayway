@@ -106,7 +106,7 @@ const S = {
   // Layout
   maxW:         1100,
   subtextMaxW:  520,
-  padX:         { desktop: 56, mobile: 24 },
+  padX:         { desktop: 56, mobile: 28 },
   // Vertical gaps (strict 4px grid)
   h1mb:         24,
   h2mb:         16,
@@ -2691,6 +2691,8 @@ function SocialProof() {
         backgroundColor: B.sand,
         paddingTop: mobile ? 48 : 64,
         paddingBottom: mobile ? 48 : 64,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         borderTop: `1px solid ${B.border}`,
         borderBottom: `1px solid ${B.border}`,
       }}
