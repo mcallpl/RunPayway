@@ -10,16 +10,15 @@ import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 
 /* ------------------------------------------------------------------ */
-/*  Design Tokens — Dark & Light themes                                */
+/*  Design Tokens                                                      */
 /* ------------------------------------------------------------------ */
-type Theme = "dark" | "light";
-
 interface ThemeColors {
   bg: string;
   bgDeep: string;
   bgGradient: string;
   surface: string;
   surfaceHover: string;
+  surfaceRaised: string;
   border: string;
   borderSubtle: string;
   text: string;
@@ -33,33 +32,18 @@ interface ThemeColors {
 const DARK: ThemeColors = {
   bg: "#0E1A2B",
   bgDeep: "#070F19",
-  bgGradient: "linear-gradient(180deg, #070F19 0%, #0E1A2B 30%, #0B1520 100%)",
-  surface: "rgba(244,241,234,0.04)",
-  surfaceHover: "rgba(244,241,234,0.06)",
-  border: "rgba(244,241,234,0.08)",
-  borderSubtle: "rgba(244,241,234,0.04)",
+  bgGradient: "linear-gradient(180deg, #070F19 0%, #0C1624 30%, #0E1A2B 100%)",
+  surface: "rgba(244,241,234,0.05)",
+  surfaceHover: "rgba(244,241,234,0.08)",
+  surfaceRaised: "rgba(244,241,234,0.07)",
+  border: "rgba(244,241,234,0.10)",
+  borderSubtle: "rgba(244,241,234,0.06)",
   text: "#F4F1EA",
-  textSecondary: "rgba(244,241,234,0.55)",
-  textMuted: "rgba(244,241,234,0.38)",
-  textFaint: "rgba(244,241,234,0.20)",
-  headerBg: "rgba(7,15,25,0.6)",
-  headerBorder: "rgba(244,241,234,0.08)",
-};
-
-const LIGHT: ThemeColors = {
-  bg: "#FAFAF8",
-  bgDeep: "#F5F2EC",
-  bgGradient: "linear-gradient(180deg, #F5F2EC 0%, #FAFAF8 30%, #FFFFFF 100%)",
-  surface: "rgba(14,26,43,0.03)",
-  surfaceHover: "rgba(14,26,43,0.05)",
-  border: "rgba(14,26,43,0.08)",
-  borderSubtle: "rgba(14,26,43,0.04)",
-  text: "#0E1A2B",
-  textSecondary: "rgba(14,26,43,0.55)",
-  textMuted: "rgba(14,26,43,0.38)",
-  textFaint: "rgba(14,26,43,0.18)",
-  headerBg: "rgba(255,255,255,0.85)",
-  headerBorder: "rgba(14,26,43,0.08)",
+  textSecondary: "rgba(244,241,234,0.65)",
+  textMuted: "rgba(244,241,234,0.45)",
+  textFaint: "rgba(244,241,234,0.25)",
+  headerBg: "rgba(7,15,25,0.75)",
+  headerBorder: "rgba(244,241,234,0.10)",
 };
 
 const BRAND = {
@@ -155,7 +139,6 @@ function Card({ children, glow, style, className }: { children: React.ReactNode;
       padding: "24px 28px",
       position: "relative",
       overflow: "hidden",
-      transition: "background-color 400ms, border-color 400ms",
       ...style,
     }}>
       {glow && <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`, pointerEvents: "none" }} />}
@@ -730,7 +713,6 @@ function BriefGenerator({
 function SimulatorContent() {
   const searchParams = useSearchParams();
   const [loaded, setLoaded] = useState(false);
-  const [theme, setTheme] = useState<Theme>("dark");
   const [simMode, setSimMode] = useState<"presets" | "advanced">("presets");
   const [simPreset, setSimPreset] = useState<string | null>(null);
   const [sliders, setSliders] = useState<{ recurrence: number; topClient: number; sources: number; monthsBooked: number; passive: number } | null>(null);
@@ -738,7 +720,7 @@ function SimulatorContent() {
   const [qualityScore, setQualityScore] = useState(5);
   const [userName, setUserName] = useState("");
   const [industry, setIndustry] = useState("");
-  const T = theme === "dark" ? DARK : LIGHT;
+  const T = DARK;
   const [incomeModel, setIncomeModel] = useState("");
 
   useEffect(() => {
@@ -867,7 +849,7 @@ function SimulatorContent() {
 
   return (
     <ThemeCtx.Provider value={T}>
-    <div style={{ minHeight: "100vh", background: T.bgGradient, fontFamily: INTER, transition: "background 400ms ease" }}>
+    <div style={{ minHeight: "100vh", background: T.bgGradient, fontFamily: INTER }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
         body{margin:0;} *{box-sizing:border-box;}
@@ -908,35 +890,14 @@ function SimulatorContent() {
         <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple}, ${BRAND.teal})` }} />
         <div style={{ padding: "12px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <Image src={logoImg} alt="RunPayway" width={100} height={12} style={{ height: "auto", filter: theme === "dark" ? "brightness(10)" : "none" }} />
+            <Image src={logoImg} alt="RunPayway" width={100} height={12} style={{ height: "auto", filter: "brightness(10)" }} />
             <div style={{ width: 1, height: 20, backgroundColor: T.border }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
               <span style={{ fontSize: 9, color: T.textFaint, letterSpacing: "0.06em" }}>MODEL RP-2.0</span>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span style={{ fontSize: 11, color: T.textMuted }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
-            {/* Theme toggle */}
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-label="Toggle theme"
-              style={{
-                width: 36, height: 20, borderRadius: 10, border: `1px solid ${T.border}`,
-                backgroundColor: T.surface, cursor: "pointer", position: "relative",
-                transition: "all 200ms", padding: 0,
-              }}
-            >
-              <div style={{
-                width: 14, height: 14, borderRadius: "50%",
-                backgroundColor: theme === "dark" ? BRAND.teal : BRAND.purple,
-                position: "absolute", top: 2,
-                left: theme === "dark" ? 2 : 18,
-                transition: "left 200ms ease-out, background-color 200ms",
-                boxShadow: `0 1px 4px ${theme === "dark" ? "rgba(26,122,109,0.4)" : "rgba(75,63,174,0.3)"}`,
-              }} />
-            </button>
-          </div>
+          <span style={{ fontSize: 11, color: T.textMuted }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
         </div>
       </header>
 
@@ -964,10 +925,10 @@ function SimulatorContent() {
         <div className="sim-score-hero" style={{ marginBottom: 32 }}>
           {/* Headline */}
           <div style={{ marginBottom: 28 }}>
-            <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: T.text, lineHeight: 1.1, letterSpacing: "-0.025em", margin: "0 0 8px", transition: "color 400ms" }}>
+            <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: T.text, lineHeight: 1.1, letterSpacing: "-0.025em", margin: "0 0 8px" }}>
               {isModified ? "Projected Impact" : "Your Income Structure"}
             </h1>
-            <p style={{ fontSize: 14, color: T.textSecondary, margin: 0, maxWidth: 520, transition: "color 400ms" }}>
+            <p style={{ fontSize: 14, color: T.textSecondary, margin: 0, maxWidth: 520 }}>
               {isModified
                 ? "How this change reshapes your income stability score and structural position."
                 : "Select a scenario below to see how structural changes affect your score over time."}
@@ -977,15 +938,15 @@ function SimulatorContent() {
           {/* Score triptych */}
           <div className="sim-triptych" style={{ display: "flex", gap: 2, borderRadius: 12, overflow: "hidden" }}>
             {/* Current */}
-            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center", transition: "background 400ms" }}>
+            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted, marginBottom: 10 }}>CURRENT</div>
-              <div className="sim-score-num" style={{ fontSize: 42, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY, transition: "color 400ms" }}>{base.overall_score}</div>
+              <div className="sim-score-num" style={{ fontSize: 42, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
               <div style={{ fontSize: 11, color: bandColor(base.band), fontWeight: 600, marginTop: 8 }}>{base.band}</div>
             </div>
 
             {/* Simulated */}
             <div style={{
-              flex: 1, padding: "28px 24px", textAlign: "center", transition: "background 400ms",
+              flex: 1, padding: "28px 24px", textAlign: "center",
               background: isModified
                 ? delta > 0 ? "rgba(26,122,109,0.06)" : delta < 0 ? "rgba(220,74,74,0.04)" : T.surface
                 : T.surface,
@@ -994,7 +955,7 @@ function SimulatorContent() {
                 {isModified ? "SIMULATED" : "BASELINE"}
               </div>
               <div className="sim-score-num" style={{
-                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, transition: "color 400ms",
+                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: isModified ? (delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.text) : T.text,
               }}>
                 {sim.overall_score}
@@ -1003,10 +964,10 @@ function SimulatorContent() {
             </div>
 
             {/* Impact */}
-            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center", transition: "background 400ms" }}>
+            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted, marginBottom: 10 }}>IMPACT</div>
               <div className="sim-score-num" style={{
-                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, transition: "color 400ms",
+                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint,
               }}>
                 {delta > 0 ? `+${delta}` : delta === 0 ? "\u2014" : String(delta)}
@@ -1025,7 +986,7 @@ function SimulatorContent() {
         )}
 
         {/* ══════════ MODE TOGGLE ══════════ */}
-        <div className="sim-mode-toggle" style={{ display: "flex", gap: 2, marginBottom: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${T.border}`, transition: "border-color 400ms" }}>
+        <div className="sim-mode-toggle" style={{ display: "flex", gap: 2, marginBottom: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${T.border}` }}>
           {(["presets", "advanced"] as const).map((mode) => (
             <button key={mode} onClick={() => {
               setSimMode(mode);
@@ -1203,12 +1164,12 @@ function SimulatorContent() {
 
         {/* ══════════ PROFILE CARD ══════════ */}
         {(userName || industry || incomeModel) && (
-          <div className="sim-profile" style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 32, padding: "16px 20px", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, transition: "all 400ms" }}>
+          <div className="sim-profile" style={{ display: "flex", gap: 16, alignItems: "center", marginTop: 32, padding: "16px 20px", background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${BRAND.purple}22, ${BRAND.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", border: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: T.text }}>{(userName || "?")[0].toUpperCase()}</span>
             </div>
             <div style={{ flex: 1 }}>
-              {userName && <div style={{ fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 2, transition: "color 400ms" }}>{userName}</div>}
+              {userName && <div style={{ fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 2 }}>{userName}</div>}
               <div style={{ display: "flex", gap: 10 }}>
                 {industry && <span style={{ fontSize: 11, color: T.textMuted }}>{industry}</span>}
                 {industry && incomeModel && <span style={{ fontSize: 11, color: T.textFaint }}>\u00B7</span>}
@@ -1216,7 +1177,7 @@ function SimulatorContent() {
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 20, fontWeight: 600, color: T.text, fontVariantNumeric: "tabular-nums", transition: "color 400ms" }}>{base.overall_score}<span style={{ fontSize: 11, color: T.textMuted }}>/100</span></div>
+              <div style={{ fontSize: 20, fontWeight: 600, color: T.text, fontVariantNumeric: "tabular-nums" }}>{base.overall_score}<span style={{ fontSize: 11, color: T.textMuted }}>/100</span></div>
               <div style={{ fontSize: 10, color: bandColor(base.band), fontWeight: 600 }}>{base.band}</div>
             </div>
           </div>
@@ -1224,9 +1185,9 @@ function SimulatorContent() {
       </div>
 
       {/* ══════════ FOOTER ══════════ */}
-      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", transition: "border-color 400ms" }}>
-        <span style={{ fontSize: 10, color: T.textFaint, transition: "color 400ms" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
-        <span style={{ fontSize: 10, color: T.textFaint, transition: "color 400ms" }}>Deterministic &middot; Fixed Rules &middot; No AI</span>
+      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 10, color: T.textFaint }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
+        <span style={{ fontSize: 10, color: T.textFaint }}>Deterministic &middot; Fixed Rules &middot; No AI</span>
       </footer>
     </div>
     </ThemeCtx.Provider>
