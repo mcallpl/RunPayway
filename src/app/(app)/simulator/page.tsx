@@ -124,8 +124,11 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
 
   return (
     <div style={{ marginBottom: 32 }}>
-      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim, marginBottom: 12 }}>
-        INCOME STABILITY CLASSIFICATION
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.dim }}>
+          INCOME STABILITY CLASSIFICATION
+        </div>
+        <div style={{ fontSize: 10, color: B.faint }}>Updates as you adjust scenarios</div>
       </div>
 
       {/* Full-width color bar with position indicator */}
@@ -223,7 +226,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
         <div>
           <SectionLabel color={B.purple}>Income Timeline</SectionLabel>
           <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 460, lineHeight: 1.5 }}>
-            How this scenario compounds over time. Structural changes don&apos;t happen overnight — they ramp, interact, and build on each other.
+            Your projected score at 3, 6, and 12 months if you make this change today. Structural improvements compound — early gains unlock interaction bonuses that accelerate over time.
           </p>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 20 }}>
@@ -525,8 +528,8 @@ function BriefGenerator({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
           <div>
             <SectionLabel color={B.purple}>Stability Brief Generator&#8482;</SectionLabel>
-            <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 480, lineHeight: 1.5 }}>
-              Generate a professional Stability Brief&#8482; from your assessment data. Hand it to a bank, landlord, partner, or client to prove your income structure.
+            <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 520, lineHeight: 1.5 }}>
+              Generate a professional Stability Brief&#8482; built from your actual assessment data. Select who the brief is for, and we produce a document you can download and hand directly to a lender, landlord, partner, or client.
             </p>
           </div>
           <div style={{ fontSize: 11, color: B.dim, padding: "6px 12px", borderRadius: 6, backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
@@ -535,8 +538,11 @@ function BriefGenerator({
         </div>
 
         {/* Purpose selector */}
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint, marginBottom: 12 }}>
-          SELECT PURPOSE
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint }}>
+            STEP 1 — WHO IS THIS FOR?
+          </div>
+          <div style={{ fontSize: 10, color: B.faint }}>Select one, then generate</div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
           {BRIEF_PURPOSES.map(bp => {
@@ -637,6 +643,9 @@ function BriefGenerator({
             </div>
 
             {/* Actions */}
+            <p style={{ fontSize: 12, color: B.dim, marginBottom: 14, marginTop: 0, textAlign: "center" }}>
+              Your Stability Brief&#8482; is ready. Download it and attach to your application, email it to your contact, or print a copy.
+            </p>
             <div style={{ display: "flex", gap: 12 }}>
               <button onClick={handleDownload} disabled={downloading} style={{
                 flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", cursor: downloading ? "wait" : "pointer",
@@ -814,6 +823,24 @@ function SimulatorContent() {
       </header>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
+
+        {/* ══════════ ORIENTATION STRIP ══════════ */}
+        {!isModified && (
+          <div style={{ display: "flex", gap: 6, marginBottom: 32, padding: "16px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`, backgroundColor: B.whisper }}>
+            {[
+              { num: "1", text: "Choose a scenario or build your own" },
+              { num: "2", text: "See how your score changes over time" },
+              { num: "3", text: "Generate a Stability Brief\u2122 to share" },
+            ].map((step, i) => (
+              <div key={i} style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, padding: "0 8px" }}>
+                <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: B.teal }}>{step.num}</span>
+                </div>
+                <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.4 }}>{step.text}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* ══════════ SCORE HERO ══════════ */}
         <div style={{ marginBottom: 32 }}>
@@ -993,7 +1020,7 @@ function SimulatorContent() {
               )}
 
               <div style={{ marginBottom: 0 }}>
-                <SectionLabel color={B.bandLimited} sub="What happens to your simulated state under stress.">
+                <SectionLabel color={B.bandLimited} sub="How your simulated structure holds up if something goes wrong. Lower drops mean a more resilient position.">
                   Stress Tests
                 </SectionLabel>
                 {[
