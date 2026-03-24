@@ -906,15 +906,15 @@ export default function ReviewPage() {
   };
 
   const p2Intro: Record<string, string> = {
-    A1: `${name} scored ${score} out of 100 as a ${structureDesc} with ${incomeModelDesc} income in ${industrySector}. The structure is highly exposed and not stable enough to absorb disruption.`,
-    A2: `${name} scored ${score} out of 100. As a ${structureDesc} with ${revenueDesc}, the structure cannot yet handle disruption.`,
-    A3: `${name} scored ${score} out of 100. Some early structure exists, but the ${incomeModelDesc} setup in ${industrySector} is still vulnerable.`,
-    B1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure in ${industrySector} is developing but has meaningful vulnerabilities.`,
-    B2: `${name} scored ${score} out of 100. The structure is improving but needs stronger protection before it can be called stable.`,
-    C1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure in ${industrySector} has real stability but is not yet fully protected.`,
-    C2: `${name} scored ${score} out of 100. The structure is established in ${industrySector} with only limited vulnerabilities remaining.`,
-    D1: `${name} scored ${score} out of 100. The ${incomeModelDesc} structure has substantial protection with only minor weaknesses.`,
-    D2: `${name} scored ${score} out of 100. Exceptionally strong. The structure is highly protected and well-positioned in ${industrySector}.`,
+    A1: `Here is how ${name}'s ${incomeModelDesc} income in ${industrySector} actually works — where it comes from, how it flows, and where it breaks.`,
+    A2: `This is the structural breakdown of ${name}'s income. As a ${structureDesc} with ${revenueDesc}, here is what the data shows.`,
+    A3: `${name} has early structure. Here is the composition of the ${incomeModelDesc} income in ${industrySector} — and where the gaps are.`,
+    B1: `The ${incomeModelDesc} income in ${industrySector} is developing. Here is the breakdown — what is working and what is exposed.`,
+    B2: `${name}'s income structure is taking shape. Here is the composition — ${record.active_income_level}% active, ${record.persistent_income_level}% persistent.`,
+    C1: `${name}'s ${incomeModelDesc} structure in ${industrySector} has real protection. Here is the composition and where the remaining exposure sits.`,
+    C2: `Established ${incomeModelDesc} structure. Here is how the income is composed — and the specific areas that still matter.`,
+    D1: `Strong ${incomeModelDesc} structure with ${record.persistent_income_level}% persistent income. Here is the full composition.`,
+    D2: `Exceptionally well-built. Here is the structural detail behind the ${score}/100 score.`,
   };
 
   const p2Interpretation: Record<string, string> = {
@@ -1104,11 +1104,7 @@ export default function ReviewPage() {
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {record.peer_stability_percentile_label && (
-            <div style={{ ...T.small, color: B.muted, marginTop: 8 }}>
-              {record.peer_stability_percentile_label} percentile among {industrySector} professionals{v2Benchmarks ? ` (peer average: ${v2Benchmarks.cluster_average_score})` : ""}
-            </div>
-          )}
+          {/* Peer percentile shown on Page 2 with full context */}
         </div>
 
         {/* Band scale */}
@@ -1152,17 +1148,17 @@ export default function ReviewPage() {
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT THIS MEANS FOR YOU</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
             {isHighScorer ? ({
-              C1: `Your income can handle moderate disruptions. You could likely sustain 3-6 months of reduced activity without crisis. But a major client loss or industry shift would still hurt.`,
-              C2: `Your income is well-protected against most common disruptions. You have meaningful runway and diversification. The remaining gaps are refinements, not emergencies.`,
-              D1: `Your income is strongly protected. You could weather significant disruptions — a lost client, an illness, a market downturn — and maintain stability. Focus on maintaining what you have built.`,
-              D2: `Your income is among the most protected in your industry. You have substantial runway, diversification, and forward visibility. Very few scenarios would threaten your stability.`,
-            })[subTier] || `Your income has real stability. The priority now is strengthening what exists, not rebuilding.` : ({
-              A1: `If your main income source changed tomorrow, you would have almost no cushion. You are one bad month away from a serious problem. This report shows you exactly what to fix first.`,
-              A2: `Your income is active but fragile. A lost client, a slow month, or an unexpected break from work could quickly become a financial emergency.`,
-              A3: `You have a starting foundation, but your income cannot absorb a meaningful disruption yet. One unexpected change could set you back significantly.`,
-              B1: `Your income is developing but still vulnerable. You could handle a minor disruption, but a major one — like losing your biggest client — would be painful. The gap between where you are and stable is closable.`,
-              B2: `You are close to stable but not there yet. Your income can handle small bumps but a sustained disruption would still create real pressure.`,
-            })[subTier] || `Your income is developing. The next gains come from building structural protection.`}
+              C1: `Your income survives most common disruptions — a slow quarter, a lost mid-tier client. But a ${record.risk_scenario_drop}-point stress test drop means a major hit (top client loss, industry shift) would still damage you.`,
+              C2: `Your income holds up under pressure. You have ${record.income_continuity_months} months of runway and no single-source dependency. The remaining gaps are specific, not structural.`,
+              D1: `Your income can absorb a lost client, an illness, or a market downturn without crisis. ${record.income_continuity_months}+ months of continuity. Focus on maintaining what you have built.`,
+              D2: `Top ${100 - peerPercentileValue}% of ${industrySector} professionals. ${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
+            })[subTier] || `Your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : ({
+              A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. That is not enough. You are one bad month away from a cash crisis.`,
+              A2: `Your income is active but fragile. A lost client, a slow month, or 2 weeks off work could become a financial emergency. You have ${continuityDisplay} of runway.`,
+              A3: `You have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change — a lost client, a contract pause — sets you back hard.`,
+              B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. The gap to stable is ${nextBandThreshold - score} points — closable.`,
+              B2: `You are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
+            })[subTier] || `Your income is developing. ${nextBandThreshold - score} points from the next band.`}
           </p>
         </div>
 
@@ -1273,17 +1269,10 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* What's working + What's vulnerable — compact */}
-        <div style={{ display: "flex", gap: 24, marginBottom: 20 }}>
-          <div style={{ flex: 1 }}>
-            <Overline large>What Is Working</Overline>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
-          </div>
-          <div style={{ flex: 1 }}>
-            <Overline large>Biggest Weakness</Overline>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1)}</div>
-            <p style={{ ...T.body, color: B.muted, margin: 0 }}>{profileConstraintAdvice[dominantConstraint]?.split(".").slice(0, 2).join(".") + "."}</p>
-          </div>
+        {/* What's working — single column (biggest weakness already on Page 1) */}
+        <div style={{ marginBottom: 20 }}>
+          <Overline large>What Is Working</Overline>
+          <p style={{ ...T.body, color: B.muted, margin: 0 }}>{p2WorkingBody}</p>
         </div>
 
         {/* Peer comparison */}
@@ -1508,8 +1497,8 @@ export default function ReviewPage() {
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500 }}>
             {isHighScorer
-              ? "Stability is not permanent. The structural advantages you have today require active maintenance."
-              : "If nothing changes in the next 90 days, these risks remain. Every month without structural improvement is a month without protection."}
+              ? `Your ${record.risk_scenario_drop}-point stress test exposure does not fix itself. The structural advantages you have today erode if you stop maintaining them.`
+              : `If nothing changes in 90 days, these risks remain. Your ${continuityDisplay} runway does not grow on its own. Every month without a structural change is a month where one disruption could set you back.`}
           </p>
         </div>
 
@@ -1528,24 +1517,6 @@ export default function ReviewPage() {
                 <span style={{ ...T.micro, color: B.bandLimited }}>{w.timeframe}</span>
               </div>
               <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{w.explanation}</p>
-            </div>
-          ))}
-          </>
-        )}
-
-        {/* Behavioral Insights — static, in PDF */}
-        {v2BehavioralInsights && v2BehavioralInsights.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>What Your Structure Says About Your Decisions</Overline>
-          {v2BehavioralInsights.map((b, i) => (
-            <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 10 }}>
-              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{b.pattern}</div>
-              <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{b.consequence}</p>
-              <div style={{ borderTop: `1px solid ${B.stone}`, paddingTop: 8 }}>
-                <div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 2 }}>HOW TO REFRAME</div>
-                <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>{b.reframe}</p>
-              </div>
             </div>
           ))}
           </>
@@ -1612,11 +1583,11 @@ export default function ReviewPage() {
                 </div>
                 <div style={{ ...T.meta, color: B.muted }}>
                   {({
-                    brittle: "Could break under minor pressure.",
-                    thin: "Handles small disruptions only.",
-                    uneven: "Some areas protected, others exposed.",
-                    supported: "Well-supported, limited fragility.",
-                    resilient: "Can absorb significant disruption.",
+                    brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
+                    thin: "Can absorb a minor hit (one slow month), but not two in a row.",
+                    uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
+                    supported: "Can absorb most common disruptions without band change.",
+                    resilient: "Can absorb a major client loss or 90-day work stoppage.",
                   })[v2Fragility.fragility_class] ?? ""}
                 </div>
                 {v2Fragility.primary_failure_mode && (
@@ -1652,37 +1623,6 @@ export default function ReviewPage() {
                 <div style={{ ...T.meta, color: B.muted }}>
                   Quality: {v2Quality.quality_score}/10 ({v2Quality.quality_score >= 7 ? "strong" : v2Quality.quality_score >= 4 ? "moderate" : "weak"})
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* What's helping and what's hurting — from explainability engine */}
-        {v2Explainability && (v2Explainability.strongest_supports?.length || v2Explainability.strongest_suppressors?.length) && (
-          <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
-            {v2Explainability.strongest_supports && v2Explainability.strongest_supports.length > 0 && (
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>What is helping your score</div>
-                {v2Explainability.strongest_supports.slice(0, 3).map((s, i) => (
-                  <div key={i} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {s}</div>
-                ))}
-              </div>
-            )}
-            {v2Explainability.strongest_suppressors && v2Explainability.strongest_suppressors.length > 0 && (
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What is holding it back</div>
-                {v2Explainability.strongest_suppressors.slice(0, 3).map((s, i) => {
-                  const suppressorLabels: Record<string, string> = {
-                    weak_forward_visibility: "Not enough income locked in ahead of time",
-                    high_labor_dependence: "Too much income depends on daily work",
-                    high_concentration: "Too dependent on one source",
-                    low_persistence: "Not enough income repeats automatically",
-                    high_variability: "Income swings too much month to month",
-                    weak_durability: "Income quality is fragile",
-                    shallow_continuity: "Income would stop too quickly if work paused",
-                  };
-                  return <div key={i} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {suppressorLabels[s] ?? s}</div>;
-                })}
               </div>
             )}
           </div>
@@ -1839,35 +1779,6 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* What the next level looks like */}
-        {!isHighScorer && (
-          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "16px 20px", marginBottom: 20 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>WHAT {score < 30 ? "DEVELOPING" : score < 50 ? "ESTABLISHED" : "HIGH"} STABILITY LOOKS LIKE</div>
-            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-              {score < 30
-                ? "At Developing Stability (30+), your income can handle minor disruptions. Your stress test drop shrinks, your continuity extends past 1 month, and you move above the bottom third of your industry."
-                : score < 50
-                ? "At Established Stability (50+), your income survives most common disruptions. Your continuity extends to 3-6 months, your peer percentile jumps above 60%, and your income no longer depends on any single source for survival."
-                : "At High Stability (75+), your income is among the most protected in your industry. You could weather a major client loss, an illness, or a market downturn without financial crisis."}
-            </p>
-          </div>
-        )}
-
-        {/* What successful people in your industry do differently */}
-        {olStrongerPatterns && olStrongerPatterns.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <Overline large>{isHighScorer ? "Structural Strengths to Maintain" : `What Top ${industrySector} Professionals Do Differently`}</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {olStrongerPatterns.slice(0, 4).map((pattern, i) => (
-                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: isHighScorer ? B.teal : B.purple, marginTop: 6, flexShrink: 0 }} />
-                  <span style={{ ...T.small, color: B.muted }}>{pattern}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Top 3 improvements + progress bar */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -1998,31 +1909,6 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        {/* 6-Week Execution Roadmap — static, in PDF */}
-        {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>Your 6-Week Execution Plan</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            Exactly what to do for the next 6 weeks. Each step builds on the last.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0, marginBottom: 16 }}>
-            {v2ExecutionRoadmap.map((week, i) => (
-              <div key={i} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: i < v2ExecutionRoadmap.length - 1 ? `1px solid ${B.stone}` : "none" }}>
-                <div style={{ minWidth: 70, flexShrink: 0 }}>
-                  <div style={{ ...T.sectionLabel, color: B.purple }}>{week.week}</div>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{week.action}</div>
-                  <p style={{ ...T.small, color: B.muted, margin: "0 0 4px", lineHeight: 1.55 }}>{week.detail}</p>
-                  <div style={{ ...T.meta, color: B.teal, fontWeight: 500 }}>Success metric: {week.success_metric}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          </>
-        )}
-
         {/* Tradeoffs & Strategy — RP-2.1 */}
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -2123,34 +2009,6 @@ export default function ReviewPage() {
             );
           })}
           </div>
-        )}
-
-        {/* How to Evaluate Your Income Going Forward — Reusable Framework (RP-2.1) */}
-        {v2ReusableFramework && v2ReusableFramework.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>How to Evaluate Your Income Going Forward</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            After reading this report, you should be able to assess your income stability on your own. These are the six factors that matter — and where you stand on each right now.
-          </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
-            {v2ReusableFramework.map((item, i) => {
-              const [title, ...rest] = item.split(": ");
-              const body = rest.join(": ");
-              return (
-                <div key={i} style={{ flex: "1 1 calc(50% - 6px)", minWidth: 280, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 16px" }}>
-                  <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{title}</div>
-                  <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{body}</p>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.teal}`, borderRadius: 4, padding: "14px 18px", marginBottom: 16 }}>
-            <p style={{ ...T.small, color: B.navy, margin: 0, fontWeight: 500 }}>
-              Use this framework to re-evaluate every quarter. If any factor shifts by more than 15%, your overall stability has materially changed. That is when you should reassess.
-            </p>
-          </div>
-          </>
         )}
 
         {/* Reassessment + Verification */}
