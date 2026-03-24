@@ -1054,6 +1054,118 @@ export default function ReviewPage() {
         <PageFooter section="Your Score" page={1} />
       </ReportPage>
 
+      {/* ── INCOME DECISION ENGINE — after score, before structure ── */}
+      {v2NormalizedInputs && (() => {
+        const ni2 = v2NormalizedInputs;
+        const baseInputs2: CanonicalInput = {
+          income_persistence_pct: ni2.income_persistence_pct,
+          largest_source_pct: ni2.largest_source_pct,
+          source_diversity_count: ni2.source_diversity_count,
+          forward_secured_pct: ni2.forward_secured_pct,
+          income_variability_level: ni2.income_variability_level as "low" | "moderate" | "high" | "extreme",
+          labor_dependence_pct: ni2.labor_dependence_pct,
+        };
+        const qs2 = v2Quality?.quality_score ?? 5;
+        const sl2 = simSliders ?? { recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct };
+        let simIn2: CanonicalInput;
+        if (simMode === "advanced" && simSliders) {
+          const gt = sl2.sources <= 1 ? 100 : Math.max(Math.round(100 / sl2.sources), sl2.topClient);
+          simIn2 = { income_persistence_pct: sl2.recurrence, largest_source_pct: gt, source_diversity_count: sl2.sources, forward_secured_pct: Math.min(100, Math.round(sl2.monthsBooked / 6 * 100)), income_variability_level: baseInputs2.income_variability_level, labor_dependence_pct: Math.max(0, 100 - sl2.passive) };
+        } else {
+          const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset);
+          simIn2 = ap ? ap.modify(baseInputs2) : baseInputs2;
+        }
+        const br2 = simulateScore(baseInputs2, qs2);
+        const sr2 = simulateScore(simIn2, qs2);
+        const sd2 = sr2.overall_score - br2.overall_score;
+        const isMod = simMode === "advanced" ? !!simSliders : !!simPreset;
+        const stLC = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(simIn2), qs2);
+        const stNW = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(simIn2), qs2);
+        const srd = Math.round(sr2.continuity_months * 30);
+        const ins2: string[] = [];
+        if (simMode === "advanced" && simSliders) {
+          const rd = sl2.recurrence - ni2.income_persistence_pct;
+          const cd = sl2.topClient - ni2.largest_source_pct;
+          const pd = sl2.passive - (100 - ni2.labor_dependence_pct);
+          if (rd >= 15) ins2.push(`+${rd}% recurring adds ${Math.round(rd * 0.03 * 30)} days of runway`);
+          if (cd <= -15) ins2.push(`Top client ${ni2.largest_source_pct}% → ${sl2.topClient}%: +${Math.abs(Math.round(cd * 0.15))} resilience`);
+          if (pd >= 15) ins2.push(`${sl2.passive}% passive — continues if you stop`);
+          if (sr2.band !== br2.band) ins2.push(`Crossed into ${sr2.band}`);
+        }
+        const tgt = br2.overall_score + 10;
+        const ps2: string[] = [];
+        if (br2.overall_score < 90) {
+          const tries = [
+            { label: "recurring", field: "income_persistence_pct" as const, step: 5, dir: 1 },
+            { label: "top client", field: "largest_source_pct" as const, step: -5, dir: -1 },
+            { label: "forward visibility", field: "forward_secured_pct" as const, step: 5, dir: 1 },
+            { label: "labor dependence", field: "labor_dependence_pct" as const, step: -5, dir: -1 },
+          ];
+          let rem = 10;
+          for (const t of tries) {
+            if (rem <= 0) break;
+            const test = { ...baseInputs2, [t.field]: Math.max(0, Math.min(100, (baseInputs2[t.field] as number) + t.step * 3)) };
+            const tr = simulateScore(test, qs2);
+            const lift = tr.overall_score - br2.overall_score;
+            if (lift > 0) { const n = Math.min(lift, rem); ps2.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${baseInputs2[t.field]}% to ${Math.max(0, Math.min(100, (baseInputs2[t.field] as number) + t.step * 3))}% (+${n})`); rem -= n; }
+          }
+        }
+        const Sl = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+              <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
+              <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
+            </div>
+            <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ width: "100%", accentColor: B.purple, cursor: "pointer" }} />
+            <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ ...T.meta, color: B.light }}>{min}{unit}</span><span style={{ ...T.meta, color: B.light }}>{max}{unit}</span></div>
+          </div>
+        );
+        return (
+          <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
+            <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div><div style={{ ...T.cardHero, color: B.navy }}>{br2.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div><div style={{ ...T.meta, color: B.muted }}>{br2.band}</div></div>
+              <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isMod ? "SIMULATED" : "BASELINE"}</div><div style={{ ...T.cardHero, color: sd2 > 0 ? B.teal : sd2 < 0 ? B.bandLimited : B.navy }}>{sr2.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div><div style={{ ...T.meta, color: B.muted }}>{sr2.band}</div></div>
+              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IMPACT</div><div style={{ ...T.cardHero, color: sd2 > 0 ? B.teal : sd2 < 0 ? B.bandLimited : B.muted }}>{sd2 > 0 ? `+${sd2}` : sd2 === 0 ? "—" : String(sd2)}</div><div style={{ ...T.meta, color: B.muted }}>{srd} days runway</div></div>
+            </div>
+            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+              <button onClick={() => { setSimMode("presets"); setSimSliders(null); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "presets" ? B.purple : B.stone}`, backgroundColor: simMode === "presets" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "presets" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>Quick Scenarios</button>
+              <button onClick={() => { setSimMode("advanced"); setSimPreset(null); if (!simSliders) setSimSliders({ recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct }); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "advanced" ? B.purple : B.stone}`, backgroundColor: simMode === "advanced" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "advanced" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>Customize Your Scenario</button>
+            </div>
+            {simMode === "presets" && (<>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>{SIMULATOR_PRESETS.map((p) => { const ia = simPreset === p.id; return (<button key={p.id} onClick={() => setSimPreset(ia ? null : p.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${ia ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms", backgroundColor: ia ? "rgba(75,63,174,0.08)" : "#fff", color: ia ? B.purple : B.navy }}>{p.label}</button>); })}</div>
+              {simPreset && (() => { const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset)!; return (<div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}><div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{ap.label}</div><p style={{ ...T.small, color: B.muted, margin: 0 }}>{ap.description}</p>{sd2 !== 0 && (<p style={{ ...T.small, color: sd2 > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>{sd2 > 0 ? `+${sd2} points${sr2.band !== br2.band ? ` — moves to ${sr2.band}` : ""}` : `${sd2} points${sr2.band !== br2.band ? ` — drops to ${sr2.band}` : ""}`}</p>)}</div>); })()}
+            </>)}
+            {simMode === "advanced" && simSliders && (
+              <div style={{ display: "flex", gap: 24 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ ...T.overline, color: B.teal, marginBottom: 12 }}>ADJUST YOUR INCOME STRUCTURE</div>
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 8 }}>INCOME STRUCTURE</div>
+                  <Sl label="Recurring revenue" value={sl2.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, recurrence: v })} />
+                  <Sl label="Top client share" value={sl2.topClient} min={sl2.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, topClient: v })} />
+                  <Sl label="Income sources" value={sl2.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSimSliders({ ...sl2, sources: v, topClient: v <= 1 ? 100 : Math.min(sl2.topClient, 100) })} />
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>PREDICTABILITY</div>
+                  <Sl label="Months booked ahead" value={sl2.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSimSliders({ ...sl2, monthsBooked: v })} />
+                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>RESILIENCE</div>
+                  <Sl label="Passive income" value={sl2.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, passive: v })} />
+                  <button onClick={() => setSimSliders({ recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct })} style={{ ...T.meta, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Reset to current</button>
+                </div>
+                <div style={{ flex: 1 }}>
+                  {ins2.length > 0 && (<div style={{ marginBottom: 16 }}><div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>WHAT CHANGED</div>{ins2.map((x, i) => (<div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4, padding: "6px 10px", backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4 }}>{x}</div>))}</div>)}
+                  <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>STRESS TESTS</div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Lose top client</span><span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{sr2.overall_score}/100 → {stLC.overall_score}/100</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Unable to work 90 days</span><span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{sr2.overall_score}/100 → {stNW.overall_score}/100</span></div>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Fragility</span><span style={{ ...T.small, fontWeight: 600, color: sr2.fragility_class === "brittle" || sr2.fragility_class === "thin" ? B.bandLimited : B.teal }}>{sr2.fragility_class}</span></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {ps2.length > 0 && (<><SectionDivider /><div style={{ ...cardStyle, borderLeft: `3px solid ${B.teal}` }}><div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>PATH TO {tgt}/100</div>{ps2.map((s, i) => (<div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4 }}>{i + 1}. {s}</div>))}</div></>)}
+          </div>
+        );
+      })()}
+
 
       {/* ════════════════════════════════════════════════════════
           PAGE 2 — HOW YOUR INCOME IS BUILT (Understand: the x-ray)
@@ -1156,285 +1268,6 @@ export default function ReviewPage() {
         <PageFooter section="How Your Income Is Built" page={2} />
       </ReportPage>
 
-      {/* ── INCOME DECISION ENGINE — full interactive simulator ── */}
-      {v2NormalizedInputs && (() => {
-        const ni = v2NormalizedInputs;
-        const baseInputs: CanonicalInput = {
-          income_persistence_pct: ni.income_persistence_pct,
-          largest_source_pct: ni.largest_source_pct,
-          source_diversity_count: ni.source_diversity_count,
-          forward_secured_pct: ni.forward_secured_pct,
-          income_variability_level: ni.income_variability_level as "low" | "moderate" | "high" | "extreme",
-          labor_dependence_pct: ni.labor_dependence_pct,
-        };
-        const qualityScore = v2Quality?.quality_score ?? 5;
-
-        // Initialize sliders from base on first render
-        const sl = simSliders ?? {
-          recurrence: ni.income_persistence_pct,
-          topClient: ni.largest_source_pct,
-          sources: ni.source_diversity_count,
-          monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2,
-          passive: 100 - ni.labor_dependence_pct,
-        };
-
-        // Build simulated inputs depending on mode
-        let simInputs: CanonicalInput;
-        if (simMode === "advanced" && simSliders) {
-          // Guardrails
-          const guardedTopClient = sl.sources <= 1 ? 100 : Math.max(Math.round(100 / sl.sources), sl.topClient);
-          simInputs = {
-            income_persistence_pct: sl.recurrence,
-            largest_source_pct: guardedTopClient,
-            source_diversity_count: sl.sources,
-            forward_secured_pct: Math.min(100, Math.round(sl.monthsBooked / 6 * 100)),
-            income_variability_level: baseInputs.income_variability_level,
-            labor_dependence_pct: Math.max(0, 100 - sl.passive),
-          };
-        } else {
-          const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset);
-          simInputs = activePreset ? activePreset.modify(baseInputs) : baseInputs;
-        }
-
-        const baseResult = simulateScore(baseInputs, qualityScore);
-        const simResult = simulateScore(simInputs, qualityScore);
-        const scoreDelta = simResult.overall_score - baseResult.overall_score;
-        const isModified = simMode === "advanced" ? !!simSliders : !!simPreset;
-
-        // Stress tests — auto-run on current simulated inputs
-        const stressLoseClient = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(simInputs), qualityScore);
-        const stressNoWork = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(simInputs), qualityScore);
-
-        // Income runway from simulated state
-        const simRunwayDays = Math.round(simResult.continuity_months * 30);
-
-        // Dynamic insights based on slider changes
-        const insights: string[] = [];
-        if (simMode === "advanced" && simSliders) {
-          const recDelta = sl.recurrence - ni.income_persistence_pct;
-          const concDelta = sl.topClient - ni.largest_source_pct;
-          const passDelta = sl.passive - (100 - ni.labor_dependence_pct);
-          if (recDelta >= 15) insights.push(`+${recDelta}% recurring revenue adds ${Math.round(recDelta * 0.03 * 30)} days of runway`);
-          if (concDelta <= -15) insights.push(`Reducing top client from ${ni.largest_source_pct}% to ${sl.topClient}% increases resilience by +${Math.abs(Math.round(concDelta * 0.15))} points`);
-          if (passDelta >= 15) insights.push(`+${passDelta}% passive income means ${sl.passive}% continues if you stop working`);
-          if (simResult.band !== baseResult.band) insights.push(`You have crossed into ${simResult.band}`);
-          if (stressLoseClient.overall_score > stressNoWork.overall_score) insights.push(`Your biggest risk is now work stoppage, not client loss`);
-        }
-
-        // Path to +10
-        const targetScore = baseResult.overall_score + 10;
-        const pathSteps: string[] = [];
-        if (baseResult.overall_score < 90) {
-          // Try each factor change individually, find cheapest path
-          const tries = [
-            { label: "recurring", field: "income_persistence_pct" as const, step: 5, dir: 1 },
-            { label: "top client", field: "largest_source_pct" as const, step: -5, dir: -1 },
-            { label: "forward visibility", field: "forward_secured_pct" as const, step: 5, dir: 1 },
-            { label: "labor dependence", field: "labor_dependence_pct" as const, step: -5, dir: -1 },
-          ];
-          let remaining = 10;
-          for (const t of tries) {
-            if (remaining <= 0) break;
-            const test = { ...baseInputs, [t.field]: Math.max(0, Math.min(100, (baseInputs[t.field] as number) + t.step * 3)) };
-            const testResult = simulateScore(test, qualityScore);
-            const lift = testResult.overall_score - baseResult.overall_score;
-            if (lift > 0) {
-              const needed = Math.min(lift, remaining);
-              const change = Math.abs(t.step * 3);
-              const fromVal = baseInputs[t.field] as number;
-              const toVal = Math.max(0, Math.min(100, fromVal + t.step * 3));
-              pathSteps.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${fromVal}% to ${toVal}% (+${needed} pts)`);
-              remaining -= needed;
-            }
-          }
-        }
-
-        // Slider component helper
-        const Slider = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-              <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
-              <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
-            </div>
-            <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ width: "100%", accentColor: B.purple, cursor: "pointer" }} />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span style={{ ...T.meta, color: B.light }}>{min}{unit}</span>
-              <span style={{ ...T.meta, color: B.light }}>{max}{unit}</span>
-            </div>
-          </div>
-        );
-
-        return (
-          <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
-
-            {/* Score display — always visible */}
-            <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
-              <div style={{ flex: 1, textAlign: "center" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div>
-                <div style={{ ...T.cardHero, color: B.navy }}>{baseResult.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div>
-                <div style={{ ...T.meta, color: B.muted }}>{baseResult.band}</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
-              <div style={{ flex: 1, textAlign: "center" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isModified ? "SIMULATED" : "BASELINE"}</div>
-                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.navy }}>{simResult.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div>
-                <div style={{ ...T.meta, color: B.muted }}>{simResult.band}</div>
-              </div>
-              <div style={{ flex: 1, textAlign: "center" }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IMPACT</div>
-                <div style={{ ...T.cardHero, color: scoreDelta > 0 ? B.teal : scoreDelta < 0 ? B.bandLimited : B.muted }}>
-                  {scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta === 0 ? "—" : String(scoreDelta)}
-                </div>
-                <div style={{ ...T.meta, color: B.muted }}>{simRunwayDays} days runway</div>
-              </div>
-            </div>
-
-            {/* Mode toggle */}
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <button onClick={() => { setSimMode("presets"); setSimSliders(null); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "presets" ? B.purple : B.stone}`, backgroundColor: simMode === "presets" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "presets" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>
-                Quick Scenarios
-              </button>
-              <button onClick={() => { setSimMode("advanced"); setSimPreset(null); if (!simSliders) setSimSliders({ recurrence: ni.income_persistence_pct, topClient: ni.largest_source_pct, sources: ni.source_diversity_count, monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni.labor_dependence_pct }); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "advanced" ? B.purple : B.stone}`, backgroundColor: simMode === "advanced" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "advanced" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>
-                Customize Your Scenario
-              </button>
-            </div>
-
-            {/* PRESETS MODE */}
-            {simMode === "presets" && (
-              <>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
-                {SIMULATOR_PRESETS.map((preset) => {
-                  const isActive = simPreset === preset.id;
-                  return (
-                    <button key={preset.id} onClick={() => setSimPreset(isActive ? null : preset.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${isActive ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms", backgroundColor: isActive ? "rgba(75,63,174,0.08)" : "#fff", color: isActive ? B.purple : B.navy }}>
-                      {preset.label}
-                    </button>
-                  );
-                })}
-              </div>
-              {simPreset && (() => {
-                const activePreset = SIMULATOR_PRESETS.find(p => p.id === simPreset)!;
-                return (
-                  <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}>
-                    <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{activePreset.label}</div>
-                    <p style={{ ...T.small, color: B.muted, margin: 0 }}>{activePreset.description}</p>
-                    {scoreDelta !== 0 && (
-                      <p style={{ ...T.small, color: scoreDelta > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>
-                        {scoreDelta > 0 ? `+${scoreDelta} points${simResult.band !== baseResult.band ? ` — moves to ${simResult.band}` : ""}` : `${scoreDelta} points${simResult.band !== baseResult.band ? ` — drops to ${simResult.band}` : ""}`}
-                      </p>
-                    )}
-                  </div>
-                );
-              })()}
-              </>
-            )}
-
-            {/* ADVANCED SLIDER MODE */}
-            {simMode === "advanced" && simSliders && (
-              <div style={{ display: "flex", gap: 24 }}>
-                {/* Left: Sliders */}
-                <div style={{ flex: 1 }}>
-                  <div style={{ ...T.overline, color: B.teal, marginBottom: 12 }}>ADJUST YOUR INCOME STRUCTURE</div>
-
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 8 }}>INCOME STRUCTURE</div>
-                  <Slider label="Recurring revenue" value={sl.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, recurrence: v })} />
-                  <Slider label="Top client share" value={sl.topClient} min={sl.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, topClient: v })} />
-                  <Slider label="Income sources" value={sl.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSimSliders({ ...sl, sources: v, topClient: v <= 1 ? 100 : Math.min(sl.topClient, 100) })} />
-
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>PREDICTABILITY</div>
-                  <Slider label="Months booked ahead" value={sl.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSimSliders({ ...sl, monthsBooked: v })} />
-
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>RESILIENCE</div>
-                  <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl, passive: v })} />
-
-                  <button onClick={() => setSimSliders({ recurrence: ni.income_persistence_pct, topClient: ni.largest_source_pct, sources: ni.source_diversity_count, monthsBooked: Math.round(ni.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni.labor_dependence_pct })} style={{ ...T.meta, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>
-                    Reset to current
-                  </button>
-                </div>
-
-                {/* Right: Live results */}
-                <div style={{ flex: 1 }}>
-                  {/* Dynamic insights */}
-                  {insights.length > 0 && (
-                    <div style={{ marginBottom: 16 }}>
-                      <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>WHAT CHANGED</div>
-                      {insights.map((ins, i) => (
-                        <div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4, padding: "6px 10px", backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4 }}>
-                          {ins}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Stress tests — auto-updating */}
-                  <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>STRESS TESTS ON SIMULATED STATE</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
-                      <span style={{ ...T.small, color: B.navy }}>Lose top client</span>
-                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score}/100 → {stressLoseClient.overall_score}/100</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
-                      <span style={{ ...T.small, color: B.navy }}>Unable to work 90 days</span>
-                      <span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{simResult.overall_score}/100 → {stressNoWork.overall_score}/100</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}>
-                      <span style={{ ...T.small, color: B.navy }}>Income runway</span>
-                      <span style={{ ...T.small, fontWeight: 600, color: simRunwayDays < 30 ? B.bandLimited : simRunwayDays < 90 ? B.bandDeveloping : B.teal }}>{simRunwayDays} days</span>
-                    </div>
-                  </div>
-
-                  {/* Fragility */}
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4, marginBottom: 16 }}>
-                    <span style={{ ...T.small, color: B.navy }}>Fragility</span>
-                    <span style={{ ...T.small, fontWeight: 600, color: simResult.fragility_class === "brittle" || simResult.fragility_class === "thin" ? B.bandLimited : B.teal }}>{simResult.fragility_class}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* PATH TO +10 — always visible */}
-            {pathSteps.length > 0 && (
-              <>
-              <SectionDivider />
-              <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.teal}`, borderRadius: 4, padding: "16px 20px" }}>
-                <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>PATH TO {baseResult.overall_score + 10}</div>
-                <p style={{ ...T.small, color: B.muted, marginBottom: 10 }}>The most efficient changes to gain 10 points from your current {baseResult.overall_score}:</p>
-                {pathSteps.map((step, i) => (
-                  <div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4 }}>{i + 1}. {step}</div>
-                ))}
-              </div>
-              </>
-            )}
-
-            {/* Income Runway */}
-            <SectionDivider />
-            <Overline large>Income Runway</Overline>
-            {(() => {
-              const runwayDays = simMode === "advanced" && simSliders ? simRunwayDays : Math.round(record.income_continuity_months * 30);
-              const target90 = Math.max(0, 90 - runwayDays);
-              return (
-                <div style={{ display: "flex", gap: 12 }}>
-                  <div style={{ flex: 1, ...cardStyle, textAlign: "center" }}>
-                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IF YOU STOP WORKING TODAY</div>
-                    <div style={{ fontSize: 40, fontWeight: 600, lineHeight: 1.1, color: runwayDays < 30 ? B.bandLimited : runwayDays < 90 ? B.bandDeveloping : B.teal, marginBottom: 4 }}>{runwayDays}</div>
-                    <div style={{ ...T.sectionLabel, color: B.navy }}>days of income</div>
-                  </div>
-                  <div style={{ flex: 1, ...cardStyle }}>
-                    <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>TO REACH 90 DAYS</div>
-                    {runwayDays >= 90 ? (
-                      <div style={{ ...T.cardHeading, color: B.teal }}>Already there</div>
-                    ) : (
-                      <div style={{ ...T.sectionLabel, color: B.navy }}>You need {target90} more days</div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-        );
-      })()}
-
-
       {/* ════════════════════════════════════════════════════════
           PAGE 3 — YOUR BIGGEST RISKS
           ════════════════════════════════════════════════════════ */}
@@ -1518,6 +1351,21 @@ export default function ReviewPage() {
               );
             })}
           </div>
+        )}
+
+        {/* Surprising Insights — aha moments between confrontation and foresight */}
+        {v2SurprisingInsights && v2SurprisingInsights.length > 0 && (
+          <>
+          <SectionDivider />
+          <Overline large>What You Might Not Realize</Overline>
+          {v2SurprisingInsights.map((insight, i) => (
+            <div key={i} style={{ ...cardStyle, borderLeft: `3px solid ${B.purple}`, marginBottom: 10 }}>
+              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{insight.headline}</div>
+              <p style={{ ...T.small, color: B.muted, margin: "0 0 6px", lineHeight: 1.55 }}>{insight.explanation}</p>
+              <div style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>{insight.data_point}</div>
+            </div>
+          ))}
+          </>
         )}
 
         {/* Predictive Warnings — static, in PDF */}
@@ -1675,20 +1523,7 @@ export default function ReviewPage() {
           </>
         )}
 
-        {/* What You Might Not Realize — Surprising Insights (moved from Page 2 for analytical context) */}
-        {v2SurprisingInsights && v2SurprisingInsights.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>What You Might Not Realize</Overline>
-          {v2SurprisingInsights.map((insight, i) => (
-            <div key={i} style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 10 }}>
-              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{insight.headline}</div>
-              <p style={{ ...T.small, color: B.muted, margin: "0 0 6px", lineHeight: 1.55 }}>{insight.explanation}</p>
-              <div style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>{insight.data_point}</div>
-            </div>
-          ))}
-          </>
-        )}
+        {/* Surprising Insights moved to Page 3 */}
 
         {/* Income System Map — visual summary of the six normalized inputs */}
         {v2NormalizedInputs && (() => {
@@ -1917,51 +1752,43 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
-      </ReportPage>
-
-
-      {/* ════════════════════════════════════════════════════════
-          PAGE 6 — TRADEOFFS, ADVISOR, VERIFICATION
-          Split from Page 5 for PDF page sizing.
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage>
-        <ReportHeader />
-
-        {/* Tradeoffs & Strategy — RP-2.1 */}
-        {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
-          <div style={{ marginBottom: 16 }}>
-            <Overline large>Tradeoffs to Understand</Overline>
-            {v2TradeoffNarratives.map((t, i) => (
-              <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
-                <div style={{ display: "flex", gap: 16 }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div>
-                    <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p>
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div>
-                    <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p>
-                  </div>
-                </div>
-                <div style={{ borderTop: `1px solid ${B.stone}`, marginTop: 8, paddingTop: 6 }}>
-                  <p style={{ ...T.meta, color: B.navy, margin: 0, fontWeight: 500 }}>{t.net_recommendation}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* What NOT to do — from avoid_actions */}
+        {/* What NOT to do — inline with actions */}
         {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
           <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>What to avoid</div>
+            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What to avoid</div>
             {(v2AvoidActions ?? []).slice(0, 2).map((a) => (
               <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
             ))}
             {(olAvoid ?? []).slice(0, 2).map((text) => (
               <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {text}</div>
+            ))}
+          </div>
+        )}
+
+        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
+      </ReportPage>
+
+
+      {/* ════════════════════════════════════════════════════════
+          PAGE 6 — TRADEOFFS, VERIFICATION, NEXT STEPS
+          ════════════════════════════════════════════════════════ */}
+      <ReportPage>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Strategy and Next Steps</h1>
+
+        {/* Tradeoffs */}
+        {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
+          <div style={{ marginBottom: R.sectionMb }}>
+            <Overline large>Tradeoffs to Understand</Overline>
+            {v2TradeoffNarratives.map((t, i) => (
+              <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
+                <div style={{ display: "flex", gap: 16 }}>
+                  <div style={{ flex: 1 }}><div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p></div>
+                  <div style={{ flex: 1 }}><div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p></div>
+                </div>
+                <div style={{ borderTop: `1px solid ${B.stone}`, marginTop: 8, paddingTop: 6 }}><p style={{ ...T.meta, color: B.navy, margin: 0, fontWeight: 500 }}>{t.net_recommendation}</p></div>
+              </div>
             ))}
           </div>
         )}
@@ -2035,7 +1862,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
-        <PageFooter section="Strategy &amp; Verification" page={6} />
+        <PageFooter section="Strategy and Next Steps" page={6} />
       </ReportPage>
 
 
