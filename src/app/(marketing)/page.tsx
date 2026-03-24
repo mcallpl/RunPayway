@@ -306,7 +306,7 @@ function HeroSection() {
       ref={ref}
       aria-label="Hero"
       className="relative overflow-hidden"
-      style={{ background: B.navy }}
+      style={{ background: B.gradient }}
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
 input[type="range"]::-webkit-slider-thumb {
