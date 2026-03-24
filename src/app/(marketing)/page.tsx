@@ -181,8 +181,15 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
   const size = mobile ? 220 : 280;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", animation: visible ? "subtleFloat 6s ease-in-out infinite" : "none" }}>
       <div style={{ position: "relative", width: size, height: size }}>
+        {/* Ambient glow behind ring */}
+        <div style={{
+          position: "absolute", inset: -20,
+          borderRadius: "50%",
+          animation: visible ? "ringPulse 4s ease-in-out infinite" : "none",
+          pointerEvents: "none",
+        }} />
         <svg
           width={size}
           height={size}
@@ -247,7 +254,7 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
             style={{
               fontSize: mobile ? 52 : 64, fontWeight: 600, color: "#F4F1EA",
               lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
-              animation: "none",
+              animation: visible ? "scorePulse 3s ease-in-out infinite 2s" : "none",
             }}
           >
             {animatedScore}
@@ -311,16 +318,41 @@ input[type="range"]::-webkit-slider-thumb {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   cursor: pointer;
 }
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(75,63,174,0.15), 0 0 80px rgba(26,122,109,0.08); }
+  50% { box-shadow: 0 0 60px rgba(75,63,174,0.25), 0 0 120px rgba(26,122,109,0.12); }
+}
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
 `}</style>
       {/* Gradient mesh */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 80% 60% at 70% 20%, rgba(75,63,174,0.18) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 50% at 20% 80%, rgba(31,109,122,0.12) 0%, transparent 55%),
-            radial-gradient(ellipse 40% 40% at 50% 50%, rgba(75,63,174,0.08) 0%, transparent 50%)
+            radial-gradient(ellipse 80% 60% at 70% 20%, rgba(75,63,174,0.22) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 20% 80%, rgba(31,109,122,0.15) 0%, transparent 55%),
+            radial-gradient(ellipse 40% 40% at 50% 50%, rgba(75,63,174,0.10) 0%, transparent 50%)
           `,
+        }}
+      />
+      {/* Noise texture — CSS only, no image */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.035,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "256px 256px",
+        }}
+      />
+      {/* Vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 70% 60% at 50% 40%, transparent 40%, rgba(7,15,25,0.35) 100%)",
         }}
       />
 
@@ -465,7 +497,7 @@ input[type="range"]::-webkit-slider-thumb {
                   fontSize: 15,
                   letterSpacing: "-0.01em",
                   border: "1px solid rgba(244,241,234,0.92)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15), 0 0 40px rgba(244,241,234,0.12)",
                   transition: "background 180ms ease, transform 180ms ease, box-shadow 180ms ease",
                 }}
                 onMouseEnter={(e) => {
@@ -473,13 +505,13 @@ input[type="range"]::-webkit-slider-thumb {
                   const el = e.currentTarget;
                   el.style.background = "linear-gradient(135deg, #EDECEA 0%, #E5E2DA 100%)";
                   el.style.transform = "translateY(-2px)";
-                  el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 40px rgba(0,0,0,0.30), 0 2px 8px rgba(0,0,0,0.18)";
+                  el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 44px rgba(0,0,0,0.30), 0 2px 8px rgba(0,0,0,0.18), 0 0 60px rgba(244,241,234,0.18)";
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
                   el.style.background = "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)";
                   el.style.transform = "translateY(0)";
-                  el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15)";
+                  el.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15), 0 0 40px rgba(244,241,234,0.12)";
                 }}
                 onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
@@ -521,6 +553,12 @@ input[type="range"]::-webkit-slider-thumb {
 
       </div>
 
+      {/* Bottom fade — smooth transition to bridge */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{ height: 120, background: `linear-gradient(to bottom, transparent, ${B.sand})` }}
+      />
+
       <style>{`
         @keyframes shimmer {
           0%, 100% { background-position: -200% 0; }
@@ -549,7 +587,6 @@ function BridgeSection() {
         paddingBottom: mobile ? 32 : 48,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        borderTop: "1px solid rgba(14,26,43,0.06)",
         borderBottom: "1px solid rgba(14,26,43,0.06)",
       }}
     >
