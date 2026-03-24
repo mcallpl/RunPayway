@@ -511,22 +511,29 @@ function BridgeSection() {
       ref={ref}
       aria-label="Why this matters"
       style={{
-        background: B.navy,
-        paddingTop: mobile ? 32 : 48,
-        paddingBottom: mobile ? 32 : 48,
+        background: "transparent",
+        paddingTop: 0,
+        paddingBottom: mobile ? 48 : 64,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        borderBottom: "1px solid rgba(244,241,234,0.06)",
+        marginTop: mobile ? -28 : -36,
+        position: "relative" as const,
+        zIndex: 10,
       }}
     >
       <div
         style={{
-          maxWidth: 680,
+          maxWidth: 720,
           margin: "0 auto",
           textAlign: "center",
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
+          transform: visible ? "translateY(0)" : "translateY(16px)",
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
+          backgroundColor: "#FFFFFF",
+          borderRadius: 16,
+          padding: mobile ? "28px 24px" : "40px 48px",
+          boxShadow: "0 8px 40px rgba(14,26,43,0.10), 0 1px 3px rgba(14,26,43,0.06)",
+          border: "1px solid rgba(14,26,43,0.06)",
         }}
       >
         <p
@@ -534,7 +541,7 @@ function BridgeSection() {
             fontSize: mobile ? 17 : 21,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
-            color: "rgba(244,241,234,0.75)",
+            color: B.navy,
             lineHeight: 1.4,
             letterSpacing: S.lsHeading,
             margin: 0,
