@@ -740,6 +740,10 @@ function Faq() {
       a: "Yes. We never collect financial account data, bank credentials, or credit information. The assessment is generated entirely from your responses. Your data is encrypted, never sold, and you can request deletion at any time. See our privacy policy for full details.",
     },
     {
+      q: "I already have accounting software. How is this different?",
+      a: "Accounting software tells you what happened \u2014 your balance sheet, cash flow, and profit margins. RunPayway measures something your books cannot: how your income is structured. How concentrated is it in one client? How much recurs without new sales? How far ahead is revenue committed? How much continues if you stop working tomorrow? These are structural risks that don\u2019t show up on a P\u0026L. Two businesses with identical revenue can have completely different stability profiles \u2014 and completely different exposure to disruption.",
+    },
+    {
       q: "Who is this for?",
       a: "Anyone whose income does not come from a single predictable paycheck \u2014 freelancers, contractors, business owners, commissioned professionals, consultants, creators, and anyone with variable or multi-source income. The model evaluates income structure, not income amount.",
     },
