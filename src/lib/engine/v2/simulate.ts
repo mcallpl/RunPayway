@@ -232,6 +232,122 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
 ];
 
+// ─── INCOME TIMELINE — FORWARD PROJECTION ───────────────
+// Projects score forward at 3, 6, and 12 months based on
+// compounding structural changes. Structural improvements
+// don't happen instantly — they ramp: 40% at 3mo, 75% at
+// 6mo, 100%+ at 12mo (with compounding interaction bonuses).
+
+export interface TimelinePoint {
+  month: number;
+  label: string;
+  score: number;
+  band: StabilityBand;
+  delta: number;
+  fragility_class: string;
+  continuity_months: number;
+  narrative: string;
+}
+
+export function projectTimeline(
+  currentInputs: CanonicalInput,
+  targetInputs: CanonicalInput,
+  qualityScore?: number,
+): TimelinePoint[] {
+  const qAdj = qualityScore ?? 5;
+  const base = simulateScore(currentInputs, qAdj);
+
+  // Ramp curves — how much of the structural change is realized at each point
+  const ramps = [
+    { month: 3,  label: "3 months",  pct: 0.40 },
+    { month: 6,  label: "6 months",  pct: 0.75 },
+    { month: 12, label: "12 months", pct: 1.00 },
+  ];
+
+  // For negative scenarios (score going down), changes happen faster
+  const targetScore = simulateScore(targetInputs, qAdj).overall_score;
+  const isNegative = targetScore < base.overall_score;
+
+  return ramps.map(({ month, label, pct }) => {
+    // Negative scenarios ramp faster (damage is immediate)
+    const effectivePct = isNegative ? Math.min(1, pct * 1.6) : pct;
+
+    // Interpolate each structural input between current and target
+    const interpolated: CanonicalInput = {
+      income_persistence_pct: Math.round(lerp(currentInputs.income_persistence_pct, targetInputs.income_persistence_pct, effectivePct)),
+      largest_source_pct: Math.round(lerp(currentInputs.largest_source_pct, targetInputs.largest_source_pct, effectivePct)),
+      source_diversity_count: Math.round(lerp(currentInputs.source_diversity_count, targetInputs.source_diversity_count, effectivePct)),
+      forward_secured_pct: Math.round(lerp(currentInputs.forward_secured_pct, targetInputs.forward_secured_pct, effectivePct)),
+      income_variability_level: effectivePct >= 0.5 ? targetInputs.income_variability_level : currentInputs.income_variability_level,
+      labor_dependence_pct: Math.round(lerp(currentInputs.labor_dependence_pct, targetInputs.labor_dependence_pct, effectivePct)),
+    };
+
+    const sim = simulateScore(interpolated, qAdj);
+
+    // At 12 months with positive changes, add a compounding bonus:
+    // structural improvements feed each other (more recurring → better continuity → bonuses unlock)
+    let compoundingBonus = 0;
+    if (!isNegative && month === 12 && sim.overall_score > base.overall_score) {
+      compoundingBonus = Math.round((sim.overall_score - base.overall_score) * 0.08);
+    }
+
+    const finalScore = Math.max(0, Math.min(100, sim.overall_score + compoundingBonus));
+
+    // Re-derive band for final score
+    let band: StabilityBand = "Limited Stability";
+    for (const { min, max, band: b } of BAND_THRESHOLDS) {
+      if (finalScore >= min && finalScore <= max) { band = b as StabilityBand; break; }
+    }
+
+    const delta = finalScore - base.overall_score;
+    const narrative = buildTimelineNarrative(month, delta, sim.band, base.band, isNegative, interpolated, currentInputs);
+
+    return { month, label, score: finalScore, band, delta, fragility_class: sim.fragility_class, continuity_months: sim.continuity_months, narrative };
+  });
+}
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function buildTimelineNarrative(
+  month: number, delta: number, newBand: string, oldBand: string,
+  isNegative: boolean, interpolated: CanonicalInput, original: CanonicalInput,
+): string {
+  if (delta === 0) return "No measurable impact yet — structural changes take time to compound.";
+
+  const bandCrossed = newBand !== oldBand;
+
+  if (isNegative) {
+    if (month <= 3) return `Immediate impact: ${Math.abs(delta)}-point drop as income structure weakens.`;
+    if (month <= 6) return bandCrossed
+      ? `Full damage realized — drops to ${newBand}. Recovery requires structural rebuilding.`
+      : `Continued erosion as reduced structure compounds. ${Math.abs(delta)} points lost.`;
+    return bandCrossed
+      ? `Long-term structural damage: ${newBand}. The compounding effect of weaker fundamentals.`
+      : `Sustained ${Math.abs(delta)}-point deficit. Without intervention, this becomes the new baseline.`;
+  }
+
+  // Positive trajectory
+  const recDelta = interpolated.income_persistence_pct - original.income_persistence_pct;
+  const fwdDelta = interpolated.forward_secured_pct - original.forward_secured_pct;
+
+  if (month <= 3) {
+    const drivers: string[] = [];
+    if (recDelta > 5) drivers.push("recurring revenue gains");
+    if (fwdDelta > 5) drivers.push("forward commitments");
+    return `Early momentum: +${delta} from ${drivers.length > 0 ? drivers.join(" and ") : "structural improvements"}.`;
+  }
+  if (month <= 6) {
+    return bandCrossed
+      ? `Crosses into ${newBand} — interaction bonuses begin unlocking.`
+      : `Structural changes taking hold. +${delta} points as compounding effects build.`;
+  }
+  return bandCrossed
+    ? `Full compound effect: ${newBand} with +${delta} total gain. Interaction bonuses fully active.`
+    : `+${delta} points. Structural improvements fully embedded — this is your new operating baseline.`;
+}
+
 // ─── SCORE PROGRESSION TIERS ─────────────────────────────
 
 export interface ProgressionTier {
