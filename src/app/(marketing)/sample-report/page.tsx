@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -561,49 +562,20 @@ function SimulatorPreview() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
   return (
-    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 72 : 96, paddingBottom: mobile ? 72 : 96, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
+    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 64 : 80, paddingBottom: mobile ? 64 : 80, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 56 }}>
         <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
-          <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>What happens if things change?</h3>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.65)", lineHeight: 1.7, marginBottom: 28 }}>
-            This user&#8217;s top client is 40% of revenue. If that client left, their score drops from 78 to 61. The simulator showed them exactly what to fix — and how many points each change is worth.
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
+          <h3 style={{ fontSize: mobile ? 24 : 30, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>What happens if things change?</h3>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20 }}>
+            Model any scenario against your actual data. See the exact score impact, timeline projection, and generate a Stability Brief&#8482; to share with lenders, landlords, or partners.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {["What if you lost your biggest client? See the exact score drop.",
-              "What if you converted to retainers? See the score jump instantly.",
-              "What if you couldn\u2019t work for 90 days? See how long your income lasts.",
-              "The tool calculates the fastest path to your next stability band.",
-            ].map((b) => (
-              <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>{b}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 20, fontStyle: "italic" }}>
-            Loads automatically with your data. Accessible through the QR code on your report.
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", fontStyle: "italic", margin: 0 }}>
+            Loads automatically via QR code on your report.
           </p>
         </div>
-        <div style={{ flex: 1, maxWidth: mobile ? undefined : 400, marginTop: mobile ? 36 : 0 }}>
-          <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={320}>
-            <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10, marginTop: 8 }}>SCORE SIMULATOR</div>
-            <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>CURRENT</div><div style={{ fontSize: 22, fontWeight: 600, color: B.navy }}>78</div><div style={{ fontSize: 9, color: B.light }}>High Stability</div></div>
-              <div style={{ display: "flex", alignItems: "center", color: B.light }}>→</div>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>SIMULATED</div><div style={{ fontSize: 22, fontWeight: 600, color: B.bandLimited }}>61</div><div style={{ fontSize: 9, color: B.light }}>Established</div></div>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontSize: 9, fontWeight: 600, color: B.light, marginBottom: 4 }}>IMPACT</div><div style={{ fontSize: 22, fontWeight: 600, color: B.bandLimited }}>-17</div></div>
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 4, marginBottom: 12 }}>
-              {["Add client", "Retainer", "Lose top", "Passive", "Forward", "90-day"].map((p, i) => (
-                <span key={p} style={{ fontSize: 9, padding: "3px 8px", borderRadius: 4, border: `1px solid ${i === 2 ? B.purple : "rgba(14,26,43,0.10)"}`, backgroundColor: i === 2 ? "rgba(75,63,174,0.06)" : "#fff", color: i === 2 ? B.purple : B.navy, fontWeight: i === 2 ? 600 : 400 }}>{p}</span>
-              ))}
-            </div>
-            <div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "8px 10px" }}>
-              <div style={{ fontSize: 9, fontWeight: 600, color: B.purple, marginBottom: 2 }}>Lose your top client</div>
-              <div style={{ fontSize: 9, color: B.muted }}>Score drops 17 points. Band shifts to Established.</div>
-            </div>
-          </ReportCard>
+        <div style={{ flex: 1, maxWidth: mobile ? undefined : 420, marginTop: mobile ? 32 : 0, opacity: visible ? 1 : 0, transition: "opacity 0.8s ease-out 200ms" }}>
+          <SimulatorTeaser />
         </div>
       </div>
     </section>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
 const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
@@ -2744,6 +2745,39 @@ function StickyNav() {
 }
 
 /* ================================================================== */
+/* SIMULATOR TEASER                                                    */
+/* ================================================================== */
+function SimulatorTeaserSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section ref={ref} style={{
+      background: B.sand,
+      paddingTop: mobile ? 48 : 72,
+      paddingBottom: mobile ? 48 : 72,
+      paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+      paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+    }}>
+      <div style={{
+        maxWidth: 520, margin: "0 auto",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: "opacity 700ms ease-out, transform 700ms ease-out",
+      }}>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>Included With Your Report</div>
+          <h2 style={{ fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
+            Model scenarios against your actual data.
+          </h2>
+        </div>
+        <SimulatorTeaser />
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== */
 /* MID-PAGE CTA                                                        */
 /* ================================================================== */
 function MidPageCta() {
@@ -2796,6 +2830,7 @@ export default function LandingPage() {
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
+      <SimulatorTeaserSection />
       <MidPageCta />
       <TestimonialsSection />
       <PricingSection />

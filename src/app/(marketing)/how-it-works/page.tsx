@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -1112,6 +1113,18 @@ export default function HowItWorksPage() {
     <div>
       <Hero />
       <ThreeSteps />
+      {/* Simulator teaser */}
+      <section style={{ background: "#F4F1EA", paddingTop: 56, paddingBottom: 56, paddingLeft: 28, paddingRight: 28 }}>
+        <div style={{ maxWidth: 520, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Then Model Scenarios</div>
+            <h2 style={{ fontSize: 24, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
+              What happens to your score if things change?
+            </h2>
+          </div>
+          <SimulatorTeaser variant="dark-on-light" />
+        </div>
+      </section>
       <ReportCovers />
       <ClassificationScale />
       <CtaSection />

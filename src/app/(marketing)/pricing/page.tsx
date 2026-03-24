@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -330,13 +331,18 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
 
       <div style={{ height: 1, background: "rgba(244,241,234,0.08)", margin: "24px 0", position: "relative" }} />
 
-      <div style={{ flex: 1, marginBottom: 32, position: "relative" }}>
+      <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
         {features.map((f, i) => (
           <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: i === 0 ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
             <span style={{ fontSize: 14, color: i === 0 ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
           </div>
         ))}
+      </div>
+
+      {/* Simulator teaser */}
+      <div style={{ marginBottom: 24 }}>
+        <SimulatorTeaser variant="compact" />
       </div>
 
       <a
