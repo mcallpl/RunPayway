@@ -316,11 +316,11 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
 // ── QR Code component ──
 function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordId: string; authCode?: string; score?: number; band?: string; date?: string; model?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [simUrl, setSimUrl] = useState("/simulator");
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // QR code → Simulator page with encoded user data
     const params = new URLSearchParams();
     try {
       const stored = sessionStorage.getItem("rp_record");
@@ -341,9 +341,10 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
         if (band) params.set("b", band);
         if (rec.assessment_title) params.set("n", encodeURIComponent(rec.assessment_title));
       }
-    } catch { /* fallback to basic params */ }
+    } catch { /* fallback */ }
     params.set("id", recordId);
     const url = `https://peoplestar.com/RunPayway/simulator?${params.toString()}`;
+    setSimUrl(`/simulator?${params.toString()}`);
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
         width: 140,
@@ -352,9 +353,13 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
         errorCorrectionLevel: "M",
       });
     }).catch(() => {});
-  }, [recordId, authCode]);
+  }, [recordId, authCode, score, band]);
 
-  return <canvas ref={canvasRef} width={140} height={140} style={{ width: 80, height: 80 }} />;
+  return (
+    <a href={simUrl} style={{ display: "block", cursor: "pointer" }} title="Open Score Simulator">
+      <canvas ref={canvasRef} width={140} height={140} style={{ width: 80, height: 80 }} />
+    </a>
+  );
 }
 
 // ============================================================
@@ -955,7 +960,7 @@ export default function ReviewPage() {
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
           <div style={{ flexShrink: 0, textAlign: "center" }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan or <a href="/simulator" style={{ color: B.purple, textDecoration: "underline", textUnderlineOffset: 2 }}>click here</a> to simulate</div>
+            <div style={{ ...T.meta, color: B.purple, marginTop: 4, fontWeight: 500 }}>Tap or scan to simulate</div>
           </div>
         </div>
 
