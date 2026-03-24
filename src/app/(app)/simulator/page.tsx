@@ -381,11 +381,11 @@ function generateBrief(
   };
 
   const openingMap: Record<BriefPurpose, string> = {
-    mortgage: `This Income Stability Brief is provided in support of a mortgage application by ${nameOrSubject}. The assessment below quantifies the structural stability of ${nameOrSubject}'s income using the RunPayway Income Stability Score\u2122, a deterministic scoring model built on fixed rules — not estimates or projections.`,
-    lease: `This brief is provided to support a lease application by ${nameOrSubject}. It documents the structural characteristics of their income using the RunPayway Income Stability Score\u2122, which evaluates income reliability based on measurable structural factors rather than self-reported estimates.`,
-    loan: `This Income Stability Brief accompanies a loan application by ${nameOrSubject}. The RunPayway assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
-    partnership: `This brief provides a structural overview of ${nameOrSubject}'s income stability for partnership evaluation purposes. The assessment uses the RunPayway Income Stability Score\u2122, a deterministic model that evaluates six structural dimensions of income reliability.`,
-    negotiation: `This brief documents the income stability profile of ${nameOrSubject} for use in contract or rate discussions. The RunPayway Income Stability Score\u2122 provides an objective, rule-based assessment of income structure — independent of revenue amount.`,
+    mortgage: `This Stability Brief\u2122 is provided in support of a mortgage application by ${nameOrSubject}. The assessment below quantifies the structural stability of ${nameOrSubject}'s income using the RunPayway Income Stability Score\u2122, a deterministic scoring model built on fixed rules — not estimates or projections.`,
+    lease: `This Stability Brief\u2122 is provided to support a lease application by ${nameOrSubject}. It documents the structural characteristics of their income using the RunPayway Income Stability Score\u2122, which evaluates income reliability based on measurable structural factors rather than self-reported estimates.`,
+    loan: `This Stability Brief\u2122 accompanies a loan application by ${nameOrSubject}. The RunPayway assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
+    partnership: `This Stability Brief\u2122 provides a structural overview of ${nameOrSubject}'s income stability for partnership evaluation purposes. The assessment uses the RunPayway Income Stability Score\u2122, a deterministic model that evaluates six structural dimensions of income reliability.`,
+    negotiation: `This Stability Brief\u2122 documents the income stability profile of ${nameOrSubject} for use in contract or rate discussions. The RunPayway Income Stability Score\u2122 provides an objective, rule-based assessment of income structure — independent of revenue amount.`,
   };
 
   const scoreSection = `${nameOrSubject} has been assessed at a score of ${score}/100, classifying as "${bandNice}" on the Income Stability Classification Scale. This score reflects the structural characteristics of their income — not the amount earned, but how that income is structured for continuity, predictability, and resilience.
@@ -418,15 +418,15 @@ Quality Rating: ${qualityScore}/10`;
     : `The score of ${score}/100 is evaluated against the full population of assessed income structures. ${score >= 75 ? "This places the subject in the top quartile of all assessed profiles." : score >= 50 ? "This indicates a structurally sound income profile with room for optimization." : "This indicates a developing income structure with identifiable paths to improvement."}`;
 
   const closingMap: Record<BriefPurpose, string> = {
-    mortgage: `This assessment was generated using RunPayway Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
-    lease: `This brief was produced by the RunPayway Income Stability Score\u2122 (Model RP-2.0). The assessment is deterministic and rule-based — the same inputs always produce the same score. For verification purposes, this assessment is filed under Record ${recordId}.`,
-    loan: `Assessment produced by RunPayway Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
-    partnership: `This assessment reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
-    negotiation: `Assessment methodology: RunPayway Income Stability Score\u2122 (Model RP-2.0). Deterministic scoring based on six structural dimensions. Not a revenue estimate — a structural reliability measurement. Record: ${recordId}.`,
+    mortgage: `This Stability Brief\u2122 was generated using RunPayway Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
+    lease: `This Stability Brief\u2122 was produced by the RunPayway Income Stability Score\u2122 (Model RP-2.0). The assessment is deterministic and rule-based — the same inputs always produce the same score. For verification purposes, this assessment is filed under Record ${recordId}.`,
+    loan: `Stability Brief\u2122 produced by RunPayway Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
+    partnership: `This Stability Brief\u2122 reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
+    negotiation: `Stability Brief\u2122 methodology: RunPayway Income Stability Score\u2122 (Model RP-2.0). Deterministic scoring based on six structural dimensions. Not a revenue estimate — a structural reliability measurement. Record: ${recordId}.`,
   };
 
   return {
-    title: `Income Stability Brief`,
+    title: `Stability Brief\u2122`,
     date: today,
     recordId,
     recipient: audienceMap[purpose],
@@ -441,7 +441,7 @@ Quality Rating: ${qualityScore}/10`;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Brief Generator UI                                                 */
+/*  Stability Brief Generator™ UI                                      */
 /* ------------------------------------------------------------------ */
 function BriefGenerator({
   inputs, score, band, qualityScore, name, industry, incomeModel,
@@ -503,8 +503,8 @@ function BriefGenerator({
         page++;
       }
 
-      pdf.setProperties({ title: `Income Stability Brief - ${name}`, author: "RunPayway", subject: `Record ${recordId}` });
-      pdf.save(`RunPayway-Brief-${recordId}.pdf`);
+      pdf.setProperties({ title: `Stability Brief - ${name}`, author: "RunPayway", subject: `Record ${recordId}` });
+      pdf.save(`Stability-Brief-${recordId}.pdf`);
     } catch (err) {
       console.error("Brief download failed:", err);
     } finally {
@@ -524,9 +524,9 @@ function BriefGenerator({
       <Card glow="rgba(75,63,174,0.10)" style={{ borderTop: `2px solid ${B.purple}33` }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
           <div>
-            <SectionLabel color={B.purple}>Income Stability Brief Generator</SectionLabel>
+            <SectionLabel color={B.purple}>Stability Brief Generator&#8482;</SectionLabel>
             <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 480, lineHeight: 1.5 }}>
-              Generate a professional document from your assessment data. Hand it to a bank, landlord, partner, or client to prove your income structure.
+              Generate a professional Stability Brief&#8482; from your assessment data. Hand it to a bank, landlord, partner, or client to prove your income structure.
             </p>
           </div>
           <div style={{ fontSize: 11, color: B.dim, padding: "6px 12px", borderRadius: 6, backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
@@ -563,7 +563,7 @@ function BriefGenerator({
             color: B.white, fontSize: 14, fontWeight: 600, letterSpacing: "-0.01em",
             boxShadow: `0 4px 16px ${B.purple}44`,
           }}>
-            Generate Brief for {BRIEF_PURPOSES.find(b => b.id === purpose)?.audience}
+            Generate Stability Brief&#8482; for {BRIEF_PURPOSES.find(b => b.id === purpose)?.audience}
           </button>
         )}
 
@@ -644,7 +644,7 @@ function BriefGenerator({
                 color: B.navy, fontSize: 14, fontWeight: 600,
                 opacity: downloading ? 0.7 : 1,
               }}>
-                {downloading ? "Generating..." : "Download Brief"}
+                {downloading ? "Generating..." : "Download Stability Brief\u2122"}
               </button>
               <button onClick={() => { setGenerated(null); setPurpose(null); }} style={{
                 padding: "14px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`,
