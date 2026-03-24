@@ -961,9 +961,10 @@ export default function ReviewPage() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
-          <div style={{ flexShrink: 0, textAlign: "center" }}>
+          <div style={{ flexShrink: 0, textAlign: "center", maxWidth: 120 }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.meta, color: B.purple, marginTop: 4, fontWeight: 500 }}>What happens if things change?</div>
+            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>YOUR SCORE SIMULATOR</div>
+            <div style={{ ...T.meta, color: B.muted, marginTop: 2, lineHeight: 1.4 }}>Tap or scan to model scenarios with your data</div>
           </div>
         </div>
 
