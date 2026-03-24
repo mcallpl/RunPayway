@@ -1044,7 +1044,7 @@ function CtaSection() {
           </p>
 
           <Link
-            href="/begin"
+            href="/pricing"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{

@@ -448,7 +448,7 @@ export default function MarketingLayout({
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
                 <LanguageSelector mobile={false} />
                 <Link
-                  href="/begin"
+                  href="/pricing"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
                     height: 38,
@@ -599,7 +599,7 @@ export default function MarketingLayout({
             </nav>
             <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
               <Link
-                href="/begin"
+                href="/pricing"
                 onClick={() => setMenuOpen(false)}
                 className="cta-tick"
                 style={{

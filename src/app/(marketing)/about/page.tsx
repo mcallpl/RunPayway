@@ -586,7 +586,7 @@ function CtaSection() {
             If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund.
           </p>
           <Link
-            href="/begin"
+            href="/pricing"
             style={{
               display: "inline-flex",
               alignItems: "center",

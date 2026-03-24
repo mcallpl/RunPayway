@@ -234,7 +234,7 @@ export default function ComingSoonPage() {
       <section style={{ background: B.sand, paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, paddingLeft: pad, paddingRight: pad, borderTop: `1px solid ${B.border}` }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <p style={{ fontSize: 14, color: B.light, marginBottom: 16 }}>The Income Stability Score&#8482; is available right now.</p>
-          <Link href="/begin" style={{ fontSize: 15, fontWeight: 600, color: B.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
+          <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: B.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
             Get your free score &#8594;
           </Link>
         </div>

@@ -452,7 +452,7 @@ input[type="range"]::-webkit-slider-thumb {
               }}
             >
               <Link
-                href="/begin"
+                href="/pricing"
                 className="cta-tick inline-flex items-center justify-center font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2"
                 style={{
                   height: S.ctaH,
@@ -972,7 +972,7 @@ function IncomePatterns() {
 
                     {/* CTA */}
                     <Link
-                      href="/begin"
+                      href="/pricing"
                       onClick={(e) => e.stopPropagation()}
                       style={{
                         display: "block", textAlign: "center",
@@ -1409,7 +1409,7 @@ function SampleResultSection() {
             What would your number be?
           </p>
           <a
-            href="/begin"
+            href="/pricing"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -1963,7 +1963,7 @@ function PricingSection() {
               Score &#183; Band &#183; Percentile &#183; One key insight
             </p>
             <Link
-              href="/begin"
+              href="/pricing"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",
@@ -2535,7 +2535,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           }}
         >
           <Link
-            href="/begin"
+            href="/pricing"
             style={{
               fontSize: 15, color: B.purple, fontWeight: 500,
               textDecoration: "underline", textUnderlineOffset: 4,
