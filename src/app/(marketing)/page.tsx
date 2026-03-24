@@ -556,7 +556,7 @@ input[type="range"]::-webkit-slider-thumb {
       {/* Bottom fade — smooth transition to bridge */}
       <div
         className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{ height: 120, background: `linear-gradient(to bottom, transparent, ${B.sand})` }}
+        style={{ height: 200, background: `linear-gradient(to bottom, transparent 0%, rgba(14,26,43,0.3) 30%, rgba(14,26,43,0.5) 50%, rgba(245,242,236,0.3) 75%, ${B.sand} 100%)` }}
       />
 
       <style>{`
