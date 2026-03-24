@@ -357,7 +357,7 @@ export default function InitializationPage() {
               background: "rgba(75,63,174,0.08)",
             }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                Income Stability Score\u2122 \u00B7 Model RP-2.0
+                Income Stability Score&#8482; &middot; Model RP-2.0
               </span>
             </div>
           </div>
