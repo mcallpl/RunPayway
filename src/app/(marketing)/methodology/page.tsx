@@ -337,158 +337,74 @@ function ScoringFramework() {
   const mobile = useMobile();
   const [hovered, setHovered] = useState<number | null>(null);
 
-  const blocks = [
-    {
-      label: "Structure Block",
-      color: B.teal,
-      desc: "Evaluates the composition of your income \u2014 repeatable income, number of income sources, income secured ahead of time, and reliance on one source.",
-    },
-    {
-      label: "Stability Block",
-      color: B.purple,
-      desc: "Evaluates the durability of your income \u2014 month-to-month stability and income that continues without daily work.",
-    },
-  ];
-
   return (
     <section
       ref={ref}
       aria-label="Scoring Framework"
       style={{
-        backgroundColor: "#ffffff",
+        backgroundColor: B.offWhite,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 720,
-            margin: "0 auto",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-          }}
-        >
-          <h2
-            className="text-[28px] md:text-[36px]"
-            style={{
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              marginBottom: S.h2mb,
-              textAlign: "center",
-            }}
-          >
-            How the score is calculated
-          </h2>
-          <p
-            className="text-[15px] md:text-[17px]"
-            style={{
-              color: B.muted,
-              lineHeight: S.lhBody,
-              marginBottom: 48,
-              textAlign: "center",
-            }}
-          >
-            Each dimension is scored individually and combined into a single
-            0&ndash;100 result. The model evaluates two structural blocks:
-          </p>
-        </div>
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ display: mobile ? "block" : "flex", gap: 64, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: S.gridGap,
-            maxWidth: 780,
-            margin: "0 auto 48px",
-          }}
-        >
-          {blocks.map((block, i) => (
-            <div
-              key={block.label}
-              onMouseEnter={() => canHover() && setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                backgroundColor: B.sand,
-                borderRadius: S.cardRadius,
-                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-                border: `1px solid ${hovered === i ? block.color : "rgba(14,26,43,0.06)"}`,
-                transition: "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
-                transform: hovered === i ? "translateY(-2px)" : "translateY(0)",
-                boxShadow: hovered === i ? "0 8px 24px rgba(14,26,43,0.06)" : "none",
-                opacity: visible ? 1 : 0,
-                animationDelay: `${i * 100}ms`,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginBottom: 16,
-                }}
-              >
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    backgroundColor: block.color,
-                    flexShrink: 0,
-                  }}
-                />
-                <div
-                  className="text-[11px] uppercase"
-                  style={{
-                    color: block.color,
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  {block.label}
-                </div>
+          {/* Left: explanation */}
+          <div style={{ flex: 1, marginBottom: mobile ? 32 : 0 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>The Scoring Engine</div>
+            <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+              Two blocks. One score. Zero subjectivity.
+            </h2>
+            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+              The 20-engine pipeline evaluates your income across two structural blocks, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
+            </p>
+          </div>
+
+          {/* Right: visual diagram */}
+          <div style={{ flex: 1 }}>
+            {/* Structure block */}
+            <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.teal }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal }}>Structure Block</span>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>60 of 100</span>
               </div>
-              <p
-                className="text-[14px]"
-                style={{
-                  color: B.muted,
-                  lineHeight: S.lhBody,
-                  margin: 0,
-                }}
-              >
-                {block.desc}
-              </p>
+              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
+                {["Recurring revenue", "Source diversification", "Forward visibility", "Concentration resilience"].map((f) => (
+                  <div key={f} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+                    {f}
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
 
-        <p
-          className="text-[15px] md:text-[16px]"
-          style={{
-            color: B.muted,
-            lineHeight: S.lhBody,
-            textAlign: "center",
-            maxWidth: 620,
-            marginLeft: "auto",
-            marginRight: "auto",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 300ms",
-          }}
-        >
-          The two blocks combine into your final score. The same inputs always
-          produce the same result.
-        </p>
+            {/* Stability block */}
+            <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.purple }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple }}>Stability Block</span>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>40 of 100</span>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
+                {["Labor independence", "Earnings stability", "Income continuity", "Quality adjustment"].map((f) => (
+                  <div key={f} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0 }} />
+                    {f}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Result arrow */}
+            <div style={{ textAlign: "center", padding: "12px 0" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.light }}>Structure + Stability + Interactions = Score</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -502,17 +418,11 @@ function InteractionEffects() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const examples = [
-    {
-      type: "Penalty",
-      color: B.bandLimited,
-      desc: "Heavy reliance on one source combined with little income secured ahead of time triggers a penalty.",
-    },
-    {
-      type: "Bonus",
-      color: B.bandHigh,
-      desc: "Strong repeatable income combined with income that continues without daily work produces a bonus.",
-    },
+  const effects = [
+    { type: "PENALTY", label: "High concentration + low visibility", desc: "If your top source is 70%+ AND less than 20% is secured ahead of time, both weaknesses compound. The combined risk is worse than the sum.", points: "-8", color: B.bandLimited },
+    { type: "PENALTY", label: "High labor + low persistence", desc: "If 75%+ requires daily work AND less than 25% recurs, your income has no safety net. A single disruption cascades.", points: "-7", color: B.bandLimited },
+    { type: "BONUS", label: "High persistence + low labor", desc: "If 60%+ recurs AND less than 35% requires daily work, your income compounds. You have real structural independence.", points: "+4", color: B.teal },
+    { type: "BONUS", label: "Strong visibility + low concentration", desc: "If 45%+ is committed ahead AND no source exceeds 35%, your income is both predictable and diversified.", points: "+3", color: B.teal },
   ];
 
   return (
@@ -523,108 +433,50 @@ function InteractionEffects() {
         backgroundColor: B.navy,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
     >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 720,
-            margin: "0 auto",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-          }}
-        >
-          <h2
-            className="text-[28px] md:text-[36px]"
-            style={{
-              color: "#F4F1EA",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              marginBottom: S.h2mb,
-            }}
-          >
-            Interaction effects
-          </h2>
-          <p
-            className="text-[15px] md:text-[17px]"
-            style={{
-              color: "rgba(244,241,234,0.70)",
-              lineHeight: S.lhBody,
-              marginBottom: 40,
-            }}
-          >
-            Certain combinations of structural characteristics produce additional
-            scoring adjustments. These are fixed rules — not learned patterns —
-            and they apply automatically when specific conditions are met.
-          </p>
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ display: mobile ? "block" : "flex", gap: 64, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-              marginBottom: 40,
-            }}
-          >
-            {examples.map((ex, i) => (
-              <div
-                key={ex.type}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 16,
-                  backgroundColor: "#ffffff",
-                  borderRadius: S.cardRadius,
-                  padding: mobile ? "20px" : "24px 28px",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(10px)",
-                  transition: `opacity 0.5s ease-out ${200 + i * 100}ms, transform 0.5s ease-out ${200 + i * 100}ms`,
-                }}
-              >
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    backgroundColor: ex.color,
-                    flexShrink: 0,
-                    marginTop: 7,
-                  }}
-                />
-                <p
-                  className="text-[14px] md:text-[15px]"
-                  style={{
-                    color: B.navy,
-                    lineHeight: S.lhBody,
-                    margin: 0,
-                  }}
-                >
-                  {ex.desc}
-                </p>
+          {/* Left: explanation */}
+          <div style={{ flex: 1, marginBottom: mobile ? 32 : 0 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Cross-Factor Intelligence</div>
+            <h2 style={{ fontSize: mobile ? 28 : 42, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+              Your weaknesses compound. So do your strengths.
+            </h2>
+            <p style={{ fontSize: mobile ? 15 : 16, color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+              Most tools score factors independently. RunPayway detects when two factors interact — when a weakness in one area makes another area more dangerous, or when two strengths reinforce each other.
+            </p>
+            <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em", margin: 0 }}>
+              All interaction rules are fixed, versioned, and documented in the model manifest.
+            </p>
+          </div>
+
+          {/* Right: interaction examples */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+            {effects.map((ex, i) => (
+              <div key={ex.label} style={{
+                background: ex.type === "PENALTY" ? "rgba(155,44,44,0.08)" : "rgba(26,122,109,0.08)",
+                border: `1px solid ${ex.type === "PENALTY" ? "rgba(155,44,44,0.15)" : "rgba(26,122,109,0.15)"}`,
+                borderRadius: S.cardRadius,
+                padding: mobile ? "16px 20px" : "20px 24px",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 0.5s ease-out ${200 + i * 80}ms, transform 0.5s ease-out ${200 + i * 80}ms`,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: ex.color }}>{ex.type}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "#F4F1EA" }}>{ex.label}</span>
+                  </div>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: ex.color }}>{ex.points}</span>
+                </div>
+                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{ex.desc}</p>
               </div>
             ))}
           </div>
-
-          <p
-            className="text-[13px]"
-            style={{
-              color: "rgba(244,241,234,0.40)",
-              letterSpacing: "0.02em",
-            }}
-          >
-            All interaction rules are versioned and documented in the model
-            manifest.
-          </p>
         </div>
       </div>
     </section>
