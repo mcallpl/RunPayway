@@ -180,8 +180,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
                       Your diagnostic report includes an interactive score simulator, risk scenarios, projected improvements, an action plan with specific targets and ready-to-use scripts, and tradeoff analysis.
                     </p>
-                    <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px; margin-right:12px;">View Full Report</a>
-                    <a href="https://peoplestar.com/RunPayway/simulator" style="display:inline-block; padding:10px 24px; background-color:transparent; color:${brandNavy}; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px; border:1px solid ${brandNavy};">Launch Simulator</a>
+                    <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
                   </td>
                 </tr>
               </table>
