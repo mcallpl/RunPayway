@@ -295,11 +295,12 @@ export async function executeClientEngineV2(submission: {
   // Explainability
   const explainability = generateExplainability(
     scores, bands, constraints, interactions, sensitivity, fragility, quality,
+    normalized, benchmarks, resolvedProfile,
   );
   reason_codes.push(REASON_CODES["EXP-001"]);
 
   // Actions
-  const actions = prioritizeActions(constraints, fragility, sensitivity, resolvedProfile);
+  const actions = prioritizeActions(constraints, fragility, sensitivity, resolvedProfile, normalized);
   reason_codes.push(REASON_CODES["ACT-001"]);
 
   // Reassessment triggers
@@ -380,6 +381,8 @@ export async function executeClientEngineV2(submission: {
     explainability,
     recommended_actions: actions.recommended_actions,
     avoid_actions: actions.avoid_actions,
+    execution_roadmap: actions.execution_roadmap,
+    script_templates: actions.script_templates,
     reassessment_triggers: reassessmentTriggers,
     benchmarks,
     comparison: null,
