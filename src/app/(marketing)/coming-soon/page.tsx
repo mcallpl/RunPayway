@@ -217,6 +217,61 @@ export default function ComingSoonPage() {
         </div>
       </section>
 
+      {/* ══ LANGUAGE LAUNCH TIMELINE ══ */}
+      <section style={{ background: "#ffffff", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
+        <div style={{ maxWidth: 700, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Global Rollout</div>
+            <h2 style={{ fontSize: mobile ? 26 : 38, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
+              Language launch timeline
+            </h2>
+            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
+              The full assessment, report, and simulator — localized for each market.
+            </p>
+          </div>
+
+          {[
+            { flag: "🇺🇸", language: "English", market: "United States", date: "Live now", color: B.teal, live: true },
+            { flag: "🇪🇸", language: "Español", market: "Spain & Latin America", date: "Q3 2026", color: B.purple, live: false },
+            { flag: "🇧🇷", language: "Português", market: "Brazil", date: "Q4 2026", color: B.purple, live: false },
+            { flag: "🇮🇳", language: "हिन्दी", market: "India", date: "Q4 2026", color: B.purple, live: false },
+          ].map((lang, i) => (
+            <div
+              key={lang.language}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: mobile ? 16 : 24,
+                padding: mobile ? "20px 16px" : "24px 28px",
+                borderRadius: 12,
+                backgroundColor: lang.live ? "rgba(26,122,109,0.04)" : B.sand,
+                border: lang.live ? "1px solid rgba(26,122,109,0.15)" : `1px solid ${B.border}`,
+                marginBottom: i < 3 ? 12 : 0,
+              }}
+            >
+              {/* Flag */}
+              <span style={{ fontSize: mobile ? 28 : 36, lineHeight: 1, flexShrink: 0 }}>{lang.flag}</span>
+
+              {/* Language + market */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, lineHeight: 1.3 }}>{lang.language}</div>
+                <div style={{ fontSize: 13, color: B.muted, marginTop: 2 }}>{lang.market}</div>
+              </div>
+
+              {/* Date badge */}
+              <div style={{
+                fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
+                color: lang.live ? B.teal : B.purple,
+                backgroundColor: lang.live ? "rgba(26,122,109,0.10)" : "rgba(75,63,174,0.08)",
+                borderRadius: 20, padding: "6px 14px", whiteSpace: "nowrap" as const, flexShrink: 0,
+              }}>
+                {lang.date}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ══ NOTIFY — Dark, singular, confident ══ */}
       <section style={{ background: B.gradient, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
         <div ref={cta.ref} style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", opacity: cta.visible ? 1 : 0, transform: cta.visible ? "translateY(0)" : "translateY(20px)", transition: "opacity 700ms ease-out, transform 700ms ease-out" }}>
