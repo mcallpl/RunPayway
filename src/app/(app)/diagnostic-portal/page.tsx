@@ -110,7 +110,7 @@ const helperStyle: React.CSSProperties = {
   marginBottom: 8,
 };
 
-const inputStyle: React.CSSProperties = {
+const inputBase: React.CSSProperties = {
   width: "100%",
   height: 48,
   padding: "0 16px",
@@ -125,7 +125,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 const selectStyle: React.CSSProperties = {
-  ...inputStyle,
+  ...inputBase,
   appearance: "none",
   backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='7' viewBox='0 0 12 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
   backgroundRepeat: "no-repeat",
@@ -133,6 +133,43 @@ const selectStyle: React.CSSProperties = {
   paddingRight: 44,
   cursor: "pointer",
 };
+
+/* ------------------------------------------------------------------ */
+/*  Radio button component                                             */
+/* ------------------------------------------------------------------ */
+
+function RadioCard({ label, desc, selected, onClick }: { label: string; desc: string; selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "14px 16px",
+        borderRadius: 10,
+        border: `1px solid ${selected ? B.purple : "rgba(14,26,43,0.10)"}`,
+        background: selected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+        cursor: "pointer",
+        textAlign: "left",
+        transition: "border-color 160ms ease, background 160ms ease",
+        width: "100%",
+      }}
+    >
+      <div style={{
+        width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
+        border: `2px solid ${selected ? B.purple : "rgba(14,26,43,0.20)"}`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />}
+      </div>
+      <div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{label}</div>
+        <div style={{ fontSize: 12, color: B.light }}>{desc}</div>
+      </div>
+    </button>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -143,6 +180,7 @@ export default function InitializationPage() {
   const [authorized, setAuthorized] = useState(false);
   const [ready, setReady] = useState(false);
   const [step, setStep] = useState(0);
+  const [portalRevealed, setPortalRevealed] = useState(false);
   const [form, setForm] = useState({
     assessment_title: "",
     classification: "",
@@ -150,10 +188,15 @@ export default function InitializationPage() {
     primary_income_model: "",
     revenue_structure: "",
     industry_sector: "",
-    recipient_email: "", // populated from Stripe checkout, not user input
+    recipient_email: "",
   });
 
-  // Warn before leaving (but don't trap the user)
+  // Portal entrance animation
+  useEffect(() => {
+    const t = setTimeout(() => setPortalRevealed(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
       if (form.assessment_title || form.classification) {
@@ -164,7 +207,6 @@ export default function InitializationPage() {
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, [form.assessment_title, form.classification]);
 
-  // Pre-fill email from Stripe checkout session
   useEffect(() => {
     const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
     if (purchaseRaw) {
@@ -190,7 +232,6 @@ export default function InitializationPage() {
         }
       }
       if (!session) {
-        // Allow free tier — create a free session
         const freeSession = { plan_key: "free", status: "paid" };
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(freeSession));
         session = JSON.stringify(freeSession);
@@ -198,101 +239,76 @@ export default function InitializationPage() {
 
       try {
         const parsed = JSON.parse(session);
-        if (parsed.status !== "paid") { router.push("/pricing"); return; }
-
-        // Verify payment token server-side (if available)
-        if (parsed.payment_token) {
-          try {
-            const res = await fetch("/api/v1/verify-payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                token: parsed.payment_token,
-                plan_key: parsed.plan_key,
-                timestamp: parsed.token_timestamp,
-                nonce: parsed.token_nonce,
-                expires_at: parsed.token_expires_at,
-              }),
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (!data.valid) { router.push("/pricing"); return; }
-            }
-          } catch {
-            // Server unavailable — proceed with client-side check
+        if (parsed?.status === "paid" || parsed?.status === "active") {
+          setAuthorized(true);
+        } else if (parsed?.payment_token) {
+          const res = await fetch("/api/v1/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: parsed.payment_token }),
+          });
+          if (res.ok) {
+            parsed.status = "paid";
+            sessionStorage.setItem("rp_purchase_session", JSON.stringify(parsed));
+            localStorage.setItem("rp_purchase_session", JSON.stringify(parsed));
+            setAuthorized(true);
           }
         }
 
-        // If monitoring plan, verify assessments remain (server-first)
-        if (parsed.plan_key === "annual_monitoring" && parsed.monitoring_access_code) {
-          const remaining = await getRemainingServer(parsed.monitoring_access_code);
-          if (remaining <= 0) { router.push("/sign-in"); return; }
+        // Monitoring plan: check remaining assessments
+        if (parsed?.plan_key === "annual_monitoring" && parsed?.monitoring_access_code) {
+          try {
+            const remaining = typeof window !== "undefined"
+              ? await getRemaining(parsed.monitoring_access_code)
+              : await getRemainingServer(parsed.monitoring_access_code);
+            if (remaining <= 0) {
+              setAuthorized(false);
+              router.push("/pricing");
+              return;
+            }
+          } catch { /* allow — can't reach monitoring service, let them proceed */ }
         }
+      } catch { /* ignore malformed session */ }
 
-        setAuthorized(true);
-        setTimeout(() => setReady(true), 3000);
-      } catch {
-        router.push("/pricing");
-      }
+      setReady(true);
     }
 
     verifyAccess();
   }, [router]);
 
-  if (!authorized || !ready) {
+  if (!ready) return null;
+  if (!authorized) {
     return (
-      <div style={{ position: "fixed", inset: 0, background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999 }}>
-        <div style={{ textAlign: "center", maxWidth: 400, padding: "0 24px" }}>
-          {/* Spinner */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 32px", animation: "rp-spin 0.8s linear infinite" }} />
-
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
-            PREPARING YOUR ASSESSMENT
-          </div>
-
-          <div style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA", marginBottom: 12 }}>
-            Income Stability Score&#8482;
-          </div>
-
-          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>
-            Setting up your profile and diagnostic...
-          </div>
-
-          {/* Progress dots */}
-          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 32 }}>
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  backgroundColor: "#F4F1EA",
-                  animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-        <style>{`
-          @keyframes rp-spin { to { transform: rotate(360deg); } }
-          @keyframes rp-pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
-        `}</style>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: 40, textAlign: "center" }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 12 }}>Access Required</h2>
+        <p style={{ fontSize: 14, color: B.muted, marginBottom: 24, maxWidth: 400 }}>
+          Your session could not be verified. Please start from the pricing page.
+        </p>
+        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#fff", backgroundColor: B.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
+          View Plans
+        </button>
       </div>
     );
   }
 
-  const update = (field: string, value: string) =>
-    setForm((prev) => ({ ...prev, [field]: value }));
+  const update = (field: string, value: string) => setForm((p) => ({ ...p, [field]: value }));
 
   const isValid =
-    form.classification &&
-    form.operating_structure &&
-    form.primary_income_model &&
-    form.revenue_structure &&
-    form.industry_sector;
+    form.assessment_title.trim() !== "" &&
+    form.classification !== "" &&
+    form.operating_structure !== "" &&
+    form.primary_income_model !== "" &&
+    form.revenue_structure !== "" &&
+    form.industry_sector !== "";
 
   const handleBegin = () => {
-    sessionStorage.setItem("rp_profile", JSON.stringify(form));
-    localStorage.setItem("rp_profile", JSON.stringify(form));
+    if (!isValid) return;
+    const profile = {
+      ...form,
+      assessment_title: form.assessment_title.trim(),
+    };
+    sessionStorage.setItem("rp_profile", JSON.stringify(profile));
+    localStorage.setItem("rp_profile", JSON.stringify(profile));
     router.push("/diagnostic");
   };
 
@@ -303,224 +319,258 @@ export default function InitializationPage() {
     e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)";
   };
 
+  const canContinueStep0 = form.assessment_title.trim() !== "";
+  const canContinueStep1 = form.classification !== "" && form.operating_structure !== "";
+
+  /* ================================================================ */
+  /*  STEP 0 — PORTAL ENTRANCE                                        */
+  /*  Dark, immersive, institutional. Feels like entering a vault.     */
+  /* ================================================================ */
+  if (step === 0) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        overflow: "hidden",
+      }}>
+        {/* Ambient glow */}
+        <div style={{
+          position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)",
+          width: 600, height: 600, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, rgba(75,63,174,0) 70%)",
+          pointerEvents: "none",
+        }} />
+
+        {/* Content */}
+        <div style={{
+          maxWidth: 520, width: "100%", padding: "0 32px",
+          opacity: portalRevealed ? 1 : 0,
+          transform: portalRevealed ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 800ms ease, transform 800ms ease",
+        }}>
+          {/* Top badge */}
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <div style={{
+              display: "inline-block", padding: "6px 16px", borderRadius: 20,
+              border: "1px solid rgba(75,63,174,0.30)",
+              background: "rgba(75,63,174,0.08)",
+            }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                Income Stability Score\u2122 \u00B7 Model RP-2.0
+              </span>
+            </div>
+          </div>
+
+          {/* Title */}
+          <h1 style={{
+            fontSize: 36, fontWeight: 300, color: "#F4F1EA", textAlign: "center",
+            lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: 12,
+          }}>
+            Your Assessment Begins Here
+          </h1>
+          <p style={{
+            fontSize: 15, color: "rgba(244,241,234,0.45)", textAlign: "center",
+            lineHeight: 1.6, marginBottom: 48, maxWidth: 400, margin: "0 auto 48px",
+          }}>
+            Enter the name that will appear on your report. This is a confidential, one-time assessment of your income stability.
+          </p>
+
+          {/* Input field — centered, glowing */}
+          <div style={{ position: "relative", marginBottom: 32 }}>
+            <input
+              type="text"
+              value={form.assessment_title}
+              onChange={(e) => update("assessment_title", e.target.value)}
+              placeholder="Your name or organization"
+              autoFocus
+              onFocus={focusHandler}
+              onBlur={blurHandler}
+              style={{
+                width: "100%", height: 56, padding: "0 20px",
+                borderRadius: 12, border: "1px solid rgba(75,63,174,0.30)",
+                background: "rgba(255,255,255,0.04)", color: "#F4F1EA",
+                fontSize: 17, fontWeight: 400, letterSpacing: "-0.01em",
+                outline: "none", boxSizing: "border-box",
+                transition: "border-color 200ms ease, box-shadow 200ms ease",
+                textAlign: "center",
+              }}
+              onKeyDown={(e) => { if (e.key === "Enter" && canContinueStep0) { setStep(1); window.scrollTo(0, 0); } }}
+            />
+            {/* Glow ring */}
+            {form.assessment_title.trim() && (
+              <div style={{
+                position: "absolute", inset: -2, borderRadius: 14,
+                border: "1px solid rgba(75,63,174,0.40)",
+                boxShadow: "0 0 20px rgba(75,63,174,0.15)",
+                pointerEvents: "none",
+              }} />
+            )}
+          </div>
+
+          {/* CTA */}
+          <button
+            disabled={!canContinueStep0}
+            onClick={() => { setStep(1); window.scrollTo(0, 0); }}
+            style={{
+              width: "100%", height: 52, borderRadius: 12, border: "none",
+              background: canContinueStep0
+                ? "linear-gradient(135deg, #4B3FAE 0%, #3d35a0 50%, #1F6D7A 100%)"
+                : "rgba(255,255,255,0.06)",
+              color: canContinueStep0 ? "#FFFFFF" : "rgba(255,255,255,0.25)",
+              fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+              cursor: canContinueStep0 ? "pointer" : "not-allowed",
+              boxShadow: canContinueStep0 ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
+              transition: "all 300ms ease",
+            }}
+          >
+            Begin Profile Setup
+          </button>
+
+          {/* Trust signals */}
+          <div style={{
+            display: "flex", justifyContent: "center", gap: 24, marginTop: 40,
+          }}>
+            {["Confidential", "Under 2 minutes", "No financial data required"].map((t) => (
+              <span key={t} style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", letterSpacing: "0.02em" }}>{t}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* CSS animations */}
+        <style>{`
+          input::placeholder { color: rgba(244,241,234,0.25); }
+          input:focus { border-color: rgba(75,63,174,0.60) !important; box-shadow: 0 0 24px rgba(75,63,174,0.12) !important; }
+        `}</style>
+      </div>
+    );
+  }
+
+  /* ================================================================ */
+  /*  STEPS 1 & 2 — CLINICAL DIAGNOSTIC INTAKE                        */
+  /*  Transition from portal to structured intake. Clean, precise,     */
+  /*  institutional. Feels like a professional assessment instrument.  */
+  /* ================================================================ */
+
   const stepTitles = [
-    "Let\u2019s set up your assessment",
-    "Tell us about your income structure",
-    "One more step \u2014 your income context",
+    "",
+    "Income Structure Profile",
+    "Income Context",
   ];
 
   const stepDescriptions = [
-    "This information appears on your report and helps us deliver your results.",
-    "This helps us benchmark your score against similar professionals in your field.",
-    "These details provide context for your income analysis.",
+    "",
+    "These fields describe how your income is structured. This enables precision in your diagnostic.",
+    "Final context for your assessment. These details refine your report but do not influence your score.",
   ];
-
-  const progressLabels = [
-    "Step 1 of 3 \u2014 Profile Setup",
-    "Step 2 of 3 \u2014 Identity",
-    "Step 3 of 3 \u2014 Income Context",
-  ];
-
-  const progressWidths = ["5%", "10%", "15%"];
-
-  const canContinueStep0 = form.assessment_title.trim() !== "";
-
-  const canContinueStep1 =
-    form.classification !== "" && form.operating_structure !== "";
 
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: "#F7F6F3",
+      background: B.sand,
       overflowY: "auto",
     }}>
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 24 }}>
-      {/* Header */}
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>
-          Step {step + 1} of 3
+      {/* Top bar — institutional header */}
+      <div style={{
+        background: B.navy, padding: "14px 24px",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+            Income Stability Diagnostic
+          </span>
         </div>
-        <h1 style={{ fontSize: 24, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
-          {stepTitles[step]}
-        </h1>
-        <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
-          {stepDescriptions[step]}
-        </p>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <span style={{ fontSize: 11, color: "rgba(244,241,234,0.35)" }}>
+            Assessing: {form.assessment_title || "—"}
+          </span>
+          <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)" }}>Model RP-2.0</span>
+        </div>
       </div>
 
-      {/* Step 0 — Email & Assessment Title */}
-      {step === 0 && (
-        <section
-          style={{
-            background: "#FFFFFF",
-            borderRadius: 16,
-            border: "1px solid rgba(14,26,43,0.06)",
-            padding: "28px 24px",
-          }}
-        >
-          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-            Assessment Setup
-          </h2>
-          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-            This information appears on your report. Your report will be sent to the email used during checkout.
-          </p>
+      {/* Progress indicator — clinical-style segmented bar */}
+      <div style={{
+        background: "#FFFFFF", borderBottom: "1px solid rgba(14,26,43,0.06)",
+        padding: "12px 24px",
+      }}>
+        <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
+          {["Profile", "Structure", "Context", "Assessment"].map((label, i) => {
+            const isActive = i === step;
+            const isComplete = i < step;
+            const isFuture = i > step && i < 3;
+            return (
+              <div key={label} style={{ flex: i === 3 ? 2 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{
+                  width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 11, fontWeight: 700,
+                  background: isComplete ? B.teal : isActive ? B.purple : "rgba(14,26,43,0.06)",
+                  color: isComplete || isActive ? "#FFFFFF" : B.light,
+                  transition: "all 300ms ease",
+                }}>
+                  {isComplete ? "\u2713" : i + 1}
+                </div>
+                <span style={{
+                  fontSize: 12, fontWeight: isActive ? 600 : 400,
+                  color: isActive ? B.navy : isComplete ? B.teal : B.light,
+                }}>
+                  {label}
+                </span>
+                {i < 3 && (
+                  <div style={{ flex: 1, height: 2, background: isComplete ? B.teal : "rgba(14,26,43,0.06)", borderRadius: 1, transition: "background 300ms ease" }} />
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {/* Assessment Title */}
-            <div>
-              <label style={labelStyle}>Assessment Title</label>
-              <p style={helperStyle}>Your name or organization name. This appears on your report.</p>
-              <input
-                type="text"
-                value={form.assessment_title}
-                onChange={(e) => update("assessment_title", e.target.value)}
-                placeholder="e.g. Jordan Ellis or Ellis Advisory Group"
-                style={inputStyle}
-                onFocus={focusHandler}
-                onBlur={blurHandler}
-              />
-            </div>
+      {/* Form content */}
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "40px 24px 60px" }}>
+        {/* Step header */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: B.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+            Step {step} of 3
           </div>
-        </section>
-      )}
-
-      {/* Step 1 — Identity */}
-      {step === 1 && (
-        <section
-          style={{
-            background: "#FFFFFF",
-            borderRadius: 16,
-            border: "1px solid rgba(14,26,43,0.06)",
-            padding: "28px 24px",
-          }}
-        >
-          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-            Identity &amp; Structure
-          </h2>
-          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-            How is your income structured? These fields describe the type of entity and operating model.
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
+            {stepTitles[step]}
+          </h1>
+          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, maxWidth: 480 }}>
+            {stepDescriptions[step]}
           </p>
+        </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {/* Classification */}
+        {/* Step 1 — Identity & Structure */}
+        {step === 1 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             <div>
               <label style={labelStyle}>Classification</label>
-              <p style={helperStyle}>Are you assessing income as an individual, business, or team?</p>
+              <p style={helperStyle}>How is your income entity structured?</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {CLASSIFICATIONS.map((c) => (
-                  <button
-                    key={c.value}
-                    onClick={() => update("classification", c.value)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 14,
-                      padding: "14px 16px",
-                      borderRadius: 10,
-                      border: `1px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                      background: form.classification === c.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "border-color 160ms ease, background 160ms ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: "50%",
-                        border: `2px solid ${form.classification === c.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {form.classification === c.value && (
-                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                      )}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{c.value}</div>
-                      <div style={{ fontSize: 12, color: B.light }}>{c.desc}</div>
-                    </div>
-                  </button>
+                  <RadioCard key={c.value} label={c.value} desc={c.desc} selected={form.classification === c.value} onClick={() => update("classification", c.value)} />
                 ))}
               </div>
             </div>
-
-            {/* Operating Structure */}
             <div>
               <label style={labelStyle}>Operating Structure</label>
-              <p style={helperStyle}>How is your work arrangement structured?</p>
+              <p style={helperStyle}>What is your work arrangement?</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {OPERATING_STRUCTURES.map((o) => (
-                  <button
-                    key={o.value}
-                    onClick={() => update("operating_structure", o.value)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 14,
-                      padding: "14px 16px",
-                      borderRadius: 10,
-                      border: `1px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                      background: form.operating_structure === o.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "border-color 160ms ease, background 160ms ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: "50%",
-                        border: `2px solid ${form.operating_structure === o.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {form.operating_structure === o.value && (
-                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                      )}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{o.value}</div>
-                      <div style={{ fontSize: 12, color: B.light }}>{o.desc}</div>
-                    </div>
-                  </button>
+                  <RadioCard key={o.value} label={o.value} desc={o.desc} selected={form.operating_structure === o.value} onClick={() => update("operating_structure", o.value)} />
                 ))}
               </div>
             </div>
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Step 2 — Income Context */}
-      {step === 2 && (
-        <section
-          style={{
-            background: "#FFFFFF",
-            borderRadius: 16,
-            border: "1px solid rgba(14,26,43,0.06)",
-            padding: "28px 24px",
-          }}
-        >
-          <h2 style={{ fontSize: 17, fontWeight: 700, color: B.navy, marginBottom: 4 }}>
-            Income Context
-          </h2>
-          <p style={{ fontSize: 13, color: B.light, lineHeight: 1.6, marginBottom: 24 }}>
-            Describe the characteristics of your income system. These fields provide context for your report but do not influence your score.
-          </p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            {/* Primary Income Model */}
+        {/* Step 2 — Income Context */}
+        {step === 2 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             <div>
               <label style={labelStyle}>Primary Income Model</label>
-              <p style={helperStyle}>What best describes how you primarily generate income?</p>
+              <p style={helperStyle}>What best describes how you generate income?</p>
               <select
                 value={form.primary_income_model}
                 onChange={(e) => update("primary_income_model", e.target.value)}
@@ -534,58 +584,18 @@ export default function InitializationPage() {
                 ))}
               </select>
             </div>
-
-            {/* Revenue Structure */}
             <div>
               <label style={labelStyle}>Revenue Structure</label>
-              <p style={helperStyle}>Select the pattern that best describes how you receive payment for your work.</p>
+              <p style={helperStyle}>How do you receive payment?</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {REVENUE_STRUCTURES.map((r) => (
-                  <button
-                    key={r.value}
-                    onClick={() => update("revenue_structure", r.value)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 14,
-                      padding: "14px 16px",
-                      borderRadius: 10,
-                      border: `1px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.10)"}`,
-                      background: form.revenue_structure === r.value ? "rgba(75,63,174,0.04)" : "#FFFFFF",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "border-color 160ms ease, background 160ms ease",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: "50%",
-                        border: `2px solid ${form.revenue_structure === r.value ? B.purple : "rgba(14,26,43,0.20)"}`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      {form.revenue_structure === r.value && (
-                        <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
-                      )}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{r.value}</div>
-                      <div style={{ fontSize: 12, color: B.light }}>{r.desc}</div>
-                    </div>
-                  </button>
+                  <RadioCard key={r.value} label={r.value} desc={r.desc} selected={form.revenue_structure === r.value} onClick={() => update("revenue_structure", r.value)} />
                 ))}
               </div>
             </div>
-
-            {/* Industry Sector */}
             <div>
               <label style={labelStyle}>Industry Sector</label>
-              <p style={helperStyle}>Which industry best describes where your income is generated?</p>
+              <p style={helperStyle}>Which industry generates your income?</p>
               <select
                 value={form.industry_sector}
                 onChange={(e) => update("industry_sector", e.target.value)}
@@ -600,113 +610,65 @@ export default function InitializationPage() {
               </select>
             </div>
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Navigation buttons for steps 0, 1 */}
-      {step < 2 && (
-        <div style={{ display: "flex", gap: 12 }}>
-          {step > 0 && (
-            <button
-              onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}
-              style={{
-                height: 52,
-                borderRadius: 12,
-                background: "#FFFFFF",
-                color: B.navy,
-                fontSize: 15,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                border: `1px solid rgba(14,26,43,0.12)`,
-                cursor: "pointer",
-                padding: "0 24px",
-                transition: "background 180ms ease",
-              }}
-            >
-              Back
-            </button>
-          )}
-          <button
-            disabled={step === 0 ? !canContinueStep0 : !canContinueStep1}
-            onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}
-            style={{
-              flex: 1,
-              height: 52,
-              borderRadius: 12,
-              background: (step === 0 ? canContinueStep0 : canContinueStep1) ? B.purple : "rgba(14,26,43,0.12)",
-              color: (step === 0 ? canContinueStep0 : canContinueStep1) ? "#FFFFFF" : B.light,
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "-0.01em",
-              border: "none",
-              cursor: (step === 0 ? canContinueStep0 : canContinueStep1) ? "pointer" : "not-allowed",
-              boxShadow: (step === 0 ? canContinueStep0 : canContinueStep1) ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
-              transition: "background 180ms ease, transform 180ms ease",
-            }}
-          >
-            Continue
-          </button>
-        </div>
-      )}
-
-      {/* Begin Assessment button for step 2 */}
-      {step === 2 && (
-        <div style={{ display: "flex", gap: 12 }}>
+        {/* Navigation */}
+        <div style={{ display: "flex", gap: 12, marginTop: 36 }}>
           <button
             onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}
             style={{
-              height: 52,
-              borderRadius: 12,
-              background: "#FFFFFF",
-              color: B.navy,
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "-0.01em",
-              border: `1px solid rgba(14,26,43,0.12)`,
-              cursor: "pointer",
-              padding: "0 24px",
+              height: 52, borderRadius: 12, background: "#FFFFFF", color: B.navy,
+              fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+              border: "1px solid rgba(14,26,43,0.12)", cursor: "pointer", padding: "0 24px",
               transition: "background 180ms ease",
             }}
           >
             Back
           </button>
-          <button
-            disabled={!isValid}
-            onClick={handleBegin}
-            style={{
-              flex: 1,
-              height: 52,
-              borderRadius: 12,
-              background: isValid ? B.purple : "rgba(14,26,43,0.12)",
-              color: isValid ? "#FFFFFF" : B.light,
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "-0.01em",
-              border: "none",
-              cursor: isValid ? "pointer" : "not-allowed",
-              boxShadow: isValid ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
-              transition: "background 180ms ease, transform 180ms ease",
-            }}
-          >
-            Begin Assessment
-          </button>
+          {step < 2 ? (
+            <button
+              disabled={!canContinueStep1}
+              onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}
+              style={{
+                flex: 1, height: 52, borderRadius: 12,
+                background: canContinueStep1 ? B.purple : "rgba(14,26,43,0.12)",
+                color: canContinueStep1 ? "#FFFFFF" : B.light,
+                fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
+                cursor: canContinueStep1 ? "pointer" : "not-allowed",
+                boxShadow: canContinueStep1 ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
+                transition: "background 180ms ease, transform 180ms ease",
+              }}
+            >
+              Continue
+            </button>
+          ) : (
+            <button
+              disabled={!isValid}
+              onClick={handleBegin}
+              style={{
+                flex: 1, height: 52, borderRadius: 12,
+                background: isValid
+                  ? "linear-gradient(135deg, #4B3FAE 0%, #1F6D7A 100%)"
+                  : "rgba(14,26,43,0.12)",
+                color: isValid ? "#FFFFFF" : B.light,
+                fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
+                cursor: isValid ? "pointer" : "not-allowed",
+                boxShadow: isValid ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
+                transition: "all 300ms ease",
+              }}
+            >
+              Begin Assessment
+            </button>
+          )}
         </div>
-      )}
 
-      {/* Endowed progress — customer feels they've already started */}
-      <div>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>{progressLabels[step]}</span>
-          <span style={{ fontSize: 11, color: B.light }}>Under 2 minutes</span>
-        </div>
-        <div style={{ height: 4, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
-          <div style={{ height: "100%", width: progressWidths[step], borderRadius: 2, background: B.teal, transition: "width 600ms ease" }} />
-        </div>
-        <p style={{ fontSize: 11, color: B.light, textAlign: "center", marginTop: 10 }}>
-          Under 2 minutes — starts after Begin Assessment
+        {/* Confidentiality notice */}
+        <p style={{
+          fontSize: 11, color: B.light, textAlign: "center", marginTop: 24, lineHeight: 1.5,
+        }}>
+          All information is confidential and used only to generate your assessment. No financial data is collected.
         </p>
       </div>
-    </div>
     </div>
   );
 }
