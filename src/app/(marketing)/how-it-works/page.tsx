@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
@@ -1061,7 +1062,7 @@ function CtaSection() {
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
 
-          <a
+          <Link
             href="/pricing"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
@@ -1088,7 +1089,7 @@ function CtaSection() {
             }}
           >
             Get My Free Score
-          </a>
+          </Link>
 
           <div
             style={{
@@ -1113,16 +1114,29 @@ export default function HowItWorksPage() {
     <div>
       <Hero />
       <ThreeSteps />
-      {/* Simulator teaser */}
-      <section style={{ background: "#F4F1EA", paddingTop: 48, paddingBottom: 48, paddingLeft: 20, paddingRight: 20 }}>
-        <div style={{ maxWidth: 520, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Then Model Scenarios</div>
-            <h2 style={{ fontSize: 22, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
-              What happens to your score if things change?
+      {/* Simulator + Script Generator teaser */}
+      <section style={{ background: "#F4F1EA", paddingTop: 64, paddingBottom: 64, paddingLeft: 20, paddingRight: 20 }}>
+        <div style={{ maxWidth: 580, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Included With Every Report</div>
+            <h2 style={{ fontSize: 28, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: "0 0 14px" }}>
+              Simulate changes. Get the scripts to make them.
             </h2>
+            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+              The interactive Score Simulator lets you drag five sliders to model real scenarios &mdash; see exactly how each change moves your score. The Script Generator gives you ready-to-use language for retainer pitches, client outreach, and pricing restructures you can copy and send tomorrow.
+            </p>
           </div>
           <SimulatorTeaser variant="dark-on-light" />
+          {/* Feature pills */}
+          <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: 10, marginTop: 20 }}>
+            {["5 Interactive Sliders", "Real-Time Score Updates", "Ready-to-Send Scripts"].map(label => (
+              <span key={label} style={{
+                fontSize: 11, fontWeight: 600, letterSpacing: "0.04em",
+                color: "#4B3FAE", backgroundColor: "rgba(75,63,174,0.08)",
+                borderRadius: 20, padding: "6px 14px",
+              }}>{label}</span>
+            ))}
+          </div>
         </div>
       </section>
       <ReportCovers />
