@@ -1130,7 +1130,7 @@ export default function ReviewPage() {
           );
         };
         return (
-          <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
+          <div className="no-print" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
             <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
               <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div><div style={{ ...T.cardHero, color: B.navy }}>{br2.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div><div style={{ ...T.meta, color: B.muted }}>{br2.band}</div></div>
               <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
