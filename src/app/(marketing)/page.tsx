@@ -2413,7 +2413,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What is your refund policy?",
-      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Email support@runpayway.com with your record ID. No questions asked. Refunds processed within 3 business days.",
+      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Visit our contact page with your record ID. No questions asked. Refunds processed within 3 business days.",
     },
     {
       q: "Is my information confidential?",

@@ -163,7 +163,7 @@ export const pt: Translations = {
     title: "Avaliação de Estabilidade de Renda",
     modelVersion: "Model RP-1.0 | Versão 1.0",
     confidential: "Confidencial — Preparado para",
-    support: "RunPayway™ · support@runpayway.com",
+    support: "RunPayway™ · runpayway.com/contact",
     scoreLabel: "Income Stability Score™",
     assessmentId: "ID da Avaliação:",
     generated: "Gerado em:",

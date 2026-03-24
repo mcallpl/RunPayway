@@ -163,7 +163,7 @@ export const hi: Translations = {
     title: "आय स्थिरता मूल्यांकन",
     modelVersion: "मॉडल RP-1.0 | संस्करण 1.0",
     confidential: "गोपनीय — इसके लिए तैयार",
-    support: "RunPayway™ · support@runpayway.com",
+    support: "RunPayway™ · runpayway.com/contact",
     scoreLabel: "Income Stability Score™",
     assessmentId: "मूल्यांकन आईडी:",
     generated: "उत्पन्न:",

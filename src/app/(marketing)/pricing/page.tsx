@@ -704,7 +704,7 @@ function TrustStrip() {
             transition: "opacity 0.5s ease-out 200ms",
           }}
         >
-          If the report doesn&#8217;t tell you something you didn&#8217;t already know, contact us at support@runpayway.com.
+          If the report doesn&#8217;t tell you something you didn&#8217;t already know, <a href="/contact" style={{ color: B.teal, textDecoration: "underline", textUnderlineOffset: 3 }}>contact us</a> for a full refund.
         </p>
       </div>
     </section>
@@ -727,7 +727,7 @@ function Faq() {
     },
     {
       q: "What is your refund policy?",
-      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Email support@runpayway.com with your record ID. No questions asked, no forms to fill out. Refunds are processed within 3 business days to the original payment method.",
+      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Visit our contact page with your record ID. No questions asked. Refunds are processed within 3 business days to the original payment method.",
     },
     {
       q: "Is my information confidential?",

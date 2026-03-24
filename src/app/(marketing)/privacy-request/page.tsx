@@ -346,9 +346,9 @@ export default function PrivacyRequestPage() {
                 </div>
                 <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.7, margin: 0 }}>
                   Your email client should have opened with the pre-filled request.
-                  If it did not, please send your request directly to{" "}
-                  <a href="mailto:privacy@runpayway.com" style={{ color: B.purple, textDecoration: "none", fontWeight: 600 }}>
-                    privacy@runpayway.com
+                  If it did not, please submit your request through our{" "}
+                  <a href="/contact" style={{ color: B.purple, textDecoration: "none", fontWeight: 600 }}>
+                    contact page
                   </a>.
                 </p>
               </div>
@@ -382,7 +382,7 @@ export default function PrivacyRequestPage() {
 
                   const bodyEncoded = encodeURIComponent(bodyParts.join("\n"));
 
-                  window.location.href = `mailto:privacy@runpayway.com?subject=${subject}&body=${bodyEncoded}`;
+                  window.location.href = `/contact`;
                   setSubmitted(true);
                 }}
                 onMouseEnter={() => canHover() && setBtnHovered(true)}

@@ -30,7 +30,7 @@ class ReportErrorBoundary extends Component<
             Something went wrong loading your report
           </h2>
           <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap, maxWidth: 400 }}>
-            Your assessment was saved. Please try refreshing the page. If the problem persists, contact support@runpayway.com.
+            Your assessment was saved. Please try refreshing the page. If the problem persists, visit our <a href="/contact" style={{ color: "#4B3FAE" }}>contact page</a>.
           </p>
           <p style={{ ...T.meta, color: B.taupe, marginBottom: R.sectionGap }}>{this.state.error}</p>
           <button
