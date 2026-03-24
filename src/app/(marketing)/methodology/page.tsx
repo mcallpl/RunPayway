@@ -867,41 +867,15 @@ function IndustryContext() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2
-            className="text-[28px] md:text-[36px]"
-            style={{
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              marginBottom: S.h2mb,
-            }}
-          >
-            Industry and income model context
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Personalization Layer</div>
+          <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+            Same score. Your context.
           </h2>
-          <p
-            className="text-[15px] md:text-[17px]"
-            style={{
-              color: B.muted,
-              lineHeight: S.lhBody,
-              marginBottom: S.paraMb,
-            }}
-          >
-            The core score is fixed regardless of industry. However, the report
-            includes additional context tailored to your income model and industry
-            — including relevant risk scenarios, improvement priorities, and peer
-            benchmarking.
+          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Your 0&#8211;100 score is deterministic and industry-agnostic. But the report wraps it in context specific to your income model, industry, and operating structure — including personalized risk scenarios, predictive warnings calibrated to your sector, peer benchmarking against actual industry data, and action plans with scripts tailored to how you earn.
           </p>
-          <p
-            className="text-[15px] md:text-[17px]"
-            style={{
-              color: B.muted,
-              lineHeight: S.lhBody,
-              marginBottom: 0,
-            }}
-          >
-            This context layer enriches the interpretation without altering the
-            score itself.
+          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+            This personalization layer enriches interpretation and execution without altering the underlying score. A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, different scripts, and different peer comparisons.
           </p>
         </div>
       </div>
@@ -920,33 +894,33 @@ function Integrity() {
 
   const panels = [
     {
-      title: "Consistency",
+      title: "Deterministic consistency",
       dotColor: B.teal,
       items: [
-        "The same answers produce the same score",
-        "Fixed scoring rules under Model RP-2.0",
-        "AI does not determine assessment results",
-        "Framework changes create a new model version",
+        "Same inputs always produce the same score — no variability, no AI interpretation",
+        "20-engine pipeline with fixed scoring rules under Model RP-2.0",
+        "Cross-factor interaction rules are versioned and documented",
+        "Any change to the framework creates a new model version — prior scores remain valid under their original model",
       ],
     },
     {
-      title: "Verification",
+      title: "Verification and record integrity",
       dotColor: B.purple,
       items: [
-        "Unique record ID on each report",
-        "Integrity hash for tamper detection",
-        "Model version recorded on every assessment",
-        "Reports can be verified at runpayway.com/verify",
+        "Every assessment is stamped with a unique record ID and SHA-256 integrity hash",
+        "Model version, factor version, and scenario version recorded on every report",
+        "QR code verification links every report to its authenticated record",
+        "Reports can be independently verified at runpayway.com/verify",
       ],
     },
     {
-      title: "Non-predictive nature",
+      title: "Scope and limitations",
       dotColor: B.navy,
       items: [
-        "The score reflects income structure at the time of assessment",
-        "It is not a prediction of future financial outcomes",
+        "The score reflects income structure at the time of assessment — it is a present-state diagnostic",
+        "It does not predict future financial outcomes or market conditions",
         "It is not financial advice, credit underwriting, or investment guidance",
-        "Reassessment is recommended after meaningful structural change",
+        "Reassessment is recommended when any structural factor shifts by more than 15%",
       ],
     },
   ];
@@ -979,31 +953,15 @@ function Integrity() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2
-            className="text-[28px] md:text-[36px]"
-            style={{
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              marginBottom: S.h2mb,
-              textAlign: "center",
-            }}
-          >
-            Assessment integrity
-          </h2>
-          <p
-            className="text-[15px] md:text-[17px]"
-            style={{
-              color: B.muted,
-              lineHeight: S.lhBody,
-              marginBottom: 48,
-              textAlign: "center",
-            }}
-          >
-            Every assessment is stamped with a unique record identifier and a
-            verification hash. The model version is recorded on every report.
-          </p>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Trust Architecture</div>
+            <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+              Every score is verifiable.<br />Every rule is fixed.
+            </h2>
+            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
+              No AI determines the outcome. No subjective judgment. The 20-engine pipeline produces identical results for identical inputs — and every assessment is cryptographically stamped.
+            </p>
+          </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {panels.map((panel, i) => {
