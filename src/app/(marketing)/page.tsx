@@ -1082,8 +1082,8 @@ function WhatYourReportSection() {
         <div style={{
           marginTop: mobile ? 24 : 32,
           padding: mobile ? "24px 20px" : "28px 32px",
-          background: "rgba(75,63,174,0.08)",
-          border: "1px solid rgba(75,63,174,0.20)",
+          background: "rgba(75,63,174,0.25)",
+          border: "1px solid rgba(75,63,174,0.40)",
           borderRadius: 12,
           display: "flex",
           alignItems: mobile ? "flex-start" : "center",
