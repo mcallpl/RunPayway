@@ -160,7 +160,7 @@ export default function PrivacyPolicyPage() {
   const heroAnim = useInView();
 
   // Create refs for each section
-  const sectionRefs = Array.from({ length: 15 }, () => useInView());
+  const sectionRefs = Array.from({ length: 16 }, () => useInView());
 
   return (
     <div style={{ background: B.sand }}>
@@ -435,10 +435,12 @@ export default function PrivacyPolicyPage() {
                 t.privacyPolicy.s9Li2,
                 t.privacyPolicy.s9Li3,
                 t.privacyPolicy.s9Li4,
+                t.privacyPolicy.s9Li5,
               ]} />
               <P>{t.privacyPolicy.s9P2}</P>
               <P>{t.privacyPolicy.s9P3}</P>
-              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s9P4}</P>
+              <P>{t.privacyPolicy.s9P4}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s9P5}</P>
             </Section>
           </div>
 
@@ -487,13 +489,22 @@ export default function PrivacyPolicyPage() {
           <div ref={sectionRefs[13].ref}>
             <Section number="13." title={t.privacyPolicy.s13Title} mobile={mobile} visible={sectionRefs[13].visible}>
               <P>{t.privacyPolicy.s13P1}</P>
-              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s13P2}</P>
+              <P>{t.privacyPolicy.s13P2}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s13P3}</P>
             </Section>
           </div>
 
-          {/* 14. Changes to This Policy */}
+          {/* 13b. Data Protection Contact */}
           <div ref={sectionRefs[14].ref}>
-            <Section number="14." title={t.privacyPolicy.s14Title} mobile={mobile} visible={sectionRefs[14].visible}>
+            <Section number="14." title={t.privacyPolicy.s13bTitle} mobile={mobile} visible={sectionRefs[14].visible}>
+              <P>{t.privacyPolicy.s13bP1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s13bP2}</P>
+            </Section>
+          </div>
+
+          {/* 15. Changes to This Policy */}
+          <div ref={sectionRefs[15].ref}>
+            <Section number="15." title={t.privacyPolicy.s14Title} mobile={mobile} visible={sectionRefs[15].visible}>
               <P>{t.privacyPolicy.s14P1}</P>
               <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s14P2}</P>
             </Section>

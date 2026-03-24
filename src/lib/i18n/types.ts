@@ -885,9 +885,11 @@ export interface Translations {
     s9Li2: string;
     s9Li3: string;
     s9Li4: string;
+    s9Li5: string;
     s9P2: string;
     s9P3: string;
     s9P4: string;
+    s9P5: string;
     s10Title: string;
     s10P1: string;
     s10Li1: string;
@@ -913,6 +915,10 @@ export interface Translations {
     s13Title: string;
     s13P1: string;
     s13P2: string;
+    s13P3: string;
+    s13bTitle: string;
+    s13bP1: string;
+    s13bP2: string;
     s14Title: string;
     s14P1: string;
     s14P2: string;
