@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -309,6 +309,358 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
 }
 
 /* ------------------------------------------------------------------ */
+/*  Record ID — deterministic hash from inputs                         */
+/* ------------------------------------------------------------------ */
+function generateRecordId(inputs: CanonicalInput, name: string): string {
+  const raw = `${inputs.income_persistence_pct}-${inputs.largest_source_pct}-${inputs.source_diversity_count}-${inputs.forward_secured_pct}-${inputs.labor_dependence_pct}-${name}`;
+  let hash = 0;
+  for (let i = 0; i < raw.length; i++) { hash = ((hash << 5) - hash + raw.charCodeAt(i)) | 0; }
+  const hex = Math.abs(hash).toString(16).toUpperCase().padStart(6, "0").slice(0, 6);
+  return `RP-${hex}`;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Brief purposes                                                     */
+/* ------------------------------------------------------------------ */
+const BRIEF_PURPOSES = [
+  { id: "mortgage", label: "Mortgage Application", audience: "Lender", icon: "\u2302", desc: "Prove income stability to a mortgage lender" },
+  { id: "lease", label: "Lease Application", audience: "Landlord", icon: "\u229E", desc: "Demonstrate reliable income for a rental" },
+  { id: "loan", label: "Business Loan", audience: "Bank", icon: "\u2261", desc: "Support a credit or loan application" },
+  { id: "partnership", label: "Partnership Proposal", audience: "Partner", icon: "\u2727", desc: "Show structural reliability to a potential partner" },
+  { id: "negotiation", label: "Client Negotiation", audience: "Client", icon: "\u2694", desc: "Justify rate structure or contract terms" },
+] as const;
+
+type BriefPurpose = typeof BRIEF_PURPOSES[number]["id"];
+
+/* ------------------------------------------------------------------ */
+/*  Brief content generator — deterministic templates from real data    */
+/* ------------------------------------------------------------------ */
+interface BriefData {
+  title: string;
+  date: string;
+  recordId: string;
+  recipient: string;
+  subject: string;
+  opening: string;
+  scoreSection: string;
+  structureSection: string;
+  riskSection: string;
+  benchmarkSection: string;
+  closing: string;
+}
+
+function generateBrief(
+  purpose: BriefPurpose,
+  inputs: CanonicalInput,
+  score: number,
+  band: string,
+  qualityScore: number,
+  name: string,
+  industry: string,
+  incomeModel: string,
+  fragility: string,
+  continuityMonths: number,
+  recordId: string,
+): BriefData {
+  const p = BRIEF_PURPOSES.find(b => b.id === purpose)!;
+  const runway = Math.round(continuityMonths * 30);
+  const recurLabel = inputs.income_persistence_pct >= 60 ? "strong" : inputs.income_persistence_pct >= 30 ? "moderate" : "limited";
+  const concLabel = inputs.largest_source_pct <= 35 ? "well-diversified" : inputs.largest_source_pct <= 55 ? "moderately concentrated" : "concentrated";
+  const fwdLabel = inputs.forward_secured_pct >= 50 ? "high" : inputs.forward_secured_pct >= 25 ? "moderate" : "limited";
+  const fragilityNice = fragility.charAt(0).toUpperCase() + fragility.slice(1);
+  const bandNice = band;
+  const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const nameOrSubject = name || "Subject";
+
+  const audienceMap: Record<BriefPurpose, string> = {
+    mortgage: "Mortgage Underwriting Team",
+    lease: "Property Management / Leasing Office",
+    loan: "Credit & Lending Department",
+    partnership: "Prospective Business Partner",
+    negotiation: "Client / Procurement Team",
+  };
+
+  const openingMap: Record<BriefPurpose, string> = {
+    mortgage: `This Income Stability Brief is provided in support of a mortgage application by ${nameOrSubject}. The assessment below quantifies the structural stability of ${nameOrSubject}'s income using the RunPayway Income Stability Score\u2122, a deterministic scoring model built on fixed rules — not estimates or projections.`,
+    lease: `This brief is provided to support a lease application by ${nameOrSubject}. It documents the structural characteristics of their income using the RunPayway Income Stability Score\u2122, which evaluates income reliability based on measurable structural factors rather than self-reported estimates.`,
+    loan: `This Income Stability Brief accompanies a loan application by ${nameOrSubject}. The RunPayway assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
+    partnership: `This brief provides a structural overview of ${nameOrSubject}'s income stability for partnership evaluation purposes. The assessment uses the RunPayway Income Stability Score\u2122, a deterministic model that evaluates six structural dimensions of income reliability.`,
+    negotiation: `This brief documents the income stability profile of ${nameOrSubject} for use in contract or rate discussions. The RunPayway Income Stability Score\u2122 provides an objective, rule-based assessment of income structure — independent of revenue amount.`,
+  };
+
+  const scoreSection = `${nameOrSubject} has been assessed at a score of ${score}/100, classifying as "${bandNice}" on the Income Stability Classification Scale. This score reflects the structural characteristics of their income — not the amount earned, but how that income is structured for continuity, predictability, and resilience.
+
+Score: ${score}/100
+Classification: ${bandNice}
+Fragility Assessment: ${fragilityNice}
+Income Runway: ${runway} days
+Quality Rating: ${qualityScore}/10`;
+
+  const structureSection = `The assessment evaluates six structural dimensions:
+
+\u2022 Recurring Revenue: ${inputs.income_persistence_pct}% of income is recurring or contractually persistent (${recurLabel})
+\u2022 Source Diversification: ${inputs.source_diversity_count} active income source${inputs.source_diversity_count !== 1 ? "s" : ""}, with the largest representing ${inputs.largest_source_pct}% of total income (${concLabel})
+\u2022 Forward Visibility: ${inputs.forward_secured_pct}% of near-term income is contractually secured (${fwdLabel} forward visibility)
+\u2022 Income Variability: ${inputs.income_variability_level.charAt(0).toUpperCase() + inputs.income_variability_level.slice(1)} month-to-month variation
+\u2022 Labor Dependence: ${inputs.labor_dependence_pct}% of income requires active personal labor
+\u2022 Income Continuity: ${continuityMonths.toFixed(1)} months of estimated continuity without new business activity`;
+
+  const riskMap: Record<BriefPurpose, string> = {
+    mortgage: `Under stress testing, ${nameOrSubject}'s income structure demonstrates ${fragility === "resilient" || fragility === "moderate" ? "structural resilience" : "areas that may warrant attention"}. The ${runway}-day income runway indicates ${runway >= 90 ? "a meaningful buffer against disruption" : runway >= 30 ? "a limited but present buffer" : "a minimal buffer, though this is common in early-stage independent income structures"}.${industry ? ` Within the ${industry} sector, ${incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} with similar structural profiles typically maintain stable payment capacity.` : ""}`,
+    lease: `The income structure shows a ${runway}-day operational runway — the estimated duration income continues without new client acquisition. ${fragility === "resilient" || fragility === "moderate" ? "The fragility assessment indicates structural stability suitable for consistent payment obligations." : "While the structure has some concentration, the forward visibility and recurring revenue components provide a foundation for reliable payments."}`,
+    loan: `Risk assessment indicates a fragility classification of "${fragilityNice}" with ${runway} days of income runway. ${inputs.income_persistence_pct >= 40 ? `The ${inputs.income_persistence_pct}% recurring revenue base provides a predictable foundation for debt service.` : `Forward revenue visibility at ${inputs.forward_secured_pct}% provides near-term payment predictability.`}${industry ? ` Industry context: ${industry} ${incomeModel ? `${incomeModel.toLowerCase()} ` : ""}professionals with this score typically fall in the top ${score >= 75 ? "20%" : score >= 50 ? "40%" : "60%"} of their peer group.` : ""}`,
+    partnership: `From a structural perspective, ${nameOrSubject}'s income profile is classified as "${fragilityNice}" for fragility, with ${runway} days of operational runway. ${inputs.source_diversity_count >= 3 ? `The ${inputs.source_diversity_count}-source diversification reduces single-point-of-failure risk.` : "Income concentration is present but manageable."} ${inputs.income_persistence_pct >= 40 ? `The ${inputs.income_persistence_pct}% recurring revenue base indicates a sustainable operating rhythm.` : "There is opportunity to increase structural persistence through retainer or subscription models."}`,
+    negotiation: `${nameOrSubject}'s income structure supports the rate and terms under discussion. The ${score}/100 stability score reflects a ${bandNice.toLowerCase()} position — ${score >= 50 ? "indicating structural reliability that justifies premium positioning" : "with clear structural factors that inform pricing strategy"}. ${inputs.income_persistence_pct >= 40 ? `With ${inputs.income_persistence_pct}% recurring revenue, the business model demonstrates consistency.` : ""} ${inputs.forward_secured_pct >= 30 ? `${inputs.forward_secured_pct}% forward-secured revenue shows demand confidence.` : ""}`,
+  };
+
+  const benchmarkSection = industry
+    ? `Peer benchmarking places ${nameOrSubject} within the ${industry} sector${incomeModel ? ` among ${incomeModel.toLowerCase()} professionals` : ""}. The top 20% of this peer group typically maintains 60%+ recurring revenue with less than 35% concentration in any single source. ${nameOrSubject}'s current structure ${score >= 75 ? "meets or exceeds" : score >= 50 ? "approaches" : "is developing toward"} these benchmarks.`
+    : `The score of ${score}/100 is evaluated against the full population of assessed income structures. ${score >= 75 ? "This places the subject in the top quartile of all assessed profiles." : score >= 50 ? "This indicates a structurally sound income profile with room for optimization." : "This indicates a developing income structure with identifiable paths to improvement."}`;
+
+  const closingMap: Record<BriefPurpose, string> = {
+    mortgage: `This assessment was generated using RunPayway Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
+    lease: `This brief was produced by the RunPayway Income Stability Score\u2122 (Model RP-2.0). The assessment is deterministic and rule-based — the same inputs always produce the same score. For verification purposes, this assessment is filed under Record ${recordId}.`,
+    loan: `Assessment produced by RunPayway Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
+    partnership: `This assessment reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
+    negotiation: `Assessment methodology: RunPayway Income Stability Score\u2122 (Model RP-2.0). Deterministic scoring based on six structural dimensions. Not a revenue estimate — a structural reliability measurement. Record: ${recordId}.`,
+  };
+
+  return {
+    title: `Income Stability Brief`,
+    date: today,
+    recordId,
+    recipient: audienceMap[purpose],
+    subject: `Income Stability Assessment — ${nameOrSubject}`,
+    opening: openingMap[purpose],
+    scoreSection,
+    structureSection,
+    riskSection: riskMap[purpose],
+    benchmarkSection,
+    closing: closingMap[purpose],
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Brief Generator UI                                                 */
+/* ------------------------------------------------------------------ */
+function BriefGenerator({
+  inputs, score, band, qualityScore, name, industry, incomeModel,
+  fragility, continuityMonths, recordId,
+}: {
+  inputs: CanonicalInput; score: number; band: string; qualityScore: number;
+  name: string; industry: string; incomeModel: string;
+  fragility: string; continuityMonths: number; recordId: string;
+}) {
+  const [purpose, setPurpose] = useState<BriefPurpose | null>(null);
+  const [generated, setGenerated] = useState<BriefData | null>(null);
+  const [downloading, setDownloading] = useState(false);
+  const briefRef = useRef<HTMLDivElement>(null);
+
+  const handleGenerate = () => {
+    if (!purpose) return;
+    const brief = generateBrief(purpose, inputs, score, band, qualityScore, name, industry, incomeModel, fragility, continuityMonths, recordId);
+    setGenerated(brief);
+  };
+
+  const handleDownload = async () => {
+    if (!briefRef.current || !generated) return;
+    setDownloading(true);
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(briefRef.current, { scale: 2, backgroundColor: "#FFFFFF", useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
+      const pageWidth = 8.5;
+      const pageHeight = 11;
+      const margin = 0.6;
+      const contentWidth = pageWidth - margin * 2;
+      const imgAspect = canvas.height / canvas.width;
+      const imgHeight = contentWidth * imgAspect;
+
+      let yOffset = 0;
+      const availableHeight = pageHeight - margin * 2;
+      let page = 0;
+
+      while (yOffset < imgHeight) {
+        if (page > 0) pdf.addPage();
+        const srcY = (yOffset / imgHeight) * canvas.height;
+        const srcH = Math.min((availableHeight / imgHeight) * canvas.height, canvas.height - srcY);
+        const drawH = (srcH / canvas.height) * imgHeight;
+
+        const sliceCanvas = document.createElement("canvas");
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = srcH;
+        const ctx = sliceCanvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
+          const sliceData = sliceCanvas.toDataURL("image/png");
+          pdf.addImage(sliceData, "PNG", margin, margin, contentWidth, drawH);
+        }
+        yOffset += availableHeight;
+        page++;
+      }
+
+      pdf.setProperties({ title: `Income Stability Brief - ${name}`, author: "RunPayway", subject: `Record ${recordId}` });
+      pdf.save(`RunPayway-Brief-${recordId}.pdf`);
+    } catch (err) {
+      console.error("Brief download failed:", err);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  return (
+    <div style={{ marginTop: 48 }}>
+      {/* Section divider */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${B.ghost}, transparent)` }} />
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.faint }}>TOOLS</span>
+        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${B.ghost}, transparent)` }} />
+      </div>
+
+      <Card glow="rgba(75,63,174,0.10)" style={{ borderTop: `2px solid ${B.purple}33` }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+          <div>
+            <SectionLabel color={B.purple}>Income Stability Brief Generator</SectionLabel>
+            <p style={{ fontSize: 13, color: B.muted, margin: 0, maxWidth: 480, lineHeight: 1.5 }}>
+              Generate a professional document from your assessment data. Hand it to a bank, landlord, partner, or client to prove your income structure.
+            </p>
+          </div>
+          <div style={{ fontSize: 11, color: B.dim, padding: "6px 12px", borderRadius: 6, backgroundColor: B.whisper, border: `1px solid ${B.ghost}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
+            Record {recordId}
+          </div>
+        </div>
+
+        {/* Purpose selector */}
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.faint, marginBottom: 12 }}>
+          SELECT PURPOSE
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
+          {BRIEF_PURPOSES.map(bp => {
+            const isActive = purpose === bp.id;
+            return (
+              <button key={bp.id} onClick={() => { setPurpose(bp.id); setGenerated(null); }} style={{
+                padding: "14px 12px", textAlign: "center", borderRadius: 10, cursor: "pointer", transition: "all 200ms",
+                border: `1px solid ${isActive ? B.purple + "44" : B.ghost}`,
+                backgroundColor: isActive ? B.purpleGlow : B.whisper,
+              }}>
+                <div style={{ fontSize: 16, marginBottom: 6 }}>{bp.icon}</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: isActive ? B.bone : B.muted, marginBottom: 4 }}>{bp.label}</div>
+                <div style={{ fontSize: 10, color: B.dim, lineHeight: 1.3 }}>{bp.desc}</div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Generate button */}
+        {purpose && !generated && (
+          <button onClick={handleGenerate} style={{
+            width: "100%", padding: "14px 24px", borderRadius: 10, border: "none", cursor: "pointer",
+            background: `linear-gradient(135deg, ${B.purple}, ${B.purple}DD)`,
+            color: B.white, fontSize: 14, fontWeight: 600, letterSpacing: "-0.01em",
+            boxShadow: `0 4px 16px ${B.purple}44`,
+          }}>
+            Generate Brief for {BRIEF_PURPOSES.find(b => b.id === purpose)?.audience}
+          </button>
+        )}
+
+        {/* Generated brief preview */}
+        {generated && (
+          <>
+            <div
+              ref={briefRef}
+              style={{
+                backgroundColor: "#FFFFFF", borderRadius: 8, padding: "48px 44px",
+                color: "#1A1A1A", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: 13, lineHeight: 1.7, marginBottom: 20,
+              }}
+            >
+              {/* Brief header */}
+              <div style={{ borderBottom: "2px solid #0E1A2B", paddingBottom: 20, marginBottom: 28 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div>
+                    <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 6 }}>RUNPAYWAY&#8482;</div>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: "#0E1A2B", letterSpacing: "-0.02em" }}>{generated.title}</div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 11, color: "#6B7280" }}>{generated.date}</div>
+                    <div style={{ fontSize: 11, color: "#6B7280", fontVariantNumeric: "tabular-nums" }}>{generated.recordId}</div>
+                  </div>
+                </div>
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ fontSize: 11, color: "#6B7280" }}>Prepared for: <strong style={{ color: "#1A1A1A" }}>{generated.recipient}</strong></div>
+                  <div style={{ fontSize: 11, color: "#6B7280" }}>Re: <strong style={{ color: "#1A1A1A" }}>{generated.subject}</strong></div>
+                </div>
+              </div>
+
+              {/* Score badge */}
+              <div style={{ display: "flex", gap: 16, alignItems: "center", padding: "16px 20px", backgroundColor: "#F8F7F4", borderRadius: 8, marginBottom: 24, border: "1px solid #E8E5DD" }}>
+                <div style={{ width: 56, height: 56, borderRadius: 12, backgroundColor: "#0E1A2B", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 22, fontWeight: 700, color: "#F4F1EA" }}>{score}</span>
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B" }}>{band}</div>
+                  <div style={{ fontSize: 12, color: "#6B7280" }}>Income Stability Score&#8482; &middot; Model RP-2.0</div>
+                </div>
+              </div>
+
+              {/* Opening */}
+              <p style={{ marginBottom: 20 }}>{generated.opening}</p>
+
+              {/* Score section */}
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Assessment Summary</div>
+              <p style={{ whiteSpace: "pre-line" as const, marginBottom: 20 }}>{generated.scoreSection}</p>
+
+              {/* Structure */}
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Structural Analysis</div>
+              <p style={{ whiteSpace: "pre-line" as const, marginBottom: 20 }}>{generated.structureSection}</p>
+
+              {/* Risk */}
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Risk &amp; Resilience</div>
+              <p style={{ marginBottom: 20 }}>{generated.riskSection}</p>
+
+              {/* Benchmark */}
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Peer Context</div>
+              <p style={{ marginBottom: 20 }}>{generated.benchmarkSection}</p>
+
+              {/* Closing */}
+              <div style={{ borderTop: "1px solid #E8E5DD", paddingTop: 20, marginTop: 28 }}>
+                <p style={{ fontSize: 12, color: "#6B7280", lineHeight: 1.6 }}>{generated.closing}</p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
+                  <span style={{ fontSize: 10, color: "#9CA3AF" }}>peoplestar.com/RunPayway</span>
+                  <span style={{ fontSize: 10, color: "#9CA3AF" }}>Income Stability Score&#8482;</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: "flex", gap: 12 }}>
+              <button onClick={handleDownload} disabled={downloading} style={{
+                flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", cursor: downloading ? "wait" : "pointer",
+                background: `linear-gradient(135deg, ${B.bone}, #E8E5DD)`,
+                color: B.navy, fontSize: 14, fontWeight: 600,
+                opacity: downloading ? 0.7 : 1,
+              }}>
+                {downloading ? "Generating..." : "Download Brief"}
+              </button>
+              <button onClick={() => { setGenerated(null); setPurpose(null); }} style={{
+                padding: "14px 20px", borderRadius: 10, border: `1px solid ${B.ghost}`,
+                backgroundColor: "transparent", color: B.dim, fontSize: 13, fontWeight: 500, cursor: "pointer",
+              }}>
+                New Brief
+              </button>
+            </div>
+          </>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main content                                                       */
 /* ------------------------------------------------------------------ */
 function SimulatorContent() {
@@ -406,6 +758,9 @@ function SimulatorContent() {
   const sim = simulateScore(simInputs, qualityScore);
   const delta = sim.overall_score - base.overall_score;
   const isModified = simMode === "advanced" ? !!sliders : !!simPreset;
+
+  // Record ID
+  const recordId = generateRecordId(baseInputs, userName);
 
   // Income Timeline
   const timeline: TimelinePoint[] = isModified ? projectTimeline(baseInputs, simInputs, qualityScore) : [];
@@ -686,6 +1041,20 @@ function SimulatorContent() {
             )}
           </Card>
         )}
+
+        {/* ══════════ BRIEF GENERATOR ══════════ */}
+        <BriefGenerator
+          inputs={baseInputs}
+          score={base.overall_score}
+          band={base.band}
+          qualityScore={qualityScore}
+          name={userName}
+          industry={industry}
+          incomeModel={incomeModel}
+          fragility={base.fragility_class}
+          continuityMonths={base.continuity_months}
+          recordId={recordId}
+        />
 
         {/* ══════════ PROFILE CARD ══════════ */}
         {(userName || industry || incomeModel) && (
