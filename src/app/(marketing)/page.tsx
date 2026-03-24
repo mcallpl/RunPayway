@@ -2412,20 +2412,20 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       a: "An interactive score simulator, income runway calculator, risk scenarios with exact score drops, an action plan with specific timeframes and targets, ready-to-use scripts (retainer pitch, client outreach, pricing restructure), tradeoff analysis, predictive warnings, six structural indicators, and an advisor discussion guide.",
     },
     {
-      q: "What if the report doesn\u2019t tell me anything new?",
-      a: "Email support@runpayway.com for a full refund. No questions asked.",
+      q: "What is your refund policy?",
+      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Email support@runpayway.com with your record ID. No questions asked. Refunds processed within 3 business days.",
+    },
+    {
+      q: "Is my information confidential?",
+      a: "Yes. We never collect bank credentials, credit data, or financial account access. Your data is encrypted, never sold, and you can request deletion at any time.",
     },
     {
       q: "How long does it take?",
-      a: "Under two minutes. Your free score is delivered instantly.",
+      a: "Under two minutes. Your free score is delivered instantly. The full report generates immediately after purchase.",
     },
     {
-      q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway™ never connects to a bank, pulls credit, or accesses financial accounts. The assessment is generated entirely from your responses.",
-    },
-    {
-      q: "Can I retake it later?",
-      a: "Yes. Retake after a meaningful structural change to see how your score has moved. Your report includes a recommended reassessment date.",
+      q: "Can I retake the assessment?",
+      a: "Yes. Each assessment is independent. Retake after a meaningful structural change to see how your score has moved.",
     },
   ];
 

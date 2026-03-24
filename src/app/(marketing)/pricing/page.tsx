@@ -722,24 +722,36 @@ function Faq() {
 
   const faqs = [
     {
-      q: "What's the difference between Free and the Full Report?",
-      a: "Free gives you your score, stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator, income runway calculator, risk scenarios with score drops, an action plan with specific targets and timelines, ready-to-use scripts (retainer pitch, client outreach), tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
+      q: "What\u2019s the difference between Free and the Full Report?",
+      a: "Free gives you your score out of 100, your stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator with 5 sliders, income runway calculator, risk scenarios with exact score drops, an action plan with specific targets and timelines, ready-to-use scripts you can send tomorrow, tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
     },
     {
-      q: "What if the report doesn't tell me anything new?",
-      a: "Email support@runpayway.com and we'll refund you. No questions asked. But the structural breakdown, cross-factor effects, and industry-specific risk scenarios consistently reveal blind spots that pay stubs and tax returns miss.",
+      q: "What is your refund policy?",
+      a: "Full refund within 30 days if the report does not reveal at least one insight you did not already know. Email support@runpayway.com with your record ID. No questions asked, no forms to fill out. Refunds are processed within 3 business days to the original payment method.",
     },
     {
-      q: "Do you need access to my bank accounts?",
-      a: "No. RunPayway\u2122 never connects to a bank, pulls credit, or accesses financial accounts. The assessment is generated entirely from your responses.",
+      q: "Is my information confidential?",
+      a: "Yes. We never collect financial account data, bank credentials, or credit information. The assessment is generated entirely from your responses. Your data is encrypted, never sold, and you can request deletion at any time. See our privacy policy for full details.",
+    },
+    {
+      q: "Who is this for?",
+      a: "Anyone whose income does not come from a single predictable paycheck \u2014 freelancers, contractors, business owners, commissioned professionals, consultants, creators, and anyone with variable or multi-source income. The model evaluates income structure, not income amount.",
     },
     {
       q: "How long does it take?",
-      a: "Most people complete the assessment in under two minutes. Your report is delivered instantly.",
+      a: "Under two minutes. Your free score is delivered instantly. The full report generates immediately after purchase \u2014 no waiting, no follow-up calls.",
     },
     {
-      q: "Can I share the report?",
-      a: "Yes. Every report includes a verification stamp with model version and record ID. Share it however you choose.",
+      q: "How is the score calculated?",
+      a: "The scoring engine evaluates six structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 through a deterministic 20-engine pipeline. Same inputs always produce the same score. Full methodology at runpayway.com/methodology.",
+    },
+    {
+      q: "Can I retake the assessment?",
+      a: "Yes. Each assessment is independent. Retake after a meaningful structural change \u2014 new client, new retainer, lost source \u2014 to see how your score has moved. Your report includes a recommended reassessment date.",
+    },
+    {
+      q: "Can I share the report with my advisor or lender?",
+      a: "Yes. Every report includes a QR-verified record ID, model version stamp, and a shareable score card. You can download the PDF, copy the verification link, or email it directly to anyone from within the report.",
     },
   ];
 
