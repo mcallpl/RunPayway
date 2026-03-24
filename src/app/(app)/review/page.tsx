@@ -344,7 +344,8 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
     } catch { /* fallback */ }
     params.set("id", recordId);
     const url = `https://peoplestar.com/RunPayway/simulator?${params.toString()}`;
-    setSimUrl(`/simulator?${params.toString()}`);
+    // Use full URL for click link — basePath not auto-prepended on raw <a> tags
+    setSimUrl(`https://peoplestar.com/RunPayway/simulator?${params.toString()}`);
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
         width: 140,

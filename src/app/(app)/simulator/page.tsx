@@ -286,9 +286,8 @@ function SimulatorContent() {
       </div>
 
       {/* ── FOOTER ── */}
-      <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", padding: "16px 28px" }}>
         <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
-        <Link href="/pricing" style={{ fontSize: 13, fontWeight: 600, color: B.teal, textDecoration: "none" }}>Get your score &#8594;</Link>
       </div>
     </div>
   );
