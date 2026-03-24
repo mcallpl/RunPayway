@@ -542,7 +542,7 @@ export const en: Translations = {
     faq1Q: "What do I get?",
     faq1A: "A comprehensive diagnostic report with your Income Stability Score\u2122, income continuity estimate, risk scenarios, industry benchmarks, action plan with specific targets, and QR-verified official record. Delivered on screen and emailed automatically.",
     faq2Q: "How long does it take?",
-    faq2A: "Under two minutes. Six structural questions, instant scoring, and your full report is delivered immediately after completion.",
+    faq2A: "Under two minutes. A short structural diagnostic, instant scoring, and your full report is delivered immediately after completion.",
     faq3Q: "Is my data secure?",
     faq3A: "All payments are processed by Stripe with 256-bit SSL encryption. Your assessment inputs are used only to generate your report and are never shared with third parties.",
   },

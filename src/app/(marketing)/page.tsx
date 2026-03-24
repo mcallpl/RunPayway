@@ -1499,9 +1499,9 @@ function HowItWorksSection() {
     {
       num: "01",
       time: "2 min",
-      title: "Answer 6 questions",
+      title: "Take the assessment",
       hook: "No bank connection. No credit pull. No login.",
-      desc: "Six structural questions about how your income works — recurrence, concentration, visibility, labor dependence, variability, and continuity. That is all we need.",
+      desc: "A short structural diagnostic about how your income works — recurrence, concentration, visibility, and labor dependence. Under two minutes.",
       color: B.teal,
     },
     {
