@@ -93,7 +93,7 @@ export default function BeginPage() {
           {/* Logo */}
           <Image
             src={logoImg}
-            alt="RunPayway"
+            alt="RunPayway&#8482;"
             width={mobile ? 120 : 140}
             height={16}
             style={{ height: "auto", filter: "brightness(10)", marginBottom: mobile ? 40 : 48 }}

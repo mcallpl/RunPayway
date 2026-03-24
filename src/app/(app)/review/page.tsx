@@ -261,7 +261,7 @@ const PDF = {
 function ReportHeader() {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-      <Image src={logoImg} alt="RunPayway" width={120} height={14} style={{ height: "auto" }} />
+      <Image src={logoImg} alt="RunPayway&#8482;" width={120} height={14} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
         <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0</div>
@@ -426,10 +426,10 @@ async function downloadPDF(record: AssessmentRecord) {
   const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
   pdf.setProperties({
     title: `Income Stability Assessment — ${record.assessment_title || "Report"}`,
-    author: "RunPayway",
-    subject: "Income Stability Score Report",
-    keywords: "income stability, assessment, RunPayway, income analysis",
-    creator: `RunPayway Model ${record.model_version || "RP-2.0"}`,
+    author: "RunPayway\u2122",
+    subject: "Income Stability Score\u2122 Report",
+    keywords: "income stability, assessment, RunPayway\u2122, income analysis",
+    creator: `RunPayway\u2122 Model ${record.model_version || "RP-2.0"}`,
   });
 
   const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, canvasW, pxPerInch, sliceH } = PDF;
@@ -1817,7 +1817,7 @@ export default function ReviewPage() {
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <Image src={logoImg} alt="RunPayway" width={100} height={12} style={{ height: "auto", marginBottom: 8, filter: "brightness(10)" }} />
+                <Image src={logoImg} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", marginBottom: 8, filter: "brightness(10)" }} />
                 <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>Verified Assessment</div>
               </div>
             </div>

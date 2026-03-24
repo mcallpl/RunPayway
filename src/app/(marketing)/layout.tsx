@@ -329,7 +329,7 @@ export default function MarketingLayout({
           >
             <Image
               src={logoImg}
-              alt="RunPayway"
+              alt="RunPayway&#8482;"
               width={mobile ? 160 : 180}
               height={mobile ? 19 : 21}
               priority
@@ -653,7 +653,7 @@ export default function MarketingLayout({
             <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
                 src={logoImg}
-                alt="RunPayway"
+                alt="RunPayway&#8482;"
                 width={mobile ? 130 : 160}
                 height={mobile ? 15 : 19}
                 style={{ height: "auto" }}

@@ -448,7 +448,7 @@ function InteractionEffects() {
               Your weaknesses compound. So do your strengths.
             </h2>
             <p style={{ fontSize: mobile ? 15 : 16, color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-              Most tools score factors independently. RunPayway detects when two factors interact — when a weakness in one area makes another area more dangerous, or when two strengths reinforce each other.
+              Most tools score factors independently. RunPayway&#8482; detects when two factors interact — when a weakness in one area makes another area more dangerous, or when two strengths reinforce each other.
             </p>
             <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em", margin: 0 }}>
               All interaction rules are fixed, versioned, and documented in the model manifest.

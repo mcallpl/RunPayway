@@ -164,7 +164,7 @@ function WhatIsISS() {
   return (
     <section
       ref={ref}
-      aria-label="What is the Income Stability Score"
+      aria-label="What is the Income Stability Score&#8482;"
       style={{
         backgroundColor: B.sand,
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,

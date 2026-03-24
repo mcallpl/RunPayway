@@ -32,7 +32,7 @@ export default function AppLayout({
           <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
             <Image
               src={logoImg}
-              alt="RunPayway"
+              alt="RunPayway&#8482;"
               width={150}
               height={18}
               style={{ height: "auto" }}

@@ -171,7 +171,7 @@ export default function FreeScorePage() {
       const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false, width: 816, height: el.scrollHeight, windowWidth: 816 });
 
       const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
-      pdf.setProperties({ title: `Income Stability Score Card — ${name}`, author: "RunPayway", subject: "Income Stability Score Card" });
+      pdf.setProperties({ title: `Income Stability Score\u2122 Card — ${name}`, author: "RunPayway\u2122", subject: "Income Stability Score\u2122 Card" });
 
       const imgW = 7.06;
       const imgH = (canvas.height / canvas.width) * imgW;
@@ -285,7 +285,7 @@ export default function FreeScorePage() {
         {/* ══ 1. ANCHOR — Score Hero (white, clean, the number breathes) ══ */}
         <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 80 : 120, paddingBottom: mobile ? 56 : 72, textAlign: "center" }}>
           <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <Image src={logoImg} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", marginBottom: mobile ? 32 : 40 }} />
+            <Image src={logoImg} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", marginBottom: mobile ? 32 : 40 }} />
 
             <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score™</div>
 

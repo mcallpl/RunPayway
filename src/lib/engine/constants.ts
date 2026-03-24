@@ -4,8 +4,8 @@
 import type { CanonicalKey, StabilityBand } from "./types";
 
 // Model identity
-export const MODEL_NAME = "Income Stability Score";
-export const MODEL_ISSUER = "RunPayway";
+export const MODEL_NAME = "Income Stability Score\u2122";
+export const MODEL_ISSUER = "RunPayway\u2122";
 export const MODEL_CODE = "RP-2.0";
 export const MODEL_DISPLAY_VERSION = "Version 2.0";
 export const MODEL_VERSION_FULL = "RP-2.0 | Version 2.0";
@@ -88,7 +88,7 @@ export const DEFAULT_VERIFICATION_STATUS = "valid" as const;
 
 // Delivery constants
 export const DELIVERY_METHOD = "secure_link";
-export const EMAIL_SUBJECT = "Your RunPayway Income Stability Assessment";
+export const EMAIL_SUBJECT = "Your RunPayway\u2122 Income Stability Assessment";
 
 // Serialization constants
 export const SERIALIZATION_FORMAT = "canonical JSON";

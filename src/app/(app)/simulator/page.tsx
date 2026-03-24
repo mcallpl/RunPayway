@@ -422,7 +422,7 @@ function generateBrief(
   const openingMap: Record<BriefPurpose, string> = {
     mortgage: `This Stability Brief\u2122 is provided in support of a mortgage application by ${nameOrSubject}. The assessment below quantifies the structural stability of ${nameOrSubject}'s income using the RunPayway Income Stability Score\u2122, a deterministic scoring model built on fixed rules — not estimates or projections.`,
     lease: `This Stability Brief\u2122 is provided to support a lease application by ${nameOrSubject}. It documents the structural characteristics of their income using the RunPayway Income Stability Score\u2122, which evaluates income reliability based on measurable structural factors rather than self-reported estimates.`,
-    loan: `This Stability Brief\u2122 accompanies a loan application by ${nameOrSubject}. The RunPayway assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
+    loan: `This Stability Brief\u2122 accompanies a loan application by ${nameOrSubject}. The RunPayway\u2122 assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
     partnership: `This Stability Brief\u2122 provides a structural overview of ${nameOrSubject}'s income stability for partnership evaluation purposes. The assessment uses the RunPayway Income Stability Score\u2122, a deterministic model that evaluates six structural dimensions of income reliability.`,
     negotiation: `This Stability Brief\u2122 documents the income stability profile of ${nameOrSubject} for use in contract or rate discussions. The RunPayway Income Stability Score\u2122 provides an objective, rule-based assessment of income structure — independent of revenue amount.`,
   };
@@ -457,10 +457,10 @@ Quality Rating: ${qualityScore}/10`;
     : `The score of ${score}/100 is evaluated against the full population of assessed income structures. ${score >= 75 ? "This places the subject in the top quartile of all assessed profiles." : score >= 50 ? "This indicates a structurally sound income profile with room for optimization." : "This indicates a developing income structure with identifiable paths to improvement."}`;
 
   const closingMap: Record<BriefPurpose, string> = {
-    mortgage: `This Stability Brief\u2122 was generated using RunPayway Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
+    mortgage: `This Stability Brief\u2122 was generated using RunPayway\u2122 Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
     lease: `This Stability Brief\u2122 was produced by the RunPayway Income Stability Score\u2122 (Model RP-2.0). The assessment is deterministic and rule-based — the same inputs always produce the same score. For verification purposes, this assessment is filed under Record ${recordId}.`,
-    loan: `Stability Brief\u2122 produced by RunPayway Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
-    partnership: `This Stability Brief\u2122 reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
+    loan: `Stability Brief\u2122 produced by RunPayway\u2122 Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
+    partnership: `This Stability Brief\u2122 reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway\u2122 Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
     negotiation: `Stability Brief\u2122 methodology: RunPayway Income Stability Score\u2122 (Model RP-2.0). Deterministic scoring based on six structural dimensions. Not a revenue estimate — a structural reliability measurement. Record: ${recordId}.`,
   };
 
@@ -543,7 +543,7 @@ function BriefGenerator({
         page++;
       }
 
-      pdf.setProperties({ title: `Stability Brief - ${name}`, author: "RunPayway", subject: `Record ${recordId}` });
+      pdf.setProperties({ title: `Stability Brief - ${name}`, author: "RunPayway\u2122", subject: `Record ${recordId}` });
       pdf.save(`Stability-Brief-${recordId}.pdf`);
     } catch (err) {
       console.error("Brief download failed:", err);
@@ -890,7 +890,7 @@ function SimulatorContent() {
         <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple}, ${BRAND.teal})` }} />
         <div style={{ padding: "12px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <Image src={logoImg} alt="RunPayway" width={100} height={12} style={{ height: "auto", filter: "brightness(10)" }} />
+            <Image src={logoImg} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", filter: "brightness(10)" }} />
             <div style={{ width: 1, height: 20, backgroundColor: T.border }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>

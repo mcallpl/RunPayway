@@ -1454,7 +1454,7 @@ function HowItWorksSection() {
       time: "Instant",
       title: "See your score",
       hook: "Free. Right now. No strings.",
-      desc: "Your Income Stability Score out of 100, your stability band, your peer percentile, and the single biggest thing holding your income back.",
+      desc: "Your Income Stability Score\u2122 out of 100, your stability band, your peer percentile, and the single biggest thing holding your income back.",
       color: B.purple,
     },
     {

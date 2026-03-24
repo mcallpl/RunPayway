@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       issued_timestamp: record.issued_timestamp_utc,
       verified_at: new Date().toISOString(),
       verification_statement:
-        "This record matches a RunPayway-issued Income Stability Assessment.",
+        "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
     });
   } catch {
     return NextResponse.json({ valid_record: false }, { status: 500 });
