@@ -1110,16 +1110,25 @@ export default function ReviewPage() {
             if (lift > 0) { const n = Math.min(lift, rem); ps2.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${baseInputs2[t.field]}% to ${Math.max(0, Math.min(100, (baseInputs2[t.field] as number) + t.step * 3))}% (+${n})`); rem -= n; }
           }
         }
-        const Sl = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-              <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
-              <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
+        const Sl = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => {
+          const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+          return (
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
+                <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
+              </div>
+              {/* CSS track bar — renders in PDF (html2canvas can't capture native range inputs) */}
+              <div style={{ position: "relative", height: 20, marginBottom: 2 }}>
+                <div style={{ position: "absolute", top: 8, left: 0, right: 0, height: 4, backgroundColor: "rgba(14,26,43,0.08)", borderRadius: 2 }} />
+                <div style={{ position: "absolute", top: 8, left: 0, width: `${pct}%`, height: 4, backgroundColor: B.purple, borderRadius: 2 }} />
+                <div style={{ position: "absolute", top: 4, left: `${pct}%`, transform: "translateX(-50%)", width: 12, height: 12, borderRadius: "50%", backgroundColor: B.purple, border: "2px solid #fff", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
+                <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 20, opacity: 0, cursor: "pointer", margin: 0 }} />
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ ...T.meta, color: B.light }}>{min}{unit}</span><span style={{ ...T.meta, color: B.light }}>{max}{unit}</span></div>
             </div>
-            <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ width: "100%", accentColor: B.purple, cursor: "pointer" }} />
-            <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ ...T.meta, color: B.light }}>{min}{unit}</span><span style={{ ...T.meta, color: B.light }}>{max}{unit}</span></div>
-          </div>
-        );
+          );
+        };
         return (
           <div className="report-page" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
             <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
@@ -1765,18 +1774,9 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
-      </ReportPage>
+        <SectionDivider />
 
-
-      {/* ════════════════════════════════════════════════════════
-          PAGE 6 — TRADEOFFS, VERIFICATION, NEXT STEPS
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Strategy and Next Steps</h1>
-
-        {/* Tradeoffs */}
+        {/* Tradeoffs — merged from former Page 6 */}
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: R.sectionMb }}>
             <Overline large>Tradeoffs to Understand</Overline>
@@ -1862,7 +1862,7 @@ export default function ReviewPage() {
           The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
         </p>
 
-        <PageFooter section="Strategy and Next Steps" page={6} />
+        <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
       </ReportPage>
 
 
