@@ -935,7 +935,7 @@ function IncomePatterns() {
                     </div>
 
                     {/* Metric cards — matches report MetricCard layout */}
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 8, marginBottom: 20 }}>
                       <div style={{ background: "#FFFFFF", border: "1px solid #E2E8F0", borderLeft: "3px solid #0F766E", borderRadius: 2, padding: "10px 12px" }}>
                         <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 4 }}>Continuity</div>
                         <div style={{ fontSize: 16, fontWeight: 600, color: "#0F172A" }}>{p.continuity}</div>
@@ -1292,9 +1292,9 @@ function SampleResultSection() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)",
-                  gap: 16,
-                  marginBottom: 20,
+                  gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)",
+                  gap: 12,
+                  marginBottom: 16,
                 }}
               >
                 <div>
@@ -1345,9 +1345,9 @@ function SampleResultSection() {
               <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
 
               {/* Constraint + Improvement in a row */}
-              <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
+              <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 16, marginBottom: 16 }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
+                  <div style={{ fontSize: 11, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
                   <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Forward visibility could be stronger</p>
                 </div>
                 <div style={{ flex: 1 }}>
@@ -2354,8 +2354,8 @@ function ClassificationSection() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)",
-            gap: mobile ? 20 : S.gridGap,
+            gridTemplateColumns: mobile ? "1fr" : "repeat(4, 1fr)",
+            gap: mobile ? 12 : S.gridGap,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 600ms ease-out 300ms, transform 600ms ease-out 300ms",
