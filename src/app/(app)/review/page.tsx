@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoImg from "../../../../public/runpayway-logo.png";
 import { useAssessmentServer } from "@/lib/monitoring";
-import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
-import type { CanonicalInput } from "@/lib/engine/v2/types";
+// Simulator moved to standalone /simulator page — accessed via QR code
 
 // ============================================================
 // ERROR BOUNDARY
@@ -321,14 +320,30 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    // QR code → Simulator page with encoded user data
     const params = new URLSearchParams();
+    try {
+      const stored = sessionStorage.getItem("rp_record");
+      if (stored) {
+        const rec = JSON.parse(stored);
+        const v2 = rec._v2;
+        if (v2?.normalized_inputs) {
+          const ni = v2.normalized_inputs;
+          params.set("p", String(ni.income_persistence_pct));
+          params.set("c", String(ni.largest_source_pct));
+          params.set("src", String(ni.source_diversity_count));
+          params.set("f", String(ni.forward_secured_pct));
+          params.set("v", ni.income_variability_level);
+          params.set("l", String(ni.labor_dependence_pct));
+          params.set("q", String(v2.quality?.quality_score ?? 5));
+        }
+        if (score !== undefined) params.set("s", String(score));
+        if (band) params.set("b", band);
+        if (rec.assessment_title) params.set("n", encodeURIComponent(rec.assessment_title));
+      }
+    } catch { /* fallback to basic params */ }
     params.set("id", recordId);
-    if (authCode) params.set("auth", authCode);
-    if (score !== undefined) params.set("s", String(score));
-    if (band) params.set("b", band);
-    if (date) params.set("d", date);
-    if (model) params.set("m", model);
-    const url = `https://peoplestar.com/RunPayway/verify?${params.toString()}`;
+    const url = `https://peoplestar.com/RunPayway/simulator?${params.toString()}`;
     import("qrcode").then((QRCode) => {
       QRCode.toCanvas(canvas, url, {
         width: 140,
@@ -533,15 +548,6 @@ export default function ReviewPage() {
   const [advisorSending, setAdvisorSending] = useState(false);
   const [advisorSent, setAdvisorSent] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
-  const [simPreset, setSimPreset] = useState<string | null>(null);
-  const [simMode, setSimMode] = useState<"presets" | "advanced">("presets");
-  const [simSliders, setSimSliders] = useState<{
-    recurrence: number;
-    topClient: number;
-    sources: number;
-    monthsBooked: number;
-    passive: number;
-  } | null>(null);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const monitoringTracked = useRef(false);
@@ -949,7 +955,7 @@ export default function ReviewPage() {
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
           <div style={{ flexShrink: 0, textAlign: "center" }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan to verify</div>
+            <div style={{ ...T.meta, color: B.taupe, marginTop: 4 }}>Scan or <a href="/simulator" style={{ color: B.purple, textDecoration: "underline", textUnderlineOffset: 2 }}>click here</a> to simulate</div>
           </div>
         </div>
 
@@ -1053,128 +1059,6 @@ export default function ReviewPage() {
 
         <PageFooter section="Your Score" page={1} />
       </ReportPage>
-
-      {/* ── INCOME DECISION ENGINE — after score, before structure ── */}
-      {v2NormalizedInputs && (() => {
-        const ni2 = v2NormalizedInputs;
-        const baseInputs2: CanonicalInput = {
-          income_persistence_pct: ni2.income_persistence_pct,
-          largest_source_pct: ni2.largest_source_pct,
-          source_diversity_count: ni2.source_diversity_count,
-          forward_secured_pct: ni2.forward_secured_pct,
-          income_variability_level: ni2.income_variability_level as "low" | "moderate" | "high" | "extreme",
-          labor_dependence_pct: ni2.labor_dependence_pct,
-        };
-        const qs2 = v2Quality?.quality_score ?? 5;
-        const sl2 = simSliders ?? { recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct };
-        let simIn2: CanonicalInput;
-        if (simMode === "advanced" && simSliders) {
-          const gt = sl2.sources <= 1 ? 100 : Math.max(Math.round(100 / sl2.sources), sl2.topClient);
-          simIn2 = { income_persistence_pct: sl2.recurrence, largest_source_pct: gt, source_diversity_count: sl2.sources, forward_secured_pct: Math.min(100, Math.round(sl2.monthsBooked / 6 * 100)), income_variability_level: baseInputs2.income_variability_level, labor_dependence_pct: Math.max(0, 100 - sl2.passive) };
-        } else {
-          const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset);
-          simIn2 = ap ? ap.modify(baseInputs2) : baseInputs2;
-        }
-        const br2 = simulateScore(baseInputs2, qs2);
-        const sr2 = simulateScore(simIn2, qs2);
-        const sd2 = sr2.overall_score - br2.overall_score;
-        const isMod = simMode === "advanced" ? !!simSliders : !!simPreset;
-        const stLC = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(simIn2), qs2);
-        const stNW = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(simIn2), qs2);
-        const srd = Math.round(sr2.continuity_months * 30);
-        const ins2: string[] = [];
-        if (simMode === "advanced" && simSliders) {
-          const rd = sl2.recurrence - ni2.income_persistence_pct;
-          const cd = sl2.topClient - ni2.largest_source_pct;
-          const pd = sl2.passive - (100 - ni2.labor_dependence_pct);
-          if (rd >= 15) ins2.push(`+${rd}% recurring adds ${Math.round(rd * 0.03 * 30)} days of runway`);
-          if (cd <= -15) ins2.push(`Top client ${ni2.largest_source_pct}% → ${sl2.topClient}%: +${Math.abs(Math.round(cd * 0.15))} resilience`);
-          if (pd >= 15) ins2.push(`${sl2.passive}% passive — continues if you stop`);
-          if (sr2.band !== br2.band) ins2.push(`Crossed into ${sr2.band}`);
-        }
-        const tgt = br2.overall_score + 10;
-        const ps2: string[] = [];
-        if (br2.overall_score < 90) {
-          const tries = [
-            { label: "recurring", field: "income_persistence_pct" as const, step: 5, dir: 1 },
-            { label: "top client", field: "largest_source_pct" as const, step: -5, dir: -1 },
-            { label: "forward visibility", field: "forward_secured_pct" as const, step: 5, dir: 1 },
-            { label: "labor dependence", field: "labor_dependence_pct" as const, step: -5, dir: -1 },
-          ];
-          let rem = 10;
-          for (const t of tries) {
-            if (rem <= 0) break;
-            const test = { ...baseInputs2, [t.field]: Math.max(0, Math.min(100, (baseInputs2[t.field] as number) + t.step * 3)) };
-            const tr = simulateScore(test, qs2);
-            const lift = tr.overall_score - br2.overall_score;
-            if (lift > 0) { const n = Math.min(lift, rem); ps2.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${baseInputs2[t.field]}% to ${Math.max(0, Math.min(100, (baseInputs2[t.field] as number) + t.step * 3))}% (+${n})`); rem -= n; }
-          }
-        }
-        const Sl = ({ label, value, min, max, step: s, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) => {
-          const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-          return (
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{label}</span>
-                <span style={{ ...T.sectionLabel, color: B.purple }}>{value}{unit}</span>
-              </div>
-              {/* CSS track bar — renders in PDF (html2canvas can't capture native range inputs) */}
-              <div style={{ position: "relative", height: 20, marginBottom: 2 }}>
-                <div style={{ position: "absolute", top: 8, left: 0, right: 0, height: 4, backgroundColor: "rgba(14,26,43,0.08)", borderRadius: 2 }} />
-                <div style={{ position: "absolute", top: 8, left: 0, width: `${pct}%`, height: 4, backgroundColor: B.purple, borderRadius: 2 }} />
-                <div style={{ position: "absolute", top: 4, left: `${pct}%`, transform: "translateX(-50%)", width: 12, height: 12, borderRadius: "50%", backgroundColor: B.purple, border: "2px solid #fff", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
-                <input type="range" min={min} max={max} step={s} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 20, opacity: 0, cursor: "pointer", margin: 0 }} />
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ ...T.meta, color: B.light }}>{min}{unit}</span><span style={{ ...T.meta, color: B.light }}>{max}{unit}</span></div>
-            </div>
-          );
-        };
-        return (
-          <div className="no-print" style={{ width: PDF.captureW, maxWidth: "100%", backgroundColor: B.sand, padding: R.pagePad, boxSizing: "border-box" }}>
-            <div style={{ display: "flex", gap: 16, marginBottom: 20, ...cardStyle, padding: "20px 24px" }}>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>CURRENT</div><div style={{ ...T.cardHero, color: B.navy }}>{br2.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div><div style={{ ...T.meta, color: B.muted }}>{br2.band}</div></div>
-              <div style={{ display: "flex", alignItems: "center", color: B.taupe, fontSize: 20 }}>→</div>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{isMod ? "SIMULATED" : "BASELINE"}</div><div style={{ ...T.cardHero, color: sd2 > 0 ? B.teal : sd2 < 0 ? B.bandLimited : B.navy }}>{sr2.overall_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></div><div style={{ ...T.meta, color: B.muted }}>{sr2.band}</div></div>
-              <div style={{ flex: 1, textAlign: "center" }}><div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IMPACT</div><div style={{ ...T.cardHero, color: sd2 > 0 ? B.teal : sd2 < 0 ? B.bandLimited : B.muted }}>{sd2 > 0 ? `+${sd2}` : sd2 === 0 ? "—" : String(sd2)}</div><div style={{ ...T.meta, color: B.muted }}>{srd} days runway</div></div>
-            </div>
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <button onClick={() => { setSimMode("presets"); setSimSliders(null); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "presets" ? B.purple : B.stone}`, backgroundColor: simMode === "presets" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "presets" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>Quick Scenarios</button>
-              <button onClick={() => { setSimMode("advanced"); setSimPreset(null); if (!simSliders) setSimSliders({ recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct }); }} style={{ flex: 1, padding: "10px 16px", fontSize: 12, fontWeight: 600, borderRadius: 8, border: `1px solid ${simMode === "advanced" ? B.purple : B.stone}`, backgroundColor: simMode === "advanced" ? "rgba(75,63,174,0.06)" : "#fff", color: simMode === "advanced" ? B.purple : B.navy, cursor: "pointer", transition: "all 150ms" }}>Customize Your Scenario</button>
-            </div>
-            {simMode === "presets" && (<>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>{SIMULATOR_PRESETS.map((p) => { const ia = simPreset === p.id; return (<button key={p.id} onClick={() => setSimPreset(ia ? null : p.id)} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, borderRadius: 6, border: `1px solid ${ia ? B.purple : B.stone}`, cursor: "pointer", transition: "all 150ms", backgroundColor: ia ? "rgba(75,63,174,0.08)" : "#fff", color: ia ? B.purple : B.navy }}>{p.label}</button>); })}</div>
-              {simPreset && (() => { const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset)!; return (<div style={{ backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}><div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>{ap.label}</div><p style={{ ...T.small, color: B.muted, margin: 0 }}>{ap.description}</p>{sd2 !== 0 && (<p style={{ ...T.small, color: sd2 > 0 ? B.teal : B.bandLimited, margin: "6px 0 0", fontWeight: 600 }}>{sd2 > 0 ? `+${sd2} points${sr2.band !== br2.band ? ` — moves to ${sr2.band}` : ""}` : `${sd2} points${sr2.band !== br2.band ? ` — drops to ${sr2.band}` : ""}`}</p>)}</div>); })()}
-            </>)}
-            {simMode === "advanced" && simSliders && (
-              <div style={{ display: "flex", gap: 24 }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ ...T.overline, color: B.teal, marginBottom: 12 }}>ADJUST YOUR INCOME STRUCTURE</div>
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 8 }}>INCOME STRUCTURE</div>
-                  <Sl label="Recurring revenue" value={sl2.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, recurrence: v })} />
-                  <Sl label="Top client share" value={sl2.topClient} min={sl2.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, topClient: v })} />
-                  <Sl label="Income sources" value={sl2.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSimSliders({ ...sl2, sources: v, topClient: v <= 1 ? 100 : Math.min(sl2.topClient, 100) })} />
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>PREDICTABILITY</div>
-                  <Sl label="Months booked ahead" value={sl2.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSimSliders({ ...sl2, monthsBooked: v })} />
-                  <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginTop: 8, marginBottom: 8 }}>RESILIENCE</div>
-                  <Sl label="Passive income" value={sl2.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSimSliders({ ...sl2, passive: v })} />
-                  <button onClick={() => setSimSliders({ recurrence: ni2.income_persistence_pct, topClient: ni2.largest_source_pct, sources: ni2.source_diversity_count, monthsBooked: Math.round(ni2.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - ni2.labor_dependence_pct })} style={{ ...T.meta, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>Reset to current</button>
-                </div>
-                <div style={{ flex: 1 }}>
-                  {ins2.length > 0 && (<div style={{ marginBottom: 16 }}><div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>WHAT CHANGED</div>{ins2.map((x, i) => (<div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4, padding: "6px 10px", backgroundColor: "rgba(75,63,174,0.04)", borderRadius: 4 }}>{x}</div>))}</div>)}
-                  <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>STRESS TESTS</div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 16 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Lose top client</span><span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{sr2.overall_score}/100 → {stLC.overall_score}/100</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Unable to work 90 days</span><span style={{ ...T.small, fontWeight: 600, color: B.bandLimited }}>{sr2.overall_score}/100 → {stNW.overall_score}/100</span></div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", backgroundColor: B.bone, borderRadius: 4 }}><span style={{ ...T.small, color: B.navy }}>Fragility</span><span style={{ ...T.small, fontWeight: 600, color: sr2.fragility_class === "brittle" || sr2.fragility_class === "thin" ? B.bandLimited : B.teal }}>{sr2.fragility_class}</span></div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {ps2.length > 0 && (<><SectionDivider /><div style={{ ...cardStyle, borderLeft: `3px solid ${B.teal}` }}><div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>PATH TO {tgt}/100</div>{ps2.map((s, i) => (<div key={i} style={{ ...T.small, color: B.navy, fontWeight: 500, marginBottom: 4 }}>{i + 1}. {s}</div>))}</div></>)}
-          </div>
-        );
-      })()}
-
 
       {/* ════════════════════════════════════════════════════════
           PAGE 2 — HOW YOUR INCOME IS BUILT (Understand: the x-ray)
