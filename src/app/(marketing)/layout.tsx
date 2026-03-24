@@ -699,6 +699,15 @@ export default function MarketingLayout({
                     {link.label}
                   </Link>
                 ))}
+                <Link
+                  href="/simulator"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#1A7A6D", lineHeight: 1.4, transition: "color 160ms ease" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#4B3FAE"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#1A7A6D"; }}
+                >
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#1A7A6D", flexShrink: 0 }} />
+                  Score Simulator
+                </Link>
               </div>
             </div>
 
