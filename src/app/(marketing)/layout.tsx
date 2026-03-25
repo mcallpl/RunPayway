@@ -699,10 +699,6 @@ export default function MarketingLayout({
                     {link.label}
                   </Link>
                 ))}
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, color: "#1A7A6D", lineHeight: 1.4 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#1A7A6D", flexShrink: 0 }} />
-                  Score Simulator <span style={{ fontSize: 10, fontWeight: 400, color: "rgba(14,26,43,0.35)" }}>included with report</span>
-                </span>
               </div>
             </div>
 
