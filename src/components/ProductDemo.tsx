@@ -86,7 +86,14 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
 
   const advance = useCallback(() => {
     setIdx(prev => {
-      if (prev + 1 >= SCENES.length) { setPlaying(false); setPlayed(true); return prev; }
+      if (prev + 1 >= SCENES.length) {
+        // Loop — restart after a brief pause
+        setTimeout(() => {
+          setIdx(-1); setP(0);
+          setTimeout(() => { t0.current = performance.now(); setIdx(0); }, 50);
+        }, 1200);
+        return prev;
+      }
       t0.current = performance.now();
       return prev + 1;
     });
@@ -112,15 +119,15 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
 
   /* Auto-play on scroll into view */
   useEffect(() => {
-    if (!autoPlay || played) return;
+    if (!autoPlay) return;
     const el = containerRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !playing && !played) { play(); obs.disconnect(); }
+      if (e.isIntersecting && !playing) { play(); obs.disconnect(); }
     }, { threshold: 0.35 });
     obs.observe(el);
     return () => obs.disconnect();
-  }, [autoPlay, playing, played, play]);
+  }, [autoPlay, playing, play]);
 
   const id = idx >= 0 && idx < SCENES.length ? SCENES[idx].id : "";
 
@@ -161,31 +168,70 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
         borderRadius: 16,
         overflow: "hidden",
         background: C.ink,
-        cursor: !playing ? "pointer" : "default",
         boxShadow: "0 32px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)",
       }}
-      onClick={() => { if (!playing) play(); }}
     >
       {/* ── Styles ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@200;300;400;500;600;700&display=swap');
         @keyframes demoFlash { 0% { opacity: 0.8; } 100% { opacity: 0; } }
-        @keyframes demoCursorBlink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes demoMeshA {
+          0%   { transform: translate(0%, 0%) scale(1); }
+          33%  { transform: translate(15%, -10%) scale(1.1); }
+          66%  { transform: translate(-5%, 12%) scale(0.95); }
+          100% { transform: translate(0%, 0%) scale(1); }
+        }
+        @keyframes demoMeshB {
+          0%   { transform: translate(0%, 0%) scale(1); }
+          33%  { transform: translate(-12%, 8%) scale(1.05); }
+          66%  { transform: translate(10%, -6%) scale(1.1); }
+          100% { transform: translate(0%, 0%) scale(1); }
+        }
+        @keyframes demoMeshC {
+          0%   { transform: translate(0%, 0%) scale(1); }
+          33%  { transform: translate(8%, 14%) scale(1.08); }
+          66%  { transform: translate(-10%, -8%) scale(0.92); }
+          100% { transform: translate(0%, 0%) scale(1); }
+        }
       `}</style>
+
+      {/* ── Gradient mesh — three slow-drifting blobs ── */}
+      <div style={{
+        position: "absolute", inset: "-40%", pointerEvents: "none",
+        opacity: id === "black" ? 0 : 0.65,
+        transition: "opacity 2s ease",
+      }}>
+        {/* Purple blob — upper center */}
+        <div style={{
+          position: "absolute", top: "15%", left: "30%", width: "50%", height: "50%",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          animation: "demoMeshA 28s ease-in-out infinite",
+        }} />
+        {/* Teal blob — lower right */}
+        <div style={{
+          position: "absolute", top: "40%", left: "50%", width: "45%", height: "45%",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(26,122,109,0.10) 0%, transparent 70%)",
+          filter: "blur(50px)",
+          animation: "demoMeshB 32s ease-in-out infinite",
+        }} />
+        {/* Deep purple accent — left */}
+        <div style={{
+          position: "absolute", top: "25%", left: "10%", width: "35%", height: "40%",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(123,111,224,0.06) 0%, transparent 70%)",
+          filter: "blur(45px)",
+          animation: "demoMeshC 36s ease-in-out infinite",
+        }} />
+      </div>
 
       {/* ── Film grain overlay ── */}
       <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 10, mixBlendMode: "overlay", opacity: 0.04,
+        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 10, mixBlendMode: "overlay", opacity: 0.035,
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
         backgroundSize: "128px 128px",
-      }} />
-
-      {/* ── Ambient light — very subtle ── */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse at 50% 45%, rgba(75,63,174,0.06) 0%, transparent 65%)",
-        opacity: id === "black" || id.startsWith("breath") ? 0 : 0.8,
-        transition: "opacity 1s ease",
       }} />
 
       {/* ── Content ── */}
@@ -201,10 +247,10 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
 
         {/* ═══ HOOK 1 — word by word, the anxiety trigger ═══ */}
         {id === "hook1" && (
-          <div style={{ textAlign: "center", maxWidth: 480 }}>
+          <div style={{ textAlign: "center", maxWidth: 500 }}>
             <p style={{
-              fontFamily: SERIF, fontSize: 30, fontWeight: 400,
-              color: C.cream, lineHeight: 1.25, letterSpacing: "-0.02em",
+              fontFamily: SERIF, fontSize: 34, fontWeight: 400,
+              color: C.cream, lineHeight: 1.22, letterSpacing: "-0.025em",
               margin: 0,
             }}>
               {kineticWords("What happens to your income if your biggest client leaves tomorrow?", 180)}
@@ -219,7 +265,7 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
             opacity: p < 0.85 ? Math.min(p / 0.15, 1) : Math.max(0, 1 - (p - 0.85) / 0.15),
             transform: `translateY(${(1 - Math.min(p / 0.15, 1)) * 6}px)`,
           }}>
-            <p style={{ fontSize: 16, fontWeight: 400, color: "rgba(244,241,234,0.35)", lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontFamily: SERIF, fontSize: 18, fontWeight: 400, color: "rgba(244,241,234,0.30)", lineHeight: 1.6, letterSpacing: "-0.01em", margin: 0 }}>
               Most people don&rsquo;t know the answer.
             </p>
           </div>
@@ -235,15 +281,15 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
             opacity: p < 0.85 ? Math.min(p / 0.18, 1) : Math.max(0, 1 - (p - 0.85) / 0.15),
           }}>
             <div style={{
-              fontSize: 12, fontWeight: 500, letterSpacing: "0.12em",
-              textTransform: "uppercase" as const, color: C.teal, marginBottom: 16,
+              fontSize: 11, fontWeight: 600, letterSpacing: "0.16em",
+              textTransform: "uppercase" as const, color: C.teal, marginBottom: 20,
               opacity: p > 0.08 ? 1 : 0, transition: "opacity 600ms ease",
             }}>
-              Under 2 minutes
+              Under two minutes
             </div>
             <p style={{
-              fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.3)",
-              lineHeight: 1.7, margin: 0, maxWidth: 320,
+              fontFamily: SERIF, fontSize: 16, fontWeight: 400, color: "rgba(244,241,234,0.28)",
+              lineHeight: 1.65, letterSpacing: "-0.01em", margin: 0, maxWidth: 300,
             }}>
               A short structural diagnostic.<br />No bank connection. No credit pull.
             </p>
@@ -284,8 +330,8 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 <span style={{
-                  fontSize: 72, fontWeight: 300, color: C.cream,
-                  letterSpacing: "-0.04em", fontVariantNumeric: "tabular-nums",
+                  fontSize: 80, fontWeight: 200, color: C.cream,
+                  letterSpacing: "-0.05em", fontVariantNumeric: "tabular-nums",
                   fontFamily: SANS, lineHeight: 1,
                   opacity: p > 0.08 ? 1 : 0,
                   transition: "opacity 400ms ease",
@@ -335,8 +381,8 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
         {id === "pages" && (
           <div style={{ textAlign: "center", width: "100%", opacity: p < 0.85 ? 1 : Math.max(0, 1 - (p - 0.85) / 0.15) }}>
             <div style={{
-              fontSize: 12, fontWeight: 400, color: "rgba(244,241,234,0.25)",
-              marginBottom: 28, letterSpacing: "0.04em",
+              fontFamily: SERIF, fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.25)",
+              marginBottom: 28, letterSpacing: "0.01em",
               opacity: p > 0.05 ? 1 : 0, transition: "opacity 600ms ease",
             }}>
               Five pages. Every number is yours.
@@ -419,13 +465,13 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
             <div style={{
               opacity: p < 0.82 ? Math.min(p / 0.12, 1) : Math.max(0, 1 - (p - 0.82) / 0.18),
             }}>
-              <div style={{ fontSize: 13, fontWeight: 400, color: "rgba(244,241,234,0.3)", marginBottom: 20 }}>
+              <div style={{ fontFamily: SERIF, fontSize: 14, fontWeight: 400, color: "rgba(244,241,234,0.28)", marginBottom: 24, letterSpacing: "-0.01em" }}>
                 If you lose your top client
               </div>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 12 }}>
-                <span style={{ fontSize: 48, fontWeight: 300, fontFamily: SANS, color: C.cream, letterSpacing: "-0.03em" }}>48</span>
-                <span style={{ fontSize: 20, color: "rgba(244,241,234,0.15)" }}>&rarr;</span>
-                <span style={{ fontSize: 48, fontWeight: 300, fontFamily: SANS, color: C.limited, letterSpacing: "-0.03em",
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 16 }}>
+                <span style={{ fontSize: 56, fontWeight: 200, fontFamily: SANS, color: C.cream, letterSpacing: "-0.04em" }}>48</span>
+                <span style={{ fontSize: 18, color: "rgba(244,241,234,0.12)" }}>&rarr;</span>
+                <span style={{ fontSize: 56, fontWeight: 200, fontFamily: SANS, color: C.limited, letterSpacing: "-0.04em",
                   opacity: p > 0.2 ? 1 : 0, transition: "opacity 500ms ease",
                 }}>31</span>
               </div>
@@ -439,10 +485,10 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
             textAlign: "center",
             opacity: p < 0.82 ? Math.min(p / 0.15, 1) : Math.max(0, 1 - (p - 0.82) / 0.18),
           }}>
-            <div style={{ fontSize: 13, fontWeight: 400, color: "rgba(244,241,234,0.3)", marginBottom: 20 }}>
+            <div style={{ fontFamily: SERIF, fontSize: 14, fontWeight: 400, color: "rgba(244,241,234,0.28)", marginBottom: 24, letterSpacing: "-0.01em" }}>
               Secure a monthly retainer
             </div>
-            <span style={{ fontSize: 48, fontWeight: 300, fontFamily: SANS, color: C.teal, letterSpacing: "-0.03em" }}>
+            <span style={{ fontSize: 56, fontWeight: 200, fontFamily: SANS, color: C.teal, letterSpacing: "-0.04em" }}>
               +12
             </span>
           </div>
@@ -450,13 +496,13 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
 
         {/* ═══ CLOSER 1 ═══ */}
         {id === "closer1" && (
-          <div style={{ textAlign: "center", maxWidth: 440 }}>
+          <div style={{ textAlign: "center", maxWidth: 460 }}>
             <p style={{
-              fontFamily: SERIF, fontSize: 30, fontWeight: 400,
-              color: C.cream, lineHeight: 1.25, letterSpacing: "-0.025em", margin: 0,
+              fontFamily: SERIF, fontSize: 34, fontWeight: 400,
+              color: C.cream, lineHeight: 1.2, letterSpacing: "-0.025em", margin: 0,
               opacity: Math.min(p / 0.2, 1),
               transform: `translateY(${(1 - Math.min(p / 0.2, 1)) * 8}px)`,
-              transition: "transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
+              transition: "transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)",
             }}>
               Your income has a structure.
             </p>
@@ -465,10 +511,10 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
 
         {/* ═══ CLOSER 2 ═══ */}
         {id === "closer2" && (
-          <div style={{ textAlign: "center", maxWidth: 440 }}>
+          <div style={{ textAlign: "center", maxWidth: 460 }}>
             <p style={{
-              fontFamily: SERIF, fontSize: 30, fontWeight: 400,
-              color: "rgba(244,241,234,0.35)", lineHeight: 1.25,
+              fontFamily: SERIF, fontSize: 34, fontWeight: 400,
+              color: "rgba(244,241,234,0.30)", lineHeight: 1.2,
               letterSpacing: "-0.025em", margin: 0,
               opacity: Math.min(p / 0.2, 1),
             }}>
@@ -477,30 +523,31 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
           </div>
         )}
 
-        {/* ═══ END FRAME — the question, not a button ═══ */}
+        {/* ═══ END FRAME — the question lingers ═══ */}
         {id === "endFrame" && (
           <div style={{ textAlign: "center", opacity: Math.min(p / 0.2, 1) }}>
             <p style={{
-              fontFamily: SERIF, fontSize: 26, fontWeight: 400,
+              fontFamily: SERIF, fontSize: 28, fontWeight: 400,
               color: C.cream, lineHeight: 1.3, letterSpacing: "-0.02em",
-              margin: "0 0 28px",
+              margin: "0 0 32px",
             }}>
               What&rsquo;s your number?
             </p>
             <div style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",
-              padding: "14px 40px", borderRadius: 12,
+              padding: "15px 44px", borderRadius: 14,
               background: C.cream,
               opacity: p > 0.25 ? 1 : 0,
-              transform: p > 0.25 ? "translateY(0)" : "translateY(8px)",
-              transition: "all 700ms cubic-bezier(0.22, 1, 0.36, 1)",
+              transform: p > 0.25 ? "translateY(0)" : "translateY(6px)",
+              transition: "all 800ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy, letterSpacing: "-0.01em" }}>
                 Get My Free Score
               </span>
             </div>
             <div style={{
-              marginTop: 18, fontSize: 11, color: "rgba(244,241,234,0.2)",
+              marginTop: 20, fontSize: 11, fontWeight: 400, letterSpacing: "0.06em",
+              color: "rgba(244,241,234,0.18)",
               opacity: p > 0.4 ? 1 : 0, transition: "opacity 800ms ease",
             }}>
               Free &middot; Under 2 minutes &middot; No bank connection
@@ -508,25 +555,8 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
           </div>
         )}
 
-        {/* ── Play / replay ── */}
-        {idx < 0 && !playing && (
-          <div style={{ textAlign: "center", cursor: "pointer" }}>
-            <div style={{
-              width: 80, height: 80, borderRadius: "50%",
-              background: "rgba(244,241,234,0.04)",
-              border: "1px solid rgba(244,241,234,0.08)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              margin: "0 auto 24px",
-            }}>
-              <svg width="18" height="22" viewBox="0 0 18 22" fill="none" style={{ marginLeft: 3 }}>
-                <path d="M1 1L17 11L1 21V1Z" fill="rgba(244,241,234,0.5)" />
-              </svg>
-            </div>
-            <div style={{ fontSize: 13, fontWeight: 400, color: "rgba(244,241,234,0.3)", letterSpacing: "0.02em" }}>
-              {played ? "Watch again" : "See how it works"}
-            </div>
-          </div>
-        )}
+        {/* ── Pre-play: empty dark frame ── */}
+        {idx < 0 && !playing && <div />}
 
       </div>
 
