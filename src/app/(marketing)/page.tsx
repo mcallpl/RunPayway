@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import SimulatorTeaser from "@/components/SimulatorTeaser";
-import ProductDemo from "@/components/ProductDemo";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
 const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
@@ -2872,10 +2871,6 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <BridgeSection />
-      {/* Product demo — embedded cleanly */}
-      <div style={{ paddingTop: 48, paddingBottom: 48, paddingLeft: 28, paddingRight: 28, background: B.sand }}>
-        <ProductDemo />
-      </div>
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
