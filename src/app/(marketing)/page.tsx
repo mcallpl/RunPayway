@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import SimulatorTeaser from "@/components/SimulatorTeaser";
+import ProductDemo from "@/components/ProductDemo";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
 const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
@@ -2871,6 +2872,13 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <BridgeSection />
+      {/* Product demo — auto-plays on scroll */}
+      <section style={{ background: "#070F19", paddingTop: 80, paddingBottom: 80 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center", paddingLeft: 28, paddingRight: 28 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>See It In Action</div>
+          <ProductDemo />
+        </div>
+      </section>
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
