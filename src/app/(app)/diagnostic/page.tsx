@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 // Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
 const loadV2Engine = () => import("@/lib/client-engine-v2");
@@ -175,6 +175,7 @@ export default function DiagnosticPage() {
   const [transitioning, setTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showReview, setShowReview] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [assessmentTitle, setAssessmentTitle] = useState("");
   const [elapsed, setElapsed] = useState(0);
 
@@ -283,12 +284,13 @@ export default function DiagnosticPage() {
     if (currentQuestion < 5) {
       // Auto-advance after selection (except last question)
       setTimeout(() => {
+        scrollRef.current?.scrollTo({ top: 0 }); // Reset scroll before showing next question
         setCurrentQuestion((prev) => Math.min(5, prev + 1));
-        setTimeout(() => setTransitioning(false), 400); // Unlock after new question renders
-      }, 600);
+        setTimeout(() => setTransitioning(false), 350);
+      }, 550);
     } else {
       // Last question — unlock after brief delay
-      setTimeout(() => setTransitioning(false), 400);
+      setTimeout(() => setTransitioning(false), 350);
     }
   }, [currentQuestion, transitioning]);
 
@@ -296,6 +298,7 @@ export default function DiagnosticPage() {
     setError(null);
     setTransitioning(true);
     setTimeout(() => {
+      scrollRef.current?.scrollTo({ top: 0 });
       setCurrentQuestion(index);
       setTransitioning(false);
     }, 200);
@@ -616,10 +619,11 @@ export default function DiagnosticPage() {
   /*  Diagnostic instrument                                           */
   /* ================================================================ */
   return (
-    <div style={{
+    <div ref={scrollRef} style={{
       position: "fixed", inset: 0, zIndex: 9999,
       background: "#F7F6F3",
       overflowY: "auto",
+      WebkitOverflowScrolling: "touch",
     }}>
     {/* Dark branded header */}
     <div style={{ background: B.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -697,8 +701,7 @@ export default function DiagnosticPage() {
           display: "flex",
           flexDirection: "column",
           opacity: transitioning ? 0 : 1,
-          transform: transitioning ? "translateY(8px)" : "translateY(0)",
-          transition: "opacity 200ms ease, transform 200ms ease",
+          transition: "opacity 200ms ease",
         }}
       >
         {/* Factor title */}
