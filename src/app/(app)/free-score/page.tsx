@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logoImg from "../../../../public/runpayway-logo.png";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -285,7 +285,7 @@ export default function FreeScorePage() {
         {/* ══ 1. ANCHOR — Score Hero (white, clean, the number breathes) ══ */}
         <section style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? 80 : 120, paddingBottom: mobile ? 56 : 72, textAlign: "center" }}>
           <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <Image src={logoImg} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", marginBottom: mobile ? 32 : 40 }} />
+            <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", marginBottom: mobile ? 32 : 40 }} />
 
             <div style={{ ...F.label, color: B.teal, marginBottom: 24 }}>Your Income Stability Score™</div>
 

@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import logoWhite from "../../../public/runpayway-logo-white.png";
 import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* Guard for hover-capable devices — prevents stuck states on iOS */
@@ -2753,8 +2755,7 @@ function StickyNav() {
     }}>
       <div style={{ maxWidth: S.maxW, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 14, fontWeight: 700, color: "#F4F1EA", letterSpacing: "-0.02em" }}>RunPayway</span>
-          <span style={{ fontSize: 9, color: "rgba(244,241,234,0.35)", fontWeight: 600, letterSpacing: "0.06em" }}>&#8482;</span>
+          <Image src={logoWhite} alt="RunPayway™" width={120} height={14} style={{ height: "auto" }} />
         </div>
         {!mobile && (
           <div style={{ display: "flex", alignItems: "center", gap: 28 }}>

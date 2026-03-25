@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoImg from "../../../../public/runpayway-logo.png";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -92,11 +92,11 @@ export default function BeginPage() {
         >
           {/* Logo */}
           <Image
-            src={logoImg}
+            src={logoWhite}
             alt="RunPayway&#8482;"
             width={mobile ? 120 : 140}
             height={16}
-            style={{ height: "auto", filter: "brightness(10)", marginBottom: mobile ? 40 : 48 }}
+            style={{ height: "auto", marginBottom: mobile ? 40 : 48 }}
           />
 
           {/* Overline */}

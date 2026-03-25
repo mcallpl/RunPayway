@@ -3,7 +3,8 @@
 import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logoImg from "../../../../public/runpayway-logo.png";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 // Simulator moved to standalone /simulator page — accessed via QR code
 
@@ -261,7 +262,7 @@ const PDF = {
 function ReportHeader() {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-      <Image src={logoImg} alt="RunPayway&#8482;" width={120} height={14} style={{ height: "auto" }} />
+      <Image src={logoBlue} alt="RunPayway&#8482;" width={120} height={14} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
         <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
         <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0</div>
@@ -1817,7 +1818,7 @@ export default function ReviewPage() {
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <Image src={logoImg} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", marginBottom: 8, filter: "brightness(10)" }} />
+                <Image src={logoWhite} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", marginBottom: 8 }} />
                 <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>Verified Assessment</div>
               </div>
             </div>

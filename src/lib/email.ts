@@ -111,7 +111,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding-bottom:28px; border-bottom:1px solid ${sand};">
-                    <span style="font-size:18px; font-weight:700; color:${brandNavy}; letter-spacing:-0.02em;">RUNPAYWAY</span>
+                    <img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" width="160" height="19" style="display:inline-block; height:auto;" />
                     <span style="font-size:11px; color:${light}; margin-left:8px;">Income Stability Assessment</span>
                   </td>
                 </tr>

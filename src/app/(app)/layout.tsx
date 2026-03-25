@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import logoImg from "../../../public/runpayway-logo.png";
+import logoBlue from "../../../public/runpayway-logo-blue.png";
 
 export default function AppLayout({
   children,
@@ -31,7 +31,7 @@ export default function AppLayout({
         >
           <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
             <Image
-              src={logoImg}
+              src={logoBlue}
               alt="RunPayway&#8482;"
               width={150}
               height={18}

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useContext, createContext, Suspense } from
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import logoImg from "../../../../public/runpayway-logo.png";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -890,7 +890,7 @@ function SimulatorContent() {
         <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple}, ${BRAND.teal})` }} />
         <div style={{ padding: "12px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <Image src={logoImg} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", filter: "brightness(10)" }} />
+            <Image src={logoWhite} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto" }} />
             <div style={{ width: 1, height: 20, backgroundColor: T.border }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>

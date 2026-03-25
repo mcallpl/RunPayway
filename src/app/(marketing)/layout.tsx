@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoImg from "../../../public/runpayway-logo.png";
+import logoBlue from "../../../public/runpayway-logo-blue.png";
 import CookieConsent from "@/components/CookieConsent";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
@@ -328,7 +328,7 @@ export default function MarketingLayout({
             onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
           >
             <Image
-              src={logoImg}
+              src={logoBlue}
               alt="RunPayway&#8482;"
               width={mobile ? 160 : 180}
               height={mobile ? 19 : 21}
@@ -652,7 +652,7 @@ export default function MarketingLayout({
           <div style={{ marginBottom: mobile ? 36 : 48, textAlign: "center" }}>
             <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
-                src={logoImg}
+                src={logoBlue}
                 alt="RunPayway&#8482;"
                 width={mobile ? 130 : 160}
                 height={mobile ? 15 : 19}
