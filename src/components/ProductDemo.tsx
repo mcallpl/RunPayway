@@ -220,6 +220,27 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-6px); }
         }
+        @keyframes demoPanelA {
+          0%   { transform: translate(0px, 0px) rotate(0deg); }
+          25%  { transform: translate(12px, -8px) rotate(0.5deg); }
+          50%  { transform: translate(-4px, -14px) rotate(-0.3deg); }
+          75%  { transform: translate(8px, -4px) rotate(0.2deg); }
+          100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
+        @keyframes demoPanelB {
+          0%   { transform: translate(0px, 0px) rotate(0deg); }
+          25%  { transform: translate(-10px, 6px) rotate(-0.4deg); }
+          50%  { transform: translate(6px, 12px) rotate(0.3deg); }
+          75%  { transform: translate(-8px, -6px) rotate(-0.2deg); }
+          100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
+        @keyframes demoPanelC {
+          0%   { transform: translate(0px, 0px) rotate(0deg); }
+          25%  { transform: translate(8px, 10px) rotate(0.3deg); }
+          50%  { transform: translate(-12px, 4px) rotate(-0.5deg); }
+          75%  { transform: translate(4px, -10px) rotate(0.2deg); }
+          100% { transform: translate(0px, 0px) rotate(0deg); }
+        }
         @keyframes demoRingPulse {
           0%, 100% { opacity: 0.15; transform: scale(1); }
           50% { opacity: 0.25; transform: scale(1.02); }
@@ -269,6 +290,105 @@ export default function ProductDemo({ autoPlay = true }: { autoPlay?: boolean })
             transition: "opacity 400ms ease",
           }} />
         )}
+      </div>
+
+      {/* ══════════════════════════════════════════════════ */}
+      {/* LAYER 1.5: Floating UI panels — product soul       */}
+      {/* Ghosted product UI drifting behind text             */}
+      {/* ══════════════════════════════════════════════════ */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        opacity: id === "black" ? 0 : 0.16,
+        filter: "blur(6px)",
+        transition: "opacity 2s ease",
+      }}>
+        {/* Panel A: Classification bar + band cards — upper left drift */}
+        <svg style={{
+          position: "absolute", top: "-8%", left: "-12%", width: "75%", height: "55%",
+          animation: "demoPanelA 40s ease-in-out infinite",
+        }} viewBox="0 0 500 200" fill="none">
+          {/* Classification bar */}
+          <rect x="40" y="30" width="420" height="8" rx="4" fill="rgba(244,241,234,0.06)" />
+          <rect x="40" y="30" width="126" height="8" rx="4" fill={`${C.limited}55`} />
+          <rect x="166" y="30" width="84" height="8" rx="4" fill={`${C.developing}55`} />
+          <rect x="250" y="30" width="105" height="8" rx="4" fill="#2B5EA755" />
+          <rect x="355" y="30" width="105" height="8" rx="4" fill={`${C.teal}55`} />
+          {/* Indicator dot */}
+          <circle cx="145" cy="34" r="6" fill={C.cream} stroke={C.teal} strokeWidth="2" opacity="0.5" />
+          {/* Band cards */}
+          {[0, 1, 2, 3].map(i => (
+            <g key={i}>
+              <rect x={40 + i * 115} y="58" width="105" height="70" rx="8" fill="rgba(244,241,234,0.03)" stroke="rgba(244,241,234,0.06)" strokeWidth="1" />
+              <circle cx={54 + i * 115} cy="76" r="3.5" fill={[C.limited, C.developing, "#2B5EA7", C.teal][i]} opacity="0.6" />
+              <rect x={62 + i * 115} y="72" width="55" height="5" rx="2.5" fill="rgba(244,241,234,0.08)" />
+              <rect x={50 + i * 115} y="90" width="30" height="4" rx="2" fill={[C.limited, C.developing, "#2B5EA7", C.teal][i]} opacity="0.3" />
+              <rect x={50 + i * 115} y="102" width="80" height="3" rx="1.5" fill="rgba(244,241,234,0.04)" />
+              <rect x={50 + i * 115} y="110" width="65" height="3" rx="1.5" fill="rgba(244,241,234,0.03)" />
+            </g>
+          ))}
+        </svg>
+
+        {/* Panel B: Income timeline chart — center right drift */}
+        <svg style={{
+          position: "absolute", top: "15%", right: "-15%", width: "70%", height: "50%",
+          animation: "demoPanelB 36s ease-in-out infinite",
+        }} viewBox="0 0 460 200" fill="none">
+          {/* Card outline */}
+          <rect x="10" y="10" width="440" height="180" rx="12" fill="rgba(244,241,234,0.02)" stroke="rgba(244,241,234,0.04)" strokeWidth="1" />
+          {/* Label */}
+          <rect x="30" y="30" width="80" height="5" rx="2.5" fill={`${C.teal}44`} />
+          <rect x="30" y="42" width="220" height="4" rx="2" fill="rgba(244,241,234,0.05)" />
+          {/* Score badge top right */}
+          <text x="400" y="38" fill={`${C.limited}66`} fontSize="18" fontWeight="300" textAnchor="middle" fontFamily={SANS}>-22</text>
+          <rect x="378" y="44" width="44" height="4" rx="2" fill="rgba(244,241,234,0.04)" />
+          {/* Timeline line */}
+          <polyline points="50,90 120,82 220,110 320,140 420,140" stroke={`${C.limited}44`} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          {/* Area under line */}
+          <polygon points="50,90 120,82 220,110 320,140 420,140 420,160 50,160" fill={`${C.limited}08`} />
+          {/* Data points */}
+          {[[50,90],[120,82],[220,110],[320,140],[420,140]].map(([cx,cy], i) => (
+            <circle key={i} cx={cx} cy={cy} r="4" fill={i === 0 ? C.cream : C.limited} opacity="0.4" stroke={C.ink} strokeWidth="1.5" />
+          ))}
+          {/* Timeline labels */}
+          {["NOW", "3 MO", "6 MO", "12 MO"].map((label, i) => (
+            <text key={label} x={50 + i * 123} y="175" fill="rgba(244,241,234,0.08)" fontSize="7" fontWeight="600" fontFamily={SANS}>{label}</text>
+          ))}
+        </svg>
+
+        {/* Panel C: What-if scenario cards — lower left drift */}
+        <svg style={{
+          position: "absolute", bottom: "-12%", left: "-5%", width: "65%", height: "48%",
+          animation: "demoPanelC 44s ease-in-out infinite",
+        }} viewBox="0 0 500 180" fill="none">
+          {/* Row of scenario cards */}
+          {[
+            { label: "Add a new client", score: "+4", color: C.teal },
+            { label: "Convert to retainer", score: "+10", color: C.teal },
+            { label: "Lose your top client", score: "-11", color: C.limited },
+          ].map((card, i) => (
+            <g key={i}>
+              <rect x={10 + i * 165} y="10" width="155" height="75" rx="10" fill="rgba(244,241,234,0.02)" stroke={i === 2 ? `${C.limited}22` : "rgba(244,241,234,0.04)"} strokeWidth="1" />
+              <rect x={22 + i * 165} y="28" width="80" height="4" rx="2" fill="rgba(244,241,234,0.06)" />
+              <text x={140 + i * 165} y="36" fill={`${card.color}66`} fontSize="14" fontWeight="600" textAnchor="end" fontFamily={SANS}>{card.score}</text>
+              <rect x={22 + i * 165} y="48" width="110" height="3" rx="1.5" fill="rgba(244,241,234,0.03)" />
+              <rect x={22 + i * 165} y="58" width="90" height="3" rx="1.5" fill="rgba(244,241,234,0.025)" />
+            </g>
+          ))}
+          {/* Second row */}
+          {[
+            { label: "Build passive income", score: "+6", color: C.teal },
+            { label: "Lock in forward revenue", score: "+5", color: C.teal },
+            { label: "Unable to work 90 days", score: "-22", color: C.limited },
+          ].map((card, i) => (
+            <g key={`r2-${i}`}>
+              <rect x={10 + i * 165} y="95" width="155" height="75" rx="10" fill="rgba(244,241,234,0.02)" stroke={i === 2 ? `${C.limited}22` : "rgba(244,241,234,0.04)"} strokeWidth="1" />
+              <rect x={22 + i * 165} y="113" width="85" height="4" rx="2" fill="rgba(244,241,234,0.06)" />
+              <text x={140 + i * 165} y="121" fill={`${card.color}66`} fontSize="14" fontWeight="600" textAnchor="end" fontFamily={SANS}>{card.score}</text>
+              <rect x={22 + i * 165} y="133" width="100" height="3" rx="1.5" fill="rgba(244,241,234,0.03)" />
+              <rect x={22 + i * 165} y="143" width="80" height="3" rx="1.5" fill="rgba(244,241,234,0.025)" />
+            </g>
+          ))}
+        </svg>
       </div>
 
       {/* ══════════════════════════════════════════════════ */}
