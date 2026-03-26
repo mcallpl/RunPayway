@@ -839,7 +839,10 @@ export default function ReviewPage() {
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
 
   // ── Deep engine data for rich personalization ──
-  const v2Explainability = v2?.explainability as { why_this_score?: string; why_not_higher?: string; strongest_supports?: string[]; strongest_suppressors?: string[]; best_lift_explanation?: string; fragility_explanation?: string } | undefined;
+  const v2Explainability = v2?.explainability as { why_this_score?: string; why_not_higher?: string; strongest_supports?: string[]; strongest_suppressors?: string[]; best_lift_explanation?: string; fragility_explanation?: string; interaction_summary?: string } | undefined;
+  const v2BehavioralInsights = v2?.behavioral_insights as Array<{ pattern: string; consequence: string; reframe: string }> | undefined;
+  const v2ExecutionRoadmap = v2?.execution_roadmap as Array<{ week: string; action: string; detail: string; success_metric: string }> | undefined;
+  const v2Indicators = v2?.indicators as Array<{ key: string; label: string; raw_value: number; normalized_value: number; level: string }> | undefined;
   const olSelectedScenarios = ol?.selected_scenarios as Array<{ scenario_id: string; label: string; description: string; severity: string; why_it_matters: string }> | undefined;
 
   // ── Outcome layer explanations override profileConstraintAdvice when available ──
@@ -1129,24 +1132,44 @@ export default function ReviewPage() {
           <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Scores reflect structural patterns, not exact measurements. Very small score differences should be interpreted with caution.</div>
         </div>
 
-        {/* What this score means — with your actual numbers */}
+        {/* What this score means — engine-generated or template */}
         <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IN PLAIN ENGLISH</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-            {isHighScorer ? ({
+            {v2Explainability?.why_this_score || (isHighScorer ? ({
               C1: `Your income survives most common disruptions — a slow quarter, a lost mid-tier client. But a ${record.risk_scenario_drop}-point stress test drop means a major hit (top client loss, industry shift) would still damage you.`,
               C2: `Your income holds up under pressure. You have ${record.income_continuity_months} months of runway and no single-source dependency. The remaining gaps are specific, not structural.`,
               D1: `Your income can absorb a lost client, an illness, or a market downturn without crisis. ${record.income_continuity_months}+ months of continuity. Focus on maintaining what you have built.`,
-              D2: `${peerPercentileValue !== null ? `Top ${100 - peerPercentileValue}% of ${industrySector} professionals. ` : ""}${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
+              D2: `${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
             })[subTier] || `Your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : ({
               A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. This leaves very little margin for unexpected disruptions.`,
               A2: `Your income is active but structurally exposed. A lost client, a slow month, or 2 weeks off work could create significant financial pressure. You have ${continuityDisplay} of runway.`,
               A3: `You have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change — a lost client, a contract pause — sets you back hard.`,
               B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. You are ${nextBandThreshold - score} points away from Established Stability. That gap is realistic to close.`,
               B2: `You are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
-            })[subTier] || `Your income is developing. ${nextBandThreshold - score} points from the next band.`}
+            })[subTier] || `Your income is developing. ${nextBandThreshold - score} points from the next band.`)}
           </p>
+          {v2Explainability?.why_not_higher && (
+            <p style={{ ...T.small, color: B.muted, margin: "8px 0 0", lineHeight: 1.55 }}>
+              <span style={{ fontWeight: 600 }}>Why not higher:</span> {v2Explainability.why_not_higher}
+            </p>
+          )}
         </div>
+
+        {/* Predictive warning — if available */}
+        {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
+          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.bandDeveloping}` }}>
+            <div style={{ ...T.overline, color: B.bandDeveloping, marginBottom: 6 }}>WATCH FOR THIS</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55, fontWeight: 500 }}>
+              {(v2PredictiveWarnings[0] as { headline?: string; explanation?: string })?.headline || String(v2PredictiveWarnings[0])}
+            </p>
+            {(v2PredictiveWarnings[0] as { explanation?: string })?.explanation && (
+              <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>
+                {(v2PredictiveWarnings[0] as { explanation?: string }).explanation}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Single key insight — structured vulnerability block */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
@@ -1252,6 +1275,73 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
+        {/* Structural Indicators */}
+        {v2Indicators && v2Indicators.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <Overline large>Structural Indicators</Overline>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
+              {v2Indicators.map((ind) => {
+                const levelColor = ind.level === "critical" || ind.level === "weak" ? B.bandLimited : ind.level === "moderate" ? B.bandDeveloping : ind.level === "strong" ? B.bandEstablished : B.bandHigh;
+                return (
+                  <div key={ind.key} style={{ ...cardStyle, padding: "10px 14px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                      <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{ind.label}</span>
+                      <span style={{ ...T.micro, color: levelColor, textTransform: "capitalize" }}>{ind.level}</span>
+                    </div>
+                    <div style={{ height: 4, backgroundColor: B.stone, borderRadius: 2 }}>
+                      <div style={{ height: 4, backgroundColor: levelColor, borderRadius: 2, width: `${ind.normalized_value}%`, transition: "width 600ms ease" }} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* What's working / What's dragging you down */}
+        {v2Explainability && (v2Explainability.strongest_supports?.length || v2Explainability.strongest_suppressors?.length) && (
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 20 }}>
+            {v2Explainability.strongest_supports && v2Explainability.strongest_supports.length > 0 && (
+              <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.teal}` }}>
+                <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>WHAT&apos;S WORKING</div>
+                {v2Explainability.strongest_supports.slice(0, 2).map((s, i) => (
+                  <p key={i} style={{ ...T.small, color: B.navy, margin: i > 0 ? "6px 0 0" : 0, lineHeight: 1.5 }}>{s}</p>
+                ))}
+              </div>
+            )}
+            {v2Explainability.strongest_suppressors && v2Explainability.strongest_suppressors.length > 0 && (
+              <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandLimited}` }}>
+                <div style={{ ...T.overline, color: B.bandLimited, marginBottom: 8 }}>WHAT&apos;S HOLDING YOU BACK</div>
+                {v2Explainability.strongest_suppressors.slice(0, 2).map((s, i) => (
+                  <p key={i} style={{ ...T.small, color: B.navy, margin: i > 0 ? "6px 0 0" : 0, lineHeight: 1.5 }}>{s}</p>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Cross-factor interactions */}
+        {v2Interactions && v2Interactions.effects && v2Interactions.effects.length > 0 && (
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>HOW YOUR FACTORS INTERACT</div>
+            {v2Explainability?.interaction_summary ? (
+              <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>{v2Explainability.interaction_summary}</p>
+            ) : (
+              <div>
+                {v2Interactions.effects.slice(0, 3).map((e, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: i < 2 ? 4 : 0 }}>
+                    <span style={{ ...T.micro, color: e.type === "penalty" ? B.bandLimited : B.teal, minWidth: 52 }}>{e.type === "penalty" ? `−${Math.abs(e.points)}` : `+${e.points}`} pts</span>
+                    <span style={{ ...T.small, color: B.muted }}>{e.trigger_condition}</span>
+                  </div>
+                ))}
+                {v2Interactions.net_adjustment !== 0 && (
+                  <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Net interaction effect: {v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Category framing */}
         {olIndustryLabel && (
           <div style={{ ...cardStyle, marginBottom: 16 }}>
@@ -1327,17 +1417,18 @@ export default function ReviewPage() {
                       Your score would drop from {s.original_score} to <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
                     </span>
                   </div>
-                  {/* Why this risk matters — from outcome layer */}
+                  {/* Why this risk matters — narrative + outcome layer */}
                   {(() => {
                     const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
                     const bandShiftNote = s.band_shift ? <p style={{ ...T.meta, color: B.bandLimited, margin: "4px 0 0", fontWeight: 500 }}>This means you would move from {s.original_band} to {s.scenario_band}.</p> : null;
-                    return olMatch?.why_it_matters ? (
-                      <div style={{ paddingLeft: 70 }}>
-                        <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{olMatch.why_it_matters}</p>
+                    const narrativeText = olMatch?.why_it_matters || s.narrative;
+                    return narrativeText ? (
+                      <div style={{ paddingLeft: mobile ? 0 : 70, marginTop: 4 }}>
+                        <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{narrativeText}</p>
                         {bandShiftNote}
                       </div>
                     ) : s.band_shift ? (
-                      <div style={{ paddingLeft: 70 }}>
+                      <div style={{ paddingLeft: mobile ? 0 : 70 }}>
                         {bandShiftNote}
                       </div>
                     ) : null;
@@ -1375,6 +1466,18 @@ export default function ReviewPage() {
                   durability_thinness: "recurring income is fragile",
                 })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
               </div>
+            )}
+          </div>
+        )}
+
+        {/* Behavioral insight */}
+        {v2BehavioralInsights && v2BehavioralInsights.length > 0 && (
+          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.bandDeveloping}` }}>
+            <div style={{ ...T.overline, color: B.bandDeveloping, marginBottom: 6 }}>PATTERN TO WATCH</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55, fontWeight: 500 }}>{v2BehavioralInsights[0].pattern}</p>
+            <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{v2BehavioralInsights[0].consequence}</p>
+            {v2BehavioralInsights[0].reframe && (
+              <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", lineHeight: 1.5, fontWeight: 500 }}>{v2BehavioralInsights[0].reframe}</p>
             )}
           </div>
         )}
@@ -1527,6 +1630,41 @@ export default function ReviewPage() {
           </div>
         )}
 
+        {/* Combined top-two lift */}
+        {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
+          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.teal}` }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>IF YOU DID BOTH</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>
+              Combining the top two changes would raise your score to approximately <span style={{ fontWeight: 700 }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
+            </p>
+            {v2Explainability?.best_lift_explanation && (
+              <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0", lineHeight: 1.5 }}>{v2Explainability.best_lift_explanation}</p>
+            )}
+          </div>
+        )}
+
+        {/* Execution roadmap */}
+        {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <SectionDivider />
+            <Overline large>Week-by-Week Roadmap</Overline>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {v2ExecutionRoadmap.slice(0, 4).map((w, i) => (
+                <div key={i} style={{ ...cardStyle, padding: "10px 14px" }}>
+                  <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ ...T.micro, color: B.purple, minWidth: mobile ? 60 : 70, flexShrink: 0 }}>{w.week}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ ...T.small, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{w.action}</div>
+                      <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{w.detail}</p>
+                      {w.success_metric && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Target: {w.success_metric}</p>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <PageFooter section="Your Action Plan" page={4} />
     </>,
 
@@ -1542,6 +1680,30 @@ export default function ReviewPage() {
             Your Income Stability Score is produced by Model RP-2.0, a deterministic scoring system that evaluates fixed structural dimensions of income. The same inputs always produce the same score. The model uses fixed rules and weights — no machine learning, no subjective judgment, and no access to your financial accounts. Full methodology is published at runpayway.com/methodology.
           </p>
         </div>
+
+        {/* Assessment quality — confidence + durability */}
+        {(v2Confidence || v2Quality) && (
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 16 }}>
+            {v2Confidence && (
+              <div style={{ flex: 1, ...cardStyle }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>ASSESSMENT CONFIDENCE</div>
+                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "moderate" ? B.navy : B.bandDeveloping, marginBottom: 4, textTransform: "capitalize" }}>{v2Confidence.confidence_level}</div>
+                {v2Confidence.deductions && v2Confidence.deductions.length > 0 && (
+                  <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+                    {v2Confidence.deductions.slice(0, 2).map((d: { reason: string }) => d.reason).join(". ")}.
+                  </p>
+                )}
+              </div>
+            )}
+            {v2Quality && (
+              <div style={{ flex: 1, ...cardStyle }}>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>INCOME DURABILITY</div>
+                <div style={{ ...T.cardHeading, color: v2Quality.durability_grade === "durable" || v2Quality.durability_grade === "robust" ? B.teal : v2Quality.durability_grade === "moderate" ? B.navy : B.bandDeveloping, marginBottom: 4, textTransform: "capitalize" }}>{v2Quality.durability_grade}</div>
+                <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Quality score: {v2Quality.quality_score}/100</p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Industry-specific reassessment triggers */}
         {olTriggers && olTriggers.length > 0 && (

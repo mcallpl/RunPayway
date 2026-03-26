@@ -317,8 +317,8 @@ function Page2Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="2" title="How Your Income Is Built" question="How is my income structured?"
-        description="Your income composition (active vs. recurring vs. passive), stress test impact, continuity window, and how you compare to actual industry peers."
-        bullets={["Income structure bar: what percentage requires your daily work", "Stress test: exact score drop if your biggest source disappears", "Peer comparison: your score vs. actual industry averages with outlier dimensions"]}
+        description="Your income composition (active vs. recurring vs. passive), stress test impact, continuity window, and structural context for your income model."
+        bullets={["Income structure bar: what percentage requires your daily work", "Stress test: exact score drop if your biggest source disappears", "Structural context: how your pattern compares to typical structures in your industry"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8, marginTop: 8 }}>How Your Income Is Built</h3>
@@ -423,7 +423,7 @@ function Page5Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="5" title="Your Action Plan" question="What do I do about it?"
-        description="Prioritized actions with specific timeframes and targets, tradeoff analysis showing the real cost of each move, ready-to-use scripts, and your reassessment date."
+        description="Prioritized actions with projected score impact, tradeoff analysis showing the real cost of each move, suggested next-move language, and your reassessment date."
         bullets={["Lift scenarios: exactly how many points each change is worth", "Action plan with specific timelines, numeric targets, and priority ranking", "Advisor-ready summary: key talking points and red flags to raise"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
@@ -591,8 +591,8 @@ function Page6Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="6" title="Strategy and Next Steps" question="What are the tradeoffs?"
-        description="Every recommended action comes with an honest cost-benefit analysis. Plus reassessment triggers, verification, and ready-to-use scripts you can copy and send."
-        bullets={["Tradeoff analysis: the upside, the cost, and the net recommendation for each move", "Ready-to-use scripts: retainer pitch, client outreach, pricing restructure — personalized to your data", "Reassessment date, verification stamp, and record ID for sharing with advisors or lenders"]}
+        description="Every recommended action comes with an honest cost-benefit analysis. Plus reassessment triggers, suggested next-move language, and your verification record."
+        bullets={["Tradeoff analysis: the upside, the cost, and the net assessment for each move", "Suggested language: starting drafts for retainer pitches, client outreach, and advisor conversations", "Reassessment date, verification stamp, and record ID"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Strategy and Next Steps</h3>
@@ -604,7 +604,7 @@ function Page6Preview() {
               <div style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.bandDeveloping }}>COST</div><div style={{ fontSize: 11, color: B.muted }}>Short-term income volatility</div></div>
             </div>
           </div>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>READY-TO-USE SCRIPTS</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>SUGGESTED LANGUAGE</div>
           <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.5 }}>Retainer pitch &#183; Client outreach &#183; Pricing restructure</div>
         </>}
       />

@@ -477,7 +477,7 @@ function ReportCovers() {
       num: "05",
       title: "What to Do Next",
       question: "What should I do next?",
-      desc: "Prioritized actions with specific timeframes and targets, tradeoff analysis for each move, ready-to-use scripts, and your reassessment date.",
+      desc: "Prioritized actions with projected score impact, tradeoff analysis for each move, suggested next-move language, and your reassessment date.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
       accent: B.navy,
     },
@@ -1121,10 +1121,10 @@ export default function HowItWorksPage() {
           <div style={{ textAlign: "center", marginBottom: 32 }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Included With Every Report</div>
             <h2 style={{ fontSize: 32, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.12, letterSpacing: "-0.025em", margin: "0 0 14px" }}>
-              Simulate changes. Get the scripts to make them.
+              Simulate changes. See the impact.
             </h2>
             <p style={{ fontSize: 16, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
-              The interactive Score Simulator lets you drag five sliders to model real scenarios &mdash; see exactly how each change moves your score. Your report includes personalized, ready-to-use scripts for retainer pitches, client outreach, and pricing restructures — generated from your actual results, ready to copy and send.
+              The interactive Score Simulator lets you model real scenarios &mdash; see exactly how each structural change moves your score. Your report includes suggested language for retainer pitches, client outreach, and advisor conversations — starting drafts based on your actual results.
             </p>
           </div>
           <SimulatorTeaser variant="dark-on-light" />

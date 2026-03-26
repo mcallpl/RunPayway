@@ -200,7 +200,7 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
   const features = [
     "Your score out of 100",
     "Your stability band",
-    "Your peer percentile",
+    "What your structure can absorb",
     "One key insight about your income",
   ];
 
@@ -281,10 +281,10 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
     "Income runway estimate — how many months your income continues without active work",
     "Risk scenarios with score-drop projections",
     "Action plan with specific timeframes, targets, and tradeoffs",
-    "Ready-to-use scripts (retainer pitch, client outreach, pricing restructure)",
-    "Predictive warnings — mistakes you are likely to make next",
-    "6 structural indicators, fragility, and cross-factor effects",
-    "Peer comparison with actual numbers + advisor discussion guide",
+    "Suggested language for your next move — starting drafts based on your structure",
+    "Predictive warnings — mistakes people in your position typically make next",
+    "Structural indicators, fragility classification, and cross-factor effects",
+    "Structural context for your income model and industry",
   ];
 
   const lifetimeFeature = "Lifetime access to your personal Score Simulator";
@@ -478,7 +478,7 @@ function WhatsIncluded() {
     {
       num: "02",
       title: "How Your Income Is Built",
-      desc: "Income structure breakdown (active vs. recurring vs. passive), stress test, continuity window, and peer comparison with actual industry numbers.",
+      desc: "Income structure breakdown (active vs. recurring vs. passive), stress test, continuity window, and structural context for your income model.",
       accent: B.teal,
     },
     {
@@ -496,7 +496,7 @@ function WhatsIncluded() {
     {
       num: "05",
       title: "Your Action Plan",
-      desc: "Prioritized actions with specific timeframes and targets, tradeoff analysis for each move, ready-to-use scripts, and your reassessment date.",
+      desc: "Prioritized actions with projected score impact, tradeoff analysis for each move, suggested next-move language, and your reassessment date.",
       accent: B.purple,
     },
   ];
@@ -552,7 +552,7 @@ function WhatsIncluded() {
               marginRight: "auto",
             }}
           >
-            Your $99 report includes an interactive simulator, structural diagnosis, and ready-to-use action tools. Nothing is withheld.
+            Your $99 report includes an interactive simulator, structural diagnosis, and practical action tools. Nothing is withheld.
           </p>
         </div>
 
@@ -745,7 +745,7 @@ function Faq() {
   const faqs = [
     {
       q: "What\u2019s the difference between Free and the Full Report?",
-      a: "Free gives you your score out of 100, your stability band, peer percentile, and one key insight. The $99 Full Report adds an interactive score simulator with 5 sliders, income runway estimate, risk scenarios with exact score drops, an action plan with specific targets and timelines, ready-to-use scripts you can send tomorrow, tradeoff analysis, predictive warnings, 6 structural indicators, and an advisor discussion guide.",
+      a: "Free gives you your score out of 100, your stability band, and one key insight. The $99 Full Report adds an interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with projected impact, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators with cross-factor effects, and structural context for your income model.",
     },
     {
       q: "What is your refund policy?",

@@ -482,7 +482,7 @@ function ModelBadge() {
             { label: "Model RP-2.0", sub: "Current version" },
             { label: "Deterministic", sub: "Fixed scoring rules" },
             { label: "19 Industries", sub: "Full sector coverage" },
-            { label: "6 Dimensions", sub: "Structural analysis" },
+            { label: "Fixed Dimensions", sub: "Structural analysis" },
           ].map((item) => (
             <div key={item.label} style={{ textAlign: "center", minWidth: mobile ? 120 : 140 }}>
               <div style={{ fontSize: 15, fontWeight: 700, color: B.navy, marginBottom: 4 }}>{item.label}</div>

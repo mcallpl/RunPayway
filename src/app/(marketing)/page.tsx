@@ -724,10 +724,10 @@ function WhatYourReportSection() {
 
   const pages = [
     { num: "01", title: "Your Score", value: "42/100", detail: "Your exact number, what it means for your daily life, and the single most important thing to fix.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", value: "63% active", detail: "Income composition, stress test drop, continuity window, and peer comparison with actual industry numbers.", color: B.teal },
+    { num: "02", title: "How Your Income Is Built", value: "63% active", detail: "Income composition, stress test drop, continuity window, and structural context for your income model.", color: B.teal },
     { num: "03", title: "Your Biggest Risks", value: "3 scenarios", detail: "Ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.", color: "#9B2C2C" },
-    { num: "04", title: "Your Income Deep Dive", value: "6 dimensions", detail: "Cross-factor effects, surprising insights, fragility classification, and your income system mapped visually.", color: B.navy },
-    { num: "05", title: "Your Action Plan", value: "3 priorities", detail: "Specific actions with timeframes, targets, tradeoff analysis, and ready-to-use scripts you can send tomorrow.", color: B.teal },
+    { num: "04", title: "Your Income Deep Dive", value: "Full breakdown", detail: "Cross-factor effects, surprising insights, fragility classification, and your income system mapped visually.", color: B.navy },
+    { num: "05", title: "Your Action Plan", value: "3 priorities", detail: "Specific actions with projected score impact, tradeoff analysis, and suggested language for your next move.", color: B.teal },
   ];
 
   return (
@@ -891,7 +891,7 @@ function HowItWorksSection() {
     {
       num: "03",
       time: "$99",
-      title: "Unlock the decision engine",
+      title: "Unlock the full diagnostic",
       hook: "Five pages. One clear path forward.",
       desc: "An interactive simulator you play with. Scripts you send tomorrow. Risk scenarios with exact score drops. Actions with specific targets and timelines. This is not a static document — it is a system.",
       color: B.navy,
@@ -1000,7 +1000,7 @@ function TestimonialsSection() {
   const testimonials = [
     { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
     { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
-    { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
+    { quote: "I shared the report with my accountant. She said it was more useful than most income documents she sees.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
   ];
 
   return (
@@ -1386,7 +1386,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What does the $99 full report include?",
-      a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with specific timeframes and targets, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators, and an advisor discussion guide.",
+      a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with projected impact, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators with cross-factor effects, and structural context for your income model.",
     },
     {
       q: "What is your refund policy?",

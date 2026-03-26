@@ -72,7 +72,7 @@ const STRIPE_FULL_REPORT = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
 const TESTIMONIALS = [
   { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", industry: "Real Estate", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
   { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", industry: "Technology", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
-  { quote: "I shared the advisor guide with my accountant. She said it was more useful than most reports she sees.", name: "Priya K.", industry: "Consulting", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
+  { quote: "I shared the report with my accountant. She said it was more useful than most income documents she sees.", name: "Priya K.", industry: "Consulting", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -162,7 +162,7 @@ export default function FreeScorePage() {
     { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you cannot work for 90 days? Each scenario scored with exact drops." },
     { title: "Action Plan with Targets", desc: "Specific actions with timeframes, numeric targets, and tradeoff analysis — not generic advice." },
     { title: "Predictive Warnings", desc: "The mistakes people in your position typically make next — and how to avoid them." },
-    { title: "6 Structural Indicators", desc: "Each dimension scored out of 100 — plus fragility classification, cross-factor effects, and surprising insights." },
+    { title: "Structural Indicators", desc: "Each dimension scored with cross-factor effects, fragility classification, and surprising insights." },
     { title: "Structural Context + Category Framing", desc: "How your structure compares to typical patterns for your income model and industry." },
   ];
 
@@ -278,7 +278,7 @@ export default function FreeScorePage() {
           {/* Upgrade CTA */}
           <div style={{ textAlign: "center", padding: "20px 24px", backgroundColor: B.navy, borderRadius: 8 }}>
             <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full report — $99</div>
-            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Score simulator, runway calculator, risk scenarios, action plan with scripts, tradeoff analysis, and advisor guide.</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Score simulator, runway calculator, risk scenarios, action plan with projected impact, tradeoff analysis, and suggested next-move language.</div>
           </div>
 
           {/* Disclaimer */}
