@@ -854,6 +854,19 @@ function SimulatorContent() {
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
         body{margin:0;} *{box-sizing:border-box;}
         @media(max-width:680px){
+          .sim-view-report{
+            writing-mode:horizontal-tb!important;
+            text-orientation:initial!important;
+            position:fixed!important;
+            left:50%!important;
+            top:auto!important;
+            bottom:16px!important;
+            transform:translateX(-50%)!important;
+            border-radius:8px!important;
+            border:1px solid rgba(244,241,234,0.10)!important;
+            padding:10px 20px!important;
+            font-size:13px!important;
+          }
           .sim-orient{flex-direction:column!important;gap:10px!important;}
           .sim-triptych{flex-direction:column!important;}
           .sim-triptych>div{border-right:none!important;border-bottom:1px solid rgba(244,241,234,0.06);}
@@ -900,6 +913,38 @@ function SimulatorContent() {
           <span style={{ fontSize: 11, color: T.textMuted }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
         </div>
       </header>
+
+      {/* Floating "View Report" side link */}
+      <Link
+        href="/review"
+        className="sim-view-report"
+        style={{
+          position: "fixed",
+          left: 0,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 40,
+          writingMode: "vertical-rl",
+          textOrientation: "mixed",
+          padding: "16px 10px",
+          fontSize: 13,
+          fontWeight: 600,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase" as const,
+          color: T.textMuted,
+          textDecoration: "none",
+          borderRadius: "0 8px 8px 0",
+          backgroundColor: T.surface,
+          border: `1px solid ${T.border}`,
+          borderLeft: "none",
+          backdropFilter: "blur(12px)",
+          transition: "color 200ms, background-color 200ms",
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = T.surfaceHover; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = T.textMuted; e.currentTarget.style.backgroundColor = T.surface; }}
+      >
+        View Report &#8592;
+      </Link>
 
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
