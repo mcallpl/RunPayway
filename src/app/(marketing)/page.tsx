@@ -726,11 +726,11 @@ function WhatYourReportSection() {
   const mobile = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score", value: "42/100", detail: "Your exact number, what it means for your daily life, and the single most important thing to fix.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", value: "63% active", detail: "Income composition, stress test drop, continuity window, and structural context for your income model.", color: B.teal },
-    { num: "03", title: "Your Biggest Risks", value: "3 scenarios", detail: "Ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.", color: "#9B2C2C" },
-    { num: "04", title: "Your Income Deep Dive", value: "Full breakdown", detail: "Cross-factor effects, surprising insights, fragility classification, and your income system mapped visually.", color: B.navy },
-    { num: "05", title: "Your Action Plan", value: "3 priorities", detail: "Specific actions with projected score impact, tradeoff analysis, and suggested language for your next move.", color: B.teal },
+    { num: "01", title: "Your Score", detail: "What it means, what to fix first", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", detail: "Composition, stress test, structural indicators", color: B.teal },
+    { num: "03", title: "Your Biggest Risks", detail: "Ranked scenarios with exact score drops", color: "#9B2C2C" },
+    { num: "04", title: "Your Action Plan", detail: "Projected impact, tradeoffs, week-by-week roadmap", color: B.purple },
+    { num: "05", title: "Methodology + Next Steps", detail: "Suggested language, confidence, reassessment", color: B.teal },
   ];
 
   return (
@@ -746,223 +746,143 @@ function WhatYourReportSection() {
       }}
     >
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: mobile ? 48 : 64 }}>
+        {/* Section header */}
+        <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
           <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             What You Get
           </div>
-          <h2
-            style={{
-              fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
-              color: "#F4F1EA",
-              lineHeight: S.lhHeading,
-              letterSpacing: S.lsHeading,
-              fontFamily: DISPLAY_FONT, fontWeight: 400,
-              marginBottom: S.h2mb,
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(16px)",
-              transition: "opacity 600ms ease-out, transform 600ms ease-out",
-            }}
-          >
-            Not a report you read once.<br />A system you use.
-          </h2>
-          <p
-            style={{
-              fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
-              color: "rgba(244,241,234,0.55)",
-              lineHeight: S.lhBody,
-              maxWidth: 520,
-              margin: "0 auto",
-              opacity: visible ? 1 : 0,
-              transition: "opacity 600ms ease-out 100ms",
-            }}
-          >
-            Five pages of analysis. An interactive simulator. Suggested language for your next move. Every number is yours.
-          </p>
-        </div>
-
-        {/* 5 cards — all visible at once */}
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(5, 1fr)", gap: mobile ? 12 : 16 }}>
-          {pages.map((page, i) => (
-            <div
-              key={page.num}
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: S.panelRadius,
-                padding: mobile ? "20px 20px" : "28px 20px",
-                position: "relative",
-                overflow: "hidden",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 500ms ease-out ${150 + i * 80}ms, transform 500ms ease-out ${150 + i * 80}ms`,
-              }}
-            >
-              {/* Top accent line */}
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color }} />
-
-              <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>{page.num}</div>
-              <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: "#F4F1EA", marginBottom: 4, letterSpacing: "-0.01em" }}>{page.title}</div>
-              <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 700, color: page.color === B.navy ? B.teal : page.color, marginBottom: 12, letterSpacing: "-0.02em" }}>{page.value}</div>
-              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{page.detail}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Score Simulator showcase — Apple App Store style */}
-        <div style={{
-          marginTop: mobile ? 32 : 48,
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 700ms ease-out 500ms, transform 700ms ease-out 500ms",
-        }}>
-          {/* Section header */}
-          <div style={{ textAlign: "center", marginBottom: mobile ? 24 : 36 }}>
-            <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>
-              Score Simulator&#8482;
-            </div>
-            <h3 style={{ fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: S.lsHeading, lineHeight: 1.2, marginBottom: 8 }}>
-              Model scenarios against your actual data.
-            </h3>
-            <p style={{ fontSize: mobile ? 14 : 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.5, maxWidth: 400, margin: "0 auto" }}>
-              Included with your report. Lifetime access.
-            </p>
-          </div>
-
-          {/* 3 screens — horizontal scroll on mobile, grid on desktop */}
-          <div style={{
-            display: mobile ? "flex" : "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: mobile ? 12 : 16,
-            overflowX: mobile ? "auto" : "visible",
-            scrollSnapType: mobile ? "x mandatory" : "none",
-            paddingBottom: mobile ? 8 : 0,
-            WebkitOverflowScrolling: "touch",
+          <h2 style={{
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: "#F4F1EA", lineHeight: S.lhHeading,
+            letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: S.h2mb,
+            opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            {[
-              {
-                label: "Adjust any dimension",
-                desc: "Drag sliders to model structural changes — recurring income, concentration, forward visibility, consistency, labor independence.",
-                screen: (
-                  <div style={{ padding: "16px 14px 12px" }}>
-                    {["Recurring Revenue", "Source Concentration", "Forward Visibility", "Earnings Consistency", "Labor Independence"].map((dim, i) => (
-                      <div key={dim} style={{ marginBottom: i < 4 ? 10 : 0 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                          <span style={{ fontSize: 7, fontWeight: 600, color: "rgba(244,241,234,0.40)", letterSpacing: "0.06em" }}>{dim.toUpperCase()}</span>
-                          <span style={{ fontSize: 7, color: "rgba(244,241,234,0.25)" }}>{[15, 55, 25, 50, 10][i]}%</span>
-                        </div>
-                        <div style={{ height: 3, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 2, position: "relative" }}>
-                          <div style={{ height: 3, backgroundColor: B.teal, borderRadius: 2, width: `${[15, 55, 25, 50, 10][i]}%`, opacity: 0.7 }} />
-                          <div style={{ position: "absolute", top: "50%", left: `${[15, 55, 25, 50, 10][i]}%`, transform: "translate(-50%, -50%)", width: 7, height: 7, borderRadius: "50%", backgroundColor: "#fff", border: `1.5px solid ${B.teal}` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ),
-              },
-              {
-                label: "See the score change instantly",
-                desc: "Watch your simulated score update in real time as you test each structural change.",
-                screen: (
-                  <div style={{ padding: "14px 14px 10px" }}>
-                    <div style={{ display: "flex", gap: 2, borderRadius: 6, overflow: "hidden", marginBottom: 10 }}>
-                      {[
-                        { label: "CURRENT", value: "48", color: "#F4F1EA" },
-                        { label: "SIMULATED", value: "62", color: B.teal },
-                        { label: "IMPACT", value: "+14", color: B.teal },
-                      ].map(col => (
-                        <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: "8px 4px", textAlign: "center" }}>
-                          <div style={{ fontSize: 6, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.25)", marginBottom: 2 }}>{col.label}</div>
-                          <div style={{ fontSize: 16, fontWeight: 300, color: col.color, fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{col.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ display: "flex", height: 3, borderRadius: 2, overflow: "hidden", marginBottom: 10, position: "relative" }}>
-                      <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} />
-                      <div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} />
-                      <div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} />
-                      <div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
-                      <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 7, height: 7, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 4px rgba(26,122,109,0.4)` }} />
-                    </div>
-                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(75,63,174,0.60)", marginBottom: 6, textTransform: "uppercase" as const }}>INCOME TIMELINE</div>
-                    <svg viewBox="0 0 200 35" style={{ width: "100%", height: 28 }}>
-                      <defs><linearGradient id="showcaseGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={B.teal} stopOpacity="0.3" /><stop offset="100%" stopColor={B.teal} stopOpacity="1" /></linearGradient></defs>
-                      <path d="M 5,28 L 55,22 L 120,14 L 195,6" fill="none" stroke="url(#showcaseGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                      {[[5,28],[55,22],[120,14],[195,6]].map(([cx,cy],j) => <circle key={j} cx={cx} cy={cy} r="2.5" fill={j === 0 ? "#F4F1EA" : B.teal} stroke={B.navy} strokeWidth="1" />)}
-                    </svg>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
-                      {["NOW", "3 MO", "6 MO", "12 MO"].map(l => <span key={l} style={{ fontSize: 6, color: "rgba(244,241,234,0.20)", fontWeight: 600 }}>{l}</span>)}
-                    </div>
-                  </div>
-                ),
-              },
-              {
-                label: "Understand what matters most",
-                desc: "The simulator shows which single change produces the biggest improvement — so you know where to focus.",
-                screen: (
-                  <div style={{ padding: "14px 14px 10px" }}>
-                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8, textTransform: "uppercase" as const }}>HIGHEST IMPACT CHANGES</div>
-                    {[
-                      { action: "Add recurring revenue", lift: "+8", band: "Established" },
-                      { action: "Reduce concentration", lift: "+5", band: "Developing" },
-                      { action: "Extend visibility", lift: "+4", band: "Developing" },
-                    ].map((item, i) => (
-                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.04)" : "none" }}>
-                        <div>
-                          <div style={{ fontSize: 8, fontWeight: 600, color: "#F4F1EA" }}>{item.action}</div>
-                          <div style={{ fontSize: 6, color: "rgba(244,241,234,0.30)", marginTop: 1 }}>{item.band}</div>
-                        </div>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: B.teal, fontFamily: DISPLAY_FONT }}>{item.lift}</span>
-                      </div>
-                    ))}
-                    <div style={{ marginTop: 10, padding: "6px 8px", borderRadius: 4, backgroundColor: "rgba(26,122,109,0.08)", border: `1px solid rgba(26,122,109,0.15)` }}>
-                      <div style={{ fontSize: 6, fontWeight: 700, color: B.teal, letterSpacing: "0.08em", marginBottom: 2 }}>COMBINED IMPACT</div>
-                      <div style={{ fontSize: 8, color: "rgba(244,241,234,0.50)" }}>All three changes: 48 &#8594; 65 (+17 points)</div>
-                    </div>
-                  </div>
-                ),
-              },
-            ].map((card, i) => (
-              <div key={i} style={{
-                flex: mobile ? "0 0 85%" : undefined,
-                scrollSnapAlign: mobile ? "start" : undefined,
+            A 5-page diagnostic.<br />Plus a simulator you keep forever.
+          </h2>
+        </div>
+
+        {/* Two-column layout: report pages left, simulator right */}
+        <div style={{
+          display: mobile ? "flex" : "grid",
+          gridTemplateColumns: "1fr 1.4fr",
+          gap: mobile ? 32 : 40,
+          flexDirection: "column",
+          alignItems: mobile ? "stretch" : undefined,
+        }}>
+          {/* LEFT — 5 report pages as clean list */}
+          <div style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
+          }}>
+            <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)", marginBottom: 20 }}>
+              Your Report
+            </div>
+            {pages.map((page, i) => (
+              <div key={page.num} style={{
+                display: "flex", gap: 16, alignItems: "flex-start",
+                padding: "16px 0",
+                borderBottom: i < 4 ? "1px solid rgba(244,241,234,0.06)" : "none",
               }}>
-                {/* Phone frame */}
                 <div style={{
-                  backgroundColor: B.navy,
-                  borderRadius: 12,
-                  border: "1px solid rgba(244,241,234,0.08)",
-                  overflow: "hidden",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.30)",
+                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                  backgroundColor: "rgba(244,241,234,0.04)",
+                  border: `1px solid rgba(244,241,234,0.08)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 13, fontWeight: 700, color: page.color,
+                  position: "relative", overflow: "hidden",
                 }}>
-                  {/* Screen header bar */}
-                  <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, textTransform: "uppercase" as const }}>Score Simulator&#8482;</div>
-                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
-                  </div>
-                  {/* Screen content */}
-                  {card.screen}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color, opacity: 0.6 }} />
+                  {page.num}
                 </div>
-                {/* Caption below screen */}
-                <div style={{ marginTop: 12, paddingLeft: 4 }}>
-                  <div style={{ fontSize: mobile ? 14 : 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>{card.label}</div>
-                  <p style={{ fontSize: mobile ? 13 : 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.5, margin: 0 }}>{card.desc}</p>
+                <div>
+                  <div style={{ fontSize: mobile ? 15 : 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>{page.title}</div>
+                  <div style={{ fontSize: mobile ? 13 : 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.45 }}>{page.detail}</div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Lifetime access line */}
+          {/* RIGHT — Simulator showcase */}
           <div style={{
-            textAlign: "center",
-            marginTop: mobile ? 24 : 32,
-            padding: "14px 24px",
-            borderRadius: S.panelRadius,
-            border: "1px solid rgba(26,122,109,0.25)",
-            background: "rgba(26,122,109,0.06)",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 700ms ease-out 300ms, transform 700ms ease-out 300ms",
           }}>
-            <p style={{ fontSize: mobile ? 14 : 15, fontWeight: 600, color: B.teal, margin: 0, lineHeight: 1.5 }}>
-              Lifetime access to your personal simulator &mdash; included with every report.
-            </p>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal }}>
+                Score Simulator&#8482;
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Lifetime access</div>
+            </div>
+
+            {/* Main simulator preview — large */}
+            <div style={{
+              backgroundColor: "rgba(244,241,234,0.03)",
+              borderRadius: 16,
+              border: "1px solid rgba(244,241,234,0.08)",
+              padding: mobile ? "20px 16px" : "28px 24px",
+              marginBottom: 16,
+              boxShadow: "0 12px 48px rgba(0,0,0,0.25)",
+            }}>
+              {/* Score triptych */}
+              <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
+                {[
+                  { label: "CURRENT", value: "48", color: "#F4F1EA" },
+                  { label: "SIMULATED", value: "62", color: B.teal },
+                  { label: "IMPACT", value: "+14", color: B.teal },
+                ].map(col => (
+                  <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: mobile ? "10px 8px" : "14px 12px", textAlign: "center" }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{col.label}</div>
+                    <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: col.color, fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{col.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Band bar */}
+              <div style={{ display: "flex", height: 4, borderRadius: 2, overflow: "hidden", marginBottom: 16, position: "relative" }}>
+                <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} />
+                <div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} />
+                <div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} />
+                <div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
+                <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 6px rgba(26,122,109,0.4)` }} />
+              </div>
+
+              {/* Timeline */}
+              <div style={{ marginBottom: 4 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(75,63,174,0.60)", marginBottom: 8, textTransform: "uppercase" as const }}>INCOME TIMELINE</div>
+                <svg viewBox="0 0 300 45" style={{ width: "100%", height: mobile ? 32 : 40 }} preserveAspectRatio="xMidYMid meet">
+                  <defs>
+                    <linearGradient id="simGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={B.teal} stopOpacity="0.3" /><stop offset="100%" stopColor={B.teal} stopOpacity="1" /></linearGradient>
+                    <linearGradient id="simArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={B.teal} stopOpacity="0.10" /><stop offset="100%" stopColor={B.teal} stopOpacity="0" /></linearGradient>
+                  </defs>
+                  <path d="M 10,36 L 80,28 L 180,18 L 290,8" fill="none" stroke="url(#simGrad)" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M 10,36 L 80,28 L 180,18 L 290,8 L 290,45 L 10,45 Z" fill="url(#simArea)" />
+                  {[[10,36],[80,28],[180,18],[290,8]].map(([cx,cy],j) => <circle key={j} cx={cx} cy={cy} r="3.5" fill={j === 0 ? "#F4F1EA" : B.teal} stroke={B.navy} strokeWidth="1.5" />)}
+                </svg>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+                  {["NOW", "3 MO", "6 MO", "12 MO"].map(l => <span key={l} style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", fontWeight: 600 }}>{l}</span>)}
+                </div>
+              </div>
+            </div>
+
+            {/* Three feature pills below */}
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 8 }}>
+              {[
+                { label: "Adjust any dimension", desc: "Drag sliders to test structural changes" },
+                { label: "Real-time score updates", desc: "Watch the projected score shift instantly" },
+                { label: "See what matters most", desc: "Which single change has the biggest impact" },
+              ].map((pill) => (
+                <div key={pill.label} style={{
+                  padding: "12px 14px", borderRadius: 8,
+                  backgroundColor: "rgba(244,241,234,0.03)",
+                  border: "1px solid rgba(244,241,234,0.06)",
+                }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>{pill.label}</div>
+                  <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", lineHeight: 1.4 }}>{pill.desc}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -1823,7 +1743,6 @@ export default function LandingPage() {
       <FourFactorsSection />
       <HowItWorksSection />
       <WhatYourReportSection />
-      <SimulatorTeaserSection />
       <TestimonialsSection />
       <PricingSection />
       <MidPageCta />
