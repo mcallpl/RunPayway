@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
@@ -233,7 +235,7 @@ function Page1Preview() {
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>RUNPAYWAY&trade;</span>
+            <Image src={logoBlue} alt="RunPayway™" width={100} height={12} style={{ height: "auto" }} />
             <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
           </div>
           <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>YOUR INCOME STABILITY REPORT</div>
