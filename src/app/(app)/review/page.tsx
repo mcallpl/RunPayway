@@ -1539,7 +1539,7 @@ export default function ReviewPage() {
         <div style={{ ...cardStyle, marginBottom: 20, borderLeft: `3px solid ${B.teal}` }}>
           <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW THIS SCORE WAS CALCULATED</div>
           <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.65 }}>
-            Your Income Stability Score is produced by Model RP-2.0, a deterministic scoring system that evaluates six structural dimensions of income. The same inputs always produce the same score. The model uses fixed rules and weights — no machine learning, no subjective judgment, and no access to your financial accounts. Full methodology is published at runpayway.com/methodology.
+            Your Income Stability Score is produced by Model RP-2.0, a deterministic scoring system that evaluates fixed structural dimensions of income. The same inputs always produce the same score. The model uses fixed rules and weights — no machine learning, no subjective judgment, and no access to your financial accounts. Full methodology is published at runpayway.com/methodology.
           </p>
         </div>
 

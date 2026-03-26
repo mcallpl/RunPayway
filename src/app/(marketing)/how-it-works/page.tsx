@@ -182,7 +182,7 @@ function Hero() {
               marginRight: "auto",
             }}
           >
-            Six questions. One score.
+            Fixed questions. One score.
             <br />
             Full structural diagnosis.
           </h1>
@@ -469,7 +469,7 @@ function ReportCovers() {
       num: "04",
       title: "Your Income Deep Dive",
       question: "How deep does it go?",
-      desc: "Six structural indicators scored, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
+      desc: "Structural indicators scored, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
       icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandHigh} strokeWidth="1.5" strokeLinecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>,
       accent: B.bandHigh,
     },
@@ -917,7 +917,7 @@ function SixDimensions() {
               marginRight: "auto",
             }}
           >
-            Your score is built from six structural dimensions.
+            Your score is built from fixed structural dimensions.
           </p>
         </div>
 

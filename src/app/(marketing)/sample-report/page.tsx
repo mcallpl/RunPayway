@@ -209,7 +209,7 @@ function Hero() {
             This is what your report looks like.
           </h1>
           <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
-            Six pages of analysis. Interactive simulator. Ready-to-send scripts. Every number is yours.
+            Five pages of analysis. Interactive simulator. Suggested next-move language. Every number is yours.
           </p>
 
           {/* Scroll indicator */}
@@ -383,8 +383,8 @@ function Page4Preview() {
     <div ref={ref}>
       <PagePreview
         pageNum="4" title="Your Income Deep Dive" question="How deep does it go?"
-        description="Six dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
-        bullets={["Six structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
+        description="Structural dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
+        bullets={["Structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>

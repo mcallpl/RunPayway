@@ -490,7 +490,7 @@ function WhatsIncluded() {
     {
       num: "04",
       title: "Your Income Deep Dive",
-      desc: "Six structural indicators scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
+      desc: "Structural indicators scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
       accent: B.teal,
     },
     {
@@ -769,7 +769,7 @@ function Faq() {
     },
     {
       q: "How is the score calculated?",
-      a: "The scoring model evaluates six structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic, fixed rules under Model RP-2.0. Same inputs always produce the same score.",
+      a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score.",
     },
     {
       q: "Can I retake the assessment?",

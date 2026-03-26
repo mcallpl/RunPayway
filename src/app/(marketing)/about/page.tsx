@@ -240,7 +240,7 @@ function WhatModelMeasures() {
             What the model measures
           </h2>
           <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            The model evaluates income across six independent dimensions. Each contributes to the final score.
+            The model evaluates income across independent structural dimensions. Each contributes to the final score.
           </p>
         </div>
 
@@ -304,7 +304,7 @@ function HowCalculated() {
             Model RP-2.0 is entirely deterministic. There is no probabilistic modeling, no adaptive learning, and no human judgment in the scoring process. The same inputs always produce the same score.
           </p>
           <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            The model evaluates your income across six dimensions using fixed, versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
+            The model evaluates your income across fixed structural dimensions using versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
           </p>
           <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             The result is a five-page diagnostic report that explains your score, translates what it means, shows your biggest risks, identifies the specific changes that would raise it, and gives you a clear action plan.

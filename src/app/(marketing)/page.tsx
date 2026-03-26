@@ -1386,7 +1386,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What does the $99 full report include?",
-      a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with specific timeframes and targets, ready-to-use scripts (retainer pitch, client outreach, pricing restructure), tradeoff analysis, predictive warnings, six structural indicators, and an advisor discussion guide.",
+      a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with specific timeframes and targets, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators, and an advisor discussion guide.",
     },
     {
       q: "What is your refund policy?",

@@ -299,9 +299,9 @@ function SixDimensions() {
         }}
       >
         <div style={{ maxWidth: 560, marginBottom: mobile ? 32 : 48 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>The Six Dimensions</div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>The Structural Dimensions</div>
           <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-            Six structural measures. Fixed rules. No subjectivity.
+            Fixed structural measures. Fixed rules. No subjectivity.
           </h2>
           <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
             Each dimension is scored independently and combined into your 0&#8211;100 result.
@@ -322,7 +322,7 @@ function SixDimensions() {
         </div>
 
         <p style={{ fontSize: 14, color: B.light, marginTop: 24, letterSpacing: "0.02em", opacity: visible ? 1 : 0, transition: "opacity 0.5s ease-out 500ms" }}>
-          All six dimensions are fixed and versioned under Model RP-2.0.
+          All dimensions are fixed and versioned under Model RP-2.0.
         </p>
       </div>
     </section>
@@ -360,7 +360,7 @@ function ScoringFramework() {
               Two blocks. One score. Zero subjectivity.
             </h2>
             <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
-              The scoring model evaluates your income across six structural dimensions, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
+              The scoring model evaluates your income across fixed structural dimensions, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
             </p>
           </div>
 
@@ -726,7 +726,7 @@ function IndustryContext() {
             Same score. Your context.
           </h2>
           <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Your score is generated from six fixed structural questions. The same answers always produce the same score.
+            Your score is generated from fixed structural questions. The same answers always produce the same score.
           </p>
           <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Your report is personalized using additional context — your operating structure, income model, revenue pattern, and current priorities. This context improves explanation quality, scenario relevance, and action planning. It does not change your score or band classification.

@@ -331,7 +331,7 @@ function generateExecutionRoadmap(
       ? `Map every hour you work to the revenue it generates. Identify which services could be productized, templated, or delivered by someone else.`
       : root === "low_persistence"
       ? `Calculate what percentage of last month's revenue will repeat this month without re-selling. Identify 2-3 clients where a retainer conversation is natural.`
-      : "Review your six structural factors. Identify the single weakest area and list 3 specific actions that could improve it.",
+      : "Review your structural factors. Identify the single weakest area and list 3 specific actions that could improve it.",
     success_metric: "You have a written list of specific opportunities to act on",
   });
 
@@ -381,7 +381,7 @@ function generateExecutionRoadmap(
   weeks.push({
     week: "Weeks 5-6",
     action: "Measure the impact and plan the next move",
-    detail: `Reassess your six structural factors. Has your ${CONSTRAINT_LABELS_PLAIN[root] ?? "primary constraint"} improved? If yes, move to your secondary constraint (${CONSTRAINT_LABELS_PLAIN[constraints.primary_constraint] ?? "next area"}). If not, double down on the same area.`,
+    detail: `Reassess your structural factors. Has your ${CONSTRAINT_LABELS_PLAIN[root] ?? "primary constraint"} improved? If yes, move to your secondary constraint (${CONSTRAINT_LABELS_PLAIN[constraints.primary_constraint] ?? "next area"}). If not, double down on the same area.`,
     success_metric: "Measurable improvement in at least one structural factor. Ready for reassessment.",
   });
 

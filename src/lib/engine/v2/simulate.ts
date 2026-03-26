@@ -423,7 +423,7 @@ export function computeProgressionTiers(
     target_score: maxSim.overall_score,
     target_band: "Maximum possible",
     current_gap: maxSim.overall_score - currentScore,
-    what_to_do: "Perfect all six structural factors to their optimal levels",
+    what_to_do: "Perfect all structural factors to their optimal levels",
     achievable: false,
   });
 
