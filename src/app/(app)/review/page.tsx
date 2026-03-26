@@ -1364,6 +1364,20 @@ export default function ReviewPage() {
           </div>
         )}
 
+        {/* Simulator callout card */}
+        <div style={{
+          marginTop: 20,
+          padding: "16px 20px",
+          border: `1.5px solid ${B.teal}`,
+          borderRadius: 6,
+          backgroundColor: "rgba(26,122,109,0.04)",
+        }}>
+          <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Your Score Simulator</div>
+          <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.6 }}>
+            Use your simulator to model these changes before you make them. Your simulator access is included for life — scan the QR code on the cover page anytime.
+          </p>
+        </div>
+
         <PageFooter section="What to Do About It" page={2} />
     </>,
 
@@ -1849,12 +1863,12 @@ export default function ReviewPage() {
         }
         @media print {
           .no-print, .download-section { display: none !important; }
-          #report-container { position: static !important; left: auto !important; }
+          #report-container { position: static !important; left: auto !important; gap: 0 !important; }
           #paginated-view { display: none !important; }
           .report-page {
-            break-inside: avoid;
-            page-break-inside: avoid;
-            page-break-after: always;
+            break-inside: auto;
+            page-break-inside: auto;
+            page-break-after: auto;
             box-shadow: none !important;
             border: none !important;
             border-radius: 0 !important;
@@ -1863,11 +1877,17 @@ export default function ReviewPage() {
             width: 100% !important;
             max-width: 100% !important;
             min-height: auto !important;
+            overflow: visible !important;
             color-adjust: exact;
             -webkit-print-color-adjust: exact;
           }
           .report-page:last-child {
             page-break-after: auto;
+          }
+          /* Prevent individual cards/sections from splitting across pages */
+          .report-page > div {
+            break-inside: avoid;
+            page-break-inside: avoid;
           }
           body { background: white !important; }
         }

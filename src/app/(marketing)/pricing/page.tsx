@@ -287,6 +287,8 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
     "Peer comparison with actual numbers + advisor discussion guide",
   ];
 
+  const lifetimeFeature = "Lifetime access to your personal Score Simulator";
+
   return (
     <div
       onMouseEnter={() => canHover() && setHovered(true)}
@@ -338,6 +340,20 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
             <span style={{ fontSize: mobile ? 15 : 16, color: i === 0 ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
           </div>
         ))}
+      </div>
+
+      {/* Lifetime simulator access — featured line item */}
+      <div style={{
+        display: "flex", gap: 12, alignItems: "center",
+        marginBottom: 20, padding: "14px 18px",
+        background: "rgba(26,122,109,0.08)",
+        border: "1px solid rgba(26,122,109,0.25)",
+        borderRadius: 8,
+      }}>
+        <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+        <span style={{ fontSize: mobile ? 15 : 16, fontWeight: 700, color: "#F4F1EA", lineHeight: 1.4 }}>
+          {lifetimeFeature}
+        </span>
       </div>
 
       {/* Simulator teaser */}

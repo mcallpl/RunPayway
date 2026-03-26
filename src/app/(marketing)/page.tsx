@@ -841,6 +841,22 @@ function WhatYourReportSection() {
             </Link>
           </div>
         </div>
+
+        {/* Lifetime simulator access callout */}
+        <div style={{
+          marginTop: mobile ? 20 : 28,
+          textAlign: "center",
+          padding: "16px 24px",
+          borderRadius: S.panelRadius,
+          border: "1px solid rgba(26,122,109,0.30)",
+          background: "rgba(26,122,109,0.08)",
+          opacity: visible ? 1 : 0,
+          transition: "opacity 600ms ease-out 700ms",
+        }}>
+          <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 600, color: B.teal, margin: 0, lineHeight: 1.5 }}>
+            Lifetime access to your personal simulator &mdash; model any scenario, anytime.
+          </p>
+        </div>
       </div>
     </section>
   );

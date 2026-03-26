@@ -697,6 +697,11 @@ function SimulatorContent() {
 
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
+        {/* Lifetime access banner */}
+        <div style={{ fontSize: 13, color: T.textMuted, textAlign: "center" as const, padding: 12, borderBottom: `1px solid ${T.borderSubtle}`, marginBottom: 24 }}>
+          This simulator is yours for life. Come back anytime your income changes.
+        </div>
+
         {/* ══════════ ORIENTATION STRIP ══════════ */}
         {!isModified && (
           <div className="sim-orient" style={{ display: "flex", gap: 6, marginBottom: 32, padding: "16px 20px", borderRadius: 10, border: `1px solid ${T.border}`, backgroundColor: T.surface }}>

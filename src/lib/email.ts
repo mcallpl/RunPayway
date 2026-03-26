@@ -131,6 +131,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                       </tr>
                     </table>
                     ${data.bandInterpretationText ? `<p style="font-size:13px; color:${muted}; line-height:1.6; margin:12px 0 0;">${data.bandInterpretationText}</p>` : ""}
+                    <p style="font-size:13px; color:${brandTeal}; line-height:1.6; margin:14px 0 0; font-weight:600;">Your personal Score Simulator is included &mdash; scan the QR code on your report to model scenarios anytime. This access is yours for life.</p>
                   </td>
                 </tr>
               </table>
