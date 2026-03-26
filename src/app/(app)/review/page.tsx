@@ -4,7 +4,6 @@ import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
-import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 // Simulator moved to standalone /simulator page — accessed via QR code
 
@@ -552,16 +551,30 @@ export default function ReviewPage() {
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [emailStatus, setEmailStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const [linkCopied, setLinkCopied] = useState(false);
-  const [advisorEmail, setAdvisorEmail] = useState("");
-  const [advisorSending, setAdvisorSending] = useState(false);
-  const [advisorSent, setAdvisorSent] = useState(false);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
   const monitoringTracked = useRef(false);
+  const totalPages = 6; // cover + 5 pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
+  const pageContainerRef = useRef<HTMLDivElement>(null);
+
+  // Keyboard navigation for pages
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); setCurrentPage(p => Math.min(totalPages - 1, p + 1)); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); setCurrentPage(p => Math.max(0, p - 1)); }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  // Scroll to top of page container on page change
+  useEffect(() => {
+    pageContainerRef.current?.scrollTo(0, 0);
+  }, [currentPage]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -993,17 +1006,14 @@ export default function ReviewPage() {
     high: "Your income has multiple layers of protection. Here is the detailed composition.",
   };
 
-  // ── Bridge sentence style ──
-  const bridgeStyle: React.CSSProperties = { fontSize: 13, color: B.purple, fontWeight: 500, marginTop: 20, fontStyle: "italic" };
+  // ── Page names for navigation ──
+  const pageNames = ["Cover", "Your Score", "Action Plan", "Income Structure", "Full Picture", "Methodology"];
 
-  return (
-    <ReportErrorBoundary>
-    <div id="report-container" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
 
-      {/* ════════════════════════════════════════════════════════
-          COVER PAGE — Title, identity, score at a glance
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+  // ── Paginated page contents (shared between PDF container and on-screen view) ──
+  const pageContents: ReactNode[] = [
+    // Page 0: Cover
+    <>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 500, textAlign: "center" }}>
           <Image src={logoBlue} alt="RunPayway&#8482;" width={180} height={21} style={{ height: "auto", marginBottom: 32 }} />
           <div style={{ width: "60%", height: 1, backgroundColor: B.stone, marginBottom: 32 }} />
@@ -1014,28 +1024,21 @@ export default function ReviewPage() {
             <span style={{ ...T.score, color: B.navy }}>{record.final_score}</span>
             <span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 32 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
-          <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · 5 Pages</div>
+          <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
+          <div style={{ ...T.meta, color: B.muted, marginTop: 8 }}>Scan for interactive simulator</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 5 Pages</div>
         </div>
-      </ReportPage>
+    </>,
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 1 — YOUR SCORE (Anchor: clean, confident, contextual)
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+    // Page 1: Your Score
+    <>
         <ReportHeader />
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-          <Overline>{`A REPORT PREPARED FOR ${(record.assessment_title || "").toUpperCase()}`}</Overline>
-          <div style={{ flexShrink: 0, textAlign: "center", maxWidth: 120 }}>
-            <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>SIMULATOR &amp; STABILITY BRIEF</div>
-            <div style={{ ...T.meta, color: B.muted, marginTop: 2, lineHeight: 1.4 }}>Tap or scan to model scenarios and generate briefs</div>
-          </div>
-        </div>
+        <Overline>{`A REPORT PREPARED FOR ${(record.assessment_title || "").toUpperCase()}`}</Overline>
 
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p1Summary[tier]}</p>
@@ -1138,15 +1141,11 @@ export default function ReviewPage() {
           ))}
         </div>
 
-        <p style={bridgeStyle}>{"Next: What to do about it \u2192"}</p>
-
         <PageFooter section="Your Score" page={1} />
-      </ReportPage>
+    </>,
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 2 — WHAT TO DO ABOUT IT (Action Plan — moved from old Page 5)
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+    // Page 2: Action Plan
+    <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What to Do About It</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>The single most impactful change you can make is described below. Start here.</p>
@@ -1365,15 +1364,11 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <p style={bridgeStyle}>{"Next: Where your income comes from \u2192"}</p>
-
         <PageFooter section="What to Do About It" page={2} />
-      </ReportPage>
+    </>,
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 3 — HOW YOUR INCOME IS BUILT (old Page 2)
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+    // Page 3: Income Structure
+    <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p3Summary[tier]}</p>
@@ -1470,15 +1465,11 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <p style={bridgeStyle}>{"Next: The full picture \u2014 risks and measurements \u2192"}</p>
-
         <PageFooter section="How Your Income Is Built" page={3} />
-      </ReportPage>
+    </>,
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 4 — THE FULL PICTURE (merged old Pages 3 + 4)
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+    // Page 4: Full Picture
+    <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>The Full Picture</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>This section covers the risks that could lower your score and the detailed measurements behind it.</p>
@@ -1778,12 +1769,10 @@ export default function ReviewPage() {
         )}
 
         <PageFooter section="The Full Picture" page={4} />
-      </ReportPage>
+    </>,
 
-      {/* ════════════════════════════════════════════════════════
-          PAGE 5 — METHODOLOGY AND NEXT STEPS
-          ════════════════════════════════════════════════════════ */}
-      <ReportPage record={record}>
+    // Page 5: Methodology
+    <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Methodology and Next Steps</h1>
 
@@ -1840,232 +1829,17 @@ export default function ReviewPage() {
         </div>
 
         <PageFooter section="Methodology and Next Steps" page={5} />
-      </ReportPage>
+    </>,
 
+  ];
 
-
-
-      {/* ================================================================
-          POST-REPORT ACTION PANEL — APP UI, NOT REPORT CONTENT
-          ================================================================ */}
-      <div className="download-section no-print" style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-        {/* Primary actions — horizontal row */}
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button
-            onClick={handleDownload}
-            disabled={downloading}
-            style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#ffffff", borderRadius: 12, border: "none", cursor: "pointer", backgroundColor: B.navy, opacity: downloading ? 0.6 : 1, transition: "background-color 180ms ease, transform 180ms ease", flex: 1, minWidth: 180, boxShadow: "0 4px 12px rgba(14,26,43,0.15)" }}
-            onMouseEnter={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.purple)}
-            onMouseLeave={(e) => !downloading && (e.currentTarget.style.backgroundColor = B.navy)}>
-            {downloading ? "Generating…" : "Download Report"}
-          </button>
-
-          <button
-            onClick={() => {
-              const url = `https://peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
-              navigator.clipboard.writeText(url).then(() => {
-                setLinkCopied(true);
-                setTimeout(() => setLinkCopied(false), 3000);
-              });
-            }}
-            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: linkCopied ? B.purple : B.navy, borderRadius: 12, border: `1px solid ${linkCopied ? B.purple : B.stone}`, cursor: "pointer", backgroundColor: linkCopied ? "rgba(31,109,122,0.06)" : "#ffffff", transition: "all 180ms ease" }}>
-            {linkCopied ? "Link Copied" : "Copy Verification Link"}
-          </button>
-
-          <button
-            onClick={() => {
-              const nextDate = new Date(record.issued_timestamp_utc || record.assessment_date_utc);
-              nextDate.setMonth(nextDate.getMonth() + (record.final_score < 40 ? 2 : record.final_score >= 80 ? 6 : 3));
-              const dateStr = nextDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-              const endDate = new Date(nextDate.getTime() + 30 * 60000);
-              const endStr = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-              const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("RunPayway Income Stability Reassessment")}&dates=${dateStr}/${endStr}&details=${encodeURIComponent(`Time to reassess your Income Stability Score.\n\nPrevious score: ${record.final_score} (${record.stability_band})\nPrimary focus: ${record.primary_constraint_label}\n\nTake your assessment at https://runpayway.com/pricing`)}`;
-              window.open(url, "_blank");
-            }}
-            style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 12, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
-            Add Reassessment to Calendar
-          </button>
-        </div>
-
-        {/* Shareable Score Card */}
-        <div id="shareable-score-card" style={{ borderRadius: 16, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden" }}>
-          {/* Card header */}
-          <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "28px 28px 24px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div>
-                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>INCOME STABILITY SCORE</div>
-                <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>{record.final_score}</div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
-                  <span style={{ fontSize: 15, fontWeight: 500, color: bandColor }}>{record.stability_band}</span>
-                </div>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <Image src={logoWhite} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", marginBottom: 8 }} />
-                <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>RunPayway Assessment</div>
-              </div>
-            </div>
-          </div>
-          {/* Card body */}
-          <div style={{ padding: "20px 28px 24px", backgroundColor: "#FFFFFF" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-              {[
-                ["Prepared for", name],
-                ["Industry", (record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())],
-                ["Assessed", issuedDate],
-              ].map(([l, v]) => (
-                <div key={l}>
-                  <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>{l}</div>
-                  <div style={{ fontSize: 12, fontWeight: 500, color: B.navy }}>{v}</div>
-                </div>
-              ))}
-            </div>
-            <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: 16 }} />
-            <div style={{ display: "flex", gap: 16, marginBottom: 16 }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Peer Percentile</div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: B.purple }}>{record.peer_stability_percentile_label || "—"}</div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Model Version</div>
-                <div style={{ fontSize: 12, fontWeight: 500, color: B.navy }}>RP-2.0</div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: B.taupe, marginBottom: 2 }}>Record ID</div>
-                <div style={{ fontSize: 12, fontWeight: 500, color: B.navy, fontFamily: "monospace" }}>{record.record_id.slice(0, 8)}</div>
-              </div>
-            </div>
-            <div style={{ fontSize: 10, color: B.taupe, marginBottom: 16 }}>
-              Confirm this record at peoplestar.com/RunPayway/verify
-            </div>
-            {/* Share actions */}
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <button
-                onClick={() => {
-                  const text = `${name} — Income Stability Score: ${record.final_score} (${record.stability_band}). ${record.peer_stability_percentile_label ? `${record.peer_stability_percentile_label} percentile. ` : ""}Assessed ${issuedDate} under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
-                  navigator.clipboard.writeText(text).then(() => {
-                    setLinkCopied(true);
-                    setTimeout(() => setLinkCopied(false), 3000);
-                  });
-                }}
-                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: B.navy, borderRadius: 10, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease", flex: 1 }}
-              >
-                {linkCopied ? "Copied to clipboard" : "Copy score summary"}
-              </button>
-              <button
-                onClick={() => {
-                  const url = `https://peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
-                  navigator.clipboard.writeText(url).then(() => {
-                    setLinkCopied(true);
-                    setTimeout(() => setLinkCopied(false), 3000);
-                  });
-                }}
-                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: B.navy, borderRadius: 10, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: B.bone, transition: "all 150ms ease", flex: 1 }}
-              >
-                Copy verification link
-              </button>
-              <button
-                onClick={async () => {
-                  const el = document.getElementById("shareable-score-card");
-                  if (!el) return;
-                  const sendSection = el.querySelector("[data-send-section]") as HTMLElement | null;
-                  if (sendSection) sendSection.style.display = "none";
-                  try {
-                    const html2canvas = (await import("html2canvas")).default;
-                    const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-                    if (sendSection) sendSection.style.display = "";
-                    const link = document.createElement("a");
-                    link.download = `RunPayway-Score-Card-${record.record_id.slice(0, 8)}.png`;
-                    link.href = canvas.toDataURL("image/png");
-                    link.click();
-                  } catch {
-                    if (sendSection) sendSection.style.display = "";
-                  }
-                }}
-                style={{ padding: "10px 16px", fontSize: 12, fontWeight: 600, color: "#FFFFFF", borderRadius: 10, border: "none", cursor: "pointer", backgroundColor: B.navy, transition: "all 150ms ease", flex: 1 }}
-              >
-                Download score card
-              </button>
-            </div>
-          </div>
-          {/* Send to someone */}
-          <div data-send-section style={{ padding: "16px 28px 20px", backgroundColor: B.bone, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Share with an advisor, accountant, or business partner</div>
-            <p style={{ fontSize: 11, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
-              They will receive your score summary and a verification link.
-            </p>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input
-                type="email"
-                placeholder="Recipient's email address"
-                value={advisorEmail}
-                onChange={(e) => setAdvisorEmail(e.target.value)}
-                style={{ flex: 1, padding: "10px 14px", fontSize: 13, borderRadius: 10, border: `1px solid ${B.stone}`, outline: "none", color: B.navy, backgroundColor: "#FFFFFF" }}
-              />
-              <button
-                disabled={advisorSending || advisorSent || !advisorEmail.includes("@")}
-                onClick={async () => {
-                  setAdvisorSending(true);
-                  try {
-                    const res = await fetch("/api/v1/send-report", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        recipientEmail: advisorEmail.trim(),
-                        assessmentTitle: record.assessment_title,
-                        finalScore: record.final_score,
-                        stabilityBand: record.stability_band,
-                        recordId: record.record_id,
-                        modelVersion: record.model_version || "RP-2.0",
-                        issuedTimestamp: record.issued_timestamp_utc || record.assessment_date_utc,
-                        industrySector: record.industry_sector,
-                        classification: record.classification,
-                        primaryConstraintLabel: record.primary_constraint_label,
-                        bandInterpretationText: record.band_interpretation_text,
-                        peerPercentileLabel: record.peer_stability_percentile_label,
-                      }),
-                    });
-                    if (res.ok) { setAdvisorSent(true); }
-                  } catch { /* silent */ }
-                  finally { setAdvisorSending(false); }
-                }}
-                style={{ padding: "10px 20px", fontSize: 13, fontWeight: 600, color: "#ffffff", borderRadius: 10, border: "none", cursor: advisorSent ? "default" : "pointer", backgroundColor: B.purple, opacity: advisorSending || (!advisorEmail.includes("@")) ? 0.6 : 1, transition: "all 180ms ease", whiteSpace: "nowrap" }}>
-                {advisorSent ? "Sent" : advisorSending ? "Sending..." : "Send"}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {downloadError && (
-          <div style={{ padding: "10px 16px", borderRadius: 10, backgroundColor: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
-            <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>Download failed: {downloadError}. Try refreshing the page.</p>
-          </div>
-        )}
-
-        {/* Email delivery status */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {emailStatus === "sending" && (
-            <>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.taupe, animation: "pulse 1.2s infinite" }} />
-              <span style={{ fontSize: 13, color: B.muted }}>Sending report to your email...</span>
-            </>
-          )}
-          {emailStatus === "sent" && (
-            <>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.purple }} />
-              <span style={{ fontSize: 13, color: B.purple, fontWeight: 500 }}>Report sent to your email</span>
-            </>
-          )}
-          {emailStatus === "error" && (
-            <>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.muted }} />
-              <span style={{ fontSize: 13, color: B.muted }}>Email delivery unavailable — download your report above</span>
-            </>
-          )}
-        </div>
-
-        <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }`}</style>
-      </div>
+  return (
+    <ReportErrorBoundary>
+    {/* Hidden container for PDF export — keeps all pages rendered */}
+    <div id="report-container" style={{ position: "absolute", left: "-9999px", top: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
+      {pageContents.map((content, i) => (
+        <ReportPage key={i} record={record}>{content}</ReportPage>
+      ))}
 
       {/* ── Print stylesheet + dark mode ── */}
       <style>{`
@@ -2075,6 +1849,8 @@ export default function ReviewPage() {
         }
         @media print {
           .no-print, .download-section { display: none !important; }
+          #report-container { position: static !important; left: auto !important; }
+          #paginated-view { display: none !important; }
           .report-page {
             break-inside: avoid;
             page-break-inside: avoid;
@@ -2101,6 +1877,91 @@ export default function ReviewPage() {
           }
         }
       `}</style>
+    </div>
+
+    {/* On-screen paginated view */}
+    <div id="paginated-view" style={{ maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 80px" }}>
+      <div ref={pageContainerRef} style={{ minHeight: "60vh" }}>
+        <div className="report-page" style={{ backgroundColor: "#FFFFFF", borderRadius: 8, padding: "32px 36px", border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 2px 12px rgba(14,26,43,0.04)" }}>
+          {pageContents[currentPage]}
+        </div>
+      </div>
+
+      {/* Fixed bottom navigation bar */}
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        backgroundColor: "rgba(255,255,255,0.97)",
+        backdropFilter: "blur(12px)",
+        borderTop: "1px solid rgba(14,26,43,0.08)",
+        padding: "12px 24px",
+        zIndex: 100,
+        display: "flex", justifyContent: "center", alignItems: "center", gap: 24,
+      }}>
+        {/* Download PDF */}
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          style={{
+            background: "none", border: "none", cursor: downloading ? "default" : "pointer",
+            fontSize: 13, color: "rgba(14,26,43,0.58)",
+            padding: "8px 12px", fontWeight: 500,
+          }}
+        >
+          {downloading ? "Generating..." : "Download PDF"}
+        </button>
+
+        {/* Left arrow */}
+        <button
+          onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+          disabled={currentPage === 0}
+          style={{
+            background: "none", border: "none", cursor: currentPage === 0 ? "default" : "pointer",
+            fontSize: 18, color: currentPage === 0 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            padding: "8px 12px",
+          }}
+          aria-label="Previous page"
+        >
+          ←
+        </button>
+
+        {/* Page dots */}
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              style={{
+                width: currentPage === i ? 24 : 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: currentPage === i ? "#0E1A2B" : "rgba(14,26,43,0.15)",
+                border: "none",
+                cursor: "pointer",
+                transition: "all 200ms ease",
+                padding: 0,
+              }}
+              aria-label={`Go to page ${i === 0 ? "Cover" : i}`}
+            />
+          ))}
+        </div>
+
+        {/* Page label */}
+        <span style={{ fontSize: 13, color: "#0E1A2B", fontWeight: 500 }}>{pageNames[currentPage]}</span>
+
+        {/* Right arrow */}
+        <button
+          onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+          disabled={currentPage === totalPages - 1}
+          style={{
+            background: "none", border: "none", cursor: currentPage === totalPages - 1 ? "default" : "pointer",
+            fontSize: 18, color: currentPage === totalPages - 1 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            padding: "8px 12px",
+          }}
+          aria-label="Next page"
+        >
+          →
+        </button>
+      </div>
     </div>
     </ReportErrorBoundary>
   );
