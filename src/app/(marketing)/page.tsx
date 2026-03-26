@@ -383,7 +383,7 @@ input[type="range"]::-webkit-slider-thumb {
                 fontFamily: DISPLAY_FONT,
               }}
             >
-              <RevealText text="Could your income survive the next 60 days?" visible={visible} baseDelay={150} />
+              <RevealText text="You know what you earn. You don&#8217;t know how it holds up." visible={visible} baseDelay={150} />
             </h1>
 
             <p
@@ -397,7 +397,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 600ms ease-out 300ms",
               }}
             >
-              Get your score in under 2 minutes. See exactly where your income is vulnerable.
+              A structural diagnostic that scores how your income is built — not how much you make.
             </p>
 
             <div
@@ -443,7 +443,10 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
-              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
+              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
+                Fixed questions. Same answers, same score. No financial data required.
+              </p>
+              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.30)", marginTop: 10, fontStyle: "italic" }}>
                 What happens to your score if your biggest client leaves tomorrow?
               </p>
             </div>
