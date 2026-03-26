@@ -518,11 +518,11 @@ function BridgeSection() {
       aria-label="Why this matters"
       style={{
         background: "transparent",
-        paddingTop: 0,
-        paddingBottom: mobile ? 48 : 64,
+        paddingTop: mobile ? 24 : 32,
+        paddingBottom: mobile ? 32 : 48,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        marginTop: mobile ? -28 : -36,
+        marginTop: 0,
         position: "relative" as const,
         zIndex: 10,
       }}
@@ -537,15 +537,15 @@ function BridgeSection() {
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
           backgroundColor: "rgba(255,255,255,0.96)",
           backdropFilter: "blur(12px)",
-          borderRadius: 12,
-          padding: mobile ? "24px 24px" : "28px 40px",
+          borderRadius: 10,
+          padding: mobile ? "18px 20px" : "24px 36px",
           boxShadow: "0 2px 16px rgba(14,26,43,0.06)",
           border: "1px solid rgba(14,26,43,0.04)",
         }}
       >
         <p
           style={{
-            fontSize: mobile ? 16 : 19,
+            fontSize: mobile ? 14 : 19,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
@@ -556,7 +556,7 @@ function BridgeSection() {
         >
           The median small business holds just 27 days of cash buffer.*
         </p>
-        <p style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginTop: 8, fontStyle: "italic" }}>
+        <p style={{ fontSize: mobile ? 10 : 11, color: "rgba(14,26,43,0.35)", marginTop: 6, fontStyle: "italic" }}>
           *JPMorgan Chase Institute, &ldquo;Cash is King: Flows, Balances, and Buffer Days,&rdquo; September 2016
         </p>
       </div>
@@ -2821,8 +2821,8 @@ function StickyNav() {
         )}
         {mobile && (
           <Link href="/pricing" style={{
-            fontSize: 12, fontWeight: 600, color: B.navy, textDecoration: "none",
-            padding: "7px 16px", borderRadius: 6,
+            fontSize: 11, fontWeight: 600, color: B.navy, textDecoration: "none",
+            padding: "5px 12px", borderRadius: 5,
             background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
           }}>Get Started</Link>
         )}
