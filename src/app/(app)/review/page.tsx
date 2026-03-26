@@ -440,11 +440,17 @@ async function downloadPDF(record: AssessmentRecord) {
   const noPrintEls = reportContainer.querySelectorAll(".no-print") as NodeListOf<HTMLElement>;
   noPrintEls.forEach((el) => { el.style.display = "none"; });
 
-  // Temporarily style for capture
+  // Temporarily style for capture — make visible and properly sized
   const savedContainerStyle = {
     maxWidth: reportContainer.style.maxWidth,
     gap: (reportContainer as HTMLElement).style.gap,
+    opacity: reportContainer.style.opacity,
+    zIndex: reportContainer.style.zIndex,
+    position: reportContainer.style.position,
   };
+  reportContainer.style.opacity = "1";
+  reportContainer.style.zIndex = "9999";
+  reportContainer.style.position = "absolute";
   reportContainer.style.maxWidth = `${captureW}px`;
   (reportContainer as HTMLElement).style.gap = "0px";
 
@@ -478,6 +484,9 @@ async function downloadPDF(record: AssessmentRecord) {
   noPrintEls.forEach((el) => { el.style.display = ""; });
   reportContainer.style.maxWidth = savedContainerStyle.maxWidth;
   (reportContainer as HTMLElement).style.gap = savedContainerStyle.gap;
+  reportContainer.style.opacity = savedContainerStyle.opacity;
+  reportContainer.style.zIndex = savedContainerStyle.zIndex;
+  reportContainer.style.position = savedContainerStyle.position;
 
   const totalCanvasH = canvas.height;
   let currentY = 0;
@@ -1850,7 +1859,7 @@ export default function ReviewPage() {
   return (
     <ReportErrorBoundary>
     {/* Hidden container for PDF export — keeps all pages rendered */}
-    <div id="report-container" style={{ position: "absolute", left: "-9999px", top: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 40px" }}>
+    <div id="report-container" style={{ position: "fixed", left: 0, top: 0, width: PDF.captureW, zIndex: -1, opacity: 0, pointerEvents: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, padding: "0 0 40px" }}>
       {pageContents.map((content, i) => (
         <ReportPage key={i} record={record}>{content}</ReportPage>
       ))}
@@ -1863,7 +1872,7 @@ export default function ReviewPage() {
         }
         @media print {
           .no-print, .download-section { display: none !important; }
-          #report-container { position: static !important; left: auto !important; gap: 0 !important; }
+          #report-container { position: static !important; left: auto !important; gap: 0 !important; opacity: 1 !important; z-index: auto !important; pointer-events: auto !important; width: 100% !important; }
           #paginated-view { display: none !important; }
           .report-page {
             break-inside: auto;
