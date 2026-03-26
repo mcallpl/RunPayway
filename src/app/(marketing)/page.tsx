@@ -104,7 +104,7 @@ const S = {
   // Section vertical rhythm
   sectionY:     { desktop: 120, mobile: 72 },
   sectionYlg:   { desktop: 144, mobile: 80 },
-  sectionYsm:   { desktop: 80, mobile: 48 },
+  sectionYsm:  { desktop: 80, mobile: 48 },
   transitionY:  { desktop: 48, mobile: 32 },
   // Layout
   maxW:         1100,
@@ -112,29 +112,40 @@ const S = {
   padX:         { desktop: 56, mobile: 28 },
   // Vertical gaps (strict 4px grid)
   h1mb:         24,
-  h2mb:         16,
+  h2mb:         20,
   subtextMb:    48,
   paraMb:       16,
-  labelMb:      12,
-  sectionHeaderMb: { desktop: 48, mobile: 32 },
+  labelMb:      14,
+  sectionHeaderMb: { desktop: 56, mobile: 36 },
   // Cards
-  cardPad:      { desktop: 32, mobile: 24 },
+  cardPad:      { desktop: 36, mobile: 28 },
   cardRadius:   8,
   panelRadius:  12,
-  gridGap:      16,
-  gridGapSm:    12,
+  gridGap:      20,
+  gridGapSm:    14,
   // CTA
-  ctaH:         52,
-  ctaHsm:       44,
-  ctaPadX:      32,
+  ctaH:         56,
+  ctaHsm:       48,
+  ctaPadX:      36,
   ctaRadius:    10,
-  // Typography
-  lhHeading:    1.08,
-  lhBody:       1.6,
-  lhDense:      1.45,
+  // Typography — enterprise legibility scale (nothing under 13px)
+  lhHeading:    1.12,
+  lhBody:       1.65,
+  lhDense:      1.5,
   lsHeading:    "-0.025em",
   lsHero:       "-0.03em",
-  lsLabel:      "0.10em",
+  lsLabel:      "0.08em",
+  // Font sizes
+  fsH1:         { desktop: 64, mobile: 40 },
+  fsH2:         { desktop: 48, mobile: 32 },
+  fsH3:         { desktop: 24, mobile: 20 },
+  fsBody:       { desktop: 18, mobile: 16 },
+  fsBodySm:     { desktop: 16, mobile: 15 },
+  fsLabel:      13,
+  fsMeta:       14,
+  fsCard:       { desktop: 16, mobile: 15 },
+  fsCta:        16,
+  fsNav:        15,
 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
@@ -353,7 +364,7 @@ input[type="range"]::-webkit-slider-thumb {
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(8px)",
                 transition: "opacity 500ms ease-out, transform 500ms ease-out",
-                fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const,
+                fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const,
                 color: B.teal, marginBottom: 24,
               }}
             >
@@ -362,7 +373,7 @@ input[type="range"]::-webkit-slider-thumb {
 
             <h1
               style={{
-                fontSize: mobile ? 36 : 58,
+                fontSize: mobile ? S.fsH1.mobile : S.fsH1.desktop,
                 fontWeight: 400,
                 color: "#F4F1EA",
                 lineHeight: 1.04,
@@ -377,7 +388,7 @@ input[type="range"]::-webkit-slider-thumb {
 
             <p
               style={{
-                fontSize: mobile ? 15 : 17,
+                fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
                 color: "rgba(244,241,234,0.50)",
                 lineHeight: 1.55,
                 marginBottom: 36,
@@ -407,7 +418,7 @@ input[type="range"]::-webkit-slider-thumb {
                   borderRadius: S.ctaRadius,
                   background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
                   color: B.navy,
-                  fontSize: 15,
+                  fontSize: S.fsCta,
                   letterSpacing: "-0.01em",
                   border: "1px solid rgba(244,241,234,0.92)",
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.20), 0 2px 6px rgba(0,0,0,0.12)",
@@ -432,7 +443,7 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
+              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginTop: 20 }}>
                 What happens to your score if your biggest client leaves tomorrow?
               </p>
             </div>
@@ -539,7 +550,7 @@ function BridgeSection() {
       >
         <p
           style={{
-            fontSize: mobile ? 15 : 19,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
@@ -550,7 +561,7 @@ function BridgeSection() {
         >
           The median small business holds just 27 days of cash buffer.*
         </p>
-        <p style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginTop: 8, fontStyle: "italic" }}>
+        <p style={{ fontSize: S.fsLabel, color: "rgba(14,26,43,0.35)", marginTop: 8, fontStyle: "italic" }}>
           *JPMorgan Chase Institute, &ldquo;Cash is King: Flows, Balances, and Buffer Days,&rdquo; September 2016
         </p>
       </div>
@@ -622,18 +633,18 @@ function FourFactorsSection() {
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
         {/* Section header */}
         <div style={{ maxWidth: 560, marginBottom: mobile ? S.sectionHeaderMb.mobile : S.sectionHeaderMb.desktop }}>
-          <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             What We Measure
           </div>
           <h2 style={{
-            fontSize: mobile ? 28 : 42, color: B.navy, lineHeight: 1.12,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: 1.12,
             letterSpacing: "-0.025em", fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16,
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
             The four structural risks that determine your score
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
             If any one is weak, your income is exposed. The score quantifies exactly how much.
           </p>
         </div>
@@ -675,22 +686,22 @@ function FourFactorsSection() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
                   {/* Number + label */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ fontSize: 20, fontWeight: 700, color: f.accent, letterSpacing: "-0.02em", fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{f.num}</span>
-                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)" }}>{f.label}</span>
+                    <span style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 700, color: f.accent, letterSpacing: "-0.02em", fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{f.num}</span>
+                    <span style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)" }}>{f.label}</span>
                   </div>
 
                   {/* Risk metric */}
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 18, fontWeight: 700, color: f.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{f.metric}</div>
-                    <div style={{ fontSize: 9, color: "rgba(244,241,234,0.30)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginTop: 2 }}>{f.metricLabel}</div>
+                    <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 700, color: f.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{f.metric}</div>
+                    <div style={{ fontSize: S.fsLabel, color: "rgba(244,241,234,0.30)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginTop: 2 }}>{f.metricLabel}</div>
                   </div>
                 </div>
 
-                <h3 style={{ fontSize: mobile ? 18 : 21, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.015em", marginBottom: 10 }}>
+                <h3 style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.015em", marginBottom: 10 }}>
                   {f.question}
                 </h3>
 
-                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, margin: 0 }}>
                   {f.description}
                 </p>
               </div>
@@ -806,7 +817,7 @@ function IncomePatterns() {
           <div style={{ maxWidth: 560 }}>
             <div
               style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
@@ -814,7 +825,7 @@ function IncomePatterns() {
             </div>
             <h2
               style={{
-                fontSize: mobile ? 28 : 42,
+                fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
                 color: B.navy,
                 lineHeight: S.lhHeading,
                 letterSpacing: S.lsHeading,
@@ -826,7 +837,7 @@ function IncomePatterns() {
           </div>
           <p
             style={{
-              fontSize: 16, color: "rgba(14,26,43,0.50)", lineHeight: 1.6,
+              fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(14,26,43,0.50)", lineHeight: 1.6,
               maxWidth: 360,
               marginTop: mobile ? 20 : 0,
             }}
@@ -878,12 +889,12 @@ function IncomePatterns() {
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                  <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>
+                  <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>
                     {p.label}
                   </div>
                   <div
                     style={{
-                      fontSize: 11, color: "rgba(14,26,43,0.35)", fontWeight: 500,
+                      fontSize: S.fsLabel, color: "rgba(14,26,43,0.35)", fontWeight: 500,
                       transition: "transform 300ms ease",
                       transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                     }}
@@ -891,7 +902,7 @@ function IncomePatterns() {
                     &#9660;
                   </div>
                 </div>
-                <p style={{ fontSize: 15, color: "rgba(14,26,43,0.50)", lineHeight: 1.6, marginBottom: isOpen ? 28 : 0 }}>
+                <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(14,26,43,0.50)", lineHeight: 1.6, marginBottom: isOpen ? 28 : 0 }}>
                   {p.examples}
                 </p>
 
@@ -1044,12 +1055,12 @@ function WhatYourReportSection() {
     >
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: mobile ? 48 : 64 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             What You Get
           </div>
           <h2
             style={{
-              fontSize: mobile ? 28 : 42,
+              fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
               color: "#F4F1EA",
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
@@ -1064,7 +1075,7 @@ function WhatYourReportSection() {
           </h2>
           <p
             style={{
-              fontSize: mobile ? 15 : 16,
+              fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
               color: "rgba(244,241,234,0.55)",
               lineHeight: S.lhBody,
               maxWidth: 520,
@@ -1097,10 +1108,10 @@ function WhatYourReportSection() {
               {/* Top accent line */}
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color }} />
 
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>{page.num}</div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 4, letterSpacing: "-0.01em" }}>{page.title}</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: page.color === B.navy ? B.teal : page.color, marginBottom: 12, letterSpacing: "-0.02em" }}>{page.value}</div>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{page.detail}</p>
+              <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>{page.num}</div>
+              <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: "#F4F1EA", marginBottom: 4, letterSpacing: "-0.01em" }}>{page.title}</div>
+              <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 700, color: page.color === B.navy ? B.teal : page.color, marginBottom: 12, letterSpacing: "-0.02em" }}>{page.value}</div>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{page.detail}</p>
             </div>
           ))}
         </div>
@@ -1121,8 +1132,8 @@ function WhatYourReportSection() {
           transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
         }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>What if you added one more client?</div>
-            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
+            <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>What if you added one more client?</div>
+            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
               What if you converted to retainers? What if you couldn&#8217;t work for 90 days? The full report includes a tool that answers these questions — with your actual numbers, in real time.
             </p>
           </div>
@@ -1131,7 +1142,7 @@ function WhatYourReportSection() {
               href="/sample-report"
               style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600,
+                padding: "10px 24px", borderRadius: 8, fontSize: S.fsMeta, fontWeight: 600,
                 color: "#F4F1EA", border: "1px solid rgba(244,241,234,0.20)",
                 textDecoration: "none", whiteSpace: "nowrap" as const,
                 transition: "border-color 200ms ease",
@@ -1210,7 +1221,7 @@ function SampleResultSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1227,7 +1238,7 @@ function SampleResultSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 15 : 16,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
             color: "rgba(244,241,234,0.60)",
             lineHeight: S.lhBody,
             maxWidth: S.subtextMaxW,
@@ -1275,7 +1286,7 @@ function SampleResultSection() {
               {/* Overline */}
               <div
                 style={{
-                  fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                  fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                   letterSpacing: S.lsLabel, color: B.light, marginBottom: 16,
                 }}
               >
@@ -1298,11 +1309,11 @@ function SampleResultSection() {
                 }}
               >
                 <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#16A34A" }} />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "#16A34A" }}>High Stability</span>
+                <span style={{ fontSize: S.fsMeta, fontWeight: 600, color: "#16A34A" }}>High Stability</span>
               </div>
 
               {/* Percentile */}
-              <div style={{ fontSize: 12, color: B.light, marginBottom: 20 }}>
+              <div style={{ fontSize: S.fsMeta, color: B.light, marginBottom: 20 }}>
                 72nd percentile within Professional Services
               </div>
 
@@ -1319,34 +1330,34 @@ function SampleResultSection() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Continuity
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
+                  <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy }}>
                     {continuityVal}%
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Stress Test
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
+                  <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy }}>
                     78 &#8594; <span style={{ color: "#DC2626" }}>56</span>
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     How Resilient
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
+                  <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy }}>
                     Supported
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 6, fontWeight: 600 }}>
                     Confidence
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 600, color: B.navy }}>
+                  <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy }}>
                     High
                   </div>
                 </div>
@@ -1357,7 +1368,7 @@ function SampleResultSection() {
 
               {/* Key insight — matches the report's key insight line */}
               <div style={{ backgroundColor: "#F8FAFC", borderLeft: `3px solid ${B.purple}`, borderRadius: 2, padding: "10px 14px", marginBottom: 16 }}>
-                <p style={{ fontSize: 13, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.5 }}>
+                <p style={{ fontSize: S.fsMeta, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.5 }}>
                   The biggest structural weak point is limited forward visibility. Improving forward secured income could add 8 points.
                 </p>
               </div>
@@ -1368,12 +1379,12 @@ function SampleResultSection() {
               {/* Constraint + Improvement in a row */}
               <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 16, marginBottom: 16 }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
-                  <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Forward visibility could be stronger</p>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.light, marginBottom: 4, fontWeight: 600 }}>Main Constraint</div>
+                  <p style={{ fontSize: S.fsMeta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Forward visibility could be stronger</p>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 4, fontWeight: 600 }}>Best Improvement</div>
-                  <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>Extend committed income further ahead</p>
+                  <div style={{ fontSize: S.fsLabel, textTransform: "uppercase", letterSpacing: S.lsLabel, color: B.teal, marginBottom: 4, fontWeight: 600 }}>Best Improvement</div>
+                  <p style={{ fontSize: S.fsMeta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Extend committed income further ahead</p>
                 </div>
               </div>
 
@@ -1381,7 +1392,7 @@ function SampleResultSection() {
               <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 12 }} />
 
               {/* Verification */}
-              <div style={{ fontSize: 12, color: B.light, textAlign: "center" }}>
+              <div style={{ fontSize: S.fsMeta, color: B.light, textAlign: "center" }}>
                 Model RP-2.0 &#183; Verified &#183; runpayway.com/verify
               </div>
             </div>
@@ -1390,7 +1401,7 @@ function SampleResultSection() {
 
         {/* Interactive demo */}
         <div style={{ maxWidth: 480, margin: "40px auto 0", textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 16 }}>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.50)", marginBottom: 16 }}>
             Drag to explore different scores
           </p>
           <input
@@ -1412,7 +1423,7 @@ function SampleResultSection() {
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 32, fontWeight: 600, color: "#F4F1EA" }}>{demoScore}</div>
-              <div style={{ fontSize: 13, color: demoBandColor, fontWeight: 600, marginTop: 4 }}>{demoBand}</div>
+              <div style={{ fontSize: S.fsMeta, color: demoBandColor, fontWeight: 600, marginTop: 4 }}>{demoBand}</div>
             </div>
           </div>
         </div>
@@ -1426,7 +1437,7 @@ function SampleResultSection() {
             transition: "opacity 600ms ease-out 500ms",
           }}
         >
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.70)", marginBottom: 20, fontFamily: DISPLAY_FONT, fontWeight: 400 }}>
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(244,241,234,0.70)", marginBottom: 20, fontFamily: DISPLAY_FONT, fontWeight: 400 }}>
             What would your number be?
           </p>
           <a
@@ -1441,7 +1452,7 @@ function SampleResultSection() {
               borderRadius: S.ctaRadius,
               background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
               color: B.navy,
-              fontSize: 15,
+              fontSize: S.fsCta,
               fontWeight: 600,
               textDecoration: "none",
               border: "1px solid rgba(244,241,234,0.92)",
@@ -1461,7 +1472,7 @@ function SampleResultSection() {
           >
             Get My Free Score
           </a>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginTop: 12 }}>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.35)", marginTop: 12 }}>
             Free · Under 2 minutes · No bank connection
           </p>
         </div>
@@ -1520,11 +1531,11 @@ function HowItWorksSection() {
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
         {/* Header */}
         <div style={{ maxWidth: 600, marginBottom: mobile ? 48 : 64 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             How It Works
           </div>
           <h2 style={{
-            fontSize: mobile ? 28 : 42, color: B.navy, lineHeight: S.lhHeading,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400,
             marginBottom: 16,
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
@@ -1533,7 +1544,7 @@ function HowItWorksSection() {
             Three steps. Under two minutes.<br />No financial data required.
           </h2>
           <p style={{
-            fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
             opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms",
           }}>
             We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
@@ -1562,27 +1573,27 @@ function HowItWorksSection() {
               {/* Top row: number + time */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                 <div style={{
-                  fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: step.color,
+                  fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.08em", color: step.color,
                   padding: "4px 10px", borderRadius: 4,
                   backgroundColor: step.color === B.navy ? "rgba(14,26,43,0.06)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(31,109,122,0.08)",
                 }}>
                   STEP {step.num}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 600, color: B.light }}>{step.time}</span>
+                <span style={{ fontSize: S.fsMeta, fontWeight: 600, color: B.light }}>{step.time}</span>
               </div>
 
               {/* Title */}
-              <h3 style={{ fontSize: mobile ? 20 : 22, fontWeight: 600, color: B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
+              <h3 style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
                 {step.title}
               </h3>
 
               {/* Hook — the line that sells */}
-              <p style={{ fontSize: 14, fontWeight: 600, color: step.color, marginBottom: 12, lineHeight: 1.4 }}>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600, color: step.color, marginBottom: 12, lineHeight: 1.4 }}>
                 {step.hook}
               </p>
 
               {/* Description */}
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: 1.65, margin: 0 }}>
                 {step.desc}
               </p>
             </div>
@@ -1626,7 +1637,7 @@ function WhatItMeasuresSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1643,7 +1654,7 @@ function WhatItMeasuresSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 15 : 16,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
             color: B.muted,
             lineHeight: S.lhBody,
             maxWidth: 640,
@@ -1700,10 +1711,10 @@ function WhatItMeasuresSection() {
                 {dim.num}
               </span>
 
-              <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 6, paddingRight: 40 }}>
+              <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy, marginBottom: 6, paddingRight: 40 }}>
                 {dim.title}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
                 {dim.desc}
               </p>
             </div>
@@ -1715,7 +1726,7 @@ function WhatItMeasuresSection() {
           style={{
             textAlign: "center",
             marginTop: 40,
-            fontSize: 12,
+            fontSize: S.fsMeta,
             fontWeight: 500,
             textTransform: "uppercase",
             letterSpacing: S.lsLabel,
@@ -1771,7 +1782,7 @@ function TestimonialsSection() {
         >
           <div
             style={{
-              fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+              fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
               letterSpacing: S.lsLabel, color: B.teal, marginBottom: S.labelMb,
             }}
           >
@@ -1779,7 +1790,7 @@ function TestimonialsSection() {
           </div>
           <h2
             style={{
-              fontSize: mobile ? 28 : 42,
+              fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
               color: "#F4F1EA",
               lineHeight: S.lhHeading,
               letterSpacing: S.lsHeading,
@@ -1814,7 +1825,7 @@ function TestimonialsSection() {
               }}
             >
               {/* Quote */}
-              <p style={{ fontSize: 15, color: "rgba(244,241,234,0.80)", lineHeight: 1.65, margin: "0 0 24px", flex: 1, fontStyle: "italic" }}>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.80)", lineHeight: 1.65, margin: "0 0 24px", flex: 1, fontStyle: "italic" }}>
                 &ldquo;{t.quote}&rdquo;
               </p>
 
@@ -1828,8 +1839,8 @@ function TestimonialsSection() {
                   style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }}
                 />
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
-                  <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.role} &middot; Score: {t.score}</div>
+                  <div style={{ fontSize: S.fsMeta, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
+                  <div style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.45)" }}>{t.role} &middot; Score: {t.score}</div>
                 </div>
               </div>
             </div>
@@ -1888,7 +1899,7 @@ function PricingSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: "#F4F1EA",
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -1905,7 +1916,7 @@ function PricingSection() {
         <p
           className="text-center mx-auto"
           style={{
-            fontSize: mobile ? 15 : 16,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
             color: "rgba(244,241,234,0.80)",
             lineHeight: S.lhBody,
             maxWidth: S.subtextMaxW,
@@ -1937,7 +1948,7 @@ function PricingSection() {
             border: "1px solid rgba(255,255,255,0.08)",
           }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal }} />
-            <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.60)", letterSpacing: "0.01em" }}>
+            <span style={{ fontSize: S.fsMeta, fontWeight: 500, color: "rgba(244,241,234,0.60)", letterSpacing: "0.01em" }}>
               Professionals across 19 industries
             </span>
           </div>
@@ -1971,7 +1982,7 @@ function PricingSection() {
           >
             <div
               style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
@@ -1980,7 +1991,7 @@ function PricingSection() {
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $0
             </div>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
+            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
               Score &#183; Band &#183; Percentile &#183; One key insight
             </p>
             <Link
@@ -1992,7 +2003,7 @@ function PricingSection() {
                 borderRadius: S.ctaRadius,
                 backgroundColor: "#FFFFFF",
                 color: B.navy,
-                fontSize: 15,
+                fontSize: S.fsCta,
                 textDecoration: "none",
                 border: `1px solid ${B.navy}`,
                 transition: "background-color 180ms ease, color 180ms ease, transform 180ms ease",
@@ -2032,7 +2043,7 @@ function PricingSection() {
             <div
               style={{
                 display: "inline-block",
-                fontSize: 9, fontWeight: 600, textTransform: "uppercase",
+                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: "0.08em",
                 backgroundColor: B.purple,
                 color: "#FFFFFF",
@@ -2046,7 +2057,7 @@ function PricingSection() {
 
             <div
               style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
@@ -2055,7 +2066,7 @@ function PricingSection() {
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $99
             </div>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
+            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
               Full report &#183; Score simulator &#183; Scripts &#183; Action plan
             </p>
             <a
@@ -2067,7 +2078,7 @@ function PricingSection() {
                 borderRadius: S.ctaRadius,
                 background: B.gradient,
                 color: "#FFFFFF",
-                fontSize: 15,
+                fontSize: S.fsCta,
                 textDecoration: "none",
                 transition: "transform 180ms ease, box-shadow 180ms ease",
                 boxShadow: "0 8px 24px rgba(75,63,174,0.30)",
@@ -2084,7 +2095,7 @@ function PricingSection() {
             >
               Get Full Report — $99
             </a>
-            <p style={{ fontSize: 11, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+            <p style={{ fontSize: S.fsLabel, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
               Full refund if it doesn&#8217;t reveal something new.
             </p>
           </div>
@@ -2100,11 +2111,11 @@ function PricingSection() {
           }}
         >
           <div style={{ display: "inline-block", padding: "16px 32px", borderRadius: S.panelRadius, border: "1px solid rgba(244,241,234,0.12)", marginBottom: 20 }}>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
+            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
               If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
             </p>
           </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)" }}>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)" }}>
             No bank connection &#183; No credit pull &#183; Private by default &#183; Under 2 minutes
           </p>
         </div>
@@ -2181,7 +2192,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2237,7 +2248,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
                         backgroundColor: panel.color, flexShrink: 0,
                       }}
                     />
-                    <span style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>
+                    <span style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy }}>
                       {panel.title}
                     </span>
                   </div>
@@ -2260,7 +2271,7 @@ function TrustSection({ trustOpen, setTrustOpen }: { trustOpen: number | null; s
                       <p
                         key={item}
                         style={{
-                          fontSize: 15, color: B.muted, margin: 0,
+                          fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, margin: 0,
                           marginBottom: 8, lineHeight: S.lhDense,
                           paddingLeft: 22,
                         }}
@@ -2318,7 +2329,7 @@ function ClassificationSection() {
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2335,7 +2346,7 @@ function ClassificationSection() {
         <p
           className="text-center"
           style={{
-            fontSize: mobile ? 15 : 16,
+            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop,
             color: B.muted,
             lineHeight: S.lhBody,
             marginBottom: mobile ? 40 : 56,
@@ -2386,10 +2397,10 @@ function ClassificationSection() {
             <div key={band.range}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                 <span style={{ width: 10, height: 10, borderRadius: 999, backgroundColor: band.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{band.range}</span>
+                <span style={{ fontSize: S.fsMeta, fontWeight: 600, color: B.navy }}>{band.range}</span>
               </div>
-              <div style={{ fontSize: 14, color: B.navy, marginBottom: 4 }}>{band.label}</div>
-              <p style={{ fontSize: 13, color: B.muted, lineHeight: S.lhDense, margin: 0 }}>
+              <div style={{ fontSize: S.fsMeta, color: B.navy, marginBottom: 4 }}>{band.label}</div>
+              <p style={{ fontSize: S.fsMeta, color: B.muted, lineHeight: S.lhDense, margin: 0 }}>
                 {band.desc}
               </p>
             </div>
@@ -2401,7 +2412,7 @@ function ClassificationSection() {
           style={{
             textAlign: "center",
             marginTop: 40,
-            fontSize: 13,
+            fontSize: S.fsMeta,
             color: B.light,
             fontStyle: "italic",
             opacity: visible ? 1 : 0,
@@ -2466,7 +2477,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         <h2
           className="font-semibold text-center"
           style={{
-            fontSize: mobile ? 28 : 42,
+            fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
             color: B.navy,
             lineHeight: S.lhHeading,
             letterSpacing: S.lsHeading,
@@ -2514,7 +2525,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                     paddingRight: 4,
                   }}
                 >
-                  <span style={{ fontSize: 16, fontWeight: 500, color: B.navy, paddingRight: 16 }}>
+                  <span style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 500, color: B.navy, paddingRight: 16 }}>
                     {faq.q}
                   </span>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
@@ -2532,7 +2543,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                 >
                   <p
                     style={{
-                      fontSize: 15, color: B.muted, lineHeight: S.lhBody,
+                      fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody,
                       margin: 0, paddingBottom: 20, paddingLeft: 4, paddingRight: 4,
                     }}
                   >
@@ -2558,7 +2569,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           <Link
             href="/pricing"
             style={{
-              fontSize: 15, color: B.purple, fontWeight: 500,
+              fontSize: S.fsCta, color: B.purple, fontWeight: 500,
               textDecoration: "underline", textUnderlineOffset: 4,
             }}
           >
@@ -2598,7 +2609,7 @@ function ShareableScoreSection() {
           <div style={{ flex: 1, marginBottom: mobile ? 40 : 0 }}>
             <div
               style={{
-                fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
                 letterSpacing: "0.08em", color: B.teal, marginBottom: 16,
               }}
             >
@@ -2606,7 +2617,7 @@ function ShareableScoreSection() {
             </div>
             <h2
               style={{
-                fontSize: mobile ? 28 : 42,
+                fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop,
                 color: B.navy,
                 lineHeight: 1.2,
                 letterSpacing: "-0.02em",
@@ -2616,14 +2627,14 @@ function ShareableScoreSection() {
             >
               A score you can share
             </h2>
-            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 440, marginBottom: 24 }}>
+            <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(14,26,43,0.55)", lineHeight: 1.7, maxWidth: 440, marginBottom: 24 }}>
               Every RunPayway&#8482; score is verified, timestamped, and shareable. Send it to a lender, landlord, business partner, or advisor. They can verify it instantly with your unique QR code or verification link.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {["Share with lenders evaluating your application", "Send to partners assessing your stability", "Provide to clients who want confidence in your durability"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                   <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, marginTop: 7, flexShrink: 0 }} />
-                  <span style={{ fontSize: 15, color: "rgba(14,26,43,0.60)", lineHeight: 1.6 }}>{item}</span>
+                  <span style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(14,26,43,0.60)", lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -2632,29 +2643,29 @@ function ShareableScoreSection() {
             {/* Preview of shareable score card */}
             <div style={{ borderRadius: S.panelRadius, border: "1px solid rgba(14,26,43,0.08)", overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.06)" }}>
               <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "24px 24px 20px" }}>
-                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>INCOME STABILITY SCORE&#8482;</div>
+                <div style={{ fontSize: S.fsLabel, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>INCOME STABILITY SCORE&#8482;</div>
                 <div style={{ fontSize: 40, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>72</div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 8 }}>
                   <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#1F6D7A" }} />
-                  <span style={{ fontSize: 13, fontWeight: 500, color: "#1F6D7A" }}>Established Stability</span>
+                  <span style={{ fontSize: S.fsMeta, fontWeight: 500, color: "#1F6D7A" }}>Established Stability</span>
                 </div>
               </div>
               <div style={{ padding: "16px 24px 20px", backgroundColor: "#FFFFFF" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
                   <div>
-                    <div style={{ fontSize: 9, color: "rgba(14,26,43,0.42)" }}>Prepared for</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: "#0E1A2B" }}>Sample Assessment</div>
+                    <div style={{ fontSize: S.fsLabel, color: "rgba(14,26,43,0.42)" }}>Prepared for</div>
+                    <div style={{ fontSize: S.fsLabel, fontWeight: 500, color: "#0E1A2B" }}>Sample Assessment</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: 9, color: "rgba(14,26,43,0.42)" }}>Verified</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: "#0E1A2B" }}>March 2026</div>
+                    <div style={{ fontSize: S.fsLabel, color: "rgba(14,26,43,0.42)" }}>Verified</div>
+                    <div style={{ fontSize: S.fsLabel, fontWeight: 500, color: "#0E1A2B" }}>March 2026</div>
                   </div>
                 </div>
-                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)" }}>Verify at peoplestar.com/RunPayway/verify</div>
+                <div style={{ fontSize: S.fsLabel, color: "rgba(14,26,43,0.35)" }}>Verify at peoplestar.com/RunPayway/verify</div>
               </div>
             </div>
             <div style={{ textAlign: "center", marginTop: 12 }}>
-              <span style={{ fontSize: 12, color: "rgba(14,26,43,0.40)" }}>Sample score card</span>
+              <span style={{ fontSize: S.fsMeta, color: "rgba(14,26,43,0.40)" }}>Sample score card</span>
             </div>
           </div>
         </div>
@@ -2684,7 +2695,7 @@ function DisclaimerSection() {
       <p
         className="mx-auto text-center"
         style={{
-          fontSize: 13,
+          fontSize: S.fsMeta,
           color: "rgba(244,241,234,0.35)",
           lineHeight: S.lhBody,
           maxWidth: 640,
@@ -2729,7 +2740,7 @@ function SocialProof() {
         transition: "opacity 600ms ease-out",
       }}>
         <p style={{
-          fontSize: 15,
+          fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop,
           fontWeight: 500,
           color: B.muted,
           letterSpacing: "0.01em",
@@ -2747,7 +2758,7 @@ function SocialProof() {
             <span
               key={industry}
               style={{
-                fontSize: 13,
+                fontSize: S.fsMeta,
                 fontWeight: 600,
                 color: "rgba(14,26,43,0.25)",
                 letterSpacing: "0.04em",
@@ -2800,13 +2811,13 @@ function StickyNav() {
               { label: "Sample Report", href: "/sample-report" },
               { label: "Pricing", href: "/pricing" },
             ].map(link => (
-              <Link key={link.href} href={link.href} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", textDecoration: "none", fontWeight: 500, letterSpacing: "-0.01em", transition: "color 200ms" }}
+              <Link key={link.href} href={link.href} style={{ fontSize: S.fsNav, color: "rgba(244,241,234,0.55)", textDecoration: "none", fontWeight: 500, letterSpacing: "-0.01em", transition: "color 200ms" }}
                 onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.color = "#F4F1EA"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
               >{link.label}</Link>
             ))}
             <Link href="/pricing" style={{
-              fontSize: 12, fontWeight: 600, color: B.navy, textDecoration: "none",
+              fontSize: S.fsMeta, fontWeight: 600, color: B.navy, textDecoration: "none",
               padding: "7px 18px", borderRadius: 6,
               background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
               boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
@@ -2815,7 +2826,7 @@ function StickyNav() {
         )}
         {mobile && (
           <Link href="/pricing" style={{
-            fontSize: 10, fontWeight: 600, color: B.navy, textDecoration: "none",
+            fontSize: S.fsMeta, fontWeight: 600, color: B.navy, textDecoration: "none",
             padding: "5px 12px", borderRadius: 5, lineHeight: 1,
             background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
             display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -2848,8 +2859,8 @@ function SimulatorTeaserSection() {
         transition: "opacity 700ms ease-out, transform 700ms ease-out",
       }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>Included With Your Report</div>
-          <h2 style={{ fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>Included With Your Report</div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
             Model scenarios against your actual data.
           </h2>
         </div>
@@ -2881,20 +2892,20 @@ function MidPageCta() {
         transform: visible ? "translateY(0)" : "translateY(12px)",
         transition: "opacity 600ms ease-out, transform 600ms ease-out",
       }}>
-        <p style={{ fontSize: mobile ? 11 : 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+        <p style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
           Still here?
         </p>
-        <h2 style={{ fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
+        <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
           Your score takes two minutes. The insight lasts longer.
         </h2>
-        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 32, lineHeight: 1.6 }}>
+        <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.50)", marginBottom: 32, lineHeight: 1.6 }}>
           No bank connection. No credit pull. Private by default.
         </p>
         <Link href="/pricing" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           height: 48, padding: "0 32px", borderRadius: 10,
           background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
-          color: B.navy, fontSize: 15, fontWeight: 600, textDecoration: "none",
+          color: B.navy, fontSize: S.fsCta, fontWeight: 600, textDecoration: "none",
           boxShadow: "0 4px 20px rgba(0,0,0,0.20)",
         }}>
           Get My Free Score
