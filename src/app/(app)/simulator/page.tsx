@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useContext, createContext, Suspense } from "react";
+import { useState, useEffect, useContext, createContext, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -358,354 +358,8 @@ function generateRecordId(inputs: CanonicalInput, name: string): string {
   return `RP-${hex}`;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Brief purposes                                                     */
-/* ------------------------------------------------------------------ */
-const BRIEF_PURPOSES = [
-  { id: "mortgage", label: "Mortgage Application", audience: "Lender", icon: "\u2302", desc: "Prove income stability to a mortgage lender" },
-  { id: "lease", label: "Lease Application", audience: "Landlord", icon: "\u229E", desc: "Demonstrate reliable income for a rental" },
-  { id: "loan", label: "Business Loan", audience: "Bank", icon: "\u2261", desc: "Support a credit or loan application" },
-  { id: "partnership", label: "Partnership Proposal", audience: "Partner", icon: "\u2727", desc: "Show structural reliability to a potential partner" },
-  { id: "negotiation", label: "Client Negotiation", audience: "Client", icon: "\u2694", desc: "Justify rate structure or contract terms" },
-] as const;
 
-type BriefPurpose = typeof BRIEF_PURPOSES[number]["id"];
 
-/* ------------------------------------------------------------------ */
-/*  Brief content generator — deterministic templates from real data    */
-/* ------------------------------------------------------------------ */
-interface BriefData {
-  title: string;
-  date: string;
-  recordId: string;
-  recipient: string;
-  subject: string;
-  opening: string;
-  scoreSection: string;
-  structureSection: string;
-  riskSection: string;
-  benchmarkSection: string;
-  closing: string;
-}
-
-function generateBrief(
-  purpose: BriefPurpose,
-  inputs: CanonicalInput,
-  score: number,
-  band: string,
-  qualityScore: number,
-  name: string,
-  industry: string,
-  incomeModel: string,
-  fragility: string,
-  continuityMonths: number,
-  recordId: string,
-): BriefData {
-  const p = BRIEF_PURPOSES.find(b => b.id === purpose)!;
-  const runway = Math.round(continuityMonths * 30);
-  const recurLabel = inputs.income_persistence_pct >= 60 ? "strong" : inputs.income_persistence_pct >= 30 ? "moderate" : "limited";
-  const concLabel = inputs.largest_source_pct <= 35 ? "well-diversified" : inputs.largest_source_pct <= 55 ? "moderately concentrated" : "concentrated";
-  const fwdLabel = inputs.forward_secured_pct >= 50 ? "high" : inputs.forward_secured_pct >= 25 ? "moderate" : "limited";
-  const fragilityNice = fragility.charAt(0).toUpperCase() + fragility.slice(1);
-  const bandNice = band;
-  const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  const nameOrSubject = name || "Subject";
-
-  const audienceMap: Record<BriefPurpose, string> = {
-    mortgage: "Mortgage Underwriting Team",
-    lease: "Property Management / Leasing Office",
-    loan: "Credit & Lending Department",
-    partnership: "Prospective Business Partner",
-    negotiation: "Client / Procurement Team",
-  };
-
-  const openingMap: Record<BriefPurpose, string> = {
-    mortgage: `This Stability Brief\u2122 is provided in support of a mortgage application by ${nameOrSubject}. The assessment below quantifies the structural stability of ${nameOrSubject}'s income using the RunPayway Income Stability Score\u2122, a deterministic scoring model built on fixed rules — not estimates or projections.`,
-    lease: `This Stability Brief\u2122 is provided to support a lease application by ${nameOrSubject}. It documents the structural characteristics of their income using the RunPayway Income Stability Score\u2122, which evaluates income reliability based on measurable structural factors rather than self-reported estimates.`,
-    loan: `This Stability Brief\u2122 accompanies a loan application by ${nameOrSubject}. The RunPayway\u2122 assessment provides a quantified, rule-based analysis of income structure — measuring recurring revenue, source diversification, forward visibility, and resilience characteristics.`,
-    partnership: `This Stability Brief\u2122 provides a structural overview of ${nameOrSubject}'s income stability for partnership evaluation purposes. The assessment uses the RunPayway Income Stability Score\u2122, a deterministic model that evaluates six structural dimensions of income reliability.`,
-    negotiation: `This Stability Brief\u2122 documents the income stability profile of ${nameOrSubject} for use in contract or rate discussions. The RunPayway Income Stability Score\u2122 provides an objective, rule-based assessment of income structure — independent of revenue amount.`,
-  };
-
-  const scoreSection = `${nameOrSubject} has been assessed at a score of ${score}/100, classifying as "${bandNice}" on the Income Stability Classification Scale. This score reflects the structural characteristics of their income — not the amount earned, but how that income is structured for continuity, predictability, and resilience.
-
-Score: ${score}/100
-Classification: ${bandNice}
-Fragility Assessment: ${fragilityNice}
-Income Runway: ${runway} days
-Quality Rating: ${qualityScore}/10`;
-
-  const structureSection = `The assessment evaluates six structural dimensions:
-
-\u2022 Recurring Revenue: ${inputs.income_persistence_pct}% of income is recurring or contractually persistent (${recurLabel})
-\u2022 Source Diversification: ${inputs.source_diversity_count} active income source${inputs.source_diversity_count !== 1 ? "s" : ""}, with the largest representing ${inputs.largest_source_pct}% of total income (${concLabel})
-\u2022 Forward Visibility: ${inputs.forward_secured_pct}% of near-term income is contractually secured (${fwdLabel} forward visibility)
-\u2022 Income Variability: ${inputs.income_variability_level.charAt(0).toUpperCase() + inputs.income_variability_level.slice(1)} month-to-month variation
-\u2022 Labor Dependence: ${inputs.labor_dependence_pct}% of income requires active personal labor
-\u2022 Income Continuity: ${continuityMonths.toFixed(1)} months of estimated continuity without new business activity`;
-
-  const riskMap: Record<BriefPurpose, string> = {
-    mortgage: `Under stress testing, ${nameOrSubject}'s income structure demonstrates ${fragility === "resilient" || fragility === "moderate" ? "structural resilience" : "areas that may warrant attention"}. The ${runway}-day income runway indicates ${runway >= 90 ? "a meaningful buffer against disruption" : runway >= 30 ? "a limited but present buffer" : "a minimal buffer, though this is common in early-stage independent income structures"}.${industry ? ` Within the ${industry} sector, ${incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} with similar structural profiles typically maintain stable payment capacity.` : ""}`,
-    lease: `The income structure shows a ${runway}-day operational runway — the estimated duration income continues without new client acquisition. ${fragility === "resilient" || fragility === "moderate" ? "The fragility assessment indicates structural stability suitable for consistent payment obligations." : "While the structure has some concentration, the forward visibility and recurring revenue components provide a foundation for reliable payments."}`,
-    loan: `Risk assessment indicates a fragility classification of "${fragilityNice}" with ${runway} days of income runway. ${inputs.income_persistence_pct >= 40 ? `The ${inputs.income_persistence_pct}% recurring revenue base provides a predictable foundation for debt service.` : `Forward revenue visibility at ${inputs.forward_secured_pct}% provides near-term payment predictability.`}${industry ? ` Industry context: ${industry} ${incomeModel ? `${incomeModel.toLowerCase()} ` : ""}professionals with this score typically fall in the top ${score >= 75 ? "20%" : score >= 50 ? "40%" : "60%"} of their peer group.` : ""}`,
-    partnership: `From a structural perspective, ${nameOrSubject}'s income profile is classified as "${fragilityNice}" for fragility, with ${runway} days of operational runway. ${inputs.source_diversity_count >= 3 ? `The ${inputs.source_diversity_count}-source diversification reduces single-point-of-failure risk.` : "Income concentration is present but manageable."} ${inputs.income_persistence_pct >= 40 ? `The ${inputs.income_persistence_pct}% recurring revenue base indicates a sustainable operating rhythm.` : "There is opportunity to increase structural persistence through retainer or subscription models."}`,
-    negotiation: `${nameOrSubject}'s income structure supports the rate and terms under discussion. The ${score}/100 stability score reflects a ${bandNice.toLowerCase()} position — ${score >= 50 ? "indicating structural reliability that justifies premium positioning" : "with clear structural factors that inform pricing strategy"}. ${inputs.income_persistence_pct >= 40 ? `With ${inputs.income_persistence_pct}% recurring revenue, the business model demonstrates consistency.` : ""} ${inputs.forward_secured_pct >= 30 ? `${inputs.forward_secured_pct}% forward-secured revenue shows demand confidence.` : ""}`,
-  };
-
-  const benchmarkSection = industry
-    ? `Peer benchmarking places ${nameOrSubject} within the ${industry} sector${incomeModel ? ` among ${incomeModel.toLowerCase()} professionals` : ""}. The top 20% of this peer group typically maintains 60%+ recurring revenue with less than 35% concentration in any single source. ${nameOrSubject}'s current structure ${score >= 75 ? "meets or exceeds" : score >= 50 ? "approaches" : "is developing toward"} these benchmarks.`
-    : `The score of ${score}/100 is evaluated against the full population of assessed income structures. ${score >= 75 ? "This places the subject in the top quartile of all assessed profiles." : score >= 50 ? "This indicates a structurally sound income profile with room for optimization." : "This indicates a developing income structure with identifiable paths to improvement."}`;
-
-  const closingMap: Record<BriefPurpose, string> = {
-    mortgage: `This Stability Brief\u2122 was generated using RunPayway\u2122 Model RP-2.0, a deterministic scoring system that evaluates income structure using fixed, auditable rules. The score is not a prediction of future income — it is a measurement of current structural characteristics. For verification, reference Record ${recordId}.`,
-    lease: `This Stability Brief\u2122 was produced by the RunPayway Income Stability Score\u2122 (Model RP-2.0). The assessment is deterministic and rule-based — the same inputs always produce the same score. For verification purposes, this assessment is filed under Record ${recordId}.`,
-    loan: `Stability Brief\u2122 produced by RunPayway\u2122 Model RP-2.0 — a deterministic, rule-based scoring system. No machine learning or probabilistic models are used. The score is reproducible and auditable. Record reference: ${recordId}.`,
-    partnership: `This Stability Brief\u2122 reflects the current structural state of ${nameOrSubject}'s income as measured by RunPayway\u2122 Model RP-2.0. The scoring methodology is deterministic and transparent — identical inputs produce identical outputs. Reference: ${recordId}.`,
-    negotiation: `Stability Brief\u2122 methodology: RunPayway Income Stability Score\u2122 (Model RP-2.0). Deterministic scoring based on six structural dimensions. Not a revenue estimate — a structural reliability measurement. Record: ${recordId}.`,
-  };
-
-  return {
-    title: `Stability Brief\u2122`,
-    date: today,
-    recordId,
-    recipient: audienceMap[purpose],
-    subject: `Income Stability Assessment — ${nameOrSubject}`,
-    opening: openingMap[purpose],
-    scoreSection,
-    structureSection,
-    riskSection: riskMap[purpose],
-    benchmarkSection,
-    closing: closingMap[purpose],
-  };
-}
-
-/* ------------------------------------------------------------------ */
-/*  Stability Brief Generator™ UI                                      */
-/* ------------------------------------------------------------------ */
-function BriefGenerator({
-  inputs, score, band, qualityScore, name, industry, incomeModel,
-  fragility, continuityMonths, recordId,
-}: {
-  inputs: CanonicalInput; score: number; band: string; qualityScore: number;
-  name: string; industry: string; incomeModel: string;
-  fragility: string; continuityMonths: number; recordId: string;
-}) {
-  const T = useTheme();
-  const [purpose, setPurpose] = useState<BriefPurpose | null>(null);
-  const [generated, setGenerated] = useState<BriefData | null>(null);
-  const [downloading, setDownloading] = useState(false);
-  const briefRef = useRef<HTMLDivElement>(null);
-
-  const handleGenerate = () => {
-    if (!purpose) return;
-    const brief = generateBrief(purpose, inputs, score, band, qualityScore, name, industry, incomeModel, fragility, continuityMonths, recordId);
-    setGenerated(brief);
-  };
-
-  const handleDownload = async () => {
-    if (!briefRef.current || !generated) return;
-    setDownloading(true);
-    try {
-      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
-        import("html2canvas"),
-        import("jspdf"),
-      ]);
-      const canvas = await html2canvas(briefRef.current, { scale: 2, backgroundColor: "#FFFFFF", useCORS: true });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
-      const pageWidth = 8.5;
-      const pageHeight = 11;
-      const margin = 0.6;
-      const contentWidth = pageWidth - margin * 2;
-      const imgAspect = canvas.height / canvas.width;
-      const imgHeight = contentWidth * imgAspect;
-
-      let yOffset = 0;
-      const availableHeight = pageHeight - margin * 2;
-      let page = 0;
-
-      while (yOffset < imgHeight) {
-        if (page > 0) pdf.addPage();
-        const srcY = (yOffset / imgHeight) * canvas.height;
-        const srcH = Math.min((availableHeight / imgHeight) * canvas.height, canvas.height - srcY);
-        const drawH = (srcH / canvas.height) * imgHeight;
-
-        const sliceCanvas = document.createElement("canvas");
-        sliceCanvas.width = canvas.width;
-        sliceCanvas.height = srcH;
-        const ctx = sliceCanvas.getContext("2d");
-        if (ctx) {
-          ctx.drawImage(canvas, 0, srcY, canvas.width, srcH, 0, 0, canvas.width, srcH);
-          const sliceData = sliceCanvas.toDataURL("image/png");
-          pdf.addImage(sliceData, "PNG", margin, margin, contentWidth, drawH);
-        }
-        yOffset += availableHeight;
-        page++;
-      }
-
-      pdf.setProperties({ title: `Stability Brief - ${name}`, author: "RunPayway\u2122", subject: `Record ${recordId}` });
-      pdf.save(`Stability-Brief-${recordId}.pdf`);
-    } catch (err) {
-      console.error("Brief download failed:", err);
-    } finally {
-      setDownloading(false);
-    }
-  };
-
-  return (
-    <div style={{ marginTop: 48 }}>
-      {/* Section divider */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
-        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
-        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint }}>TOOLS</span>
-        <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${T.border}, transparent)` }} />
-      </div>
-
-      <Card glow="rgba(75,63,174,0.10)" style={{ borderTop: `2px solid ${B.purple}33` }}>
-        <div className="sim-brief-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
-          <div>
-            <SectionLabel color={B.purple}>Stability Brief Generator&#8482;</SectionLabel>
-            <p style={{ fontSize: 13, color: T.textSecondary, margin: 0, maxWidth: 520, lineHeight: 1.5 }}>
-              Generate a professional Stability Brief&#8482; built from your actual assessment data. Select who the brief is for, and we produce a document you can download and hand directly to a lender, landlord, partner, or client.
-            </p>
-          </div>
-          <div style={{ fontSize: 11, color: T.textMuted, padding: "6px 12px", borderRadius: 6, backgroundColor: T.surface, border: `1px solid ${T.border}`, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" as const }}>
-            Record {recordId}
-          </div>
-        </div>
-
-        {/* Purpose selector */}
-        <div className="sim-step-label" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint }}>
-            STEP 1 — WHO IS THIS FOR?
-          </div>
-          <div style={{ fontSize: 10, color: T.textFaint }}>Select one, then generate</div>
-        </div>
-        <div className="sim-purposes" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8, marginBottom: 24 }}>
-          {BRIEF_PURPOSES.map(bp => {
-            const isActive = purpose === bp.id;
-            return (
-              <button key={bp.id} onClick={() => { setPurpose(bp.id); setGenerated(null); }} style={{
-                padding: "14px 12px", textAlign: "center", borderRadius: 10, cursor: "pointer", transition: "all 200ms",
-                border: `1px solid ${isActive ? BRAND.purple + "44" : T.border}`,
-                backgroundColor: isActive ? BRAND.purpleGlow : T.surface,
-              }}>
-                <div style={{ fontSize: 16, marginBottom: 6 }}>{bp.icon}</div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: isActive ? T.text : T.textSecondary, marginBottom: 4 }}>{bp.label}</div>
-                <div style={{ fontSize: 10, color: T.textMuted, lineHeight: 1.3 }}>{bp.desc}</div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Generate button */}
-        {purpose && !generated && (
-          <button onClick={handleGenerate} style={{
-            width: "100%", padding: "14px 24px", borderRadius: 10, border: "none", cursor: "pointer",
-            background: `linear-gradient(135deg, ${B.purple}, ${B.purple}DD)`,
-            color: B.white, fontSize: 14, fontWeight: 600, letterSpacing: "-0.01em",
-            boxShadow: `0 4px 16px ${B.purple}44`,
-          }}>
-            Generate Stability Brief&#8482; for {BRIEF_PURPOSES.find(b => b.id === purpose)?.audience}
-          </button>
-        )}
-
-        {/* Generated brief preview */}
-        {generated && (
-          <>
-            <div
-              ref={briefRef}
-              className="sim-brief-preview"
-              style={{
-                backgroundColor: "#FFFFFF", borderRadius: 8, padding: "48px 44px",
-                color: "#1A1A1A", fontFamily: "'Inter', 'Helvetica Neue', Arial, sans-serif",
-                fontSize: 13, lineHeight: 1.7, marginBottom: 20,
-              }}
-            >
-              {/* Brief header */}
-              <div style={{ borderBottom: "2px solid #0E1A2B", paddingBottom: 20, marginBottom: 28 }}>
-                <div className="sim-brief-hdr" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div>
-                    <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 6 }}>RUNPAYWAY&#8482;</div>
-                    <div style={{ fontSize: 20, fontWeight: 700, color: "#0E1A2B", letterSpacing: "-0.02em" }}>{generated.title}</div>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 11, color: "#6B7280" }}>{generated.date}</div>
-                    <div style={{ fontSize: 11, color: "#6B7280", fontVariantNumeric: "tabular-nums" }}>{generated.recordId}</div>
-                  </div>
-                </div>
-                <div style={{ marginTop: 12 }}>
-                  <div style={{ fontSize: 11, color: "#6B7280" }}>Prepared for: <strong style={{ color: "#1A1A1A" }}>{generated.recipient}</strong></div>
-                  <div style={{ fontSize: 11, color: "#6B7280" }}>Re: <strong style={{ color: "#1A1A1A" }}>{generated.subject}</strong></div>
-                </div>
-              </div>
-
-              {/* Score badge */}
-              <div style={{ display: "flex", gap: 16, alignItems: "center", padding: "16px 20px", backgroundColor: "#F8F7F4", borderRadius: 8, marginBottom: 24, border: "1px solid #E8E5DD" }}>
-                <div style={{ width: 56, height: 56, borderRadius: 12, backgroundColor: "#0E1A2B", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: 22, fontWeight: 700, color: "#F4F1EA" }}>{score}</span>
-                </div>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B" }}>{band}</div>
-                  <div style={{ fontSize: 12, color: "#6B7280" }}>Income Stability Score&#8482; &middot; Model RP-2.0</div>
-                </div>
-              </div>
-
-              {/* Opening */}
-              <p style={{ marginBottom: 20 }}>{generated.opening}</p>
-
-              {/* Score section */}
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Assessment Summary</div>
-              <p style={{ whiteSpace: "pre-line" as const, marginBottom: 20 }}>{generated.scoreSection}</p>
-
-              {/* Structure */}
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Structural Analysis</div>
-              <p style={{ whiteSpace: "pre-line" as const, marginBottom: 20 }}>{generated.structureSection}</p>
-
-              {/* Risk */}
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Risk &amp; Resilience</div>
-              <p style={{ marginBottom: 20 }}>{generated.riskSection}</p>
-
-              {/* Benchmark */}
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", marginBottom: 8, marginTop: 28 }}>Peer Context</div>
-              <p style={{ marginBottom: 20 }}>{generated.benchmarkSection}</p>
-
-              {/* Closing */}
-              <div style={{ borderTop: "1px solid #E8E5DD", paddingTop: 20, marginTop: 28 }}>
-                <p style={{ fontSize: 12, color: "#6B7280", lineHeight: 1.6 }}>{generated.closing}</p>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
-                  <span style={{ fontSize: 10, color: "#9CA3AF" }}>peoplestar.com/RunPayway</span>
-                  <span style={{ fontSize: 10, color: "#9CA3AF" }}>Income Stability Score&#8482;</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <p style={{ fontSize: 12, color: T.textMuted, marginBottom: 14, marginTop: 0, textAlign: "center" }}>
-              Your Stability Brief&#8482; is ready. Download it and attach to your application, email it to your contact, or print a copy.
-            </p>
-            <div className="sim-brief-actions" style={{ display: "flex", gap: 12 }}>
-              <button onClick={handleDownload} disabled={downloading} style={{
-                flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", cursor: downloading ? "wait" : "pointer",
-                background: `linear-gradient(135deg, #F4F1EA, #E8E5DD)`,
-                color: "#0E1A2B", fontSize: 14, fontWeight: 600,
-                opacity: downloading ? 0.7 : 1,
-              }}>
-                {downloading ? "Generating..." : "Download Stability Brief\u2122"}
-              </button>
-              <button onClick={() => { setGenerated(null); setPurpose(null); }} style={{
-                padding: "14px 20px", borderRadius: 10, border: `1px solid ${T.border}`,
-                backgroundColor: "transparent", color: T.textMuted, fontSize: 13, fontWeight: 500, cursor: "pointer",
-              }}>
-                New Brief
-              </button>
-            </div>
-          </>
-        )}
-      </Card>
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /*  Main content                                                       */
@@ -866,6 +520,7 @@ function SimulatorContent() {
             border:1px solid rgba(244,241,234,0.10)!important;
             padding:10px 20px!important;
             font-size:13px!important;
+            background-color:rgba(244,241,234,0.12)!important;
           }
           .sim-orient{flex-direction:column!important;gap:10px!important;}
           .sim-triptych{flex-direction:column!important;}
@@ -875,13 +530,6 @@ function SimulatorContent() {
           .sim-timeline-ms{flex-direction:column!important;}
           .sim-presets{grid-template-columns:repeat(2,1fr)!important;}
           .sim-advanced{grid-template-columns:1fr!important;gap:24px!important;}
-          .sim-brief-head{flex-direction:column!important;gap:12px!important;}
-          .sim-brief-head>div:last-child{align-self:flex-start!important;}
-          .sim-purposes{grid-template-columns:repeat(2,1fr)!important;}
-          .sim-brief-preview{padding:28px 20px!important;}
-          .sim-brief-hdr{flex-direction:column!important;gap:8px!important;}
-          .sim-brief-hdr>div:last-child{text-align:left!important;}
-          .sim-brief-actions{flex-direction:column!important;}
           .sim-profile{flex-direction:column!important;text-align:center!important;gap:12px!important;}
           .sim-profile>div:last-child{text-align:center!important;}
           .sim-step-label{flex-direction:column!important;gap:4px!important;align-items:flex-start!important;}
@@ -931,17 +579,17 @@ function SimulatorContent() {
           fontWeight: 600,
           letterSpacing: "0.08em",
           textTransform: "uppercase" as const,
-          color: T.textMuted,
+          color: T.textSecondary,
           textDecoration: "none",
           borderRadius: "0 8px 8px 0",
-          backgroundColor: T.surface,
+          backgroundColor: "rgba(244,241,234,0.08)",
           border: `1px solid ${T.border}`,
           borderLeft: "none",
           backdropFilter: "blur(12px)",
           transition: "color 200ms, background-color 200ms",
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = T.surfaceHover; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = T.textMuted; e.currentTarget.style.backgroundColor = T.surface; }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.12)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.08)"; }}
       >
         View Report &#8592;
       </Link>
@@ -954,7 +602,7 @@ function SimulatorContent() {
             {[
               { num: "1", text: "Choose a scenario or build your own" },
               { num: "2", text: "See how your score changes over time" },
-              { num: "3", text: "Generate a Stability Brief\u2122 to share" },
+              { num: "3", text: "Set a score goal and plan your path" },
             ].map((step, i) => (
               <div key={i} style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, padding: "0 8px" }}>
                 <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -1193,19 +841,81 @@ function SimulatorContent() {
           </Card>
         )}
 
-        {/* ══════════ BRIEF GENERATOR ══════════ */}
-        <BriefGenerator
-          inputs={baseInputs}
-          score={base.overall_score}
-          band={base.band}
-          qualityScore={qualityScore}
-          name={userName}
-          industry={industry}
-          incomeModel={incomeModel}
-          fragility={base.fragility_class}
-          continuityMonths={base.continuity_months}
-          recordId={recordId}
-        />
+        {/* ══════════ SCORE GOAL PLANNER ══════════ */}
+        <div style={{ marginTop: 48 }}>
+          <SectionLabel color={BRAND.teal}>Score Goal Planner</SectionLabel>
+          <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, marginBottom: 24, maxWidth: 560 }}>
+            Set a target score and see which changes would get you there. Use the sliders above to model different scenarios, then save your plan below.
+          </p>
+
+          {/* Current vs Target */}
+          <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
+            <div style={{ flex: 1, padding: "20px 24px", borderRadius: 10, backgroundColor: T.surface, border: `1px solid ${T.border}` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.textFaint, marginBottom: 8 }}>CURRENT SCORE</div>
+              <div style={{ fontSize: 32, fontWeight: 600, color: T.text }}>{base.overall_score}</div>
+              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>{base.band}</div>
+            </div>
+            <div style={{ flex: 1, padding: "20px 24px", borderRadius: 10, backgroundColor: T.surface, border: `1px solid ${T.border}` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: BRAND.teal, marginBottom: 8 }}>
+                {isModified ? "SIMULATED SCORE" : "NEXT BAND THRESHOLD"}
+              </div>
+              <div style={{ fontSize: 32, fontWeight: 600, color: BRAND.teal }}>
+                {isModified ? sim.overall_score : (base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : 100)}
+              </div>
+              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>
+                {isModified ? sim.band : (base.overall_score < 30 ? "Developing" : base.overall_score < 50 ? "Established" : base.overall_score < 75 ? "High" : "Maximum")}
+              </div>
+            </div>
+          </div>
+
+          {/* Gap analysis */}
+          <div style={{ padding: "20px 24px", borderRadius: 10, backgroundColor: T.surface, border: `1px solid ${T.border}`, marginBottom: 24 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.textFaint, marginBottom: 12 }}>
+              {isModified ? "IMPACT OF YOUR CHANGES" : "TO REACH THE NEXT BAND"}
+            </div>
+            {isModified ? (
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 600, color: delta > 0 ? BRAND.teal : delta < 0 ? "#9B2C2C" : T.text }}>
+                  {delta > 0 ? "+" : ""}{delta} points
+                </div>
+                <p style={{ fontSize: 14, color: T.textSecondary, marginTop: 8, lineHeight: 1.6, margin: "8px 0 0" }}>
+                  {delta > 0
+                    ? `These changes would move your score from ${base.overall_score} to ${sim.overall_score}. ${sim.band !== base.band ? `This moves you from ${base.band} to ${sim.band}.` : "You would stay in the same stability band."}`
+                    : delta < 0
+                      ? `This scenario would lower your score by ${Math.abs(delta)} points. Use this to understand the risk, then model a protective change.`
+                      : "No change from your current score. Try adjusting the sliders above to model a different scenario."}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 600, color: T.text }}>
+                  {(() => {
+                    const target = base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : 100;
+                    const gap = target - base.overall_score;
+                    return `${gap} points to go`;
+                  })()}
+                </div>
+                <p style={{ fontSize: 14, color: T.textSecondary, marginTop: 8, lineHeight: 1.6, margin: "8px 0 0" }}>
+                  Use the sliders above to model changes and see how close you can get. The action plan in your report shows the specific changes with the highest impact.
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Link back to report action plan */}
+          <Link href="/review" style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            fontSize: 14, fontWeight: 600, color: BRAND.teal, textDecoration: "none",
+            padding: "12px 20px", borderRadius: 8,
+            backgroundColor: T.surface, border: `1px solid ${T.border}`,
+            transition: "background-color 200ms",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = T.surfaceHover; }}
+          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = T.surface; }}
+          >
+            &larr; View your full action plan in the report
+          </Link>
+        </div>
 
         {/* ══════════ PROFILE CARD ══════════ */}
         {(userName || industry || incomeModel) && (
