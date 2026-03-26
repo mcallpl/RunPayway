@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
@@ -180,7 +182,17 @@ export default function InitializationPage() {
   const [authorized, setAuthorized] = useState(false);
   const [ready, setReady] = useState(false);
   const [step, setStep] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
   const [portalRevealed, setPortalRevealed] = useState(false);
+
+  const goToStep = useCallback((nextStep: number) => {
+    setTransitioning(true);
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      setStep(nextStep);
+      setTimeout(() => setTransitioning(false), 400);
+    }, 2000);
+  }, []);
   const [form, setForm] = useState({
     assessment_title: "",
     classification: "",
@@ -400,7 +412,7 @@ export default function InitializationPage() {
                 transition: "border-color 200ms ease, box-shadow 200ms ease",
                 textAlign: "center",
               }}
-              onKeyDown={(e) => { if (e.key === "Enter" && canContinueStep0) { setStep(1); window.scrollTo(0, 0); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" && canContinueStep0) goToStep(1); }}
             />
             {/* Glow ring */}
             {form.assessment_title.trim() && (
@@ -416,7 +428,7 @@ export default function InitializationPage() {
           {/* CTA */}
           <button
             disabled={!canContinueStep0}
-            onClick={() => { setStep(1); window.scrollTo(0, 0); }}
+            onClick={() => goToStep(1)}
             style={{
               width: "100%", height: 52, borderRadius: 12, border: "none",
               background: canContinueStep0
@@ -475,6 +487,36 @@ export default function InitializationPage() {
       background: B.sand,
       overflowY: "auto",
     }}>
+      {/* Section transition overlay */}
+      {transitioning && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 10000,
+          background: "#FFFFFF",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          opacity: 1,
+          animation: "portalFadeIn 400ms ease-out",
+        }}>
+          <style>{`
+            @keyframes portalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes portalPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+          `}</style>
+          <Image
+            src={logoBlue}
+            alt="RunPayway™"
+            width={180}
+            height={21}
+            style={{ height: "auto", animation: "portalPulse 1.5s ease-in-out infinite" }}
+          />
+          <div style={{
+            marginTop: 24,
+            width: 48, height: 2,
+            background: `linear-gradient(90deg, ${B.teal}, ${B.purple})`,
+            borderRadius: 1,
+          }} />
+        </div>
+      )}
+
       {/* Top bar — institutional header */}
       <div style={{
         background: B.navy, padding: "14px 24px",
@@ -620,7 +662,7 @@ export default function InitializationPage() {
         {/* Navigation */}
         <div style={{ display: "flex", gap: 12, marginTop: 36 }}>
           <button
-            onClick={() => { setStep(step - 1); window.scrollTo(0, 0); }}
+            onClick={() => goToStep(step - 1)}
             style={{
               height: 52, borderRadius: 12, background: "#FFFFFF", color: B.navy,
               fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
@@ -633,7 +675,7 @@ export default function InitializationPage() {
           {step < 2 ? (
             <button
               disabled={!canContinueStep1}
-              onClick={() => { setStep(step + 1); window.scrollTo(0, 0); }}
+              onClick={() => goToStep(step + 1)}
               style={{
                 flex: 1, height: 52, borderRadius: 12,
                 background: canContinueStep1 ? B.purple : "rgba(14,26,43,0.12)",
