@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
 // Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
 const loadV2Engine = () => import("@/lib/client-engine-v2");
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
@@ -178,6 +180,9 @@ export default function DiagnosticPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [assessmentTitle, setAssessmentTitle] = useState("");
   const [elapsed, setElapsed] = useState(0);
+  const [entered, setEntered] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [reviewExiting, setReviewExiting] = useState(false);
 
   // Lock user in — prevent back button and tab close
   useEffect(() => {
@@ -242,6 +247,7 @@ export default function DiagnosticPage() {
       if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
       else setCurrentQuestion(5);
     }
+    setTimeout(() => setEntered(true), 100);
   }, [router]);
 
   // Live elapsed timer
@@ -381,6 +387,10 @@ export default function DiagnosticPage() {
 
       sessionStorage.removeItem(STORAGE_KEY);
       setAssessmentTitle(profile.assessment_title || "");
+      setReviewExiting(true);
+      setShowOverlay(true);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setShowOverlay(false);
       setShowLoading(true);
       // Route based on plan type
       const planKey = (() => {
@@ -389,7 +399,9 @@ export default function DiagnosticPage() {
           return ps.plan_key || "free";
         } catch { return "free"; }
       })();
-      setTimeout(() => {
+      setTimeout(async () => {
+        setLoadingStep(PROCESSING_STEPS.length);
+        await new Promise(resolve => setTimeout(resolve, 800));
         router.push(planKey === "free" ? "/free-score" : "/review");
       }, 5000);
     } catch (err: unknown) {
@@ -510,7 +522,30 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReview) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
+      {showOverlay && (
+        <div style={{
+          position: "fixed", inset: 0, zIndex: 10000,
+          background: "#FFFFFF",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          animation: "diagFadeIn 300ms ease-out",
+        }}>
+          <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
+          <Image
+            src={logoBlue}
+            alt="RunPayway"
+            width={160}
+            height={19}
+            style={{ height: "auto", animation: "rp-pulse 1.5s ease-in-out infinite" }}
+          />
+          <div style={{
+            marginTop: 20, width: 40, height: 2,
+            background: "linear-gradient(90deg, #1F6D7A, #4B3FAE)",
+            borderRadius: 1,
+          }} />
+        </div>
+      )}
       {/* Dark branded header */}
       <div style={{ background: B.navy, padding: "20px 24px", textAlign: "center" }}>
         <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
@@ -625,6 +660,29 @@ export default function DiagnosticPage() {
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
     }}>
+    {showOverlay && (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 10000,
+        background: "#FFFFFF",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        animation: "diagFadeIn 300ms ease-out",
+      }}>
+        <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
+        <Image
+          src={logoBlue}
+          alt="RunPayway"
+          width={160}
+          height={19}
+          style={{ height: "auto", animation: "rp-pulse 1.5s ease-in-out infinite" }}
+        />
+        <div style={{
+          marginTop: 20, width: 40, height: 2,
+          background: "linear-gradient(90deg, #1F6D7A, #4B3FAE)",
+          borderRadius: 1,
+        }} />
+      </div>
+    )}
     {/* Dark branded header */}
     <div style={{ background: B.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
@@ -634,7 +692,7 @@ export default function DiagnosticPage() {
         Model RP-2.0
       </div>
     </div>
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
       {/* Top bar — factor label + progress */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
@@ -701,7 +759,8 @@ export default function DiagnosticPage() {
           display: "flex",
           flexDirection: "column",
           opacity: transitioning ? 0 : 1,
-          transition: "opacity 200ms ease",
+          transform: transitioning ? "translateX(-20px)" : "translateX(0)",
+          transition: "opacity 250ms ease, transform 250ms ease",
         }}
       >
         {/* Factor title */}
@@ -859,7 +918,15 @@ export default function DiagnosticPage() {
 
           {currentQuestion === 5 && (
             <button
-              onClick={() => setShowReview(true)}
+              onClick={() => {
+                setTransitioning(true);
+                setShowOverlay(true);
+                setTimeout(() => {
+                  setShowReview(true);
+                  setTransitioning(false);
+                  setTimeout(() => setShowOverlay(false), 300);
+                }, 1500);
+              }}
               disabled={!allAnswered}
               style={{
                 height: 48,
