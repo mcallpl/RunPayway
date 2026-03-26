@@ -142,7 +142,7 @@ function Hero() {
         >
           <div
             style={{
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: 600,
               textTransform: "uppercase" as const,
               letterSpacing: S.lsLabel,
@@ -169,7 +169,7 @@ function Hero() {
 
           <p
             style={{
-              fontSize: mobile ? 15 : 17,
+              fontSize: mobile ? 16 : 18,
               lineHeight: S.lhBody,
               color: "rgba(244,241,234,0.60)",
               maxWidth: 480,
@@ -180,8 +180,8 @@ function Hero() {
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" as const }}>
-            {["Under 2 minutes", "No bank connection", "Full refund guarantee"].map((t) => (
-              <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>{t}</span>
+            {["No bank connection", "Full refund guarantee", "Instant results"].map((t) => (
+              <span key={t} style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -223,7 +223,7 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
         flexDirection: "column" as const,
       }}
     >
-      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: B.teal, marginBottom: 20 }}>
+      <div style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: B.teal, marginBottom: 20 }}>
         Free Score
       </div>
 
@@ -238,7 +238,7 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
         {features.map((f) => (
           <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 14 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
-            <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>{f}</span>
+            <span style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: 1.6 }}>{f}</span>
           </div>
         ))}
       </div>
@@ -253,7 +253,7 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
           borderRadius: S.ctaRadius,
           background: "#FFFFFF",
           color: B.navy,
-          fontSize: 15,
+          fontSize: 16,
           fontWeight: 600,
           textDecoration: "none",
           letterSpacing: "0.01em",
@@ -265,8 +265,8 @@ function FreeCard({ visible, mobile, delay }: { visible: boolean; mobile: boolea
         Get My Free Score
       </Link>
 
-      <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
-        Under 2 minutes &middot; No bank connection
+      <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+        Takes about 90 seconds &middot; No bank connection
       </p>
     </div>
   );
@@ -316,10 +316,10 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
 
       <div style={{ position: "relative" }}>
         <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.20)", marginBottom: 16 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Most Popular</span>
+          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Most Popular</span>
         </div>
 
-        <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>
           Complete Assessment
         </div>
 
@@ -335,7 +335,7 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
         {features.map((f, i) => (
           <div key={f} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: i === 0 ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
-            <span style={{ fontSize: 14, color: i === 0 ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
+            <span style={{ fontSize: mobile ? 15 : 16, color: i === 0 ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: i === 0 ? 600 : 400 }}>{f}</span>
           </div>
         ))}
       </div>
@@ -357,7 +357,7 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
           borderRadius: S.ctaRadius,
           background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)",
           color: B.navy,
-          fontSize: 15,
+          fontSize: 16,
           fontWeight: 600,
           textDecoration: "none",
           letterSpacing: "-0.01em",
@@ -370,7 +370,7 @@ function FullReportCard({ visible, mobile, delay }: { visible: boolean; mobile: 
         Get Full Report — $99
       </a>
 
-      <p style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 14, marginBottom: 0, position: "relative" }}>
+      <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 14, marginBottom: 0, position: "relative" }}>
         If it doesn&apos;t reveal something new, full refund. No questions.
       </p>
     </div>
@@ -410,7 +410,7 @@ function PricingCards() {
           textAlign: "center", marginBottom: mobile ? 32 : 48,
           opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out",
         }}>
-          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, margin: 0, lineHeight: 1.6 }}>
             Built for freelancers, contractors, and business owners across 19 industries.
             <span style={{ color: B.teal, fontWeight: 600 }}> Typical assessment time: under 2 minutes.</span>
           </p>
@@ -435,8 +435,8 @@ function PricingCards() {
           textAlign: "center", marginTop: mobile ? 32 : 48,
           opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms",
         }}>
-          <p style={{ fontSize: 13, color: B.light, margin: 0 }}>
-            Your score is calculated the moment you finish. No waiting. No follow-up calls. Instant results.
+          <p style={{ fontSize: 14, color: B.light, margin: 0 }}>
+            Your score is calculated the moment you finish. No waiting. No follow-up calls.
           </p>
         </div>
       </div>
@@ -515,7 +515,7 @@ function WhatsIncluded() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -524,11 +524,11 @@ function WhatsIncluded() {
               marginBottom: 12,
             }}
           >
-            What every assessment delivers
+            What the full report covers
           </h2>
           <p
             style={{
-              fontSize: 16,
+              fontSize: mobile ? 16 : 18,
               color: B.muted,
               lineHeight: S.lhBody,
               maxWidth: 560,
@@ -536,7 +536,7 @@ function WhatsIncluded() {
               marginRight: "auto",
             }}
           >
-            Every assessment delivers the full report, interactive simulator, and ready-to-use action tools. Nothing is withheld.
+            Your $99 report includes an interactive simulator, structural diagnosis, and ready-to-use action tools. Nothing is withheld.
           </p>
         </div>
 
@@ -571,17 +571,17 @@ function WhatsIncluded() {
               <div>
                 <div
                   style={{
-                    fontSize: 15,
+                    fontSize: mobile ? 20 : 24,
                     fontWeight: 600,
                     color: B.navy,
-                    marginBottom: 4,
+                    marginBottom: 6,
                   }}
                 >
                   {item.title}
                 </div>
                 <p
                   style={{
-                    fontSize: 14,
+                    fontSize: mobile ? 15 : 16,
                     color: B.muted,
                     lineHeight: 1.65,
                     margin: 0,
@@ -605,7 +605,7 @@ function WhatsIncluded() {
           <Link
             href="/sample-report"
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: 600,
               color: B.purple,
               textDecoration: "none",
@@ -641,8 +641,8 @@ function TrustStrip() {
       aria-label="Trust Badges"
       style={{
         backgroundColor: "#FFFFFF",
-        paddingTop: mobile ? 48 : 80,
-        paddingBottom: mobile ? 48 : 80,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       }}
     >
       <div
@@ -703,7 +703,7 @@ function TrustStrip() {
           style={{
             textAlign: "center",
             marginTop: 28,
-            fontSize: 13,
+            fontSize: 14,
             color: B.muted,
             lineHeight: 1.6,
             opacity: visible ? 1 : 0,
@@ -795,7 +795,7 @@ function Faq() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 36,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -833,7 +833,7 @@ function Faq() {
               >
                 <span
                   style={{
-                    fontSize: 15,
+                    fontSize: mobile ? 16 : 18,
                     fontWeight: 600,
                     color: B.navy,
                     paddingRight: 16,
@@ -862,7 +862,7 @@ function Faq() {
               >
                 <p
                   style={{
-                    fontSize: 14,
+                    fontSize: mobile ? 15 : 16,
                     color: B.muted,
                     lineHeight: S.lhBody,
                     paddingBottom: 24,
@@ -896,8 +896,8 @@ function FinalCta() {
       style={{
         position: "relative",
         background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 50%, #4B3FAE 100%)",
-        paddingTop: mobile ? 100 : 160,
-        paddingBottom: mobile ? 100 : 160,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         overflow: "hidden",
       }}
     >
@@ -938,7 +938,7 @@ function FinalCta() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHeading,
@@ -952,7 +952,7 @@ function FinalCta() {
 
           <p
             style={{
-              fontSize: 16,
+              fontSize: mobile ? 16 : 18,
               color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
               maxWidth: 480,
@@ -961,7 +961,7 @@ function FinalCta() {
               marginBottom: 40,
             }}
           >
-            Under two minutes. Full structural diagnosis. Instant delivery.
+            Free score in 90 seconds. Full structural diagnosis with one upgrade.
           </p>
 
           <Link
@@ -978,7 +978,7 @@ function FinalCta() {
               borderRadius: S.ctaRadius,
               background: B.cream,
               color: B.navy,
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 600,
               textDecoration: "none",
               letterSpacing: "0.01em",
@@ -994,7 +994,7 @@ function FinalCta() {
 
           <p
             style={{
-              fontSize: 12,
+              fontSize: 14,
               color: "rgba(244,241,234,0.40)",
               marginTop: 24,
               marginBottom: 0,
