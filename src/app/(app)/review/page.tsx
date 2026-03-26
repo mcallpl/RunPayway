@@ -1729,58 +1729,6 @@ export default function ReviewPage() {
           </>
         )}
 
-        {/* Income System Map — visual summary of the six normalized inputs */}
-        {v2NormalizedInputs && (() => {
-          const ni = v2NormalizedInputs;
-          const strengthColor = (pct: number) => pct >= 60 ? B.teal : pct >= 30 ? B.navy : B.bandLimited;
-          return (
-            <>
-            <SectionDivider />
-            <Overline large>Your Income at a Glance</Overline>
-            <p style={{ ...T.meta, color: B.muted, marginBottom: 12 }}>This shows how your income is structured across four characteristics. A single source of income can count in more than one category.</p>
-
-            {/* Sources row */}
-            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12 }}>
-              <div style={{ ...T.small, fontWeight: 600, color: B.navy, minWidth: 140 }}>Your income sources</div>
-              <div style={{ flex: 1, display: "flex", gap: 4 }}>
-                {Array.from({ length: Math.min(6, ni.source_diversity_count) }, (_, i) => (
-                  <div key={i} style={{ height: 24, flex: i === 0 ? ni.largest_source_pct : Math.round((100 - ni.largest_source_pct) / Math.max(1, ni.source_diversity_count - 1)), borderRadius: 3, backgroundColor: i === 0 ? (ni.largest_source_pct >= 60 ? B.bandLimited : B.navy) : B.teal, minWidth: 20 }} />
-                ))}
-              </div>
-              <div style={{ ...T.small, color: B.muted, minWidth: 100, textAlign: "right" }}>{ni.source_diversity_count} source{ni.source_diversity_count !== 1 ? "s" : ""}</div>
-            </div>
-
-            {/* Three structural strength bars */}
-            {[
-              { label: "Income that renews automatically", pct: ni.income_persistence_pct, desc: "repeats without re-selling" },
-              { label: "Income already booked for future months", pct: ni.forward_secured_pct, desc: "committed before month starts" },
-              { label: "Income that comes in without your daily work", pct: 100 - ni.labor_dependence_pct, desc: "continues without daily work" },
-            ].map((dim) => (
-              <div key={dim.label} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                <div style={{ ...T.small, fontWeight: 600, color: B.navy, minWidth: 240 }}>{dim.label}</div>
-                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${dim.pct}%`, backgroundColor: strengthColor(dim.pct), borderRadius: 4, transition: "width 300ms ease" }} />
-                </div>
-                <div style={{ ...T.small, color: strengthColor(dim.pct), fontWeight: 600, minWidth: 40, textAlign: "right" }}>{dim.pct}%</div>
-              </div>
-            ))}
-            <div style={{ ...T.meta, color: B.taupe, marginTop: 4, marginBottom: 12 }}>
-              {ni.largest_source_pct >= 60 ? `${ni.largest_source_pct}% from your largest source — high concentration risk.` : `Largest source at ${ni.largest_source_pct}% — reasonably distributed.`}
-            </div>
-
-            {/* Risk flags */}
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {[
-                { label: "Concentration Risk", active: ni.largest_source_pct >= 50 },
-                { label: "Labor Risk", active: ni.labor_dependence_pct >= 70 },
-                { label: "Visibility Risk", active: ni.forward_secured_pct <= 20 },
-              ].filter(r => r.active).map((risk) => (
-                <span key={risk.label} style={{ ...T.micro, color: B.bandLimited, padding: "3px 8px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.06)", border: "1px solid rgba(155,44,44,0.12)" }}>{risk.label}</span>
-              ))}
-            </div>
-            </>
-          );
-        })()}
 
         {/* High scorer: brief peer position note */}
         {isHighScorer && v2Benchmarks && (
