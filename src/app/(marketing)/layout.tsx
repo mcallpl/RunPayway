@@ -350,7 +350,7 @@ export default function MarketingLayout({
                     href={link.href}
                     className="header-nav-link"
                     style={{
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: 500,
                       color: "rgba(14,26,43,0.65)",
                       transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
@@ -372,7 +372,7 @@ export default function MarketingLayout({
                   <button
                     className="header-nav-link"
                     style={{
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: 500,
                       color: moreDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.65)",
                       background: "none",
@@ -451,13 +451,13 @@ export default function MarketingLayout({
                   href="/pricing"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
-                    height: 38,
-                    paddingLeft: 18,
-                    paddingRight: 18,
+                    height: 42,
+                    paddingLeft: 22,
+                    paddingRight: 22,
                     borderRadius: 9,
                     background: "#4B3FAE",
                     color: "#ffffff",
-                    fontSize: 13,
+                    fontSize: 16,
                     letterSpacing: "-0.01em",
                     border: "1px solid rgba(75,63,174,0.90)",
                     boxShadow: "0 4px 12px rgba(75,63,174,0.18), 0 1px 3px rgba(75,63,174,0.10)",
@@ -611,7 +611,7 @@ export default function MarketingLayout({
                   borderRadius: 12,
                   background: "#4B3FAE",
                   color: "#ffffff",
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: 600,
                   letterSpacing: "-0.01em",
                   border: "1px solid rgba(75,63,174,0.90)",
@@ -677,7 +677,7 @@ export default function MarketingLayout({
           >
             {/* Product */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/", label: t.footer.home },
@@ -692,7 +692,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -704,7 +704,7 @@ export default function MarketingLayout({
 
             {/* Company */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/about", label: t.nav.about },
@@ -713,7 +713,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -725,7 +725,7 @@ export default function MarketingLayout({
 
             {/* Governance */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.governance}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.governance}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/privacy-policy", label: t.footer.privacyPolicy },
@@ -738,7 +738,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -750,9 +750,9 @@ export default function MarketingLayout({
 
             {/* Enterprise */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.enterprise}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.enterprise}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <span style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4 }}>
+                <span style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4 }}>
                   {t.footer.forOrganizations}
                 </span>
                 <form
@@ -770,7 +770,7 @@ export default function MarketingLayout({
                       borderRadius: 7,
                       border: "1px solid rgba(14,26,43,0.10)",
                       background: "#ffffff",
-                      fontSize: 12,
+                      fontSize: 13,
                       color: "#0E1A2B",
                       outline: "none",
                       boxSizing: "border-box" as const,
@@ -786,7 +786,7 @@ export default function MarketingLayout({
                       borderRadius: 7,
                       background: "#4B3FAE",
                       color: "#ffffff",
-                      fontSize: 12,
+                      fontSize: 13,
                       fontWeight: 600,
                       border: "none",
                       cursor: "pointer",
@@ -803,7 +803,7 @@ export default function MarketingLayout({
 
             {/* Social */}
             <div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.social}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.social}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
@@ -815,7 +815,7 @@ export default function MarketingLayout({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -830,12 +830,12 @@ export default function MarketingLayout({
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
           {/* Language availability */}
-          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.40)", textAlign: "center", marginBottom: 12 }}>
+          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.40)", textAlign: "center", marginBottom: 12 }}>
             Available in: English • <span style={{ opacity: 0.6 }}>Español (Q3 2026)</span> • <span style={{ opacity: 0.6 }}>Português (Q4 2026)</span> • <span style={{ opacity: 0.6 }}>हिन्दी (Q4 2026)</span>
           </div>
 
           {/* Legal strip */}
-          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
+          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
             {t.footer.legal}
           </div>
         </div>
