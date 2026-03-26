@@ -1141,15 +1141,6 @@ export default function ReviewPage() {
           } catch { return null; }
         })()}
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
-          {[["Prepared for", name], ["Industry", industrySector], ["Date Issued", issuedDate], ["Record ID", record.record_id.slice(0, 8)]].map(([l, v]) => (
-            <div key={l}>
-              <div style={{ ...T.meta, color: B.taupe }}>{l}</div>
-              <div style={{ ...T.small, fontWeight: 500, color: B.navy }}>{v}</div>
-            </div>
-          ))}
-        </div>
-
         <PageFooter section="Your Score" page={1} />
     </>,
 
@@ -1158,25 +1149,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What to Do About It</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>The single most impactful change you can make is described below. Start here.</p>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {isHighScorer
-            ? `As a ${structureDesc} in ${industrySector}, you have built real stability. The priority now is to lock it in, close the remaining gaps, and maintain your position.`
-            : `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, the fastest way to raise your score is to change how your money comes in — not just earn more.`}
-        </p>
-
-        {/* Current Band → Next Target Band */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${bandColor}`, borderRadius: 4, padding: "16px 20px" }}>
-            <Overline>CURRENT BAND</Overline>
-            <div style={{ ...T.cardHeading, color: bandColor }}>{record.stability_band} | {record.final_score}/100</div>
-          </div>
-          <div style={{ flex: 1, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${tier === "high" ? B.bandHigh : tier === "established" ? B.bandHigh : tier === "developing" ? B.bandEstablished : B.bandDeveloping}`, borderRadius: 4, padding: "16px 20px" }}>
-            <Overline>NEXT TARGET BAND</Overline>
-            <div style={{ ...T.cardHeading, color: B.navy }}>{record.final_score < 30 ? "Developing Stability | 30+" : record.final_score < 50 ? "Established Stability | 50+" : record.final_score < 75 ? "High Stability | 75+" : "Maintain Current"}</div>
-          </div>
-        </div>
-
-        {/* Top 3 improvements + progress bar */}
+        {/* Top 3 improvements */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <Overline large>What Your Score Could Be</Overline>
@@ -1215,24 +1188,6 @@ export default function ReviewPage() {
                 </div>
               );
             })}
-            {v2Lift.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-            <div style={{ marginTop: 12, marginBottom: 8 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-                <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>Now</span>
-                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${record.final_score}%`, backgroundColor: B.navy, borderRadius: 4 }} />
-                </div>
-                <span style={{ ...T.meta, color: B.navy, fontWeight: 600, minWidth: 36, textAlign: "right" }}>{record.final_score}/100</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ ...T.meta, color: B.muted, minWidth: 50 }}>After</span>
-                <div style={{ flex: 1, height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${Math.min(100, v2Lift.combined_top_two.projected_score)}%`, backgroundColor: B.teal, borderRadius: 4 }} />
-                </div>
-                <span style={{ ...T.meta, color: B.teal, fontWeight: 600, minWidth: 36, textAlign: "right" }}>{v2Lift.combined_top_two.projected_score}/100</span>
-              </div>
-            </div>
-            )}
           </div>
         )}
 
@@ -1296,13 +1251,6 @@ export default function ReviewPage() {
               <div style={{ flex: 1 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
                 <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
-                {action.why && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>Why now: {action.why}</p>}
-                {(action as Record<string, string>).effect && <p style={{ ...T.meta, color: B.muted, margin: "2px 0 0" }}>Expected effect: {(action as Record<string, string>).effect}</p>}
-                {(action as Record<string, string>).timeframe && <p style={{ ...T.meta, color: B.purple, margin: "4px 0 0", fontWeight: 500 }}>Timeline: {(action as Record<string, string>).timeframe}</p>}
-                {(action as Record<string, string>).target && <p style={{ ...T.meta, color: B.navy, margin: "2px 0 0", fontWeight: 500 }}>Target: {(action as Record<string, string>).target}</p>}
-                {(action as Record<string, string>).tradeoff && (
-                  <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", fontStyle: "italic" }}>Tradeoff: {(action as Record<string, string>).tradeoff}</p>
-                )}
               </div>
             </div>
           ))}
@@ -1312,10 +1260,10 @@ export default function ReviewPage() {
         {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
           <div style={{ marginBottom: 16 }}>
             <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What to avoid</div>
-            {(v2AvoidActions ?? []).slice(0, 2).map((a) => (
+            {(v2AvoidActions ?? []).slice(0, 1).map((a) => (
               <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
             ))}
-            {(olAvoid ?? []).slice(0, 2).map((text) => (
+            {(olAvoid ?? []).slice(0, 1).map((text) => (
               <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {text}</div>
             ))}
           </div>
@@ -1327,7 +1275,7 @@ export default function ReviewPage() {
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
           <div style={{ marginBottom: R.sectionMb }}>
             <Overline large>Tradeoffs to Understand</Overline>
-            {v2TradeoffNarratives.map((t, i) => (
+            {v2TradeoffNarratives.slice(0, 1).map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
                 <div style={{ display: "flex", gap: 16 }}>
@@ -1373,20 +1321,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Simulator callout card */}
-        <div style={{
-          marginTop: 20,
-          padding: "16px 20px",
-          border: `1.5px solid ${B.teal}`,
-          borderRadius: 6,
-          backgroundColor: "rgba(26,122,109,0.04)",
-        }}>
-          <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Your Score Simulator</div>
-          <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-            Use your simulator to model these changes before you make them. Your simulator access is included for life — scan the QR code on the cover page anytime.
-          </p>
-        </div>
-
         <PageFooter section="What to Do About It" page={2} />
     </>,
 
@@ -1395,9 +1329,6 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p3Summary[tier]}</p>
-        <p style={{ ...T.body, color: B.muted, marginBottom: 20, maxWidth: 540 }}>
-          {p2Intro[subTier]}
-        </p>
 
         {/* Income Structure Bar */}
         <Overline large>Income Structure</Overline>
@@ -1449,42 +1380,15 @@ export default function ReviewPage() {
         <SectionDivider />
 
         {/* Peer comparison */}
-        {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
+        {v2Benchmarks && (
           <div style={{ ...cardStyle, marginBottom: 16 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer && peerPercentileValue !== null ? `YOU OUTPERFORM ${100 - peerPercentileValue}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
-            <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
+            <div style={{ display: "flex", gap: 16, padding: "8px 0" }}>
               <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
               <div style={{ ...T.small, color: B.muted }}>Peer Average (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
               <div style={{ ...T.small, color: B.muted }}>Top 20% (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
             </div>
-            <div style={{ ...T.meta, color: B.taupe, marginBottom: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
-            {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
-              const peerLabel: Record<string, string> = {
-                income_persistence: "How much income repeats without new sales",
-                forward_revenue_visibility: "How much income is already booked ahead",
-                concentration_resilience: "How much depends on your biggest source",
-                income_source_diversity: "How spread out your income sources are",
-                source_diversification: "How spread out your income sources are",
-                labor_dependence: "How much continues if you stop working",
-                active_labor_dependence: "How much continues if you stop working",
-                earnings_stability: "How consistent your income is month to month",
-                income_variability: "How consistent your income is month to month",
-                forward_visibility: "How much income is already booked ahead",
-                income_continuity: "How much income repeats without new sales",
-                source_concentration: "How much depends on your biggest source",
-              };
-              const label = peerLabel[d.factor.toLowerCase().replace(/ /g, "_")] ?? d.factor;
-              return (
-                <div key={d.factor} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0 0 6px" }}>
-                  <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{label}</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ ...T.meta, color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}/100</span></span>
-                    <span style={{ ...T.meta, color: B.muted }}>Peers (modeled): <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}/100</span></span>
-                    <span style={{ ...T.micro, color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{peerDirectionLabel(d.direction)}</span>
-                  </div>
-                </div>
-              );
-            })}
+            <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
           </div>
         )}
 
@@ -1496,13 +1400,6 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>The Full Picture</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>This section covers the risks that could lower your score and the detailed measurements behind it.</p>
-
-        {/* === RISKS SECTION (from old Page 3) === */}
-        <p style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 540 }}>
-          {isHighScorer
-            ? `You have built real stability. These are the scenarios that could weaken what you have built.${olIndustryLabel ? ` Assessed for ${olIndustryLabel}.` : ""}`
-            : `${p3Intro[subTier]}${olIndustryLabel ? ` These risks are specific to ${olIndustryLabel}.` : ""}`}
-        </p>
 
         {/* Stress scenarios — top 3 */}
         {v2Scenarios && v2Scenarios.length > 0 && (
@@ -1579,166 +1476,38 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Surprising Insights */}
-        {v2SurprisingInsights && v2SurprisingInsights.length > 0 && (
-          <>
-          <SectionDivider />
-          <Overline large>What You Might Not Realize</Overline>
-          {v2SurprisingInsights.map((insight, i) => (
-            <div key={i} style={{ ...cardStyle, borderLeft: `3px solid ${B.purple}`, marginBottom: 10 }}>
-              <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{insight.headline}</div>
-              <p style={{ ...T.small, color: B.muted, margin: "0 0 6px", lineHeight: 1.55 }}>{insight.explanation}</p>
-              <div style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>{insight.data_point}</div>
-            </div>
-          ))}
-          </>
-        )}
-
         <SectionDivider />
 
-        {/* === DEEP DIVE SECTION (from old Page 4) === */}
-
-        {/* Structural Indicators — 6 dimensions */}
-        {v2?.indicators && v2.indicators.length > 0 && (
-          <div style={{ marginBottom: 24 }}>
-          <Overline large>The Six Measurements Behind Your Score</Overline>
-          <p style={{ ...T.meta, color: B.muted, marginBottom: 10, fontStyle: "italic" }}>These indicators are derived from your assessment responses and weighted by the scoring model. They represent structural characteristics, not financial projections.</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
-            {v2.indicators.map((ind) => {
-              const levelColor = /high|very high/i.test(ind.level) ? B.teal : /low|very low/i.test(ind.level) ? B.bandLimited : B.muted;
-              const indicatorLabel: Record<string, string> = {
-                income_persistence: "Income Persistence",
-                source_diversity: "Source Diversification",
-                income_source_diversity: "Source Diversification",
-                forward_secured: "Forward Revenue Visibility",
-                forward_revenue_visibility: "Forward Revenue Visibility",
-                income_variability: "Earnings Stability",
-                labor_dependence: "Labor Independence",
-                active_labor_dependence: "Labor Independence",
-                concentration_resilience: "Source Independence",
-                exposure_concentration: "Source Independence",
-              };
-              const rawLabel = indicatorLabel[ind.key] ?? ind.label;
-              const displayLabel = plainDimension(rawLabel);
-              const roundedVal = Math.round(ind.normalized_value);
-              return (
-                <div key={ind.key} style={{ flex: "1 1 calc(33.33% - 8px)", minWidth: 190, ...cardStyle }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                    <span style={{ ...T.small, fontWeight: 600, color: B.navy, flex: 1, lineHeight: 1.3 }}>{displayLabel}</span>
-                    <span style={{ ...T.micro, color: levelColor, flexShrink: 0 }}>{ind.level.toUpperCase()}</span>
-                  </div>
-                  <div style={{ height: 5, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${Math.min(100, ind.normalized_value)}%`, backgroundColor: levelColor, borderRadius: 2 }} />
-                  </div>
-                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>{roundedVal} / 100 <span style={{ fontStyle: "italic" }}>{scoreContext(roundedVal)}</span></div>
-                </div>
-              );
-            })}
-          </div>
-          </div>
-        )}
-
-        {/* Fragility + Confidence + Durability */}
-        {(v2Fragility || v2Confidence || v2Quality) && (
-          <div style={{ display: "flex", gap: 12, marginBottom: 24 }}>
-            {v2Fragility && (
-              <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IF SOMETHING GOES WRONG, HOW PROTECTED ARE YOU?</div>
-                <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
-                  {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
-                </div>
-                <div style={{ ...T.meta, color: B.muted }}>
-                  {({
-                    brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
-                    thin: "Can absorb a minor hit (one slow month), but not two in a row.",
-                    uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
-                    supported: "Can absorb most common disruptions without band change.",
-                    resilient: "Can absorb a major client loss or 90-day work stoppage.",
-                  })[v2Fragility.fragility_class] ?? ""}
-                </div>
-                {v2Fragility.primary_failure_mode && (
-                  <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
-                    Primary risk: {({
-                      concentration_collapse: "single-source dependency",
-                      labor_interruption: "income stops when work stops",
-                      visibility_gap: "no forward-committed income",
-                      durability_thinness: "recurring income is fragile",
-                    })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
-                  </div>
-                )}
-              </div>
-            )}
-            {v2Confidence && (
-              <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW CONFIDENT WE ARE IN THIS SCORE</div>
-                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "low" ? B.bandLimited : B.navy, marginBottom: 6 }}>
-                  {(v2Confidence.confidence_level || "").charAt(0).toUpperCase() + (v2Confidence.confidence_level || "").slice(1)} Confidence
-                </div>
-                <div style={{ ...T.meta, color: B.muted }}>
-                  This measures whether your assessment answers were internally consistent. {v2Confidence.confidence_level === "high" ? "High confidence means your responses painted a clear, coherent picture." :
-                   v2Confidence.confidence_level === "moderate" ? "Your responses were mostly consistent, with minor gaps that slightly reduce precision." :
-                   v2Confidence.confidence_level === "guarded" ? "Some of your responses appeared to contradict each other, which reduces how precisely we can score you." :
-                   "Your responses had significant inconsistencies. We recommend retaking the assessment with more complete information."}
-                </div>
-              </div>
-            )}
-            {v2Quality && (
-              <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>OVERALL QUALITY OF YOUR INCOME STRUCTURE</div>
-                <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{(v2Quality.durability_grade || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}</div>
-                <div style={{ ...T.meta, color: B.muted }}>
-                  {v2Quality.quality_score >= 7 ? "Your income has a strong, durable structure with few gaps." : v2Quality.quality_score >= 4 ? "Your income has a working structure, but there are clear gaps that limit your score." : "Your income structure has significant weaknesses that are holding your score back."}
-                </div>
+        {/* Fragility card */}
+        {v2Fragility && (
+          <div style={{ ...cardStyle, marginBottom: 24 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IF SOMETHING GOES WRONG, HOW PROTECTED ARE YOU?</div>
+            <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
+              {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
+            </div>
+            <div style={{ ...T.meta, color: B.muted }}>
+              {({
+                brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
+                thin: "Can absorb a minor hit (one slow month), but not two in a row.",
+                uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
+                supported: "Can absorb most common disruptions without band change.",
+                resilient: "Can absorb a major client loss or 90-day work stoppage.",
+              })[v2Fragility.fragility_class] ?? ""}
+            </div>
+            {v2Fragility.primary_failure_mode && (
+              <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
+                Primary risk: {({
+                  concentration_collapse: "single-source dependency",
+                  labor_interruption: "income stops when work stops",
+                  visibility_gap: "no forward-committed income",
+                  durability_thinness: "recurring income is fragile",
+                })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
               </div>
             )}
           </div>
         )}
 
-        {/* Cross-factor effects */}
-        {v2Interactions && v2Interactions.effects.length > 0 && (
-          <>
-          <Overline large>How Your Weak Points Make Each Other Worse</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            When two weak areas overlap, they create a compounding effect on your score. Here is how your specific combination of strengths and weaknesses affects your total.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
-            {v2Interactions.effects.filter(e => e.condition_met !== false).map((e) => {
-              const effectLabel: Record<string, string> = {
-                "CF-01": "High concentration + low forward visibility",
-                "CF-02": "High labor dependence + low persistence",
-                "CF-03": "Multiple sources but still concentrated",
-                "CF-04": "Recurring income but high cancellation risk",
-                "CF-05": "Forward visibility but mostly cancelable",
-                "CF-06": "Few sources + extreme variability",
-                "CF-B01": "Strong forward visibility + low concentration",
-                "CF-B02": "High persistence + low labor dependence",
-              };
-              return (
-                <div key={e.code} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", backgroundColor: e.type === "bonus" ? "rgba(31,109,122,0.06)" : "rgba(155,44,44,0.04)", borderRadius: 4 }}>
-                  <span style={{ ...T.small, color: B.navy }}>{effectLabel[e.code] ?? e.trigger_condition}</span>
-                  <span style={{ ...T.sectionLabel, color: e.points > 0 ? B.teal : B.bandLimited }}>
-                    {e.points > 0 ? `This earns you ${e.points} points` : `This costs you ${Math.abs(e.points)} points`}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
-            Net effect on your score: <span style={{ fontWeight: 600, color: v2Interactions.net_adjustment >= 0 ? B.teal : B.bandLimited }}>{v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} of 100</span>
-          </div>
-          </>
-        )}
-
-
-        {/* High scorer: brief peer position note */}
-        {isHighScorer && v2Benchmarks && (
-          <div style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
-            {score >= (v2Benchmarks.top_20_threshold ?? 65)
-              ? `${peerPercentileValue !== null ? `You outperform ${100 - peerPercentileValue}% of ${industrySector} professionals. ` : ""}The remaining gaps are refinements — see the action plan for specifics.`
-              : `You are ${(v2Benchmarks.top_20_threshold ?? 65) - score} points from the top 20%. The action plan shows exactly how to close that gap.`}
-          </div>
-        )}
-
+        {/* Page footer */}
         <PageFooter section="The Full Picture" page={4} />
     </>,
 
@@ -1769,22 +1538,11 @@ export default function ReviewPage() {
         )}
 
         {/* Reassessment + Verification */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-          <div style={{ flex: 1, ...cardStyle }}>
-            <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
-            <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
-            <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
-          </div>
-          <div style={{ flex: 1, ...cardStyle }}>
-            <Overline>RECORD STATUS</Overline>
-            <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
-              <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
-              <div>Status: Private Record</div>
-              <div>Model: {record.model_version || "RP-2.0"}</div>
-              <div>This record can be confirmed at peoplestar.com/RunPayway/verify</div>
-            </div>
-          </div>
+        <div style={{ ...cardStyle, marginBottom: 16 }}>
+          <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
+          <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
+          <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
+          <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
         </div>
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
