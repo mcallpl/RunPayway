@@ -1001,6 +1001,13 @@ export default function ReviewPage() {
   })();
 
   // ── Page summary sentences ──
+  const coverBandDesc: Record<string, string> = {
+    limited: "Your income is highly vulnerable to disruption right now.",
+    developing: "Some structure is in place, but important weaknesses still remain.",
+    established: "Your income has meaningful structural protection in place.",
+    high: "Your income is well-protected against most disruptions.",
+  };
+
   const p1Summary: Record<string, string> = {
     limited: "Your income is structurally vulnerable right now — but this report shows you exactly how to fix it.",
     developing: "Your income has a foundation, but meaningful gaps remain. Here is your plan.",
@@ -1026,19 +1033,25 @@ export default function ReviewPage() {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 500, textAlign: "center" }}>
           <Image src={logoBlue} alt="RunPayway&#8482;" width={180} height={21} style={{ height: "auto", marginBottom: 32 }} />
           <div style={{ width: "60%", height: 1, backgroundColor: B.stone, marginBottom: 32 }} />
-          <div style={{ ...T.pageTitle, marginBottom: 16 }}>Income Stability Report</div>
+          <div style={{ ...T.pageTitle, marginBottom: 8 }}>Income Stability Report</div>
+          <div style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 400 }}>See where your income stands. Then see what to do next.</div>
           <div style={{ fontSize: 24, fontWeight: 500, color: B.navy, marginBottom: 8 }}>{record.assessment_title}</div>
           <div style={{ ...T.body, color: B.muted, marginBottom: 32 }}>{formalDate}</div>
           <div style={{ marginBottom: 16 }}>
             <span style={{ ...T.score, color: B.navy }}>{record.final_score}</span>
             <span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
+          <div style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 380 }}>{coverBandDesc[tier]}</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 4 }}>Built from six fixed questions about your income structure.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 32 }}>The same answers always produce the same score under Model RP-2.0.</div>
+          <div style={{ ...T.overline, color: B.navy, marginBottom: 8, letterSpacing: 1 }}>SCORE SIMULATOR&#8482;</div>
+          <div style={{ ...T.meta, color: B.muted, marginBottom: 12 }}>Scan to model changes using your actual assessment.</div>
           <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-          <div style={{ ...T.meta, color: B.muted, marginTop: 8 }}>Scan for interactive simulator</div>
+          <div style={{ ...T.meta, color: B.muted, marginTop: 8 }}>Linked to your report</div>
           <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 5 Pages</div>
         </div>
     </>,
