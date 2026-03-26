@@ -865,6 +865,7 @@ export default function ReviewPage() {
 
   // ── LAYER 3: Distance to next band ──
   const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
+  const nextBandName = score < 30 ? "Developing" : score < 50 ? "Established" : score < 75 ? "High" : null;
   const distanceToNext = nextBandThreshold - score;
   const bandDistance: "CLOSE" | "MODERATE" | "FAR" | "TOP_BAND" =
     tier === "high" ? "TOP_BAND" :
@@ -1010,7 +1011,7 @@ export default function ReviewPage() {
 
   const p1Summary: Record<string, string> = {
     limited: "Your income is structurally vulnerable right now — but this report shows you exactly how to fix it.",
-    developing: "Your income has a foundation, but meaningful gaps remain. Here is your plan.",
+    developing: "Your income has some structure, but important weaknesses still remain.",
     established: "Your income is well-protected. This report shows the remaining gaps and how to close them.",
     high: "Your income is strong. This report confirms what is working and where to focus next.",
   };
@@ -1060,7 +1061,7 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
 
-        <Overline>{`A REPORT PREPARED FOR ${(record.assessment_title || "").toUpperCase()}`}</Overline>
+        <Overline>{`ASSESSMENT PREPARED FOR ${(record.assessment_title || "").toUpperCase()}`}</Overline>
 
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p1Summary[tier]}</p>
@@ -1071,7 +1072,7 @@ export default function ReviewPage() {
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {/* Peer percentile shown on Page 3 with full context */}
+          {nextBandName && <div style={{ ...T.meta, color: B.muted, marginTop: 6 }}>{distanceToNext} points to {nextBandName} Stability</div>}
         </div>
 
         {/* Band scale */}
@@ -1090,18 +1091,18 @@ export default function ReviewPage() {
           <div style={{ display: "flex", gap: 2 }}>
             {[
               { range: "0–29", label: "Limited", desc: "Your income is highly vulnerable to disruption", color: B.bandLimited, tier: "limited" as const },
-              { range: "30–49", label: "Developing", desc: "Some protection exists, but significant gaps remain", color: B.bandDeveloping, tier: "developing" as const },
+              { range: "30–49", label: "Developing", desc: "Some protection exists, but significant gaps still remain", color: B.bandDeveloping, tier: "developing" as const },
               { range: "50–74", label: "Established", desc: "Your income has meaningful structural protection", color: B.bandEstablished, tier: "established" as const },
               { range: "75–100", label: "High", desc: "Your income is well-protected against most disruptions", color: B.bandHigh, tier: "high" as const },
             ].map((band) => (
               <div key={band.range} style={{ flex: 1, opacity: tier === band.tier ? 1 : 0.5 }}>
                 <div style={{ ...T.micro, color: band.color, fontWeight: tier === band.tier ? 700 : 500 }}>{band.range}</div>
                 <div style={{ ...T.meta, color: tier === band.tier ? B.navy : B.taupe, fontWeight: tier === band.tier ? 600 : 400 }}>{band.label}</div>
-                <div style={{ ...T.meta, color: B.taupe, fontWeight: 400, lineHeight: 1.4, marginTop: 2 }}>{band.desc}</div>
+                {tier === band.tier && <div style={{ ...T.meta, color: B.taupe, fontWeight: 400, lineHeight: 1.4, marginTop: 2 }}>{band.desc}</div>}
               </div>
             ))}
           </div>
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Scores reflect structural patterns, not precise measurements. Small differences (1–3 points) are not meaningful.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Scores reflect structural patterns, not exact measurements. Very small score differences should be interpreted with caution.</div>
         </div>
 
         {/* What this score means — with your actual numbers */}
@@ -1117,18 +1118,33 @@ export default function ReviewPage() {
               A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. This leaves very little margin for unexpected disruptions.`,
               A2: `Your income is active but structurally exposed. A lost client, a slow month, or 2 weeks off work could create significant financial pressure. You have ${continuityDisplay} of runway.`,
               A3: `You have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change — a lost client, a contract pause — sets you back hard.`,
-              B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. The gap to stable is ${nextBandThreshold - score} points — closable.`,
+              B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. You are ${nextBandThreshold - score} points away from Established Stability. That gap is realistic to close.`,
               B2: `You are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
             })[subTier] || `Your income is developing. ${nextBandThreshold - score} points from the next band.`}
           </p>
         </div>
 
-        {/* Single key insight — merged constraint advice + fix-one-thing */}
+        {/* Single key insight — structured vulnerability block */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>YOUR BIGGEST VULNERABILITY</div>
-          <p style={{ ...T.body, color: B.navy, margin: 0, fontWeight: 500, lineHeight: 1.6 }}>
-            {v2OneThingThatMatters || (profileConstraintAdvice[dominantConstraint] || `The main thing holding you back: ${dominantConstraintPlain[dominantConstraint]}.`) + (v2Sensitivity?.tests?.[0]?.lift ? ` Fixing this could raise the score by about ${v2Sensitivity.tests[0].lift} points.` : "")}
-          </p>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 12 }}>YOUR BIGGEST VULNERABILITY</div>
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Fastest score gain</div>
+            <div style={{ ...T.body, color: B.navy, margin: 0 }}>
+              {v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`)}
+            </div>
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Near-term score impact</div>
+            <div style={{ ...T.body, color: B.navy, margin: 0 }}>
+              {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
+            </div>
+          </div>
+          <div>
+            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Why this matters now</div>
+            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.6 }}>
+              {v2OneThingThatMatters || (profileConstraintAdvice[dominantConstraint] || `The main thing holding you back: ${dominantConstraintPlain[dominantConstraint]}.`)}
+            </p>
+          </div>
         </div>
 
         {/* Score trend — shown only if previous assessments exist */}
