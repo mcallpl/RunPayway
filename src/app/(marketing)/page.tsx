@@ -961,53 +961,89 @@ function HowItWorksSection() {
           </p>
         </div>
 
-        {/* Steps — left-aligned, horizontal with connecting line */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 0 }}>
-          {steps.map((step, i) => (
-            <div
-              key={step.num}
-              style={{
-                flex: 1,
-                position: "relative",
-                paddingLeft: mobile ? 0 : i === 0 ? 0 : 32,
-                paddingRight: mobile ? 0 : i === 2 ? 0 : 32,
-                paddingTop: mobile ? (i === 0 ? 0 : 32) : 0,
-                paddingBottom: mobile ? (i === 2 ? 0 : 32) : 0,
-                borderLeft: !mobile && i > 0 ? "1px solid rgba(14,26,43,0.08)" : "none",
-                borderTop: mobile && i > 0 ? "1px solid rgba(14,26,43,0.08)" : "none",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 500ms ease-out ${150 + i * 120}ms, transform 500ms ease-out ${150 + i * 120}ms`,
-              }}
-            >
-              {/* Top row: number + time */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-                <div style={{
-                  fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.08em", color: step.color,
-                  padding: "4px 10px", borderRadius: 4,
-                  backgroundColor: step.color === B.navy ? "rgba(14,26,43,0.06)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(31,109,122,0.08)",
-                }}>
-                  STEP {step.num}
+        {/* Steps — cards with connecting arrows */}
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr auto 1fr auto 1fr", gap: 0, alignItems: "stretch" }}>
+          {steps.map((step, i) => {
+            const isLast = i === 2;
+            return (
+              <div key={step.num} style={{ display: "contents" }}>
+                {/* Step card */}
+                <div
+                  style={{
+                    position: "relative",
+                    padding: mobile ? "28px 24px" : "32px 28px",
+                    borderRadius: 14,
+                    backgroundColor: isLast ? B.navy : "#FFFFFF",
+                    border: isLast ? "none" : "1px solid rgba(14,26,43,0.06)",
+                    boxShadow: isLast ? "0 8px 32px rgba(14,26,43,0.15)" : "0 2px 8px rgba(14,26,43,0.04)",
+                    overflow: "hidden",
+                    opacity: visible ? 1 : 0,
+                    transform: visible ? "translateY(0)" : "translateY(20px)",
+                    transition: `opacity 500ms ease-out ${150 + i * 120}ms, transform 500ms ease-out ${150 + i * 120}ms`,
+                    display: "flex", flexDirection: "column",
+                  }}
+                >
+                  {/* Accent bar */}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: step.color, opacity: isLast ? 1 : 0.6 }} />
+
+                  {/* Step number + time */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                    <div style={{
+                      width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center",
+                      backgroundColor: isLast ? "rgba(244,241,234,0.08)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(26,122,109,0.08)",
+                      fontSize: 14, fontWeight: 700, color: isLast ? "#F4F1EA" : step.color,
+                    }}>
+                      {step.num}
+                    </div>
+                    <span style={{
+                      fontSize: S.fsMeta, fontWeight: 700, letterSpacing: "0.04em",
+                      color: isLast ? B.teal : B.light,
+                      padding: "3px 10px", borderRadius: 100,
+                      backgroundColor: isLast ? "rgba(26,122,109,0.12)" : "rgba(14,26,43,0.04)",
+                    }}>
+                      {step.time}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 style={{
+                    fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600,
+                    color: isLast ? "#F4F1EA" : B.navy,
+                    marginBottom: 8, letterSpacing: "-0.02em",
+                  }}>
+                    {step.title}
+                  </h3>
+
+                  {/* Hook */}
+                  <p style={{
+                    fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600,
+                    color: isLast ? B.teal : step.color,
+                    marginBottom: 14, lineHeight: 1.4,
+                  }}>
+                    {step.hook}
+                  </p>
+
+                  {/* Description */}
+                  <p style={{
+                    fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop,
+                    color: isLast ? "rgba(244,241,234,0.50)" : B.muted,
+                    lineHeight: 1.65, margin: 0, flex: 1,
+                  }}>
+                    {step.desc}
+                  </p>
                 </div>
-                <span style={{ fontSize: S.fsMeta, fontWeight: 600, color: B.light }}>{step.time}</span>
+
+                {/* Arrow connector between cards (desktop only) */}
+                {!isLast && !mobile && (
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40 }}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
               </div>
-
-              {/* Title */}
-              <h3 style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
-                {step.title}
-              </h3>
-
-              {/* Hook — the line that sells */}
-              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600, color: step.color, marginBottom: 12, lineHeight: 1.4 }}>
-                {step.hook}
-              </p>
-
-              {/* Description */}
-              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: 1.65, margin: 0 }}>
-                {step.desc}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
