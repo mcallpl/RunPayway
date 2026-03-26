@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
@@ -355,51 +356,61 @@ export default function InitializationPage() {
           opacity: readyVisible ? 1 : 0,
           transform: readyVisible ? "translateY(0)" : "translateY(20px)",
           transition: "opacity 800ms ease-out, transform 800ms ease-out",
+          maxWidth: 440,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          minHeight: "80vh", justifyContent: "center", position: "relative",
         }}>
-          <Image
-            src={logoBlue}
-            alt="RunPayway"
-            width={160}
-            height={19}
-            style={{ height: "auto", marginBottom: 40, filter: "brightness(10)" }}
-          />
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 28 }}>
+              Prepared for {form.assessment_title}
+            </div>
 
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 20 }}>
-            Prepared for {form.assessment_title}
+            <h1 style={{ fontSize: 28, fontWeight: 500, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
+              Your assessment is ready.
+            </h1>
+
+            <div style={{ width: 32, height: 1, backgroundColor: "rgba(244,241,234,0.12)", marginBottom: 20 }} />
+
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
+              A short structural diagnostic about how your income works. No financial data required.
+            </p>
+
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", marginBottom: 40 }}>
+              Takes about 90 seconds
+            </p>
+
+            <button
+              onClick={() => router.push("/diagnostic")}
+              style={{
+                height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+                background: "#F4F1EA",
+                color: B.navy, fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+                border: "none", cursor: "pointer",
+                boxShadow: "0 8px 28px rgba(0,0,0,0.20)",
+                transition: "transform 200ms ease, box-shadow 200ms ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.25)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.20)"; }}
+            >
+              Begin Assessment
+            </button>
+
+            <div style={{ marginTop: 28, display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
+              {["No bank connection", "No credit pull", "Private by default"].map((item) => (
+                <span key={item} style={{ fontSize: 12, color: "rgba(244,241,234,0.20)", letterSpacing: "0.02em" }}>{item}</span>
+              ))}
+            </div>
           </div>
 
-          <h1 style={{ fontSize: 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.2 }}>
-            Your assessment is ready.
-          </h1>
-
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 420, margin: "0 auto 16px" }}>
-            Six questions about how your income is structured. No financial data required. Your answers are private.
-          </p>
-
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", marginBottom: 40 }}>
-            Takes about 90 seconds
-          </p>
-
-          <button
-            onClick={() => router.push("/diagnostic")}
-            style={{
-              height: 56, paddingLeft: 40, paddingRight: 40, borderRadius: 12,
-              background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-              color: B.navy, fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em",
-              border: "none", cursor: "pointer",
-              boxShadow: "0 8px 28px rgba(0,0,0,0.25)",
-              transition: "transform 200ms ease, box-shadow 200ms ease",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.30)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.25)"; }}
-          >
-            Begin
-          </button>
-
-          <div style={{ marginTop: 32, display: "flex", justifyContent: "center", gap: 24 }}>
-            {["No bank connection", "No credit pull", "Private by default"].map((item) => (
-              <span key={item} style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>{item}</span>
-            ))}
+          {/* Logo at bottom center */}
+          <div style={{ paddingBottom: 40, paddingTop: 32 }}>
+            <Image
+              src={logoWhite}
+              alt="RunPayway"
+              width={100}
+              height={12}
+              style={{ height: "auto", opacity: 0.3 }}
+            />
           </div>
         </div>
       </div>

@@ -564,11 +564,27 @@ export default function ReviewPage() {
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [mobile, setMobile] = useState(false);
   const monitoringTracked = useRef(false);
   const totalPages = 6; // cover + 5 pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
   const pageContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth <= 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Scroll to top on page change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (pageContainerRef.current) {
+      pageContainerRef.current.scrollTop = 0;
+    }
+  }, [currentPage]);
 
   // Keyboard navigation for pages
   useEffect(() => {
@@ -1031,30 +1047,37 @@ export default function ReviewPage() {
   const pageContents: ReactNode[] = [
     // Page 0: Cover
     <>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: 500, textAlign: "center" }}>
-          <Image src={logoBlue} alt="RunPayway&#8482;" width={180} height={21} style={{ height: "auto", marginBottom: 32 }} />
-          <div style={{ width: "60%", height: 1, backgroundColor: B.stone, marginBottom: 32 }} />
-          <div style={{ ...T.pageTitle, marginBottom: 8 }}>Income Stability Report</div>
-          <div style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 400 }}>See where your income stands. Then see what to do next.</div>
-          <div style={{ fontSize: 24, fontWeight: 500, color: B.navy, marginBottom: 8 }}>{record.assessment_title}</div>
-          <div style={{ ...T.body, color: B.muted, marginBottom: 32 }}>{formalDate}</div>
-          <div style={{ marginBottom: 16 }}>
-            <span style={{ ...T.score, color: B.navy }}>{record.final_score}</span>
-            <span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : 500, textAlign: "center", padding: mobile ? "0 8px" : 0 }}>
+          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 140 : 180} height={21} style={{ height: "auto", marginBottom: mobile ? 20 : 32 }} />
+          <div style={{ width: mobile ? "80%" : "60%", height: 1, backgroundColor: B.stone, marginBottom: mobile ? 20 : 32 }} />
+
+          <div style={{ ...T.pageTitle, fontSize: mobile ? 22 : 28, marginBottom: 4 }}>Income Stability Report</div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24 }}>See where your income stands. Then see what to do next.</div>
+
+          <div style={{ fontSize: mobile ? 18 : 24, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
+          <div style={{ ...T.meta, color: B.muted, marginBottom: mobile ? 20 : 32 }}>{formalDate}</div>
+
+          {/* Score block */}
+          <div style={{ marginBottom: 12 }}>
+            <span style={{ ...T.score, fontSize: mobile ? 56 : 72, color: B.navy }}>{record.final_score}</span>
+            <span style={{ fontSize: mobile ? 18 : 24, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
-            <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
+            <div style={{ ...T.classification, fontSize: mobile ? 16 : 18, color: bandColor }}>{record.stability_band}</div>
           </div>
-          <div style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 380 }}>{coverBandDesc[tier]}</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 4 }}>Built from six fixed questions about your income structure.</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 4 }}>The same answers always produce the same score under Model RP-2.0.</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 32 }}>Report tailored using your operating structure, income model, and priorities.</div>
-          <div style={{ ...T.overline, color: B.navy, marginBottom: 8, letterSpacing: 1 }}>SCORE SIMULATOR&#8482;</div>
-          <div style={{ ...T.meta, color: B.muted, marginBottom: 12 }}>Scan to model changes using your actual assessment.</div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24, maxWidth: 340, lineHeight: 1.5 }}>{coverBandDesc[tier]}</div>
+
+          {/* Methodology footer */}
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 3 }}>Built from fixed structural questions under Model RP-2.0.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 28 }}>Report tailored using your operating structure, income model, and priorities.</div>
+
+          {/* Simulator QR */}
+          <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>SCORE SIMULATOR&#8482;</div>
+          <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Scan to model changes using your actual assessment.</div>
           <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-          <div style={{ ...T.meta, color: B.muted, marginTop: 8 }}>Linked to your report</div>
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 5 Pages</div>
+          <div style={{ ...T.meta, color: B.muted, marginTop: 6, fontSize: mobile ? 11 : 12 }}>Linked to your report</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 12 }}>Model RP-2.0 · 5 Pages</div>
         </div>
     </>,
 
@@ -1089,14 +1112,14 @@ export default function ReviewPage() {
               <div key={i} style={{ width: `${seg.w}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: (tier === "limited" && i === 0) || (tier === "developing" && i === 1) || (tier === "established" && i === 2) || (tier === "high" && i === 3) ? 1 : 0.25 }} />
             ))}
           </div>
-          <div style={{ display: "flex", gap: 2 }}>
+          <div style={{ display: mobile ? "grid" : "flex", gridTemplateColumns: "1fr 1fr", gap: mobile ? 8 : 2 }}>
             {[
               { range: "0–29", label: "Limited", desc: "Your income is highly vulnerable to disruption", color: B.bandLimited, tier: "limited" as const },
               { range: "30–49", label: "Developing", desc: "Some protection exists, but significant gaps still remain", color: B.bandDeveloping, tier: "developing" as const },
               { range: "50–74", label: "Established", desc: "Your income has meaningful structural protection", color: B.bandEstablished, tier: "established" as const },
               { range: "75–100", label: "High", desc: "Your income is well-protected against most disruptions", color: B.bandHigh, tier: "high" as const },
             ].map((band) => (
-              <div key={band.range} style={{ flex: 1, opacity: tier === band.tier ? 1 : 0.5 }}>
+              <div key={band.range} style={{ flex: mobile ? undefined : 1, opacity: tier === band.tier ? 1 : 0.5 }}>
                 <div style={{ ...T.micro, color: band.color, fontWeight: tier === band.tier ? 700 : 500 }}>{band.range}</div>
                 <div style={{ ...T.meta, color: tier === band.tier ? B.navy : B.taupe, fontWeight: tier === band.tier ? 600 : 400 }}>{band.label}</div>
                 {tier === band.tier && <div style={{ ...T.meta, color: B.taupe, fontWeight: 400, lineHeight: 1.4, marginTop: 2 }}>{band.desc}</div>}
@@ -1187,15 +1210,15 @@ export default function ReviewPage() {
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
         </div>
-        <div style={{ display: "flex", gap: 24, marginBottom: 12 }}>
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 6 : 24, marginBottom: 12 }}>
           {[
             { label: "You must actively work to earn this", pct: record.active_income_level, color: B.ink },
             { label: "This renews automatically (retainers, subscriptions, contracts)", pct: record.semi_persistent_income_level, color: B.taupe },
             { label: "This continues even if you stop working entirely", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
-            <div key={seg.label} style={{ flex: 1 }}>
+            <div key={seg.label} style={{ flex: mobile ? undefined : 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color }} />
+                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color, flexShrink: 0 }} />
                 <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
               </div>
             </div>
@@ -1206,8 +1229,8 @@ export default function ReviewPage() {
         </p>
 
         {/* Stress Test + Continuity cards */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 3, ...cardStyle }}>
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: mobile ? undefined : 3, ...cardStyle }}>
             <Overline>WHAT HAPPENS IF YOUR BIGGEST SOURCE OF INCOME GOES AWAY</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
@@ -1218,7 +1241,7 @@ export default function ReviewPage() {
               {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
             </p>
           </div>
-          <div style={{ flex: 2, ...cardStyle }}>
+          <div style={{ flex: mobile ? undefined : 2, ...cardStyle }}>
             <Overline>HOW LONG YOUR INCOME CONTINUES IF YOU STOP WORKING</Overline>
             <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
@@ -1494,9 +1517,9 @@ export default function ReviewPage() {
             {v2TradeoffNarratives.slice(0, 1).map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
-                <div style={{ display: "flex", gap: 16 }}>
-                  <div style={{ flex: 1 }}><div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p></div>
-                  <div style={{ flex: 1 }}><div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p></div>
+                <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 16 }}>
+                  <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p></div>
+                  <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p></div>
                 </div>
                 <div style={{ borderTop: `1px solid ${B.stone}`, marginTop: 8, paddingTop: 6 }}><p style={{ ...T.meta, color: B.navy, margin: 0, fontWeight: 500 }}>{t.net_recommendation}</p></div>
               </div>
@@ -1649,7 +1672,7 @@ export default function ReviewPage() {
     {/* On-screen paginated view */}
     <div id="paginated-view" style={{ maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 80px" }}>
       <div ref={pageContainerRef} style={{ minHeight: "60vh" }}>
-        <div className="report-page" style={{ backgroundColor: "#FFFFFF", borderRadius: 8, padding: "32px 36px", border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 2px 12px rgba(14,26,43,0.04)" }}>
+        <div className="report-page" style={{ backgroundColor: "#FFFFFF", borderRadius: mobile ? 0 : 8, padding: mobile ? "24px 16px" : "32px 36px", border: mobile ? "none" : "1px solid rgba(14,26,43,0.06)", boxShadow: mobile ? "none" : "0 2px 12px rgba(14,26,43,0.04)" }}>
           {pageContents[currentPage]}
         </div>
       </div>
@@ -1660,22 +1683,24 @@ export default function ReviewPage() {
         backgroundColor: "rgba(255,255,255,0.97)",
         backdropFilter: "blur(12px)",
         borderTop: "1px solid rgba(14,26,43,0.08)",
-        padding: "12px 24px",
+        padding: mobile ? "10px 12px" : "12px 24px",
         zIndex: 100,
-        display: "flex", justifyContent: "center", alignItems: "center", gap: 24,
+        display: "flex", justifyContent: "center", alignItems: "center", gap: mobile ? 8 : 24,
       }}>
-        {/* Download PDF */}
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          style={{
-            background: "none", border: "none", cursor: downloading ? "default" : "pointer",
-            fontSize: 13, color: "rgba(14,26,43,0.58)",
-            padding: "8px 12px", fontWeight: 500,
-          }}
-        >
-          {downloading ? "Generating..." : "Download PDF"}
-        </button>
+        {/* Download PDF — hide on mobile to save space */}
+        {!mobile && (
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            style={{
+              background: "none", border: "none", cursor: downloading ? "default" : "pointer",
+              fontSize: 13, color: "rgba(14,26,43,0.58)",
+              padding: "8px 12px", fontWeight: 500,
+            }}
+          >
+            {downloading ? "Generating..." : "Download PDF"}
+          </button>
+        )}
 
         {/* Left arrow */}
         <button
@@ -1683,8 +1708,8 @@ export default function ReviewPage() {
           disabled={currentPage === 0}
           style={{
             background: "none", border: "none", cursor: currentPage === 0 ? "default" : "pointer",
-            fontSize: 18, color: currentPage === 0 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
-            padding: "8px 12px",
+            fontSize: mobile ? 16 : 18, color: currentPage === 0 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            padding: mobile ? "8px 8px" : "8px 12px",
           }}
           aria-label="Previous page"
         >
@@ -1692,14 +1717,14 @@ export default function ReviewPage() {
         </button>
 
         {/* Page dots */}
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: mobile ? 6 : 8, alignItems: "center" }}>
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
               onClick={() => setCurrentPage(i)}
               style={{
-                width: currentPage === i ? 24 : 8,
-                height: 8,
+                width: currentPage === i ? (mobile ? 18 : 24) : (mobile ? 6 : 8),
+                height: mobile ? 6 : 8,
                 borderRadius: 4,
                 backgroundColor: currentPage === i ? "#0E1A2B" : "rgba(14,26,43,0.15)",
                 border: "none",
@@ -1713,7 +1738,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Page label */}
-        <span style={{ fontSize: 13, color: "#0E1A2B", fontWeight: 500 }}>{pageNames[currentPage]}</span>
+        <span style={{ fontSize: mobile ? 12 : 13, color: "#0E1A2B", fontWeight: 500 }}>{pageNames[currentPage]}</span>
 
         {/* Right arrow */}
         <button
@@ -1721,8 +1746,8 @@ export default function ReviewPage() {
           disabled={currentPage === totalPages - 1}
           style={{
             background: "none", border: "none", cursor: currentPage === totalPages - 1 ? "default" : "pointer",
-            fontSize: 18, color: currentPage === totalPages - 1 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
-            padding: "8px 12px",
+            fontSize: mobile ? 16 : 18, color: currentPage === totalPages - 1 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            padding: mobile ? "8px 8px" : "8px 12px",
           }}
           aria-label="Next page"
         >
