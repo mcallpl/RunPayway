@@ -464,6 +464,43 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 /* ================================================================== */
+/* HERO VIDEO — 15s cinematic loop below hero                          */
+/* ================================================================== */
+function HeroVideo() {
+  const mobile = useMobile();
+
+  return (
+    <section
+      aria-label="Brand video"
+      style={{
+        backgroundColor: B.navy,
+        paddingTop: 0,
+        paddingBottom: 0,
+        lineHeight: 0,
+      }}
+    >
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+          }}
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* BRIDGE — Emotional beat between hero and methodology                 */
 /* ================================================================== */
 function BridgeSection() {
@@ -2871,6 +2908,7 @@ export default function LandingPage() {
     <div className="overflow-x-hidden">
       <StickyNav />
       <HeroSection />
+      <HeroVideo />
       <BridgeSection />
       <FourFactorsSection />
       <HowItWorksSection />
