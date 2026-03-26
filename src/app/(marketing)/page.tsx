@@ -637,7 +637,7 @@ function FourFactorsSection() {
         {/* Section header */}
         <div style={{ maxWidth: 560, marginBottom: mobile ? S.sectionHeaderMb.mobile : S.sectionHeaderMb.desktop }}>
           <div style={{ fontSize: S.fsLabel, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
-            What We Measure
+            The Model
           </div>
           <h2 style={{
             fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: 1.12,
@@ -645,10 +645,10 @@ function FourFactorsSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            The four structural risks that determine your score
+            Four questions your income<br />can&#8217;t hide from.
           </h2>
           <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
-            If any one is weak, your income is exposed. The score quantifies exactly how much.
+            Each one exposes a different structural weakness. The score measures how well your income holds up across all four.
           </p>
         </div>
 
