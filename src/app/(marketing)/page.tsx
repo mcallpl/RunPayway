@@ -1739,10 +1739,10 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <HeroVideo />
-      <BridgeSection />
-      <FourFactorsSection />
-      <HowItWorksSection />
       <WhatYourReportSection />
+      <HowItWorksSection />
+      <FourFactorsSection />
+      <BridgeSection />
       <TestimonialsSection />
       <PricingSection />
       <MidPageCta />
