@@ -318,6 +318,9 @@ export default function InitializationPage() {
     form.revenue_structure !== "" &&
     form.industry_sector !== "";
 
+  const [showReadyScreen, setShowReadyScreen] = useState(false);
+  const [readyVisible, setReadyVisible] = useState(false);
+
   const handleBegin = () => {
     if (!isValid) return;
     const profile = {
@@ -326,7 +329,8 @@ export default function InitializationPage() {
     };
     sessionStorage.setItem("rp_profile", JSON.stringify(profile));
     localStorage.setItem("rp_profile", JSON.stringify(profile));
-    router.push("/diagnostic");
+    setShowReadyScreen(true);
+    setTimeout(() => setReadyVisible(true), 100);
   };
 
   const focusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -338,6 +342,74 @@ export default function InitializationPage() {
 
   const canContinueStep0 = form.assessment_title.trim() !== "";
   const canContinueStep1 = form.classification !== "" && form.operating_structure !== "";
+
+  /* ================================================================ */
+  /*  READY SCREEN — Breath before the diagnostic begins               */
+  /* ================================================================ */
+  if (showReadyScreen) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        textAlign: "center",
+        padding: "0 32px",
+      }}>
+        <div style={{
+          opacity: readyVisible ? 1 : 0,
+          transform: readyVisible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 800ms ease-out, transform 800ms ease-out",
+        }}>
+          <Image
+            src={logoBlue}
+            alt="RunPayway"
+            width={160}
+            height={19}
+            style={{ height: "auto", marginBottom: 40, filter: "brightness(10)" }}
+          />
+
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 20 }}>
+            Prepared for {form.assessment_title}
+          </div>
+
+          <h1 style={{ fontSize: 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 12, lineHeight: 1.2 }}>
+            Your assessment is ready.
+          </h1>
+
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 420, margin: "0 auto 16px" }}>
+            Six questions about how your income is structured. No financial data required. Your answers are private.
+          </p>
+
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", marginBottom: 40 }}>
+            Takes about 90 seconds
+          </p>
+
+          <button
+            onClick={() => router.push("/diagnostic")}
+            style={{
+              height: 56, paddingLeft: 40, paddingRight: 40, borderRadius: 12,
+              background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+              color: B.navy, fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em",
+              border: "none", cursor: "pointer",
+              boxShadow: "0 8px 28px rgba(0,0,0,0.25)",
+              transition: "transform 200ms ease, box-shadow 200ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.30)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.25)"; }}
+          >
+            Begin
+          </button>
+
+          <div style={{ marginTop: 32, display: "flex", justifyContent: "center", gap: 24 }}>
+            {["No bank connection", "No credit pull", "Private by default"].map((item) => (
+              <span key={item} style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>{item}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   /* ================================================================ */
   /*  STEP 0 — PORTAL ENTRANCE                                        */
