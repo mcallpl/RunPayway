@@ -2821,9 +2821,10 @@ function StickyNav() {
         )}
         {mobile && (
           <Link href="/pricing" style={{
-            fontSize: 11, fontWeight: 600, color: B.navy, textDecoration: "none",
-            padding: "5px 12px", borderRadius: 5,
+            fontSize: 9, fontWeight: 600, color: B.navy, textDecoration: "none",
+            padding: "4px 10px", borderRadius: 4,
             background: "linear-gradient(135deg, #F4F1EA, #E8E5DD)",
+            textAlign: "center",
           }}>Get Started</Link>
         )}
       </div>
