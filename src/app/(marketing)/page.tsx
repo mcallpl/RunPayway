@@ -468,18 +468,23 @@ input[type="range"]::-webkit-slider-thumb {
 /* ================================================================== */
 function HeroVideo() {
   const mobile = useMobile();
+  const [videoSrc, setVideoSrc] = useState("");
+
+  useEffect(() => {
+    // Detect basePath at runtime for static export compatibility
+    const base = window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
+    setVideoSrc(`${base}/hero-video.mp4`);
+  }, []);
 
   return (
     <section
       aria-label="Brand video"
       style={{
-        backgroundColor: B.navy,
-        paddingTop: 0,
-        paddingBottom: 0,
+        backgroundColor: "#000000",
         lineHeight: 0,
       }}
     >
-      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+      {videoSrc && (
         <video
           autoPlay
           muted
@@ -492,9 +497,9 @@ function HeroVideo() {
             display: "block",
           }}
         >
-          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
-      </div>
+      )}
     </section>
   );
 }
