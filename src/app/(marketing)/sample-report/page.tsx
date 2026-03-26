@@ -155,10 +155,10 @@ function CardFooter({
         borderTop: "1px solid rgba(14,26,43,0.06)",
       }}
     >
-      <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>
+      <span style={{ fontSize: 12, color: B.light, fontWeight: 500 }}>
         {left}
       </span>
-      <span style={{ fontSize: 11, color: B.light, fontWeight: 500 }}>
+      <span style={{ fontSize: 12, color: B.light, fontWeight: 500 }}>
         {right}
       </span>
     </div>
@@ -196,7 +196,7 @@ function Hero() {
       <div style={{ position: "relative", zIndex: 1, maxWidth: 800, margin: "0 auto", padding: `0 ${mobile ? 28 : 48}px`, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 1s ease-out, transform 1s ease-out" }}>
           <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 32 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>Sample Report &#183; Consulting Profile</span>
+            <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>Sample Report &#183; Consulting Profile</span>
           </div>
 
           {/* Animated score */}
@@ -205,11 +205,11 @@ function Hero() {
           </div>
           <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 32 }}>out of 100 &middot; High Stability</div>
 
-          <h1 style={{ fontSize: mobile ? 28 : 42, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.025em", marginBottom: 16 }}>
+          <h1 style={{ fontSize: mobile ? 32 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.025em", marginBottom: 16 }}>
             This is what your report looks like.
           </h1>
-          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
-            Five pages. Interactive simulator. Ready-to-send scripts. Every number is yours.
+          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
+            Six pages of analysis. Interactive simulator. Ready-to-send scripts. Every number is yours.
           </p>
 
           {/* Scroll indicator */}
@@ -236,9 +236,9 @@ function Page1Preview() {
         cardContent={<>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
             <Image src={logoBlue} alt="RunPayway™" width={100} height={12} style={{ height: "auto" }} />
-            <span style={{ fontSize: 10, color: B.light }}>Model RP-2.0</span>
+            <span style={{ fontSize: 11, color: B.light }}>Model RP-2.0</span>
           </div>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>YOUR INCOME STABILITY REPORT</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>YOUR INCOME STABILITY REPORT</div>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Score</h3>
           <div style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 6 }}>78</div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
@@ -273,16 +273,16 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
     <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
       <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
         <span style={{ fontSize: mobile ? 36 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: dark ? "rgba(244,241,234,0.15)" : "rgba(14,26,43,0.06)", lineHeight: 1 }}>{pageNum}</span>
-        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: labelColor }}>PAGE {pageNum}</span>
+        <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: labelColor }}>PAGE {pageNum}</span>
       </div>
-      <div style={{ fontSize: 15, color: mutedColor, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
-      <h3 style={{ fontSize: mobile ? 26 : 34, fontFamily: DISPLAY_FONT, fontWeight: 400, color: textColor, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
-      <p style={{ fontSize: 15, color: mutedColor, lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
+      <div style={{ fontSize: mobile ? 16 : 18, color: mutedColor, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
+      <h3 style={{ fontSize: mobile ? 32 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: textColor, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
+      <p style={{ fontSize: mobile ? 16 : 18, color: mutedColor, lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         {bullets.map((b) => (
           <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: dotColor, marginTop: 7, flexShrink: 0 }} />
-            <span style={{ fontSize: 14, color: bulletColor, lineHeight: 1.6 }}>{b}</span>
+            <span style={{ fontSize: mobile ? 15 : 16, color: bulletColor, lineHeight: 1.6 }}>{b}</span>
           </div>
         ))}
       </div>
@@ -302,7 +302,7 @@ function PagePreview({ pageNum, title, question, description, bullets, cardConte
   const sectionBg = bg || sectionBgs[parseInt(pageNum) - 1] || "#F8F6F2";
 
   return (
-    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 56 : 96, paddingBottom: mobile ? 56 : 96, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
+    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
       <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
         {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 36 : 0 }} />{card}</> : <>{card}<div style={{ width: 64 }} />{content}</>}
       </div>
@@ -328,18 +328,18 @@ function Page2Preview() {
             <div style={{ width: "52%", backgroundColor: B.teal }} />
           </div>
           <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-            <span style={{ fontSize: 10, color: B.navy }}>Active 26%</span>
-            <span style={{ fontSize: 10, color: B.light }}>Repeatable 22%</span>
-            <span style={{ fontSize: 10, color: B.teal }}>Passive 52%</span>
+            <span style={{ fontSize: 11, color: B.navy }}>Active 26%</span>
+            <span style={{ fontSize: 11, color: B.light }}>Repeatable 22%</span>
+            <span style={{ fontSize: 11, color: B.teal }}>Passive 52%</span>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>WHAT IS WORKING</div>
-              <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Strong recurring base. Focus: refinement.</p>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>WHAT IS WORKING</div>
+              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Strong recurring base. Focus: refinement.</p>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>BIGGEST WEAKNESS</div>
-              <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Source concentration still too high.</p>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>BIGGEST WEAKNESS</div>
+              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Source concentration still too high.</p>
             </div>
           </div>
         </>}
@@ -360,14 +360,14 @@ function Page3Preview() {
         alignRight={true} visible={visible} mobile={mobile} dark
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
-          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78/100 → 56/100" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78/100 → 62/100" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78/100 → 72/100" }].map((r) => (
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
+          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78 → 56" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78 → 62" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78 → 72" }].map((r) => (
             <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 9, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
                 <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
               </div>
-              <span style={{ fontSize: 10, color: B.muted }}>{r.drop}</span>
+              <span style={{ fontSize: 11, color: B.muted }}>{r.drop}</span>
             </div>
           ))}
         </>}
@@ -388,12 +388,12 @@ function Page4Preview() {
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
           {[{ label: "Income Persistence", pct: 82, color: B.teal }, { label: "Source Independence", pct: 55, color: B.light }, { label: "Forward Visibility", pct: 71, color: B.teal }].map((ind) => (
             <div key={ind.label} style={{ marginBottom: 10 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                <span style={{ fontSize: 10, fontWeight: 600, color: B.navy }}>{ind.label}</span>
-                <span style={{ fontSize: 9, fontWeight: 600, color: ind.pct >= 60 ? B.teal : B.bandDeveloping }}>{ind.pct}/100</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{ind.label}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: ind.pct >= 60 ? B.teal : B.bandDeveloping }}>{ind.pct}/100</span>
               </div>
               <div style={{ height: 4, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
                 <div style={{ height: "100%", width: `${ind.pct}%`, backgroundColor: ind.color, borderRadius: 2 }} />
@@ -402,11 +402,11 @@ function Page4Preview() {
           ))}
           <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
             <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
-              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>FRAGILITY</div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>FRAGILITY</div>
               <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Supported</div>
             </div>
             <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
-              <div style={{ fontSize: 8, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>CONFIDENCE</div>
+              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>CONFIDENCE</div>
               <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>High</div>
             </div>
           </div>
@@ -424,22 +424,22 @@ function Page5Preview() {
       <PagePreview
         pageNum="5" title="Your Action Plan" question="What do I do about it?"
         description="Prioritized actions with specific timeframes and targets, tradeoff analysis showing the real cost of each move, ready-to-use scripts, and your reassessment date."
-        bullets={["Lift scenarios: exactly how many points each change is worth", "Action plan with timelines, numeric targets, and tradeoff warnings", "Ready-to-use scripts: retainer pitch, client outreach, pricing restructure"]}
+        bullets={["Lift scenarios: exactly how many points each change is worth", "Action plan with specific timelines, numeric targets, and priority ranking", "Advisor-ready summary: key talking points and red flags to raise"]}
         alignRight={true} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Action Plan</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
           {[{ n: "1", t: "Secure more income ahead of time", pts: "+8 pts → 86" }, { n: "2", t: "Reduce reliance on largest source", pts: "+5 pts → 83" }, { n: "3", t: "Build more repeatable income", pts: "+3 pts → 81" }].map((r) => (
             <div key={r.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{r.n}</span>
-                <span style={{ fontSize: 10, fontWeight: 600, color: B.navy }}>{r.t}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
               </div>
-              <span style={{ fontSize: 10, fontWeight: 600, color: B.teal }}>{r.pts}</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>{r.pts}</span>
             </div>
           ))}
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginTop: 12, marginBottom: 6 }}>SHARE WITH YOUR ADVISOR</div>
-          <p style={{ fontSize: 10, color: B.muted, margin: 0, lineHeight: 1.5 }}>Talking points, questions, and red flags — ready to share.</p>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginTop: 12, marginBottom: 6 }}>SHARE WITH YOUR ADVISOR</div>
+          <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Talking points, questions, and red flags — ready to share.</p>
         </>}
       />
     </div>
@@ -462,8 +462,8 @@ function CtaSection() {
         background: B.gradient,
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? 72 : 96,
-        paddingBottom: mobile ? 72 : 96,
+        paddingTop: mobile ? 72 : 120,
+        paddingBottom: mobile ? 72 : 120,
       }}
     >
       <div
@@ -498,11 +498,11 @@ function CtaSection() {
             transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <h2 style={{ fontSize: mobile ? 28 : 42, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
+          <h2 style={{ fontSize: mobile ? 32 : 48, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
             See your own numbers.
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32, maxWidth: 440, margin: "0 auto 32px" }}>
-            This was a sample. Your report uses your real data, your industry, and your income structure. Full refund if it does not reveal something new.
+          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32, maxWidth: 440, margin: "0 auto 32px" }}>
+            This was a sample. Your report uses your real data, your industry, and your actual income structure. Full refund if it does not reveal something new.
           </p>
           <Link
             href="/pricing"
@@ -518,7 +518,7 @@ function CtaSection() {
               borderRadius: 12,
               backgroundColor: "#F4F1EA",
               color: B.navy,
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 600,
               letterSpacing: "0.01em",
               textDecoration: "none",
@@ -534,7 +534,7 @@ function CtaSection() {
           <div
             style={{
               marginTop: 20,
-              fontSize: 12,
+              fontSize: 14,
               color: "rgba(244,241,234,0.40)",
               letterSpacing: "0.02em",
             }}
@@ -552,8 +552,8 @@ function BridgeLine() {
   return (
     <section style={{ backgroundColor: B.sand, paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48, borderTop: `1px solid ${B.border}`, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "center", alignItems: "center", gap: mobile ? 8 : 32, textAlign: "center" }}>
-        {["5 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
-          <span key={t} style={{ fontSize: 13, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
+        {["6 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
+          <span key={t} style={{ fontSize: 14, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
         ))}
       </div>
     </section>
@@ -564,15 +564,15 @@ function SimulatorPreview() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
   return (
-    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 64 : 80, paddingBottom: mobile ? 64 : 80, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
+    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
       <div style={{ maxWidth: 960, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 56 }}>
         <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
-          <h3 style={{ fontSize: mobile ? 24 : 30, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>What happens if things change?</h3>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
+          <h3 style={{ fontSize: mobile ? 20 : 24, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>What happens if things change?</h3>
+          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20 }}>
             Model any scenario against your actual data. See the exact score impact, timeline projection, and generate a Stability Brief&#8482; to share with lenders, landlords, or partners.
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", fontStyle: "italic", margin: 0 }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", fontStyle: "italic", margin: 0 }}>
             Loads automatically via QR code on your report.
           </p>
         </div>
@@ -596,16 +596,16 @@ function Page6Preview() {
         alignRight={false} visible={visible} mobile={mobile}
         cardContent={<>
           <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Strategy and Next Steps</h3>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>TRADEOFFS TO UNDERSTAND</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>TRADEOFFS TO UNDERSTAND</div>
           <div style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 10, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Reduce client concentration</div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Reduce client concentration</div>
             <div style={{ display: "flex", gap: 8 }}>
-              <div style={{ flex: 1 }}><div style={{ fontSize: 8, fontWeight: 600, color: B.teal }}>UPSIDE</div><div style={{ fontSize: 9, color: B.muted }}>Removes single point of failure</div></div>
-              <div style={{ flex: 1 }}><div style={{ fontSize: 8, fontWeight: 600, color: B.bandDeveloping }}>COST</div><div style={{ fontSize: 9, color: B.muted }}>Short-term income volatility</div></div>
+              <div style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>UPSIDE</div><div style={{ fontSize: 11, color: B.muted }}>Removes single point of failure</div></div>
+              <div style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.bandDeveloping }}>COST</div><div style={{ fontSize: 11, color: B.muted }}>Short-term income volatility</div></div>
             </div>
           </div>
-          <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>READY-TO-USE SCRIPTS</div>
-          <div style={{ fontSize: 10, color: B.muted, lineHeight: 1.5 }}>Retainer pitch &#183; Client outreach &#183; Pricing restructure</div>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>READY-TO-USE SCRIPTS</div>
+          <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.5 }}>Retainer pitch &#183; Client outreach &#183; Pricing restructure</div>
         </>}
       />
     </div>
