@@ -517,9 +517,9 @@ function BridgeSection() {
       ref={ref}
       aria-label="Why this matters"
       style={{
-        background: "transparent",
-        paddingTop: mobile ? 24 : 32,
-        paddingBottom: mobile ? 32 : 48,
+        background: "#FFFFFF",
+        paddingTop: mobile ? 40 : 56,
+        paddingBottom: mobile ? 40 : 56,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         marginTop: 0,
@@ -529,23 +529,17 @@ function BridgeSection() {
     >
       <div
         style={{
-          maxWidth: 680,
+          maxWidth: 600,
           margin: "0 auto",
           textAlign: "center",
           opacity: visible ? 1 : 0,
           transform: visible ? "translateY(0)" : "translateY(16px)",
           transition: "opacity 700ms ease-out, transform 700ms ease-out",
-          backgroundColor: "rgba(255,255,255,0.96)",
-          backdropFilter: "blur(12px)",
-          borderRadius: 10,
-          padding: mobile ? "18px 20px" : "24px 36px",
-          boxShadow: "0 2px 16px rgba(14,26,43,0.06)",
-          border: "1px solid rgba(14,26,43,0.04)",
         }}
       >
         <p
           style={{
-            fontSize: mobile ? 14 : 19,
+            fontSize: mobile ? 15 : 19,
             fontFamily: DISPLAY_FONT,
             fontWeight: 400,
             color: B.navy,
@@ -556,7 +550,7 @@ function BridgeSection() {
         >
           The median small business holds just 27 days of cash buffer.*
         </p>
-        <p style={{ fontSize: mobile ? 10 : 11, color: "rgba(14,26,43,0.35)", marginTop: 6, fontStyle: "italic" }}>
+        <p style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginTop: 8, fontStyle: "italic" }}>
           *JPMorgan Chase Institute, &ldquo;Cash is King: Flows, Balances, and Buffer Days,&rdquo; September 2016
         </p>
       </div>
@@ -619,7 +613,7 @@ function FourFactorsSection() {
       aria-label="What RunPayway™ Measures"
       style={{
         background: "#FFFFFF",
-        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
@@ -627,7 +621,7 @@ function FourFactorsSection() {
     >
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
         {/* Section header */}
-        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 56 }}>
+        <div style={{ maxWidth: 560, marginBottom: mobile ? S.sectionHeaderMb.mobile : S.sectionHeaderMb.desktop }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
             What We Measure
           </div>
@@ -791,7 +785,7 @@ function IncomePatterns() {
       style={{
         background: "linear-gradient(180deg, #F8F6F2 0%, #F4F1EA 100%)",
         paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? 80 : 120,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -1198,8 +1192,8 @@ function SampleResultSection() {
           linear-gradient(180deg, #0E1A2B 0%, #141225 50%, #1A1540 100%)
         `,
         position: "relative",
-        paddingTop: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
-        paddingBottom: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -1862,8 +1856,8 @@ function PricingSection() {
         background: "linear-gradient(180deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 100%)",
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
-        paddingBottom: mobile ? S.sectionYlg.mobile : S.sectionYlg.desktop,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -2587,8 +2581,8 @@ function ShareableScoreSection() {
     <section
       style={{
         background: "#FFFFFF",
-        paddingTop: mobile ? S.sectionYsm.mobile : S.sectionYsm.desktop,
-        paddingBottom: mobile ? 80 : 100,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       }}
@@ -2842,8 +2836,8 @@ function SimulatorTeaserSection() {
   return (
     <section ref={ref} style={{
       background: B.sand,
-      paddingTop: mobile ? 48 : 72,
-      paddingBottom: mobile ? 48 : 72,
+      paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
       paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
       paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
     }}>
@@ -2875,23 +2869,26 @@ function MidPageCta() {
   return (
     <section ref={ref} style={{
       background: B.navy,
-      padding: mobile ? "48px 28px" : "64px 56px",
+      paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+      paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+      paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
       textAlign: "center",
     }}>
       <div style={{
-        maxWidth: 600, margin: "0 auto",
+        maxWidth: 540, margin: "0 auto",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(12px)",
         transition: "opacity 600ms ease-out, transform 600ms ease-out",
       }}>
         <p style={{ fontSize: mobile ? 11 : 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
-          Ready to see your score?
+          Still here?
         </p>
         <h2 style={{ fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
-          Find out where your income is vulnerable — in under 2 minutes.
+          Your score takes two minutes. The insight lasts longer.
         </h2>
         <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", marginBottom: 32, lineHeight: 1.6 }}>
-          No bank connection. No credit pull. Your data stays on your device.
+          No bank connection. No credit pull. Private by default.
         </p>
         <Link href="/pricing" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -2920,9 +2917,9 @@ export default function LandingPage() {
       <HowItWorksSection />
       <WhatYourReportSection />
       <SimulatorTeaserSection />
-      <MidPageCta />
       <TestimonialsSection />
       <PricingSection />
+      <MidPageCta />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
     </div>
