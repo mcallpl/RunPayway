@@ -362,6 +362,103 @@ function generateRecordId(inputs: CanonicalInput, name: string): string {
 
 
 /* ------------------------------------------------------------------ */
+/*  Voice of the Model — slider explanations                           */
+/* ------------------------------------------------------------------ */
+function getSliderExplanation(sliderName: string, oldValue: number, newValue: number, scoreDelta: number): string {
+  const explanations: Record<string, { up: string; down: string }> = {
+    recurrence: {
+      up: `Increasing recurring income from ${oldValue}% to ${newValue}% converts income you rebuild every month into income that renews automatically. This is typically the single highest-impact change.`,
+      down: `Reducing recurring income means more of your income must be re-earned each month. This increases your vulnerability to disruptions.`,
+    },
+    topClient: {
+      up: `When your largest source grows from ${oldValue}% to ${newValue}% of revenue, a single client decision has more power over your income. This is concentration risk.`,
+      down: `Reducing your largest source from ${oldValue}% to ${newValue}% spreads your risk. No single client departure can damage your income as severely.`,
+    },
+    sources: {
+      up: `Adding income sources from ${oldValue} to ${newValue} creates redundancy. If one source disappears, the others continue.`,
+      down: `Fewer income sources means less redundancy. Each remaining source carries more weight — and more risk.`,
+    },
+    monthsBooked: {
+      up: `Extending booked income from ${oldValue} to ${newValue} months means you know what is coming. This forward visibility reduces uncertainty and improves your score.`,
+      down: `Less booked income means more months where revenue is uncertain. This reduces your score because the model cannot see committed income ahead.`,
+    },
+    passive: {
+      up: `Increasing passive income from ${oldValue}% to ${newValue}% means more of your income continues even if you stop working. This protects against illness, burnout, or forced breaks.`,
+      down: `Less passive income means more depends on your daily effort. Any disruption to your ability to work directly impacts your income.`,
+    },
+  };
+
+  const key = newValue > oldValue ? "up" : "down";
+  const base = explanations[sliderName]?.[key] || "";
+  const impact = Math.abs(scoreDelta);
+  const impactLine = impact > 0 ? ` This change moves your score by ${scoreDelta > 0 ? "+" : ""}${scoreDelta} points.` : " This change has minimal impact on your score at current levels.";
+  return base + impactLine;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reverse Engineer — find minimum changes to reach target score      */
+/* ------------------------------------------------------------------ */
+function reverseEngineer(target: number, baseInputs: CanonicalInput, qualityScore: number): { slider: string; label: string; from: number; to: number; pointsGained: number }[] {
+  const baseResult = simulateScore(baseInputs, qualityScore);
+  if (baseResult.overall_score >= target) return [];
+
+  const sliderDefs = [
+    { key: "recurrence", field: "income_persistence_pct", max: 100, step: 5, label: "Increase recurring income" },
+    { key: "topClient", field: "largest_source_pct", max: 100, step: -5, label: "Reduce largest source dependence" },
+    { key: "sources", field: "source_diversity_count", max: 10, step: 1, label: "Add income sources" },
+    { key: "forward", field: "forward_secured_pct", max: 100, step: 5, label: "Book income further ahead" },
+    { key: "passive", field: "labor_dependence_pct", max: 100, step: -5, label: "Increase passive income" },
+  ];
+
+  const results: { slider: string; label: string; from: number; to: number; pointsGained: number }[] = [];
+  let currentInputs = { ...baseInputs };
+  let currentScore = baseResult.overall_score;
+
+  for (let iteration = 0; iteration < 20 && currentScore < target; iteration++) {
+    let bestGain = 0;
+    let bestDef: typeof sliderDefs[0] | null = null;
+    let bestNewValue = 0;
+
+    for (const def of sliderDefs) {
+      const currentValue = (currentInputs as Record<string, unknown>)[def.field] as number;
+      const newValue = def.step > 0
+        ? Math.min(def.max, currentValue + def.step)
+        : Math.max(0, currentValue + def.step);
+      if (newValue === currentValue) continue;
+
+      const testInputs = { ...currentInputs, [def.field]: newValue };
+      const testScore = simulateScore(testInputs, qualityScore).overall_score;
+      const gain = testScore - currentScore;
+      if (gain > bestGain) {
+        bestGain = gain;
+        bestDef = def;
+        bestNewValue = newValue;
+      }
+    }
+
+    if (!bestDef || bestGain <= 0) break;
+
+    const fromValue = (currentInputs as Record<string, unknown>)[bestDef.field] as number;
+    results.push({ slider: bestDef.key, label: bestDef.label, from: fromValue, to: bestNewValue, pointsGained: bestGain });
+    currentInputs = { ...currentInputs, [bestDef.field]: bestNewValue };
+    currentScore += bestGain;
+  }
+
+  const merged: typeof results = [];
+  for (const r of results) {
+    const last = merged[merged.length - 1];
+    if (last && last.slider === r.slider) {
+      last.to = r.to;
+      last.pointsGained += r.pointsGained;
+    } else {
+      merged.push({ ...r });
+    }
+  }
+
+  return merged;
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main content                                                       */
 /* ------------------------------------------------------------------ */
 function SimulatorContent() {
@@ -376,6 +473,8 @@ function SimulatorContent() {
   const [industry, setIndustry] = useState("");
   const T = DARK;
   const [incomeModel, setIncomeModel] = useState("");
+  const [lastChangedSlider, setLastChangedSlider] = useState<string | null>(null);
+  const [targetScore, setTargetScore] = useState<number | null>(null);
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -760,24 +859,58 @@ function SimulatorContent() {
 
               <Card style={{ marginBottom: 20 }}>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>INCOME STRUCTURE</div>
-                <Slider label="Recurring revenue" value={sl.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, recurrence: v })} />
-                <Slider label="Top client share" value={sl.topClient} min={sl.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, topClient: v })} accent={B.bandDeveloping} />
-                <Slider label="Income sources" value={sl.sources} min={1} max={8} step={1} unit="" onChange={(v) => setSliders({ ...sl, sources: v, topClient: v <= 1 ? 100 : Math.min(sl.topClient, 100) })} />
+                <Slider label="Recurring revenue" value={sl.recurrence} min={0} max={100} step={5} unit="%" onChange={(v) => { setSliders({ ...sl, recurrence: v }); setLastChangedSlider("recurrence"); }} />
+                <Slider label="Top client share" value={sl.topClient} min={sl.sources <= 1 ? 100 : 10} max={100} step={5} unit="%" onChange={(v) => { setSliders({ ...sl, topClient: v }); setLastChangedSlider("topClient"); }} accent={B.bandDeveloping} />
+                <Slider label="Income sources" value={sl.sources} min={1} max={8} step={1} unit="" onChange={(v) => { setSliders({ ...sl, sources: v, topClient: v <= 1 ? 100 : Math.min(sl.topClient, 100) }); setLastChangedSlider("sources"); }} />
               </Card>
 
               <Card style={{ marginBottom: 20 }}>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>PREDICTABILITY</div>
-                <Slider label="Months booked ahead" value={sl.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => setSliders({ ...sl, monthsBooked: v })} accent={B.bandEstablished} />
+                <Slider label="Months booked ahead" value={sl.monthsBooked} min={0} max={6} step={0.5} unit=" mo" onChange={(v) => { setSliders({ ...sl, monthsBooked: v }); setLastChangedSlider("monthsBooked"); }} accent={B.bandEstablished} />
               </Card>
 
               <Card>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 20 }}>RESILIENCE</div>
-                <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => setSliders({ ...sl, passive: v })} accent={B.purple} />
+                <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => { setSliders({ ...sl, passive: v }); setLastChangedSlider("passive"); }} accent={B.purple} />
               </Card>
 
-              <button onClick={() => setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct })} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
+              <button onClick={() => { setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct }); setLastChangedSlider(null); }} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
                 Reset to current
               </button>
+
+              {/* ── Voice of the Model ── */}
+              {isModified && simMode === "advanced" && lastChangedSlider && (() => {
+                const baseSliderMap: Record<string, number> = {
+                  recurrence: baseInputs.income_persistence_pct,
+                  topClient: baseInputs.largest_source_pct,
+                  sources: baseInputs.source_diversity_count,
+                  monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2,
+                  passive: 100 - baseInputs.labor_dependence_pct,
+                };
+                const currentSliderMap: Record<string, number> = {
+                  recurrence: sl.recurrence,
+                  topClient: sl.topClient,
+                  sources: sl.sources,
+                  monthsBooked: sl.monthsBooked,
+                  passive: sl.passive,
+                };
+                const baseSliderValue = baseSliderMap[lastChangedSlider] ?? 0;
+                const currentSliderValue = currentSliderMap[lastChangedSlider] ?? 0;
+                if (baseSliderValue === currentSliderValue) return null;
+                return (
+                  <div style={{
+                    marginTop: 16, padding: "16px 20px", borderRadius: 10,
+                    backgroundColor: "rgba(26,122,109,0.08)", border: "1px solid rgba(26,122,109,0.15)",
+                  }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: BRAND.teal, marginBottom: 8 }}>
+                      WHY THIS MATTERS
+                    </div>
+                    <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>
+                      {getSliderExplanation(lastChangedSlider, baseSliderValue, currentSliderValue, delta)}
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Right: analysis */}
@@ -915,6 +1048,82 @@ function SimulatorContent() {
           >
             &larr; View your full action plan in the report
           </Link>
+        </div>
+
+        {/* ══════════ REVERSE ENGINEER ══════════ */}
+        <div style={{ marginTop: 48 }}>
+          <SectionLabel color={BRAND.purple}>Reverse Engineer Your Score</SectionLabel>
+          <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, marginBottom: 20, maxWidth: 560 }}>
+            Set a target score. The model will calculate the minimum changes needed to get there.
+          </p>
+
+          {/* Target input */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
+            <span style={{ fontSize: 14, color: T.textSecondary }}>Target score:</span>
+            <input
+              type="number"
+              min={base.overall_score + 1}
+              max={100}
+              value={targetScore ?? ""}
+              onChange={(e) => setTargetScore(e.target.value ? Number(e.target.value) : null)}
+              placeholder={String(Math.min(100, base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : 100))}
+              style={{
+                width: 80, padding: "8px 12px", borderRadius: 8, fontSize: 18, fontWeight: 600,
+                textAlign: "center", backgroundColor: T.surface, color: T.text,
+                border: `1px solid ${T.border}`, outline: "none",
+              }}
+            />
+            <span style={{ fontSize: 14, color: T.textFaint }}>out of 100</span>
+          </div>
+
+          {/* Results */}
+          {targetScore && targetScore > base.overall_score && (() => {
+            const path = reverseEngineer(targetScore, baseInputs, qualityScore);
+            const totalGain = path.reduce((sum, p) => sum + p.pointsGained, 0);
+            const reachable = base.overall_score + totalGain >= targetScore;
+
+            return (
+              <div>
+                {path.length > 0 ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    {path.map((step, i) => (
+                      <div key={i} style={{
+                        display: "flex", alignItems: "center", gap: 16,
+                        padding: "14px 20px", borderRadius: 10,
+                        backgroundColor: T.surface, border: `1px solid ${T.border}`,
+                      }}>
+                        <div style={{
+                          width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          backgroundColor: BRAND.teal, color: "#FFFFFF", fontSize: 13, fontWeight: 700,
+                        }}>
+                          {i + 1}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 14, fontWeight: 600, color: T.text }}>{step.label}</div>
+                          <div style={{ fontSize: 13, color: T.textMuted, marginTop: 2 }}>
+                            Change from {Math.round(step.from)} to {Math.round(step.to)}
+                          </div>
+                        </div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: BRAND.teal }}>
+                          +{step.pointsGained} pts
+                        </div>
+                      </div>
+                    ))}
+                    <div style={{ padding: "14px 20px", borderRadius: 10, backgroundColor: reachable ? "rgba(26,122,109,0.08)" : "rgba(155,44,44,0.06)", border: `1px solid ${reachable ? "rgba(26,122,109,0.15)" : "rgba(155,44,44,0.12)"}` }}>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: reachable ? BRAND.teal : "#9B2C2C" }}>
+                        {reachable
+                          ? `These ${path.length} changes would bring your score from ${base.overall_score} to ${base.overall_score + totalGain}.`
+                          : `These changes would bring your score to ${base.overall_score + totalGain} — ${targetScore - (base.overall_score + totalGain)} points short of your target. The remaining gap requires changes the model cannot simulate from your current inputs.`}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p style={{ fontSize: 14, color: BRAND.teal }}>Your score already meets or exceeds this target.</p>
+                )}
+              </div>
+            );
+          })()}
         </div>
 
         {/* ══════════ PROFILE CARD ══════════ */}
