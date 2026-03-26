@@ -184,6 +184,8 @@ export default function InitializationPage() {
   const [step, setStep] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [portalRevealed, setPortalRevealed] = useState(false);
+  const [showReadyScreen, setShowReadyScreen] = useState(false);
+  const [readyVisible, setReadyVisible] = useState(false);
 
   const goToStep = useCallback((nextStep: number) => {
     setTransitioning(true);
@@ -317,9 +319,6 @@ export default function InitializationPage() {
     form.primary_income_model !== "" &&
     form.revenue_structure !== "" &&
     form.industry_sector !== "";
-
-  const [showReadyScreen, setShowReadyScreen] = useState(false);
-  const [readyVisible, setReadyVisible] = useState(false);
 
   const handleBegin = () => {
     if (!isValid) return;
