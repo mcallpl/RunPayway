@@ -1016,7 +1016,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Your Score", "Action Plan", "Income Structure", "Full Picture", "Methodology"];
+  const pageNames = ["Cover", "Your Score", "Income Structure", "Risks", "Action Plan", "Methodology"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1144,7 +1144,194 @@ export default function ReviewPage() {
         <PageFooter section="Your Score" page={1} />
     </>,
 
-    // Page 2: Action Plan
+    // Page 2: Income Structure
+    <>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p3Summary[tier]}</p>
+
+        {/* Income Structure Bar */}
+        <Overline large>Income Structure</Overline>
+        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 4 }}>
+          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
+          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
+          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
+        </div>
+        <div style={{ display: "flex", gap: 24, marginBottom: 12 }}>
+          {[
+            { label: "You must actively work to earn this", pct: record.active_income_level, color: B.ink },
+            { label: "This renews automatically (retainers, subscriptions, contracts)", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "This continues even if you stop working entirely", pct: record.persistent_income_level, color: B.teal },
+          ].map((seg) => (
+            <div key={seg.label} style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color }} />
+                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
+          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. When this percentage requires your daily effort, any disruption to your ability to work directly impacts your income.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
+        </p>
+
+        {/* Stress Test + Continuity cards */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 3, ...cardStyle }}>
+            <Overline>WHAT HAPPENS IF YOUR BIGGEST SOURCE OF INCOME GOES AWAY</Overline>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
+              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
+              <span style={{ ...T.sectionLabel, color: B.taupe }}>→</span>
+              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
+            </div>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+              {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
+            </p>
+          </div>
+          <div style={{ flex: 2, ...cardStyle }}>
+            <Overline>HOW LONG YOUR INCOME CONTINUES IF YOU STOP WORKING</Overline>
+            <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
+            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
+              {record.income_continuity_months < 1 ? `Critically short for a ${structureDesc}.` : record.income_continuity_months < 3 ? `Limited runway.` : record.income_continuity_months < 6 ? `Moderate runway.` : `Strong window.`}
+            </p>
+          </div>
+        </div>
+
+        <SectionDivider />
+
+        {/* Peer comparison */}
+        {v2Benchmarks && (
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer && peerPercentileValue !== null ? `YOU OUTPERFORM ${100 - peerPercentileValue}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
+            <div style={{ display: "flex", gap: 16, padding: "8px 0" }}>
+              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Peer Average (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Top 20% (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
+            </div>
+            <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
+          </div>
+        )}
+
+        <PageFooter section="How Your Income Is Built" page={2} />
+    </>,
+
+    // Page 3: Risks
+    <>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What Could Go Wrong</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>This section covers the risks that could lower your score and the detailed measurements behind it.</p>
+
+        {/* Stress scenarios — top 3 */}
+        {v2Scenarios && v2Scenarios.length > 0 && (
+          <div style={{ marginBottom: 20 }}>
+            <Overline large>What Could Hurt Your Score Most</Overline>
+            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
+              const scenarioPlain: Record<string, string> = {
+                active_labor_interrupted: "You are unable to work for an extended period",
+                platform_dependency_shock: "An income channel you rely on changes its terms or access",
+                forward_commitments_delayed: "Income you were expecting gets delayed",
+                client_concentration_loss: "Your largest client leaves or stops paying",
+                market_contraction: "Demand in your industry drops significantly",
+                regulatory_disruption: "A regulatory or policy change affects your work",
+                revenue_model_disruption: "Your primary way of earning income stops working",
+                high_volatility_month: "You have a month where income drops sharply",
+                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
+                key_client_loss: "You lose a key client or contract",
+                pricing_pressure: "What you can charge drops due to market pressure",
+                recurring_stream_degrades: "A repeating income stream weakens or ends",
+                referral_pipeline_dries: "New business or referrals slow down significantly",
+                contract_non_renewal: "A major contract is not renewed",
+                scope_reduction: "A client significantly reduces the scope of your work",
+              };
+              const title = scenarioPlain[s.scenario_id] ?? s.label
+                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
+                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
+                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
+                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
+                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
+                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
+                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
+                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
+                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
+                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
+                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
+                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
+                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
+                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
+                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
+              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
+                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+                : title;
+              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
+              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
+              return (
+                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
+                      <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
+                    </div>
+                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
+                      Your score would drop from {s.original_score} to <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
+                    </span>
+                  </div>
+                  {/* Why this risk matters — from outcome layer */}
+                  {(() => {
+                    const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
+                    const bandShiftNote = s.band_shift ? <p style={{ ...T.meta, color: B.bandLimited, margin: "4px 0 0", fontWeight: 500 }}>This means you would move from {s.original_band} to {s.scenario_band}.</p> : null;
+                    return olMatch?.why_it_matters ? (
+                      <div style={{ paddingLeft: 70 }}>
+                        <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{olMatch.why_it_matters}</p>
+                        {bandShiftNote}
+                      </div>
+                    ) : s.band_shift ? (
+                      <div style={{ paddingLeft: 70 }}>
+                        {bandShiftNote}
+                      </div>
+                    ) : null;
+                  })()}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <SectionDivider />
+
+        {/* Fragility card */}
+        {v2Fragility && (
+          <div style={{ ...cardStyle, marginBottom: 24 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IF SOMETHING GOES WRONG, HOW PROTECTED ARE YOU?</div>
+            <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
+              {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
+            </div>
+            <div style={{ ...T.meta, color: B.muted }}>
+              {({
+                brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
+                thin: "Can absorb a minor hit (one slow month), but not two in a row.",
+                uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
+                supported: "Can absorb most common disruptions without band change.",
+                resilient: "Can absorb a major client loss or 90-day work stoppage.",
+              })[v2Fragility.fragility_class] ?? ""}
+            </div>
+            {v2Fragility.primary_failure_mode && (
+              <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
+                Primary risk: {({
+                  concentration_collapse: "single-source dependency",
+                  labor_interruption: "income stops when work stops",
+                  visibility_gap: "no forward-committed income",
+                  durability_thinness: "recurring income is fragile",
+                })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Page footer */}
+        <PageFooter section="What Could Go Wrong" page={3} />
+    </>,
+
+    // Page 4: Action Plan
     <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What to Do About It</h1>
@@ -1321,194 +1508,7 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="What to Do About It" page={2} />
-    </>,
-
-    // Page 3: Income Structure
-    <>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p3Summary[tier]}</p>
-
-        {/* Income Structure Bar */}
-        <Overline large>Income Structure</Overline>
-        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 4 }}>
-          <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
-          <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
-          <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
-        </div>
-        <div style={{ display: "flex", gap: 24, marginBottom: 12 }}>
-          {[
-            { label: "You must actively work to earn this", pct: record.active_income_level, color: B.ink },
-            { label: "This renews automatically (retainers, subscriptions, contracts)", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "This continues even if you stop working entirely", pct: record.persistent_income_level, color: B.teal },
-          ].map((seg) => (
-            <div key={seg.label} style={{ flex: 1 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color }} />
-                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. When this percentage requires your daily effort, any disruption to your ability to work directly impacts your income.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
-        </p>
-
-        {/* Stress Test + Continuity cards */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
-          <div style={{ flex: 3, ...cardStyle }}>
-            <Overline>WHAT HAPPENS IF YOUR BIGGEST SOURCE OF INCOME GOES AWAY</Overline>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
-              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
-              <span style={{ ...T.sectionLabel, color: B.taupe }}>→</span>
-              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
-            </div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
-            </p>
-          </div>
-          <div style={{ flex: 2, ...cardStyle }}>
-            <Overline>HOW LONG YOUR INCOME CONTINUES IF YOU STOP WORKING</Overline>
-            <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.income_continuity_months < 1 ? `Critically short for a ${structureDesc}.` : record.income_continuity_months < 3 ? `Limited runway.` : record.income_continuity_months < 6 ? `Moderate runway.` : `Strong window.`}
-            </p>
-          </div>
-        </div>
-
-        <SectionDivider />
-
-        {/* Peer comparison */}
-        {v2Benchmarks && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer && peerPercentileValue !== null ? `YOU OUTPERFORM ${100 - peerPercentileValue}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
-            <div style={{ display: "flex", gap: 16, padding: "8px 0" }}>
-              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Peer Average (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Top 20% (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
-            </div>
-            <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
-          </div>
-        )}
-
-        <PageFooter section="How Your Income Is Built" page={3} />
-    </>,
-
-    // Page 4: Full Picture
-    <>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>The Full Picture</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>This section covers the risks that could lower your score and the detailed measurements behind it.</p>
-
-        {/* Stress scenarios — top 3 */}
-        {v2Scenarios && v2Scenarios.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <Overline large>What Could Hurt Your Score Most</Overline>
-            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
-              const scenarioPlain: Record<string, string> = {
-                active_labor_interrupted: "You are unable to work for an extended period",
-                platform_dependency_shock: "An income channel you rely on changes its terms or access",
-                forward_commitments_delayed: "Income you were expecting gets delayed",
-                client_concentration_loss: "Your largest client leaves or stops paying",
-                market_contraction: "Demand in your industry drops significantly",
-                regulatory_disruption: "A regulatory or policy change affects your work",
-                revenue_model_disruption: "Your primary way of earning income stops working",
-                high_volatility_month: "You have a month where income drops sharply",
-                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
-                key_client_loss: "You lose a key client or contract",
-                pricing_pressure: "What you can charge drops due to market pressure",
-                recurring_stream_degrades: "A repeating income stream weakens or ends",
-                referral_pipeline_dries: "New business or referrals slow down significantly",
-                contract_non_renewal: "A major contract is not renewed",
-                scope_reduction: "A client significantly reduces the scope of your work",
-              };
-              const title = scenarioPlain[s.scenario_id] ?? s.label
-                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
-                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
-                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
-                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
-                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
-                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
-                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
-                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
-                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
-                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
-                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
-                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
-                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
-                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
-                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
-              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
-                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
-                : title;
-              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
-              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
-              return (
-                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
-                      <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
-                    </div>
-                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
-                      Your score would drop from {s.original_score} to <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
-                    </span>
-                  </div>
-                  {/* Why this risk matters — from outcome layer */}
-                  {(() => {
-                    const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
-                    const bandShiftNote = s.band_shift ? <p style={{ ...T.meta, color: B.bandLimited, margin: "4px 0 0", fontWeight: 500 }}>This means you would move from {s.original_band} to {s.scenario_band}.</p> : null;
-                    return olMatch?.why_it_matters ? (
-                      <div style={{ paddingLeft: 70 }}>
-                        <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{olMatch.why_it_matters}</p>
-                        {bandShiftNote}
-                      </div>
-                    ) : s.band_shift ? (
-                      <div style={{ paddingLeft: 70 }}>
-                        {bandShiftNote}
-                      </div>
-                    ) : null;
-                  })()}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        <SectionDivider />
-
-        {/* Fragility card */}
-        {v2Fragility && (
-          <div style={{ ...cardStyle, marginBottom: 24 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IF SOMETHING GOES WRONG, HOW PROTECTED ARE YOU?</div>
-            <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
-              {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
-            </div>
-            <div style={{ ...T.meta, color: B.muted }}>
-              {({
-                brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
-                thin: "Can absorb a minor hit (one slow month), but not two in a row.",
-                uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
-                supported: "Can absorb most common disruptions without band change.",
-                resilient: "Can absorb a major client loss or 90-day work stoppage.",
-              })[v2Fragility.fragility_class] ?? ""}
-            </div>
-            {v2Fragility.primary_failure_mode && (
-              <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
-                Primary risk: {({
-                  concentration_collapse: "single-source dependency",
-                  labor_interruption: "income stops when work stops",
-                  visibility_gap: "no forward-committed income",
-                  durability_thinness: "recurring income is fragile",
-                })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Page footer */}
-        <PageFooter section="The Full Picture" page={4} />
+        <PageFooter section="What to Do About It" page={4} />
     </>,
 
     // Page 5: Methodology
