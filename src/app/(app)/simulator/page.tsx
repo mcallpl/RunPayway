@@ -475,6 +475,8 @@ function SimulatorContent() {
   const [incomeModel, setIncomeModel] = useState("");
   const [lastChangedSlider, setLastChangedSlider] = useState<string | null>(null);
   const [targetScore, setTargetScore] = useState<number | null>(null);
+  const [stressTestActive, setStressTestActive] = useState(false);
+  const [savedScenarios, setSavedScenarios] = useState<{ name: string; score: number; band: string; sliders: typeof sliders }[]>([]);
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -769,6 +771,62 @@ function SimulatorContent() {
           </div>
         </div>
 
+        {/* ══════════ WHAT-IF NARRATIVE ══════════ */}
+        {isModified && delta !== 0 && (
+          <div style={{
+            marginTop: 20, padding: "20px 24px", borderRadius: 10,
+            backgroundColor: T.surface, border: `1px solid ${T.border}`,
+          }}>
+            <p style={{ fontSize: 15, color: T.text, lineHeight: 1.7, margin: 0 }}>
+              {(() => {
+                const changes: string[] = [];
+                if (sliders && sliders.recurrence !== Math.round(baseInputs.income_persistence_pct))
+                  changes.push(`${sliders.recurrence > baseInputs.income_persistence_pct ? "increased" : "decreased"} recurring income to ${sliders.recurrence}%`);
+                if (sliders && sliders.topClient !== Math.round(baseInputs.largest_source_pct))
+                  changes.push(`${sliders.topClient < baseInputs.largest_source_pct ? "reduced" : "increased"} your largest source to ${sliders.topClient}% of revenue`);
+                if (sliders && sliders.sources !== baseInputs.source_diversity_count)
+                  changes.push(`${sliders.sources > baseInputs.source_diversity_count ? "added" : "reduced to"} ${sliders.sources} income source${sliders.sources !== 1 ? "s" : ""}`);
+                if (sliders && sliders.monthsBooked !== Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2)
+                  changes.push(`booked income ${sliders.monthsBooked} months ahead`);
+                if (sliders && sliders.passive !== (100 - baseInputs.labor_dependence_pct))
+                  changes.push(`${sliders.passive > (100 - baseInputs.labor_dependence_pct) ? "increased" : "decreased"} passive income to ${sliders.passive}%`);
+
+                const changeText = changes.length === 0
+                  ? "applied this scenario"
+                  : changes.length === 1 ? changes[0] : changes.slice(0, -1).join(", ") + " and " + changes[changes.length - 1];
+
+                const bandChange = sim.band !== base.band
+                  ? ` This would move you from ${base.band} to ${sim.band}.`
+                  : ` You would remain in the ${base.band} band.`;
+
+                return `If you ${changeText}, your score would ${delta > 0 ? "rise" : "fall"} from ${base.overall_score} to ${sim.overall_score} — a ${delta > 0 ? "+" : ""}${delta} point change.${bandChange}`;
+              })()}
+            </p>
+          </div>
+        )}
+
+        {/* ══════════ SAVE SCENARIO BUTTON ══════════ */}
+        {isModified && savedScenarios.length < 3 && (
+          <button
+            onClick={() => {
+              setSavedScenarios(prev => [...prev, {
+                name: `Scenario ${prev.length + 1}`,
+                score: sim.overall_score,
+                band: sim.band,
+                sliders: sliders ? { ...sliders } : null,
+              }]);
+            }}
+            style={{
+              marginTop: 12, padding: "8px 16px", borderRadius: 8,
+              fontSize: 13, fontWeight: 600, color: BRAND.teal,
+              backgroundColor: "rgba(26,122,109,0.08)", border: `1px solid rgba(26,122,109,0.15)`,
+              cursor: "pointer",
+            }}
+          >
+            Save This Scenario ({3 - savedScenarios.length} remaining)
+          </button>
+        )}
+
         {/* ══════════ CLASSIFICATION SCALE ══════════ */}
         <ClassificationScale currentBand={isModified ? sim.band : base.band} currentScore={isModified ? sim.overall_score : base.overall_score} />
 
@@ -972,6 +1030,95 @@ function SimulatorContent() {
               </p>
             )}
           </Card>
+        )}
+
+        {/* ══════════ STRESS TEST: RISK FLOOR ══════════ */}
+        <div style={{ marginTop: 32 }}>
+          <button
+            onClick={() => setStressTestActive(!stressTestActive)}
+            style={{
+              padding: "12px 20px", borderRadius: 10, fontSize: 14, fontWeight: 600,
+              color: BRAND.bandLimited, backgroundColor: "rgba(220,74,74,0.06)",
+              border: `1px solid rgba(220,74,74,0.15)`, cursor: "pointer",
+              transition: "background-color 200ms",
+              width: "100%", textAlign: "left",
+            }}
+          >
+            {stressTestActive ? "Hide Stress Test" : "Run Stress Test: See Your Floor"}
+          </button>
+
+          {stressTestActive && (() => {
+            const stressedTopClient = Math.min(80, Math.round(sl.topClient + sl.topClient * 0.2));
+            const stressedRecurrence = Math.max(0, sl.recurrence - 20);
+            const stressedMonthsBooked = Math.round(sl.monthsBooked / 2 * 2) / 2;
+            const stressedInputs: CanonicalInput = {
+              income_persistence_pct: stressedRecurrence,
+              largest_source_pct: stressedTopClient,
+              source_diversity_count: sl.sources,
+              forward_secured_pct: Math.min(100, Math.round(stressedMonthsBooked / 6 * 100)),
+              income_variability_level: baseInputs.income_variability_level,
+              labor_dependence_pct: Math.max(0, 100 - sl.passive),
+            };
+            const stressResult = simulateScore(stressedInputs, qualityScore);
+            const currentRef = isModified ? sim.overall_score : base.overall_score;
+            const stressDelta = stressResult.overall_score - currentRef;
+
+            return (
+              <div style={{
+                marginTop: 12, padding: "24px 28px", borderRadius: 12,
+                backgroundColor: "rgba(220,74,74,0.04)", border: `1px solid rgba(220,74,74,0.15)`,
+              }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: BRAND.bandLimited, marginBottom: 12 }}>
+                  YOUR FLOOR
+                </div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 16 }}>
+                  <div style={{ fontSize: 48, fontWeight: 300, fontFamily: DISPLAY, color: BRAND.bandLimited, lineHeight: 1 }}>
+                    {stressResult.overall_score}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 18, fontWeight: 600, color: BRAND.bandLimited }}>{stressDelta} points</div>
+                    <div style={{ fontSize: 13, color: bandColor(stressResult.band), fontWeight: 600, marginTop: 4 }}>{stressResult.band}</div>
+                  </div>
+                </div>
+                <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: 0 }}>
+                  This is your worst realistic scenario — if your biggest source left, recurring income dropped, and booked income fell simultaneously. This is the floor your income structure protects against.
+                </p>
+              </div>
+            );
+          })()}
+        </div>
+
+        {/* ══════════ SAVED SCENARIOS COMPARISON ══════════ */}
+        {savedScenarios.length > 0 && (
+          <div style={{ marginTop: 32 }}>
+            <SectionLabel color={BRAND.purple}>Saved Scenarios</SectionLabel>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              {savedScenarios.map((s, i) => (
+                <div key={i} style={{
+                  flex: 1, minWidth: 160, padding: "16px 20px", borderRadius: 10,
+                  backgroundColor: T.surface, border: `1px solid ${T.border}`,
+                }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: T.textFaint, marginBottom: 8 }}>{s.name}</div>
+                  <div style={{ fontSize: 28, fontWeight: 600, color: BRAND.teal }}>{s.score}</div>
+                  <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>{s.band}</div>
+                  <button
+                    onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))}
+                    style={{ marginTop: 12, fontSize: 11, color: T.textFaint, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+            {savedScenarios.length >= 2 && (
+              <p style={{ fontSize: 14, color: T.textSecondary, marginTop: 16, lineHeight: 1.6 }}>
+                {(() => {
+                  const best = savedScenarios.reduce((a, b) => a.score > b.score ? a : b);
+                  return `${best.name} produces the highest score at ${best.score}. Compare the scenarios above to decide which path is most realistic for you.`;
+                })()}
+              </p>
+            )}
+          </div>
         )}
 
         {/* ══════════ SCORE GOAL PLANNER ══════════ */}
