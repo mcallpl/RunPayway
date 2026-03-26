@@ -478,7 +478,7 @@ export default function InitializationPage() {
   const stepDescriptions = [
     "",
     "These fields describe how your income is structured. This enables precision in your diagnostic.",
-    "Final context for your assessment. These details refine your report but do not influence your score.",
+    "These details personalize your report — industry benchmarks, peer comparisons, and tailored action steps.",
   ];
 
   return (
@@ -615,6 +615,20 @@ export default function InitializationPage() {
         {/* Step 2 — Income Context */}
         {step === 2 && (
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            {/* Context intro card */}
+            <div style={{
+              background: "#FFFFFF", borderRadius: 12, padding: "20px 24px",
+              border: "1px solid rgba(14,26,43,0.06)",
+              display: "flex", alignItems: "center", gap: 16,
+            }}>
+              <div style={{ width: 40, height: 40, borderRadius: "50%", backgroundColor: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.purple }} />
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>Almost there</div>
+                <div style={{ fontSize: 13, color: B.muted, lineHeight: 1.5 }}>These three fields unlock your industry benchmarks, peer comparisons, and personalized action steps.</div>
+              </div>
+            </div>
             <div>
               <label style={labelStyle}>Primary Income Model</label>
               <p style={helperStyle}>What best describes how you generate income?</p>

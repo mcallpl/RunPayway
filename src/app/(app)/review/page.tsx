@@ -226,17 +226,17 @@ const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 // ── Typography: 7-step scale optimized for print clarity ──
 const T = {
   score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },                                          // The big number
-  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.2, color: B.navy },                     // Page titles
-  sectionTitle: { fontSize: 15, fontWeight: 600, lineHeight: 1.3, color: B.navy },                  // Major section headers (H2)
-  classification: { fontSize: 16, fontWeight: 500, lineHeight: 1.3 },                               // Band label
-  overline: { fontSize: 9.5, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },  // Card/metadata labels
-  sectionLabel: { fontSize: 12, fontWeight: 600, lineHeight: 1.4 },                                 // Bold inline labels
-  cardHeading: { fontSize: 13, fontWeight: 600, lineHeight: 1.35 },                                 // Card titles
-  cardHero: { fontSize: 22, fontWeight: 600, lineHeight: 1.1 },                                     // Card hero numbers
-  body: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.65 },                                      // Paragraph text
-  small: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.55 },                                     // Secondary text
-  meta: { fontSize: 10, fontWeight: 400, lineHeight: 1.5 },                                         // Fine print (bumped for print)
-  micro: { fontSize: 9, fontWeight: 700, lineHeight: 1.3 },                                         // Severity tags (bumped for print)
+  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.2, color: B.navy },                     // Page titles
+  sectionTitle: { fontSize: 18, fontWeight: 600, lineHeight: 1.3, color: B.navy },                  // Major section headers (H2)
+  classification: { fontSize: 18, fontWeight: 500, lineHeight: 1.3 },                               // Band label
+  overline: { fontSize: 11, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },  // Card/metadata labels
+  sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.4 },                                 // Bold inline labels
+  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },                                 // Card titles
+  cardHero: { fontSize: 24, fontWeight: 600, lineHeight: 1.1 },                                     // Card hero numbers
+  body: { fontSize: 14, fontWeight: 400, lineHeight: 1.65 },                                        // Paragraph text
+  small: { fontSize: 13, fontWeight: 400, lineHeight: 1.55 },                                       // Secondary text
+  meta: { fontSize: 12, fontWeight: 400, lineHeight: 1.5 },                                         // Fine print
+  micro: { fontSize: 11, fontWeight: 700, lineHeight: 1.3 },                                        // Severity tags
 };
 
 // ── PDF page dimensions ──
