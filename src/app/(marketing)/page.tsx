@@ -719,6 +719,172 @@ function FourFactorsSection() {
 
 
 /* ================================================================== */
+/* INTERACTIVE SIMULATOR SHOWCASE — tab-driven preview                  */
+/* ================================================================== */
+function SimulatorShowcase({ visible, mobile }: { visible: boolean; mobile: boolean }) {
+  const [activeTab, setActiveTab] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleTabEnter = (idx: number) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setActiveTab(idx);
+  };
+
+  const handleTabLeave = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setActiveTab(null), 6000);
+  };
+
+  const tabs = [
+    { label: "Adjust any dimension", desc: "Drag sliders to test structural changes" },
+    { label: "Real-time score updates", desc: "Watch the projected score shift instantly" },
+    { label: "See what matters most", desc: "Which single change has the biggest impact" },
+  ];
+
+  // Screen 0: default (score triptych + timeline)
+  const screenDefault = (
+    <>
+      <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
+        {[
+          { label: "CURRENT", value: "48", color: "#F4F1EA" },
+          { label: "SIMULATED", value: "62", color: B.teal },
+          { label: "IMPACT", value: "+14", color: B.teal },
+        ].map(col => (
+          <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: mobile ? "10px 8px" : "14px 12px", textAlign: "center" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{col.label}</div>
+            <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: col.color, fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{col.value}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", height: 4, borderRadius: 2, overflow: "hidden", marginBottom: 16, position: "relative" }}>
+        <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} />
+        <div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} />
+        <div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} />
+        <div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
+        <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 6px rgba(26,122,109,0.4)` }} />
+      </div>
+      <div>
+        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(75,63,174,0.60)", marginBottom: 8, textTransform: "uppercase" as const }}>INCOME TIMELINE</div>
+        <svg viewBox="0 0 300 45" style={{ width: "100%", height: mobile ? 32 : 40 }} preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="simGrad2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={B.teal} stopOpacity="0.3" /><stop offset="100%" stopColor={B.teal} stopOpacity="1" /></linearGradient>
+            <linearGradient id="simArea2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={B.teal} stopOpacity="0.10" /><stop offset="100%" stopColor={B.teal} stopOpacity="0" /></linearGradient>
+          </defs>
+          <path d="M 10,36 L 80,28 L 180,18 L 290,8" fill="none" stroke="url(#simGrad2)" strokeWidth="2" strokeLinecap="round" />
+          <path d="M 10,36 L 80,28 L 180,18 L 290,8 L 290,45 L 10,45 Z" fill="url(#simArea2)" />
+          {[[10,36],[80,28],[180,18],[290,8]].map(([cx,cy],j) => <circle key={j} cx={cx} cy={cy} r="3.5" fill={j === 0 ? "#F4F1EA" : B.teal} stroke={B.navy} strokeWidth="1.5" />)}
+        </svg>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+          {["NOW", "3 MO", "6 MO", "12 MO"].map(l => <span key={l} style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", fontWeight: 600 }}>{l}</span>)}
+        </div>
+      </div>
+    </>
+  );
+
+  // Screen 1: sliders view
+  const screenSliders = (
+    <div>
+      {["Recurring Revenue", "Source Concentration", "Forward Visibility", "Earnings Consistency", "Labor Independence"].map((dim, i) => (
+        <div key={dim} style={{ marginBottom: i < 4 ? 14 : 0 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>{dim}</span>
+            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)" }}>{[15, 55, 25, 50, 10][i]}%</span>
+          </div>
+          <div style={{ height: 4, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 2, position: "relative" }}>
+            <div style={{ height: 4, backgroundColor: B.teal, borderRadius: 2, width: `${[15, 55, 25, 50, 10][i]}%`, opacity: 0.7 }} />
+            <div style={{ position: "absolute", top: "50%", left: `${[15, 55, 25, 50, 10][i]}%`, transform: "translate(-50%, -50%)", width: 10, height: 10, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Screen 2: impact ranking
+  const screenImpact = (
+    <div>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12, textTransform: "uppercase" as const }}>HIGHEST IMPACT CHANGES</div>
+      {[
+        { action: "Add recurring revenue", lift: "+8", band: "→ Established" },
+        { action: "Reduce concentration", lift: "+5", band: "Developing" },
+        { action: "Extend visibility", lift: "+4", band: "Developing" },
+      ].map((item, i) => (
+        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>{item.action}</div>
+            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 2 }}>{item.band}</div>
+          </div>
+          <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: B.teal, fontFamily: DISPLAY_FONT }}>{item.lift}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 14, padding: "10px 14px", borderRadius: 8, backgroundColor: "rgba(26,122,109,0.08)", border: `1px solid rgba(26,122,109,0.15)` }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: B.teal, letterSpacing: "0.06em", marginBottom: 2 }}>COMBINED IMPACT</div>
+        <div style={{ fontSize: 14, color: "rgba(244,241,234,0.55)" }}>All three changes: 48 &#8594; 65 (+17 points)</div>
+      </div>
+    </div>
+  );
+
+  const screens = [screenSliders, screenDefault, screenImpact];
+  const currentScreen = activeTab !== null ? screens[activeTab] : screenDefault;
+
+  return (
+    <div style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(20px)",
+      transition: "opacity 700ms ease-out 300ms, transform 700ms ease-out 300ms",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal }}>
+          Score Simulator&#8482;
+        </div>
+        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Lifetime access</div>
+      </div>
+
+      {/* Main preview area */}
+      <div style={{
+        backgroundColor: "rgba(244,241,234,0.03)",
+        borderRadius: 16,
+        border: "1px solid rgba(244,241,234,0.08)",
+        padding: mobile ? "20px 16px" : "28px 24px",
+        marginBottom: 12,
+        boxShadow: "0 12px 48px rgba(0,0,0,0.25)",
+        minHeight: mobile ? 200 : 240,
+        transition: "border-color 300ms ease",
+        borderColor: activeTab !== null ? "rgba(26,122,109,0.25)" : "rgba(244,241,234,0.08)",
+      }}>
+        <div style={{ transition: "opacity 250ms ease" }} key={activeTab ?? "default"}>
+          {currentScreen}
+        </div>
+      </div>
+
+      {/* Three interactive tabs */}
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 8 }}>
+        {tabs.map((tab, i) => {
+          const isActive = activeTab === i;
+          return (
+            <div
+              key={tab.label}
+              onMouseEnter={() => handleTabEnter(i)}
+              onMouseLeave={handleTabLeave}
+              onClick={() => handleTabEnter(i)}
+              style={{
+                padding: "14px 16px", borderRadius: 10, cursor: "pointer",
+                backgroundColor: isActive ? "rgba(26,122,109,0.12)" : "rgba(244,241,234,0.03)",
+                border: `1px solid ${isActive ? "rgba(26,122,109,0.30)" : "rgba(244,241,234,0.06)"}`,
+                transition: "all 200ms ease",
+              }}
+            >
+              <div style={{ fontSize: 14, fontWeight: 600, color: isActive ? B.teal : "#F4F1EA", marginBottom: 2, transition: "color 200ms ease" }}>{tab.label}</div>
+              <div style={{ fontSize: 13, color: isActive ? "rgba(26,122,109,0.60)" : "rgba(244,241,234,0.35)", lineHeight: 1.4, transition: "color 200ms ease" }}>{tab.desc}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 4: WHAT YOUR REPORT INCLUDES — "The Inventory"              */
 /* ================================================================== */
 function WhatYourReportSection() {
@@ -803,87 +969,8 @@ function WhatYourReportSection() {
             ))}
           </div>
 
-          {/* RIGHT — Simulator showcase */}
-          <div style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 700ms ease-out 300ms, transform 700ms ease-out 300ms",
-          }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal }}>
-                Score Simulator&#8482;
-              </div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Lifetime access</div>
-            </div>
-
-            {/* Main simulator preview — large */}
-            <div style={{
-              backgroundColor: "rgba(244,241,234,0.03)",
-              borderRadius: 16,
-              border: "1px solid rgba(244,241,234,0.08)",
-              padding: mobile ? "20px 16px" : "28px 24px",
-              marginBottom: 16,
-              boxShadow: "0 12px 48px rgba(0,0,0,0.25)",
-            }}>
-              {/* Score triptych */}
-              <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
-                {[
-                  { label: "CURRENT", value: "48", color: "#F4F1EA" },
-                  { label: "SIMULATED", value: "62", color: B.teal },
-                  { label: "IMPACT", value: "+14", color: B.teal },
-                ].map(col => (
-                  <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: mobile ? "10px 8px" : "14px 12px", textAlign: "center" }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{col.label}</div>
-                    <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: col.color, fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{col.value}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Band bar */}
-              <div style={{ display: "flex", height: 4, borderRadius: 2, overflow: "hidden", marginBottom: 16, position: "relative" }}>
-                <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} />
-                <div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} />
-                <div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} />
-                <div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
-                <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 6px rgba(26,122,109,0.4)` }} />
-              </div>
-
-              {/* Timeline */}
-              <div style={{ marginBottom: 4 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(75,63,174,0.60)", marginBottom: 8, textTransform: "uppercase" as const }}>INCOME TIMELINE</div>
-                <svg viewBox="0 0 300 45" style={{ width: "100%", height: mobile ? 32 : 40 }} preserveAspectRatio="xMidYMid meet">
-                  <defs>
-                    <linearGradient id="simGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={B.teal} stopOpacity="0.3" /><stop offset="100%" stopColor={B.teal} stopOpacity="1" /></linearGradient>
-                    <linearGradient id="simArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={B.teal} stopOpacity="0.10" /><stop offset="100%" stopColor={B.teal} stopOpacity="0" /></linearGradient>
-                  </defs>
-                  <path d="M 10,36 L 80,28 L 180,18 L 290,8" fill="none" stroke="url(#simGrad)" strokeWidth="2" strokeLinecap="round" />
-                  <path d="M 10,36 L 80,28 L 180,18 L 290,8 L 290,45 L 10,45 Z" fill="url(#simArea)" />
-                  {[[10,36],[80,28],[180,18],[290,8]].map(([cx,cy],j) => <circle key={j} cx={cx} cy={cy} r="3.5" fill={j === 0 ? "#F4F1EA" : B.teal} stroke={B.navy} strokeWidth="1.5" />)}
-                </svg>
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-                  {["NOW", "3 MO", "6 MO", "12 MO"].map(l => <span key={l} style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", fontWeight: 600 }}>{l}</span>)}
-                </div>
-              </div>
-            </div>
-
-            {/* Three feature pills below */}
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: 8 }}>
-              {[
-                { label: "Adjust any dimension", desc: "Drag sliders to test structural changes" },
-                { label: "Real-time score updates", desc: "Watch the projected score shift instantly" },
-                { label: "See what matters most", desc: "Which single change has the biggest impact" },
-              ].map((pill) => (
-                <div key={pill.label} style={{
-                  padding: "12px 14px", borderRadius: 8,
-                  backgroundColor: "rgba(244,241,234,0.03)",
-                  border: "1px solid rgba(244,241,234,0.06)",
-                }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>{pill.label}</div>
-                  <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", lineHeight: 1.4 }}>{pill.desc}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* RIGHT — Interactive Simulator showcase */}
+          <SimulatorShowcase visible={visible} mobile={mobile} />
         </div>
       </div>
     </section>
