@@ -552,7 +552,7 @@ function BridgeLine() {
   return (
     <section style={{ backgroundColor: B.sand, paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48, borderTop: `1px solid ${B.border}`, borderBottom: `1px solid ${B.border}` }}>
       <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "center", alignItems: "center", gap: mobile ? 8 : 32, textAlign: "center" }}>
-        {["6 pages of analysis", "Interactive simulator", "5 structural sliders", "Scripts you can send"].map((t) => (
+        {["5 pages of analysis", "Interactive simulator", "Structural sliders", "Suggested language"].map((t) => (
           <span key={t} style={{ fontSize: 14, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
         ))}
       </div>

@@ -176,7 +176,7 @@ function Hero() {
               margin: "0 auto 32px",
             }}
           >
-            Your Income Stability Score&#8482; tells you how protected your income actually is. The full report shows you exactly what to do about it — with an interactive simulator, ready-to-send scripts, and tradeoff analysis.
+            Your Income Stability Score&#8482; tells you how protected your income actually is. The full report shows you exactly what to do about it — with an interactive simulator, suggested next-move language, and tradeoff analysis.
           </p>
 
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" as const }}>

@@ -300,7 +300,7 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
           </span>
         </div>
         <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", fontWeight: 500 }}>
-          72nd percentile
+          Strong structural protection
         </div>
       </div>
     </div>
@@ -773,7 +773,7 @@ function WhatYourReportSection() {
               transition: "opacity 600ms ease-out 100ms",
             }}
           >
-            Five pages of analysis. An interactive simulator. Ready-to-send scripts. Every number is yours.
+            Five pages of analysis. An interactive simulator. Suggested language for your next move. Every number is yours.
           </p>
         </div>
 
@@ -893,7 +893,7 @@ function HowItWorksSection() {
       time: "$99",
       title: "Unlock the full diagnostic",
       hook: "Five pages. One clear path forward.",
-      desc: "An interactive simulator you play with. Scripts you send tomorrow. Risk scenarios with exact score drops. Actions with specific targets and timelines. This is not a static document — it is a system.",
+      desc: "Risk scenarios with exact score drops. Actions with projected impact. Tradeoff analysis. Suggested language for your next move. An interactive simulator. This is not a static document — it is a diagnostic system.",
       color: B.navy,
     },
   ];
@@ -1237,7 +1237,7 @@ function PricingSection() {
               $0
             </div>
             <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Score &#183; Band &#183; Percentile &#183; One key insight
+              Score &#183; Band &#183; Key insight &#183; What to fix first
             </p>
             <Link
               href="/pricing"
@@ -1312,7 +1312,7 @@ function PricingSection() {
               $99
             </div>
             <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Full report &#183; Score simulator &#183; Scripts &#183; Action plan
+              Full report &#183; Score simulator &#183; Action plan &#183; Suggested language
             </p>
             <a
               href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"

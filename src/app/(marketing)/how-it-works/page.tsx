@@ -1130,7 +1130,7 @@ export default function HowItWorksPage() {
           <SimulatorTeaser variant="dark-on-light" />
           {/* Feature pills */}
           <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: 10, marginTop: 20 }}>
-            {["5 Interactive Sliders", "Real-Time Score Updates", "Ready-to-Send Scripts"].map(label => (
+            {["5 Interactive Sliders", "Real-Time Score Updates", "Suggested Next-Move Language"].map(label => (
               <span key={label} style={{
                 fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
                 color: "#4B3FAE", backgroundColor: "rgba(75,63,174,0.08)",
