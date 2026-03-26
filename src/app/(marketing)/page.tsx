@@ -808,57 +808,162 @@ function WhatYourReportSection() {
           ))}
         </div>
 
-        {/* Simulator callout — the differentiator */}
+        {/* Score Simulator showcase — Apple App Store style */}
         <div style={{
-          marginTop: mobile ? 24 : 32,
-          padding: mobile ? "24px 20px" : "28px 32px",
-          background: "rgba(75,63,174,0.25)",
-          border: "1px solid rgba(75,63,174,0.40)",
-          borderRadius: S.panelRadius,
-          display: "flex",
-          alignItems: mobile ? "flex-start" : "center",
-          flexDirection: mobile ? "column" : "row",
-          gap: mobile ? 16 : 32,
+          marginTop: mobile ? 32 : 48,
           opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(16px)",
-          transition: "opacity 600ms ease-out 600ms, transform 600ms ease-out 600ms",
+          transform: visible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 700ms ease-out 500ms, transform 700ms ease-out 500ms",
         }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>What if you added one more client?</div>
-            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
-              What if you converted to retainers? What if you couldn&#8217;t work for 90 days? The full report includes a tool that answers these questions — with your actual numbers, in real time.
+          {/* Section header */}
+          <div style={{ textAlign: "center", marginBottom: mobile ? 24 : 36 }}>
+            <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>
+              Score Simulator&#8482;
+            </div>
+            <h3 style={{ fontSize: mobile ? 24 : 32, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: S.lsHeading, lineHeight: 1.2, marginBottom: 8 }}>
+              Model scenarios against your actual data.
+            </h3>
+            <p style={{ fontSize: mobile ? 14 : 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.5, maxWidth: 400, margin: "0 auto" }}>
+              Included with your report. Lifetime access.
             </p>
           </div>
-          <div style={{ display: "flex", gap: 12 }}>
-            <Link
-              href="/sample-report"
-              style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                padding: "10px 24px", borderRadius: 8, fontSize: S.fsMeta, fontWeight: 600,
-                color: "#F4F1EA", border: "1px solid rgba(244,241,234,0.20)",
-                textDecoration: "none", whiteSpace: "nowrap" as const,
-                transition: "border-color 200ms ease",
-              }}
-            >
-              View sample report
-            </Link>
-          </div>
-        </div>
 
-        {/* Lifetime simulator access callout */}
-        <div style={{
-          marginTop: mobile ? 20 : 28,
-          textAlign: "center",
-          padding: "16px 24px",
-          borderRadius: S.panelRadius,
-          border: "1px solid rgba(26,122,109,0.30)",
-          background: "rgba(26,122,109,0.08)",
-          opacity: visible ? 1 : 0,
-          transition: "opacity 600ms ease-out 700ms",
-        }}>
-          <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 600, color: B.teal, margin: 0, lineHeight: 1.5 }}>
-            Lifetime access to your personal simulator &mdash; model any scenario, anytime.
-          </p>
+          {/* 3 screens — horizontal scroll on mobile, grid on desktop */}
+          <div style={{
+            display: mobile ? "flex" : "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: mobile ? 12 : 16,
+            overflowX: mobile ? "auto" : "visible",
+            scrollSnapType: mobile ? "x mandatory" : "none",
+            paddingBottom: mobile ? 8 : 0,
+            WebkitOverflowScrolling: "touch",
+          }}>
+            {[
+              {
+                label: "Adjust any dimension",
+                desc: "Drag sliders to model structural changes — recurring income, concentration, forward visibility, consistency, labor independence.",
+                screen: (
+                  <div style={{ padding: "16px 14px 12px" }}>
+                    {["Recurring Revenue", "Source Concentration", "Forward Visibility", "Earnings Consistency", "Labor Independence"].map((dim, i) => (
+                      <div key={dim} style={{ marginBottom: i < 4 ? 10 : 0 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                          <span style={{ fontSize: 7, fontWeight: 600, color: "rgba(244,241,234,0.40)", letterSpacing: "0.06em" }}>{dim.toUpperCase()}</span>
+                          <span style={{ fontSize: 7, color: "rgba(244,241,234,0.25)" }}>{[15, 55, 25, 50, 10][i]}%</span>
+                        </div>
+                        <div style={{ height: 3, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 2, position: "relative" }}>
+                          <div style={{ height: 3, backgroundColor: B.teal, borderRadius: 2, width: `${[15, 55, 25, 50, 10][i]}%`, opacity: 0.7 }} />
+                          <div style={{ position: "absolute", top: "50%", left: `${[15, 55, 25, 50, 10][i]}%`, transform: "translate(-50%, -50%)", width: 7, height: 7, borderRadius: "50%", backgroundColor: "#fff", border: `1.5px solid ${B.teal}` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              },
+              {
+                label: "See the score change instantly",
+                desc: "Watch your simulated score update in real time as you test each structural change.",
+                screen: (
+                  <div style={{ padding: "14px 14px 10px" }}>
+                    <div style={{ display: "flex", gap: 2, borderRadius: 6, overflow: "hidden", marginBottom: 10 }}>
+                      {[
+                        { label: "CURRENT", value: "48", color: "#F4F1EA" },
+                        { label: "SIMULATED", value: "62", color: B.teal },
+                        { label: "IMPACT", value: "+14", color: B.teal },
+                      ].map(col => (
+                        <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: "8px 4px", textAlign: "center" }}>
+                          <div style={{ fontSize: 6, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.25)", marginBottom: 2 }}>{col.label}</div>
+                          <div style={{ fontSize: 16, fontWeight: 300, color: col.color, fontFamily: DISPLAY_FONT, lineHeight: 1 }}>{col.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ display: "flex", height: 3, borderRadius: 2, overflow: "hidden", marginBottom: 10, position: "relative" }}>
+                      <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} />
+                      <div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} />
+                      <div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} />
+                      <div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
+                      <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 7, height: 7, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 4px rgba(26,122,109,0.4)` }} />
+                    </div>
+                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(75,63,174,0.60)", marginBottom: 6, textTransform: "uppercase" as const }}>INCOME TIMELINE</div>
+                    <svg viewBox="0 0 200 35" style={{ width: "100%", height: 28 }}>
+                      <defs><linearGradient id="showcaseGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor={B.teal} stopOpacity="0.3" /><stop offset="100%" stopColor={B.teal} stopOpacity="1" /></linearGradient></defs>
+                      <path d="M 5,28 L 55,22 L 120,14 L 195,6" fill="none" stroke="url(#showcaseGrad)" strokeWidth="1.5" strokeLinecap="round" />
+                      {[[5,28],[55,22],[120,14],[195,6]].map(([cx,cy],j) => <circle key={j} cx={cx} cy={cy} r="2.5" fill={j === 0 ? "#F4F1EA" : B.teal} stroke={B.navy} strokeWidth="1" />)}
+                    </svg>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+                      {["NOW", "3 MO", "6 MO", "12 MO"].map(l => <span key={l} style={{ fontSize: 6, color: "rgba(244,241,234,0.20)", fontWeight: 600 }}>{l}</span>)}
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                label: "Understand what matters most",
+                desc: "The simulator shows which single change produces the biggest improvement — so you know where to focus.",
+                screen: (
+                  <div style={{ padding: "14px 14px 10px" }}>
+                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8, textTransform: "uppercase" as const }}>HIGHEST IMPACT CHANGES</div>
+                    {[
+                      { action: "Add recurring revenue", lift: "+8", band: "Established" },
+                      { action: "Reduce concentration", lift: "+5", band: "Developing" },
+                      { action: "Extend visibility", lift: "+4", band: "Developing" },
+                    ].map((item, i) => (
+                      <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.04)" : "none" }}>
+                        <div>
+                          <div style={{ fontSize: 8, fontWeight: 600, color: "#F4F1EA" }}>{item.action}</div>
+                          <div style={{ fontSize: 6, color: "rgba(244,241,234,0.30)", marginTop: 1 }}>{item.band}</div>
+                        </div>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: B.teal, fontFamily: DISPLAY_FONT }}>{item.lift}</span>
+                      </div>
+                    ))}
+                    <div style={{ marginTop: 10, padding: "6px 8px", borderRadius: 4, backgroundColor: "rgba(26,122,109,0.08)", border: `1px solid rgba(26,122,109,0.15)` }}>
+                      <div style={{ fontSize: 6, fontWeight: 700, color: B.teal, letterSpacing: "0.08em", marginBottom: 2 }}>COMBINED IMPACT</div>
+                      <div style={{ fontSize: 8, color: "rgba(244,241,234,0.50)" }}>All three changes: 48 &#8594; 65 (+17 points)</div>
+                    </div>
+                  </div>
+                ),
+              },
+            ].map((card, i) => (
+              <div key={i} style={{
+                flex: mobile ? "0 0 85%" : undefined,
+                scrollSnapAlign: mobile ? "start" : undefined,
+              }}>
+                {/* Phone frame */}
+                <div style={{
+                  backgroundColor: B.navy,
+                  borderRadius: 12,
+                  border: "1px solid rgba(244,241,234,0.08)",
+                  overflow: "hidden",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.30)",
+                }}>
+                  {/* Screen header bar */}
+                  <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ fontSize: 7, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, textTransform: "uppercase" as const }}>Score Simulator&#8482;</div>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                  </div>
+                  {/* Screen content */}
+                  {card.screen}
+                </div>
+                {/* Caption below screen */}
+                <div style={{ marginTop: 12, paddingLeft: 4 }}>
+                  <div style={{ fontSize: mobile ? 14 : 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>{card.label}</div>
+                  <p style={{ fontSize: mobile ? 13 : 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.5, margin: 0 }}>{card.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Lifetime access line */}
+          <div style={{
+            textAlign: "center",
+            marginTop: mobile ? 24 : 32,
+            padding: "14px 24px",
+            borderRadius: S.panelRadius,
+            border: "1px solid rgba(26,122,109,0.25)",
+            background: "rgba(26,122,109,0.06)",
+          }}>
+            <p style={{ fontSize: mobile ? 14 : 15, fontWeight: 600, color: B.teal, margin: 0, lineHeight: 1.5 }}>
+              Lifetime access to your personal simulator &mdash; included with every report.
+            </p>
+          </div>
         </div>
       </div>
     </section>
