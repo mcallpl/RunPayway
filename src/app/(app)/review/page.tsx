@@ -663,13 +663,12 @@ export default function ReviewPage() {
     if (!record || scoreAnimated.current) return;
     scoreAnimated.current = true;
     const target = record.final_score;
-    const duration = 1500;
+    const duration = 600;
     const start = performance.now();
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      setAnimatedScore(Math.round(eased * target));
+      setAnimatedScore(Math.round(progress * target));
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -737,36 +736,36 @@ export default function ReviewPage() {
   // Dynamic constraint advice based on profile
   const profileConstraintAdvice: Record<string, string> = {
     source_concentration: opStructure.includes("contractor") || opStructure.includes("independent")
-      ? "As a contractor, losing your primary client would be devastating. Secure at least 2–3 active contracts at all times."
+      ? "Based on your assessment profile, as a contractor, losing your primary client would significantly impact your income. Maintaining at least 2–3 active contracts reduces this exposure."
       : opStructure.includes("employee")
-      ? "As a salaried employee, your income depends entirely on one employer. Building a secondary income stream is critical."
+      ? "Based on your assessment profile, as a salaried employee, your income depends entirely on one employer. Building a secondary income stream strengthens your structure."
       : profileClass.includes("business")
-      ? "Your business revenue is too concentrated. No single client should represent more than 30% of total revenue."
-      : "Your income is too concentrated in one source. Diversify to protect against sudden loss.",
+      ? "Based on your assessment profile, your business revenue is too concentrated. As a general guideline, reducing reliance on any single client strengthens the overall structure."
+      : "Based on your assessment profile, your income is too concentrated in one source. Diversifying helps protect against sudden loss.",
     forward_visibility: incomeModel.includes("commission") || incomeModel.includes("project")
-      ? `With ${incomeModelDesc} income, future earnings are unpredictable. Lock in advance commitments, retainers, or pipeline guarantees.`
+      ? `Based on your assessment profile, with ${incomeModelDesc} income, future earnings are unpredictable. Lock in advance commitments, retainers, or pipeline guarantees.`
       : opStructure.includes("contractor")
-      ? "As a contractor, secure multi-month engagements or retainer agreements instead of rolling month-to-month."
+      ? "Based on your assessment profile, as a contractor, secure multi-month engagements or retainer agreements instead of rolling month-to-month."
       : profileClass.includes("business")
-      ? "Your business needs more contracted or recurring revenue locked in before each month begins."
-      : "Too little of your income is committed before the month starts. Lock in recurring or pre-committed income.",
+      ? "Based on your assessment profile, your business needs more contracted or recurring revenue locked in before each month begins."
+      : "Based on your assessment profile, too little of your income is committed before the month starts. Lock in recurring or pre-committed income.",
     labor_dependence: opStructure.includes("employee")
-      ? "As an employee, 100% of your income stops if you stop working. Build passive or semi-passive income alongside your salary."
+      ? "Based on your assessment profile, as an employee, 100% of your income stops if you stop working. Building passive or semi-passive income alongside your salary can help."
       : incomeModel.includes("consulting") || incomeModel.includes("client")
-      ? "Your consulting income requires constant client delivery. Productize your expertise into courses, templates, or licensing."
+      ? "Based on your assessment profile, your consulting income requires constant client delivery. Productizing your expertise into courses, templates, or licensing can reduce this dependency."
       : profileClass.includes("business")
-      ? "Your business is still owner-dependent. Build systems, recurring revenue, or delegated delivery so income continues without you."
-      : "Too much income requires your daily effort. Shift toward streams that produce without constant work.",
+      ? "Based on your assessment profile, your business is still owner-dependent. Building systems, recurring revenue, or delegated delivery so income continues without you strengthens the structure."
+      : "Based on your assessment profile, too much income requires your daily effort. Shifting toward streams that produce without constant work improves stability.",
     low_continuity: incomeModel.includes("commission")
-      ? "Commission income stops immediately when deals stop closing. Build a base of recurring or residual commissions."
+      ? "Based on your assessment profile, commission income stops immediately when deals stop closing. Building a base of recurring or residual commissions adds runway."
       : opStructure.includes("contractor")
-      ? "Contract income has a short shelf life. Negotiate longer-term contracts or build retainer relationships."
-      : "Your income would stop too quickly if active work paused. Build streams that continue producing independently.",
+      ? "Based on your assessment profile, contract income has a short shelf life. Negotiating longer-term contracts or building retainer relationships extends continuity."
+      : "Based on your assessment profile, your income would stop too quickly if active work paused. Building streams that continue producing independently adds protection.",
     few_sources: profileClass.includes("business")
-      ? "Your business relies on too few revenue channels. Add a new client segment, product line, or service tier."
+      ? "Based on your assessment profile, your business relies on too few revenue channels. Adding a new client segment, product line, or service tier broadens the base."
       : opStructure.includes("contractor")
-      ? "You need more active clients. Each new contract that contributes at least 10% of income strengthens the structure."
-      : "Your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
+      ? "Based on your assessment profile, you need more active clients. Each new contract that contributes at least 10% of income strengthens the structure."
+      : "Based on your assessment profile, your income comes from too few sources. Adding even one more meaningful source significantly reduces risk.",
   };
 
 
@@ -863,8 +862,8 @@ export default function ReviewPage() {
     record.risk_scenario_drop > score * 0.3 ? "significant" :
     record.risk_scenario_drop > 5 ? "moderate" : "minor";
 
-  const peerPercentileValue = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? 50);
-  const peerInterpretation: string =
+  const peerPercentileValue: number | null = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? null);
+  const peerInterpretation: string | null = peerPercentileValue === null ? null :
     peerPercentileValue <= 10 ? "far below benchmark" :
     peerPercentileValue <= 30 ? "below benchmark" :
     peerPercentileValue <= 60 ? "around benchmark" :
@@ -915,7 +914,7 @@ export default function ReviewPage() {
     shallow_continuity: "Continuity window is too short",
   };
   const fragilityClassLabel: Record<string, string> = {
-    brittle: "Brittle", thin: "Thin", uneven: "Uneven", supported: "Supported", resilient: "Resilient",
+    brittle: "Fragile — significant disruption risk", thin: "Narrow margin — limited buffer", uneven: "Mixed — some strengths offset weaknesses", supported: "Solid — multiple protections in place", resilient: "Strong — built to withstand disruption",
   };
   const confidenceColor: Record<string, string> = {
     high: B.teal, moderate: B.bandEstablished, guarded: B.bandDeveloping, low: B.bandLimited,
@@ -964,7 +963,7 @@ export default function ReviewPage() {
           <Overline>YOUR INCOME STABILITY REPORT</Overline>
           <div style={{ flexShrink: 0, textAlign: "center", maxWidth: 120 }}>
             <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>SIMULATOR &amp; STABILITY BRIEF&#8482;</div>
+            <div style={{ ...T.overline, color: B.purple, marginTop: 6, fontSize: 8 }}>SIMULATOR &amp; STABILITY BRIEF</div>
             <div style={{ ...T.meta, color: B.muted, marginTop: 2, lineHeight: 1.4 }}>Tap or scan to model scenarios and generate briefs</div>
           </div>
         </div>
@@ -1006,6 +1005,7 @@ export default function ReviewPage() {
               </div>
             ))}
           </div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Scores reflect structural patterns, not precise measurements. Small differences (1–3 points) are not meaningful.</div>
         </div>
 
         {/* What this score means — with your actual numbers */}
@@ -1016,10 +1016,10 @@ export default function ReviewPage() {
               C1: `Your income survives most common disruptions — a slow quarter, a lost mid-tier client. But a ${record.risk_scenario_drop}-point stress test drop means a major hit (top client loss, industry shift) would still damage you.`,
               C2: `Your income holds up under pressure. You have ${record.income_continuity_months} months of runway and no single-source dependency. The remaining gaps are specific, not structural.`,
               D1: `Your income can absorb a lost client, an illness, or a market downturn without crisis. ${record.income_continuity_months}+ months of continuity. Focus on maintaining what you have built.`,
-              D2: `Top ${100 - peerPercentileValue}% of ${industrySector} professionals. ${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
+              D2: `${peerPercentileValue !== null ? `Top ${100 - peerPercentileValue}% of ${industrySector} professionals. ` : ""}${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
             })[subTier] || `Your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : ({
-              A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. That is not enough. You are one bad month away from a cash crisis.`,
-              A2: `Your income is active but fragile. A lost client, a slow month, or 2 weeks off work could become a financial emergency. You have ${continuityDisplay} of runway.`,
+              A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. This leaves very little margin for unexpected disruptions.`,
+              A2: `Your income is active but structurally exposed. A lost client, a slow month, or 2 weeks off work could create significant financial pressure. You have ${continuityDisplay} of runway.`,
               A3: `You have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change — a lost client, a contract pause — sets you back hard.`,
               B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. The gap to stable is ${nextBandThreshold - score} points — closable.`,
               B2: `You are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
@@ -1102,7 +1102,7 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. That is not a business — that is a job without benefits.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
+          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. When this percentage requires your daily effort, any disruption to your ability to work directly impacts your income.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
         </p>
 
         {/* Stress Test + Continuity cards */}
@@ -1132,12 +1132,13 @@ export default function ReviewPage() {
         {/* Peer comparison */}
         {v2Benchmarks && v2Benchmarks.outlier_dimensions.length > 0 && (
           <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer ? `YOU OUTPERFORM ${100 - (peerPercentileValue ?? 50)}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer && peerPercentileValue !== null ? `YOU OUTPERFORM ${100 - peerPercentileValue}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
             <div style={{ display: "flex", gap: 16, marginBottom: 10, padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
               <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Peer Average: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Top 20%: <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Peer Average (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
+              <div style={{ ...T.small, color: B.muted }}>Top 20% (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
             </div>
+            <div style={{ ...T.meta, color: B.taupe, marginBottom: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
             {v2Benchmarks.outlier_dimensions.slice(0, 3).map((d) => {
               const peerLabel: Record<string, string> = {
                 income_persistence: "Income that continues if work stops",
@@ -1159,7 +1160,7 @@ export default function ReviewPage() {
                   <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{label}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ ...T.meta, color: B.muted }}>You: <span style={{ fontWeight: 600, color: B.navy }}>{Math.round(d.user_value)}/100</span></span>
-                    <span style={{ ...T.meta, color: B.muted }}>Peers: <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}/100</span></span>
+                    <span style={{ ...T.meta, color: B.muted }}>Peers (modeled): <span style={{ fontWeight: 600 }}>{Math.round(d.peer_average)}/100</span></span>
                     <span style={{ ...T.micro, color: d.direction === "above" ? B.teal : B.bandLimited, fontWeight: 600 }}>{d.direction === "above" ? "▲" : "▼"} {d.direction}</span>
                   </div>
                 </div>
@@ -1275,7 +1276,7 @@ export default function ReviewPage() {
         {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
           <>
           <SectionDivider />
-          <Overline large>What You Are Likely to Do Wrong Next</Overline>
+          <Overline large>Common Pitfalls for Your Profile</Overline>
           {v2PredictiveWarnings.map((w, i) => (
             <div key={i} style={{ backgroundColor: "rgba(155,44,44,0.03)", border: "1px solid rgba(155,44,44,0.08)", borderLeft: `3px solid ${B.bandLimited}`, borderRadius: 4, padding: R.cardPad, marginBottom: 8 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
@@ -1303,6 +1304,7 @@ export default function ReviewPage() {
         {v2?.indicators && v2.indicators.length > 0 && (
           <div style={{ marginBottom: 24 }}>
           <Overline large>The Six Things That Determine Your Score</Overline>
+          <p style={{ ...T.meta, color: B.muted, marginBottom: 10, fontStyle: "italic" }}>These indicators are derived from your assessment responses and weighted by the scoring model. They represent structural characteristics, not financial projections.</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
             {v2.indicators.map((ind) => {
               const levelColor = /high|very high/i.test(ind.level) ? B.teal : /low|very low/i.test(ind.level) ? B.bandLimited : B.muted;
@@ -1342,7 +1344,7 @@ export default function ReviewPage() {
               <div style={{ flex: 1, ...cardStyle }}>
                 <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW EASILY IT COULD BREAK</div>
                 <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
-                  {(v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1)}
+                  {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
                 </div>
                 <div style={{ ...T.meta, color: B.muted }}>
                   {({
@@ -1381,7 +1383,7 @@ export default function ReviewPage() {
             )}
             {v2Quality && (
               <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW WELL-BUILT IT IS</div>
+                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>INCOME STRUCTURE GRADE</div>
                 <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 6 }}>{(v2Quality.durability_grade || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase())}</div>
                 <div style={{ ...T.meta, color: B.muted }}>
                   Quality: {v2Quality.quality_score}/10 ({v2Quality.quality_score >= 7 ? "strong" : v2Quality.quality_score >= 4 ? "moderate" : "weak"})
@@ -1485,7 +1487,7 @@ export default function ReviewPage() {
         {isHighScorer && v2Benchmarks && (
           <div style={{ ...T.small, color: B.muted, marginBottom: 16 }}>
             {score >= (v2Benchmarks.top_20_threshold ?? 65)
-              ? `You outperform ${100 - (peerPercentileValue ?? 50)}% of ${industrySector} professionals. The remaining gaps are refinements — see the action plan for specifics.`
+              ? `${peerPercentileValue !== null ? `You outperform ${100 - peerPercentileValue}% of ${industrySector} professionals. ` : ""}The remaining gaps are refinements — see the action plan for specifics.`
               : `You are ${(v2Benchmarks.top_20_threshold ?? 65) - score} points from the top 20%. The action plan shows exactly how to close that gap.`}
           </div>
         )}
@@ -1733,27 +1735,35 @@ export default function ReviewPage() {
           </div>
         )}
 
+        {/* Methodology */}
+        <div style={{ ...cardStyle, marginBottom: 20, borderLeft: `3px solid ${B.teal}` }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW THIS SCORE WAS CALCULATED</div>
+          <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.65 }}>
+            Your Income Stability Score is produced by Model RP-2.0, a deterministic scoring system that evaluates six structural dimensions of income. The same inputs always produce the same score. The model uses fixed rules and weights — no machine learning, no subjective judgment, and no access to your financial accounts. Full methodology is published at runpayway.com/methodology.
+          </p>
+        </div>
+
         {/* Reassessment + Verification */}
         <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
           <div style={{ flex: 1, ...cardStyle }}>
             <Overline>WHEN TO REASSESS</Overline>
             <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
             <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake after real structural improvement is active, not after a short-term earnings spike.</p>
+            <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
           </div>
           <div style={{ flex: 1, ...cardStyle }}>
-            <Overline>VERIFICATION</Overline>
+            <Overline>RECORD STATUS</Overline>
             <div style={{ ...T.meta, color: B.ink, display: "flex", flexDirection: "column", gap: 2 }}>
               <div>Record ID: <span style={{ fontFamily: "monospace", fontSize: 9 }}>{record.record_id.slice(0, 8)}</span></div>
-              <div>Registry Status: Private Record</div>
+              <div>Status: Private Record</div>
               <div>Model: {record.model_version || "RP-2.0"}</div>
-              <div>Verification: peoplestar.com/RunPayway/verify</div>
+              <div>This record can be confirmed at peoplestar.com/RunPayway/verify</div>
             </div>
           </div>
         </div>
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score™ is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway™ framework.
+          The Income Stability Score is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.
         </p>
 
         <PageFooter section={isHighScorer ? "How to Protect Your Position" : "Your Action Plan"} page={5} />
@@ -1796,7 +1806,7 @@ export default function ReviewPage() {
               const dateStr = nextDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
               const endDate = new Date(nextDate.getTime() + 30 * 60000);
               const endStr = endDate.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-              const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("RunPayway™ Income Stability Reassessment")}&dates=${dateStr}/${endStr}&details=${encodeURIComponent(`Time to reassess your Income Stability Score™.\n\nPrevious score: ${record.final_score} (${record.stability_band})\nPrimary focus: ${record.primary_constraint_label}\n\nTake your assessment at https://runpayway.com/pricing`)}`;
+              const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent("RunPayway Income Stability Reassessment")}&dates=${dateStr}/${endStr}&details=${encodeURIComponent(`Time to reassess your Income Stability Score.\n\nPrevious score: ${record.final_score} (${record.stability_band})\nPrimary focus: ${record.primary_constraint_label}\n\nTake your assessment at https://runpayway.com/pricing`)}`;
               window.open(url, "_blank");
             }}
             style={{ padding: "12px 18px", fontSize: 13, fontWeight: 500, color: B.navy, borderRadius: 12, border: `1px solid ${B.stone}`, cursor: "pointer", backgroundColor: "#ffffff", transition: "all 180ms ease" }}>
@@ -1810,7 +1820,7 @@ export default function ReviewPage() {
           <div style={{ background: "linear-gradient(135deg, #0E1A2B 0%, #1a2d45 100%)", padding: "28px 28px 24px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
-                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>INCOME STABILITY SCORE™</div>
+                <div style={{ fontSize: 10, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>INCOME STABILITY SCORE</div>
                 <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>{record.final_score}</div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 10 }}>
                   <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
@@ -1819,7 +1829,7 @@ export default function ReviewPage() {
               </div>
               <div style={{ textAlign: "right" }}>
                 <Image src={logoWhite} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", marginBottom: 8 }} />
-                <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>Verified Assessment</div>
+                <div style={{ fontSize: 10, color: "rgba(244,241,234,0.40)" }}>RunPayway Assessment</div>
               </div>
             </div>
           </div>
@@ -1853,13 +1863,13 @@ export default function ReviewPage() {
               </div>
             </div>
             <div style={{ fontSize: 10, color: B.taupe, marginBottom: 16 }}>
-              Verify this score at peoplestar.com/RunPayway/verify
+              Confirm this record at peoplestar.com/RunPayway/verify
             </div>
             {/* Share actions */}
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <button
                 onClick={() => {
-                  const text = `${name} — Income Stability Score™: ${record.final_score} (${record.stability_band}). ${record.peer_stability_percentile_label ? `${record.peer_stability_percentile_label} percentile. ` : ""}Assessed ${issuedDate} under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
+                  const text = `${name} — Income Stability Score: ${record.final_score} (${record.stability_band}). ${record.peer_stability_percentile_label ? `${record.peer_stability_percentile_label} percentile. ` : ""}Assessed ${issuedDate} under Model RP-2.0. Verify at peoplestar.com/RunPayway/verify?id=${record.record_id}&auth=${record.authorization_code}`;
                   navigator.clipboard.writeText(text).then(() => {
                     setLinkCopied(true);
                     setTimeout(() => setLinkCopied(false), 3000);
@@ -1907,7 +1917,7 @@ export default function ReviewPage() {
           </div>
           {/* Send to someone */}
           <div data-send-section style={{ padding: "16px 28px 20px", backgroundColor: B.bone, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Send to a lender, partner, or advisor</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Share with an advisor, accountant, or business partner</div>
             <p style={{ fontSize: 11, color: B.muted, margin: "0 0 10px 0", lineHeight: 1.5 }}>
               They will receive your score summary and a verification link.
             </p>
