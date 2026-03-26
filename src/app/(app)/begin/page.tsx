@@ -100,7 +100,7 @@ export default function BeginPage() {
           />
 
           {/* Overline */}
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>
             Income Stability Score&#8482;
           </div>
 
@@ -152,8 +152,8 @@ export default function BeginPage() {
                   <span style={{ fontSize: 13, fontWeight: 700, color: B.cream }}>{step.num}</span>
                 </div>
                 <div>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: B.cream, marginBottom: 4 }}>{step.title}</div>
-                  <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>{step.desc}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: B.cream, marginBottom: 4 }}>{step.title}</div>
+                  <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65 }}>{step.desc}</div>
                 </div>
               </div>
             ))}
@@ -187,8 +187,8 @@ export default function BeginPage() {
 
           {/* Trust line */}
           <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? 12 : 20 }}>
-            {["Under 2 minutes", "No bank connection", "No credit pull", "Private by default"].map((badge) => (
-              <span key={badge} style={{ fontSize: 11, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>
+            {["No bank connection", "No credit pull", "Private by default"].map((badge) => (
+              <span key={badge} style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>
                 {badge}
               </span>
             ))}

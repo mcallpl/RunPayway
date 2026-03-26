@@ -420,7 +420,7 @@ export default function DiagnosticPage() {
           {/* Spinner */}
           <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 28px", animation: "rp-spin 0.8s linear infinite" }} />
 
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
             GENERATING YOUR ASSESSMENT
           </div>
 
@@ -513,17 +513,17 @@ export default function DiagnosticPage() {
       <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto" }}>
       {/* Dark branded header */}
       <div style={{ background: B.navy, padding: "20px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
           Income Stability Score&#8482; &middot; Model RP-2.0
         </div>
       </div>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
               Review Your Answers
             </div>
-            <span style={{ fontSize: 11, color: B.light, fontFeatureSettings: "'tnum'" }}>
+            <span style={{ fontSize: 13, color: B.light, fontFeatureSettings: "'tnum'" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
           </div>
@@ -563,7 +563,7 @@ export default function DiagnosticPage() {
                   width: 28, height: 28, borderRadius: "50%",
                   background: "rgba(75,63,174,0.06)", color: B.purple,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 12, fontWeight: 700, flexShrink: 0,
+                  fontSize: 13, fontWeight: 700, flexShrink: 0,
                 }}>{question.number}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>
@@ -627,10 +627,10 @@ export default function DiagnosticPage() {
     }}>
     {/* Dark branded header */}
     <div style={{ background: B.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
         Income Stability Score&#8482;
       </div>
-      <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>
+      <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>
         Model RP-2.0
       </div>
     </div>
@@ -639,19 +639,19 @@ export default function DiagnosticPage() {
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
               Question {q.number} of 6
             </div>
-            <div style={{ fontSize: 11, color: B.light }}>
+            <div style={{ fontSize: 13, color: B.light }}>
               Based on your previous 12 months
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 11, color: B.light, fontFeatureSettings: "'tnum'" }}>
+            <span style={{ fontSize: 13, color: B.light, fontFeatureSettings: "'tnum'" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.10)" }}>|</span>
-            <span style={{ fontSize: 11, color: B.light }}></span>
+            <span style={{ fontSize: 13, color: "rgba(14,26,43,0.10)" }}>|</span>
+            <span style={{ fontSize: 13, color: B.light }}></span>
           </div>
         </div>
 
@@ -683,7 +683,7 @@ export default function DiagnosticPage() {
         {currentQuestion >= 3 && !allAnswered && (
           <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 6 }}>
             <div style={{ width: 5, height: 5, borderRadius: 99, background: B.teal }} />
-            <span style={{ fontSize: 11, fontWeight: 500, color: B.teal }}>
+            <span style={{ fontSize: 13, fontWeight: 500, color: B.teal }}>
               {currentQuestion === 3 ? "Halfway there — your score is being calculated." : currentQuestion === 4 ? "Almost done — one factor remaining." : "All factors captured — ready to generate."}
             </span>
           </div>
@@ -717,14 +717,14 @@ export default function DiagnosticPage() {
         {/* Examples */}
         {q.examples && (
           <div style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: B.light }}>Examples: </span>
-            <span style={{ fontSize: 12, color: B.light }}>{q.examples.join(", ")}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: B.light }}>Examples: </span>
+            <span style={{ fontSize: 13, color: B.light }}>{q.examples.join(", ")}</span>
           </div>
         )}
 
         {/* Note */}
         {q.note && (
-          <p style={{ fontSize: 12, color: B.light, fontStyle: "italic", marginBottom: 8 }}>
+          <p style={{ fontSize: 13, color: B.light, fontStyle: "italic", marginBottom: 8 }}>
             {q.note}
           </p>
         )}
@@ -795,7 +795,7 @@ export default function DiagnosticPage() {
         {/* Definition */}
         {q.definition && (
           <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
-            <p style={{ fontSize: 12, color: B.light, lineHeight: 1.6 }}>
+            <p style={{ fontSize: 13, color: B.light, lineHeight: 1.65 }}>
               {q.definition}
             </p>
           </div>

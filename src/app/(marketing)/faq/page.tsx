@@ -193,7 +193,7 @@ function AccordionItem({
       >
         <span
           style={{
-            fontSize: mobile ? 15 : 16,
+            fontSize: mobile ? 16 : 18,
             fontWeight: 600,
             color: B.navy,
             lineHeight: 1.4,
@@ -256,7 +256,7 @@ function FaqCategorySection({
     <div ref={catAnim.ref}>
       <div
         style={{
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: 600,
           color: B.purple,
           letterSpacing: "0.08em",
@@ -318,7 +318,7 @@ export default function FaqPage() {
       {/* Scoped styles for FAQ answer content */}
       <style>{`
         .faq-answer p {
-          font-size: 15px;
+          font-size: 16px;
           color: ${B.muted};
           line-height: 1.65;
           margin-bottom: 10px;
@@ -332,7 +332,7 @@ export default function FaqPage() {
           list-style: none;
         }
         .faq-answer ul li {
-          font-size: 15px;
+          font-size: 16px;
           color: ${B.muted};
           line-height: 1.65;
           padding-left: 20px;
@@ -369,7 +369,7 @@ export default function FaqPage() {
         .faq-table-header {
           background: ${B.navy} !important;
           color: rgba(255,255,255,0.70);
-          font-size: 11px;
+          font-size: 13px;
           font-weight: 600;
           letter-spacing: 0.08em;
           text-transform: uppercase;
@@ -444,18 +444,18 @@ export default function FaqPage() {
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {t.faqPage.heroTag}
             </span>
           </div>
 
           <h1
             style={{
-              fontSize: mobile ? 30 : 44,
+              fontSize: mobile ? 32 : 48,
               fontWeight: 600,
               color: "#FFFFFF",
               letterSpacing: "-0.03em",
-              lineHeight: 1.15,
+              lineHeight: 1.12,
               marginBottom: 20,
             }}
           >
@@ -464,7 +464,7 @@ export default function FaqPage() {
 
           <p
             style={{
-              fontSize: mobile ? 15 : 18,
+              fontSize: mobile ? 16 : 18,
               color: "rgba(255,255,255,0.65)",
               lineHeight: 1.65,
               maxWidth: 600,
@@ -481,8 +481,8 @@ export default function FaqPage() {
       {/* ============================================================ */}
       <section
         style={{
-          paddingTop: mobile ? 48 : 72,
-          paddingBottom: mobile ? 64 : 96,
+          paddingTop: mobile ? 72 : 120,
+          paddingBottom: mobile ? 72 : 120,
         }}
       >
         <div
@@ -557,10 +557,10 @@ export default function FaqPage() {
           <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
-          <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
+          <div style={{ fontSize: mobile ? 16 : 18, color: "rgba(255,255,255,0.60)", lineHeight: 1.65, marginBottom: 24 }}>
             {t.faqPage.closingSubtitle}
           </div>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
             {t.faqPage.poweredBy}
           </p>
         </div>

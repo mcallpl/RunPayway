@@ -147,7 +147,7 @@ function Hero() {
           }}
         >
           <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 20 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)" }}>Model RP-2.0 &middot; Methodology</span>
+            <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)" }}>Model RP-2.0 &middot; Methodology</span>
           </div>
           <h1
             style={{
@@ -164,7 +164,7 @@ function Hero() {
           </h1>
           <p
             style={{
-              fontSize: mobile ? 15 : 17,
+              fontSize: mobile ? 16 : 18,
               color: "rgba(244,241,234,0.55)",
               lineHeight: S.lhBody,
               maxWidth: 540,
@@ -175,7 +175,7 @@ function Hero() {
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap" as const }}>
             {["Deterministic", "Fixed rules", "Versioned", "Reproducible"].map((t) => (
-              <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -213,16 +213,16 @@ function Purpose() {
       >
         <div style={{ display: mobile ? "block" : "flex", gap: 64, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
           <div style={{ flex: 1, marginBottom: mobile ? 32 : 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>What It Measures</div>
-            <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>What It Measures</div>
+            <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
               Not how much you earn. How well it holds up when something changes.
             </h2>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
               The Income Stability Score&#8482; quantifies structural resilience — the architecture of your income, not the amount. Two people earning the same number can have completely different stability profiles.
             </p>
-            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+            <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
               The model evaluates recurrence, concentration, forward visibility, variability, labor dependence, and income quality — then applies cross-factor interaction rules that capture how weaknesses compound.
             </p>
           </div>
@@ -299,11 +299,11 @@ function SixDimensions() {
         }}
       >
         <div style={{ maxWidth: 560, marginBottom: mobile ? 32 : 48 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>The Six Dimensions</div>
-          <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>The Six Dimensions</div>
+          <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
             Six structural measures. Fixed rules. No subjectivity.
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
+          <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
             Each dimension is scored independently and combined into your 0&#8211;100 result.
           </p>
         </div>
@@ -312,16 +312,16 @@ function SixDimensions() {
           {dimensions.map((dim, i) => (
             <div key={dim.num} style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : S.cardPad.desktop, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: `opacity 0.5s ease-out ${i * 60}ms, transform 0.5s ease-out ${i * 60}ms` }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.06em" }}>{dim.num}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{dim.title.split(" ").slice(0, 2).join(" ")}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: B.teal, letterSpacing: "0.06em" }}>{dim.num}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{dim.title.split(" ").slice(0, 2).join(" ")}</span>
               </div>
-              <h3 style={{ fontSize: 16, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.3, letterSpacing: "-0.01em", marginBottom: 10 }}>{dim.title}</h3>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{dim.desc}</p>
+              <h3 style={{ fontSize: 20, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.01em", marginBottom: 10 }}>{dim.title}</h3>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, margin: 0 }}>{dim.desc}</p>
             </div>
           ))}
         </div>
 
-        <p style={{ fontSize: 12, color: B.light, marginTop: 24, letterSpacing: "0.02em", opacity: visible ? 1 : 0, transition: "opacity 0.5s ease-out 500ms" }}>
+        <p style={{ fontSize: 14, color: B.light, marginTop: 24, letterSpacing: "0.02em", opacity: visible ? 1 : 0, transition: "opacity 0.5s ease-out 500ms" }}>
           All six dimensions are fixed and versioned under Model RP-2.0.
         </p>
       </div>
@@ -355,11 +355,11 @@ function ScoringFramework() {
 
           {/* Left: explanation */}
           <div style={{ flex: 1, marginBottom: mobile ? 32 : 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>The Scoring Engine</div>
-            <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>The Scoring Engine</div>
+            <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
               Two blocks. One score. Zero subjectivity.
             </h2>
-            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+            <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
               The scoring model evaluates your income across six structural dimensions, applies cross-factor interaction rules, and produces a single 0&#8211;100 score. Every rule is fixed. The same inputs always produce the same result.
             </p>
           </div>
@@ -370,8 +370,8 @@ function ScoringFramework() {
             <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.teal }} />
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal }}>Structure Analysis</span>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>Primary weight</span>
+                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal }}>Structure Analysis</span>
+                <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)" }}>Primary weight</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                 {["Recurring revenue", "Source diversification", "Forward visibility", "Concentration resilience"].map((f) => (
@@ -387,8 +387,8 @@ function ScoringFramework() {
             <div style={{ background: B.navy, borderRadius: S.cardRadius, padding: mobile ? S.cardPad.mobile : "28px 28px", marginBottom: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: B.purple }} />
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple }}>Stability Analysis</span>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>Secondary weight</span>
+                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple }}>Stability Analysis</span>
+                <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)" }}>Secondary weight</span>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                 {["Labor independence", "Earnings stability", "Income continuity", "Quality adjustment"].map((f) => (
@@ -402,7 +402,7 @@ function ScoringFramework() {
 
             {/* Result arrow */}
             <div style={{ textAlign: "center", padding: "12px 0" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.light }}>Structure + Stability + Interactions = Score</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.light }}>Structure + Stability + Interactions = Score</div>
             </div>
           </div>
         </div>
@@ -443,14 +443,14 @@ function InteractionEffects() {
 
           {/* Left: explanation */}
           <div style={{ flex: 1, marginBottom: mobile ? 32 : 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Cross-Factor Intelligence</div>
-            <h2 style={{ fontSize: mobile ? 28 : 42, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Cross-Factor Intelligence</div>
+            <h2 style={{ fontSize: mobile ? 32 : 48, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
               Your weaknesses compound. So do your strengths.
             </h2>
             <p style={{ fontSize: mobile ? 15 : 16, color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
               Most tools score factors independently. RunPayway&#8482; detects when two factors interact — when a weakness in one area makes another area more dangerous, or when two strengths reinforce each other.
             </p>
-            <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em", margin: 0 }}>
+            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em", margin: 0 }}>
               All interaction rules are fixed, versioned, and documented in the model manifest.
             </p>
           </div>
@@ -469,12 +469,12 @@ function InteractionEffects() {
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: ex.color }}>{ex.type}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: ex.color }}>{ex.type}</span>
                     <span style={{ fontSize: 13, fontWeight: 600, color: "#F4F1EA" }}>{ex.label}</span>
                   </div>
                   <span style={{ fontSize: 14, fontWeight: 700, color: ex.color }}>{ex.points}</span>
                 </div>
-                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{ex.desc}</p>
+                <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, margin: 0 }}>{ex.desc}</p>
               </div>
             ))}
           </div>
@@ -552,19 +552,20 @@ function ClassificationBands() {
           }}
         >
           <h2
-            className="text-[28px] md:text-[36px]"
+            className="text-[32px] md:text-[48px]"
             style={{
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
               letterSpacing: S.lsHeading,
+              lineHeight: S.lhHeading,
               marginBottom: 12,
             }}
           >
             Income Stability Classification Scale
           </h2>
           <p
-            className="text-[15px] md:text-[17px]"
+            className="text-[16px] md:text-[18px]"
             style={{
               color: B.muted,
               lineHeight: S.lhBody,
@@ -644,7 +645,7 @@ function ClassificationBands() {
                   </span>
                 </div>
                 <h3
-                  className="text-[14px]"
+                  className="text-[16px]"
                   style={{
                     fontWeight: 600,
                     color: band.color,
@@ -655,8 +656,8 @@ function ClassificationBands() {
                   {band.label}
                 </h3>
                 <p
-                  className="text-[13px]"
-                  style={{ color: B.muted, lineHeight: 1.6, margin: 0 }}
+                  className="text-[14px]"
+                  style={{ color: B.muted, lineHeight: 1.65, margin: 0 }}
                 >
                   {band.desc}
                 </p>
@@ -665,7 +666,7 @@ function ClassificationBands() {
           </div>
 
           <p
-            className="text-[13px]"
+            className="text-[14px]"
             style={{
               color: B.light,
               textAlign: "center",
@@ -720,14 +721,14 @@ function IndustryContext() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Personalization Layer</div>
-          <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Personalization Layer</div>
+          <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             Same score. Your context.
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Your 0&#8211;100 score is deterministic and industry-agnostic. But the report wraps it in context specific to your income model, industry, and operating structure — including personalized risk scenarios, predictive warnings calibrated to your sector, peer benchmarking against actual industry data, and action plans with scripts tailored to how you earn.
           </p>
-          <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
+          <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
             This personalization layer enriches interpretation and execution without altering the underlying score. A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, different scripts, and different peer comparisons.
           </p>
         </div>
@@ -807,11 +808,11 @@ function Integrity() {
           }}
         >
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Trust Architecture</div>
-            <h2 style={{ fontSize: mobile ? 28 : 42, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Trust Architecture</div>
+            <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
               Every score is verifiable.<br />Every rule is fixed.
             </h2>
-            <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
+            <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto" }}>
               No subjective judgment. No probabilistic modeling. The scoring model produces identical results for identical inputs — and every assessment is cryptographically stamped.
             </p>
           </div>
@@ -865,7 +866,7 @@ function Integrity() {
                         }}
                       />
                       <span
-                        className="text-[15px]"
+                        className="text-[16px]"
                         style={{ fontWeight: 600, color: B.navy }}
                       >
                         {panel.title}
@@ -1011,7 +1012,7 @@ function CtaSection() {
           }}
         >
           <h2
-            className="text-[32px] md:text-[40px]"
+            className="text-[32px] md:text-[48px]"
             style={{
               color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
@@ -1024,7 +1025,7 @@ function CtaSection() {
             Now that you know how it works &#8212; see your score.
           </h2>
           <p
-            className="text-[15px] md:text-[16px]"
+            className="text-[16px] md:text-[18px]"
             style={{
               color: "rgba(244,241,234,0.70)",
               lineHeight: S.lhBody,
@@ -1034,10 +1035,10 @@ function CtaSection() {
             Your free score shows where you stand. The full report shows what to do about it &#8212; $99.
           </p>
           <p
-            className="text-[13px]"
+            className="text-[14px]"
             style={{
               color: "rgba(244,241,234,0.40)",
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               marginBottom: 40,
             }}
           >
@@ -1058,7 +1059,7 @@ function CtaSection() {
               borderRadius: S.ctaRadius,
               backgroundColor: "#F4F1EA",
               color: B.navy,
-              fontSize: mobile ? 14 : 15,
+              fontSize: 16,
               fontWeight: 600,
               letterSpacing: "-0.01em",
               textDecoration: "none",
@@ -1074,14 +1075,14 @@ function CtaSection() {
           </Link>
 
           <p
-            className="text-[12px]"
+            className="text-[14px]"
             style={{
               color: "rgba(244,241,234,0.40)",
               marginTop: 24,
               letterSpacing: "0.02em",
             }}
           >
-            Free to start &middot; Under 2 minutes &middot; No bank connection
+            Free to start &middot; No bank connection &middot; No credit pull
           </p>
         </div>
       </div>
@@ -1105,7 +1106,7 @@ export default function MethodologyPage() {
       <section style={{ background: B.sand, paddingTop: 48, paddingBottom: 48, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 520, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 10 }}>See It In Action</div>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 10 }}>See It In Action</div>
             <h2 style={{ fontSize: 24, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
               Test how your factors interact — in real time.
             </h2>

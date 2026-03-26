@@ -40,13 +40,13 @@ const B = {
   bandHigh: "#1F6D7A",
 };
 
-// 7-step type scale: 11 · 13 · 15 · 17 · 20 · 32 · 72
+// Enterprise type scale: 13 · 14 · 16 · 18 · 20 · 32 · 72
 const F = {
-  label: { fontSize: 11, fontWeight: 700 as const, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  small: { fontSize: 13, lineHeight: 1.55 },
-  body: { fontSize: 15, lineHeight: 1.65 },
-  lead: { fontSize: 17, lineHeight: 1.65 },
-  h3: { fontSize: 20, fontWeight: 600 as const, lineHeight: 1.3 },
+  label: { fontSize: 13, fontWeight: 700 as const, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  small: { fontSize: 14, lineHeight: 1.65 },
+  body: { fontSize: 16, lineHeight: 1.65 },
+  lead: { fontSize: 18, lineHeight: 1.65 },
+  h3: { fontSize: 20, fontWeight: 600 as const, lineHeight: 1.12 },
   h2: { fontSize: 32, fontWeight: 400 as const, letterSpacing: "-0.02em", lineHeight: 1.12 },
   score: { fontSize: 72, fontWeight: 600 as const, lineHeight: 1 },
 };

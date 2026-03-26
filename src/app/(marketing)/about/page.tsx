@@ -126,7 +126,7 @@ function Hero() {
             transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)", marginBottom: 20 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)", marginBottom: 20 }}>
             PeopleStar Enterprises, Inc.
           </div>
           <h1
@@ -143,7 +143,7 @@ function Hero() {
             About RunPayway&#8482;
           </h1>
           <p
-            style={{ fontSize: mobile ? 15 : 17, color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
+            style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
             RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. Fixed rules. No opinions. Just the math.
           </p>
@@ -181,16 +181,16 @@ function WhatIsISS() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             The Income Stability Score&#8482;
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             The Income Stability Score&#8482; is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score&#8482; examines the architecture of how you earn. It looks at how many sources you have, how predictable they are, how much continues without active work, and how far forward your income is committed.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             The result is a deterministic structural assessment — the same inputs always produce the same score, and every score maps to a fixed classification band under Model RP-2.0.
           </p>
         </div>
@@ -236,10 +236,10 @@ function WhatModelMeasures() {
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: 12 }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
             What the model measures
           </h2>
-          <p className="text-[15px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
             The model evaluates income across six independent dimensions. Each contributes to the final score.
           </p>
         </div>
@@ -259,8 +259,8 @@ function WhatModelMeasures() {
               }}
             >
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal, marginBottom: 16 }} />
-              <h3 className="text-[15px]" style={{ fontWeight: 600, color: "#FFFFFF", marginBottom: 10 }}>{d.title}</h3>
-              <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.70)", lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
+              <h3 className="text-[20px] md:text-[24px]" style={{ fontWeight: 600, color: "#FFFFFF", lineHeight: 1.12, marginBottom: 10 }}>{d.title}</h3>
+              <p className="text-[14px]" style={{ color: "rgba(255,255,255,0.70)", lineHeight: 1.65, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
         </div>
@@ -297,16 +297,16 @@ function HowCalculated() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             How the score is calculated
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Model RP-2.0 is entirely deterministic. There is no probabilistic modeling, no adaptive learning, and no human judgment in the scoring process. The same inputs always produce the same score.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             The model evaluates your income across six dimensions using fixed, versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             The result is a five-page diagnostic report that explains your score, translates what it means, shows your biggest risks, identifies the specific changes that would raise it, and gives you a clear action plan.
           </p>
         </div>
@@ -343,16 +343,16 @@ function ModelGovernance() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             Model governance
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Every version of the scoring model is locked and versioned. The current version is Model RP-2.0. If any rule, weight, threshold, or classification boundary changes, the model increments to a new version number.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             This means a score generated under Model RP-2.0 can always be compared to another score generated under Model RP-2.0. The rules are identical. If the rules ever change, it becomes a new model — and every assessment is stamped with the version that produced it.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             Every assessment includes a SHA-256 hash that can be used to verify the report was produced by the stated model version and has not been modified after generation. This is how institutional trust works: not through promises, but through verifiable, versioned outputs.
           </p>
         </div>
@@ -389,13 +389,13 @@ function Verification() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             Every score is verifiable
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             Every assessment includes a SHA-256 hash, a model version stamp, and a timestamp. These three elements prove the assessment was produced by Model RP-2.0 and has not been altered.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: 0 }}>
             Share your score with a lender, employer, or financial advisor. They don&#8217;t need to trust you or trust RunPayway&#8482; — they can verify it themselves.
           </p>
 
@@ -404,7 +404,7 @@ function Verification() {
             {["SHA-256 Hash", "Model Version Stamp", "Immutable Timestamp", "QR Verification"].map((badge) => (
               <div key={badge} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal }} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
               </div>
             ))}
           </div>
@@ -442,16 +442,16 @@ function WhoBuiltIt() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[28px] md:text-[36px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, marginBottom: S.h2mb }}>
+          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             Who built this
           </h2>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             RunPayway&#8482; is built and operated by PeopleStar Enterprises, Inc. The Income Stability Score&#8482; was developed to fill a gap in how income is evaluated: credit scores measure borrowing history, income verification confirms what you earned last month, but nothing measured the structural durability of how you earn.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
             RunPayway&#8482; exists to give people a clear, verifiable way to understand and communicate the stability of their income. The score is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
           </p>
-          <p className="text-[15px] md:text-[16px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
             The model is designed for anyone whose income does not fit neatly into a W-2 paycheck — business owners, self-employed professionals, consultants, contractors, and anyone with variable or multi-source income.
           </p>
         </div>
@@ -486,7 +486,7 @@ function ModelBadge() {
           ].map((item) => (
             <div key={item.label} style={{ textAlign: "center", minWidth: mobile ? 120 : 140 }}>
               <div style={{ fontSize: 15, fontWeight: 700, color: B.navy, marginBottom: 4 }}>{item.label}</div>
-              <div style={{ fontSize: 11, color: B.light, letterSpacing: "0.02em" }}>{item.sub}</div>
+              <div style={{ fontSize: 13, color: B.light, letterSpacing: "0.02em" }}>{item.sub}</div>
             </div>
           ))}
         </div>
@@ -548,7 +548,7 @@ function CtaSection() {
         >
           <h2
             style={{
-              fontSize: mobile ? 26 : 36,
+              fontSize: mobile ? 32 : 48,
               color: "#F4F1EA",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -574,9 +574,9 @@ function CtaSection() {
           </p>
           <p
             style={{
-              fontSize: 13,
+              fontSize: 14,
               color: "rgba(244,241,234,0.40)",
-              lineHeight: 1.6,
+              lineHeight: 1.65,
               marginBottom: 28,
               maxWidth: 440,
               marginLeft: "auto",
@@ -597,7 +597,7 @@ function CtaSection() {
               borderRadius: 12,
               backgroundColor: "#F4F1EA",
               color: B.navy,
-              fontSize: 15,
+              fontSize: 16,
               fontWeight: 600,
               letterSpacing: "-0.01em",
               textDecoration: "none",
@@ -605,8 +605,8 @@ function CtaSection() {
           >
             Get My Free Score
           </Link>
-          <div style={{ marginTop: 16, fontSize: 12, color: "rgba(244,241,234,0.40)" }}>
-            Free to start &#183; Under 2 minutes &#183; No bank connection
+          <div style={{ marginTop: 16, fontSize: 14, color: "rgba(244,241,234,0.40)" }}>
+            Free to start &#183; No bank connection &#183; No credit pull
           </div>
         </div>
       </div>

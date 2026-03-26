@@ -158,7 +158,7 @@ function Hero() {
         >
           <div
             style={{
-              fontSize: 11,
+              fontSize: 13,
               textTransform: "uppercase",
               color: "rgba(250,249,247,0.50)",
               fontWeight: 600,
@@ -170,7 +170,7 @@ function Hero() {
           </div>
           <h1
             style={{
-              fontSize: mobile ? 32 : 44,
+              fontSize: mobile ? 32 : 48,
               color: "#FAF9F7",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -182,13 +182,13 @@ function Hero() {
               marginRight: "auto",
             }}
           >
-            Under two minutes.
+            Six questions. One score.
             <br />
             Full structural diagnosis.
           </h1>
           <p
             style={{
-              fontSize: mobile ? 15 : 17,
+              fontSize: mobile ? 16 : 18,
               color: "rgba(250,249,247,0.70)",
               lineHeight: S.lhBody,
               maxWidth: 600,
@@ -197,7 +197,7 @@ function Hero() {
               margin: "0 auto",
             }}
           >
-            Under two minutes. Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
+            Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
           </p>
         </div>
       </div>
@@ -264,7 +264,7 @@ function ThreeSteps() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -321,7 +321,7 @@ function ThreeSteps() {
           style={{
             textAlign: "center",
             marginTop: 40,
-            fontSize: 12,
+            fontSize: 14,
             color: B.muted,
             opacity: visible ? 1 : 0,
             transition: "opacity 0.5s ease-out 500ms",
@@ -397,10 +397,11 @@ function StepCard({
 
       <h3
         style={{
-          fontSize: 17,
+          fontSize: mobile ? 20 : 24,
           fontWeight: 600,
           color: B.navy,
           letterSpacing: S.lsHeading,
+          lineHeight: 1.12,
           marginBottom: 6,
         }}
       >
@@ -409,7 +410,7 @@ function StepCard({
 
       <div
         style={{
-          fontSize: 13,
+          fontSize: 14,
           fontWeight: 600,
           color: B.teal,
           marginBottom: 16,
@@ -420,7 +421,7 @@ function StepCard({
 
       <p
         style={{
-          fontSize: 14,
+          fontSize: mobile ? 16 : 18,
           color: B.muted,
           lineHeight: S.lhBody,
           margin: 0,
@@ -513,7 +514,7 @@ function ReportCovers() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -526,7 +527,7 @@ function ReportCovers() {
           </h2>
           <p
             style={{
-              fontSize: mobile ? 15 : 18,
+              fontSize: mobile ? 16 : 18,
               color: B.muted,
               lineHeight: S.lhBody,
               maxWidth: 520,
@@ -594,12 +595,12 @@ function ReportCovers() {
               {/* Content */}
               <div style={{ flex: 1, paddingTop: 4 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
-                  <span style={{ fontSize: 13, color: B.light }}>—</span>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
+                  <span style={{ fontSize: 14, color: B.light }}>—</span>
+                  <span style={{ fontSize: 14, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
                 </div>
-                <h3 style={{ fontSize: mobile ? 16 : 17, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{page.title}</h3>
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.desc}</p>
+                <h3 style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading, lineHeight: 1.12 }}>{page.title}</h3>
+                <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.desc}</p>
               </div>
             </div>
           ))}
@@ -681,7 +682,7 @@ function ClassificationScale() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -770,7 +771,7 @@ function ClassificationScale() {
                 </div>
                 <div
                   style={{
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: 600,
                     color: band.color,
                     marginBottom: 6,
@@ -780,9 +781,9 @@ function ClassificationScale() {
                 </div>
                 <div
                   style={{
-                    fontSize: 12,
+                    fontSize: 14,
                     color: B.muted,
-                    lineHeight: 1.5,
+                    lineHeight: 1.65,
                   }}
                 >
                   {band.desc}
@@ -797,7 +798,7 @@ function ClassificationScale() {
           style={{
             textAlign: "center",
             marginTop: 44,
-            fontSize: 13,
+            fontSize: 14,
             color: B.muted,
             fontStyle: "italic",
             opacity: visible ? 1 : 0,
@@ -895,7 +896,7 @@ function SixDimensions() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: B.navy,
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -954,9 +955,9 @@ function SixDimensions() {
               }}>
                 {dim.icon}
               </div>
-              <div style={{ fontSize: 10, fontWeight: 600, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading }}>{dim.title}</h3>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, margin: 0, maxWidth: 240, marginLeft: "auto", marginRight: "auto" }}>{dim.desc}</p>
+              <div style={{ fontSize: 13, fontWeight: 600, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
+              <h3 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading, lineHeight: 1.12 }}>{dim.title}</h3>
+              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, margin: 0, maxWidth: 240, marginLeft: "auto", marginRight: "auto" }}>{dim.desc}</p>
             </div>
           ))}
         </div>
@@ -966,7 +967,7 @@ function SixDimensions() {
           style={{
             textAlign: "center",
             marginTop: 44,
-            fontSize: 12,
+            fontSize: 14,
             color: B.muted,
             opacity: visible ? 1 : 0,
             transition: "opacity 0.5s ease-out 500ms",
@@ -1037,7 +1038,7 @@ function CtaSection() {
         >
           <h2
             style={{
-              fontSize: mobile ? 28 : 40,
+              fontSize: mobile ? 32 : 48,
               color: "#FAF9F7",
               fontFamily: DISPLAY_FONT,
               fontWeight: 400,
@@ -1076,7 +1077,7 @@ function CtaSection() {
               borderRadius: S.ctaRadius,
               backgroundColor: "#FAF9F7",
               color: B.navy,
-              fontSize: mobile ? 14 : 15,
+              fontSize: 16,
               fontWeight: 600,
               letterSpacing: "0.01em",
               textDecoration: "none",
@@ -1094,11 +1095,11 @@ function CtaSection() {
           <div
             style={{
               marginTop: 20,
-              fontSize: 12,
+              fontSize: 14,
               color: "rgba(250,249,247,0.40)",
             }}
           >
-            Free to start &middot; Under 2 minutes &middot; No bank connection
+            Free to start &middot; No bank connection &middot; No credit pull
           </div>
         </div>
       </div>
@@ -1118,11 +1119,11 @@ export default function HowItWorksPage() {
       <section style={{ background: "#F4F1EA", paddingTop: 64, paddingBottom: 64, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 580, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Included With Every Report</div>
-            <h2 style={{ fontSize: 28, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.15, letterSpacing: "-0.025em", margin: "0 0 14px" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Included With Every Report</div>
+            <h2 style={{ fontSize: 32, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.12, letterSpacing: "-0.025em", margin: "0 0 14px" }}>
               Simulate changes. Get the scripts to make them.
             </h2>
-            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
               The interactive Score Simulator lets you drag five sliders to model real scenarios &mdash; see exactly how each change moves your score. Your report includes personalized, ready-to-use scripts for retainer pitches, client outreach, and pricing restructures — generated from your actual results, ready to copy and send.
             </p>
           </div>
@@ -1131,7 +1132,7 @@ export default function HowItWorksPage() {
           <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: 10, marginTop: 20 }}>
             {["5 Interactive Sliders", "Real-Time Score Updates", "Ready-to-Send Scripts"].map(label => (
               <span key={label} style={{
-                fontSize: 11, fontWeight: 600, letterSpacing: "0.04em",
+                fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
                 color: "#4B3FAE", backgroundColor: "rgba(75,63,174,0.08)",
                 borderRadius: 20, padding: "6px 14px",
               }}>{label}</span>
