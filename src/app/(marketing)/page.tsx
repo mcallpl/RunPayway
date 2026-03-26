@@ -885,7 +885,7 @@ function HowItWorksSection() {
       time: "Instant",
       title: "See your score",
       hook: "Free. Right now. No strings.",
-      desc: "Your Income Stability Score\u2122 out of 100, your stability band, your peer percentile, and the single biggest thing holding your income back.",
+      desc: "Your Income Stability Score\u2122 out of 100, your stability band, and the single biggest thing holding your income back.",
       color: B.purple,
     },
     {
@@ -1382,7 +1382,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   const faqs = [
     {
       q: "What do I get for free?",
-      a: "Your score out of 100, your stability band, your peer percentile, and one key insight about what is holding your income back. No payment required.",
+      a: "Your score out of 100, your stability band, and one key insight about what is holding your income back. No payment required.",
     },
     {
       q: "What does the $99 full report include?",

@@ -218,13 +218,13 @@ export default function InitializationPage() {
 
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (form.assessment_title || form.classification) {
+      if (form.assessment_title || form.industry_sector) {
         e.preventDefault();
       }
     };
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
-  }, [form.assessment_title, form.classification]);
+  }, [form.assessment_title, form.industry_sector]);
 
   useEffect(() => {
     const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
@@ -314,10 +314,6 @@ export default function InitializationPage() {
 
   const isValid =
     form.assessment_title.trim() !== "" &&
-    form.classification !== "" &&
-    form.operating_structure !== "" &&
-    form.primary_income_model !== "" &&
-    form.revenue_structure !== "" &&
     form.industry_sector !== "";
 
   const handleBegin = () => {
@@ -340,7 +336,7 @@ export default function InitializationPage() {
   };
 
   const canContinueStep0 = form.assessment_title.trim() !== "";
-  const canContinueStep1 = form.classification !== "" && form.operating_structure !== "";
+  const canContinueStep1 = form.industry_sector !== "";
 
   /* ================================================================ */
   /*  READY SCREEN — Breath before the diagnostic begins               */
@@ -542,14 +538,12 @@ export default function InitializationPage() {
 
   const stepTitles = [
     "",
-    "Income Structure Profile",
-    "Income Context",
+    "Industry Context",
   ];
 
   const stepDescriptions = [
     "",
-    "These fields describe how your income is structured. This enables precision in your diagnostic.",
-    "These details personalize your report — industry benchmarks, peer comparisons, and tailored action steps.",
+    "Which industry generates your income? This helps tailor your report.",
   ];
 
   return (
@@ -613,12 +607,12 @@ export default function InitializationPage() {
         padding: "12px 24px",
       }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
-          {["Profile", "Structure", "Context", "Assessment"].map((label, i) => {
+          {["Profile", "Industry", "Assessment"].map((label, i) => {
             const isActive = i === step;
             const isComplete = i < step;
             const isFuture = i > step && i < 3;
             return (
-              <div key={label} style={{ flex: i === 3 ? 2 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+              <div key={label} style={{ flex: i === 2 ? 2 : 1, display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{
                   width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -635,7 +629,7 @@ export default function InitializationPage() {
                 }}>
                   {label}
                 </span>
-                {i < 3 && (
+                {i < 2 && (
                   <div style={{ flex: 1, height: 2, background: isComplete ? B.teal : "rgba(14,26,43,0.06)", borderRadius: 1, transition: "background 300ms ease" }} />
                 )}
               </div>
@@ -649,7 +643,7 @@ export default function InitializationPage() {
         {/* Step header */}
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: B.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
-            Step {step} of 3
+            Step {step} of 2
           </div>
           <h1 style={{ fontSize: 26, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
             {stepTitles[step]}
@@ -659,72 +653,9 @@ export default function InitializationPage() {
           </p>
         </div>
 
-        {/* Step 1 — Identity & Structure */}
+        {/* Step 1 — Industry Sector only */}
         {step === 1 && (
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            <div>
-              <label style={labelStyle}>Classification</label>
-              <p style={helperStyle}>How is your income entity structured?</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {CLASSIFICATIONS.map((c) => (
-                  <RadioCard key={c.value} label={c.value} desc={c.desc} selected={form.classification === c.value} onClick={() => update("classification", c.value)} />
-                ))}
-              </div>
-            </div>
-            <div>
-              <label style={labelStyle}>Operating Structure</label>
-              <p style={helperStyle}>What is your work arrangement?</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {OPERATING_STRUCTURES.map((o) => (
-                  <RadioCard key={o.value} label={o.value} desc={o.desc} selected={form.operating_structure === o.value} onClick={() => update("operating_structure", o.value)} />
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2 — Income Context */}
-        {step === 2 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {/* Context intro card */}
-            <div style={{
-              background: "#FFFFFF", borderRadius: 12, padding: "20px 24px",
-              border: "1px solid rgba(14,26,43,0.06)",
-              display: "flex", alignItems: "center", gap: 16,
-            }}>
-              <div style={{ width: 40, height: 40, borderRadius: "50%", backgroundColor: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.purple }} />
-              </div>
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>Almost there</div>
-                <div style={{ fontSize: 13, color: B.muted, lineHeight: 1.5 }}>These three fields unlock your industry benchmarks, peer comparisons, and personalized action steps.</div>
-              </div>
-            </div>
-            <div>
-              <label style={labelStyle}>Primary Income Model</label>
-              <p style={helperStyle}>What best describes how you generate income?</p>
-              <select
-                value={form.primary_income_model}
-                onChange={(e) => update("primary_income_model", e.target.value)}
-                style={{ ...selectStyle, color: form.primary_income_model ? B.navy : B.light }}
-                onFocus={focusHandler}
-                onBlur={blurHandler}
-              >
-                <option value="">Select your primary income model</option>
-                {PRIMARY_INCOME_MODELS.map((m) => (
-                  <option key={m} value={m}>{m}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label style={labelStyle}>Revenue Structure</label>
-              <p style={helperStyle}>How do you receive payment?</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {REVENUE_STRUCTURES.map((r) => (
-                  <RadioCard key={r.value} label={r.value} desc={r.desc} selected={form.revenue_structure === r.value} onClick={() => update("revenue_structure", r.value)} />
-                ))}
-              </div>
-            </div>
             <div>
               <label style={labelStyle}>Industry Sector</label>
               <p style={helperStyle}>Which industry generates your income?</p>
@@ -757,7 +688,7 @@ export default function InitializationPage() {
           >
             Back
           </button>
-          {step < 2 ? (
+          {step < 1 ? (
             <button
               disabled={!canContinueStep1}
               onClick={() => goToStep(step + 1)}

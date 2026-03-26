@@ -123,7 +123,6 @@ export default function FreeScorePage() {
   const score = record.final_score as number;
   const band = record.stability_band as string;
   const name = (record.assessment_title as string) || "Your income";
-  const percentileLabel = record.peer_stability_percentile_label as string;
   const industrySector = ((record.industry_sector as string) || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
   const tier: "limited" | "developing" | "established" | "high" =
@@ -145,15 +144,26 @@ export default function FreeScorePage() {
   const rootConstraint = v2Constraints?.root_constraint || "weak_forward_visibility";
   const insightText = constraintPlain[rootConstraint] || "Your income structure has room to improve.";
 
+  const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
+  const nextBandName = score < 30 ? "Developing" : score < 50 ? "Established" : score < 75 ? "High" : null;
+  const distanceToNext = nextBandThreshold - score;
+
+  const consequenceText: Record<string, string> = {
+    limited: "Your income depends almost entirely on active work. A major disruption would put immediate pressure on the structure.",
+    developing: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly.",
+    established: "Your income can absorb most common disruptions without dropping below a stable threshold.",
+    high: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage.",
+  };
+
   const features = [
     { title: "Interactive Score Simulator", desc: "Model scenarios in real time — add a client, lose your top source, convert to retainers. See the score change instantly." },
     { title: "Income Runway Calculator", desc: "How many days your income lasts if you stop working today — and exactly what to change to reach 90 days." },
-    { title: "Ready-to-Use Scripts", desc: "Retainer pitch, client outreach, pricing restructure — copy, customize, and send tomorrow." },
+    { title: "Suggested Language for Your Next Move", desc: "Starting drafts for retainer pitches, client outreach, and advisor conversations — based on your structure." },
     { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you cannot work for 90 days? Each scenario scored with exact drops." },
     { title: "Action Plan with Targets", desc: "Specific actions with timeframes, numeric targets, and tradeoff analysis — not generic advice." },
     { title: "Predictive Warnings", desc: "The mistakes people in your position typically make next — and how to avoid them." },
     { title: "6 Structural Indicators", desc: "Each dimension scored out of 100 — plus fragility classification, cross-factor effects, and surprising insights." },
-    { title: "Peer Comparison + Advisor Guide", desc: "Your numbers vs. actual industry peers, plus a summary you can share with your advisor or lender." },
+    { title: "Structural Context + Category Framing", desc: "How your structure compares to typical patterns for your income model and industry." },
   ];
 
   const issuedDate = ((record.issued_timestamp_utc as string) || (record.assessment_date_utc as string) || "").split("T")[0];
@@ -214,11 +224,9 @@ export default function FreeScorePage() {
               <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
               <span style={{ fontSize: 18, fontWeight: 500, color: bandColor }}>{band}</span>
             </div>
-            {percentileLabel && (
-              <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 8 }}>
-                {percentileLabel} percentile among {industrySector} professionals
-              </div>
-            )}
+            <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 8 }}>
+              {consequenceText[tier]}
+            </div>
           </div>
 
           {/* Score breakdown removed — math doesn't add up without interaction penalties */}
@@ -299,10 +307,15 @@ export default function FreeScorePage() {
               <span style={{ ...F.h3, fontSize: mobile ? 18 : 20, color: bandColor }}>{band}</span>
             </div>
 
-            {/* Peer percentile */}
+            {/* Consequence framing */}
             <div style={{ ...F.body, color: B.muted, marginBottom: 8 }}>
-              {percentileLabel ? `${percentileLabel} percentile among ${industrySector} professionals` : `Assessed in ${industrySector}`}
+              {consequenceText[tier]}
             </div>
+            {nextBandName && (
+              <div style={{ ...F.small, color: bandColor, fontWeight: 500, marginBottom: 8 }}>
+                {distanceToNext} points to {nextBandName} Stability
+              </div>
+            )}
 
             <button
               onClick={handleDownload}

@@ -1048,7 +1048,8 @@ export default function ReviewPage() {
           </div>
           <div style={{ ...T.body, color: B.muted, marginBottom: 24, maxWidth: 380 }}>{coverBandDesc[tier]}</div>
           <div style={{ ...T.meta, color: B.taupe, marginBottom: 4 }}>Built from six fixed questions about your income structure.</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 32 }}>The same answers always produce the same score under Model RP-2.0.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 4 }}>The same answers always produce the same score under Model RP-2.0.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 32 }}>Report tailored using your operating structure, income model, and priorities.</div>
           <div style={{ ...T.overline, color: B.navy, marginBottom: 8, letterSpacing: 1 }}>SCORE SIMULATOR&#8482;</div>
           <div style={{ ...T.meta, color: B.muted, marginBottom: 12 }}>Scan to model changes using your actual assessment.</div>
           <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
@@ -1228,16 +1229,15 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* Peer comparison */}
-        {v2Benchmarks && (
+        {/* Category framing */}
+        {olIndustryLabel && (
           <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>{isHighScorer && peerPercentileValue !== null ? `YOU OUTPERFORM ${100 - peerPercentileValue}% OF ${(olIndustryLabel || industrySector).toUpperCase()} PROFESSIONALS` : `HOW YOU COMPARE TO PEERS${olIndustryLabel ? ` IN ${olIndustryLabel.toUpperCase()}` : ""}`}</div>
-            <div style={{ display: "flex", gap: 16, padding: "8px 0" }}>
-              <div style={{ ...T.small, color: B.navy }}>Your Score: <span style={{ fontWeight: 700, ...T.sectionLabel }}>{score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Peer Average (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.navy }}>{v2Benchmarks.cluster_average_score}/100</span></div>
-              <div style={{ ...T.small, color: B.muted }}>Top 20% (modeled): <span style={{ fontWeight: 700, ...T.sectionLabel, color: B.teal }}>{v2Benchmarks.top_20_threshold}/100</span></div>
-            </div>
-            <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Based on RunPayway assessment data for this sector</div>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>STRUCTURAL CONTEXT</div>
+            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
+              {tier === "high" || tier === "established"
+                ? `For ${incomeModelDesc || "this type of"} income structures in ${olIndustryLabel}, your level of structural protection is above typical patterns. The remaining gaps are specific, not fundamental.`
+                : `For ${incomeModelDesc || "this type of"} income structures in ${olIndustryLabel}, the differentiating factor between ${record.stability_band} and the next band is typically ${dominantConstraintPlain[dominantConstraint] || "reducing the primary structural weakness"}.`}
+            </p>
           </div>
         )}
 
@@ -1363,7 +1363,7 @@ export default function ReviewPage() {
     // Page 4: Action Plan
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What to Do About It</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Action Plan</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>The single most impactful change you can make is described below. Start here.</p>
         {/* Top 3 improvements */}
         {v2Lift && v2Lift.lift_scenarios.length > 0 && (
@@ -1504,40 +1504,7 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Scripts — browser-only (copy-to-clipboard doesn't work in PDF) */}
-        {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
-          <div className="no-print">
-          <SectionDivider />
-          <Overline large>Ready-to-Use Scripts</Overline>
-          <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-            Do not just know what to do — have the words to do it. Copy, customize, and send.
-          </p>
-          {v2ScriptTemplates.map((script) => {
-            const isExpanded = expandedScript === script.id;
-            return (
-              <div key={script.id} style={{ marginBottom: 8, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.04)" : B.bone, transition: "background-color 150ms ease" }}>
-                  <div style={{ textAlign: "left" }}>
-                    <div style={{ ...T.sectionLabel, color: B.navy }}>{script.title}</div>
-                    <div style={{ ...T.meta, color: B.muted }}>{script.context}</div>
-                  </div>
-                  <span style={{ ...T.sectionLabel, color: B.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
-                </button>
-                {isExpanded && (
-                  <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
-                    <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
-                    <button onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: scriptCopied === script.id ? B.teal : B.purple, borderRadius: 6, border: `1px solid ${scriptCopied === script.id ? B.teal : B.purple}`, cursor: "pointer", backgroundColor: scriptCopied === script.id ? "rgba(31,109,122,0.06)" : "rgba(75,63,174,0.04)", transition: "all 150ms ease" }}>
-                      {scriptCopied === script.id ? "Copied" : "Copy to clipboard"}
-                    </button>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          </div>
-        )}
-
-        <PageFooter section="What to Do About It" page={4} />
+        <PageFooter section="Your Action Plan" page={4} />
     </>,
 
     // Page 5: Methodology
@@ -1573,6 +1540,42 @@ export default function ReviewPage() {
           <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
           <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
         </div>
+
+        {/* Suggested Language for Your Next Move — browser-only */}
+        {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
+          <div className="no-print" style={{ marginBottom: 20 }}>
+            <SectionDivider />
+            <Overline large>Suggested Language for Your Next Move</Overline>
+            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
+              These drafts are based on the structural weaknesses identified in your report. Use them as starting points and adjust them to fit your voice and situation.
+            </p>
+            {v2ScriptTemplates.slice(0, 3).map((script) => {
+              const isExpanded = expandedScript === script.id;
+              return (
+                <div key={script.id} style={{ marginBottom: 8, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                  <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.04)" : B.bone, transition: "background-color 150ms ease" }}>
+                    <div style={{ textAlign: "left" }}>
+                      <div style={{ ...T.sectionLabel, color: B.navy }}>{script.title}</div>
+                      <div style={{ ...T.meta, color: B.muted }}>{script.context}</div>
+                    </div>
+                    <span style={{ ...T.sectionLabel, color: B.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
+                  </button>
+                  {isExpanded && (
+                    <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
+                      <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
+                      <button onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: scriptCopied === script.id ? B.teal : B.purple, borderRadius: 6, border: `1px solid ${scriptCopied === script.id ? B.teal : B.purple}`, cursor: "pointer", backgroundColor: scriptCopied === script.id ? "rgba(31,109,122,0.06)" : "rgba(75,63,174,0.04)", transition: "all 150ms ease" }}>
+                        {scriptCopied === script.id ? "Copied" : "Copy to clipboard"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            <p style={{ ...T.meta, color: B.taupe, marginTop: 8, fontStyle: "italic" }}>
+              These are optional starting drafts — not advice, guarantees, or one-size-fits-all scripts.
+            </p>
+          </div>
+        )}
 
         <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
           The Income Stability Score is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.

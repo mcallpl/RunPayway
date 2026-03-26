@@ -721,15 +721,18 @@ function IndustryContext() {
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Personalization Layer</div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>How the report is personalized</div>
           <h2 style={{ fontSize: mobile ? 32 : 48, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
             Same score. Your context.
           </h2>
           <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            Your 0&#8211;100 score is deterministic and industry-agnostic. But the report wraps it in context specific to your income model, industry, and operating structure — including personalized risk scenarios, predictive warnings calibrated to your sector, peer benchmarking against actual industry data, and action plans with scripts tailored to how you earn.
+            Your score is generated from six fixed structural questions. The same answers always produce the same score.
+          </p>
+          <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+            Your report is personalized using additional context — your operating structure, income model, revenue pattern, and current priorities. This context improves explanation quality, scenario relevance, and action planning. It does not change your score or band classification.
           </p>
           <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>
-            This personalization layer enriches interpretation and execution without altering the underlying score. A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, different scripts, and different peer comparisons.
+            A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, different action plans, and different structural context. The separation between scoring and interpretation is fixed and auditable.
           </p>
         </div>
       </div>
