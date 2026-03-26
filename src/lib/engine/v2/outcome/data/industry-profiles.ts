@@ -111,6 +111,7 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
       low_forward_secured: "Too little of the agency's future revenue is protected by signed retainers, renewal commitments, or forward-contracted work.",
       high_concentration: "A small number of accounts drive most agency revenue. Losing the largest would create a gap that threatens operations and payroll.",
       high_labor_dependence: "Key client relationships and delivery still depend on the founder or a small number of individuals rather than the team.",
+      high_variability: "Agency revenue swings with project cycles and client onboarding timelines. Without a retainer base, monthly income is unpredictable.",
     },
     benchmark_framing: {
       framing_text: "Among agencies and client services firms in your size range",
@@ -146,6 +147,7 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
       high_labor_dependence: "Your practice income depends entirely on your personal availability to see clients. If you are unavailable for any reason, income stops immediately.",
       low_forward_secured: "Forward visibility is limited to your current booking calendar. Beyond scheduled appointments, there is no committed income.",
       short_continuity: "Practice income stops when you stop seeing clients. There is no passive, digital, or recurring component to bridge an absence.",
+      high_concentration: "Your practice revenue depends on a small number of high-value clients or referral sources. Losing the largest would create a significant income gap.",
     },
     benchmark_framing: {
       framing_text: "Among private practitioners and coaches in your specialty",
@@ -218,6 +220,7 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
       low_forward_secured: "Product revenue depends on ongoing customer demand. There is limited pre-sold, subscribed, or committed revenue before the month begins.",
       high_concentration: "Revenue is concentrated in a single product line, sales channel, or marketplace. A disruption to that channel would disproportionately affect total income.",
       high_variability: "Sales fluctuate with demand cycles, marketing spend, seasonal trends, and competitive dynamics.",
+      high_labor_dependence: "Your product revenue still depends heavily on your personal involvement in fulfillment, marketing, or customer service. There is limited automation or delegation.",
     },
     benchmark_framing: {
       framing_text: "Among e-commerce and product businesses in your revenue range",
@@ -254,6 +257,7 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
       low_forward_secured: "Investment and asset income depends on dividend declarations, lease terms, and licensing agreements that can be changed or not renewed.",
       high_concentration: "Too much passive income depends on a single asset, issuer, tenant, or licensing arrangement.",
       high_variability: "Income from investments and assets varies with market conditions, occupancy rates, and distribution policies.",
+      low_continuity: "Some asset income may be interrupted by vacancy periods, dividend cuts, or licensing lapses with no automatic replacement.",
     },
     benchmark_framing: {
       framing_text: "Among investment and asset income earners in your portfolio tier",
@@ -274,18 +278,23 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
       "Diversified deal pipeline across 3+ market segments",
       "Recurring service revenue alongside transactional commissions",
       "Team sales structure sharing pipeline and deal flow",
+      "Book of business with renewal cycles providing a recurring base",
     ],
     action_priority_overrides: [
       { action_id: "ACT-SB-01", label: "Build trailing or residual commission income", description: "Prioritize products or services that pay ongoing commissions, not just one-time transaction fees.", why_now: "One-time commissions require constant new deal flow with no baseline", expected_effect: "Creates compounding residual income alongside new sales" },
       { action_id: "ACT-SB-02", label: "Diversify pipeline across 3+ market segments", description: "Avoid concentrating all deals in a single product line, geography, or client segment.", why_now: "Concentrated pipeline amplifies market-specific slowdowns", expected_effect: "Reduces sensitivity to any single market segment decline" },
+      { action_id: "ACT-SB-03", label: "Build a recurring service or advisory layer", description: "Add ongoing account management, consulting, or advisory services alongside transactional sales.", why_now: "Pure transaction income resets to zero each period with no baseline", expected_effect: "Creates a floor of recurring revenue that compounds over time" },
     ],
     reassessment_trigger_overrides: [
       { trigger_id: "RT-SB-01", condition: "Trailing or residual commissions reach 20%+", display_text: "Reassess when trailing or residual commission income reaches 20% or more of total." },
+      { trigger_id: "RT-SB-02", condition: "Pipeline concentration drops below 40% from any single segment", display_text: "Reassess when no single market segment represents more than 40% of your deal pipeline." },
     ],
     explanation_language_overrides: {
       low_forward_secured: "Sales and brokerage income depends on deals that have not yet closed. There is limited committed income before transactions complete.",
       high_concentration: "Too much deal flow depends on a single product line, market segment, or referral source.",
       high_variability: "Commission income swings between strong closing months and slow periods. The pattern is not yet smoothed with trailing or residual income.",
+      high_labor_dependence: "Your income depends on your continued active prospecting and closing. There is no income that continues if you step away from deal flow.",
+      low_continuity: "Commission income stops immediately when deals stop closing. There is no structural backstop between transactions.",
     },
     benchmark_framing: {
       framing_text: "Among sales and brokerage professionals in your market",
@@ -759,14 +768,18 @@ export const INDUSTRY_PROFILES: Record<string, IndustryProfile> = {
     action_priority_overrides: [
       { action_id: "ACT-EU-01", label: "Secure long-term contracts or power purchase agreements", description: "Lock in multi-year agreements for energy delivery, services, or consulting.", why_now: "Spot-market or short-term energy pricing creates volatile revenue", expected_effect: "Creates predictable baseline revenue across commodity cycles" },
       { action_id: "ACT-EU-02", label: "Diversify across 3+ revenue streams", description: "Add consulting, maintenance, inspection, or renewable energy credits alongside core operations.", why_now: "Single-service concentration exposes all revenue to regulatory or market shifts", expected_effect: "Reduces sensitivity to any single regulatory or commodity change" },
+      { action_id: "ACT-EU-03", label: "Build a recurring maintenance or inspection service line", description: "Add predictable service revenue through scheduled maintenance, safety inspections, or compliance audits.", why_now: "Project-based energy work creates gaps between installations or deployments", expected_effect: "Creates a recurring revenue floor that smooths income between projects" },
     ],
     reassessment_trigger_overrides: [
       { trigger_id: "RT-EU-01", condition: "Long-term contract revenue reaches 50%+ of total", display_text: "Reassess when long-term contract or PPA revenue reaches 50% or more of total." },
+      { trigger_id: "RT-EU-02", condition: "Regulatory or incentive structure changes materially", display_text: "Reassess when a major regulatory change, subsidy expiration, or incentive program shift affects your revenue mix." },
     ],
     explanation_language_overrides: {
       low_forward_secured: "Energy income depends on commodity prices and contract terms that may not be committed beyond the near term.",
       high_concentration: "Revenue is concentrated in a single energy type, client, or contract. A regulatory change could significantly reduce income.",
       high_variability: "Energy income fluctuates with commodity prices, seasonal demand, and regulatory incentive changes.",
+      high_labor_dependence: "Your income requires your continued operational involvement in generation, installation, or service delivery. There is limited revenue that continues without your active management.",
+      low_continuity: "Energy project income stops between deployments or contract periods. Without long-term agreements, there is no structural floor between engagements.",
     },
     benchmark_framing: {
       framing_text: "Among energy and utility professionals in your sector",
