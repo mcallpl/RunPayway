@@ -298,17 +298,17 @@ export default function SignInPage() {
       <section style={{ backgroundColor: B.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
         <div ref={infoAnim.ref} style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, opacity: infoAnim.visible ? 1 : 0, transform: infoAnim.visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>How It Works</div>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Continuous Monitoring</div>
             <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
-              Three assessments. Your schedule.
+              Stability is not static.<br />Neither is the score.
             </h2>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20 }}>
             {[
-              { num: "01", title: "Sign in with your email", desc: "The same email you used at checkout. No passwords, no codes, no friction.", color: B.purple },
-              { num: "02", title: "Take an assessment", desc: "Under two minutes. Each one generates a full 5-page diagnostic report with your current score.", color: B.teal },
-              { num: "03", title: "Track your progress", desc: "Come back anytime within 12 months to take your remaining assessments and see how your structure has changed.", color: B.purple },
+              { num: "01", title: "Authenticate instantly", desc: "One email. Zero passwords. Your monitoring portal recognizes you the moment you arrive.", color: B.purple },
+              { num: "02", title: "Reassess on your terms", desc: "Each assessment captures a new structural snapshot \u2014 a full 5-page diagnostic calibrated to your current reality.", color: B.teal },
+              { num: "03", title: "Observe the trajectory", desc: "Income structures evolve. Three assessments over 12 months reveal what changed, what held, and what to act on next.", color: B.purple },
             ].map((card, i) => (
               <div key={card.num} style={{
                 background: "#FFFFFF", borderRadius: 16, border: `1px solid ${B.border}`,
