@@ -1220,6 +1220,40 @@ export default function ReviewPage() {
           } catch { return null; }
         })()}
 
+        {/* PressureMap™ — Real-time structural intelligence */}
+        {record.pressure_map && (
+          <div style={{ ...cardStyle, marginTop: 16, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Overline>PressureMap&#8482;</Overline>
+              <span style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>Generated {new Date(record.pressure_map.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+            </div>
+            <p style={{ ...T.small, color: B.muted, lineHeight: 1.55, marginBottom: 4, fontStyle: "italic" }}>
+              Real-time structural intelligence for {record.pressure_map.industry} — {record.pressure_map.operating_structure}, {record.pressure_map.income_model}.
+            </p>
+
+            <div style={{ marginTop: 16 }}>
+              <div style={{ ...T.overline, color: "#DC4A4A", marginBottom: 6, fontSize: 10 }}>WHAT&#8217;S PRESSURING YOUR STRUCTURE</div>
+              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: "0 0 16px" }}>{record.pressure_map.pressure}</p>
+            </div>
+
+            <div>
+              <div style={{ ...T.overline, color: B.teal, marginBottom: 6, fontSize: 10 }}>WHAT&#8217;S STRUCTURALLY FAVORABLE</div>
+              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: "0 0 16px" }}>{record.pressure_map.tailwind}</p>
+            </div>
+
+            <div>
+              <div style={{ ...T.overline, color: B.purple, marginBottom: 6, fontSize: 10 }}>HIGHEST-LEVERAGE MOVE RIGHT NOW</div>
+              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.leverage_move}</p>
+            </div>
+
+            <div style={{ marginTop: 14, paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
+              <p style={{ ...T.meta, color: B.taupe, margin: 0, fontStyle: "italic", lineHeight: 1.5 }}>
+                PressureMap&#8482; is contextual intelligence — it does not affect your score. Generated using current market conditions applied to your structural profile.
+              </p>
+            </div>
+          </div>
+        )}
+
         <PageFooter section="Your Score" page={1} />
     </>,
 

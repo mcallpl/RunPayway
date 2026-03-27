@@ -417,6 +417,7 @@ function SimulatorContent() {
   const [scriptTemplates, setScriptTemplates] = useState<Array<{ id: string; title: string; context: string; script: string }>>([]);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
+  const [pressureMap, setPressureMap] = useState<{ pressure: string; tailwind: string; leverage_move: string; generated_at: string; industry: string; operating_structure: string; income_model: string } | null>(null);
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -463,6 +464,10 @@ function SimulatorContent() {
             setScriptTemplates(industryScripts);
           } else if (v2.script_templates && Array.isArray(v2.script_templates)) {
             setScriptTemplates(v2.script_templates.slice(0, 3));
+          }
+          // Load PressureMap™ if available
+          if (record.pressure_map) {
+            setPressureMap(record.pressure_map);
           }
           setLoaded(true);
         }
@@ -1075,6 +1080,40 @@ function SimulatorContent() {
         )}
 
       </div>
+
+      {/* ══════════ PRESSUREMAP™ ══════════ */}
+      {pressureMap && (
+        <div style={{ padding: "24px 28px", borderTop: `1px solid ${T.border}` }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.accent }}>PressureMap&#8482;</div>
+              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>Real-time structural intelligence for {pressureMap.industry}.</div>
+            </div>
+            <div style={{ fontSize: 11, color: T.textFaint }}>{new Date(pressureMap.generated_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
+            <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: "rgba(220,74,74,0.06)", border: "1px solid rgba(220,74,74,0.12)" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#DC4A4A", marginBottom: 8 }}>What&apos;s Pressuring Your Structure</div>
+              <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>{pressureMap.pressure}</p>
+            </div>
+
+            <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: BRAND.tealGlow, border: `1px solid rgba(26,122,109,0.15)` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 8 }}>What&apos;s Structurally Favorable</div>
+              <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>{pressureMap.tailwind}</p>
+            </div>
+
+            <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: BRAND.purpleGlow, border: `1px solid rgba(75,63,174,0.15)` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 8 }}>Highest-Leverage Move Right Now</div>
+              <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>{pressureMap.leverage_move}</p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: 12, color: T.textFaint, marginTop: 14, fontStyle: "italic" }}>
+            PressureMap&#8482; is contextual intelligence — it does not affect your score. Generated using current conditions applied to your structural profile.
+          </p>
+        </div>
+      )}
 
       {/* ══════════ SUGGESTED LANGUAGE ══════════ */}
       {scriptTemplates.length > 0 && (
