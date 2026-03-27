@@ -449,15 +449,15 @@ export default function MarketingLayout({
                 <Link
                   href="/sign-in"
                   style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: "rgba(14,26,43,0.65)",
+                    fontSize: 15,
+                    fontWeight: 500,
+                    color: "#0E1A2B",
                     textDecoration: "none",
                     transition: "color 200ms ease",
                     whiteSpace: "nowrap",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                 >
                   Sign In
                 </Link>
