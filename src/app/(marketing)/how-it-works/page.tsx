@@ -4,11 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
-/*  Shared hooks                                                       */
+/*  Hooks                                                              */
 /* ------------------------------------------------------------------ */
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -17,33 +16,22 @@ function useInView(threshold = 0) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold },
-    );
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return { ref, visible };
 }
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
+/*  Tokens                                                             */
 /* ------------------------------------------------------------------ */
 
 const B = {
@@ -51,10 +39,11 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1A7A6D",
   sand: "#F5F2EC",
-  offWhite: "#FAFAF8",
+  bone: "#FAF9F6",
   muted: "rgba(14,26,43,0.55)",
   light: "rgba(14,26,43,0.38)",
   border: "rgba(14,26,43,0.08)",
+  borderMd: "rgba(14,26,43,0.12)",
   gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
@@ -62,55 +51,35 @@ const B = {
   bandHigh: "#1A7A6D",
 };
 
-const S = {
-  sectionY: { desktop: 120, mobile: 72 },
-  maxW: 1100,
-  padX: { desktop: 56, mobile: 28 },
-  lhHeading: 1.12,
-  lhBody: 1.65,
-  lsHeading: "-0.025em",
-  lsHero: "-0.03em",
-  lsLabel: "0.08em",
-  fsH1: { desktop: 56, mobile: 36 },
-  fsH2: { desktop: 48, mobile: 32 },
-  fsH3: { desktop: 24, mobile: 20 },
-  fsBody: { desktop: 18, mobile: 16 },
-  fsLabel: 13,
-  fsMeta: 14,
-  fsCard: { desktop: 16, mobile: 15 },
-  fsCta: 16,
-  ctaH: 56,
-  ctaRadius: 10,
-  panelRadius: 14,
-};
-
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+const SY = { desktop: 120, mobile: 72 };
+const PAD = { desktop: 56, mobile: 24 };
+const MAX = 1100;
+const DF = "'DM Serif Display', Georgia, serif";
 
 /* ================================================================== */
-/* 1. HERO                                                              */
+/* 1. HERO — Explanatory, not salesy                                   */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
-
+  const m = useMobile();
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: mobile ? 120 : 160, paddingBottom: mobile ? 72 : 100 }}>
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
-      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: S.maxW, margin: "0 auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.7s ease-out, transform 0.7s ease-out" }}>
-          <div style={{ fontSize: S.fsLabel, textTransform: "uppercase" as const, color: "rgba(250,249,247,0.50)", fontWeight: 600, letterSpacing: S.lsLabel, marginBottom: 24 }}>
-            How It Works
-          </div>
-          <h1 style={{ fontSize: mobile ? S.fsH1.mobile : S.fsH1.desktop, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHero, lineHeight: S.lhHeading, marginBottom: 20, maxWidth: 720, margin: "0 auto 20px" }}>
-            Fixed questions. One score.<br />Full structural diagnosis.
+      <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: 680, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>How It Works</div>
+          <h1 style={{ fontSize: m ? 36 : 56, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+            A structured assessment.<br />Not a guess.
           </h1>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(250,249,247,0.55)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto 12px" }}>
-            A structural diagnostic that scores how your income is built — not how much you make.
+          <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16, maxWidth: 520 }}>
+            RunPayway scores how your income is built using fixed structural dimensions. The same answers always produce the same score. Here is exactly how the process works.
           </p>
-          <p style={{ fontSize: S.fsMeta, color: "rgba(250,249,247,0.35)", margin: 0 }}>
-            Same answers, same score. No financial data required.
-          </p>
+          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 16, marginTop: 28 }}>
+            {["No bank connection", "No credit pull", "No document upload"].map(t => (
+              <span key={t} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -118,73 +87,188 @@ function Hero() {
 }
 
 /* ================================================================== */
-/* 2. THREE STEPS — Card-based with arrows                             */
+/* 2. THE JOURNEY — Vertical timeline with screen previews             */
 /* ================================================================== */
-function ThreeSteps() {
+function Journey() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   const steps = [
     {
-      num: "01", time: "2 min", title: "Take the assessment",
-      hook: "No bank connection. No credit pull. No login.",
-      desc: "A short structural diagnostic about how your income works — recurrence, concentration, visibility, and labor dependence.",
-      color: B.teal,
+      num: "01", title: "You answer structural questions",
+      body: "Each question examines a different part of your income \u2014 how much repeats, how concentrated it is, how far ahead it\u2019s secured, how consistent it is month to month, and how much continues without your daily effort.",
+      detail: "No dollar amounts. No account access. Just structural patterns.",
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Question 4 of 6</div>
+          <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: "#F4F1EA", marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
+          {["Less than 1 month", "1\u20132 months", "3\u20135 months", "6\u201311 months", "12 or more months"].map((opt, i) => (
+            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(26,122,109,0.15)" : "rgba(244,241,234,0.04)", border: i === 2 ? `1px solid ${B.teal}` : "1px solid rgba(244,241,234,0.06)", fontSize: 14, color: i === 2 ? B.teal : "rgba(244,241,234,0.50)", fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
+          ))}
+        </div>
+      ),
     },
     {
-      num: "02", time: "Instant", title: "See your score",
-      hook: "Free. Right now. No strings.",
-      desc: "Your Income Stability Score\u2122 out of 100, your stability band, and the single biggest structural factor limiting your score.",
-      color: B.purple,
+      num: "02", title: "The model scores your structure",
+      body: "Model RP-2.0 evaluates your answers across fixed structural dimensions. It applies cross-factor interaction rules \u2014 capturing how weaknesses compound \u2014 and produces a single 0\u2013100 score.",
+      detail: "Fixed rules. Deterministic. No machine learning.",
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.30)", textTransform: "uppercase" as const, marginBottom: 16 }}>Calculating</div>
+          {["Evaluating structural factors", "Applying cross-factor interactions", "Computing stability classification", "Generating structural diagnosis"].map((step, i) => (
+            <div key={step} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
+              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? B.teal : "rgba(244,241,234,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                {i < 3 && <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="#F4F1EA" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>}
+              </div>
+              <span style={{ fontSize: 14, color: i < 3 ? "rgba(244,241,234,0.60)" : "rgba(244,241,234,0.25)", fontWeight: i === 3 ? 500 : 400 }}>{step}</span>
+            </div>
+          ))}
+          <div style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.06)", marginTop: 8 }}>
+            <div style={{ height: 3, borderRadius: 2, backgroundColor: B.teal, width: "75%" }} />
+          </div>
+        </div>
+      ),
     },
     {
-      num: "03", time: "$99", title: "Unlock the full diagnostic",
-      hook: "Five pages. One clear path forward.",
-      desc: "Risk scenarios with exact score drops. Actions with projected impact. Tradeoff analysis. An interactive simulator you keep forever.",
-      color: B.navy,
+      num: "03", title: "You see your score instantly",
+      body: "Your Income Stability Score\u2122, your stability band, a consequence sentence explaining what the structure can absorb, how far you are from the next band, and the single biggest structural factor limiting your score.",
+      detail: "Free. Instant. No payment required.",
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
+          <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 4 }}>48</div>
+          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.bandDeveloping }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: B.bandDeveloping }}>Developing Stability</span>
+          </div>
+          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", lineHeight: 1.5 }}>17 points to Established</div>
+        </div>
+      ),
+    },
+    {
+      num: "04", title: "You unlock the full diagnostic",
+      body: "The $99 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 5-page structural diagnosis with risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
+      detail: "Same score. Deeper interpretation. Practical action plan.",
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          {[
+            { num: "01", title: "Your Score", color: B.purple },
+            { num: "02", title: "How Your Income Is Built", color: B.teal },
+            { num: "03", title: "What Could Go Wrong", color: B.bandLimited },
+            { num: "04", title: "Your Action Plan", color: B.purple },
+            { num: "05", title: "Methodology + Next Steps", color: B.teal },
+          ].map((p, i) => (
+            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 4 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
+              <span style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.60)" }}>{p.title}</span>
+            </div>
+          ))}
+        </div>
+      ),
     },
   ];
 
   return (
-    <section ref={ref} style={{ background: B.sand, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
-        <div style={{ maxWidth: 600, marginBottom: mobile ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Process</div>
-          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: S.lhHeading, letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16 }}>
-            Three steps. No financial data required.
+    <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Process</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+            Four steps. Every one transparent.
           </h2>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 480 }}>
-            We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
+          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+            No black boxes. You see exactly what happens at each stage.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr auto 1fr auto 1fr", gap: 0, alignItems: "stretch" }}>
+        {/* Timeline */}
+        <div style={{ maxWidth: 880, margin: "0 auto", position: "relative" }}>
+          {/* Vertical line — desktop */}
+          {!m && <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, backgroundColor: B.borderMd, transform: "translateX(-0.5px)" }} />}
+
           {steps.map((step, i) => {
-            const isLast = i === 2;
+            const isRight = !m && i % 2 === 1;
             return (
-              <div key={step.num} style={{ display: "contents" }}>
-                <div style={{
-                  position: "relative", padding: mobile ? "28px 24px" : "32px 28px", borderRadius: S.panelRadius,
-                  backgroundColor: isLast ? B.navy : "#FFFFFF",
-                  border: isLast ? "none" : `1px solid ${B.border}`,
-                  boxShadow: isLast ? "0 8px 32px rgba(14,26,43,0.15)" : "0 2px 8px rgba(14,26,43,0.04)",
-                  overflow: "hidden", display: "flex", flexDirection: "column",
-                  opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)",
-                  transition: `opacity 500ms ease-out ${150 + i * 120}ms, transform 500ms ease-out ${150 + i * 120}ms`,
-                }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: step.color, opacity: isLast ? 1 : 0.6 }} />
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: isLast ? "rgba(244,241,234,0.08)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(26,122,109,0.08)", fontSize: 14, fontWeight: 700, color: isLast ? "#F4F1EA" : step.color }}>{step.num}</div>
-                    <span style={{ fontSize: S.fsMeta, fontWeight: 700, letterSpacing: "0.04em", color: isLast ? B.teal : B.light, padding: "3px 10px", borderRadius: 100, backgroundColor: isLast ? "rgba(26,122,109,0.12)" : "rgba(14,26,43,0.04)" }}>{step.time}</span>
+              <div key={step.num} style={{
+                display: m ? "flex" : "grid",
+                gridTemplateColumns: "1fr 48px 1fr",
+                gap: 0,
+                flexDirection: "column",
+                marginBottom: i < 3 ? (m ? 40 : 64) : 0,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 600ms ease-out ${200 + i * 150}ms, transform 600ms ease-out ${200 + i * 150}ms`,
+              }}>
+                {/* Left content or empty */}
+                {!m && (
+                  <div style={{ paddingRight: 32, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    {!isRight && (
+                      <>
+                        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>Step {step.num}</div>
+                        <h3 style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 10, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{step.title}</h3>
+                        <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
+                        <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                      </>
+                    )}
+                    {isRight && (
+                      <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
+                        <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                        </div>
+                        {step.screen}
+                      </div>
+                    )}
                   </div>
-                  <h3 style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: isLast ? "#F4F1EA" : B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>{step.title}</h3>
-                  <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600, color: isLast ? B.teal : step.color, marginBottom: 14, lineHeight: 1.4 }}>{step.hook}</p>
-                  <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: isLast ? "rgba(244,241,234,0.50)" : B.muted, lineHeight: S.lhBody, margin: 0, flex: 1 }}>{step.desc}</p>
-                </div>
-                {!isLast && !mobile && (
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40 }}>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                )}
+
+                {/* Center dot */}
+                {!m && (
+                  <div style={{ display: "flex", justifyContent: "center", paddingTop: 4 }}>
+                    <div style={{ width: 14, height: 14, borderRadius: "50%", backgroundColor: "#FFFFFF", border: `3px solid ${B.teal}`, boxShadow: `0 0 0 4px ${B.bone}, 0 0 8px rgba(26,122,109,0.20)`, position: "relative", zIndex: 2 }} />
                   </div>
+                )}
+
+                {/* Right content or empty */}
+                {!m && (
+                  <div style={{ paddingLeft: 32, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    {isRight && (
+                      <>
+                        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>Step {step.num}</div>
+                        <h3 style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 10, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{step.title}</h3>
+                        <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
+                        <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                      </>
+                    )}
+                    {!isRight && (
+                      <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
+                        <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                        </div>
+                        {step.screen}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Mobile layout: screen + text stacked */}
+                {m && (
+                  <>
+                    <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(26,122,109,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{step.num}</div>
+                      <h3 style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: 0, letterSpacing: "-0.02em" }}>{step.title}</h3>
+                    </div>
+                    <div style={{ backgroundColor: B.navy, borderRadius: 14, overflow: "hidden", boxShadow: "0 6px 24px rgba(14,26,43,0.10)", marginBottom: 16 }}>
+                      <div style={{ padding: "6px 12px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                        <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                      </div>
+                      {step.screen}
+                    </div>
+                    <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, marginBottom: 6 }}>{step.body}</p>
+                    <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                  </>
                 )}
               </div>
             );
@@ -196,53 +280,81 @@ function ThreeSteps() {
 }
 
 /* ================================================================== */
-/* 3. WHAT THE MODEL MEASURES — Clean 2-column layout                  */
+/* 3. THE DIMENSIONS — Deep breakdown with low/high examples           */
 /* ================================================================== */
-function WhatTheModelMeasures() {
+function Dimensions() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
-  const dimensions = [
-    { title: "Recurring Income", desc: "How much income continues from existing sources without new acquisition.", color: B.teal },
-    { title: "Source Concentration", desc: "How much depends on your single largest source. One lost client can collapse the structure.", color: B.purple },
-    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", color: B.teal },
-    { title: "Forward Visibility", desc: "How far ahead income is already committed, contracted, or scheduled.", color: B.purple },
-    { title: "Earnings Consistency", desc: "How stable income is from month to month. High swings reduce structural resilience.", color: "#D97706" },
-    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort. The structural ceiling for most.", color: B.navy },
+  const dims = [
+    { title: "Recurring Income", desc: "How much income continues from existing agreements without new acquisition.", low: "0% recurring \u2014 you rebuild from scratch every month.", high: "60%+ recurring \u2014 most income renews automatically.", color: B.teal },
+    { title: "Source Concentration", desc: "How much depends on your single largest client or source.", low: "90%+ from one source \u2014 a single loss collapses the structure.", high: "Under 30% from any single source \u2014 no single point of failure.", color: B.purple },
+    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", low: "1 source \u2014 total dependency on a single relationship.", high: "5+ sources each contributing 10%+ \u2014 well-diversified.", color: B.teal },
+    { title: "Forward Visibility", desc: "How far ahead income is already committed or contracted.", low: "Less than 1 month \u2014 no income secured beyond what you earn today.", high: "12+ months committed \u2014 strong forward protection.", color: B.purple },
+    { title: "Earnings Consistency", desc: "How stable income is from month to month.", low: "Fluctuates 75%+ \u2014 income is unpredictable and hard to plan around.", high: "Fluctuates less than 10% \u2014 highly predictable month to month.", color: "#D97706" },
+    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort.", low: "0% continues \u2014 if you stop working, income stops immediately.", high: "76%+ continues \u2014 income persists through extended absence.", color: B.navy },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
-        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16 }}>The Model</div>
-          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: S.lhHeading, letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16 }}>
-            What the score measures.
+    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto" }}>
+        <div style={{ maxWidth: 600, marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Model</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 16 }}>
+            What each dimension measures.
           </h2>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody }}>
-            Each dimension is scored independently and combined into a single 0&#8211;100 result. Fixed rules. Same answers, same score.
+          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65 }}>
+            Each dimension is scored independently. The model then applies cross-factor interaction rules to capture how weaknesses compound.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 16 : 20 }}>
-          {dimensions.map((dim, i) => (
-            <div key={dim.title} style={{
-              padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 12,
-              backgroundColor: B.sand, border: `1px solid ${B.border}`,
-              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: `opacity 500ms ease-out ${100 + i * 60}ms, transform 500ms ease-out ${100 + i * 60}ms`,
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
-                <h3 style={{ fontSize: mobile ? 17 : 18, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em", margin: 0 }}>{dim.title}</h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {dims.map((dim, i) => {
+            const isOpen = expandedIdx === i;
+            return (
+              <div key={dim.title} style={{
+                borderBottom: `1px solid ${B.border}`,
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(10px)",
+                transition: `opacity 500ms ease-out ${80 + i * 60}ms, transform 500ms ease-out ${80 + i * 60}ms`,
+              }}>
+                <button
+                  onClick={() => setExpandedIdx(isOpen ? null : i)}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: m ? "20px 0" : "24px 0", border: "none", backgroundColor: "transparent", cursor: "pointer",
+                    textAlign: "left", gap: 16,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
+                    <div>
+                      <div style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>{dim.title}</div>
+                      <div style={{ fontSize: m ? 14 : 15, color: B.muted, lineHeight: 1.5, marginTop: 2 }}>{dim.desc}</div>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 18, color: B.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
+                </button>
+                {isOpen && (
+                  <div style={{ paddingLeft: m ? 24 : 24, paddingBottom: 24, display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
+                    <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.04)", border: "1px solid rgba(155,44,44,0.10)" }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.bandLimited, textTransform: "uppercase" as const, marginBottom: 6 }}>Low Score</div>
+                      <div style={{ fontSize: 14, color: B.muted, lineHeight: 1.5 }}>{dim.low}</div>
+                    </div>
+                    <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(26,122,109,0.04)", border: "1px solid rgba(26,122,109,0.10)" }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.bandHigh, textTransform: "uppercase" as const, marginBottom: 6 }}>High Score</div>
+                      <div style={{ fontSize: 14, color: B.muted, lineHeight: 1.5 }}>{dim.high}</div>
+                    </div>
+                  </div>
+                )}
               </div>
-              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, margin: 0, paddingLeft: 20 }}>{dim.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, fontSize: S.fsMeta, color: B.light, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 500ms" }}>
-          All dimensions are fixed and versioned under Model RP-2.0.
+        <div style={{ textAlign: "center", marginTop: 32, fontSize: 14, color: B.light, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 500ms" }}>
+          All dimensions are fixed and versioned under Model RP-2.0. The same answers always produce the same result.
         </div>
       </div>
     </section>
@@ -250,47 +362,56 @@ function WhatTheModelMeasures() {
 }
 
 /* ================================================================== */
-/* 4. CLASSIFICATION SCALE                                             */
+/* 4. CLASSIFICATION BANDS — Elevated with layered cards               */
 /* ================================================================== */
-function ClassificationScale() {
+function Bands() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited", color: B.bandLimited, width: "30%", desc: "Vulnerable. Not yet protected against disruption." },
-    { range: "30\u201349", label: "Developing", color: B.bandDeveloping, width: "20%", desc: "Emerging structure. Key gaps remain." },
-    { range: "50\u201374", label: "Established", color: B.bandEstablished, width: "25%", desc: "Meaningful protection. Not yet fully resilient." },
-    { range: "75\u2013100", label: "High", color: B.bandHigh, width: "25%", desc: "Strong. Resilient against most disruptions." },
+    { range: "0\u201329", label: "Limited", color: B.bandLimited, consequence: "Your income depends almost entirely on active work. A major disruption puts immediate pressure on the structure." },
+    { range: "30\u201349", label: "Developing", color: B.bandDeveloping, consequence: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly." },
+    { range: "50\u201374", label: "Established", color: B.bandEstablished, consequence: "Your income can absorb most common disruptions without dropping below a stable threshold." },
+    { range: "75\u2013100", label: "High", color: B.bandHigh, consequence: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.sand, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 40, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
-          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
-            Four stability bands. Fixed thresholds.
+    <section ref={ref} style={{ backgroundColor: B.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+            What your score means.
           </h2>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 440, margin: "0 auto" }}>
-            Every score maps to a fixed band under Model RP-2.0.
+          <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+            Each band defines what your income structure can absorb.
           </p>
         </div>
 
         {/* Animated bar */}
-        <div style={{ display: "flex", height: 14, borderRadius: 7, overflow: "hidden", marginBottom: 32 }}>
-          {bands.map((band, i) => (
-            <div key={band.label} style={{ width: band.width, backgroundColor: band.color, transform: visible ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center", transition: `transform 0.6s ease-out ${200 + i * 150}ms` }} />
+        <div style={{ display: "flex", height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 32 }}>
+          {bands.map((b, i) => (
+            <div key={b.label} style={{ flex: i === 0 ? 3 : i === 1 ? 2 : 2.5, backgroundColor: b.color, transform: visible ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: `transform 600ms ease-out ${200 + i * 150}ms` }} />
           ))}
         </div>
 
-        {/* Band details */}
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: mobile ? 20 : 16 }}>
-          {bands.map((band, i) => (
-            <div key={band.label} style={{ textAlign: "center", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)", transition: `opacity 400ms ease-out ${300 + i * 100}ms, transform 400ms ease-out ${300 + i * 100}ms` }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: band.color, margin: "0 auto 8px" }} />
-              <div style={{ fontSize: S.fsMeta, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{band.range}</div>
-              <div style={{ fontSize: S.fsMeta, fontWeight: 600, color: band.color, marginBottom: 6 }}>{band.label}</div>
-              <div style={{ fontSize: S.fsMeta, color: B.muted, lineHeight: S.lhBody }}>{band.desc}</div>
+        {/* Band cards */}
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
+          {bands.map((b, i) => (
+            <div key={b.label} style={{
+              padding: m ? "20px 18px" : "24px 24px", borderRadius: 14,
+              backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)",
+              position: "relative", overflow: "hidden",
+              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: `opacity 500ms ease-out ${300 + i * 100}ms, transform 500ms ease-out ${300 + i * 100}ms`,
+            }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: b.color }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: b.color }} />
+                <span style={{ fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA" }}>{b.label} Stability</span>
+              </div>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{b.consequence}</p>
             </div>
           ))}
         </div>
@@ -300,54 +421,56 @@ function ClassificationScale() {
 }
 
 /* ================================================================== */
-/* 5. WHAT YOUR REPORT COVERS — Clean numbered list                    */
+/* 5. TWO-LAYER ARCHITECTURE — Score vs. interpretation                */
 /* ================================================================== */
-function ReportCovers() {
+function TwoLayers() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const pages = [
-    { num: "01", title: "Your Score", detail: "What it means in plain English, what to fix first, and how far you are from the next band.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", detail: "Composition, stress test, structural indicators, what\u2019s working, and what\u2019s holding you back.", color: B.teal },
-    { num: "03", title: "What Could Go Wrong", detail: "Ranked risk scenarios with exact score drops. Fragility classification. Behavioral patterns to watch.", color: B.bandLimited },
-    { num: "04", title: "Your Action Plan", detail: "Projected score impact per action, tradeoff analysis, week-by-week execution roadmap.", color: B.purple },
-    { num: "05", title: "Methodology + Next Steps", detail: "How the score was calculated, assessment confidence, reassessment triggers, and your verification record.", color: B.teal },
-  ];
+  const m = useMobile();
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
-      <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Report</div>
-          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
-            Five pages. Five questions answered.
+    <section ref={ref} style={{ backgroundColor: B.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Architecture</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+            Two layers. One boundary.
           </h2>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody }}>
-            Each page answers a different question about your income structure.
+          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+            The score and the report are built separately. The boundary between them is fixed and auditable.
           </p>
         </div>
 
-        {pages.map((page, i) => (
-          <div key={page.num} style={{
-            display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0",
-            borderBottom: i < 4 ? `1px solid ${B.border}` : "none",
-            opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
-            transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
-          }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
-              backgroundColor: B.sand, border: `1px solid ${B.border}`,
-              fontSize: S.fsLabel, fontWeight: 700, color: page.color, position: "relative", overflow: "hidden",
-            }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color, opacity: 0.6 }} />
-              {page.num}
-            </div>
-            <div>
-              <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{page.title}</div>
-              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.detail}</p>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 16 : 20 }}>
+          {/* Layer 1 */}
+          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: "#FFFFFF", border: `1px solid ${B.borderMd}`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Layer 1 — Core Score</div>
+            <h3 style={{ fontSize: m ? 20 : 22, fontWeight: 600, color: B.navy, marginBottom: 12, letterSpacing: "-0.02em" }}>The number.</h3>
+            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, marginBottom: 16 }}>Generated from fixed structural questions only. Same answers, same score. No contextual input can alter it.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
+                <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+                  <span style={{ fontSize: 14, color: B.navy }}>{item}</span>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
+
+          {/* Layer 2 */}
+          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: B.navy, boxShadow: "0 4px 16px rgba(14,26,43,0.10)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 200ms, transform 500ms ease-out 200ms" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Layer 2 — Context Precision</div>
+            <h3 style={{ fontSize: m ? 20 : 22, fontWeight: 600, color: "#F4F1EA", marginBottom: 12, letterSpacing: "-0.02em" }}>The interpretation.</h3>
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Uses your operating structure, income model, and industry to improve explanation quality, scenario relevance, and action planning. Does not change the score.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {["Scenario selection", "Action priority ordering", "Language precision", "Category framing"].map(item => (
+                <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+                  <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -356,20 +479,20 @@ function ReportCovers() {
 /* ================================================================== */
 /* 6. CTA                                                              */
 /* ================================================================== */
-function CtaSection() {
+function Cta() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
   const [hovered, setHovered] = useState(false);
 
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: S.maxW, margin: "0 auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 20 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
             See where your income stands.
           </h2>
-          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(250,249,247,0.55)", lineHeight: S.lhBody, maxWidth: 440, margin: "0 auto 40px" }}>
+          <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
           <Link
@@ -378,16 +501,16 @@ function CtaSection() {
             onMouseLeave={() => setHovered(false)}
             style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: mobile ? 48 : S.ctaH, paddingLeft: 36, paddingRight: 36, borderRadius: S.ctaRadius,
-              backgroundColor: "#F4F1EA", color: B.navy, fontSize: S.fsCta, fontWeight: 600,
+              height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+              backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600,
               textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
               transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            Get My Free Score
+            Start Your Assessment
           </Link>
-          <div style={{ marginTop: 20, fontSize: S.fsMeta, color: "rgba(250,249,247,0.35)" }}>
-            Free to start &#183; No bank connection &#183; No credit pull
+          <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
+            Free to start &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>
       </div>
@@ -402,11 +525,11 @@ export default function HowItWorksPage() {
   return (
     <div>
       <Hero />
-      <ThreeSteps />
-      <WhatTheModelMeasures />
-      <ClassificationScale />
-      <ReportCovers />
-      <CtaSection />
+      <Journey />
+      <Dimensions />
+      <Bands />
+      <TwoLayers />
+      <Cta />
     </div>
   );
 }
