@@ -368,9 +368,9 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // Generate PressureMap™ — real-time structural intelligence (client-side)
+      // Generate PressureMap™ — real-time structural intelligence
+      // Tries API (Claude-powered, personalized) first, falls back to client-side generator
       try {
-        const { generatePressureMap } = await import("@/lib/pressure-map");
         const adapted = record as Record<string, unknown>;
         const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
         const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
@@ -379,7 +379,7 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
-        const pressureMap = generatePressureMap({
+        const pmPayload = {
           industry: profile.industry_sector || "",
           operating_structure: profile.operating_structure || "",
           income_model: profile.primary_income_model || "",
@@ -393,7 +393,27 @@ export default function DiagnosticPage() {
           forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
           labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
           variability_level: (ni.income_variability_level as string) || "moderate",
-        });
+        };
+
+        // Try API endpoint first (Claude-generated, customer-specific)
+        let pressureMap = null;
+        try {
+          const pmRes = await fetch("/api/v1/pressure-map", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pmPayload),
+          });
+          if (pmRes.ok) {
+            pressureMap = await pmRes.json();
+          }
+        } catch { /* API unavailable, fall through to client-side */ }
+
+        // Fallback to client-side deterministic generator
+        if (!pressureMap || !pressureMap.pressure) {
+          const { generatePressureMap } = await import("@/lib/pressure-map");
+          pressureMap = generatePressureMap(pmPayload);
+        }
+
         (record as Record<string, unknown>).pressure_map = pressureMap;
       } catch { /* PressureMap is non-blocking */ }
 
