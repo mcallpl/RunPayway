@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -23,12 +22,7 @@ function useInView(threshold = 0) {
       return;
     }
     const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold },
     );
     obs.observe(el);
@@ -55,149 +49,67 @@ function useMobile(breakpoint = 768) {
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  offWhite: "#FFFFFF",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  border: "rgba(14,26,43,0.12)",
-  gradient:
-    "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  teal: "#1A7A6D",
+  sand: "#F5F2EC",
+  offWhite: "#FAFAF8",
+  muted: "rgba(14,26,43,0.55)",
+  light: "rgba(14,26,43,0.38)",
+  border: "rgba(14,26,43,0.08)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
+  bandHigh: "#1A7A6D",
 };
 
 const S = {
-  sectionY: { desktop: 120, mobile: 80 },
-  sectionYsm: { desktop: 100, mobile: 64 },
-  transitionY: { desktop: 56, mobile: 40 },
-  disclaimerY: { desktop: 20, mobile: 14 },
-  maxW: 1060,
-  padX: { desktop: 48, mobile: 24 },
-  h1mb: 20,
-  h2mb: 20,
-  subtextMb: 44,
-  paraMb: 20,
-  labelMb: 14,
-  cardPad: { desktop: 32, mobile: 24 },
-  cardRadius: 12,
-  panelRadius: 16,
-  gridGap: 20,
-  gridGapSm: 14,
-  ctaH: 52,
-  ctaHsm: 44,
-  ctaPadX: 28,
-  ctaRadius: 12,
+  sectionY: { desktop: 120, mobile: 72 },
+  maxW: 1100,
+  padX: { desktop: 56, mobile: 28 },
   lhHeading: 1.12,
   lhBody: 1.65,
-  lhDense: 1.5,
-  lsHeading: "-0.02em",
+  lsHeading: "-0.025em",
   lsHero: "-0.03em",
-  lsLabel: "0.12em",
+  lsLabel: "0.08em",
+  fsH1: { desktop: 56, mobile: 36 },
+  fsH2: { desktop: 48, mobile: 32 },
+  fsH3: { desktop: 24, mobile: 20 },
+  fsBody: { desktop: 18, mobile: 16 },
+  fsLabel: 13,
+  fsMeta: 14,
+  fsCard: { desktop: 16, mobile: 15 },
+  fsCta: 16,
+  ctaH: 56,
+  ctaRadius: 10,
+  panelRadius: 14,
 };
 
-const STRIPE_SINGLE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 /* ================================================================== */
-/* 1. HERO — Dark gradient                                             */
+/* 1. HERO                                                              */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   return (
-    <section
-      ref={ref}
-      aria-label="How It Works Hero"
-      style={{
-        background: B.gradient,
-        position: "relative",
-        overflow: "hidden",
-        paddingTop: mobile ? 120 : 160,
-        paddingBottom: mobile ? 72 : 100,
-      }}
-    >
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: mobile ? 120 : 160, paddingBottom: mobile ? 72 : 100 }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
-      {/* Radial glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: "30%",
-          left: "50%",
-          width: 800,
-          height: 800,
-          transform: "translate(-50%, -50%)",
-          background:
-            "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 13,
-              textTransform: "uppercase",
-              color: "rgba(250,249,247,0.50)",
-              fontWeight: 600,
-              letterSpacing: S.lsLabel,
-              marginBottom: 24,
-            }}
-          >
-            HOW IT WORKS
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: S.maxW, margin: "0 auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.7s ease-out, transform 0.7s ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, textTransform: "uppercase" as const, color: "rgba(250,249,247,0.50)", fontWeight: 600, letterSpacing: S.lsLabel, marginBottom: 24 }}>
+            How It Works
           </div>
-          <h1
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: "#FAF9F7",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHero,
-              lineHeight: S.lhHeading,
-              marginBottom: S.h1mb,
-              maxWidth: 720,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Fixed questions. One score.
-            <br />
-            Full structural diagnosis.
+          <h1 style={{ fontSize: mobile ? S.fsH1.mobile : S.fsH1.desktop, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHero, lineHeight: S.lhHeading, marginBottom: 20, maxWidth: 720, margin: "0 auto 20px" }}>
+            Fixed questions. One score.<br />Full structural diagnosis.
           </h1>
-          <p
-            style={{
-              fontSize: mobile ? 16 : 18,
-              color: "rgba(250,249,247,0.70)",
-              lineHeight: S.lhBody,
-              maxWidth: 600,
-              marginLeft: "auto",
-              marginRight: "auto",
-              margin: "0 auto",
-            }}
-          >
-            Your free score instantly &mdash; plus the option to unlock a full 5-page diagnostic report for $99.
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(250,249,247,0.55)", lineHeight: S.lhBody, maxWidth: 520, margin: "0 auto 12px" }}>
+            A structural diagnostic that scores how your income is built — not how much you make.
+          </p>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(250,249,247,0.35)", margin: 0 }}>
+            Same answers, same score. No financial data required.
           </p>
         </div>
       </div>
@@ -206,7 +118,7 @@ function Hero() {
 }
 
 /* ================================================================== */
-/* 2. THE THREE STEPS — Sand background                                */
+/* 2. THREE STEPS — Card-based with arrows                             */
 /* ================================================================== */
 function ThreeSteps() {
   const { ref, visible } = useInView();
@@ -214,776 +126,235 @@ function ThreeSteps() {
 
   const steps = [
     {
-      num: "1",
-      title: "Take the assessment",
-      subtitle: "About your income structure",
-      body: "Each question looks at a different part of your income \u2014 how much repeats, how many sources you depend on, how much is secured ahead of time, how stable it is month to month, and how much continues without daily work.",
+      num: "01", time: "2 min", title: "Take the assessment",
+      hook: "No bank connection. No credit pull. No login.",
+      desc: "A short structural diagnostic about how your income works — recurrence, concentration, visibility, and labor dependence.",
+      color: B.teal,
     },
     {
-      num: "2",
-      title: "The model scores",
-      subtitle: "Fixed rules, deterministic",
-      body: "Model RP-2.0 calculates your score using fixed, deterministic rules. The same answers always produce the same result. No subjective judgment. No variability.",
+      num: "02", time: "Instant", title: "See your score",
+      hook: "Free. Right now. No strings.",
+      desc: "Your Income Stability Score\u2122 out of 100, your stability band, and the single biggest structural factor limiting your score.",
+      color: B.purple,
     },
     {
-      num: "3",
-      title: "Get your free score",
-      subtitle: "Upgrade to the full report for $99",
-      body: "Your score, stability band, and one key insight \u2014 free and instant. The full report adds an interactive score simulator you can use forever, risk scenarios, an action plan with suggested next-move language, and predictive warnings.",
+      num: "03", time: "$99", title: "Unlock the full diagnostic",
+      hook: "Five pages. One clear path forward.",
+      desc: "Risk scenarios with exact score drops. Actions with projected impact. Tradeoff analysis. An interactive simulator you keep forever.",
+      color: B.navy,
     },
   ];
 
   return (
-    <section
-      ref={ref}
-      aria-label="Three Steps"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        {/* Section title */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
-              marginBottom: 0,
-            }}
-          >
-            How the assessment works
+    <section ref={ref} style={{ background: B.sand, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ maxWidth: 600, marginBottom: mobile ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Process</div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: S.lhHeading, letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16 }}>
+            Three steps. No financial data required.
           </h2>
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 480 }}>
+            We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
+          </p>
         </div>
 
-        {/* Step cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
-            gap: S.gridGap,
-            maxWidth: 960,
-            margin: "0 auto",
-            position: "relative",
-          }}
-        >
-          {/* Dashed connecting line — desktop only */}
-          {!mobile && (
-            <div
-              style={{
-                position: "absolute",
-                top: 58,
-                left: "calc(16.67% + 22px)",
-                right: "calc(16.67% + 22px)",
-                height: 0,
-                borderTop: `2px dashed ${B.border}`,
-                zIndex: 0,
-                opacity: visible ? 1 : 0,
-                transition: "opacity 0.6s ease-out 400ms",
-              }}
-            />
-          )}
-
-          {steps.map((step, i) => (
-            <StepCard
-              key={step.num}
-              step={step}
-              index={i}
-              visible={visible}
-              mobile={mobile}
-            />
-          ))}
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 40,
-            fontSize: 14,
-            color: B.muted,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 500ms",
-          }}
-        >
-          Powered by Model RP-2.0
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr auto 1fr auto 1fr", gap: 0, alignItems: "stretch" }}>
+          {steps.map((step, i) => {
+            const isLast = i === 2;
+            return (
+              <div key={step.num} style={{ display: "contents" }}>
+                <div style={{
+                  position: "relative", padding: mobile ? "28px 24px" : "32px 28px", borderRadius: S.panelRadius,
+                  backgroundColor: isLast ? B.navy : "#FFFFFF",
+                  border: isLast ? "none" : `1px solid ${B.border}`,
+                  boxShadow: isLast ? "0 8px 32px rgba(14,26,43,0.15)" : "0 2px 8px rgba(14,26,43,0.04)",
+                  overflow: "hidden", display: "flex", flexDirection: "column",
+                  opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity 500ms ease-out ${150 + i * 120}ms, transform 500ms ease-out ${150 + i * 120}ms`,
+                }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: step.color, opacity: isLast ? 1 : 0.6 }} />
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: isLast ? "rgba(244,241,234,0.08)" : step.color === B.purple ? "rgba(75,63,174,0.08)" : "rgba(26,122,109,0.08)", fontSize: 14, fontWeight: 700, color: isLast ? "#F4F1EA" : step.color }}>{step.num}</div>
+                    <span style={{ fontSize: S.fsMeta, fontWeight: 700, letterSpacing: "0.04em", color: isLast ? B.teal : B.light, padding: "3px 10px", borderRadius: 100, backgroundColor: isLast ? "rgba(26,122,109,0.12)" : "rgba(14,26,43,0.04)" }}>{step.time}</span>
+                  </div>
+                  <h3 style={{ fontSize: mobile ? S.fsH3.mobile : S.fsH3.desktop, fontWeight: 600, color: isLast ? "#F4F1EA" : B.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>{step.title}</h3>
+                  <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600, color: isLast ? B.teal : step.color, marginBottom: 14, lineHeight: 1.4 }}>{step.hook}</p>
+                  <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: isLast ? "rgba(244,241,234,0.50)" : B.muted, lineHeight: S.lhBody, margin: 0, flex: 1 }}>{step.desc}</p>
+                </div>
+                {!isLast && !mobile && (
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40 }}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10H16M16 10L11 5M16 10L11 15" stroke={B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
 
-function StepCard({
-  step,
-  index,
-  visible,
-  mobile,
-}: {
-  step: { num: string; title: string; subtitle: string; body: string };
-  index: number;
-  visible: boolean;
-  mobile: boolean;
-}) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => canHover() && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        backgroundColor: "#ffffff",
-        borderRadius: S.cardRadius,
-        border: "1px solid rgba(14,26,43,0.06)",
-        boxShadow: hovered
-          ? "0 8px 24px rgba(14,26,43,0.08)"
-          : "0 2px 8px rgba(14,26,43,0.04)",
-        padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
-        textAlign: "center",
-        position: "relative",
-        zIndex: 1,
-        transform: visible
-          ? hovered
-            ? "translateY(-4px)"
-            : "translateY(0)"
-          : "translateY(16px)",
-        opacity: visible ? 1 : 0,
-        transition: `opacity 0.5s ease-out ${index * 120}ms, transform 0.4s ease-out ${index * 120}ms, box-shadow 0.3s ease`,
-      }}
-    >
-      {/* Purple square badge */}
-      <div
-        style={{
-          width: 44,
-          height: 44,
-          borderRadius: 12,
-          backgroundColor: B.purple,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "0 auto 20px",
-        }}
-      >
-        <span
-          style={{
-            color: "#ffffff",
-            fontSize: 18,
-            fontWeight: 600,
-          }}
-        >
-          {step.num}
-        </span>
-      </div>
-
-      <h3
-        style={{
-          fontSize: mobile ? 20 : 24,
-          fontWeight: 600,
-          color: B.navy,
-          letterSpacing: S.lsHeading,
-          lineHeight: 1.12,
-          marginBottom: 6,
-        }}
-      >
-        {step.title}
-      </h3>
-
-      <div
-        style={{
-          fontSize: 14,
-          fontWeight: 600,
-          color: B.teal,
-          marginBottom: 16,
-        }}
-      >
-        {step.subtitle}
-      </div>
-
-      <p
-        style={{
-          fontSize: mobile ? 16 : 18,
-          color: B.muted,
-          lineHeight: S.lhBody,
-          margin: 0,
-        }}
-      >
-        {step.body}
-      </p>
-    </div>
-  );
-}
-
 /* ================================================================== */
-/* 3. WHAT YOUR REPORT COVERS — White background                       */
+/* 3. WHAT THE MODEL MEASURES — Clean 2-column layout                  */
 /* ================================================================== */
-function ReportCovers() {
+function WhatTheModelMeasures() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  const pages = [
-    {
-      num: "01",
-      title: "Your Score",
-      question: "What is my score?",
-      desc: "Your score, your stability band, a plain-English summary, and the single most important thing holding the structure back.",
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>,
-      accent: B.purple,
-    },
-    {
-      num: "02",
-      title: "What This Score Means",
-      question: "What does it mean?",
-      desc: "What is already working, what is still vulnerable, and a plain-English interpretation of what the score says about your income structure.",
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>,
-      accent: B.teal,
-    },
-    {
-      num: "03",
-      title: "Your Biggest Risks",
-      question: "What could hurt it?",
-      desc: "The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next.",
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandLimited} strokeWidth="1.5" strokeLinecap="round"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>,
-      accent: B.bandLimited,
-    },
-    {
-      num: "04",
-      title: "Your Income Deep Dive",
-      question: "How deep does it go?",
-      desc: "Structural indicators scored, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually.",
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.bandHigh} strokeWidth="1.5" strokeLinecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>,
-      accent: B.bandHigh,
-    },
-    {
-      num: "05",
-      title: "What to Do Next",
-      question: "What should I do next?",
-      desc: "Prioritized actions with projected score impact, tradeoff analysis for each move, suggested next-move language, and your reassessment date.",
-      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>,
-      accent: B.navy,
-    },
+  const dimensions = [
+    { title: "Recurring Income", desc: "How much income continues from existing sources without new acquisition.", color: B.teal },
+    { title: "Source Concentration", desc: "How much depends on your single largest source. One lost client can collapse the structure.", color: B.purple },
+    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", color: B.teal },
+    { title: "Forward Visibility", desc: "How far ahead income is already committed, contracted, or scheduled.", color: B.purple },
+    { title: "Earnings Consistency", desc: "How stable income is from month to month. High swings reduce structural resilience.", color: "#D97706" },
+    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort. The structural ceiling for most.", color: B.navy },
   ];
 
   return (
-    <section
-      ref={ref}
-      aria-label="What Your Report Covers"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        {/* Heading */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
-              marginBottom: 12,
-            }}
-          >
-            What you will learn
+    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
+        <div style={{ maxWidth: 560, marginBottom: mobile ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16 }}>The Model</div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: S.lhHeading, letterSpacing: S.lsHeading, fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16 }}>
+            What the score measures.
           </h2>
-          <p
-            style={{
-              fontSize: mobile ? 16 : 18,
-              color: B.muted,
-              lineHeight: S.lhBody,
-              maxWidth: 520,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Five pages. Five questions answered. One clear path forward.
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody }}>
+            Each dimension is scored independently and combined into a single 0&#8211;100 result. Fixed rules. Same answers, same score.
           </p>
         </div>
 
-        {/* Flowchart layout — vertical line with connected nodes */}
-        <div
-          style={{
-            maxWidth: 640,
-            margin: "0 auto",
-            position: "relative",
-          }}
-        >
-          {/* Vertical connecting line */}
-          {!mobile && (
-            <div style={{
-              position: "absolute",
-              left: 27,
-              top: 40,
-              bottom: 40,
-              width: 1,
-              background: "rgba(14,26,43,0.10)",
-              opacity: visible ? 1 : 0,
-              transition: "opacity 1s ease-out 300ms",
-            }} />
-          )}
-
-          {pages.map((page, i) => (
-            <div
-              key={page.num}
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: mobile ? 16 : 24,
-                marginBottom: i < pages.length - 1 ? (mobile ? 24 : 32) : 0,
-                paddingLeft: mobile ? 0 : 0,
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity 0.5s ease-out ${i * 100}ms, transform 0.5s ease-out ${i * 100}ms`,
-              }}
-            >
-              {/* Node circle */}
-              <div style={{
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
-                backgroundColor: "#ffffff",
-                border: "1px solid rgba(14,26,43,0.10)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                position: "relative",
-                zIndex: 2,
-              }}>
-                <span style={{ fontSize: 16, fontWeight: 600, color: B.teal }}>{page.num}</span>
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 16 : 20 }}>
+          {dimensions.map((dim, i) => (
+            <div key={dim.title} style={{
+              padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 12,
+              backgroundColor: B.sand, border: `1px solid ${B.border}`,
+              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: `opacity 500ms ease-out ${100 + i * 60}ms, transform 500ms ease-out ${100 + i * 60}ms`,
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
+                <h3 style={{ fontSize: mobile ? 17 : 18, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em", margin: 0 }}>{dim.title}</h3>
               </div>
-
-              {/* Content */}
-              <div style={{ flex: 1, paddingTop: 4 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>Page {page.num}</span>
-                  <span style={{ fontSize: 14, color: B.light }}>—</span>
-                  <span style={{ fontSize: 14, fontWeight: 500, color: B.muted, fontStyle: "italic" }}>{page.question}</span>
-                </div>
-                <h3 style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading, lineHeight: 1.12 }}>{page.title}</h3>
-                <p style={{ fontSize: mobile ? 16 : 18, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.desc}</p>
-              </div>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, margin: 0, paddingLeft: 20 }}>{dim.desc}</p>
             </div>
           ))}
         </div>
 
+        <div style={{ textAlign: "center", marginTop: 32, fontSize: S.fsMeta, color: B.light, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 500ms" }}>
+          All dimensions are fixed and versioned under Model RP-2.0.
+        </div>
       </div>
     </section>
   );
 }
 
-/* ReportCard removed — replaced by flowchart layout inline */
-
 /* ================================================================== */
-/* 4. CLASSIFICATION SCALE — Sand background                           */
+/* 4. CLASSIFICATION SCALE                                             */
 /* ================================================================== */
 function ClassificationScale() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
   const bands = [
-    {
-      range: "0\u201329",
-      label: "Limited Stability",
-      color: B.bandLimited,
-      width: "30%",
-      desc: "The income structure is vulnerable and not yet protected against disruption.",
-    },
-    {
-      range: "30\u201349",
-      label: "Developing Stability",
-      color: B.bandDeveloping,
-      width: "20%",
-      desc: "The structure is developing but still needs stronger protection in key areas.",
-    },
-    {
-      range: "50\u201374",
-      label: "Established Stability",
-      color: B.bandEstablished,
-      width: "25%",
-      desc: "The structure has real stability but is not yet fully protected against disruption.",
-    },
-    {
-      range: "75\u2013100",
-      label: "High Stability",
-      color: B.bandHigh,
-      width: "25%",
-      desc: "The structure is strong, well-protected, and resilient against most disruptions.",
-    },
+    { range: "0\u201329", label: "Limited", color: B.bandLimited, width: "30%", desc: "Vulnerable. Not yet protected against disruption." },
+    { range: "30\u201349", label: "Developing", color: B.bandDeveloping, width: "20%", desc: "Emerging structure. Key gaps remain." },
+    { range: "50\u201374", label: "Established", color: B.bandEstablished, width: "25%", desc: "Meaningful protection. Not yet fully resilient." },
+    { range: "75\u2013100", label: "High", color: B.bandHigh, width: "25%", desc: "Strong. Resilient against most disruptions." },
   ];
 
   return (
-    <section
-      ref={ref}
-      aria-label="Classification Scale"
-      style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        {/* Heading */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
-              marginBottom: 12,
-            }}
-          >
-            Income Stability Classification Scale
+    <section ref={ref} style={{ backgroundColor: B.sand, paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 40, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
+            Four stability bands. Fixed thresholds.
           </h2>
-          <p
-            style={{
-              fontSize: 16,
-              color: B.muted,
-              lineHeight: S.lhBody,
-              maxWidth: 480,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Every score maps to a fixed stability band under Model RP-2.0.
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 440, margin: "0 auto" }}>
+            Every score maps to a fixed band under Model RP-2.0.
           </p>
         </div>
 
-        {/* Animated horizontal color bar */}
-        <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          <div
-            style={{
-              display: "flex",
-              height: 14,
-              borderRadius: 7,
-              overflow: "hidden",
-              marginBottom: 32,
-            }}
-          >
-            {bands.map((band, i) => (
-              <div
-                key={band.label}
-                style={{
-                  width: band.width,
-                  backgroundColor: band.color,
-                  transform: visible ? "scaleX(1)" : "scaleX(0)",
-                  transformOrigin: "left center",
-                  transition: `transform 0.6s ease-out ${200 + i * 150}ms`,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* 4-column grid below */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)",
-              gap: mobile ? 20 : 16,
-            }}
-          >
-            {bands.map((band, i) => (
-              <div
-                key={band.label}
-                style={{
-                  textAlign: "center",
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? "translateY(0)" : "translateY(8px)",
-                  transition: `opacity 0.4s ease-out ${300 + i * 100}ms, transform 0.4s ease-out ${300 + i * 100}ms`,
-                }}
-              >
-                <div
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: "50%",
-                    backgroundColor: band.color,
-                    margin: "0 auto 8px",
-                  }}
-                />
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: B.navy,
-                    marginBottom: 2,
-                  }}
-                >
-                  {band.range}
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: band.color,
-                    marginBottom: 6,
-                  }}
-                >
-                  {band.label}
-                </div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    color: B.muted,
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {band.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 44,
-            fontSize: 14,
-            color: B.muted,
-            fontStyle: "italic",
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 700ms",
-          }}
-        >
-          Band thresholds are fixed under Model RP-2.0. The same answers produce
-          the same score every time.
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================== */
-/* 5. SIX DIMENSIONS — White background                                */
-/* ================================================================== */
-function SixDimensions() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const dimensions = [
-    {
-      num: "01",
-      title: "Recurring Income",
-      desc: "How much income continues from existing sources without new acquisition.",
-      color: B.teal,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>,
-    },
-    {
-      num: "02",
-      title: "Concentration",
-      desc: "How much depends on your single largest source.",
-      color: B.purple,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-    },
-    {
-      num: "03",
-      title: "Source Diversity",
-      desc: "How many meaningful income sources support the structure.",
-      color: B.teal,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>,
-    },
-    {
-      num: "04",
-      title: "Forward Visibility",
-      desc: "How far ahead income is already committed or scheduled.",
-      color: B.purple,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/><circle cx="12" cy="12" r="10"/></svg>,
-    },
-    {
-      num: "05",
-      title: "Variability",
-      desc: "How sharply income moves between strong and weak months.",
-      color: "#D97706",
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="1.5" strokeLinecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
-    },
-    {
-      num: "06",
-      title: "Continuity",
-      desc: "What percentage of income continues without your daily effort.",
-      color: B.navy,
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M2 12h20"/><path d="M12 2v20"/></svg>,
-    },
-  ];
-
-  return (
-    <section
-      ref={ref}
-      aria-label="Six Dimensions"
-      style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-        }}
-      >
-        {/* Heading */}
-        <div
-          style={{
-            textAlign: "center",
-            marginBottom: S.subtextMb,
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: B.navy,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
-              marginBottom: 12,
-            }}
-          >
-            What the model measures
-          </h2>
-          <p
-            style={{
-              fontSize: 16,
-              color: B.muted,
-              lineHeight: S.lhBody,
-              maxWidth: 440,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            Your score is built from fixed structural dimensions.
-          </p>
-        </div>
-
-        {/* 3-column icon grid */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
-            gap: mobile ? 24 : 32,
-            maxWidth: 900,
-            margin: "0 auto",
-          }}
-        >
-          {dimensions.map((dim, i) => (
-            <div
-              key={dim.num}
-              style={{
-                textAlign: "center",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(16px)",
-                transition: `opacity 0.5s ease-out ${i * 80}ms, transform 0.5s ease-out ${i * 80}ms`,
-              }}
-            >
-              {/* Circular icon badge */}
-              <div style={{
-                width: 64,
-                height: 64,
-                borderRadius: "50%",
-                backgroundColor: `${dim.color}10`,
-                border: `1.5px solid ${dim.color}30`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 16px",
-              }}>
-                {dim.icon}
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: dim.color, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 6 }}>{dim.num}</div>
-              <h3 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 6, letterSpacing: S.lsHeading, lineHeight: 1.12 }}>{dim.title}</h3>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, margin: 0, maxWidth: 240, marginLeft: "auto", marginRight: "auto" }}>{dim.desc}</p>
-            </div>
+        {/* Animated bar */}
+        <div style={{ display: "flex", height: 14, borderRadius: 7, overflow: "hidden", marginBottom: 32 }}>
+          {bands.map((band, i) => (
+            <div key={band.label} style={{ width: band.width, backgroundColor: band.color, transform: visible ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left center", transition: `transform 0.6s ease-out ${200 + i * 150}ms` }} />
           ))}
         </div>
 
-        {/* Footer */}
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 44,
-            fontSize: 14,
-            color: B.muted,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 0.5s ease-out 500ms",
-          }}
-        >
-          Official Scoring Framework &middot; Model RP-2.0
+        {/* Band details */}
+        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: mobile ? 20 : 16 }}>
+          {bands.map((band, i) => (
+            <div key={band.label} style={{ textAlign: "center", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)", transition: `opacity 400ms ease-out ${300 + i * 100}ms, transform 400ms ease-out ${300 + i * 100}ms` }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: band.color, margin: "0 auto 8px" }} />
+              <div style={{ fontSize: S.fsMeta, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{band.range}</div>
+              <div style={{ fontSize: S.fsMeta, fontWeight: 600, color: band.color, marginBottom: 6 }}>{band.label}</div>
+              <div style={{ fontSize: S.fsMeta, color: B.muted, lineHeight: S.lhBody }}>{band.desc}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-/* DimensionCard removed — replaced by circular icon grid inline */
+/* ================================================================== */
+/* 5. WHAT YOUR REPORT COVERS — Clean numbered list                    */
+/* ================================================================== */
+function ReportCovers() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const pages = [
+    { num: "01", title: "Your Score", detail: "What it means in plain English, what to fix first, and how far you are from the next band.", color: B.purple },
+    { num: "02", title: "How Your Income Is Built", detail: "Composition, stress test, structural indicators, what\u2019s working, and what\u2019s holding you back.", color: B.teal },
+    { num: "03", title: "What Could Go Wrong", detail: "Ranked risk scenarios with exact score drops. Fragility classification. Behavioral patterns to watch.", color: B.bandLimited },
+    { num: "04", title: "Your Action Plan", detail: "Projected score impact per action, tradeoff analysis, week-by-week execution roadmap.", color: B.purple },
+    { num: "05", title: "Methodology + Next Steps", detail: "How the score was calculated, assessment confidence, reassessment triggers, and your verification record.", color: B.teal },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: 640, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Report</div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
+            Five pages. Five questions answered.
+          </h2>
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody }}>
+            Each page answers a different question about your income structure.
+          </p>
+        </div>
+
+        {pages.map((page, i) => (
+          <div key={page.num} style={{
+            display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0",
+            borderBottom: i < 4 ? `1px solid ${B.border}` : "none",
+            opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
+            transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
+          }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+              backgroundColor: B.sand, border: `1px solid ${B.border}`,
+              fontSize: S.fsLabel, fontWeight: 700, color: page.color, position: "relative", overflow: "hidden",
+            }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color, opacity: 0.6 }} />
+              {page.num}
+            </div>
+            <div>
+              <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{page.title}</div>
+              <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, margin: 0 }}>{page.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 /* ================================================================== */
-/* 6. CTA — Dark gradient                                              */
+/* 6. CTA                                                              */
 /* ================================================================== */
 function CtaSection() {
   const { ref, visible } = useInView();
@@ -991,115 +362,32 @@ function CtaSection() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <section
-      ref={ref}
-      aria-label="Call to Action"
-      style={{
-        background: B.gradient,
-        position: "relative",
-        overflow: "hidden",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-      }}
-    >
-      {/* Radial glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: 700,
-          height: 700,
-          transform: "translate(-50%, -50%)",
-          background:
-            "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          maxWidth: S.maxW,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: mobile ? 32 : 48,
-              color: "#FAF9F7",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
-              marginBottom: S.h2mb,
-            }}
-          >
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop, paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop }}>
+      <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: S.maxW, margin: "0 auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 20 }}>
             See where your income stands.
           </h2>
-          <p
-            style={{
-              fontSize: 16,
-              color: "rgba(250,249,247,0.70)",
-              lineHeight: S.lhBody,
-              maxWidth: 440,
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: 40,
-            }}
-          >
+          <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(250,249,247,0.55)", lineHeight: S.lhBody, maxWidth: 440, margin: "0 auto 40px" }}>
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
-
           <Link
             href="/pricing"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: mobile ? S.ctaHsm : S.ctaH,
-              paddingLeft: mobile ? 24 : S.ctaPadX,
-              paddingRight: mobile ? 24 : S.ctaPadX,
-              borderRadius: S.ctaRadius,
-              backgroundColor: "#FAF9F7",
-              color: B.navy,
-              fontSize: 16,
-              fontWeight: 600,
-              letterSpacing: "0.01em",
-              textDecoration: "none",
-              boxShadow: hovered
-                ? "0 8px 28px rgba(0,0,0,0.25)"
-                : "0 4px 16px rgba(0,0,0,0.15)",
-              transform: hovered ? "translateY(-2px)" : "translateY(0)",
-              transition:
-                "box-shadow 260ms ease, transform 260ms ease",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: mobile ? 48 : S.ctaH, paddingLeft: 36, paddingRight: 36, borderRadius: S.ctaRadius,
+              backgroundColor: "#F4F1EA", color: B.navy, fontSize: S.fsCta, fontWeight: 600,
+              textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
+              transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
             Get My Free Score
           </Link>
-
-          <div
-            style={{
-              marginTop: 20,
-              fontSize: 14,
-              color: "rgba(250,249,247,0.40)",
-            }}
-          >
-            Free to start &middot; No bank connection &middot; No credit pull
+          <div style={{ marginTop: 20, fontSize: S.fsMeta, color: "rgba(250,249,247,0.35)" }}>
+            Free to start &#183; No bank connection &#183; No credit pull
           </div>
         </div>
       </div>
@@ -1115,33 +403,9 @@ export default function HowItWorksPage() {
     <div>
       <Hero />
       <ThreeSteps />
-      {/* Simulator + Scripts teaser */}
-      <section style={{ background: "#F4F1EA", paddingTop: 64, paddingBottom: 64, paddingLeft: 20, paddingRight: 20 }}>
-        <div style={{ maxWidth: 580, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#4B3FAE", marginBottom: 10 }}>Included With Every Report</div>
-            <h2 style={{ fontSize: 32, fontFamily: "'DM Serif Display', Georgia, serif", fontWeight: 400, color: "#0E1A2B", lineHeight: 1.12, letterSpacing: "-0.025em", margin: "0 0 14px" }}>
-              Simulate changes. See the impact.
-            </h2>
-            <p style={{ fontSize: 16, color: "rgba(14,26,43,0.58)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
-              The interactive Score Simulator lets you model real scenarios &mdash; see exactly how each structural change moves your score. Your report includes suggested language for retainer pitches, client outreach, and advisor conversations — starting drafts based on your actual results.
-            </p>
-          </div>
-          <SimulatorTeaser variant="dark-on-light" />
-          {/* Feature pills */}
-          <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: 10, marginTop: 20 }}>
-            {["5 Interactive Sliders", "Real-Time Score Updates", "Suggested Next-Move Language"].map(label => (
-              <span key={label} style={{
-                fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
-                color: "#4B3FAE", backgroundColor: "rgba(75,63,174,0.08)",
-                borderRadius: 20, padding: "6px 14px",
-              }}>{label}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-      <ReportCovers />
+      <WhatTheModelMeasures />
       <ClassificationScale />
+      <ReportCovers />
       <CtaSection />
     </div>
   );
