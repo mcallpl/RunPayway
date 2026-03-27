@@ -162,8 +162,8 @@ export interface SimulatorPreset {
 export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   {
     id: "add_client",
-    label: "Add a new client",
-    description: "Add 1 new meaningful income source, reducing concentration",
+    label: "Add one additional consistent client",
+    description: "One new income source that produces steady, recurring work — reducing how much depends on your current biggest source",
     modify: (base) => ({
       ...base,
       source_diversity_count: Math.min(8, base.source_diversity_count + 1),
@@ -172,8 +172,8 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
   {
     id: "convert_retainer",
-    label: "Convert to retainer",
-    description: "Convert your biggest client to a monthly retainer",
+    label: "Convert one client to a monthly retainer",
+    description: "Move your biggest client from project-based to a recurring monthly agreement — income repeats without re-selling",
     modify: (base) => ({
       ...base,
       income_persistence_pct: Math.min(100, base.income_persistence_pct + 20),
@@ -182,8 +182,8 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
   {
     id: "lose_top_client",
-    label: "Lose your top client",
-    description: "Your single biggest income source disappears — along with its revenue",
+    label: "Your biggest client stops paying",
+    description: "Your single largest income source disappears — along with everything tied to it",
     modify: (base) => {
       // Losing your top client means losing that share of ALL income metrics
       const lossFactor = base.largest_source_pct / 100;
@@ -203,8 +203,8 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
   {
     id: "build_passive",
-    label: "Build passive income",
-    description: "Launch a revenue stream that doesn't require your daily work",
+    label: "Create one income stream that continues without your daily work",
+    description: "Launch a product, license, or recurring arrangement that produces revenue whether you work that day or not",
     modify: (base) => ({
       ...base,
       labor_dependence_pct: Math.max(12, base.labor_dependence_pct - 20),
@@ -213,8 +213,8 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
   {
     id: "lock_forward",
-    label: "Lock in forward revenue",
-    description: "Secure next quarter's income with signed commitments",
+    label: "Secure next quarter with signed commitments",
+    description: "Get written agreements, prepaid packages, or retainers that lock in revenue before the month starts",
     modify: (base) => ({
       ...base,
       forward_secured_pct: Math.min(100, base.forward_secured_pct + 25),
@@ -222,8 +222,8 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
   {
     id: "cant_work_90_days",
-    label: "Unable to work for 90 days",
-    description: "Illness, injury, or personal event stops all active work",
+    label: "You cannot work for 90 days",
+    description: "Illness, injury, or personal event stops all active work — only passive and pre-committed income continues",
     modify: (base) => ({
       ...base,
       labor_dependence_pct: 100,

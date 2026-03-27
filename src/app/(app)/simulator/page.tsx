@@ -630,20 +630,46 @@ function SimulatorContent() {
     if (sim.band !== base.band) insights.push(`Crossed into ${sim.band}`);
   }
 
-  // Path to +10
-  const pathSteps: string[] = [];
+  // ── Best Move + Structural impact for each preset ──
+  const presetAnalysis = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id)).map(p => {
+    const modified = p.modify(baseInputs);
+    const result = simulateScore(modified, qualityScore);
+    const lift = result.overall_score - base.overall_score;
+    // Determine which structural factors changed
+    const tags: string[] = [];
+    if (modified.income_persistence_pct > baseInputs.income_persistence_pct) tags.push("Persistence \u2191");
+    if (modified.largest_source_pct < baseInputs.largest_source_pct) tags.push("Concentration \u2193");
+    if (modified.source_diversity_count > baseInputs.source_diversity_count) tags.push("Diversification \u2191");
+    if (modified.forward_secured_pct > baseInputs.forward_secured_pct) tags.push("Visibility \u2191");
+    if (modified.labor_dependence_pct < baseInputs.labor_dependence_pct) tags.push("Labor dependence \u2193");
+    // Effort level heuristic
+    const effort: "Low" | "Medium" | "High" = p.id === "lock_forward" ? "Medium" : p.id === "convert_retainer" ? "Medium" : "High";
+    const impact: "Low" | "Medium" | "High" = lift >= 10 ? "High" : lift >= 5 ? "Medium" : "Low";
+    // Why this matters — structural explanation
+    const why = p.id === "convert_retainer" ? "Converts income you rebuild every month into income that renews automatically. Reduces reset risk and improves forward visibility."
+      : p.id === "add_client" ? "Spreads income across more sources so no single client departure can seriously damage your structure."
+      : p.id === "build_passive" ? "Creates income that survives interruption. Protects against illness, burnout, or forced time off."
+      : p.id === "lock_forward" ? "Removes uncertainty about next month. You stop guessing and start planning."
+      : "Improves your income structure.";
+    return { ...p, lift, tags, effort, impact, why, bandShift: result.band !== base.band ? result.band : null };
+  }).sort((a, b) => b.lift - a.lift);
+
+  const bestMove = presetAnalysis[0];
+
+  // ── Path to next band (sequenced plan) ──
+  const targetScore = base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : base.overall_score + 10;
+  const targetLabel = base.overall_score < 30 ? "Developing Stability" : base.overall_score < 50 ? "Established Stability" : base.overall_score < 75 ? "High Stability" : `${targetScore}/100`;
+  const pathSteps: { phase: string; action: string; detail: string; lift: number }[] = [];
   if (base.overall_score < 90) {
-    let rem = 10;
-    for (const t of [
-      { label: "recurring", field: "income_persistence_pct" as const, step: 5, dir: 1 },
-      { label: "top client", field: "largest_source_pct" as const, step: -5, dir: -1 },
-      { label: "forward visibility", field: "forward_secured_pct" as const, step: 5, dir: 1 },
-      { label: "labor dependence", field: "labor_dependence_pct" as const, step: -5, dir: -1 },
-    ]) {
-      if (rem <= 0) break;
-      const test = { ...baseInputs, [t.field]: Math.max(0, Math.min(100, (baseInputs[t.field] as number) + t.step * 3)) };
-      const lift = simulateScore(test, qualityScore).overall_score - base.overall_score;
-      if (lift > 0) { const n = Math.min(lift, rem); pathSteps.push(`${t.dir > 0 ? "Increase" : "Reduce"} ${t.label} from ${baseInputs[t.field]}${typeof baseInputs[t.field] === "number" ? "%" : ""} to ${Math.max(0, Math.min(100, (baseInputs[t.field] as number) + t.step * 3))}% (+${n})`); rem -= n; }
+    let accum = 0;
+    const needed = targetScore - base.overall_score;
+    const phases = ["Immediate", "Next 30 days", "Next 60 days", "Stabilization"];
+    for (let i = 0; i < presetAnalysis.length && accum < needed && i < 4; i++) {
+      const p = presetAnalysis[i];
+      if (p.lift <= 0) continue;
+      const contribution = Math.min(p.lift, needed - accum);
+      pathSteps.push({ phase: phases[pathSteps.length] || "Ongoing", action: p.label, detail: p.why, lift: contribution });
+      accum += contribution;
     }
   }
 
@@ -697,7 +723,7 @@ function SimulatorContent() {
             <Image src={logoWhite} alt="RunPayway&#8482;" width={140} height={16} style={{ height: "auto", opacity: 0.95 }} />
             <div style={{ width: 1, height: 28, background: `linear-gradient(180deg, transparent 0%, rgba(232,229,221,0.15) 50%, transparent 100%)` }} />
             <div>
-              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>RunPayway&#8482; RunPayway&#8482; Stability Simulator</span>
+              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>RunPayway&#8482; Stability Simulator</span>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -854,6 +880,40 @@ function SimulatorContent() {
           <IncomeTimeline timeline={timeline} baseScore={base.overall_score} />
         )}
 
+        {/* ══════════ BEST MOVE RIGHT NOW ══════════ */}
+        {bestMove && bestMove.lift > 0 && !isModified && (
+          <div style={{ marginBottom: 32, padding: "28px 28px", borderRadius: 14, background: `linear-gradient(135deg, rgba(75,63,174,0.08) 0%, rgba(26,122,109,0.06) 100%)`, border: `1px solid rgba(75,63,174,0.18)` }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 12 }}>BEST MOVE FOR YOUR STRUCTURE</div>
+            <div style={{ fontSize: 20, fontWeight: 600, color: T.text, marginBottom: 6, lineHeight: 1.3 }}>{bestMove.label}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+              <span style={{ fontSize: 18, fontWeight: 700, color: BRAND.teal, fontFamily: DISPLAY }}>+{bestMove.lift} points</span>
+              {bestMove.bandShift && <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.purple }}>Moves you to {bestMove.bandShift}</span>}
+            </div>
+            <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: "0 0 12px" }}>{bestMove.why}</p>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const }}>
+              {bestMove.tags.map(tag => (
+                <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: BRAND.teal, backgroundColor: "rgba(26,122,109,0.10)", padding: "4px 10px", borderRadius: 20, letterSpacing: "0.02em" }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ══════════ DO NOTHING SCENARIO ══════════ */}
+        {!isModified && (
+          <div style={{ marginBottom: 32, padding: "20px 24px", borderRadius: 12, backgroundColor: "rgba(220,74,74,0.04)", border: `1px solid rgba(220,74,74,0.12)` }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.bandLimited, marginBottom: 8 }}>IF NOTHING CHANGES</div>
+            <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>
+              {base.overall_score < 30
+                ? `Your structure remains highly dependent on active work. Score stays at ${base.overall_score}. Income resets monthly — one disruption creates immediate financial pressure.`
+                : base.overall_score < 50
+                  ? `Your structure has gaps that leave you exposed. Score stays at ${base.overall_score}. You can absorb a small hit, but not two in a row. Forward visibility remains limited.`
+                  : base.overall_score < 75
+                    ? `Your structure is functional but has specific weaknesses. Score stays at ${base.overall_score}. You are ${75 - base.overall_score} points from High Stability — close enough that one structural change could close the gap.`
+                    : `Your structure is strong. Score stays at ${base.overall_score}. The risk is complacency — maintaining this position requires ongoing attention to concentration and forward visibility.`}
+            </p>
+          </div>
+        )}
+
         {/* ══════════ MODE TOGGLE ══════════ */}
         <div className="sim-mode-toggle" style={{ display: "flex", gap: 0, marginBottom: 32, borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}`, background: T.surface }}>
           {(["presets", "advanced"] as const).map((mode) => {
@@ -879,16 +939,37 @@ function SimulatorContent() {
           })}
         </div>
 
-        {/* ══════════ PRESETS ══════════ */}
+        {/* ══════════ PRESETS — WHAT-IF SCENARIOS ══════════ */}
         {simMode === "presets" && (
           <div style={{ marginBottom: 32 }}>
-            <SectionLabel color={B.teal} sub={industry ? `Modeled for ${incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} in ${industry}.` : "Select a scenario to model its impact on your score."}>
+            <SectionLabel color={B.teal} sub={industry ? `Modeled for ${incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} in ${industry}.` : "Select a scenario to see exactly what changes — and why."}>
               What-If Scenarios
             </SectionLabel>
+
+            {/* ── Effort vs Impact table ── */}
+            {!simPreset && presetAnalysis.length > 0 && (
+              <div style={{ marginBottom: 20, borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px", padding: "10px 16px", backgroundColor: "rgba(244,241,234,0.04)", borderBottom: `1px solid ${T.border}` }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint }}>ACTION</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>EFFORT</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>IMPACT</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>POINTS</span>
+                </div>
+                {presetAnalysis.map(p => (
+                  <button key={p.id} onClick={() => setSimPreset(p.id)} style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px", padding: "12px 16px", width: "100%", border: "none", borderBottom: `1px solid ${T.border}`, cursor: "pointer", backgroundColor: simPreset === p.id ? "rgba(75,63,174,0.08)" : "transparent", textAlign: "left", transition: "background-color 150ms" }}>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: T.text }}>{p.label}</span>
+                    <span style={{ fontSize: 12, color: p.effort === "High" ? B.bandDeveloping : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.effort}</span>
+                    <span style={{ fontSize: 12, color: p.impact === "High" ? B.teal : p.impact === "Medium" ? B.bandEstablished : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.impact}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: B.teal, textAlign: "center", fontFamily: DISPLAY }}>+{p.lift}</span>
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="sim-presets" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 20 }}>
               {SIMULATOR_PRESETS.map((preset) => {
                 const ia = simPreset === preset.id;
+                const analysis = presetAnalysis.find(p => p.id === preset.id);
                 const previewDelta = simulateScore(preset.modify(baseInputs), qualityScore).overall_score - base.overall_score;
                 const isNeg = previewDelta < 0;
                 return (
@@ -906,25 +987,48 @@ function SimulatorContent() {
                       </span>
                     </div>
                     <p style={{ fontSize: 12, color: T.textMuted, margin: 0, lineHeight: 1.5 }}>{preset.description}</p>
+                    {/* Structural impact tags */}
+                    {analysis && analysis.tags.length > 0 && (
+                      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" as const, marginTop: 8 }}>
+                        {analysis.tags.map(tag => (
+                          <span key={tag} style={{ fontSize: 10, fontWeight: 600, color: isNeg ? B.bandLimited : B.teal, backgroundColor: isNeg ? "rgba(220,74,74,0.08)" : "rgba(26,122,109,0.08)", padding: "2px 8px", borderRadius: 12, letterSpacing: "0.01em" }}>{tag}</span>
+                        ))}
+                      </div>
+                    )}
                   </button>
                 );
               })}
             </div>
 
+            {/* ── Expanded scenario detail — WHY THIS CHANGES YOUR SCORE ── */}
             {simPreset && (() => {
               const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset)!;
+              const analysis = presetAnalysis.find(p => p.id === simPreset);
               return (
                 <Card glow={delta > 0 ? "rgba(75,63,174,0.10)" : "rgba(220,74,74,0.06)"}>
                   <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 6 }}>{ap.label}</div>
-                  <p style={{ fontSize: 13, color: T.textSecondary, margin: "0 0 10px" }}>{ap.description}</p>
                   {delta !== 0 && (
-                    <p style={{ fontSize: 14, color: delta > 0 ? B.teal : B.bandLimited, margin: 0, fontWeight: 600 }}>
+                    <div style={{ fontSize: 18, color: delta > 0 ? B.teal : B.bandLimited, fontWeight: 700, marginBottom: 10, fontFamily: DISPLAY }}>
                       {delta > 0 ? `+${delta} points` : `${delta} points`}
                       {sim.band !== base.band ? ` \u2014 ${delta > 0 ? "rises" : "drops"} to ${sim.band}` : ""}
-                    </p>
+                    </div>
+                  )}
+                  {/* Why this changes your score */}
+                  {analysis && (
+                    <div style={{ padding: "14px 16px", borderRadius: 8, backgroundColor: delta > 0 ? "rgba(26,122,109,0.06)" : "rgba(220,74,74,0.04)", border: `1px solid ${delta > 0 ? "rgba(26,122,109,0.12)" : "rgba(220,74,74,0.10)"}`, marginBottom: 10 }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: delta > 0 ? BRAND.teal : BRAND.bandLimited, marginBottom: 6 }}>WHY THIS CHANGES YOUR SCORE</div>
+                      <p style={{ fontSize: 13, color: T.text, lineHeight: 1.6, margin: 0 }}>{analysis.why}</p>
+                      {analysis.tags.length > 0 && (
+                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginTop: 8 }}>
+                          {analysis.tags.map(tag => (
+                            <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: delta > 0 ? B.teal : B.bandLimited, backgroundColor: delta > 0 ? "rgba(26,122,109,0.10)" : "rgba(220,74,74,0.08)", padding: "3px 10px", borderRadius: 20 }}>{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   )}
                   {industry && delta < 0 && (
-                    <p style={{ fontSize: 12, color: T.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>
+                    <p style={{ fontSize: 12, color: T.textMuted, margin: "0", fontStyle: "italic" }}>
                       In {industry}, {incomeModel ? `${incomeModel.toLowerCase()} professionals` : "professionals"} with similar structure average a {Math.max(Math.abs(delta) - 2, Math.abs(delta) + 3)}-point drop in this scenario.
                     </p>
                   )}
@@ -1033,30 +1137,30 @@ function SimulatorContent() {
           </div>
         )}
 
-        {/* ══════════ PATH TO +10 ══════════ */}
+        {/* ══════════ PATH TO NEXT BAND — SEQUENCED PLAN ══════════ */}
         {pathSteps.length > 0 && (
           <Card glow="rgba(26,122,109,0.08)" style={{ borderLeft: `3px solid ${B.teal}`, marginTop: 8 }}>
             <SectionLabel color={B.teal}>
-              {`Path to ${base.overall_score + 10}/100${industry ? ` in ${industry}` : ""}`}
+              {`Path to ${targetLabel}${industry ? ` in ${industry}` : ""}`}
             </SectionLabel>
             <p style={{ fontSize: 13, color: T.textSecondary, marginBottom: 16, marginTop: 0 }}>
-              {industry && incomeModel
-                ? `For ${incomeModel.toLowerCase()} professionals in ${industry}, the fastest path to gain 10 points:`
-                : "The most efficient structural changes to gain 10 points:"}
+              This is the sequence that changes your structure — not a suggestion list. Do them in order.
             </p>
             {pathSteps.map((step, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 10 }}>
-                <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: B.teal }}>{i + 1}</span>
+              <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 16, paddingBottom: i < pathSteps.length - 1 ? 16 : 0, borderBottom: i < pathSteps.length - 1 ? `1px solid ${T.border}` : "none" }}>
+                <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", flexShrink: 0, minWidth: 56 }}>
+                  <div style={{ width: 24, height: 24, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: B.teal }}>{i + 1}</span>
+                  </div>
+                  <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: T.textFaint, marginTop: 4, textAlign: "center" }}>{step.phase}</span>
                 </div>
-                <span style={{ fontSize: 13, color: T.text, fontWeight: 500, lineHeight: 1.5 }}>{step}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: T.text, marginBottom: 4 }}>{step.action}</div>
+                  <p style={{ fontSize: 12, color: T.textMuted, margin: "0 0 4px", lineHeight: 1.5 }}>{step.detail}</p>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>+{step.lift} points</span>
+                </div>
               </div>
             ))}
-            {industry && (
-              <p style={{ fontSize: 12, color: T.textMuted, marginTop: 16, marginBottom: 0, fontStyle: "italic", paddingLeft: 34 }}>
-                Top 20% of {industry} professionals typically have 60%+ recurring revenue and less than 35% from any single source.
-              </p>
-            )}
           </Card>
         )}
 
@@ -1156,8 +1260,12 @@ function SimulatorContent() {
       {scriptTemplates.length > 0 && (
         <div style={{ padding: "40px 36px", borderTop: `1px solid ${T.border}` }}>
           <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 6 }}>Ready-to-Use Action Scripts</div>
-            <div style={{ fontSize: 16, color: T.textSecondary, fontWeight: 500, lineHeight: 1.4 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
+            <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 6 }}>How To Execute Your Best Move</div>
+            <div style={{ fontSize: 16, color: T.textSecondary, fontWeight: 500, lineHeight: 1.4 }}>
+              {bestMove && bestMove.lift > 0
+                ? `Your highest-impact move is: ${bestMove.label.toLowerCase()}. Here is exactly how to start that conversation.`
+                : "Operational language calibrated to your industry. Copy, adapt, and send."}
+            </div>
           </div>
           {scriptTemplates.map((script) => {
             const isExpanded = expandedScript === script.id;
