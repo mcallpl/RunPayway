@@ -271,6 +271,7 @@ export default function MarketingLayout({
   ];
 
   const MORE_LINKS = [
+    { href: "/simulator", label: "Stability Simulator" },
     { href: "/verify", label: t.nav.verifyAScore },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
@@ -722,6 +723,7 @@ export default function MarketingLayout({
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
                   { href: "/methodology", label: t.nav.methodology },
+                  { href: "/simulator", label: "Stability Simulator" },
                   { href: "/verify", label: t.nav.verifyAScore },
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/sign-in", label: "Sign In" },

@@ -313,57 +313,6 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
   );
 }
 
-// ── QR Code component ──
-function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordId: string; authCode?: string; score?: number; band?: string; date?: string; model?: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [simUrl, setSimUrl] = useState("/simulator");
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const params = new URLSearchParams();
-    try {
-      const stored = sessionStorage.getItem("rp_record");
-      if (stored) {
-        const rec = JSON.parse(stored);
-        const v2 = rec._v2;
-        if (v2?.normalized_inputs) {
-          const ni = v2.normalized_inputs;
-          params.set("p", String(ni.income_persistence_pct));
-          params.set("c", String(ni.largest_source_pct));
-          params.set("src", String(ni.source_diversity_count));
-          params.set("f", String(ni.forward_secured_pct));
-          params.set("v", ni.income_variability_level);
-          params.set("l", String(ni.labor_dependence_pct));
-          params.set("q", String(v2.quality?.quality_score ?? 5));
-        }
-        if (score !== undefined) params.set("s", String(score));
-        if (band) params.set("b", band);
-        if (rec.assessment_title) params.set("n", encodeURIComponent(rec.assessment_title));
-        if (rec.industry_sector) params.set("ind", encodeURIComponent(rec.industry_sector));
-        if (rec.primary_income_model) params.set("mod", encodeURIComponent(rec.primary_income_model));
-      }
-    } catch { /* fallback */ }
-    params.set("id", recordId);
-    const url = `https://peoplestar.com/RunPayway/simulator?${params.toString()}`;
-    // Use full URL for click link — basePath not auto-prepended on raw <a> tags
-    setSimUrl(`https://peoplestar.com/RunPayway/simulator?${params.toString()}`);
-    import("qrcode").then((QRCode) => {
-      QRCode.toCanvas(canvas, url, {
-        width: 140,
-        margin: 2,
-        color: { dark: "#0E1A2B", light: "#FFFFFF" },
-        errorCorrectionLevel: "M",
-      });
-    }).catch(() => {});
-  }, [recordId, authCode, score, band]);
-
-  return (
-    <a href={simUrl} style={{ display: "block", cursor: "pointer" }} title="Open RunPayway&#8482; Stability Simulator">
-      <canvas ref={canvasRef} width={140} height={140} style={{ width: 80, height: 80 }} />
-    </a>
-  );
-}
 
 // ============================================================
 // PDF DOWNLOAD
@@ -1068,15 +1017,19 @@ export default function ReviewPage() {
           <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24, maxWidth: 340, lineHeight: 1.5 }}>{coverBandDesc[tier]}</div>
 
           {/* Methodology footer */}
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 3 }}>Built from fixed structural questions under Model RP-2.0.</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 28 }}>Report tailored using your operating structure, income model, and priorities.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 28 }}>Built from fixed structural questions under Model RP-2.0.</div>
 
-          {/* Simulator QR */}
-          <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>SCORE SIMULATOR&#8482;</div>
-          <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Scan to model changes using your actual assessment.</div>
-          <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
-          <div style={{ ...T.meta, color: B.muted, marginTop: 6, fontSize: mobile ? 11 : 12 }}>Linked to your report</div>
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 12 }}>Model RP-2.0 · 4 Pages</div>
+          {/* Simulator access credentials */}
+          <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>STABILITY SIMULATOR&#8482; ACCESS</div>
+          <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Enter these codes at runpayway.com/simulator to model changes.</div>
+          <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
+            <div style={{ ...T.meta, color: B.taupe, fontSize: 10 }}>Report ID</div>
+            <div style={{ fontFamily: "monospace", fontSize: mobile ? 10 : 11, color: B.navy, letterSpacing: "0.02em", wordBreak: "break-all" as const }}>{record.record_id}</div>
+            <div style={{ ...T.meta, color: B.taupe, fontSize: 10, marginTop: 4 }}>Access Code</div>
+            <div style={{ fontFamily: "monospace", fontSize: mobile ? 10 : 11, color: B.navy, letterSpacing: "0.02em" }}>{record.authorization_code?.slice(0, 16) || ""}</div>
+          </div>
+
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 4 Pages</div>
         </div>
     </>,
 

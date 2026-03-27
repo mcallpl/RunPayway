@@ -421,6 +421,56 @@ function SimulatorContent() {
   const [scriptTemplates, setScriptTemplates] = useState<Array<{ id: string; title: string; context: string; script: string }>>([]);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
+  const [accessReportId, setAccessReportId] = useState("");
+  const [accessCode, setAccessCode] = useState("");
+  const [accessError, setAccessError] = useState<string | null>(null);
+  const [accessLoading, setAccessLoading] = useState(false);
+
+  // Helper to populate simulator state from data
+  const populateFromData = (data: { normalized_inputs: { income_persistence_pct: number; largest_source_pct: number; source_diversity_count: number; forward_secured_pct: number; income_variability_level: string; labor_dependence_pct: number }; quality_score: number; assessment_title: string; industry_sector: string; primary_income_model: string }) => {
+    const ni = data.normalized_inputs;
+    const inputs: CanonicalInput = { income_persistence_pct: ni.income_persistence_pct, largest_source_pct: ni.largest_source_pct, source_diversity_count: ni.source_diversity_count, forward_secured_pct: ni.forward_secured_pct, income_variability_level: (ni.income_variability_level || "moderate") as CanonicalInput["income_variability_level"], labor_dependence_pct: ni.labor_dependence_pct };
+    setBaseInputs(inputs);
+    setQualityScore(data.quality_score || 5);
+    setUserName(data.assessment_title || "");
+    setIndustry((data.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
+    setIncomeModel((data.primary_income_model || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
+    setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
+    if (data.industry_sector) {
+      const scripts = getScriptsForSector(data.industry_sector);
+      if (scripts.length > 0) setScriptTemplates(scripts);
+    }
+    setLoaded(true);
+  };
+
+  // Handle access code submission
+  const handleAccessSubmit = async () => {
+    setAccessError(null);
+    const trimmedId = accessReportId.trim().toLowerCase();
+    const trimmedCode = accessCode.trim().toLowerCase();
+    if (!trimmedId || !trimmedCode) {
+      setAccessError("Enter both your Report ID and Access Code from your report.");
+      return;
+    }
+    setAccessLoading(true);
+    try {
+      const res = await fetch("/api/v1/simulator-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ record_id: trimmedId, authorization_code: trimmedCode }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setAccessError(data.error || "Code not recognized. Check your report and try again.");
+        setAccessLoading(false);
+        return;
+      }
+      populateFromData(data);
+    } catch {
+      setAccessError("Something went wrong. Please try again.");
+      setAccessLoading(false);
+    }
+  };
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -435,20 +485,13 @@ function SimulatorContent() {
     const mod = searchParams.get("mod");
 
     if (p && c && src && f && l) {
-      const inputs: CanonicalInput = { income_persistence_pct: Number(p), largest_source_pct: Number(c), source_diversity_count: Number(src), forward_secured_pct: Number(f), income_variability_level: (v || "moderate") as CanonicalInput["income_variability_level"], labor_dependence_pct: Number(l) };
-      setBaseInputs(inputs);
-      setQualityScore(Number(q) || 5);
-      setUserName(n ? decodeURIComponent(n) : "");
-      setIndustry(ind ? decodeURIComponent(ind).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
-      setIncomeModel(mod ? decodeURIComponent(mod).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
-      setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
-      // Load action scripts from URL industry param
-      if (ind) {
-        const rawInd = decodeURIComponent(ind);
-        const scripts = getScriptsForSector(rawInd);
-        if (scripts.length > 0) setScriptTemplates(scripts);
-      }
-      setLoaded(true);
+      populateFromData({
+        normalized_inputs: { income_persistence_pct: Number(p), largest_source_pct: Number(c), source_diversity_count: Number(src), forward_secured_pct: Number(f), income_variability_level: v || "moderate", labor_dependence_pct: Number(l) },
+        quality_score: Number(q) || 5,
+        assessment_title: n ? decodeURIComponent(n) : "",
+        industry_sector: ind ? decodeURIComponent(ind) : "",
+        primary_income_model: mod ? decodeURIComponent(mod) : "",
+      });
       return;
     }
 
@@ -458,29 +501,25 @@ function SimulatorContent() {
         const record = JSON.parse(stored);
         const v2 = record._v2;
         if (v2?.normalized_inputs) {
-          const ni = v2.normalized_inputs;
-          const inputs: CanonicalInput = { income_persistence_pct: ni.income_persistence_pct, largest_source_pct: ni.largest_source_pct, source_diversity_count: ni.source_diversity_count, forward_secured_pct: ni.forward_secured_pct, income_variability_level: ni.income_variability_level, labor_dependence_pct: ni.labor_dependence_pct };
-          setBaseInputs(inputs);
-          setQualityScore(v2.quality?.quality_score ?? 5);
-          setUserName(record.assessment_title || "");
-          setIndustry((record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
-          setIncomeModel((record.primary_income_model || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
-          setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
-          // Load industry-specific action scripts
-          const sectorKey = record.industry_sector || "";
-          const industryScripts = getScriptsForSector(sectorKey);
-          if (industryScripts.length > 0) {
-            setScriptTemplates(industryScripts);
-          } else if (v2.script_templates && Array.isArray(v2.script_templates)) {
-            setScriptTemplates(v2.script_templates.slice(0, 3));
+          populateFromData({
+            normalized_inputs: v2.normalized_inputs,
+            quality_score: v2.quality?.quality_score ?? 5,
+            assessment_title: record.assessment_title || "",
+            industry_sector: record.industry_sector || "",
+            primary_income_model: record.primary_income_model || "",
+          });
+          // Also load script templates from v2 if no industry scripts
+          if (!record.industry_sector) {
+            if (v2.script_templates && Array.isArray(v2.script_templates)) {
+              setScriptTemplates(v2.script_templates.slice(0, 3));
+            }
           }
-          setLoaded(true);
         }
       }
     } catch { /* ignore */ }
   }, [searchParams]);
 
-  /* ── Empty state ── */
+  /* ── Empty state — access code entry ── */
   if (!loaded || !baseInputs) {
     return (
       <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 40%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -490,15 +529,63 @@ function SimulatorContent() {
             <span style={{ fontSize: 20 }}>&#9672;</span>
           </div>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Simulator</div>
-          <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 16 }}>
-            This tool is included<br />with your report.
+          <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 12 }}>
+            Enter your report codes
           </h1>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 36 }}>
-            Tap the QR code on your report to load your data and model scenarios against your actual income structure.
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 28 }}>
+            Your Report ID and Access Code are on the cover page of your report. Enter them below to load your assessment data.
           </p>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)" }}>
-            Get the Full Report
-          </Link>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16, textAlign: "left" }}>
+            <div>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Report ID</label>
+              <input
+                type="text"
+                value={accessReportId}
+                onChange={(e) => { setAccessReportId(e.target.value); setAccessError(null); }}
+                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                spellCheck={false}
+                autoComplete="off"
+                style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.02em", boxSizing: "border-box" as const }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Access Code</label>
+              <input
+                type="text"
+                value={accessCode}
+                onChange={(e) => { setAccessCode(e.target.value); setAccessError(null); }}
+                placeholder="16-character code"
+                spellCheck={false}
+                autoComplete="off"
+                style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.02em", boxSizing: "border-box" as const }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+                onKeyDown={(e) => { if (e.key === "Enter") handleAccessSubmit(); }}
+              />
+            </div>
+          </div>
+
+          {accessError && (
+            <div style={{ fontSize: 13, color: "#DC4A4A", marginBottom: 12, lineHeight: 1.4 }}>{accessError}</div>
+          )}
+
+          <button
+            onClick={handleAccessSubmit}
+            disabled={accessLoading}
+            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: accessLoading ? "rgba(244,241,234,0.5)" : "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)", border: "none", cursor: accessLoading ? "wait" : "pointer", width: "100%", transition: "opacity 200ms ease" }}
+          >
+            {accessLoading ? "Loading..." : "Load My Assessment"}
+          </button>
+
+          <div style={{ marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(244,241,234,0.08)" }}>
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", lineHeight: 1.5 }}>
+              Don&apos;t have a report yet?{" "}
+              <Link href="/pricing" style={{ color: BRAND.teal, textDecoration: "none", fontWeight: 500 }}>Get the Full Report</Link>
+            </p>
+          </div>
         </div>
       </div>
     );
