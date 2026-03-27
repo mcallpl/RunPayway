@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -100,7 +102,7 @@ function Journey() {
       detail: "No dollar amounts. No account access. Just structural patterns.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Question 4 of 6</div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Structural Assessment</div>
           <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: "#F4F1EA", marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
           {["Less than 1 month", "1\u20132 months", "3\u20135 months", "6\u201311 months", "12 or more months"].map((opt, i) => (
             <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(26,122,109,0.15)" : "rgba(244,241,234,0.04)", border: i === 2 ? `1px solid ${B.teal}` : "1px solid rgba(244,241,234,0.06)", fontSize: 14, color: i === 2 ? B.teal : "rgba(244,241,234,0.50)", fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
@@ -213,7 +215,7 @@ function Journey() {
                     {isRight && (
                       <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
                         <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                          <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
                           <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
                         </div>
                         {step.screen}
@@ -243,7 +245,7 @@ function Journey() {
                     {!isRight && (
                       <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
                         <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                          <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
                           <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
                         </div>
                         {step.screen}
@@ -261,7 +263,7 @@ function Journey() {
                     </div>
                     <div style={{ backgroundColor: B.navy, borderRadius: 14, overflow: "hidden", boxShadow: "0 6px 24px rgba(14,26,43,0.10)", marginBottom: 16 }}>
                       <div style={{ padding: "6px 12px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const }}>RunPayway&#8482;</span>
+                        <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
                         <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
                       </div>
                       {step.screen}
