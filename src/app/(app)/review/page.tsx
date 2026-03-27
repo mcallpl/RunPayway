@@ -1043,7 +1043,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Your Score", "Income X-Ray", "Risks", "Action Plan", "Methodology"];
+  const pageNames = ["Cover", "Your Score", "Income X-Ray", "Risks", "What To Do", "Methodology"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1515,135 +1515,89 @@ export default function ReviewPage() {
     // Page 4: Action Plan
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Action Plan</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>The single most impactful change you can make is described below. Start here.</p>
-        {/* Top 3 improvements */}
-        {v2Lift && v2Lift.lift_scenarios.length > 0 && (
-          <div style={{ marginBottom: 16 }}>
-            <Overline large>What Your Score Could Be</Overline>
-            {v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => {
-              const liftPlain: Record<string, string> = {
-                reduce_labor_dependence: "Reduce how much income depends on daily work",
-                extend_forward_visibility: "Secure more income before next month begins",
-                reduce_concentration: "Reduce reliance on the largest source",
-                increase_persistence: "Build more income that repeats or continues without daily work",
-                increase_persistent_revenue: "Build more income that repeats or continues without daily work",
-                add_income_sources: "Add more dependable income sources",
-                reduce_variability: "Reduce month-to-month income swings",
-                increase_continuity: "Increase how long income would continue if work stopped",
-                extend_continuity: "Increase how long income would continue if work stopped",
-                diversify_sources: "Spread income across more independent sources",
-                reduce_active_dependence: "Reduce how much income depends on daily work",
-                improve_forward_secured: "Secure more income before next month begins",
-                strengthen_persistence: "Build more income that continues without daily work",
-                reduce_largest_source: "Reduce reliance on the largest source",
-              };
-              const title = liftPlain[s.scenario_id] ?? s.label
-                .replace(/Extend Forward Visibility/i, "Secure more income before next month begins")
-                .replace(/Reduce Labor Dependence/i, "Reduce how much income depends on daily work")
-                .replace(/Reduce Concentration/i, "Reduce reliance on the largest source")
-                .replace(/Increase Persist.*Revenue/i, "Build more income that repeats or continues without daily work");
-              return (
-                <div key={s.scenario_id} style={{ padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <span style={{ ...T.sectionTitle, color: B.purple, minWidth: 20 }}>{i + 1}</span>
-                    <div style={{ flex: 1 }}>
-                      <span style={{ ...T.sectionLabel, color: B.navy }}>{title}</span>
-                      <div style={{ ...T.small, color: B.teal, fontWeight: 500, marginTop: 4 }}>If you made this change, your score would increase by approximately {s.lift} points, from {s.original_score} to {s.projected_score}.{s.band_shift ? ` This would move you to ${s.projected_band}.` : ""}</div>
-                      {s.change_description && <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>What this means in practice: {s.change_description}</div>}
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What To Do About It</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>Not just what could improve — how to decide which change to make first.</p>
+
+        {/* ── DECISION FRAMEWORK — CATEGORIZED IMPROVEMENTS ── */}
+        {v2Lift && v2Lift.lift_scenarios.length > 0 && (() => {
+          const viable = v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift);
+          if (viable.length === 0) return null;
+
+          // Concrete action descriptions per scenario type
+          const liftConcrete: Record<string, { title: string; how: string }> = {
+            reduce_labor_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables that generate revenue without your direct involvement each time." },
+            reduce_active_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables that generate revenue without your direct involvement each time." },
+            extend_forward_visibility: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, recurring service plans, or standing agreements. Even partial forward commitments reduce structural exposure." },
+            improve_forward_secured: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, recurring service plans, or standing agreements. Even partial forward commitments reduce structural exposure." },
+            reduce_concentration: { title: "Reduce dependence on your largest income source", how: "Add one new client, contract, or revenue stream that could reach 15%+ of your income within 90 days. The goal is not to replace, but to rebalance." },
+            reduce_largest_source: { title: "Reduce dependence on your largest income source", how: "Add one new client, contract, or revenue stream that could reach 15%+ of your income within 90 days. The goal is not to replace, but to rebalance." },
+            increase_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, licensing fees, or membership models where revenue renews automatically unless cancelled." },
+            increase_persistent_revenue: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, licensing fees, or membership models where revenue renews automatically unless cancelled." },
+            strengthen_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, licensing fees, or membership models where revenue renews automatically unless cancelled." },
+            add_income_sources: { title: "Add more independent income sources", how: "Identify one adjacent service, product, or client type that operates on a different cycle or serves a different market from your primary source." },
+            diversify_sources: { title: "Spread income across more independent sources", how: "Identify one adjacent service, product, or client type that operates on a different cycle or serves a different market from your primary source." },
+            reduce_variability: { title: "Smooth out month-to-month income swings", how: "Shift project-based work toward retainers or phased billing. Offer clients quarterly or annual pricing in exchange for commitment." },
+            increase_continuity: { title: "Extend how long income would last if you stopped working", how: "Build at least one income stream that would keep producing for 3+ months independently — recurring contracts, digital products, or licensing arrangements." },
+            extend_continuity: { title: "Extend how long income would last if you stopped working", how: "Build at least one income stream that would keep producing for 3+ months independently — recurring contracts, digital products, or licensing arrangements." },
+          };
+
+          // Categorize: fastest = highest lift, easiest = smallest change_description or lowest lift barrier
+          const fastest = viable[0];
+          const easiest = viable.length > 1 ? viable[viable.length - 1] : null;
+          const mostDurable = viable.find(s => s.scenario_id.includes("persist") || s.scenario_id.includes("continuity") || s.scenario_id.includes("labor"));
+
+          const categories: { tag: string; tagColor: string; scenario: typeof fastest }[] = [
+            { tag: "FASTEST IMPROVEMENT", tagColor: B.purple, scenario: fastest },
+          ];
+          if (easiest && easiest.scenario_id !== fastest.scenario_id) {
+            categories.push({ tag: "EASIEST TO START", tagColor: B.teal, scenario: easiest });
+          }
+          if (mostDurable && mostDurable.scenario_id !== fastest.scenario_id && mostDurable.scenario_id !== easiest?.scenario_id) {
+            categories.push({ tag: "MOST DURABLE CHANGE", tagColor: B.navy, scenario: mostDurable });
+          }
+
+          return (
+            <div style={{ marginBottom: 20 }}>
+              <Overline large>How To Decide What To Change</Overline>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {categories.map(({ tag, tagColor, scenario }) => {
+                  const concrete = liftConcrete[scenario.scenario_id];
+                  const title = concrete?.title ?? scenario.label;
+                  const how = concrete?.how ?? scenario.change_description ?? "";
+                  return (
+                    <div key={tag} style={{ ...cardStyle, padding: "14px 16px", borderLeft: `3px solid ${tagColor}` }}>
+                      <div style={{ ...T.overline, color: tagColor, marginBottom: 6, fontSize: 10 }}>{tag}</div>
+                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{title}</div>
+                      {how && <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{how}</p>}
+                      <div style={{ ...T.small, color: B.teal, fontWeight: 500 }}>
+                        {scenario.original_score} → {scenario.projected_score} (+{scenario.lift} points){scenario.band_shift ? ` — moves you to ${scenario.projected_band}` : ""}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        <SectionDivider />
-
-        {/* Priority actions — from outcome layer or fallback */}
-        <Overline large>{isHighScorer ? `How to Maintain Your Position in ${industrySector}` : `Your Next Steps as a ${structureDesc} in ${industrySector}`}</Overline>
-        {olActions && olActions.length > 0 && (
-          <div style={{ ...T.meta, color: B.teal, fontWeight: 500, marginBottom: 8 }}>
-            Tailored for {olIndustryLabel ? `${olIndustryLabel} · ` : ""}{olFamilyLabel ?? "your income model"}
-          </div>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-          {(olActions && olActions.length > 0
-            ? olActions.slice(0, 3).map((a, i) => {
-                // Blend OL narrative with v2 engine specifics (timeframe/target/tradeoff)
-                const v2Match = v2?.recommended_actions?.find(ra => ra.category === a.action_id || ra.label.toLowerCase().includes(a.label.toLowerCase().split(" ")[0]));
-                return {
-                  rank: `${i + 1}`,
-                  title: a.label,
-                  copy: a.description,
-                  why: a.why_now,
-                  effect: a.expected_effect,
-                  timeframe: (v2Match as Record<string, string>)?.timeframe ?? "",
-                  target: (v2Match as Record<string, string>)?.target ?? "",
-                  tradeoff: (v2Match as Record<string, string>)?.tradeoff ?? "",
-                };
-              })
-            : (v2?.recommended_actions && v2.recommended_actions.length > 0)
-            ? v2.recommended_actions.slice(0, 4).map((a, i) => ({
-                rank: `${i + 1}`,
-                title: a.label,
-                copy: a.description,
-                why: "",
-                effect: a.expected_impact,
-                timeframe: (a as Record<string, string>).timeframe ?? "",
-                target: (a as Record<string, string>).target ?? "",
-                tradeoff: (a as Record<string, string>).tradeoff ?? "",
-              }))
-            : (() => {
-                const fam = olFamilyLabel ? olFamilyLabel.toLowerCase() : structureDesc;
-                const ind = olIndustryLabel || industrySector;
-                const priorities = isHighScorer ? [
-                  { key: "forward_visibility", title: "Maintain forward revenue visibility", copy: `As a ${fam} in ${ind}, review your committed revenue quarterly. Ensure at least 60% of next quarter's income is already locked in.` },
-                  { key: "source_concentration", title: "Monitor client concentration", copy: `For ${fam} structures, no single client should exceed 25% of revenue. Review your client mix monthly and diversify proactively.` },
-                  { key: "labor_dependence", title: "Protect income continuity", copy: `As a ${fam}, ensure your passive and repeatable income streams are growing, not shrinking. Review annually.` },
-                  { key: "low_continuity", title: "Extend your runway", copy: `For ${fam} structures in ${ind}, your continuity window is your safety margin. Every quarter, ask: could I sustain 6 months without new business?` },
-                ] : [
-                  { key: "forward_visibility", title: "This week: start locking in future income", copy: `As a ${fam} in ${ind}, reach out to your top 3 clients or prospects about converting to retainers, multi-month contracts, or advance commitments. Your forward visibility is your biggest gap right now.` },
-                  { key: "source_concentration", title: "This month: add a second meaningful income source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your biggest source disappears. For ${fam} structures, identify one new client, product, or revenue stream that could reach 10%+ of your income within 90 days.` },
-                  { key: "labor_dependence", title: "This quarter: build one income stream that doesn't need you daily", copy: `${record.active_income_level}% of your income requires your daily effort. As a ${fam} in ${ind}, pick one service, product, or arrangement you can convert into recurring or passive revenue this quarter.` },
-                  { key: "low_continuity", title: "This quarter: extend how long income lasts without work", copy: `Your income would continue for about ${continuityDisplay} if you stopped. For ${fam} structures, build at least one stream that would keep producing for 3+ months independently.` },
-                ];
-                const sorted = [
-                  ...priorities.filter(p => p.key === dominantConstraint),
-                  ...priorities.filter(p => p.key !== dominantConstraint),
-                ];
-                return sorted.map((p, i) => ({ rank: `${i + 1}`, title: p.title, copy: p.copy, why: "", effect: "", timeframe: "", target: "", tradeoff: "" }));
-              })()
-          ).map((action) => (
-            <div key={action.rank} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <span style={{ ...T.sectionLabel, color: B.purple, minWidth: 18 }}>{action.rank}.</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{action.title}</div>
-                <p style={{ ...T.small, color: B.muted, margin: 0 }}>{action.copy}</p>
+                  );
+                })}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })()}
 
-        {/* What NOT to do — inline with actions */}
-        {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What to avoid</div>
-            {(v2AvoidActions ?? []).slice(0, 1).map((a) => (
-              <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
-            ))}
-            {(olAvoid ?? []).slice(0, 1).map((text) => (
-              <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {text}</div>
-            ))}
+        {/* ── IF YOU DID BOTH ── */}
+        {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
+          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.teal}` }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>IF YOU DID BOTH</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>
+              Combining the top two changes would raise your score to approximately <span style={{ fontWeight: 700 }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
+            </p>
+            {v2Explainability?.best_lift_explanation && (
+              <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0", lineHeight: 1.5 }}>{v2Explainability.best_lift_explanation}</p>
+            )}
           </div>
         )}
 
         <SectionDivider />
 
-        {/* Tradeoffs */}
+        {/* ── TRADEOFFS ── */}
         {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
-          <div style={{ marginBottom: R.sectionMb }}>
+          <div style={{ marginBottom: 16 }}>
             <Overline large>Tradeoffs to Understand</Overline>
             {v2TradeoffNarratives.slice(0, 1).map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
@@ -1658,20 +1612,20 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Combined top-two lift */}
-        {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.teal}` }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>IF YOU DID BOTH</div>
-            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>
-              Combining the top two changes would raise your score to approximately <span style={{ fontWeight: 700 }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
-            </p>
-            {v2Explainability?.best_lift_explanation && (
-              <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0", lineHeight: 1.5 }}>{v2Explainability.best_lift_explanation}</p>
-            )}
+        {/* ── WHAT TO AVOID ── */}
+        {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>What to avoid</div>
+            {(v2AvoidActions ?? []).slice(0, 1).map((a) => (
+              <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
+            ))}
+            {(olAvoid ?? []).slice(0, 1).map((text) => (
+              <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>— {text}</div>
+            ))}
           </div>
         )}
 
-        {/* Execution roadmap */}
+        {/* ── WEEK-BY-WEEK ROADMAP ── */}
         {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 && (
           <div style={{ marginBottom: 16 }}>
             <SectionDivider />
@@ -1693,7 +1647,7 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="Your Action Plan" page={4} />
+        <PageFooter section="What To Do About It" page={4} />
     </>,
 
     // Page 5: Methodology
