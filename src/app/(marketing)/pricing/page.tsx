@@ -119,7 +119,7 @@ function PricingCards() {
               display: "flex", flexDirection: "column" as const,
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>Free Score</div>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>Income Stability Score&#8482;</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
               <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$0</span>
               <span style={{ fontSize: 14, color: B.muted }}>always free</span>
@@ -166,7 +166,7 @@ function PricingCards() {
               <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.10)", marginBottom: 16 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.purple }}>Most Popular</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>Diagnostic Report</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>RunPayway&#8482; Diagnostic Report</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$69</span>
                 <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
@@ -230,7 +230,7 @@ function PricingCards() {
               <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(26,122,109,0.15)", marginBottom: 16 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Best Value</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>Stability Monitoring</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$149</span>
                 <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>/year</span>
@@ -244,7 +244,7 @@ function PricingCards() {
 
             <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
               {[
-                { text: "Everything in Diagnostic Report, plus:", bold: true },
+                { text: "Everything in the Diagnostic Report, plus:", bold: true },
                 { text: "3 full assessments within 12 months" },
                 { text: "Side-by-side score comparison" },
                 { text: "Progress tracking across assessments" },
@@ -389,13 +389,13 @@ function Faq() {
 
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, a consequence sentence showing what your structure can absorb, and the single biggest structural factor limiting your score. No payment required." },
-    { q: "What does the $69 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the Score Simulator." },
-    { q: "What does Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a new diagnostic report. You also get side-by-side score comparisons, progress tracking, updated action priorities after each round, persistent simulator history, and a recalculated \u201Cbest next move\u201D every time you reassess." },
+    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the Score Simulator." },
+    { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a new diagnostic report. You also get side-by-side score comparisons, progress tracking, updated action priorities after each round, persistent simulator history, and a recalculated \u201Cbest next move\u201D every time you reassess." },
     { q: "How is the score calculated?", a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
     { q: "Is my information confidential?", a: "Yes. We never collect bank credentials, credit data, or financial account access. Your data is encrypted, never sold, and you can request deletion at any time." },
     { q: "How long does it take?", a: "Under two minutes. Your free score is delivered instantly. The full report generates immediately after purchase." },
-    { q: "Can I retake the assessment?", a: "Yes. Each assessment is independent. With the $69 Diagnostic Report, you purchase one at a time. With Stability Monitoring ($149/year), you get three assessments over 12 months with comparison tracking built in." },
+    { q: "Can I retake the assessment?", a: "Yes. Each assessment is independent. With the RunPayway\u2122 Diagnostic Report, you purchase one at a time. With RunPayway\u2122 Stability Monitoring ($149/year), you get three assessments over 12 months with comparison tracking built in." },
   ];
 
   return (

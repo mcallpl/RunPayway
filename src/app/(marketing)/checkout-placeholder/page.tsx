@@ -15,13 +15,13 @@ const B = {
 
 const PLANS: Record<string, { name: string; price: string; priceCents: number; assessments: number; period?: string }> = {
   single: {
-    name: "Diagnostic Report",
+    name: "RunPayway\u2122 Diagnostic Report",
     price: "$69",
     priceCents: 6900,
     assessments: 1,
   },
   monitoring: {
-    name: "Stability Monitoring",
+    name: "RunPayway\u2122 Stability Monitoring",
     price: "$149",
     priceCents: 14900,
     assessments: 3,

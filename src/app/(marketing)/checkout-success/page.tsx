@@ -18,8 +18,8 @@ const B = {
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
-  monitoring: { title: "Stability Monitoring", price: "$149" },
-  single: { title: "Diagnostic Report", price: "$69" },
+  monitoring: { title: "RunPayway\u2122 Stability Monitoring", price: "$149" },
+  single: { title: "RunPayway\u2122 Diagnostic Report", price: "$69" },
 };
 
 function CheckoutSuccessContent() {

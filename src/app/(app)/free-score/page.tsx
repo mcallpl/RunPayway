@@ -425,7 +425,7 @@ export default function FreeScorePage() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.35)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.30)"; }}
               >
-                Get Diagnostic Report — $69
+                Get RunPayway&#8482; Diagnostic Report — $69
               </a>
             </div>
 

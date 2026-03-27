@@ -90,7 +90,7 @@ export default function SignInPage() {
     }
     const found = getSessionByEmail(trimmed);
     if (!found) {
-      setError("No Stability Monitoring plan found for this email. Check your email or purchase a plan.");
+      setError("No RunPayway\u2122 Stability Monitoring plan found for this email. Check your email or purchase a plan.");
       return;
     }
     if (isExpired(found)) {
@@ -204,7 +204,7 @@ export default function SignInPage() {
               margin: "0 auto 8px",
             }}
           >
-            Sign in with your email to access your Stability Monitoring dashboard.
+            Sign in with your email to access your RunPayway&#8482; Stability Monitoring dashboard.
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
@@ -260,7 +260,7 @@ export default function SignInPage() {
                 </h2>
 
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-                  Enter the email you used when you purchased Stability Monitoring.
+                  Enter the email you used when you purchased RunPayway&#8482; Stability Monitoring.
                 </p>
 
                 {/* Email */}
@@ -346,7 +346,7 @@ export default function SignInPage() {
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                   >
-                    Get Stability Monitoring
+                    Get RunPayway&#8482; Stability Monitoring
                   </Link>
                 </div>
 
@@ -373,7 +373,7 @@ export default function SignInPage() {
                 </h2>
 
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-                  Welcome back. Here is the status of your Stability Monitoring plan.
+                  Welcome back. Here is the status of your RunPayway&#8482; Stability Monitoring plan.
                 </p>
 
                 {/* Status cards */}
@@ -555,10 +555,10 @@ export default function SignInPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Diagnostic Report Customers
+              RunPayway&#8482; Diagnostic Report Customers
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              Diagnostic Report purchases are delivered immediately after completing the assessment. No login required.
+              RunPayway&#8482; Diagnostic Report purchases are delivered immediately after completing the assessment. No login required.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
               To generate a new report, simply purchase another diagnostic.
@@ -593,7 +593,7 @@ export default function SignInPage() {
               }}
             >
               <span className="tick tick-white" />
-              <span className="cta-label">Get Diagnostic Report</span>
+              <span className="cta-label">Get RunPayway&#8482; Diagnostic Report</span>
               <span className="cta-arrow cta-arrow-white" />
             </a>
           </div>
@@ -616,7 +616,7 @@ export default function SignInPage() {
               How It Works
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              Stability Monitoring subscribers sign in with the email they used at checkout. No access codes or passwords needed.
+              RunPayway&#8482; Stability Monitoring subscribers sign in with the email they used at checkout. No access codes or passwords needed.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
               Your dashboard shows remaining assessments, plan expiration, and past assessment history.

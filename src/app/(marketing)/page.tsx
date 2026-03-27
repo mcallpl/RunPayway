@@ -1363,7 +1363,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
           }}
         >
-          {/* CARD 1 — Free Score */}
+          {/* CARD 1 — Income Stability Score™ */}
           <div
             style={{
               background: "#FFFFFF",
@@ -1382,7 +1382,7 @@ function PricingSection() {
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
-              Free Score
+              Income Stability Score&#8482;
             </div>
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $0
@@ -1421,7 +1421,7 @@ function PricingSection() {
             </Link>
           </div>
 
-          {/* CARD 2 — Diagnostic Report $69 */}
+          {/* CARD 2 — RunPayway™ Diagnostic Report $69 */}
           <div
             style={{
               background: "#FFFFFF",
@@ -1457,7 +1457,7 @@ function PricingSection() {
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
-              Diagnostic Report
+              RunPayway&#8482; Diagnostic Report
             </div>
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $69
@@ -1536,7 +1536,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       a: "Your score out of 100, your stability band, and one key insight about what is holding your income back. No payment required.",
     },
     {
-      q: "What does the $69 Diagnostic Report include?",
+      q: "What does the RunPayway\u2122 Diagnostic Report include?",
       a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with projected impact, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators with cross-factor effects, and structural context for your income model.",
     },
     {
