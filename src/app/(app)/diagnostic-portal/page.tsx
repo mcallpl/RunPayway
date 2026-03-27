@@ -72,6 +72,13 @@ const REVENUE_STRUCTURES = [
   { value: "Mixed Revenue Structure", desc: "Combination of one-time and recurring income" },
 ];
 
+const YEARS_IN_STRUCTURE = [
+  "Less than 1 year",
+  "1–3 years",
+  "3–5 years",
+  "5+ years",
+];
+
 const INDUSTRY_SECTORS = [
   "Real Estate",
   "Finance / Banking",
@@ -203,6 +210,7 @@ export default function InitializationPage() {
     primary_income_model: "",
     revenue_structure: "",
     industry_sector: "",
+    years_in_structure: "",
     recipient_email: "",
   });
 
@@ -315,7 +323,10 @@ export default function InitializationPage() {
 
   const isValid =
     form.assessment_title.trim() !== "" &&
-    form.industry_sector !== "";
+    form.industry_sector !== "" &&
+    form.operating_structure !== "" &&
+    form.primary_income_model !== "" &&
+    form.years_in_structure !== "";
 
   const handleBegin = () => {
     if (!isValid) return;
@@ -337,7 +348,7 @@ export default function InitializationPage() {
   };
 
   const canContinueStep0 = form.assessment_title.trim() !== "";
-  const canContinueStep1 = form.industry_sector !== "";
+  const canContinueStep1 = form.industry_sector !== "" && form.operating_structure !== "" && form.primary_income_model !== "" && form.years_in_structure !== "";
 
   /* ================================================================ */
   /*  READY SCREEN — Breath before the diagnostic begins               */
@@ -549,12 +560,12 @@ export default function InitializationPage() {
 
   const stepTitles = [
     "",
-    "Industry Context",
+    "Your Income Profile",
   ];
 
   const stepDescriptions = [
     "",
-    "Which industry generates your income? This helps tailor your report.",
+    "Tell us about how your income is structured. This calibrates your diagnostic report.",
   ];
 
   return (
@@ -618,7 +629,7 @@ export default function InitializationPage() {
         padding: "12px 24px",
       }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
-          {["Profile", "Industry", "Assessment"].map((label, i) => {
+          {["Profile", "Income Structure", "Assessment"].map((label, i) => {
             const isActive = i === step;
             const isComplete = i < step;
             const isFuture = i > step && i < 3;
@@ -664,12 +675,13 @@ export default function InitializationPage() {
           </p>
         </div>
 
-        {/* Step 1 — Industry Sector only */}
+        {/* Step 1 — Income Profile */}
         {step === 1 && (
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            {/* Industry */}
             <div>
               <label style={labelStyle}>Industry Sector</label>
-              <p style={helperStyle}>Which industry generates your income?</p>
+              <p style={helperStyle}>Which industry generates your primary income?</p>
               <select
                 value={form.industry_sector}
                 onChange={(e) => update("industry_sector", e.target.value)}
@@ -679,6 +691,60 @@ export default function InitializationPage() {
               >
                 <option value="">Select your industry</option>
                 {INDUSTRY_SECTORS.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Operating Structure */}
+            <div>
+              <label style={labelStyle}>Operating Structure</label>
+              <p style={helperStyle}>How is your income legally structured?</p>
+              <select
+                value={form.operating_structure}
+                onChange={(e) => update("operating_structure", e.target.value)}
+                style={{ ...selectStyle, color: form.operating_structure ? B.navy : B.light }}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              >
+                <option value="">Select your structure</option>
+                {OPERATING_STRUCTURES.map((s) => (
+                  <option key={s.value} value={s.value}>{s.value}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Primary Income Model */}
+            <div>
+              <label style={labelStyle}>Primary Income Model</label>
+              <p style={helperStyle}>How do you primarily earn income?</p>
+              <select
+                value={form.primary_income_model}
+                onChange={(e) => update("primary_income_model", e.target.value)}
+                style={{ ...selectStyle, color: form.primary_income_model ? B.navy : B.light }}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              >
+                <option value="">Select your income model</option>
+                {PRIMARY_INCOME_MODELS.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Years in Current Structure */}
+            <div>
+              <label style={labelStyle}>Years in Current Structure</label>
+              <p style={helperStyle}>How long have you been earning under this arrangement?</p>
+              <select
+                value={form.years_in_structure}
+                onChange={(e) => update("years_in_structure", e.target.value)}
+                style={{ ...selectStyle, color: form.years_in_structure ? B.navy : B.light }}
+                onFocus={focusHandler}
+                onBlur={blurHandler}
+              >
+                <option value="">Select tenure</option>
+                {YEARS_IN_STRUCTURE.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
