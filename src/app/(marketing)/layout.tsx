@@ -451,7 +451,7 @@ export default function MarketingLayout({
                   style={{
                     fontSize: 14,
                     fontWeight: 600,
-                    color: scrolled ? B.navy : "#FFFFFF",
+                    color: scrolled ? "#0E1A2B" : "#FFFFFF",
                     textDecoration: "none",
                     transition: "color 300ms ease",
                     whiteSpace: "nowrap",
