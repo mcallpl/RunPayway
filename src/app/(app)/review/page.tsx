@@ -284,7 +284,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   return (
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page} of 5</span>
+        <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page} of 4</span>
         <span style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · runpayway.com/methodology</span>
       </div>
     </div>
@@ -368,7 +368,6 @@ async function downloadPDF(record: AssessmentRecord) {
     return;
   }
 
-  // Capture entire report as one continuous flow — no artificial page breaks
   const reportContainer = document.getElementById("report-container");
   if (!reportContainer) return;
 
@@ -381,15 +380,17 @@ async function downloadPDF(record: AssessmentRecord) {
     creator: `RunPayway\u2122 Model ${record.model_version || "RP-2.0"}`,
   });
 
-  const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW, canvasW, pxPerInch, sliceH } = PDF;
+  const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW } = PDF;
+  const pxPerInch = (captureW * S) / CW;
+  const maxContentH = PH - M - FT;
 
-  // Hide all HTML page footers (PDF adds its own) and interactive-only sections
+  // Hide HTML page footers (PDF adds its own) and interactive-only sections
   const htmlFooters = reportContainer.querySelectorAll(".report-page-footer") as NodeListOf<HTMLElement>;
   htmlFooters.forEach((f) => { f.style.display = "none"; });
   const noPrintEls = reportContainer.querySelectorAll(".no-print") as NodeListOf<HTMLElement>;
   noPrintEls.forEach((el) => { el.style.display = "none"; });
 
-  // Temporarily style for capture — make visible and properly sized
+  // Make container visible for capture
   const savedContainerStyle = {
     maxWidth: reportContainer.style.maxWidth,
     gap: (reportContainer as HTMLElement).style.gap,
@@ -417,15 +418,30 @@ async function downloadPDF(record: AssessmentRecord) {
 
   await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-  const canvas = await html2canvas(reportContainer as HTMLElement, {
-    scale: S,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    logging: false,
-    width: captureW,
-    height: reportContainer.scrollHeight,
-    windowWidth: captureW,
-  });
+  // Capture each report page individually — one per PDF page
+  const pageCount = pages.length;
+  for (let i = 0; i < pageCount; i++) {
+    if (i > 0) pdf.addPage();
+
+    const pageEl = pages[i];
+    const canvas = await html2canvas(pageEl, {
+      scale: S,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      logging: false,
+      width: captureW,
+      windowWidth: captureW,
+    });
+
+    const imgW = CW;
+    const imgH = canvas.height / pxPerInch;
+    // Scale down if content is taller than the printable area
+    const scale = imgH > maxContentH ? maxContentH / imgH : 1;
+    const finalW = imgW * scale;
+    const finalH = imgH * scale;
+
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", M, M, finalW, finalH);
+  }
 
   // Restore styles
   pages.forEach((el, i) => { Object.assign(el.style, savedPageStyles[i]); });
@@ -437,40 +453,8 @@ async function downloadPDF(record: AssessmentRecord) {
   reportContainer.style.zIndex = savedContainerStyle.zIndex;
   reportContainer.style.position = savedContainerStyle.position;
 
-  const totalCanvasH = canvas.height;
-  let currentY = 0;
-  let pdfPageCount = 0;
-
-  while (currentY < totalCanvasH) {
-    if (pdfPageCount > 0) pdf.addPage();
-    pdfPageCount++;
-
-    let cutY: number;
-    const idealCutY = currentY + sliceH;
-
-    if (idealCutY >= totalCanvasH) {
-      cutY = totalCanvasH;
-    } else {
-      cutY = findSafeCutRow(canvas, idealCutY, 400);
-    }
-
-    const srcH = Math.max(1, cutY - currentY);
-
-    const strip = document.createElement("canvas");
-    strip.width = canvasW;
-    strip.height = srcH;
-    const ctx = strip.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvasW, srcH);
-    ctx.drawImage(canvas, 0, currentY, canvasW, srcH, 0, 0, canvasW, srcH);
-
-    const imgH = srcH / pxPerInch;
-    pdf.addImage(strip.toDataURL("image/png"), "PNG", M, M, CW, imgH);
-
-    currentY = cutY;
-  }
-
-  for (let p = 1; p <= pdfPageCount; p++) {
+  // Add PDF footers to each page
+  for (let p = 1; p <= pageCount; p++) {
     pdf.setPage(p);
 
     pdf.setDrawColor(220, 218, 212);
@@ -491,7 +475,7 @@ async function downloadPDF(record: AssessmentRecord) {
 
     pdf.setFontSize(7.5);
     pdf.setTextColor(156, 163, 175);
-    pdf.text(`Page ${p} of ${pdfPageCount}`, PW / 2, PH - FT + 0.35, { align: "center" });
+    pdf.text(`Page ${p} of ${pageCount}`, PW / 2, PH - FT + 0.35, { align: "center" });
   }
 
   const shortId = record.record_id.slice(0, 8);
