@@ -57,10 +57,14 @@ export function applyInteractions(
   const stability_score = rawScores.stability_subtotal;
   const pre_interaction = structure_score + stability_score;
 
-  const overall_score = Math.max(
-    0,
-    Math.min(100, pre_interaction + interactions.net_adjustment),
-  );
+  // Apply penalties proportionally — penalties cannot reduce score below 50% of pre-interaction
+  // This prevents low-scoring profiles from being crushed to 0 by stacking penalties
+  let adjusted = pre_interaction + interactions.net_adjustment;
+  const floor = Math.round(pre_interaction * 0.5);
+  if (interactions.net_adjustment < 0 && adjusted < floor) {
+    adjusted = floor;
+  }
+  const overall_score = Math.max(0, Math.min(100, adjusted));
 
   return {
     overall_score,

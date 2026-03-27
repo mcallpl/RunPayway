@@ -182,7 +182,7 @@ export const INTERACTION_RULES: InteractionRule[] = [
   {
     code: "CF-01",
     type: "penalty",
-    points: -8,
+    points: -5,
     condition: (n) => n.largest_source_pct >= 70 && n.forward_secured_pct <= 20,
     factors: ["largest_source_pct", "forward_secured_pct"],
     description: "High concentration with weak forward visibility",
@@ -190,7 +190,7 @@ export const INTERACTION_RULES: InteractionRule[] = [
   {
     code: "CF-02",
     type: "penalty",
-    points: -7,
+    points: -5,
     condition: (n) => n.labor_dependence_pct >= 75 && n.income_persistence_pct <= 25,
     factors: ["labor_dependence_pct", "income_persistence_pct"],
     description: "High labor dependence with low persistence",
@@ -226,7 +226,7 @@ export const INTERACTION_RULES: InteractionRule[] = [
   {
     code: "CF-06",
     type: "penalty",
-    points: -6,
+    points: -4,
     condition: (n) =>
       n.source_diversity_count <= 2 &&
       n.income_variability_level === "extreme",
@@ -251,7 +251,7 @@ export const INTERACTION_RULES: InteractionRule[] = [
   },
 ];
 
-export const NET_ADJUSTMENT_CLAMP = { min: -20, max: 8 } as const;
+export const NET_ADJUSTMENT_CLAMP = { min: -12, max: 8 } as const;
 
 // ─── QUALITY RULES ──────────────────────────────────────
 
