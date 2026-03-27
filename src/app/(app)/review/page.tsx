@@ -1088,19 +1088,25 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
 
-        <Overline>{`ASSESSMENT PREPARED FOR ${(record.assessment_title || "").toUpperCase()}`}</Overline>
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 16, letterSpacing: "0.14em" }}>INCOME STABILITY ASSESSMENT</div>
+          <h1 style={{ ...T.pageTitle, marginBottom: 8, fontSize: 28 }}>{record.assessment_title || "Assessment"}</h1>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: 24 }}>
+            {issuedDate} &middot; Model RP-2.0
+          </div>
 
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>Your Score</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p1Summary[tier]}</p>
-
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ marginBottom: 12 }}><span style={{ ...T.score, color: B.navy }}>{animatedScore}</span><span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span></div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <div style={{ marginBottom: 8 }}>
+            <span style={{ ...T.score, color: B.navy }}>{animatedScore}</span>
+            <span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span>
+          </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
           {nextBandName && <div style={{ ...T.meta, color: B.muted, marginTop: 6 }}>{distanceToNext} points to {nextBandName} Stability</div>}
         </div>
+
+        <p style={{ fontSize: 15, color: B.muted, maxWidth: 480, marginBottom: 20, lineHeight: 1.6 }}>{p1Summary[tier]}</p>
 
         {/* Band scale */}
         <div style={{ marginBottom: 20 }}>
@@ -1159,41 +1165,22 @@ export default function ReviewPage() {
           )}
         </div>
 
-        {/* Predictive warning — if available */}
-        {v2PredictiveWarnings && v2PredictiveWarnings.length > 0 && (
-          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.bandDeveloping}` }}>
-            <div style={{ ...T.overline, color: B.bandDeveloping, marginBottom: 6 }}>WATCH FOR THIS</div>
-            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55, fontWeight: 500 }}>
-              {(v2PredictiveWarnings[0] as { headline?: string; explanation?: string })?.headline || String(v2PredictiveWarnings[0])}
-            </p>
-            {(v2PredictiveWarnings[0] as { explanation?: string })?.explanation && (
-              <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>
-                {(v2PredictiveWarnings[0] as { explanation?: string }).explanation}
-              </p>
-            )}
-          </div>
-        )}
-
         {/* Single key insight — structured vulnerability block */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 12 }}>YOUR BIGGEST VULNERABILITY</div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Fastest score gain</div>
-            <div style={{ ...T.body, color: B.navy, margin: 0 }}>
-              {v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`)}
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 12 }}>PRIMARY STRUCTURAL CONSTRAINT</div>
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap" as const }}>
+            <div style={{ flex: 1, minWidth: 180 }}>
+              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Fastest score gain</div>
+              <div style={{ ...T.body, color: B.navy, margin: 0 }}>
+                {v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`)}
+              </div>
             </div>
-          </div>
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Near-term score impact</div>
-            <div style={{ ...T.body, color: B.navy, margin: 0 }}>
-              {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
+            <div style={{ flex: 1, minWidth: 140 }}>
+              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Projected impact</div>
+              <div style={{ ...T.body, color: B.navy, margin: 0 }}>
+                {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
+              </div>
             </div>
-          </div>
-          <div>
-            <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Why this matters now</div>
-            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.6 }}>
-              {v2OneThingThatMatters || (profileConstraintAdvice[dominantConstraint] || `The main thing holding you back: ${dominantConstraintPlain[dominantConstraint]}.`)}
-            </p>
           </div>
         </div>
 
