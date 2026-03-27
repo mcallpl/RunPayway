@@ -200,8 +200,8 @@ export default function InitializationPage() {
     window.scrollTo(0, 0);
     setTimeout(() => {
       setStep(nextStep);
-      setTimeout(() => setTransitioning(false), 400);
-    }, 2000);
+      setTimeout(() => setTransitioning(false), 300);
+    }, 800);
   }, []);
   const [form, setForm] = useState({
     assessment_title: "",
@@ -578,29 +578,21 @@ export default function InitializationPage() {
       {transitioning && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
-          background: "#FFFFFF",
+          background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
-          opacity: 1,
-          animation: "portalFadeIn 400ms ease-out",
+          animation: "portalCrossFade 800ms ease-in-out",
         }}>
           <style>{`
-            @keyframes portalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-            @keyframes portalPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+            @keyframes portalCrossFade { 0% { opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
           `}</style>
           <Image
-            src={logoBlue}
+            src={logoWhite}
             alt="RunPayway™"
-            width={180}
-            height={21}
-            style={{ height: "auto", animation: "portalPulse 1.5s ease-in-out infinite" }}
+            width={140}
+            height={16}
+            style={{ height: "auto", opacity: 0.6 }}
           />
-          <div style={{
-            marginTop: 24,
-            width: 48, height: 2,
-            background: `linear-gradient(90deg, ${B.teal}, ${B.purple})`,
-            borderRadius: 1,
-          }} />
         </div>
       )}
 

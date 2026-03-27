@@ -393,7 +393,7 @@ function findSafeCutRow(
 
     for (let x = 0; x < width; x += sampleStep) {
       const idx = rowStart + x * 4;
-      if (pixels[idx] < 245 || pixels[idx + 1] < 245 || pixels[idx + 2] < 245) {
+      if (pixels[idx] < 235 || pixels[idx + 1] < 230 || pixels[idx + 2] < 225) {
         nonWhiteCount++;
         if (nonWhiteCount > threshold) break;
       }
@@ -502,7 +502,7 @@ async function downloadPDF(record: AssessmentRecord) {
     if (idealCutY >= totalCanvasH) {
       cutY = totalCanvasH;
     } else {
-      cutY = findSafeCutRow(canvas, idealCutY, 200);
+      cutY = findSafeCutRow(canvas, idealCutY, 400);
     }
 
     const srcH = Math.max(1, cutY - currentY);
