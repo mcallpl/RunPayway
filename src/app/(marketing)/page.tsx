@@ -178,7 +178,7 @@ function RevealText({ text, visible, baseDelay = 0 }: { text: string; visible: b
 /* ANIMATED SCORE RING — SVG with stroke-dasharray animation           */
 /* ================================================================== */
 function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: boolean }) {
-  const score = 78;
+  const score = 48;
   const radius = 70;
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
@@ -289,18 +289,18 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
           style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             padding: "6px 16px", borderRadius: 100,
-            backgroundColor: "rgba(31,109,122,0.15)",
-            border: "1px solid rgba(31,109,122,0.25)",
+            backgroundColor: "rgba(146,100,10,0.15)",
+            border: "1px solid rgba(146,100,10,0.25)",
             marginBottom: 8,
           }}
         >
-          <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: B.teal }} />
-          <span style={{ fontSize: 14, fontWeight: 600, color: B.teal, letterSpacing: "-0.01em" }}>
-            High Stability
+          <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#92640A" }} />
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#92640A", letterSpacing: "-0.01em" }}>
+            Developing Stability
           </span>
         </div>
         <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", fontWeight: 500 }}>
-          Strong structural protection
+          17 points to Established
         </div>
       </div>
     </div>
