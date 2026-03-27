@@ -1005,7 +1005,7 @@ function HowItWorksSection() {
     },
     {
       num: "03",
-      time: "$99",
+      time: "$69",
       title: "Unlock the full diagnostic",
       hook: "Five pages. One clear path forward.",
       desc: "Risk scenarios with exact score drops. Actions with projected impact. Tradeoff analysis. Suggested language for your next move. An interactive simulator. This is not a static document — it is a diagnostic system.",
@@ -1421,7 +1421,7 @@ function PricingSection() {
             </Link>
           </div>
 
-          {/* CARD 2 — Full Report $99 */}
+          {/* CARD 2 — Diagnostic Report $69 */}
           <div
             style={{
               background: "#FFFFFF",
@@ -1457,10 +1457,10 @@ function PricingSection() {
                 letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16,
               }}
             >
-              Complete Assessment
+              Diagnostic Report
             </div>
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
-              $99
+              $69
             </div>
             <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
               Full report &#183; Score simulator &#183; Action plan &#183; Suggested language
@@ -1489,7 +1489,7 @@ function PricingSection() {
                 e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)";
               }}
             >
-              Get Full Report — $99
+              Get Diagnostic Report — $69
             </a>
             <p style={{ fontSize: S.fsLabel, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
               30-day money-back guarantee.
@@ -1536,7 +1536,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       a: "Your score out of 100, your stability band, and one key insight about what is holding your income back. No payment required.",
     },
     {
-      q: "What does the $99 full report include?",
+      q: "What does the $69 Diagnostic Report include?",
       a: "An interactive score simulator, income runway estimate, risk scenarios with exact score drops, an action plan with projected impact, suggested next-move language, tradeoff analysis, predictive warnings, structural indicators with cross-factor effects, and structural context for your income model.",
     },
     {

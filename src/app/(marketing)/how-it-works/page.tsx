@@ -149,7 +149,7 @@ function Journey() {
     },
     {
       num: "04", title: "You unlock the full diagnostic",
-      body: "The $99 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 5-page structural diagnosis with risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
+      body: "The $69 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 5-page structural diagnosis with risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
       detail: "Same score. Deeper interpretation. Practical action plan.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>

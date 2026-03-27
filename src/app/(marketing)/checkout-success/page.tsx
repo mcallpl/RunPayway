@@ -17,8 +17,8 @@ const B = {
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
-  monitoring: { title: "Annual Monitoring", price: "$199" },
-  single: { title: "Complete Assessment", price: "$99" },
+  monitoring: { title: "Stability Monitoring", price: "$149" },
+  single: { title: "Diagnostic Report", price: "$69" },
 };
 
 function CheckoutSuccessContent() {
@@ -39,7 +39,7 @@ function CheckoutSuccessContent() {
     const planKey = plan === "monitoring" ? "annual_monitoring" : "single_assessment";
     const session = {
       plan_key: planKey,
-      price_cents: plan === "monitoring" ? 19900 : 9900,
+      price_cents: plan === "monitoring" ? 14900 : 6900,
       currency: "USD",
       intended_assessment_count: plan === "monitoring" ? 3 : 1,
       status: "paid",

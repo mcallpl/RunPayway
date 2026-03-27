@@ -197,7 +197,7 @@ export default function CreateAccountPage() {
             }}
           >
             <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Annual Monitoring
+              Stability Monitoring
             </span>
           </div>
 
@@ -225,7 +225,7 @@ export default function CreateAccountPage() {
           >
             {session
               ? "Save this code to access your remaining assessments."
-              : "Set up your Monitoring Portal to access your three Income Stability Assessments."}
+              : "Set up your Monitoring Portal to access your three Stability Monitoring assessments."}
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
@@ -271,7 +271,7 @@ export default function CreateAccountPage() {
               transition: "opacity 700ms ease, transform 700ms ease",
             }}
           >
-            {/* Annual Monitoring badge */}
+            {/* Stability Monitoring badge */}
             <div
               style={{
                 display: "inline-flex",
@@ -285,7 +285,7 @@ export default function CreateAccountPage() {
             >
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.purple }} />
               <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.04em", textTransform: "uppercase" }}>
-                Annual Monitoring Subscriber
+                Stability Monitoring Subscriber
               </span>
             </div>
 
@@ -411,7 +411,7 @@ export default function CreateAccountPage() {
                 </h2>
 
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-                  Your Annual Monitoring plan is now active. Save the access code below — you will need it to access your remaining assessments.
+                  Your Stability Monitoring plan is now active. Save the access code below — you will need it to access your remaining assessments.
                 </p>
 
                 {/* Access code display */}

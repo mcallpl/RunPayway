@@ -94,7 +94,6 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
         style={{ height: 48, padding: "0 16px", borderRadius: 8, border: "1px solid rgba(244,241,234,0.15)", background: "rgba(255,255,255,0.04)", color: product ? "#F4F1EA" : "rgba(244,241,234,0.35)", fontSize: 14, outline: "none", appearance: "none", minWidth: mobile ? undefined : 200 }}
       >
         <option value="">I am interested in...</option>
-        <option value="Annual Monitoring">Annual Monitoring</option>
         <option value="Advisor License">Advisor / API License</option>
         <option value="Enterprise">Enterprise Integration</option>
         <option value="All">Everything</option>
@@ -118,13 +117,6 @@ export default function ComingSoonPage() {
   const pad = mobile ? 28 : 56;
 
   const upcoming = [
-    {
-      label: "MONITORING",
-      name: "Annual Income Monitoring",
-      oneLiner: "Track your score over time. See what moves the needle.",
-      details: ["Quarterly reassessments with trend tracking", "Personal dashboard with score history", "Email alerts when it is time to reassess", "Full report on every assessment"],
-      color: B.purple,
-    },
     {
       label: "ADVISOR",
       name: "Advisor & API License",
@@ -167,7 +159,7 @@ export default function ComingSoonPage() {
             </h1>
 
             <p style={{ fontSize: mobile ? 16 : 19, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 48px" }}>
-              Monitoring. Advisor tools. Enterprise integration. We are building the infrastructure for income stability.
+              Advisor tools. Enterprise integration. We are building the infrastructure for income stability.
             </p>
 
             {/* Scroll indicator */}

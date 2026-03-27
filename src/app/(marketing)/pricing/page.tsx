@@ -68,7 +68,7 @@ function Hero() {
             Know your number.<br />Then change it.
           </h1>
           <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
-            Your free score instantly. The full diagnostic for $99 — with an interactive simulator you keep forever.
+            Your free score instantly. The full diagnostic for $69 — or track your progress over 12 months for $149.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
             {["No bank connection", "Full refund guarantee", "Instant results"].map(t => (
@@ -82,18 +82,19 @@ function Hero() {
 }
 
 /* ================================================================== */
-/* 2. PRICING CARDS — Side by side                                     */
+/* 2. PRICING CARDS — Three tiers                                      */
 /* ================================================================== */
 function PricingCards() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const [freeHover, setFreeHover] = useState(false);
   const [fullHover, setFullHover] = useState(false);
+  const [annualHover, setAnnualHover] = useState(false);
 
   return (
     <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop, position: "relative" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0.03) 0%, transparent 100%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: 860, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out" }}>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.6 }}>
             Built for freelancers, contractors, and business owners across 19 industries.
@@ -101,14 +102,14 @@ function PricingCards() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "5fr 7fr", gap: m ? 16 : 24, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20, alignItems: "start" }}>
           {/* FREE */}
           <div
             onMouseEnter={() => canHover() && setFreeHover(true)}
             onMouseLeave={() => setFreeHover(false)}
             style={{
               background: "#FFFFFF", borderRadius: 16, border: `1px solid ${B.border}`,
-              padding: m ? "32px 24px" : "40px 36px",
+              padding: m ? "32px 24px" : "36px 28px",
               boxShadow: freeHover ? "0 12px 32px rgba(14,26,43,0.08)" : "0 4px 16px rgba(14,26,43,0.04)",
               transform: freeHover ? "translateY(-4px)" : "translateY(0)",
               transition: "box-shadow 260ms ease, transform 260ms ease",
@@ -119,12 +120,12 @@ function PricingCards() {
           >
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>Free Score</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: 52, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$0</span>
+              <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$0</span>
               <span style={{ fontSize: 14, color: B.muted }}>always free</span>
             </div>
             <div style={{ height: 1, background: B.border, margin: "24px 0" }} />
             <div style={{ flex: 1, marginBottom: 28 }}>
-              {["Your score out of 100", "Your stability band", "What your structure can absorb", "The single biggest factor to fix"].map(f => (
+              {["Your score out of 100", "Your stability band", "Points to the next band", "Top limiting factor"].map(f => (
                 <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
                   <span style={{ fontSize: 15, color: B.muted, lineHeight: 1.55 }}>{f}</span>
@@ -142,32 +143,99 @@ function PricingCards() {
             <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>Takes about 90 seconds</p>
           </div>
 
-          {/* FULL REPORT */}
+          {/* DIAGNOSTIC REPORT — $69 */}
           <div
             onMouseEnter={() => canHover() && setFullHover(true)}
             onMouseLeave={() => setFullHover(false)}
             style={{
-              background: B.navy, borderRadius: 16, position: "relative", overflow: "hidden",
-              padding: m ? "36px 24px" : "48px 40px",
-              boxShadow: fullHover ? "0 24px 56px rgba(14,26,43,0.30)" : "0 12px 40px rgba(14,26,43,0.20)",
+              background: "#FFFFFF", borderRadius: 16, position: "relative", overflow: "hidden",
+              padding: m ? "32px 24px" : "36px 28px",
+              border: `2px solid ${B.purple}`,
+              boxShadow: fullHover ? "0 20px 48px rgba(75,63,174,0.18)" : "0 8px 28px rgba(75,63,174,0.12)",
               transform: fullHover ? "translateY(-4px)" : "translateY(0)",
               transition: "box-shadow 260ms ease, transform 260ms ease",
               opacity: visible ? 1 : 0, ...(visible ? {} : { transform: "translateY(28px)" }),
-              transitionDuration: "700ms", transitionDelay: "120ms",
+              transitionDuration: "700ms", transitionDelay: "80ms",
               display: "flex", flexDirection: "column" as const,
             }}
           >
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.purple}, ${B.teal})` }} />
-            <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
 
             <div style={{ position: "relative" }}>
-              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.20)", marginBottom: 16 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Most Popular</span>
+              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.10)", marginBottom: 16 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.purple }}>Most Popular</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>Complete Assessment</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>Diagnostic Report</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$99</span>
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>one-time</span>
+                <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$69</span>
+                <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
+              </div>
+            </div>
+
+            <div style={{ height: 1, background: B.border, margin: "24px 0", position: "relative" }} />
+
+            <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
+              {[
+                { text: "Everything in Free, plus:", bold: true },
+                { text: "5-page structural diagnostic report" },
+                { text: "Risk scenarios ranked by severity" },
+                { text: "Action plan with projected score impact" },
+                { text: "Tradeoff analysis for each move" },
+                { text: "Week-by-week execution roadmap" },
+                { text: "Assessment confidence and durability grade" },
+                { text: "Lifetime access to Score Simulator" },
+              ].map((f, i) => (
+                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? B.navy : B.muted, lineHeight: 1.55, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
+                </div>
+              ))}
+            </div>
+
+            <a href={STRIPE} style={{
+              display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
+              background: B.gradient, color: "#FFFFFF",
+              fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
+              boxShadow: fullHover ? "0 12px 32px rgba(75,63,174,0.35)" : "0 8px 24px rgba(75,63,174,0.25)",
+              transition: "box-shadow 260ms ease, transform 200ms ease",
+              transform: fullHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
+            }}>
+              Get Diagnostic Report — $69
+            </a>
+            <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
+              If it doesn&#8217;t reveal something new, full refund. No questions.
+            </p>
+          </div>
+
+          {/* STABILITY MONITORING — $149/year */}
+          <div
+            onMouseEnter={() => canHover() && setAnnualHover(true)}
+            onMouseLeave={() => setAnnualHover(false)}
+            style={{
+              background: B.navy, borderRadius: 16, position: "relative", overflow: "hidden",
+              padding: m ? "32px 24px" : "36px 28px",
+              boxShadow: annualHover ? "0 24px 56px rgba(14,26,43,0.30)" : "0 12px 40px rgba(14,26,43,0.20)",
+              transform: annualHover ? "translateY(-4px)" : "translateY(0)",
+              transition: "box-shadow 260ms ease, transform 260ms ease",
+              opacity: visible ? 1 : 0, ...(visible ? {} : { transform: "translateY(28px)" }),
+              transitionDuration: "700ms", transitionDelay: "160ms",
+              display: "flex", flexDirection: "column" as const,
+            }}
+          >
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
+            <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+            <div style={{ position: "relative" }}>
+              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(26,122,109,0.15)", marginBottom: 16 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Best Value</span>
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>Stability Monitoring</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$149</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>/year</span>
+              </div>
+              <div style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", marginTop: 4 }}>
+                3 assessments &middot; save $58 vs. buying separately
               </div>
             </div>
 
@@ -175,15 +243,13 @@ function PricingCards() {
 
             <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
               {[
-                { text: "Everything in Free, plus:", bold: true },
-                { text: "5-page structural diagnostic report" },
-                { text: "Risk scenarios ranked by severity with exact score drops" },
-                { text: "Action plan with projected score impact" },
-                { text: "Tradeoff analysis for each recommended move" },
-                { text: "Structural indicators with cross-factor effects" },
-                { text: "Predictive warnings and behavioral insights" },
-                { text: "Week-by-week execution roadmap" },
-                { text: "Assessment confidence and income durability grade" },
+                { text: "Everything in Diagnostic Report, plus:", bold: true },
+                { text: "3 full assessments within 12 months" },
+                { text: "Side-by-side score comparison" },
+                { text: "Progress tracking across assessments" },
+                { text: "Updated action priorities after each round" },
+                { text: "Persistent simulator history" },
+                { text: "\"Best next move now\" recalculation each time" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
@@ -192,24 +258,18 @@ function PricingCards() {
               ))}
             </div>
 
-            {/* Lifetime simulator callout */}
-            <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 24, padding: "14px 18px", background: "rgba(26,122,109,0.08)", border: "1px solid rgba(26,122,109,0.25)", borderRadius: 10, position: "relative" }}>
-              <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#F4F1EA", lineHeight: 1.4 }}>Lifetime access to your personal Score Simulator</span>
-            </div>
-
-            <a href={STRIPE} style={{
+            <Link href="/sign-in" style={{
               display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
               background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy,
               fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
-              boxShadow: fullHover ? "0 12px 32px rgba(0,0,0,0.30)" : "0 8px 24px rgba(0,0,0,0.20)",
+              boxShadow: annualHover ? "0 12px 32px rgba(0,0,0,0.30)" : "0 8px 24px rgba(0,0,0,0.20)",
               transition: "box-shadow 260ms ease, transform 200ms ease",
-              transform: fullHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
+              transform: annualHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
-              Get Full Report — $99
-            </a>
+              Start Stability Monitoring — $149
+            </Link>
             <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
-              If it doesn&#8217;t reveal something new, full refund. No questions.
+              Includes login access to your Monitoring Portal.
             </p>
           </div>
         </div>
@@ -328,12 +388,13 @@ function Faq() {
 
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, a consequence sentence showing what your structure can absorb, and the single biggest structural factor limiting your score. No payment required." },
-    { q: "What does the $99 report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the Score Simulator." },
+    { q: "What does the $69 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the Score Simulator." },
+    { q: "What does Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a new diagnostic report. You also get side-by-side score comparisons, progress tracking, updated action priorities after each round, persistent simulator history, and a recalculated \u201Cbest next move\u201D every time you reassess." },
     { q: "How is the score calculated?", a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
     { q: "Is my information confidential?", a: "Yes. We never collect bank credentials, credit data, or financial account access. Your data is encrypted, never sold, and you can request deletion at any time." },
     { q: "How long does it take?", a: "Under two minutes. Your free score is delivered instantly. The full report generates immediately after purchase." },
-    { q: "Can I retake the assessment?", a: "Yes. Each assessment is independent. Retake after a meaningful structural change to see how your score has moved." },
+    { q: "Can I retake the assessment?", a: "Yes. Each assessment is independent. With the $69 Diagnostic Report, you purchase one at a time. With Stability Monitoring ($149/year), you get three assessments over 12 months with comparison tracking built in." },
   ];
 
   return (

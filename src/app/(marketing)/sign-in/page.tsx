@@ -261,7 +261,7 @@ export default function SignInPage() {
                 </h2>
 
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
-                  This portal is available to Annual Monitoring subscribers.
+                  This portal is available to Stability Monitoring subscribers.
                 </p>
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
                   Enter your access code to view your monitoring timeline and take your next assessment.
@@ -352,7 +352,7 @@ export default function SignInPage() {
                     onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                   >
-                    Get Annual Monitoring
+                    Get Stability Monitoring
                   </Link>
                 </div>
 
@@ -379,7 +379,7 @@ export default function SignInPage() {
                 </h2>
 
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-                  Welcome back. Here is the status of your Annual Monitoring plan.
+                  Welcome back. Here is the status of your Stability Monitoring plan.
                 </p>
 
                 {/* Status cards */}

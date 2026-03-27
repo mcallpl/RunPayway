@@ -570,7 +570,7 @@ function CtaSection() {
               marginRight: "auto",
             }}
           >
-            Your free score shows where you stand. The full report shows what to do about it &#8212; $99.
+            Your free score shows where you stand. The full report shows what to do about it &#8212; $69.
           </p>
           <p
             style={{

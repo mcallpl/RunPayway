@@ -277,7 +277,7 @@ export default function FreeScorePage() {
 
           {/* Upgrade CTA */}
           <div style={{ textAlign: "center", padding: "20px 24px", backgroundColor: B.navy, borderRadius: 8 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full report — $99</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>Get the full report — $69</div>
             <div style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>Score simulator, runway calculator, risk scenarios, action plan with projected impact, tradeoff analysis, and suggested next-move language.</div>
           </div>
 
@@ -401,7 +401,7 @@ export default function FreeScorePage() {
             <div style={{ display: "inline-block", padding: mobile ? "32px 28px" : "40px 48px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, marginBottom: 32 }}>
               <div style={{ ...F.label, color: B.teal, marginBottom: 12 }}>FULL 5-PAGE REPORT</div>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 20 }}>
-                <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 600, color: "#F4F1EA" }}>$99</span>
+                <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 600, color: "#F4F1EA" }}>$69</span>
                 <span style={{ ...F.body, color: "rgba(244,241,234,0.45)" }}>one-time</span>
               </div>
               <a
@@ -425,7 +425,7 @@ export default function FreeScorePage() {
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.35)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.30)"; }}
               >
-                Get Full Report — $99
+                Get Diagnostic Report — $69
               </a>
             </div>
 

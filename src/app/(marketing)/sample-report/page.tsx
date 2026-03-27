@@ -449,7 +449,7 @@ function Cta() {
             Start Your Assessment
           </Link>
           <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
-            Free to start &#183; Under 2 minutes &#183; $99 for the full report
+            Free to start &#183; Under 2 minutes &#183; $69 for the full report
           </div>
         </div>
       </div>

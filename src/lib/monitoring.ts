@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------ */
-/*  Annual Monitoring — access code system                             */
+/*  Stability Monitoring — access code system                          */
 /*  Server-first with localStorage fallback for static deployments     */
 /* ------------------------------------------------------------------ */
 
