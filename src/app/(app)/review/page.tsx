@@ -1043,7 +1043,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Your Score", "Income Structure", "Risks", "Action Plan", "Methodology"];
+  const pageNames = ["Cover", "Your Score", "Income X-Ray", "Risks", "Action Plan", "Methodology"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1237,88 +1237,125 @@ export default function ReviewPage() {
     // Page 2: Income Structure
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>How Your Income Is Built</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>{p3Summary[tier]}</p>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Income X-Ray</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>Where your income actually comes from, what repeats, and what disappears the moment you stop.</p>
 
-        {/* Income Structure Bar */}
-        <Overline large>Income Structure</Overline>
+        {/* ── KILLER LINE ── */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "14px 16px" : "16px 24px", marginBottom: 20, textAlign: "center" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
+            {record.active_income_level + record.semi_persistent_income_level >= 80
+              ? `${record.active_income_level + record.semi_persistent_income_level}% of your income still requires you to keep re-earning it.`
+              : record.active_income_level >= 50
+                ? `${record.active_income_level}% of your income is earned once and stops. It does not repeat, renew, or survive interruption.`
+                : `${100 - record.active_income_level}% of your income continues without your daily effort. That is uncommon structural protection.`}
+          </p>
+        </div>
+
+        {/* ── INCOME STRUCTURE BAR ── */}
+        <Overline large>How Your Income Breaks Down</Overline>
         <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 4 }}>
           <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
         </div>
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 6 : 24, marginBottom: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
           {[
-            { label: "You must actively work to earn this", pct: record.active_income_level, color: B.ink },
-            { label: "This renews automatically (retainers, subscriptions, contracts)", pct: record.semi_persistent_income_level, color: B.taupe },
-            { label: "This continues even if you stop working entirely", pct: record.persistent_income_level, color: B.teal },
+            { label: "Earned once, stops when you stop", pct: record.active_income_level, color: B.ink },
+            { label: "Repeats on its own (retainers, subscriptions, contracts)", pct: record.semi_persistent_income_level, color: B.taupe },
+            { label: "Survives interruption entirely", pct: record.persistent_income_level, color: B.teal },
           ].map((seg) => (
-            <div key={seg.label} style={{ flex: mobile ? undefined : 1 }}>
+            <div key={seg.label}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 8, height: 8, borderRadius: 1, backgroundColor: seg.color, flexShrink: 0 }} />
-                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.label} — {seg.pct}%</span>
+                <span style={{ ...T.small, fontWeight: 500, color: B.navy }}>{seg.pct}% — {seg.label}</span>
               </div>
             </div>
           ))}
         </div>
-        <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-          {(olExplanations as Record<string, string> | null)?.high_labor_dependence && record.active_income_level >= 70
-            ? (olExplanations as Record<string, string>).high_labor_dependence
-            : record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, this level of labor dependence is the primary structural ceiling.` : ""}`
-            : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, reducing this is typically the path to the next band.` : ""}`
-            : `${100 - record.active_income_level}% of your income continues without your daily effort.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, this level of persistence is a meaningful structural advantage.` : ""}`}
-        </p>
 
-        {/* Stress Test + Continuity cards */}
+        {/* ── STRUCTURAL EXPOSURE ── */}
         <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 20 }}>
           <div style={{ flex: mobile ? undefined : 3, ...cardStyle }}>
-            <Overline>WHAT HAPPENS IF YOUR BIGGEST SOURCE OF INCOME GOES AWAY</Overline>
+            <Overline>IF YOUR BIGGEST SOURCE GOES AWAY</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
               <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
               <span style={{ ...T.sectionLabel, color: B.taupe }}>→</span>
               <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}<span style={{ ...T.meta, color: B.taupe }}>/100</span></span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.risk_scenario_drop}-point drop on the 0–100 scale.{record.risk_scenario_drop > score * 0.4 ? " Severe dependency." : ""}
+              {record.risk_scenario_drop}-point drop.{record.risk_scenario_drop > score * 0.4 ? " That is a severe dependency on a single source." : ""}
             </p>
           </div>
           <div style={{ flex: mobile ? undefined : 2, ...cardStyle }}>
-            <Overline>HOW LONG YOUR INCOME CONTINUES IF YOU STOP WORKING</Overline>
+            <Overline>IF YOU STOP WORKING ENTIRELY</Overline>
             <div style={{ ...T.cardHero, color: B.navy, marginBottom: 8 }}>{continuityDisplay}</div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {record.income_continuity_months < 1 ? `Critically short for a ${structureDesc}.` : record.income_continuity_months < 3 ? `Limited runway.` : record.income_continuity_months < 6 ? `Moderate runway.` : `Strong window.`}
+              {record.income_continuity_months < 1 ? "Your income stops almost immediately." : record.income_continuity_months < 3 ? "Very little runway before income pressure begins." : record.income_continuity_months < 6 ? "Some runway, but not enough to absorb a serious disruption." : "Meaningful buffer before income pressure begins."}
             </p>
           </div>
         </div>
 
         <SectionDivider />
 
-        {/* Structural Indicators */}
-        {v2Indicators && v2Indicators.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <Overline large>Structural Indicators</Overline>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 8 }}>
-              {v2Indicators.map((ind) => {
-                const levelColor = ind.level === "critical" || ind.level === "weak" ? B.bandLimited : ind.level === "moderate" ? B.bandDeveloping : ind.level === "strong" ? B.bandEstablished : B.bandHigh;
-                return (
-                  <div key={ind.key} style={{ ...cardStyle, padding: "10px 14px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                      <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{ind.label}</span>
-                      <span style={{ ...T.micro, color: levelColor, textTransform: "capitalize" }}>{ind.level}</span>
-                    </div>
-                    <div style={{ height: 4, backgroundColor: B.stone, borderRadius: 2 }}>
-                      <div style={{ height: 4, backgroundColor: levelColor, borderRadius: 2, width: `${ind.normalized_value}%`, transition: "width 600ms ease" }} />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* ── STRUCTURAL INDICATORS — RANKED HIERARCHY ── */}
+        {v2Indicators && v2Indicators.length > 0 && (() => {
+          const sorted = [...v2Indicators].sort((a, b) => a.normalized_value - b.normalized_value);
+          const weakest = sorted[0];
+          const strongest = sorted[sorted.length - 1];
+          const mostDangerous = sorted.find(ind => ind.level === "critical") || sorted.find(ind => ind.level === "weak") || weakest;
+          const rankItems: { role: string; roleColor: string; ind: typeof weakest; explanation: string }[] = [];
 
-        {/* What's working / What's dragging you down */}
+          if (strongest && strongest.key !== weakest.key) {
+            rankItems.push({
+              role: "STRONGEST FACTOR",
+              roleColor: B.teal,
+              ind: strongest,
+              explanation: "This is what is holding your structure together.",
+            });
+          }
+          rankItems.push({
+            role: "WEAKEST FACTOR",
+            roleColor: B.bandLimited,
+            ind: weakest,
+            explanation: "This is the biggest structural gap in your income.",
+          });
+          if (mostDangerous && mostDangerous.key !== weakest.key) {
+            rankItems.push({
+              role: "MOST DANGEROUS FACTOR",
+              roleColor: "#DC4A4A",
+              ind: mostDangerous,
+              explanation: "This is the factor most likely to cause damage if conditions change.",
+            });
+          }
+
+          return (
+            <div style={{ marginBottom: 20 }}>
+              <Overline large>What The Structure Reveals</Overline>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {rankItems.map(({ role, roleColor, ind, explanation }) => {
+                  const levelColor = ind.level === "critical" || ind.level === "weak" ? B.bandLimited : ind.level === "moderate" ? B.bandDeveloping : ind.level === "strong" ? B.bandEstablished : B.bandHigh;
+                  return (
+                    <div key={role} style={{ ...cardStyle, padding: "12px 16px", borderLeft: `3px solid ${roleColor}` }}>
+                      <div style={{ ...T.overline, color: roleColor, marginBottom: 6, fontSize: 10 }}>{role}</div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ ...T.sectionLabel, color: B.navy }}>{ind.label}</span>
+                        <span style={{ ...T.micro, color: levelColor, textTransform: "capitalize" }}>{ind.level}</span>
+                      </div>
+                      <div style={{ height: 4, backgroundColor: B.stone, borderRadius: 2, marginBottom: 6 }}>
+                        <div style={{ height: 4, backgroundColor: levelColor, borderRadius: 2, width: `${ind.normalized_value}%`, transition: "width 600ms ease" }} />
+                      </div>
+                      <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.4 }}>{explanation}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* ── WHAT'S WORKING / WHAT'S HOLDING YOU BACK ── */}
         {v2Explainability && (v2Explainability.strongest_supports?.length || v2Explainability.strongest_suppressors?.length) && (
-          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 20 }}>
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 16 }}>
             {v2Explainability.strongest_supports && v2Explainability.strongest_supports.length > 0 && (
               <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.teal}` }}>
                 <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>WHAT&apos;S WORKING</div>
@@ -1338,41 +1375,7 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Cross-factor interactions */}
-        {v2Interactions && v2Interactions.effects && v2Interactions.effects.length > 0 && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>HOW YOUR FACTORS INTERACT</div>
-            {v2Explainability?.interaction_summary ? (
-              <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>{v2Explainability.interaction_summary}</p>
-            ) : (
-              <div>
-                {v2Interactions.effects.slice(0, 3).map((e, i) => (
-                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: i < 2 ? 4 : 0 }}>
-                    <span style={{ ...T.micro, color: e.type === "penalty" ? B.bandLimited : B.teal, minWidth: 52 }}>{e.type === "penalty" ? `−${Math.abs(e.points)}` : `+${e.points}`} pts</span>
-                    <span style={{ ...T.small, color: B.muted }}>{e.trigger_condition}</span>
-                  </div>
-                ))}
-                {v2Interactions.net_adjustment !== 0 && (
-                  <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Net interaction effect: {v2Interactions.net_adjustment > 0 ? "+" : ""}{v2Interactions.net_adjustment} points</div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Category framing */}
-        {olIndustryLabel && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>STRUCTURAL CONTEXT</div>
-            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-              {tier === "high" || tier === "established"
-                ? `For ${incomeModelDesc || "this type of"} income structures in ${olIndustryLabel}, your level of structural protection is above typical patterns. The remaining gaps are specific, not fundamental.`
-                : `For ${incomeModelDesc || "this type of"} income structures in ${olIndustryLabel}, the differentiating factor between ${record.stability_band} and the next band is typically ${dominantConstraintPlain[dominantConstraint] || "reducing the primary structural weakness"}.`}
-            </p>
-          </div>
-        )}
-
-        <PageFooter section="How Your Income Is Built" page={2} />
+        <PageFooter section="Income X-Ray" page={2} />
     </>,
 
     // Page 3: Risks
