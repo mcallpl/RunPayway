@@ -8,6 +8,7 @@ import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
+import { getScriptsForSector } from "@/lib/action-scripts";
 
 /* ------------------------------------------------------------------ */
 /*  Design Tokens                                                      */
@@ -455,7 +456,12 @@ function SimulatorContent() {
           setIndustry((record.industry_sector || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
           setIncomeModel((record.primary_income_model || "").replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()));
           setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
-          if (v2.script_templates && Array.isArray(v2.script_templates)) {
+          // Load industry-specific action scripts
+          const sectorKey = record.industry_sector || "";
+          const industryScripts = getScriptsForSector(sectorKey);
+          if (industryScripts.length > 0) {
+            setScriptTemplates(industryScripts);
+          } else if (v2.script_templates && Array.isArray(v2.script_templates)) {
             setScriptTemplates(v2.script_templates.slice(0, 3));
           }
           setLoaded(true);
@@ -1075,8 +1081,8 @@ function SimulatorContent() {
         <div style={{ padding: "24px 28px", borderTop: `1px solid ${T.border}` }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.accent }}>Suggested Language for Your Next Move</div>
-              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>Starting drafts based on your structural weaknesses. Adjust to fit your voice.</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.accent }}>Ready-to-Use Action Scripts</div>
+              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
             </div>
           </div>
           {scriptTemplates.map((script) => {
