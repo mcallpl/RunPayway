@@ -451,11 +451,13 @@ export default function MarketingLayout({
                   style={{
                     fontSize: 14,
                     fontWeight: 600,
-                    color: scrolled ? "#0E1A2B" : "#FFFFFF",
+                    color: "rgba(14,26,43,0.65)",
                     textDecoration: "none",
-                    transition: "color 300ms ease",
+                    transition: "color 200ms ease",
                     whiteSpace: "nowrap",
                   }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
                 >
                   Sign In
                 </Link>
