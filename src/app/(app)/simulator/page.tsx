@@ -642,19 +642,36 @@ function SimulatorContent() {
     if (modified.source_diversity_count > baseInputs.source_diversity_count) tags.push("Diversification \u2191");
     if (modified.forward_secured_pct > baseInputs.forward_secured_pct) tags.push("Visibility \u2191");
     if (modified.labor_dependence_pct < baseInputs.labor_dependence_pct) tags.push("Labor dependence \u2193");
-    // Effort level heuristic
+    // Effort, speed, and realism
     const effort: "Low" | "Medium" | "High" = p.id === "lock_forward" ? "Medium" : p.id === "convert_retainer" ? "Medium" : "High";
     const impact: "Low" | "Medium" | "High" = lift >= 10 ? "High" : lift >= 5 ? "Medium" : "Low";
+    const speed: "Fast" | "Moderate" | "Slow" = p.id === "lock_forward" ? "Fast" : p.id === "convert_retainer" ? "Fast" : "Moderate";
+    const realism = p.id === "convert_retainer" ? "Immediate tactical move"
+      : p.id === "lock_forward" ? "Immediate tactical move"
+      : p.id === "add_client" ? "Requires active pipeline work"
+      : p.id === "build_passive" ? "Longer-term structural shift"
+      : "Requires business model shift";
     // Why this matters — structural explanation
     const why = p.id === "convert_retainer" ? "Converts income you rebuild every month into income that renews automatically. Reduces reset risk and improves forward visibility."
       : p.id === "add_client" ? "Spreads income across more sources so no single client departure can seriously damage your structure."
       : p.id === "build_passive" ? "Creates income that survives interruption. Protects against illness, burnout, or forced time off."
       : p.id === "lock_forward" ? "Removes uncertainty about next month. You stop guessing and start planning."
       : "Improves your income structure.";
-    return { ...p, lift, tags, effort, impact, why, bandShift: result.band !== base.band ? result.band : null };
+    // Real example by structure type
+    const example = p.id === "convert_retainer" ? "Monthly advisory, support retainer, optimization contract, ongoing implementation"
+      : p.id === "add_client" ? "Second anchor client, adjacent service offering, referral partnership"
+      : p.id === "build_passive" ? "Digital product, licensing, course, template library, maintenance SLA"
+      : p.id === "lock_forward" ? "Prepaid package, quarterly commitment, annual agreement, deposit-based booking"
+      : "";
+    return { ...p, lift, tags, effort, impact, speed, realism, why, example, bandShift: result.band !== base.band ? result.band : null };
   }).sort((a, b) => b.lift - a.lift);
 
   const bestMove = presetAnalysis[0];
+
+  // ── Band gap ──
+  const nextBandThreshold = base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : null;
+  const nextBandLabel = base.overall_score < 30 ? "Developing" : base.overall_score < 50 ? "Established" : base.overall_score < 75 ? "High" : null;
+  const bandGap = nextBandThreshold ? nextBandThreshold - base.overall_score : null;
 
   // ── Path to next band (sequenced plan) ──
   const targetScore = base.overall_score < 30 ? 30 : base.overall_score < 50 ? 50 : base.overall_score < 75 ? 75 : base.overall_score + 10;
@@ -802,19 +819,79 @@ function SimulatorContent() {
               <div style={{ fontSize: 12, color: bandColor(sim.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{sim.band}</div>
             </div>
 
-            {/* Impact */}
+            {/* Third card: Points to Next Band / Impact */}
             <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "36px 28px", textAlign: "center" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>IMPACT</div>
-              <div className="sim-score-num" style={{
-                fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
-                color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint,
-              }}>
-                {delta > 0 ? `+${delta}` : delta === 0 ? "\u2014" : String(delta)}
-              </div>
-              <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>{runway} day{runway !== 1 ? "s" : ""} runway</div>
+              {isModified ? (
+                <>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint, marginBottom: 14 }}>IMPACT</div>
+                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint }}>
+                    {delta > 0 ? `+${delta}` : delta === 0 ? "\u2014" : String(delta)}
+                  </div>
+                  <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>{sim.band !== base.band ? `Moves to ${sim.band}` : `Stays in ${base.band}`}</div>
+                </>
+              ) : (
+                <>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 14 }}>
+                    {bandGap ? "POINTS TO NEXT BAND" : "STABILITY POSITION"}
+                  </div>
+                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, color: BRAND.purple }}>
+                    {bandGap ? bandGap : base.overall_score}
+                  </div>
+                  <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>
+                    {nextBandLabel ? `${nextBandLabel} starts at ${nextBandThreshold}` : "Highest band achieved"}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
+
+        {/* ══════════ BEST MOVE RIGHT NOW (primary position) ══════════ */}
+        {bestMove && bestMove.lift > 0 && !isModified && (
+          <div style={{ marginBottom: 28, padding: "28px 28px", borderRadius: 16, background: `linear-gradient(135deg, rgba(75,63,174,0.10) 0%, rgba(26,122,109,0.08) 100%)`, border: `1px solid rgba(75,63,174,0.22)`, boxShadow: "0 8px 32px rgba(75,63,174,0.08)" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 14 }}>BEST MOVE FOR YOUR STRUCTURE RIGHT NOW</div>
+            <div style={{ fontSize: 22, fontWeight: 600, color: T.text, marginBottom: 8, lineHeight: 1.3 }}>{bestMove.label}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 14 }}>
+              <span style={{ fontSize: 24, fontWeight: 700, color: BRAND.teal, fontFamily: DISPLAY }}>+{bestMove.lift} points</span>
+              {bestMove.bandShift && <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.purple, padding: "3px 10px", backgroundColor: "rgba(75,63,174,0.10)", borderRadius: 20 }}>Moves you to {bestMove.bandShift}</span>}
+              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, fontStyle: "italic" }}>{bestMove.realism}</span>
+            </div>
+            <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: "0 0 12px" }}>{bestMove.why}</p>
+            {bestMove.example && <p style={{ fontSize: 12, color: T.textMuted, margin: "0 0 12px", fontStyle: "italic" }}>Examples: {bestMove.example}</p>}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const }}>
+              {bestMove.tags.map(tag => (
+                <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: BRAND.teal, backgroundColor: "rgba(26,122,109,0.10)", padding: "4px 12px", borderRadius: 20, letterSpacing: "0.02em" }}>{tag}</span>
+              ))}
+              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "4px 12px", borderRadius: 20 }}>Effort: {bestMove.effort}</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "4px 12px", borderRadius: 20 }}>Speed: {bestMove.speed}</span>
+            </div>
+          </div>
+        )}
+
+        {/* ══════════ BAND PROGRESS ══════════ */}
+        <ClassificationScale currentBand={isModified ? sim.band : base.band} currentScore={isModified ? sim.overall_score : base.overall_score} />
+        {bandGap && !isModified && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 16px", marginTop: -8, marginBottom: 20 }}>
+            <span style={{ fontSize: 12, color: T.textMuted }}>Current: {base.overall_score}</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: BRAND.purple }}>{nextBandLabel} starts at {nextBandThreshold} ({bandGap} points away)</span>
+          </div>
+        )}
+
+        {/* ══════════ DO NOTHING SCENARIO ══════════ */}
+        {!isModified && (
+          <div style={{ marginBottom: 28, padding: "20px 24px", borderRadius: 12, backgroundColor: "rgba(220,74,74,0.04)", border: `1px solid rgba(220,74,74,0.12)` }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.bandLimited, marginBottom: 8 }}>IF NOTHING CHANGES</div>
+            <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>
+              {base.overall_score < 30
+                ? `Your structure remains highly dependent on active work. Score stays at ${base.overall_score}. Income resets monthly — one disruption creates immediate financial pressure.`
+                : base.overall_score < 50
+                  ? `Your structure has gaps that leave you exposed. Score stays at ${base.overall_score}. You can absorb a small hit, but not two in a row. Forward visibility remains limited.`
+                  : base.overall_score < 75
+                    ? `Your structure is functional but has specific weaknesses. Score stays at ${base.overall_score}. You are ${75 - base.overall_score} points from High Stability — close enough that one structural change could close the gap.`
+                    : `Your structure is strong. Score stays at ${base.overall_score}. The risk is complacency — maintaining this position requires ongoing attention to concentration and forward visibility.`}
+            </p>
+          </div>
+        )}
 
         {/* ══════════ WHAT-IF NARRATIVE ══════════ */}
         {isModified && delta !== 0 && (
@@ -872,46 +949,9 @@ function SimulatorContent() {
           </button>
         )}
 
-        {/* ══════════ CLASSIFICATION SCALE ══════════ */}
-        <ClassificationScale currentBand={isModified ? sim.band : base.band} currentScore={isModified ? sim.overall_score : base.overall_score} />
-
         {/* ══════════ INCOME TIMELINE ══════════ */}
         {isModified && timeline.length > 0 && (
           <IncomeTimeline timeline={timeline} baseScore={base.overall_score} />
-        )}
-
-        {/* ══════════ BEST MOVE RIGHT NOW ══════════ */}
-        {bestMove && bestMove.lift > 0 && !isModified && (
-          <div style={{ marginBottom: 32, padding: "28px 28px", borderRadius: 14, background: `linear-gradient(135deg, rgba(75,63,174,0.08) 0%, rgba(26,122,109,0.06) 100%)`, border: `1px solid rgba(75,63,174,0.18)` }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 12 }}>BEST MOVE FOR YOUR STRUCTURE</div>
-            <div style={{ fontSize: 20, fontWeight: 600, color: T.text, marginBottom: 6, lineHeight: 1.3 }}>{bestMove.label}</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-              <span style={{ fontSize: 18, fontWeight: 700, color: BRAND.teal, fontFamily: DISPLAY }}>+{bestMove.lift} points</span>
-              {bestMove.bandShift && <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.purple }}>Moves you to {bestMove.bandShift}</span>}
-            </div>
-            <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: "0 0 12px" }}>{bestMove.why}</p>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const }}>
-              {bestMove.tags.map(tag => (
-                <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: BRAND.teal, backgroundColor: "rgba(26,122,109,0.10)", padding: "4px 10px", borderRadius: 20, letterSpacing: "0.02em" }}>{tag}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ══════════ DO NOTHING SCENARIO ══════════ */}
-        {!isModified && (
-          <div style={{ marginBottom: 32, padding: "20px 24px", borderRadius: 12, backgroundColor: "rgba(220,74,74,0.04)", border: `1px solid rgba(220,74,74,0.12)` }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.bandLimited, marginBottom: 8 }}>IF NOTHING CHANGES</div>
-            <p style={{ fontSize: 14, color: T.text, lineHeight: 1.65, margin: 0 }}>
-              {base.overall_score < 30
-                ? `Your structure remains highly dependent on active work. Score stays at ${base.overall_score}. Income resets monthly — one disruption creates immediate financial pressure.`
-                : base.overall_score < 50
-                  ? `Your structure has gaps that leave you exposed. Score stays at ${base.overall_score}. You can absorb a small hit, but not two in a row. Forward visibility remains limited.`
-                  : base.overall_score < 75
-                    ? `Your structure is functional but has specific weaknesses. Score stays at ${base.overall_score}. You are ${75 - base.overall_score} points from High Stability — close enough that one structural change could close the gap.`
-                    : `Your structure is strong. Score stays at ${base.overall_score}. The risk is complacency — maintaining this position requires ongoing attention to concentration and forward visibility.`}
-            </p>
-          </div>
         )}
 
         {/* ══════════ MODE TOGGLE ══════════ */}
@@ -949,16 +989,21 @@ function SimulatorContent() {
             {/* ── Effort vs Impact table ── */}
             {!simPreset && presetAnalysis.length > 0 && (
               <div style={{ marginBottom: 20, borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}` }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px", padding: "10px 16px", backgroundColor: "rgba(244,241,234,0.04)", borderBottom: `1px solid ${T.border}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 70px 70px 60px 60px", padding: "10px 16px", backgroundColor: "rgba(244,241,234,0.04)", borderBottom: `1px solid ${T.border}` }}>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint }}>ACTION</span>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>EFFORT</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>SPEED</span>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>IMPACT</span>
-                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>POINTS</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>LIFT</span>
                 </div>
-                {presetAnalysis.map(p => (
-                  <button key={p.id} onClick={() => setSimPreset(p.id)} style={{ display: "grid", gridTemplateColumns: "1fr 80px 80px 70px", padding: "12px 16px", width: "100%", border: "none", borderBottom: `1px solid ${T.border}`, cursor: "pointer", backgroundColor: simPreset === p.id ? "rgba(75,63,174,0.08)" : "transparent", textAlign: "left", transition: "background-color 150ms" }}>
-                    <span style={{ fontSize: 13, fontWeight: 500, color: T.text }}>{p.label}</span>
+                {presetAnalysis.map((p, idx) => (
+                  <button key={p.id} onClick={() => setSimPreset(p.id)} style={{ display: "grid", gridTemplateColumns: "1fr 70px 70px 60px 60px", padding: "12px 16px", width: "100%", border: "none", borderBottom: `1px solid ${T.border}`, cursor: "pointer", backgroundColor: simPreset === p.id ? "rgba(75,63,174,0.08)" : "transparent", textAlign: "left", transition: "background-color 150ms" }}>
+                    <div>
+                      <span style={{ fontSize: 13, fontWeight: 500, color: T.text }}>{p.label}</span>
+                      {idx === 0 && <span style={{ fontSize: 9, fontWeight: 700, color: BRAND.purple, backgroundColor: "rgba(75,63,174,0.12)", padding: "1px 6px", borderRadius: 8, marginLeft: 8, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>BEST</span>}
+                    </div>
                     <span style={{ fontSize: 12, color: p.effort === "High" ? B.bandDeveloping : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.effort}</span>
+                    <span style={{ fontSize: 12, color: p.speed === "Fast" ? B.teal : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.speed}</span>
                     <span style={{ fontSize: 12, color: p.impact === "High" ? B.teal : p.impact === "Medium" ? B.bandEstablished : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.impact}</span>
                     <span style={{ fontSize: 13, fontWeight: 700, color: B.teal, textAlign: "center", fontFamily: DISPLAY }}>+{p.lift}</span>
                   </button>
@@ -1018,13 +1063,14 @@ function SimulatorContent() {
                     <div style={{ padding: "14px 16px", borderRadius: 8, backgroundColor: delta > 0 ? "rgba(26,122,109,0.06)" : "rgba(220,74,74,0.04)", border: `1px solid ${delta > 0 ? "rgba(26,122,109,0.12)" : "rgba(220,74,74,0.10)"}`, marginBottom: 10 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: delta > 0 ? BRAND.teal : BRAND.bandLimited, marginBottom: 6 }}>WHY THIS CHANGES YOUR SCORE</div>
                       <p style={{ fontSize: 13, color: T.text, lineHeight: 1.6, margin: 0 }}>{analysis.why}</p>
-                      {analysis.tags.length > 0 && (
-                        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginTop: 8 }}>
-                          {analysis.tags.map(tag => (
-                            <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: delta > 0 ? B.teal : B.bandLimited, backgroundColor: delta > 0 ? "rgba(26,122,109,0.10)" : "rgba(220,74,74,0.08)", padding: "3px 10px", borderRadius: 20 }}>{tag}</span>
-                          ))}
-                        </div>
-                      )}
+                      {analysis.example && <p style={{ fontSize: 12, color: T.textMuted, margin: "8px 0 0", fontStyle: "italic" }}>Examples: {analysis.example}</p>}
+                      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginTop: 10 }}>
+                        {analysis.tags.map(tag => (
+                          <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: delta > 0 ? B.teal : B.bandLimited, backgroundColor: delta > 0 ? "rgba(26,122,109,0.10)" : "rgba(220,74,74,0.08)", padding: "3px 10px", borderRadius: 20 }}>{tag}</span>
+                        ))}
+                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "3px 10px", borderRadius: 20 }}>{analysis.realism}</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "3px 10px", borderRadius: 20 }}>Effort: {analysis.effort} · Speed: {analysis.speed}</span>
+                      </div>
                     </div>
                   )}
                   {industry && delta < 0 && (
@@ -1164,19 +1210,26 @@ function SimulatorContent() {
           </Card>
         )}
 
-        {/* ══════════ STRESS TEST: RISK FLOOR ══════════ */}
+        {/* ══════════ STRESS TEST YOUR STRUCTURE ══════════ */}
         <div style={{ marginTop: 32 }}>
+          <SectionLabel color={B.bandLimited} sub="See how your score changes if revenue drops, work pauses, or a major client disappears.">
+            Stress Test Your Structure
+          </SectionLabel>
+
           <button
             onClick={() => setStressTestActive(!stressTestActive)}
             style={{
-              padding: "12px 20px", borderRadius: 10, fontSize: 14, fontWeight: 600,
-              color: BRAND.bandLimited, backgroundColor: "rgba(220,74,74,0.06)",
+              padding: "16px 20px", borderRadius: 12, fontSize: 14, fontWeight: 600,
+              color: stressTestActive ? T.text : BRAND.bandLimited,
+              backgroundColor: stressTestActive ? "rgba(220,74,74,0.08)" : "rgba(220,74,74,0.04)",
               border: `1px solid rgba(220,74,74,0.15)`, cursor: "pointer",
-              transition: "background-color 200ms",
+              transition: "all 200ms",
               width: "100%", textAlign: "left",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
             }}
           >
-            {stressTestActive ? "Hide Stress Test" : "Run Stress Test: See Your Floor"}
+            <span>{stressTestActive ? "Hide Stress Test" : "Run Combined Stress Test: See Your Floor"}</span>
+            <span style={{ fontSize: 12, color: T.textMuted }}>{stressTestActive ? "\u25B2" : "\u25BC"}</span>
           </button>
 
           {stressTestActive && (() => {
@@ -1197,11 +1250,11 @@ function SimulatorContent() {
 
             return (
               <div style={{
-                marginTop: 12, padding: "24px 28px", borderRadius: 12,
+                marginTop: 12, padding: "24px 28px", borderRadius: 14,
                 backgroundColor: "rgba(220,74,74,0.04)", border: `1px solid rgba(220,74,74,0.15)`,
               }}>
-                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: BRAND.bandLimited, marginBottom: 12 }}>
-                  YOUR FLOOR
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: BRAND.bandLimited, marginBottom: 16 }}>
+                  YOUR STRUCTURAL FLOOR
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 16 }}>
                   <div style={{ fontSize: 48, fontWeight: 300, fontFamily: DISPLAY, color: BRAND.bandLimited, lineHeight: 1 }}>
@@ -1212,8 +1265,15 @@ function SimulatorContent() {
                     <div style={{ fontSize: 13, color: bandColor(stressResult.band), fontWeight: 600, marginTop: 4 }}>{stressResult.band}</div>
                   </div>
                 </div>
-                <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: 0 }}>
-                  This is your worst realistic scenario — if your biggest source left, recurring income dropped, and booked income fell simultaneously. This is the floor your income structure protects against.
+                <p style={{ fontSize: 14, color: T.textSecondary, lineHeight: 1.65, margin: "0 0 12px" }}>
+                  This is what happens if your biggest source leaves, recurring income drops by 20%, and booked income is cut in half — all at once. This is the floor your income structure protects against.
+                </p>
+                <p style={{ fontSize: 13, color: T.text, fontWeight: 500, margin: 0 }}>
+                  {stressResult.overall_score <= 10
+                    ? "Your structure has almost no buffer. A single serious disruption would create a financial emergency."
+                    : stressResult.overall_score <= 25
+                      ? "Your structure absorbs some of the shock, but the result is still fragile. Building persistence and reducing concentration would raise this floor."
+                      : "Your structure has meaningful protection. Even under combined stress, you maintain some stability."}
                 </p>
               </div>
             );
