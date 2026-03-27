@@ -1003,15 +1003,35 @@ export default function ReviewPage() {
           {/* Methodology footer */}
           <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 28 }}>Built from fixed structural questions under Model RP-2.0.</div>
 
-          {/* Simulator access credentials */}
-          <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>STABILITY SIMULATOR&#8482; ACCESS</div>
-          <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Enter these codes at runpayway.com/simulator to model changes.</div>
-          <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
-            <div style={{ ...T.meta, color: B.taupe, fontSize: 10 }}>Report ID</div>
-            <div style={{ fontFamily: "monospace", fontSize: mobile ? 10 : 11, color: B.navy, letterSpacing: "0.02em", wordBreak: "break-all" as const }}>{record.record_id}</div>
-            <div style={{ ...T.meta, color: B.taupe, fontSize: 10, marginTop: 4 }}>Access Code</div>
-            <div style={{ fontFamily: "monospace", fontSize: mobile ? 10 : 11, color: B.navy, letterSpacing: "0.02em" }}>{record.authorization_code?.slice(0, 16) || ""}</div>
-          </div>
+          {/* Simulator access code — encoded data for client-side decode */}
+          {(() => {
+            const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
+            const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
+            if (!ni) return null;
+            const payload = {
+              p: ni.income_persistence_pct,
+              c: ni.largest_source_pct,
+              s: ni.source_diversity_count,
+              f: ni.forward_secured_pct,
+              v: ni.income_variability_level,
+              l: ni.labor_dependence_pct,
+              q: (v2?.quality as Record<string, number>)?.quality_score ?? 5,
+              n: record.assessment_title || "",
+              i: record.industry_sector || "",
+              m: record.primary_income_model || "",
+            };
+            const code = btoa(JSON.stringify(payload));
+            return (
+              <>
+                <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>STABILITY SIMULATOR&#8482; ACCESS</div>
+                <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Enter this code at runpayway.com/simulator to model changes.</div>
+                <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left", maxWidth: mobile ? "90%" : 420 }}>
+                  <div style={{ ...T.meta, color: B.taupe, fontSize: 10 }}>Access Code</div>
+                  <div style={{ fontFamily: "monospace", fontSize: mobile ? 8 : 9, color: B.navy, letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+                </div>
+              </>
+            );
+          })()}
 
           <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 4 Pages</div>
         </div>

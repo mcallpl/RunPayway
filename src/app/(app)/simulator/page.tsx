@@ -421,10 +421,8 @@ function SimulatorContent() {
   const [scriptTemplates, setScriptTemplates] = useState<Array<{ id: string; title: string; context: string; script: string }>>([]);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
-  const [accessReportId, setAccessReportId] = useState("");
   const [accessCode, setAccessCode] = useState("");
   const [accessError, setAccessError] = useState<string | null>(null);
-  const [accessLoading, setAccessLoading] = useState(false);
 
   // Helper to populate simulator state from data
   const populateFromData = (data: { normalized_inputs: { income_persistence_pct: number; largest_source_pct: number; source_diversity_count: number; forward_secured_pct: number; income_variability_level: string; labor_dependence_pct: number }; quality_score: number; assessment_title: string; industry_sector: string; primary_income_model: string }) => {
@@ -443,32 +441,36 @@ function SimulatorContent() {
     setLoaded(true);
   };
 
-  // Handle access code submission
-  const handleAccessSubmit = async () => {
+  // Handle access code submission — decode base64 client-side
+  const handleAccessSubmit = () => {
     setAccessError(null);
-    const trimmedId = accessReportId.trim().toLowerCase();
-    const trimmedCode = accessCode.trim().toLowerCase();
-    if (!trimmedId || !trimmedCode) {
-      setAccessError("Enter both your Report ID and Access Code from your report.");
+    const trimmed = accessCode.trim();
+    if (!trimmed) {
+      setAccessError("Paste your Access Code from the cover page of your report.");
       return;
     }
-    setAccessLoading(true);
     try {
-      const res = await fetch("/api/v1/simulator-access", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ record_id: trimmedId, authorization_code: trimmedCode }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        setAccessError(data.error || "Code not recognized. Check your report and try again.");
-        setAccessLoading(false);
+      const decoded = JSON.parse(atob(trimmed));
+      if (typeof decoded.p !== "number" || typeof decoded.c !== "number" || typeof decoded.l !== "number") {
+        setAccessError("Invalid code. Copy the full Access Code from your report cover page.");
         return;
       }
-      populateFromData(data);
+      populateFromData({
+        normalized_inputs: {
+          income_persistence_pct: decoded.p,
+          largest_source_pct: decoded.c,
+          source_diversity_count: decoded.s,
+          forward_secured_pct: decoded.f,
+          income_variability_level: decoded.v || "moderate",
+          labor_dependence_pct: decoded.l,
+        },
+        quality_score: decoded.q || 5,
+        assessment_title: decoded.n || "",
+        industry_sector: decoded.i || "",
+        primary_income_model: decoded.m || "",
+      });
     } catch {
-      setAccessError("Something went wrong. Please try again.");
-      setAccessLoading(false);
+      setAccessError("Invalid code. Make sure you copied the entire Access Code from your report.");
     }
   };
 
@@ -530,42 +532,26 @@ function SimulatorContent() {
           </div>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Simulator</div>
           <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 12 }}>
-            Enter your report codes
+            Enter your access code
           </h1>
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 28 }}>
-            Your Report ID and Access Code are on the cover page of your report. Enter them below to load your assessment data.
+            Your Access Code is on the cover page of your report. Paste it below to load your assessment data.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16, textAlign: "left" }}>
-            <div>
-              <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Report ID</label>
-              <input
-                type="text"
-                value={accessReportId}
-                onChange={(e) => { setAccessReportId(e.target.value); setAccessError(null); }}
-                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                spellCheck={false}
-                autoComplete="off"
-                style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.02em", boxSizing: "border-box" as const }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
-              />
-            </div>
-            <div>
-              <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Access Code</label>
-              <input
-                type="text"
-                value={accessCode}
-                onChange={(e) => { setAccessCode(e.target.value); setAccessError(null); }}
-                placeholder="16-character code"
-                spellCheck={false}
-                autoComplete="off"
-                style={{ width: "100%", padding: "12px 14px", fontSize: 14, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.02em", boxSizing: "border-box" as const }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
-                onKeyDown={(e) => { if (e.key === "Enter") handleAccessSubmit(); }}
-              />
-            </div>
+          <div style={{ marginBottom: 16, textAlign: "left" }}>
+            <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Access Code</label>
+            <textarea
+              value={accessCode}
+              onChange={(e) => { setAccessCode(e.target.value); setAccessError(null); }}
+              placeholder="Paste your access code here"
+              spellCheck={false}
+              autoComplete="off"
+              rows={3}
+              style={{ width: "100%", padding: "12px 14px", fontSize: 12, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.01em", boxSizing: "border-box" as const, resize: "none" as const, lineHeight: 1.4 }}
+              onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAccessSubmit(); } }}
+            />
           </div>
 
           {accessError && (
@@ -574,10 +560,9 @@ function SimulatorContent() {
 
           <button
             onClick={handleAccessSubmit}
-            disabled={accessLoading}
-            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: accessLoading ? "rgba(244,241,234,0.5)" : "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)", border: "none", cursor: accessLoading ? "wait" : "pointer", width: "100%", transition: "opacity 200ms ease" }}
+            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)", border: "none", cursor: "pointer", width: "100%", transition: "opacity 200ms ease" }}
           >
-            {accessLoading ? "Loading..." : "Load My Assessment"}
+            Load My Assessment
           </button>
 
           <div style={{ marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(244,241,234,0.08)" }}>
