@@ -197,26 +197,26 @@ const B = {
 // ============================================================
 // ── Spacing: strict 4px grid ──
 const R = {
-  pagePad: 40,
-  headerMb: 16,
-  sectionGap: 24,
-  sectionMb: 20,
+  pagePad: "52px 56px 40px",     // top right/left bottom — premium margins
+  headerMb: 20,
+  sectionGap: 32,
+  sectionMb: 24,
   cardMb: 16,
-  labelMb: 8,
+  labelMb: 10,
   paraMb: 12,
   itemGap: 12,
-  cardGap: 12,
+  cardGap: 14,
   rowGap: 16,
-  dividerMy: 20,
+  dividerMy: 24,
   footerMt: 16,
-  cardPad: "16px 20px" as string,
+  cardPad: "18px 22px" as string,
 };
 
 // ── Reusable card style ──
 const cardStyle: React.CSSProperties = {
   backgroundColor: B.bone,
   border: "1px solid rgba(14,26,43,0.06)",
-  borderRadius: 4,
+  borderRadius: 6,
   padding: R.cardPad,
 };
 
@@ -224,18 +224,18 @@ const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 
 // ── Typography: 7-step scale optimized for print clarity ──
 const T = {
-  score: { fontSize: 72, fontWeight: 600, lineHeight: 1 },                                          // The big number
-  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.2, color: B.navy },                     // Page titles
-  sectionTitle: { fontSize: 18, fontWeight: 600, lineHeight: 1.3, color: B.navy },                  // Major section headers (H2)
-  classification: { fontSize: 18, fontWeight: 500, lineHeight: 1.3 },                               // Band label
-  overline: { fontSize: 11, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },  // Card/metadata labels
-  sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.4 },                                 // Bold inline labels
-  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },                                 // Card titles
-  cardHero: { fontSize: 24, fontWeight: 600, lineHeight: 1.1 },                                     // Card hero numbers
-  body: { fontSize: 14, fontWeight: 400, lineHeight: 1.65 },                                        // Paragraph text
-  small: { fontSize: 13, fontWeight: 400, lineHeight: 1.55 },                                       // Secondary text
-  meta: { fontSize: 12, fontWeight: 400, lineHeight: 1.5 },                                         // Fine print
-  micro: { fontSize: 11, fontWeight: 700, lineHeight: 1.3 },                                        // Severity tags
+  score: { fontSize: 64, fontWeight: 700, lineHeight: 1 },
+  pageTitle: { fontSize: 26, fontWeight: 700, lineHeight: 1.2, color: B.navy },
+  sectionTitle: { fontSize: 18, fontWeight: 700, lineHeight: 1.3, color: B.navy },
+  classification: { fontSize: 16, fontWeight: 600, lineHeight: 1.3 },
+  overline: { fontSize: 10, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4 },
+  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },
+  cardHero: { fontSize: 22, fontWeight: 700, lineHeight: 1.1 },
+  body: { fontSize: 12.5, fontWeight: 400, lineHeight: 1.7 },
+  small: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.6 },
+  meta: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
+  micro: { fontSize: 10, fontWeight: 700, lineHeight: 1.3 },
 };
 
 // ── PDF page dimensions ──
@@ -260,11 +260,10 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-      <Image src={logoBlue} alt="RunPayway&#8482;" width={120} height={14} style={{ height: "auto" }} />
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.10)" }}>
+      <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto" }} />
       <div style={{ textAlign: "right" }}>
-        <div style={{ ...T.meta, color: B.taupe }}>Income Stability Score™</div>
-        <div style={{ ...T.meta, color: B.taupe }}>Model RP-2.0</div>
+        <div style={{ fontSize: 10, fontWeight: 500, color: B.taupe, letterSpacing: "0.02em" }}>Income Stability Score™ · Model RP-2.0</div>
       </div>
     </div>
   );
@@ -272,20 +271,21 @@ function ReportHeader() {
 
 function Overline({ children, large }: { children: React.ReactNode; large?: boolean }) {
   return large
-    ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: R.labelMb }}>{children}</div>
-    : <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>{children}</div>;
+    ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10 }}>{children}</div>
+    : <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{children}</div>;
 }
 
 function SectionDivider() {
-  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
+  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.06)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function PageFooter({ section, page }: { section: string; page: number }) {
   return (
-    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 12, borderTop: "1px solid rgba(14,26,43,0.12)" }}>
+    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 14, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ ...T.meta, color: B.taupe }}>{section} · Page {page} of 4</span>
-        <span style={{ ...T.meta, color: B.taupe }}>Model RP-2.0 · runpayway.com/methodology</span>
+        <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>Confidential — {section}</span>
+        <span style={{ fontSize: 9.5, fontWeight: 500, color: B.taupe }}>Page {page} of 4</span>
+        <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>support@runpayway.com</span>
       </div>
     </div>
   );
@@ -296,7 +296,7 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
     <div className="report-page" style={{
       width: PDF.captureW,
       maxWidth: "100%",
-      backgroundColor: B.sand,
+      backgroundColor: "#FFFFFF",
       border: "none",
       borderRadius: 0,
       padding: noPad ? 0 : R.pagePad,
@@ -305,9 +305,8 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
       flexDirection: "column",
       overflow: "visible",
       position: "relative",
+      fontFamily: "'Inter', sans-serif",
     }}>
-      {/* Top accent line */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: accentGradient }} />
       {children}
     </div>
   );
@@ -979,29 +978,29 @@ export default function ReviewPage() {
   const pageContents: ReactNode[] = [
     // Page 0: Cover
     <>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : 500, textAlign: "center", padding: mobile ? "0 8px" : 0 }}>
-          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 140 : 180} height={21} style={{ height: "auto", marginBottom: mobile ? 20 : 32 }} />
-          <div style={{ width: mobile ? "80%" : "60%", height: 1, backgroundColor: B.stone, marginBottom: mobile ? 20 : 32 }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : "auto", textAlign: "center", padding: mobile ? "0 8px" : "60px 0 40px" }}>
+          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 140 : 180} height={21} style={{ height: "auto", marginBottom: mobile ? 20 : 44 }} />
+          <div style={{ width: mobile ? "80%" : "60%", height: 1, backgroundColor: B.stone, marginBottom: mobile ? 20 : 48 }} />
 
-          <div style={{ ...T.pageTitle, fontSize: mobile ? 22 : 28, marginBottom: 4 }}>Income Stability Report</div>
-          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24 }}>Structural assessment of how your income holds up under disruption, concentration, and interruption.</div>
+          <div style={{ ...T.pageTitle, fontSize: mobile ? 22 : 30, fontWeight: 700, marginBottom: 4 }}>Income Stability Report</div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 10 }}>Structural assessment of how your income holds up under disruption, concentration, and interruption.</div>
 
-          <div style={{ fontSize: mobile ? 18 : 24, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
-          <div style={{ ...T.meta, color: B.muted, marginBottom: mobile ? 20 : 32 }}>{formalDate}</div>
+          <div style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
+          <div style={{ ...T.meta, color: B.muted, marginBottom: mobile ? 20 : 38 }}>{formalDate}</div>
 
           {/* Score block */}
           <div style={{ marginBottom: 12 }}>
-            <span style={{ ...T.score, fontSize: mobile ? 56 : 72, color: B.navy }}>{record.final_score}</span>
+            <span style={{ ...T.score, fontSize: mobile ? 56 : 64, color: B.navy }}>{record.final_score}</span>
             <span style={{ fontSize: mobile ? 18 : 24, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
-            <div style={{ ...T.classification, fontSize: mobile ? 16 : 18, color: bandColor }}>{record.stability_band}</div>
+            <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
-          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24, maxWidth: 340, lineHeight: 1.5 }}>{coverBandDesc[tier]}</div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 28, maxWidth: 340, lineHeight: 1.5 }}>{coverBandDesc[tier]}</div>
 
           {/* Methodology footer */}
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 28 }}>Built from fixed structural questions under Model RP-2.0.</div>
+          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 20 : 36 }}>Built from fixed structural questions under Model RP-2.0.</div>
 
           {/* Simulator access code — encoded data for client-side decode */}
           {(() => {
@@ -1025,7 +1024,7 @@ export default function ReviewPage() {
               <>
                 <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>STABILITY SIMULATOR&#8482; ACCESS</div>
                 <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Enter this code at runpayway.com/simulator to model changes.</div>
-                <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left", maxWidth: mobile ? "90%" : 420 }}>
+                <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 20px", textAlign: "left", maxWidth: mobile ? "90%" : 420 }}>
                   <div style={{ ...T.meta, color: B.taupe, fontSize: 10 }}>Access Code</div>
                   <div style={{ fontFamily: "monospace", fontSize: mobile ? 8 : 9, color: B.navy, letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
@@ -1033,7 +1032,7 @@ export default function ReviewPage() {
             );
           })()}
 
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 16 }}>Model RP-2.0 · 4 Pages</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 24 }}>Model RP-2.0 · 4 Pages</div>
         </div>
     </>,
 
@@ -1043,8 +1042,8 @@ export default function ReviewPage() {
 
         {/* ── 1. STATE THE SCORE ── */}
         <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 16, letterSpacing: "0.14em" }}>INCOME STABILITY ASSESSMENT</div>
-          <h1 style={{ ...T.pageTitle, marginBottom: 4, fontSize: 28 }}>{record.assessment_title || "Assessment"}</h1>
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 12, letterSpacing: "0.14em" }}>INCOME STABILITY ASSESSMENT</div>
+          <h1 style={{ ...T.pageTitle, marginBottom: 6 }}>{record.assessment_title || "Assessment"}</h1>
           <div style={{ ...T.meta, color: B.taupe, marginBottom: 24 }}>
             {issuedDate} &middot; Model RP-2.0
           </div>
@@ -1061,8 +1060,8 @@ export default function ReviewPage() {
         </div>
 
         {/* ── 2. KILLER DIAGNOSTIC SENTENCE ── */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "16px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "16px 16px" : "24px 28px", marginBottom: 20, textAlign: "center" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 15, fontWeight: 500 }}>
             {(() => {
               if (tier === "high") return "Your income is not invulnerable. But it is built to absorb a hit without forcing a crisis. That is rare.";
               if (tier === "established") return "Your income is not fragile. But it still depends on a narrow set of conditions staying exactly as they are.";
@@ -1077,7 +1076,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── 3. IN PLAIN ENGLISH — WHY THE SCORE IS WHERE IT IS ── */}
-        <div style={{ ...cardStyle, marginBottom: 16 }}>
+        <div style={{ ...cardStyle, marginBottom: 14 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IN PLAIN ENGLISH</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
             {v2Explainability?.why_this_score || (() => {
@@ -1104,7 +1103,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── 4. BIGGEST THING HOLDING IT DOWN ── */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 14 }}>
           <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>THE SINGLE BIGGEST THING HOLDING YOUR SCORE DOWN</div>
           <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.6 }}>
             {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "A structural weakness is limiting your score."}
@@ -1127,7 +1126,7 @@ export default function ReviewPage() {
 
         {/* ── 5. HOW FAR FROM STRONGER STABILITY ── */}
         {nextBandName && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
+          <div style={{ ...cardStyle, marginBottom: 14 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW FAR FROM STRONGER STABILITY</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
               <span style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{distanceToNext}</span>
@@ -1145,7 +1144,7 @@ export default function ReviewPage() {
           </div>
         )}
         {tier === "high" && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
+          <div style={{ ...cardStyle, marginBottom: 14 }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>STABILITY POSITION</div>
             <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.6 }}>You are in the highest stability band. The remaining pages show what is working, what could still improve, and how to maintain this position.</p>
           </div>
@@ -1153,7 +1152,7 @@ export default function ReviewPage() {
 
         {/* ── PRESSUREMAP™ — YOUR STRUCTURE + CURRENT CONDITIONS ── */}
         {record.pressure_map && (
-          <div style={{ ...cardStyle, marginTop: 4, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
+          <div style={{ ...cardStyle, marginTop: 12, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
             <div style={{ marginBottom: 12 }}>
               <Overline>PressureMap&#8482;</Overline>
               <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.4 }}>
@@ -1161,12 +1160,12 @@ export default function ReviewPage() {
               </p>
             </div>
 
-            <div style={{ marginBottom: 14 }}>
+            <div style={{ marginBottom: 16 }}>
               <div style={{ ...T.overline, color: "#DC4A4A", marginBottom: 4, fontSize: 10 }}>WHAT IS MOST LIKELY TO DISRUPT YOU RIGHT NOW</div>
               <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.pressure}</p>
             </div>
 
-            <div style={{ marginBottom: 14 }}>
+            <div style={{ marginBottom: 16 }}>
               <div style={{ ...T.overline, color: B.teal, marginBottom: 4, fontSize: 10 }}>WHAT IS WORKING IN YOUR FAVOR</div>
               <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.tailwind}</p>
             </div>
@@ -1194,7 +1193,7 @@ export default function ReviewPage() {
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>Where your income actually comes from, what repeats, and what disappears the moment you stop.</p>
 
         {/* ── KILLER LINE ── */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "14px 16px" : "16px 24px", marginBottom: 20, textAlign: "center" }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "14px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
             {record.active_income_level + record.semi_persistent_income_level >= 80
               ? `${record.active_income_level + record.semi_persistent_income_level}% of your income still requires you to keep re-earning it.`
@@ -1206,7 +1205,7 @@ export default function ReviewPage() {
 
         {/* ── INCOME STRUCTURE BAR ── */}
         <Overline large>How Your Income Breaks Down</Overline>
-        <div style={{ display: "flex", gap: 2, height: 10, marginBottom: 12, marginTop: 4 }}>
+        <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 12, marginTop: 4 }}>
           <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.navy, borderRadius: 1 }} />
           <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.taupe, borderRadius: 1 }} />
           <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal, borderRadius: 1 }} />
@@ -1227,7 +1226,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── STRUCTURAL EXPOSURE ── */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 20 }}>
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 20 }}>
           <div style={{ flex: mobile ? undefined : 3, ...cardStyle }}>
             <Overline>IF YOUR BIGGEST SOURCE GOES AWAY</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 8 }}>
@@ -1284,7 +1283,7 @@ export default function ReviewPage() {
           return (
             <div style={{ marginBottom: 20 }}>
               <Overline large>What The Structure Reveals</Overline>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {rankItems.map(({ role, roleColor, ind, explanation }) => {
                   const levelColor = ind.level === "critical" || ind.level === "weak" ? B.bandLimited : ind.level === "moderate" ? B.bandDeveloping : ind.level === "strong" ? B.bandEstablished : B.bandHigh;
                   return (
@@ -1308,7 +1307,7 @@ export default function ReviewPage() {
 
         {/* ── WHAT'S WORKING / WHAT'S HOLDING YOU BACK ── */}
         {v2Explainability && (v2Explainability.strongest_supports?.length || v2Explainability.strongest_suppressors?.length) && (
-          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 16 }}>
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 16 }}>
             {v2Explainability.strongest_supports && v2Explainability.strongest_supports.length > 0 && (
               <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.teal}` }}>
                 <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>WHAT&apos;S WORKING</div>
@@ -1338,7 +1337,7 @@ export default function ReviewPage() {
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 16 }}>The specific disruptions your income structure is most exposed to — ranked by how much damage they would do.</p>
 
         {/* ── HARD DIAGNOSTIC SENTENCE ── */}
-        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "14px 16px" : "16px 24px", marginBottom: 20, textAlign: "center" }}>
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "14px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
             {(() => {
               const fc = v2Fragility?.fragility_class;
@@ -1397,11 +1396,11 @@ export default function ReviewPage() {
                 const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your ") && !title.includes("One ") && !title.includes("New "))
                   ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
                   : title;
-                const borderColor = idx === 0 ? B.bandLimited : idx === 1 ? B.bandDeveloping : B.stone;
+                const borderColor = idx === 0 ? B.bandLimited : idx === 1 ? B.bandDeveloping : "rgba(14,26,43,0.12)";
                 const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
                 const narrativeText = olMatch?.why_it_matters || s.narrative;
                 return (
-                  <div key={s.scenario_id} style={{ ...cardStyle, padding: "14px 16px", marginBottom: 8, borderLeft: `3px solid ${borderColor}` }}>
+                  <div key={s.scenario_id} style={{ ...cardStyle, padding: "16px 20px", marginBottom: 10, borderLeft: `3px solid ${borderColor}` }}>
                     <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 4 : 0, marginBottom: 4 }}>
                       <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
                       <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
@@ -1421,7 +1420,7 @@ export default function ReviewPage() {
 
         {/* ── FRAGILITY — HOW MUCH CAN YOU ABSORB ── */}
         {v2Fragility && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
+          <div style={{ ...cardStyle, marginTop: 8, marginBottom: 16 }}>
             <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW MUCH CAN YOUR INCOME ABSORB?</div>
             <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
               {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
@@ -1512,13 +1511,13 @@ export default function ReviewPage() {
           return (
             <div style={{ marginBottom: 20 }}>
               <Overline large>How To Decide What To Change</Overline>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {categories.map(({ tag, tagColor, scenario }) => {
                   const concrete = liftConcrete[scenario.scenario_id];
                   const title = concrete?.title ?? scenario.label;
                   const how = concrete?.how ?? scenario.change_description ?? "";
                   return (
-                    <div key={tag} style={{ ...cardStyle, padding: "14px 16px", borderLeft: `3px solid ${tagColor}` }}>
+                    <div key={tag} style={{ ...cardStyle, padding: "16px 20px", borderLeft: `3px solid ${tagColor}` }}>
                       <div style={{ ...T.overline, color: tagColor, marginBottom: 6, fontSize: 10 }}>{tag}</div>
                       <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{title}</div>
                       {how && <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{how}</p>}
@@ -1535,7 +1534,7 @@ export default function ReviewPage() {
 
         {/* ── IF YOU DID BOTH ── */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-          <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.teal}` }}>
+          <div style={{ ...cardStyle, marginBottom: 14, borderLeft: `3px solid ${B.teal}` }}>
             <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>IF YOU DID BOTH</div>
             <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.55 }}>
               Combining the top two changes would raise your score to approximately <span style={{ fontWeight: 700 }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
@@ -1555,7 +1554,7 @@ export default function ReviewPage() {
             {v2TradeoffNarratives.slice(0, 1).map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
-                <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 16 }}>
+                <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 8 }}>
                   <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.upside}</p></div>
                   <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{t.downside}</p></div>
                 </div>
@@ -1583,9 +1582,9 @@ export default function ReviewPage() {
           <div style={{ marginBottom: 16 }}>
             <SectionDivider />
             <Overline large>Week-by-Week Roadmap</Overline>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {v2ExecutionRoadmap.slice(0, 4).map((w, i) => (
-                <div key={i} style={{ ...cardStyle, padding: "10px 14px" }}>
+                <div key={i} style={{ ...cardStyle, padding: "14px 18px" }}>
                   <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                     <span style={{ ...T.micro, color: B.purple, minWidth: mobile ? 60 : 70, flexShrink: 0 }}>{w.week}</span>
                     <div style={{ flex: 1 }}>
@@ -1602,7 +1601,7 @@ export default function ReviewPage() {
 
         {/* ── RETAKE TIMING ── */}
         <SectionDivider />
-        <div style={{ ...cardStyle, marginBottom: 12 }}>
+        <div style={{ ...cardStyle, marginBottom: 14 }}>
           <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
             <div style={{ ...T.cardHeading, color: B.navy }}>{reassessDate}</div>
@@ -1622,7 +1621,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── COMPACT METHODOLOGY FOOTER ── */}
-        <div style={{ marginTop: 8, paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
+        <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${B.stone}` }}>
           <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
             Scored by Model RP-2.0 — a deterministic system using fixed rules and weights. No machine learning, no financial account access, no subjective judgment. Same inputs always produce the same score. Full methodology at runpayway.com/methodology. This is a present-state structural assessment, not financial advice.
           </p>
