@@ -6,20 +6,8 @@ import { useRouter } from "next/navigation";
 import { getSessionByEmail, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
-/*  Shared hooks                                                       */
+/*  Hooks                                                              */
 /* ------------------------------------------------------------------ */
-
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
-}
-
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -27,54 +15,49 @@ function useInView(threshold = 0) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
+}
+
+const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 /* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
+/*  Tokens — matched to pricing / methodology pages                    */
 /* ------------------------------------------------------------------ */
-
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
+  teal: "#1A7A6D",
+  sand: "#F5F2EC",
+  bone: "#FAF9F6",
+  muted: "rgba(14,26,43,0.55)",
+  light: "rgba(14,26,43,0.38)",
+  border: "rgba(14,26,43,0.08)",
+  borderMd: "rgba(14,26,43,0.12)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
 };
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
+const SY = { desktop: 120, mobile: 72 };
+const PAD = { desktop: 56, mobile: 24 };
+const MAX = 1100;
+const DF = "'DM Serif Display', Georgia, serif";
 
+/* ================================================================== */
+/* PAGE                                                                */
+/* ================================================================== */
 export default function SignInPage() {
   const router = useRouter();
-  const mobile = useMobile();
-  const heroAnim = useInView();
-  const formAnim = useInView();
-  const singleAnim = useInView();
-  const noticeAnim = useInView();
+  const m = useMobile();
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -82,386 +65,197 @@ export default function SignInPage() {
   const [nextBtnHovered, setNextBtnHovered] = useState(false);
   const [session, setSession] = useState<MonitoringSession | null>(null);
 
+  const heroAnim = useInView();
+  const formAnim = useInView();
+  const infoAnim = useInView();
+
   const handleLookup = () => {
     const trimmed = email.trim();
-    if (!trimmed || !trimmed.includes("@")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+    if (!trimmed || !trimmed.includes("@")) { setError("Please enter a valid email address."); return; }
     const found = getSessionByEmail(trimmed);
-    if (!found) {
-      setError("No RunPayway\u2122 Stability Monitoring plan found for this email. Check your email or purchase a plan.");
-      return;
-    }
-    if (isExpired(found)) {
-      setError("This monitoring plan has expired. Please purchase a new plan to continue.");
-      return;
-    }
+    if (!found) { setError("No active monitoring plan found for this email."); return; }
+    if (isExpired(found)) { setError("This monitoring plan has expired. Purchase a new plan to continue."); return; }
     setError("");
     setSession(found);
   };
 
   const remaining = session ? getRemaining(session.access_code) : 0;
   const allUsed = session ? remaining <= 0 : false;
-  const expiresDate = session
-    ? new Date(session.expires_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
-    : "";
+  const expiresDate = session ? new Date(session.expires_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "";
 
   const handleTakeAssessment = () => {
     if (!session || allUsed) return;
-    sessionStorage.setItem(
-      "rp_purchase_session",
-      JSON.stringify({
-        plan_key: "annual_monitoring",
-        price_cents: 14900,
-        currency: "USD",
-        intended_assessment_count: 3,
-        status: "paid",
-        checkout_provider: "stripe",
-        monitoring_access_code: session.access_code,
-      }),
-    );
+    sessionStorage.setItem("rp_purchase_session", JSON.stringify({
+      plan_key: "annual_monitoring", price_cents: 14900, currency: "USD",
+      intended_assessment_count: 3, status: "paid", checkout_provider: "stripe",
+      monitoring_access_code: session.access_code,
+    }));
     router.push("/diagnostic-portal");
   };
 
   return (
-    <div style={{ background: "#FFFFFF" }}>
-      {/* ============================================================ */}
-      {/*  Hero                                                        */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: B.gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
+    <div>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
 
-        <div
-          ref={heroAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            textAlign: "center",
-            opacity: heroAnim.visible ? 1 : 0,
-            transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Monitoring Portal
-            </span>
+      {/* ══ HERO ══ */}
+      <section ref={heroAnim.ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
+        <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+          <div style={{ opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>Monitoring Portal</div>
+            <h1 style={{ fontSize: m ? 36 : 56, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
+              Your stability,<br />tracked over time.
+            </h1>
+            <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
+              Sign in to access your RunPayway&#8482; Stability Monitoring dashboard, take assessments, and review your history.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
+              {["Email sign-in", "No password required", "3 assessments included"].map(t => (
+                <span key={t} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>{t}</span>
+              ))}
+            </div>
           </div>
-
-          <h1
-            style={{
-              fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
-              color: "#FFFFFF",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginBottom: 20,
-            }}
-          >
-            RunPayway&#8482; Monitoring Portal
-          </h1>
-
-          <p
-            style={{
-              fontSize: mobile ? 15 : 18,
-              color: "rgba(255,255,255,0.65)",
-              lineHeight: 1.7,
-              maxWidth: 480,
-              margin: "0 auto 8px",
-            }}
-          >
-            Sign in with your email to access your RunPayway&#8482; Stability Monitoring dashboard.
-          </p>
-
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
-            Structural Stability Model RP-2.0
-          </p>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/*  Email login / Dashboard                                     */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
-        }}
-      >
-        <div
-          ref={formAnim.ref}
-          className="mx-auto"
-          style={{
-            maxWidth: 480,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            opacity: formAnim.visible ? 1 : 0,
-            transform: formAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <div
-            style={{
-              background: "#FFFFFF",
-              borderRadius: 20,
-              border: "1px solid rgba(14,26,43,0.06)",
-              padding: mobile ? "32px 24px" : "40px 40px",
-              boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
-            }}
-          >
+      {/* ══ SIGN-IN / DASHBOARD ══ */}
+      <section style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+        <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", opacity: formAnim.visible ? 1 : 0, transform: formAnim.visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 700ms ease-out, transform 700ms ease-out" }}>
+          <div style={{ background: "#FFFFFF", borderRadius: 16, border: `1px solid ${B.border}`, padding: m ? "36px 24px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
+
             {!session ? (
-              /* ---- Email login form ---- */
+              /* ─── Email login ─── */
               <>
-                <h2
-                  style={{
-                    fontSize: mobile ? 22 : 26,
-                    fontWeight: 700,
-                    color: B.navy,
-                    letterSpacing: "-0.02em",
-                    marginBottom: 12,
-                  }}
-                >
-                  Sign In
-                </h2>
+                <div style={{ textAlign: "center", marginBottom: 32 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
+                  <h2 style={{ fontSize: m ? 28 : 36, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+                    Sign in to your portal
+                  </h2>
+                  <p style={{ fontSize: m ? 15 : 16, color: B.muted, lineHeight: 1.6, maxWidth: 360, margin: "0 auto" }}>
+                    Enter the email address you used at checkout.
+                  </p>
+                </div>
 
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-                  Enter the email you used when you purchased RunPayway&#8482; Stability Monitoring.
-                </p>
-
-                {/* Email */}
-                <div style={{ marginBottom: 28 }}>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: 12,
-                      fontWeight: 600,
-                      color: B.navy,
-                      letterSpacing: "0.04em",
-                      textTransform: "uppercase",
-                      marginBottom: 8,
-                    }}
-                  >
+                <div style={{ marginBottom: 24 }}>
+                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: B.navy, letterSpacing: "0.06em", textTransform: "uppercase" as const, marginBottom: 10 }}>
                     Email Address
                   </label>
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
                     style={{
-                      width: "100%",
-                      height: 48,
-                      padding: "0 16px",
-                      borderRadius: 10,
-                      border: "1px solid rgba(14,26,43,0.12)",
-                      background: B.sand,
-                      fontSize: 15,
-                      color: B.navy,
-                      outline: "none",
-                      transition: "border-color 180ms ease",
-                      boxSizing: "border-box",
+                      width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
+                      border: `1px solid ${B.borderMd}`, background: B.bone, fontSize: 15, color: B.navy,
+                      outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box",
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = B.borderMd; e.currentTarget.style.boxShadow = "none"; }}
                     onKeyDown={(e) => { if (e.key === "Enter") handleLookup(); }}
                   />
                 </div>
 
-                {error && (
-                  <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16 }}>{error}</p>
-                )}
+                {error && <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
-                {/* Sign In button */}
                 <button
                   onClick={handleLookup}
                   onMouseEnter={() => canHover() && setBtnHovered(true)}
                   onMouseLeave={() => setBtnHovered(false)}
                   style={{
-                    width: "100%",
-                    height: 52,
-                    borderRadius: 12,
-                    background: btnHovered ? "#3D33A0" : B.purple,
-                    color: "#FFFFFF",
-                    fontSize: 15,
-                    fontWeight: 600,
-                    letterSpacing: "-0.01em",
-                    border: "none",
-                    cursor: "pointer",
-                    boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                    transition: "background 180ms ease, transform 180ms ease",
-                    transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
+                    width: "100%", height: 52, borderRadius: 10,
+                    background: B.gradient, color: "#FFFFFF",
+                    fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
+                    boxShadow: btnHovered ? "0 12px 32px rgba(75,63,174,0.30)" : "0 8px 24px rgba(75,63,174,0.20)",
+                    transition: "box-shadow 260ms ease, transform 260ms ease",
+                    transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
                   }}
                 >
                   Access Monitoring Portal
                 </button>
 
-                {/* Don't have a plan */}
-                <div style={{ textAlign: "center", marginTop: 20 }}>
-                  <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have a plan yet? </span>
-                  <Link
-                    href="/pricing"
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: B.purple,
-                      textDecoration: "none",
-                      borderBottom: "1px solid rgba(75,63,174,0.30)",
-                      transition: "border-color 180ms ease",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
-                  >
-                    Get RunPayway&#8482; Stability Monitoring
+                <div style={{ textAlign: "center", marginTop: 24 }}>
+                  <span style={{ fontSize: 14, color: B.light }}>Don&apos;t have a plan? </span>
+                  <Link href="/pricing" style={{ fontSize: 14, fontWeight: 600, color: B.purple, textDecoration: "none" }}>
+                    View pricing &rarr;
                   </Link>
                 </div>
 
-                {/* Security line */}
-                <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
-                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                  <span style={{ fontSize: 12, color: B.light }}>Email-based authentication</span>
-                  <span style={{ fontSize: 12, color: B.light }}>No password required</span>
+                <div style={{ height: 1, background: B.border, margin: "28px 0 20px" }} />
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 13, color: B.light, margin: 0 }}>
+                    Deterministic &#183; Email-based authentication &#183; No password required
+                  </p>
                 </div>
               </>
             ) : (
-              /* ---- Monitoring dashboard ---- */
+              /* ─── Dashboard ─── */
               <>
-                <h2
-                  style={{
-                    fontSize: mobile ? 22 : 26,
-                    fontWeight: 700,
-                    color: B.navy,
-                    letterSpacing: "-0.02em",
-                    marginBottom: 12,
-                  }}
-                >
-                  Monitoring Dashboard
-                </h2>
+                <div style={{ textAlign: "center", marginBottom: 32 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Monitoring Dashboard</div>
+                  <h2 style={{ fontSize: m ? 28 : 36, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+                    Welcome back.
+                  </h2>
+                  <p style={{ fontSize: m ? 15 : 16, color: B.muted, lineHeight: 1.6 }}>
+                    Your RunPayway&#8482; Stability Monitoring plan is active.
+                  </p>
+                </div>
 
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
-                  Welcome back. Here is the status of your RunPayway&#8482; Stability Monitoring plan.
-                </p>
-
-                {/* Status cards */}
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
-                    <span style={{ fontSize: 13, color: B.muted }}>Assessments Remaining</span>
-                    <span style={{ fontSize: 15, fontWeight: 700, color: allUsed ? "#DC2626" : B.teal }}>{remaining} of 3</span>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
-                    <span style={{ fontSize: 13, color: B.muted }}>Plan Expires</span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{expiresDate}</span>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
-                    <span style={{ fontSize: 13, color: B.muted }}>Email</span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{session.email}</span>
-                  </div>
+                {/* Status rows */}
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, marginBottom: 28 }}>
+                  {[
+                    { label: "Assessments Remaining", value: `${remaining} of 3`, highlight: true },
+                    { label: "Plan Expires", value: expiresDate },
+                    { label: "Account Email", value: session.email },
+                  ].map((row, i) => (
+                    <div key={row.label} style={{
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                      padding: "16px 0",
+                      borderBottom: i < 2 ? `1px solid ${B.border}` : "none",
+                    }}>
+                      <span style={{ fontSize: 14, color: B.muted }}>{row.label}</span>
+                      <span style={{
+                        fontSize: row.highlight ? 16 : 14,
+                        fontWeight: row.highlight ? 700 : 600,
+                        color: row.highlight ? (allUsed ? "#DC2626" : B.teal) : B.navy,
+                      }}>{row.value}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* Past assessments */}
                 {session.assessment_records.length > 0 && (
-                  <div style={{ marginBottom: 24 }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10 }}>
-                      Past Assessments
+                  <div style={{ marginBottom: 28 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 14 }}>
+                      Assessment History
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      {session.assessment_records.map((recordId, i) => (
-                        <div
-                          key={recordId}
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            padding: "10px 14px",
-                            borderRadius: 8,
-                            background: "rgba(75,63,174,0.04)",
-                            border: "1px solid rgba(75,63,174,0.08)",
-                          }}
-                        >
-                          <span style={{ fontSize: 13, fontWeight: 500, color: B.navy }}>Assessment {i + 1}</span>
-                          <span style={{ fontSize: 11, color: B.light, fontFamily: "monospace" }}>{recordId.slice(0, 12)}...</span>
-                        </div>
-                      ))}
-                    </div>
+                    {session.assessment_records.map((recordId, i) => (
+                      <div key={recordId} style={{
+                        display: "flex", justifyContent: "space-between", alignItems: "center",
+                        padding: "12px 16px", borderRadius: 10,
+                        background: B.bone, border: `1px solid ${B.border}`,
+                        marginBottom: i < session.assessment_records.length - 1 ? 8 : 0,
+                      }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Assessment {i + 1}</span>
+                        <span style={{ fontSize: 12, color: B.light, fontFamily: "monospace" }}>{recordId.slice(0, 14)}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
 
-                {/* Action */}
+                {/* CTA */}
                 {allUsed ? (
                   <>
-                    <div
-                      style={{
-                        padding: "20px 20px",
-                        borderRadius: 12,
-                        background: "rgba(220,38,38,0.04)",
-                        border: "1px solid rgba(220,38,38,0.12)",
-                        textAlign: "center",
-                        marginBottom: 16,
-                      }}
-                    >
-                      <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 6 }}>
-                        All Assessments Completed
-                      </div>
-                      <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.6 }}>
-                        You have used all 3 assessments in this monitoring plan. Purchase a new plan to continue tracking your income stability.
-                      </p>
+                    <div style={{ padding: "20px 24px", borderRadius: 12, background: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.10)", textAlign: "center", marginBottom: 16 }}>
+                      <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 6 }}>All 3 Assessments Completed</div>
+                      <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.55, margin: 0 }}>Purchase a new plan to continue tracking your income stability.</p>
                     </div>
-                    <Link
-                      href="/pricing"
-                      style={{
-                        display: "block",
-                        width: "100%",
-                        height: 52,
-                        lineHeight: "52px",
-                        borderRadius: 12,
-                        background: B.purple,
-                        color: "#FFFFFF",
-                        fontSize: 15,
-                        fontWeight: 600,
-                        letterSpacing: "-0.01em",
-                        border: "none",
-                        textDecoration: "none",
-                        textAlign: "center",
-                        cursor: "pointer",
-                        boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                        boxSizing: "border-box",
-                      }}
-                    >
-                      Purchase New Monitoring Plan
+                    <Link href="/pricing" style={{
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: "100%", height: 52, borderRadius: 10,
+                      background: B.gradient, color: "#FFFFFF",
+                      fontSize: 16, fontWeight: 600, textDecoration: "none",
+                      boxShadow: "0 8px 24px rgba(75,63,174,0.20)",
+                    }}>
+                      Renew Stability Monitoring
                     </Link>
                   </>
                 ) : (
@@ -470,48 +264,29 @@ export default function SignInPage() {
                     onMouseEnter={() => canHover() && setNextBtnHovered(true)}
                     onMouseLeave={() => setNextBtnHovered(false)}
                     style={{
-                      width: "100%",
-                      height: 52,
-                      borderRadius: 12,
-                      background: nextBtnHovered ? "#1a5c67" : B.teal,
-                      color: "#FFFFFF",
-                      fontSize: 15,
-                      fontWeight: 600,
-                      letterSpacing: "-0.01em",
-                      border: "none",
-                      cursor: "pointer",
-                      boxShadow: "0 6px 16px rgba(31,109,122,0.25)",
-                      transition: "background 180ms ease, transform 180ms ease",
-                      transform: nextBtnHovered ? "translateY(-1px)" : "translateY(0)",
+                      width: "100%", height: 52, borderRadius: 10,
+                      background: B.gradient, color: "#FFFFFF",
+                      fontSize: 16, fontWeight: 600, border: "none", cursor: "pointer",
+                      boxShadow: nextBtnHovered ? "0 12px 32px rgba(75,63,174,0.30)" : "0 8px 24px rgba(75,63,174,0.20)",
+                      transition: "box-shadow 260ms ease, transform 260ms ease",
+                      transform: nextBtnHovered ? "translateY(-2px)" : "translateY(0)",
                     }}
                   >
                     Take Next Assessment
                   </button>
                 )}
 
-                {/* Sign out */}
                 <div style={{ textAlign: "center", marginTop: 16 }}>
-                  <button
-                    onClick={() => { setSession(null); setEmail(""); setError(""); }}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      fontSize: 13,
-                      fontWeight: 500,
-                      color: B.muted,
-                      cursor: "pointer",
-                      padding: 0,
-                    }}
-                  >
+                  <button onClick={() => { setSession(null); setEmail(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: B.light, cursor: "pointer", padding: 0 }}>
                     Sign in with a different email
                   </button>
                 </div>
 
-                {/* Security line */}
-                <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
-                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                  <span style={{ fontSize: 12, color: B.light }}>Email-based authentication</span>
-                  <span style={{ fontSize: 12, color: B.light }}>No password required</span>
+                <div style={{ height: 1, background: B.border, margin: "28px 0 20px" }} />
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 13, color: B.light, margin: 0 }}>
+                    Deterministic &#183; Model RP-2.0 &#183; Same inputs, same score
+                  </p>
                 </div>
               </>
             )}
@@ -519,126 +294,63 @@ export default function SignInPage() {
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/*  Single Assessment + Portal Notice                          */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          paddingTop: mobile ? 56 : 80,
-          paddingBottom: mobile ? 56 : 80,
-          background: "#FFFFFF",
-        }}
-      >
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 860,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: mobile ? 24 : 28,
-          }}
-        >
-          {/* Single Assessment */}
-          <div
-            ref={singleAnim.ref}
-            style={{
-              background: "#FFFFFF",
-              borderRadius: 16,
-              border: "1px solid rgba(14,26,43,0.06)",
-              padding: mobile ? "28px 24px" : "36px 36px",
-              boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-              opacity: singleAnim.visible ? 1 : 0,
-              transform: singleAnim.visible ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 600ms ease, transform 600ms ease",
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              RunPayway&#8482; Diagnostic Report Customers
-            </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              RunPayway&#8482; Diagnostic Report purchases are delivered immediately after completing the assessment. No login required.
-            </p>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
-              To generate a new report, simply purchase another diagnostic.
-            </p>
-            <a
-              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
-              target="_top"
-              rel="noopener noreferrer"
-              className="cta-tick inline-flex items-center justify-center font-semibold"
-              style={{
-                height: 44,
-                paddingLeft: 22,
-                paddingRight: 22,
-                borderRadius: 10,
-                background: B.navy,
-                color: "#FFFFFF",
-                fontSize: 14,
-                letterSpacing: "-0.01em",
-                border: "none",
-                textDecoration: "none",
-                boxShadow: "0 4px 12px rgba(14,26,43,0.15)",
-                transition: "background 180ms ease, transform 180ms ease",
-              }}
-              onMouseEnter={(e) => {
-                if (!canHover()) return;
-                e.currentTarget.style.background = "#1a2a40";
-                e.currentTarget.style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = B.navy;
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
-            >
-              <span className="tick tick-white" />
-              <span className="cta-label">Get RunPayway&#8482; Diagnostic Report</span>
-              <span className="cta-arrow cta-arrow-white" />
-            </a>
+      {/* ══ INFO CARDS ══ */}
+      <section style={{ backgroundColor: B.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+        <div ref={infoAnim.ref} style={{ maxWidth: 800, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, opacity: infoAnim.visible ? 1 : 0, transform: infoAnim.visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>How It Works</div>
+            <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
+              Three assessments. Your schedule.
+            </h2>
           </div>
 
-          {/* Portal Access Notice */}
-          <div
-            ref={noticeAnim.ref}
-            style={{
-              background: "#FFFFFF",
-              borderRadius: 16,
-              border: "1px solid rgba(14,26,43,0.06)",
-              padding: mobile ? "28px 24px" : "36px 36px",
-              boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-              opacity: noticeAnim.visible ? 1 : 0,
-              transform: noticeAnim.visible ? "translateY(0)" : "translateY(20px)",
-              transition: "opacity 600ms ease 100ms, transform 600ms ease 100ms",
-            }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              How It Works
-            </div>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              RunPayway&#8482; Stability Monitoring subscribers sign in with the email they used at checkout. No access codes or passwords needed.
-            </p>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
-              Your dashboard shows remaining assessments, plan expiration, and past assessment history.
-            </p>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20 }}>
+            {[
+              { num: "01", title: "Sign in with your email", desc: "The same email you used at checkout. No passwords, no codes, no friction.", color: B.purple },
+              { num: "02", title: "Take an assessment", desc: "Under two minutes. Each one generates a full 5-page diagnostic report with your current score.", color: B.teal },
+              { num: "03", title: "Track your progress", desc: "Come back anytime within 12 months to take your remaining assessments and see how your structure has changed.", color: B.purple },
+            ].map((card, i) => (
+              <div key={card.num} style={{
+                background: "#FFFFFF", borderRadius: 16, border: `1px solid ${B.border}`,
+                padding: m ? "28px 24px" : "32px 28px",
+                opacity: infoAnim.visible ? 1 : 0, transform: infoAnim.visible ? "translateY(0)" : "translateY(16px)",
+                transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
+              }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: B.bone, border: `1px solid ${B.borderMd}`, fontSize: 13, fontWeight: 700, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: card.color, opacity: 0.6 }} />
+                  {card.num}
+                </div>
+                <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{card.title}</div>
+                <p style={{ fontSize: m ? 14 : 15, color: B.muted, lineHeight: 1.55, margin: 0 }}>{card.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/*  Model reference bar                                         */}
-      {/* ============================================================ */}
-      <div
-        style={{
-          background: B.gradient,
-          padding: "16px 0",
-          textAlign: "center",
-        }}
-      >
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.02em" }}>
-          Powered by Structural Stability Model RP-2.0
-        </span>
-      </div>
+      {/* ══ CTA ══ */}
+      <section style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+            Not a subscriber yet?
+          </h2>
+          <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
+            Start with your free Income Stability Score&#8482;. Upgrade to the full diagnostic or annual monitoring when you are ready.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
+            <Link href="/begin" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10, backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
+              Get My Free Score
+            </Link>
+            <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10, backgroundColor: "transparent", color: "#F4F1EA", fontSize: 16, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(244,241,234,0.25)" }}>
+              View Pricing
+            </Link>
+          </div>
+          <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
+            Free to start &#183; Under 2 minutes &#183; Private by default
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
