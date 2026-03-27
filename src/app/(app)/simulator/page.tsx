@@ -594,7 +594,6 @@ function SimulatorContent() {
             font-size:13px!important;
             background-color:rgba(244,241,234,0.12)!important;
           }
-          .sim-orient{flex-direction:column!important;gap:10px!important;}
           .sim-triptych{flex-direction:column!important;}
           .sim-triptych>div{border-right:none!important;border-bottom:1px solid rgba(244,241,234,0.06);}
           .sim-triptych>div:last-child{border-bottom:none!important;}
@@ -608,7 +607,6 @@ function SimulatorContent() {
           .sim-tl-header{flex-direction:column!important;gap:12px!important;}
           .sim-tl-header>div:last-child{text-align:left!important;margin-left:0!important;}
           .sim-container{padding:28px 16px 60px!important;}
-          .sim-score-hero h1{font-size:26px!important;}
           .sim-triptych>div{padding:20px 16px!important;}
           .sim-triptych .sim-score-num{font-size:34px!important;}
           .sim-footer{flex-direction:column!important;gap:4px!important;text-align:center!important;padding:14px 16px!important;}
@@ -670,42 +668,8 @@ function SimulatorContent() {
 
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
-        {/* Lifetime access banner */}
-        <div style={{ fontSize: 12, color: T.textFaint, textAlign: "center" as const, padding: "14px 20px", borderBottom: `1px solid ${T.borderSubtle}`, marginBottom: 32, letterSpacing: "0.04em" }}>
-          Lifetime access &#183; Your structure, your scenarios &#183; Come back anytime
-        </div>
-
-        {/* ══════════ ORIENTATION STRIP ══════════ */}
-        {!isModified && (
-          <div className="sim-orient" style={{ display: "flex", gap: 6, marginBottom: 32, padding: "16px 20px", borderRadius: 10, border: `1px solid ${T.border}`, backgroundColor: T.surface }}>
-            {[
-              { num: "1", text: "Choose a scenario or build your own" },
-              { num: "2", text: "See how your score changes over time" },
-              { num: "3", text: "Set a score goal and plan your path" },
-            ].map((step, i) => (
-              <div key={i} style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, padding: "0 8px" }}>
-                <div style={{ width: 22, height: 22, borderRadius: "50%", backgroundColor: B.tealGlow, border: `1px solid ${B.teal}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: B.teal }}>{step.num}</span>
-                </div>
-                <span style={{ fontSize: 12, color: T.textSecondary, lineHeight: 1.4 }}>{step.text}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* ══════════ SCORE HERO ══════════ */}
-        <div className="sim-score-hero" style={{ marginBottom: 36 }}>
-          {/* Headline */}
-          <div style={{ marginBottom: 32 }}>
-            <h1 style={{ fontSize: 36, fontFamily: DISPLAY, fontWeight: 400, color: T.text, lineHeight: 1.1, letterSpacing: "-0.03em", margin: "0 0 10px" }}>
-              {isModified ? "Projected Impact" : "Your Income Structure"}
-            </h1>
-            <p style={{ fontSize: 15, color: T.textSecondary, margin: 0, maxWidth: 520, lineHeight: 1.55 }}>
-              {isModified
-                ? "How this change reshapes your income stability score and structural position."
-                : "Select a scenario below to see how structural changes affect your score over time."}
-            </p>
-          </div>
+        <div className="sim-score-hero" style={{ marginBottom: 36, paddingTop: 8 }}>
 
           {/* Score triptych */}
           <div className="sim-triptych" style={{ display: "flex", gap: 1, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
