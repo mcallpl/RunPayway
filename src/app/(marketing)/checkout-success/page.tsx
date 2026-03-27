@@ -124,7 +124,13 @@ function CheckoutSuccessContent() {
 
   // No auto-redirect — user clicks "Begin Assessment" when ready
 
-  const steps = hasExistingRecord ? [
+  const isMonitoring = plan === "monitoring";
+
+  const steps = isMonitoring ? [
+    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}/year`, done: true },
+    { num: "2", title: "Account created", desc: `Linked to ${customerEmail || "your email"}. Sign in anytime to take your assessments.`, done: true },
+    { num: "3", title: "3 assessments included", desc: "Take them whenever you want over the next 12 months. You decide when.", done: true },
+  ] : hasExistingRecord ? [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Assessment already completed", desc: "Your answers are saved. No need to retake.", done: true },
     { num: "3", title: "View your full report", desc: "Report, simulator, and action tools — unlocked instantly.", done: false },
@@ -180,7 +186,11 @@ function CheckoutSuccessContent() {
 
         {/* Headline */}
         <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.cream, marginBottom: 36 }}>
-          {hasExistingRecord ? "Your full report is ready." : "Your full assessment is ready to begin."}
+          {isMonitoring
+            ? "Your Stability Monitoring is active."
+            : hasExistingRecord
+              ? "Your full report is ready."
+              : "Your full assessment is ready to begin."}
         </h1>
 
         {/* Steps */}
@@ -216,7 +226,7 @@ function CheckoutSuccessContent() {
         {/* CTA — user clicks when ready */}
         {ready ? (
           <Link
-            href={hasExistingRecord ? "/unlock" : "/diagnostic-portal"}
+            href={isMonitoring ? "/sign-in" : hasExistingRecord ? "/unlock" : "/diagnostic-portal"}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -237,7 +247,7 @@ function CheckoutSuccessContent() {
             onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
           >
-            {hasExistingRecord ? "View Full Report" : "Begin Assessment"}
+            {isMonitoring ? "Go to Monitoring Portal" : hasExistingRecord ? "View Full Report" : "Begin Assessment"}
           </Link>
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
