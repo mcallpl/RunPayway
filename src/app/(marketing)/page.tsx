@@ -531,9 +531,9 @@ function BridgeSection() {
       ref={ref}
       aria-label="Why this matters"
       style={{
-        background: "#FFFFFF",
-        paddingTop: mobile ? 40 : 56,
-        paddingBottom: mobile ? 40 : 56,
+        background: B.sand,
+        paddingTop: mobile ? 48 : 64,
+        paddingBottom: mobile ? 48 : 64,
         paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
         paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
         marginTop: 0,
@@ -1868,7 +1868,6 @@ export default function LandingPage() {
       <BridgeSection />
       <TestimonialsSection />
       <PricingSection />
-      <MidPageCta />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
     </div>
