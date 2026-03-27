@@ -1381,120 +1381,123 @@ export default function ReviewPage() {
     // Page 3: Risks
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 12 }}>What Could Go Wrong</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>This section covers the risks that could lower your score and the detailed measurements behind it.</p>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 16 }}>The specific disruptions your income structure is most exposed to — ranked by how much damage they would do.</p>
 
-        {/* Stress scenarios — top 3 */}
-        {v2Scenarios && v2Scenarios.length > 0 && (
-          <div style={{ marginBottom: 20 }}>
-            <Overline large>What Could Hurt Your Score Most</Overline>
-            {[...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map((s) => {
-              const scenarioPlain: Record<string, string> = {
-                active_labor_interrupted: "You are unable to work for an extended period",
-                platform_dependency_shock: "An income channel you rely on changes its terms or access",
-                forward_commitments_delayed: "Income you were expecting gets delayed",
-                client_concentration_loss: "Your largest client leaves or stops paying",
-                market_contraction: "Demand in your industry drops significantly",
-                regulatory_disruption: "A regulatory or policy change affects your work",
-                revenue_model_disruption: "Your primary way of earning income stops working",
-                high_volatility_month: "You have a month where income drops sharply",
-                seasonal_revenue_gap: "A seasonal slowdown reduces your income",
-                key_client_loss: "You lose a key client or contract",
-                pricing_pressure: "What you can charge drops due to market pressure",
-                recurring_stream_degrades: "A repeating income stream weakens or ends",
-                referral_pipeline_dries: "New business or referrals slow down significantly",
-                contract_non_renewal: "A major contract is not renewed",
-                scope_reduction: "A client significantly reduces the scope of your work",
-              };
-              const title = scenarioPlain[s.scenario_id] ?? s.label
-                .replace(/^Active Labor Interrupted$/i, "You are unable to work for an extended period")
-                .replace(/^Platform Dependency Shock$/i, "An income channel you rely on changes its terms or access")
-                .replace(/^Forward Commitments Delayed$/i, "Income you were expecting gets delayed")
-                .replace(/^High Volatility Month$/i, "You have a month where income drops sharply")
-                .replace(/^Client Concentration Loss$/i, "Your largest client leaves or stops paying")
-                .replace(/^Market Contraction$/i, "Demand in your industry drops significantly")
-                .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
-                .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown reduces your income")
-                .replace(/^Key Client Loss$/i, "You lose a key client or contract")
-                .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects your work")
-                .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
-                .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or ends")
-                .replace(/^Referral Pipeline Dries$/i, "New business or referrals slow down significantly")
-                .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
-                .replace(/^Scope Reduction$/i, "A client significantly reduces the scope of your work");
-              const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your "))
-                ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
-                : title;
-              const severity = s.band_shift ? "SEVERE" : (s.scenario_score <= 0 || s.score_drop > score * 0.5) ? "SEVERE" : s.score_drop > 8 ? "HIGH" : s.score_drop > 3 ? "MODERATE" : "LOW";
-              const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
-              return (
-                <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
-                  <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 4 : 0, marginBottom: 4 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ ...T.micro, color: sevColor, minWidth: mobile ? 50 : 60 }}>{severity}</span>
+        {/* ── HARD DIAGNOSTIC SENTENCE ── */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "14px 16px" : "16px 24px", marginBottom: 20, textAlign: "center" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
+            {(() => {
+              const fc = v2Fragility?.fragility_class;
+              if (fc === "brittle") return "A single disruption — one lost client, one slow month — could force a structural crisis. That is not a risk scenario. That is your current exposure.";
+              if (fc === "thin") return "You can likely absorb one mild setback. Two close together would create pressure fast.";
+              if (fc === "uneven") return "Parts of your income are well-protected. Other parts are not. That unevenness is where risk hides.";
+              if (fc === "supported") return "Most common disruptions would not break your structure. But the scenarios below show where your limits are.";
+              if (fc === "resilient") return "Your income can take a serious hit. The scenarios below show the few things that could still cause real damage.";
+              return "Your income has specific structural exposures. The scenarios below show exactly where they are.";
+            })()}
+          </p>
+        </div>
+
+        {/* ── RANKED RISK SCENARIOS ── */}
+        {v2Scenarios && v2Scenarios.length > 0 && (() => {
+          const scenarioPlain: Record<string, string> = {
+            active_labor_interrupted: "You take two weeks off and have no backup revenue",
+            platform_dependency_shock: "One income source changes its terms or access",
+            forward_commitments_delayed: "New work arrives later than expected",
+            client_concentration_loss: "A major client pauses or ends work",
+            market_contraction: "Demand in your industry drops for two or more months",
+            regulatory_disruption: "A regulatory or policy change affects how you earn",
+            revenue_model_disruption: "Your primary way of earning income stops working",
+            high_volatility_month: "You have a slow month with no backup revenue",
+            seasonal_revenue_gap: "A seasonal slowdown cuts your income for weeks",
+            key_client_loss: "You lose a key client or contract",
+            pricing_pressure: "What you can charge drops due to market pressure",
+            recurring_stream_degrades: "A repeating income stream weakens or stops",
+            referral_pipeline_dries: "New business or referrals dry up for a stretch",
+            contract_non_renewal: "A major contract is not renewed",
+            scope_reduction: "A client cuts the scope of your work significantly",
+          };
+          const sorted = [...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop);
+          const top = sorted.slice(0, 4);
+
+          return (
+            <div style={{ marginBottom: 20 }}>
+              <Overline large>Ranked By Damage</Overline>
+              {top.map((s, idx) => {
+                const title = scenarioPlain[s.scenario_id] ?? s.label
+                  .replace(/^Active Labor Interrupted$/i, "You take two weeks off and have no backup revenue")
+                  .replace(/^Platform Dependency Shock$/i, "One income source changes its terms or access")
+                  .replace(/^Forward Commitments Delayed$/i, "New work arrives later than expected")
+                  .replace(/^High Volatility Month$/i, "You have a slow month with no backup revenue")
+                  .replace(/^Client Concentration Loss$/i, "A major client pauses or ends work")
+                  .replace(/^Market Contraction$/i, "Demand in your industry drops for two or more months")
+                  .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
+                  .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown cuts your income for weeks")
+                  .replace(/^Key Client Loss$/i, "You lose a key client or contract")
+                  .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects how you earn")
+                  .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
+                  .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or stops")
+                  .replace(/^Referral Pipeline Dries$/i, "New business or referrals dry up for a stretch")
+                  .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
+                  .replace(/^Scope Reduction$/i, "A client cuts the scope of your work significantly");
+                const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your ") && !title.includes("One ") && !title.includes("New "))
+                  ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
+                  : title;
+                const borderColor = idx === 0 ? B.bandLimited : idx === 1 ? B.bandDeveloping : B.stone;
+                const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
+                const narrativeText = olMatch?.why_it_matters || s.narrative;
+                return (
+                  <div key={s.scenario_id} style={{ ...cardStyle, padding: "14px 16px", marginBottom: 8, borderLeft: `3px solid ${borderColor}` }}>
+                    <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 4 : 0, marginBottom: 4 }}>
                       <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
+                      <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
+                        {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span> <span style={{ color: B.muted }}>(−{s.score_drop})</span>
+                      </span>
                     </div>
-                    <span style={{ ...T.small, color: B.navy, flexShrink: 0, paddingLeft: mobile ? 58 : 0 }}>
-                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span> <span style={{ color: B.muted }}>(−{s.score_drop})</span>
-                    </span>
+                    {narrativeText && <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{narrativeText}</p>}
+                    {s.band_shift && <p style={{ ...T.meta, color: B.bandLimited, margin: "4px 0 0", fontWeight: 500 }}>This would drop you from {s.original_band} to {s.scenario_band}.</p>}
                   </div>
-                  {/* Why this risk matters — narrative + outcome layer */}
-                  {(() => {
-                    const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
-                    const bandShiftNote = s.band_shift ? <p style={{ ...T.meta, color: B.bandLimited, margin: "4px 0 0", fontWeight: 500 }}>This means you would move from {s.original_band} to {s.scenario_band}.</p> : null;
-                    const narrativeText = olMatch?.why_it_matters || s.narrative;
-                    return narrativeText ? (
-                      <div style={{ paddingLeft: mobile ? 0 : 70, marginTop: 4 }}>
-                        <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{narrativeText}</p>
-                        {bandShiftNote}
-                      </div>
-                    ) : s.band_shift ? (
-                      <div style={{ paddingLeft: mobile ? 0 : 70 }}>
-                        {bandShiftNote}
-                      </div>
-                    ) : null;
-                  })()}
-                </div>
-              );
-            })}
-          </div>
-        )}
+                );
+              })}
+            </div>
+          );
+        })()}
 
         <SectionDivider />
 
-        {/* Fragility card */}
+        {/* ── FRAGILITY — HOW MUCH CAN YOU ABSORB ── */}
         {v2Fragility && (
-          <div style={{ ...cardStyle, marginBottom: 24 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>IF SOMETHING GOES WRONG, HOW PROTECTED ARE YOU?</div>
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>HOW MUCH CAN YOUR INCOME ABSORB?</div>
             <div style={{ ...T.cardHeading, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
               {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
             </div>
-            <div style={{ ...T.meta, color: B.muted }}>
+            <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
               {v2Explainability?.fragility_explanation || ((() => {
-                const fCtx = olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures${olIndustryLabel ? ` in ${olIndustryLabel}` : ""}, this is ` : "";
                 return ({
-                  brittle: `A single disruption — lost client, slow month — could cause a score collapse.${fCtx ? `${fCtx}a critical vulnerability.` : ""}`,
-                  thin: `Can absorb a minor hit, but not two in a row.${fCtx ? `${fCtx}a common pattern that limits growth.` : ""}`,
-                  uneven: `Protected in some dimensions, exposed in others.${fCtx ? `${fCtx}typical when one structural area is strong but others lag.` : ""}`,
-                  supported: `Can absorb most common disruptions without band change.${fCtx ? `${fCtx}above-average structural protection.` : ""}`,
-                  resilient: `Can absorb a major client loss or 90-day work stoppage.${fCtx ? `${fCtx}strong structural resilience.` : ""}`,
+                  brittle: "A single disruption — one lost client, one slow month — could cause your score to collapse. There is no structural buffer.",
+                  thin: "You can absorb a minor hit. But two disruptions close together — a lost client followed by a slow month — would create serious pressure.",
+                  uneven: "Some parts of your income are well-protected. Others are fully exposed. The danger is that the exposed part gets hit first.",
+                  supported: "Your income can absorb most common disruptions without dropping to a lower band. The remaining risks are specific, not structural.",
+                  resilient: "Your income can absorb a major client loss or a 90-day work stoppage without structural crisis.",
                 })[v2Fragility.fragility_class] ?? "";
               })())}
-            </div>
+            </p>
             {v2Fragility.primary_failure_mode && (
-              <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
-                Primary risk: {({
-                  concentration_collapse: "single-source dependency",
-                  labor_interruption: "income stops when work stops",
-                  visibility_gap: "no forward-committed income",
-                  durability_thinness: "recurring income is fragile",
-                })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}
-              </div>
+              <p style={{ ...T.meta, color: B.muted, margin: "6px 0 0" }}>
+                Most likely failure point: {({
+                  concentration_collapse: "too much income depends on one source",
+                  labor_interruption: "income stops when your work stops",
+                  visibility_gap: "no income is secured ahead of time",
+                  durability_thinness: "repeating income is fragile and could end",
+                })[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode}.
+              </p>
             )}
           </div>
         )}
 
-        {/* Behavioral insight */}
+        {/* ── PATTERN TO WATCH ── */}
         {v2BehavioralInsights && v2BehavioralInsights.length > 0 && (
           <div style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.bandDeveloping}` }}>
             <div style={{ ...T.overline, color: B.bandDeveloping, marginBottom: 6 }}>PATTERN TO WATCH</div>
@@ -1506,7 +1509,6 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* Page footer */}
         <PageFooter section="What Could Go Wrong" page={3} />
     </>,
 
