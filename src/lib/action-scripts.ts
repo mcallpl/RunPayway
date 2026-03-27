@@ -793,11 +793,37 @@ I'll provide free product, custom discount codes, and creative assets. Would you
 /* ------------------------------------------------------------------ */
 /*  Helper — resolve sector key to scripts                             */
 /* ------------------------------------------------------------------ */
+/** Maps display names (from UI dropdowns) to ACTION_SCRIPTS keys */
+const DISPLAY_TO_KEY: Record<string, string> = {
+  "Real Estate": "real_estate",
+  "Finance / Banking": "finance_banking",
+  "Insurance": "insurance",
+  "Technology": "technology",
+  "Healthcare": "healthcare",
+  "Legal Services": "legal_services",
+  "Consulting / Professional Services": "consulting_professional_services",
+  "Sales / Brokerage": "sales_brokerage",
+  "Media / Entertainment": "creator_media",
+  "Construction / Trades": "construction_trades",
+  "Retail / E-Commerce": "ecommerce_product",
+  "Hospitality / Food Service": "hospitality_food_service",
+  "Transportation / Logistics": "transportation_logistics",
+  "Manufacturing": "manufacturing",
+  "Education": "education",
+  "Nonprofit / Public Sector": "nonprofit_public_sector",
+  "Agriculture": "agriculture",
+  "Energy / Utilities": "energy_utilities",
+};
+
 export function getScriptsForSector(sectorKey: string): ActionScript[] {
-  // Direct match
+  // Direct match (snake_case key)
   if (ACTION_SCRIPTS[sectorKey]) return ACTION_SCRIPTS[sectorKey];
 
-  // Mapped matches (same as industry-sector-map.ts)
+  // Display name match (from UI)
+  const resolved = DISPLAY_TO_KEY[sectorKey];
+  if (resolved && ACTION_SCRIPTS[resolved]) return ACTION_SCRIPTS[resolved];
+
+  // Mapped matches (alternate snake_case keys)
   const mapped: Record<string, string> = {
     media_entertainment: "creator_media",
     retail_ecommerce: "ecommerce_product",

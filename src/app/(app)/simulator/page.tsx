@@ -1115,39 +1115,48 @@ function SimulatorContent() {
         </div>
       )}
 
-      {/* ══════════ SUGGESTED LANGUAGE ══════════ */}
+      {/* ══════════ READY-TO-USE ACTION SCRIPTS ══════════ */}
       {scriptTemplates.length > 0 && (
         <div style={{ padding: "24px 28px", borderTop: `1px solid ${T.border}` }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.accent }}>Ready-to-Use Action Scripts</div>
-              <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
-            </div>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: BRAND.teal }}>Ready-to-Use Action Scripts</div>
+            <div style={{ fontSize: 13, color: T.textMuted, marginTop: 4 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
           </div>
           {scriptTemplates.map((script) => {
             const isExpanded = expandedScript === script.id;
             return (
-              <div key={script.id} style={{ marginBottom: 8, border: `1px solid ${T.border}`, borderRadius: 8, overflow: "hidden" }}>
-                <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.08)" : "rgba(244,241,234,0.03)", transition: "background-color 150ms ease" }}>
+              <div key={script.id} style={{ marginBottom: 10, border: `1px solid ${T.border}`, borderRadius: 10, overflow: "hidden" }}>
+                <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.10)" : T.surface, transition: "background-color 150ms ease" }}>
                   <div style={{ textAlign: "left" }}>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: T.textPrimary }}>{script.title}</div>
-                    <div style={{ fontSize: 13, color: T.textMuted }}>{script.context}</div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: T.text }}>{script.title}</div>
+                    <div style={{ fontSize: 13, color: T.textMuted, marginTop: 2 }}>{script.context}</div>
                   </div>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: T.accent, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
+                  <span style={{ fontSize: 16, fontWeight: 600, color: BRAND.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease", flexShrink: 0, marginLeft: 12 }}>&#9662;</span>
                 </button>
                 {isExpanded && (
-                  <div style={{ padding: "16px 20px", backgroundColor: "rgba(244,241,234,0.02)", borderTop: `1px solid ${T.border}` }}>
-                    <pre style={{ fontSize: 14, color: T.textPrimary, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
-                    <button onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }} style={{ marginTop: 12, padding: "8px 16px", fontSize: 13, fontWeight: 600, color: scriptCopied === script.id ? T.accent : "#F4F1EA", borderRadius: 6, border: `1px solid ${scriptCopied === script.id ? T.accent : "rgba(244,241,234,0.20)"}`, cursor: "pointer", backgroundColor: scriptCopied === script.id ? "rgba(26,122,109,0.12)" : "rgba(244,241,234,0.04)", transition: "all 150ms ease" }}>
-                      {scriptCopied === script.id ? "Copied" : "Copy to clipboard"}
+                  <div style={{ padding: "20px 24px", backgroundColor: "rgba(75,63,174,0.04)", borderTop: `1px solid ${T.border}` }}>
+                    <pre style={{ fontSize: 14, color: T.text, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.75, fontFamily: INTER }}>{script.script}</pre>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }}
+                      style={{
+                        marginTop: 16, padding: "10px 20px", fontSize: 13, fontWeight: 600,
+                        color: scriptCopied === script.id ? BRAND.teal : T.text,
+                        borderRadius: 8,
+                        border: `1px solid ${scriptCopied === script.id ? BRAND.teal : T.border}`,
+                        cursor: "pointer",
+                        backgroundColor: scriptCopied === script.id ? BRAND.tealGlow : T.surface,
+                        transition: "all 200ms ease",
+                      }}
+                    >
+                      {scriptCopied === script.id ? "\u2713 Copied to clipboard" : "Copy to clipboard"}
                     </button>
                   </div>
                 )}
               </div>
             );
           })}
-          <p style={{ fontSize: 13, color: T.textFaint, marginTop: 10, fontStyle: "italic" }}>
-            These are optional starting drafts — not advice, guarantees, or one-size-fits-all scripts.
+          <p style={{ fontSize: 12, color: T.textFaint, marginTop: 14, fontStyle: "italic" }}>
+            These are starting drafts calibrated to your industry — adapt the language to fit your voice and situation.
           </p>
         </div>
       )}
