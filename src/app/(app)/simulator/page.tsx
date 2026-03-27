@@ -443,6 +443,20 @@ function SimulatorContent() {
       setIndustry(ind ? decodeURIComponent(ind).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
       setIncomeModel(mod ? decodeURIComponent(mod).replace(/_/g, " ").replace(/\b\w/g, (ch: string) => ch.toUpperCase()) : "");
       setSliders({ recurrence: inputs.income_persistence_pct, topClient: inputs.largest_source_pct, sources: inputs.source_diversity_count, monthsBooked: Math.round(inputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - inputs.labor_dependence_pct });
+      // Load action scripts from URL industry param
+      if (ind) {
+        const rawInd = decodeURIComponent(ind);
+        const scripts = getScriptsForSector(rawInd);
+        if (scripts.length > 0) setScriptTemplates(scripts);
+      }
+      // Load PressureMap from sessionStorage record if available
+      try {
+        const storedRec = sessionStorage.getItem("rp_record");
+        if (storedRec) {
+          const rec = JSON.parse(storedRec);
+          if (rec.pressure_map) setPressureMap(rec.pressure_map);
+        }
+      } catch { /* ignore */ }
       setLoaded(true);
       return;
     }

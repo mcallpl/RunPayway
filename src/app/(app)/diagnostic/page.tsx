@@ -368,9 +368,9 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // Generate PressureMap™ — real-time structural intelligence
-      // Non-blocking: if it fails, the report still works without it
+      // Generate PressureMap™ — real-time structural intelligence (client-side)
       try {
+        const { generatePressureMap } = await import("@/lib/pressure-map");
         const adapted = record as Record<string, unknown>;
         const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
         const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
@@ -379,29 +379,22 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
-        const pmRes = await fetch("/api/v1/pressure-map", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            industry: profile.industry_sector || "",
-            operating_structure: profile.operating_structure || "",
-            income_model: profile.primary_income_model || "",
-            years_in_structure: profile.years_in_structure || "",
-            score: adapted.final_score || 0,
-            band: adapted.stability_band || "",
-            weakest_factor: topConstraint.factor || topConstraint.label || "",
-            weakest_factor_value: topConstraint.label || "",
-            recurrence_pct: ni.income_persistence_pct || 0,
-            concentration_pct: ni.largest_source_pct || 0,
-            forward_visibility_pct: ni.forward_secured_pct || 0,
-            labor_dependence_pct: ni.labor_dependence_pct || 0,
-            variability_level: ni.income_variability_level || "moderate",
-          }),
+        const pressureMap = generatePressureMap({
+          industry: profile.industry_sector || "",
+          operating_structure: profile.operating_structure || "",
+          income_model: profile.primary_income_model || "",
+          years_in_structure: profile.years_in_structure || "",
+          score: (adapted.final_score as number) || 0,
+          band: (adapted.stability_band as string) || "",
+          weakest_factor: topConstraint.factor || topConstraint.label || "",
+          weakest_factor_value: topConstraint.label || "",
+          recurrence_pct: (ni.income_persistence_pct as number) || 0,
+          concentration_pct: (ni.largest_source_pct as number) || 0,
+          forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
+          labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
+          variability_level: (ni.income_variability_level as string) || "moderate",
         });
-        if (pmRes.ok) {
-          const pressureMap = await pmRes.json();
-          (record as Record<string, unknown>).pressure_map = pressureMap;
-        }
+        (record as Record<string, unknown>).pressure_map = pressureMap;
       } catch { /* PressureMap is non-blocking */ }
 
       sessionStorage.setItem("rp_record", JSON.stringify(record));
