@@ -3,38 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
-import SimulatorTeaser from "@/components/SimulatorTeaser";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 
 /* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
+/*  Hooks                                                              */
 /* ------------------------------------------------------------------ */
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1A7A6D",
-  sand: "#F5F2EC",
-  offWhite: "#FAFAF8",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
-  border: "rgba(14,26,43,0.08)",
-  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
-  bandLimited: "#9B2C2C",
-  bandDeveloping: "#92640A",
-  bandEstablished: "#2B5EA7",
-  bandHigh: "#1A7A6D",
-};
-
-const STRIPE_SINGLE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
-const FONT_IMPORT = `@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`;
-
-/* ------------------------------------------------------------------ */
-/*  Shared hooks                                                       */
-/* ------------------------------------------------------------------ */
-const canHover = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(hover: hover)").matches;
+const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,177 +17,65 @@ function useInView(threshold = 0) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return { ref, visible };
 }
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
-}
-
-function useAnimatedCounter(target: number, active: boolean, duration = 1500) {
-  const [value, setValue] = useState(0);
-  const animated = useRef(false);
-  useEffect(() => {
-    if (!active || animated.current) return;
-    animated.current = true;
-    const start = performance.now();
-    const step = (now: number) => {
-      const elapsed = now - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [active, target, duration]);
-  return value;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Shared card wrapper                                                */
+/*  Tokens                                                             */
 /* ------------------------------------------------------------------ */
-function ReportCard({
-  children,
-  visible,
-  delay = 0,
-  mobile,
-  maxHeight,
-}: {
-  children: React.ReactNode;
-  visible: boolean;
-  delay?: number;
-  mobile: boolean;
-  maxHeight?: number;
-}) {
-  return (
-    <div
-      style={{
-        maxWidth: 620,
-        backgroundColor: "#ffffff",
-        border: "1px solid rgba(14,26,43,0.06)",
-        borderRadius: 12,
-        boxShadow: "0 4px 20px rgba(14,26,43,0.05), 0 1px 4px rgba(14,26,43,0.03)",
-        padding: mobile ? 24 : 32,
-        position: "relative",
-        overflow: "hidden",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(16px)",
-        transition: `opacity 0.6s ease-out ${delay}ms, transform 0.4s ease-out ${visible ? 0 : delay}ms`,
-        maxHeight: maxHeight || undefined,
-      }}
-    >
-      {/* Gradient accent bar */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${B.purple}, ${B.teal})` }} />
-      {children}
-      {/* Bottom fade overlay — creates "peek" effect */}
-      {maxHeight && (
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(180deg, transparent 0%, #F8F6F2 100%)", pointerEvents: "none" }} />
-      )}
-    </div>
-  );
-}
+const B = {
+  navy: "#0E1A2B",
+  purple: "#4B3FAE",
+  teal: "#1A7A6D",
+  sand: "#F5F2EC",
+  bone: "#FAF9F6",
+  muted: "rgba(14,26,43,0.55)",
+  light: "rgba(14,26,43,0.38)",
+  border: "rgba(14,26,43,0.08)",
+  borderMd: "rgba(14,26,43,0.12)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
+  bandLimited: "#9B2C2C",
+  bandDeveloping: "#92640A",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1A7A6D",
+};
 
-
-function CardFooter({
-  left,
-  right,
-}: {
-  left: string;
-  right: string;
-}) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 28,
-        paddingTop: 16,
-        borderTop: "1px solid rgba(14,26,43,0.06)",
-      }}
-    >
-      <span style={{ fontSize: 12, color: B.light, fontWeight: 500 }}>
-        {left}
-      </span>
-      <span style={{ fontSize: 12, color: B.light, fontWeight: 500 }}>
-        {right}
-      </span>
-    </div>
-  );
-}
+const SY = { desktop: 120, mobile: 72 };
+const PAD = { desktop: 56, mobile: 24 };
+const MAX = 1100;
+const DF = "'DM Serif Display', Georgia, serif";
 
 /* ================================================================== */
-/* HERO                                                                */
+/* 1. HERO — Transparent, confident                                    */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
-
-  const animatedScore = useAnimatedCounter(78, visible, 1800);
+  const m = useMobile();
 
   return (
-    <section
-      ref={ref}
-      aria-label="Sample Report Hero"
-      style={{
-        background: B.navy,
-        position: "relative",
-        overflow: "hidden",
-        minHeight: mobile ? "70vh" : "80vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <style>{FONT_IMPORT}</style>
-      {/* Atmospheric glows */}
-      <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 500 : 900, height: mobile ? 500 : 900, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-15%", right: "-10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
-
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 800, margin: "0 auto", padding: `0 ${mobile ? 28 : 48}px`, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 1s ease-out, transform 1s ease-out" }}>
-          <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 32 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>Sample Report &#183; Consulting Profile</span>
-          </div>
-
-          {/* Animated score */}
-          <div style={{ fontSize: mobile ? 72 : 96, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 8, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em" }}>
-            {animatedScore}
-          </div>
-          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 32 }}>out of 100 &middot; High Stability</div>
-
-          <h1 style={{ fontSize: mobile ? 32 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.025em", marginBottom: 16 }}>
-            This is what your report looks like.
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
+      <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>Sample Report</div>
+          <h1 style={{ fontSize: m ? 36 : 56, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
+            See what the report looks like<br />before you buy.
           </h1>
-          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 40px" }}>
-            Five pages of analysis. Interactive simulator. Suggested next-move language. Every number is yours.
+          <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
+            Five pages of structural diagnosis. An interactive simulator. Every number is yours.
           </p>
-
-          {/* Scroll indicator */}
-          <div style={{ width: 1, height: 48, background: "linear-gradient(180deg, rgba(244,241,234,0.20) 0%, transparent 100%)", margin: "0 auto", opacity: visible ? 1 : 0, transition: "opacity 1.5s ease-out 800ms" }} />
         </div>
       </div>
     </section>
@@ -221,325 +83,373 @@ function Hero() {
 }
 
 /* ================================================================== */
-/* PAGE 1: YOUR SCORE — FULL REVEAL                                    */
+/* 2. REPORT PAGES PREVIEW — Visual proof of each page                 */
 /* ================================================================== */
-function Page1Preview() {
+function ReportPreview() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
+
+  const pages = [
+    {
+      num: "01", title: "Your Score", color: B.purple,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
+          <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 4 }}>48</div>
+          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 10 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.bandDeveloping }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: B.bandDeveloping }}>Developing</span>
+          </div>
+          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)" }}>17 points to Established</div>
+          <div style={{ marginTop: 14, padding: "10px 12px", borderRadius: 8, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.06)", textAlign: "left" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 4, textTransform: "uppercase" as const }}>In Plain English</div>
+            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>Your income is developing. A major source loss would put pressure on the structure quickly.</div>
+          </div>
+        </div>
+      ),
+      desc: "Your exact score, what it means in plain English, how far you are from the next band, and the single biggest structural factor to fix.",
+    },
+    {
+      num: "02", title: "How Your Income Is Built", color: B.teal,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 8, textTransform: "uppercase" as const }}>Income Structure</div>
+          <div style={{ display: "flex", gap: 2, height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 12 }}>
+            <div style={{ flex: 72, backgroundColor: B.navy, border: "1px solid rgba(244,241,234,0.15)" }} />
+            <div style={{ flex: 18, backgroundColor: "rgba(244,241,234,0.25)" }} />
+            <div style={{ flex: 10, backgroundColor: B.teal }} />
+          </div>
+          {[{ label: "Active work", pct: "72%" }, { label: "Semi-persistent", pct: "18%" }, { label: "Persistent", pct: "10%" }].map(s => (
+            <div key={s.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontSize: 13, color: "rgba(244,241,234,0.45)" }}>
+              <span>{s.label}</span><span style={{ fontWeight: 600, color: "rgba(244,241,234,0.60)" }}>{s.pct}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 12, display: "flex", gap: 6 }}>
+            <div style={{ flex: 1, padding: "8px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)", textAlign: "center" }}>
+              <div style={{ fontSize: 18, fontWeight: 600, color: "#F4F1EA" }}>48</div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>Current</div>
+            </div>
+            <div style={{ flex: 1, padding: "8px", borderRadius: 6, backgroundColor: "rgba(155,44,44,0.10)", textAlign: "center" }}>
+              <div style={{ fontSize: 18, fontWeight: 600, color: B.bandLimited }}>19</div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>Stress test</div>
+            </div>
+          </div>
+        </div>
+      ),
+      desc: "Income composition, stress test drop, continuity window, structural indicators, what\u2019s working, and what\u2019s holding you back.",
+    },
+    {
+      num: "03", title: "What Could Go Wrong", color: B.bandLimited,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          {[
+            { severity: "SEVERE", title: "Largest client leaves", drop: "\u221229" },
+            { severity: "HIGH", title: "Work interruption (90 days)", drop: "\u221218" },
+            { severity: "MODERATE", title: "Pipeline slowdown", drop: "\u22128" },
+          ].map((s, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: i === 0 ? B.bandLimited : i === 1 ? B.bandDeveloping : "rgba(244,241,234,0.35)", minWidth: 65 }}>{s.severity}</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{s.title}</span>
+              </div>
+              <span style={{ fontSize: 15, fontWeight: 700, color: B.bandLimited }}>{s.drop}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)" }}>Fragility: <span style={{ color: B.bandDeveloping }}>Thin</span></div>
+          </div>
+        </div>
+      ),
+      desc: "Ranked scenarios with exact score drops, fragility classification, behavioral patterns to watch, and predictive warnings.",
+    },
+    {
+      num: "04", title: "Your Action Plan", color: B.purple,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 10, textTransform: "uppercase" as const }}>What your score could be</div>
+          {[
+            { action: "Add recurring revenue", lift: "+8" },
+            { action: "Reduce concentration", lift: "+5" },
+            { action: "Extend visibility", lift: "+4" },
+          ].map((a, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+              <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{a.action}</span>
+              <span style={{ fontSize: 16, fontWeight: 700, color: B.teal, fontFamily: DF }}>{a.lift}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(75,63,174,0.08)", border: "1px solid rgba(75,63,174,0.15)" }}>
+            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Combined: 48 &#8594; 65 (+17 points)</div>
+          </div>
+        </div>
+      ),
+      desc: "Projected score impact per action, tradeoff analysis, week-by-week execution roadmap, and what to avoid.",
+    },
+    {
+      num: "05", title: "Methodology + Next Steps", color: B.teal,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ padding: "10px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)", marginBottom: 10 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)" }}>Confidence: <span style={{ color: B.teal }}>High</span></div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)", marginTop: 4 }}>Durability: <span style={{ color: B.teal }}>Moderate</span></div>
+          </div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 8, textTransform: "uppercase" as const }}>Reassess when</div>
+          {["Major client change", "Revenue model shift", "3 months post-action"].map((t, i) => (
+            <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0 }} />
+              <span style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>{t}</span>
+            </div>
+          ))}
+        </div>
+      ),
+      desc: "How the score was calculated, assessment confidence, income durability grade, reassessment triggers, and verification record.",
+    },
+  ];
+
   return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="1" title="Your Score" question="Where do I stand?"
-        description="Your exact number, your stability band, what it means for your daily life with your actual data points, and the single most important thing to fix — with projected score gain."
-        bullets={["Your 0–100 Income Stability Score\u2122 with band classification", "Plain-English consequence framing with your actual numbers", "The One Thing That Matters Most — your highest-leverage fix"]}
-        alignRight={true} visible={visible} mobile={mobile}
-        cardContent={<>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, marginTop: 8, paddingBottom: 10, borderBottom: "1px solid rgba(14,26,43,0.12)" }}>
-            <Image src={logoBlue} alt="RunPayway™" width={100} height={12} style={{ height: "auto" }} />
-            <span style={{ fontSize: 11, color: B.light }}>Model RP-2.0</span>
-          </div>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 6 }}>YOUR INCOME STABILITY REPORT</div>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12 }}>Your Score</h3>
-          <div style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 6 }}>78</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
-            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandHigh }} />
-            <span style={{ fontSize: 13, fontWeight: 500, color: B.bandHigh }}>High Stability</span>
-          </div>
-          <div style={{ display: "flex", gap: 2, height: 6, marginBottom: 12 }}>
-            {[{ w: 30 }, { w: 20 }, { w: 25 }, { w: 25 }].map((seg, i) => (
-              <div key={i} style={{ width: `${seg.w}%`, backgroundColor: [B.bandLimited, B.bandDeveloping, B.bandEstablished, B.bandHigh][i], borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: i === 3 ? 1 : 0.25 }} />
-            ))}
-          </div>
-          <p style={{ fontSize: 11, color: B.muted, lineHeight: 1.5, margin: 0 }}>The income structure is strong, with substantial protection already in place.</p>
-        </>}
-      />
-    </div>
-  );
-}
+    <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Inside The Report</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+            Five pages. Every one earns its place.
+          </h2>
+        </div>
 
-/* ================================================================== */
-/* PAGES 2-5: EDITORIAL LAYOUT WITH TRUNCATED PREVIEWS                 */
-/* ================================================================== */
-function PagePreview({ pageNum, title, question, description, bullets, cardContent, alignRight, visible, mobile, dark }: {
-  pageNum: string; title: string; question: string; description: string; bullets: string[]; cardContent: React.ReactNode; alignRight: boolean; visible: boolean; mobile: boolean; dark?: boolean;
-}) {
-  const textColor = dark ? "#F4F1EA" : B.navy;
-  const mutedColor = dark ? "rgba(244,241,234,0.65)" : "rgba(14,26,43,0.55)";
-  const bulletColor = dark ? "rgba(244,241,234,0.50)" : "rgba(14,26,43,0.50)";
-  const dotColor = dark ? B.teal : B.teal;
-  const labelColor = dark ? "rgba(244,241,234,0.50)" : B.teal;
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? 32 : 48 }}>
+          {pages.map((page, i) => {
+            const isRight = !m && i % 2 === 1;
+            return (
+              <div key={page.num} style={{
+                display: m ? "flex" : "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: m ? 20 : 40,
+                flexDirection: "column",
+                alignItems: m ? "stretch" : "center",
+                opacity: visible ? 1 : 0,
+                transform: visible ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 600ms ease-out ${150 + i * 100}ms, transform 600ms ease-out ${150 + i * 100}ms`,
+              }}>
+                {/* Screen preview */}
+                <div style={{ order: m ? 0 : isRight ? 1 : 0 }}>
+                  <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
+                    <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <Image src={logoWhite} alt="RunPayway" width={80} height={10} style={{ height: "auto", opacity: 0.6 }} />
+                      <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.20)" }}>Page {page.num}</span>
+                    </div>
+                    {page.screen}
+                  </div>
+                </div>
 
-  const content = (
-    <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 14 }}>
-        <span style={{ fontSize: mobile ? 36 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: dark ? "rgba(244,241,234,0.15)" : "rgba(14,26,43,0.06)", lineHeight: 1 }}>{pageNum}</span>
-        <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase", color: labelColor }}>PAGE {pageNum}</span>
-      </div>
-      <div style={{ fontSize: mobile ? 16 : 18, color: mutedColor, fontStyle: "italic", marginBottom: 14, lineHeight: 1.5 }}>{question}</div>
-      <h3 style={{ fontSize: mobile ? 32 : 48, fontFamily: DISPLAY_FONT, fontWeight: 400, color: textColor, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 18 }}>{title}</h3>
-      <p style={{ fontSize: mobile ? 16 : 18, color: mutedColor, lineHeight: 1.7, marginBottom: 28 }}>{description}</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        {bullets.map((b) => (
-          <div key={b} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: dotColor, marginTop: 7, flexShrink: 0 }} />
-            <span style={{ fontSize: mobile ? 15 : 16, color: bulletColor, lineHeight: 1.6 }}>{b}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  const card = (
-    <div style={{ flex: 1, maxWidth: mobile ? undefined : 400 }}>
-      <ReportCard visible={visible} mobile={mobile} delay={200} maxHeight={340}>
-        {cardContent}
-      </ReportCard>
-    </div>
-  );
-
-  const bg = dark ? B.navy : undefined;
-  const sectionBgs = ["#F8F6F2", "#FFFFFF", "#F8F6F2", "#FFFFFF", "#F8F6F2"];
-  const sectionBg = bg || sectionBgs[parseInt(pageNum) - 1] || "#F8F6F2";
-
-  return (
-    <section style={{ backgroundColor: sectionBg, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 64 }}>
-        {mobile || !alignRight ? <>{content}<div style={{ height: mobile ? 36 : 0 }} />{card}</> : <>{card}<div style={{ width: 64 }} />{content}</>}
+                {/* Description */}
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", order: m ? 1 : isRight ? 0 : 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: B.sand, border: `1px solid ${B.borderMd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: page.color, position: "relative", overflow: "hidden" }}>
+                      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color, opacity: 0.6 }} />
+                      {page.num}
+                    </div>
+                    <h3 style={{ fontSize: m ? 22 : 26, fontWeight: 600, color: B.navy, letterSpacing: "-0.02em", margin: 0 }}>{page.title}</h3>
+                  </div>
+                  <p style={{ fontSize: m ? 15 : 17, color: B.muted, lineHeight: 1.65, margin: 0 }}>{page.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
 }
 
-function Page2Preview() {
+/* ================================================================== */
+/* 3. SIMULATOR PREVIEW — Interactive tab showcase                     */
+/* ================================================================== */
+function SimulatorPreview() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="2" title="How Your Income Is Built" question="How is my income structured?"
-        description="Your income composition (active vs. recurring vs. passive), stress test impact, continuity window, and structural context for your income model."
-        bullets={["Income structure bar: what percentage requires your daily work", "Stress test: exact score drop if your biggest source disappears", "Structural context: how your pattern compares to typical structures in your industry"]}
-        alignRight={false} visible={visible} mobile={mobile}
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 8, marginTop: 8 }}>How Your Income Is Built</h3>
-          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8, borderRadius: 2, overflow: "hidden" }}>
-            <div style={{ width: "26%", backgroundColor: B.navy }} />
-            <div style={{ width: "22%", backgroundColor: B.light }} />
-            <div style={{ width: "52%", backgroundColor: B.teal }} />
+  const m = useMobile();
+  const [activeTab, setActiveTab] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleEnter = (i: number) => { if (timerRef.current) clearTimeout(timerRef.current); setActiveTab(i); };
+  const handleLeave = () => { if (timerRef.current) clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setActiveTab(null), 6000); };
+
+  const tabs = [
+    { label: "Adjust any dimension", desc: "Drag sliders to test changes" },
+    { label: "Real-time score updates", desc: "Watch the projected score shift" },
+    { label: "See what matters most", desc: "Which change has the biggest impact" },
+  ];
+
+  const screenDefault = (
+    <>
+      <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
+        {[{ l: "CURRENT", v: "48", c: "#F4F1EA" }, { l: "SIMULATED", v: "62", c: B.teal }, { l: "IMPACT", v: "+14", c: B.teal }].map(col => (
+          <div key={col.l} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: m ? "10px 6px" : "12px 10px", textAlign: "center" }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.25)", marginBottom: 3 }}>{col.l}</div>
+            <div style={{ fontSize: m ? 22 : 28, fontWeight: 300, color: col.c, fontFamily: DF, lineHeight: 1 }}>{col.v}</div>
           </div>
-          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-            <span style={{ fontSize: 11, color: B.navy }}>Active 26%</span>
-            <span style={{ fontSize: 11, color: B.light }}>Repeatable 22%</span>
-            <span style={{ fontSize: 11, color: B.teal }}>Passive 52%</span>
+        ))}
+      </div>
+      <div style={{ display: "flex", height: 4, borderRadius: 2, overflow: "hidden", marginBottom: 14, position: "relative" }}>
+        <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} /><div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} /><div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} /><div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
+        <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}`, boxShadow: `0 0 6px rgba(26,122,109,0.4)` }} />
+      </div>
+    </>
+  );
+
+  const screenSliders = (
+    <div>
+      {["Recurring Revenue", "Source Concentration", "Forward Visibility", "Earnings Consistency", "Labor Independence"].map((dim, i) => (
+        <div key={dim} style={{ marginBottom: i < 4 ? 12 : 0 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)" }}>{dim}</span>
+            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>{[15, 55, 25, 50, 10][i]}%</span>
           </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>WHAT IS WORKING</div>
-              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Strong recurring base. Focus: refinement.</p>
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 4 }}>BIGGEST WEAKNESS</div>
-              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Source concentration still too high.</p>
-            </div>
+          <div style={{ height: 4, backgroundColor: "rgba(244,241,234,0.06)", borderRadius: 2, position: "relative" }}>
+            <div style={{ height: 4, backgroundColor: B.teal, borderRadius: 2, width: `${[15, 55, 25, 50, 10][i]}%`, opacity: 0.7 }} />
+            <div style={{ position: "absolute", top: "50%", left: `${[15, 55, 25, 50, 10][i]}%`, transform: "translate(-50%, -50%)", width: 9, height: 9, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${B.teal}` }} />
           </div>
-        </>}
-      />
+        </div>
+      ))}
     </div>
   );
-}
 
-function Page3Preview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="3" title="Your Biggest Risks" question="What could go wrong?"
-        description="The scenarios that would hurt you most — ranked by severity with exact score drops. Plus predictive warnings about mistakes you are likely to make next."
-        bullets={["Top 3 stress scenarios ranked by severity with score-drop projections", "Predictive warnings: what people in your position typically do wrong next", "Urgency framing with your actual runway and stress test numbers"]}
-        alignRight={true} visible={visible} mobile={mobile} dark
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Biggest Risks</h3>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>WHAT COULD HURT YOUR SCORE MOST</div>
-          {[{ sev: "HIGH", t: "You are unable to work for an extended period", drop: "78 → 56" }, { sev: "MODERATE", t: "Your largest client leaves", drop: "78 → 62" }, { sev: "LOW", t: "A seasonal slowdown reduces income", drop: "78 → 72" }].map((r) => (
-            <div key={r.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: r.sev === "HIGH" ? B.bandLimited : r.sev === "MODERATE" ? B.bandDeveloping : B.muted, minWidth: 52 }}>{r.sev}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
-              </div>
-              <span style={{ fontSize: 11, color: B.muted }}>{r.drop}</span>
-            </div>
-          ))}
-        </>}
-      />
+  const screenImpact = (
+    <div>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 10, textTransform: "uppercase" as const }}>Highest Impact</div>
+      {[{ a: "Add recurring revenue", l: "+8" }, { a: "Reduce concentration", l: "+5" }, { a: "Extend visibility", l: "+4" }].map((item, i) => (
+        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+          <span style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.60)" }}>{item.a}</span>
+          <span style={{ fontSize: 18, fontWeight: 700, color: B.teal, fontFamily: DF }}>{item.l}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(26,122,109,0.08)", border: "1px solid rgba(26,122,109,0.12)" }}>
+        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>All three: 48 &#8594; 65 (+17)</div>
+      </div>
     </div>
   );
-}
 
-function Page4Preview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="4" title="Your Income Deep Dive" question="How deep does it go?"
-        description="Structural dimensions scored, fragility classified, cross-factor effects explained, surprising insights surfaced, and your income system mapped visually."
-        bullets={["Structural indicators — each scored out of 100 with a progress bar", "Surprising insights: non-obvious findings from your data", "Income system map: sources, recurring/forward/passive strength bars, risk flags"]}
-        alignRight={false} visible={visible} mobile={mobile}
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Income Deep Dive</h3>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>STRUCTURAL INDICATORS</div>
-          {[{ label: "Income Persistence", pct: 82, color: B.teal }, { label: "Source Independence", pct: 55, color: B.light }, { label: "Forward Visibility", pct: 71, color: B.teal }].map((ind) => (
-            <div key={ind.label} style={{ marginBottom: 10 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{ind.label}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: ind.pct >= 60 ? B.teal : B.bandDeveloping }}>{ind.pct}/100</span>
-              </div>
-              <div style={{ height: 4, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 2, overflow: "hidden" }}>
-                <div style={{ height: "100%", width: `${ind.pct}%`, backgroundColor: ind.color, borderRadius: 2 }} />
-              </div>
-            </div>
-          ))}
-          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>FRAGILITY</div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Supported</div>
-            </div>
-            <div style={{ flex: 1, backgroundColor: B.sand, borderRadius: 4, padding: "8px 10px" }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: B.teal, marginBottom: 2 }}>CONFIDENCE</div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>High</div>
-            </div>
-          </div>
-        </>}
-      />
-    </div>
-  );
-}
+  const screens = [screenSliders, screenDefault, screenImpact];
+  const current = activeTab !== null ? screens[activeTab] : screenDefault;
 
-function Page5Preview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
   return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="5" title="Your Action Plan" question="What do I do about it?"
-        description="Prioritized actions with projected score impact, tradeoff analysis showing the real cost of each move, suggested next-move language, and your reassessment date."
-        bullets={["Lift scenarios: exactly how many points each change is worth", "Action plan with specific timelines, numeric targets, and priority ranking", "Advisor-ready summary: key talking points and red flags to raise"]}
-        alignRight={true} visible={visible} mobile={mobile}
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Your Action Plan</h3>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginBottom: 10 }}>IF YOU MADE THESE CHANGES</div>
-          {[{ n: "1", t: "Secure more income ahead of time", pts: "+8 pts → 86" }, { n: "2", t: "Reduce reliance on largest source", pts: "+5 pts → 83" }, { n: "3", t: "Build more repeatable income", pts: "+3 pts → 81" }].map((r) => (
-            <div key={r.n} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid rgba(14,26,43,0.08)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{r.n}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: B.navy }}>{r.t}</span>
+    <section ref={ref} style={{ backgroundColor: B.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: 640, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Score Simulator&#8482;</div>
+          <h2 style={{ fontSize: m ? 28 : 40, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 8 }}>
+            Model scenarios against your actual data.
+          </h2>
+          <p style={{ fontSize: m ? 15 : 16, color: "rgba(244,241,234,0.40)", lineHeight: 1.5, margin: "0 auto" }}>
+            Included with your report. Lifetime access.
+          </p>
+        </div>
+
+        <div style={{ backgroundColor: "rgba(244,241,234,0.03)", borderRadius: 16, border: `1px solid rgba(244,241,234,0.08)`, padding: m ? "20px 16px" : "24px 20px", marginBottom: 12, boxShadow: "0 12px 48px rgba(0,0,0,0.25)", minHeight: m ? 180 : 200, borderColor: activeTab !== null ? "rgba(26,122,109,0.25)" : "rgba(244,241,234,0.08)", transition: "border-color 300ms ease", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms, border-color 300ms ease" }}>
+          <div key={activeTab ?? "d"}>{current}</div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 8 }}>
+          {tabs.map((tab, i) => {
+            const active = activeTab === i;
+            return (
+              <div key={tab.label} onMouseEnter={() => handleEnter(i)} onMouseLeave={handleLeave} onClick={() => handleEnter(i)} style={{
+                padding: "14px 16px", borderRadius: 10, cursor: "pointer",
+                backgroundColor: active ? "rgba(26,122,109,0.12)" : "rgba(244,241,234,0.03)",
+                border: `1px solid ${active ? "rgba(26,122,109,0.30)" : "rgba(244,241,234,0.06)"}`,
+                transition: "all 200ms ease",
+              }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: active ? B.teal : "#F4F1EA", marginBottom: 2, transition: "color 200ms" }}>{tab.label}</div>
+                <div style={{ fontSize: 13, color: active ? "rgba(26,122,109,0.60)" : "rgba(244,241,234,0.35)", lineHeight: 1.4, transition: "color 200ms" }}>{tab.desc}</div>
               </div>
-              <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>{r.pts}</span>
-            </div>
-          ))}
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: B.teal, marginTop: 12, marginBottom: 6 }}>SHARE WITH YOUR ADVISOR</div>
-          <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>Talking points, questions, and red flags — ready to share.</p>
-        </>}
-      />
-    </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
 
 /* ================================================================== */
-/* CTA                                                                 */
+/* 4. WHAT'S INCLUDED — Scannable checklist                            */
 /* ================================================================== */
-function CtaSection() {
+function WhatsIncluded() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
+
+  const items = [
+    { cat: "Diagnosis", features: ["Score with plain-English interpretation", "Structural indicators with cross-factor effects", "Income composition breakdown", "Stress test with exact score drop", "Fragility classification"] },
+    { cat: "Risks", features: ["Ranked risk scenarios by severity", "Predictive warnings", "Behavioral patterns to watch", "Band shift alerts"] },
+    { cat: "Action", features: ["Prioritized actions with projected impact", "Tradeoff analysis for each move", "Week-by-week execution roadmap", "Reassessment triggers"] },
+    { cat: "Tools", features: ["Interactive Score Simulator (lifetime)", "Suggested language for your next move", "Structural context for your income model", "Assessment confidence and durability grade"] },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Everything Included</div>
+          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
+            One report. Nothing withheld.
+          </h2>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 20 : 24 }}>
+          {items.map((group, gi) => (
+            <div key={group.cat} style={{
+              padding: m ? "24px 20px" : "28px 24px", borderRadius: 14,
+              backgroundColor: B.bone, border: `1px solid ${B.border}`,
+              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
+              transition: `opacity 500ms ease-out ${100 + gi * 80}ms, transform 500ms ease-out ${100 + gi * 80}ms`,
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 16 }}>{group.cat}</div>
+              {group.features.map((f) => (
+                <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}><circle cx="8" cy="8" r="7" fill="none" stroke={B.teal} strokeWidth="1.5" /><path d="M5 8l2 2 4-4" stroke={B.teal} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  <span style={{ fontSize: 15, color: B.navy, lineHeight: 1.45 }}>{f}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/* 5. CTA                                                              */
+/* ================================================================== */
+function Cta() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
   const [hovered, setHovered] = useState(false);
 
   return (
-    <section
-      ref={ref}
-      aria-label="Call to Action"
-      style={{
-        background: B.gradient,
-        position: "relative",
-        overflow: "hidden",
-        paddingTop: mobile ? 72 : 120,
-        paddingBottom: mobile ? 72 : 120,
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          top: "40%",
-          left: "50%",
-          width: 700,
-          height: 700,
-          transform: "translate(-50%, -50%)",
-          background:
-            "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          maxWidth: 640,
-          marginLeft: "auto",
-          marginRight: "auto",
-          paddingLeft: mobile ? 24 : 48,
-          paddingRight: mobile ? 24 : 48,
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
-          }}
-        >
-          <h2 style={{ fontSize: mobile ? 32 : 48, color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
-            See your own numbers.
+    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
+      <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+            Ready to see yours?
           </h2>
-          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, marginBottom: 32, maxWidth: 440, margin: "0 auto 32px" }}>
-            This was a sample. Your report uses your real data, your industry, and your actual income structure. Full refund if it does not reveal something new.
+          <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
+            Your free score shows where you stand. The full report shows what to do about it.
           </p>
           <Link
             href="/pricing"
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: mobile ? 48 : 56,
-              paddingLeft: 36,
-              paddingRight: 36,
-              borderRadius: 12,
-              backgroundColor: "#F4F1EA",
-              color: B.navy,
-              fontSize: 16,
-              fontWeight: 600,
-              letterSpacing: "0.01em",
-              textDecoration: "none",
-              boxShadow: hovered
-                ? "0 8px 28px rgba(0,0,0,0.20)"
-                : "0 4px 16px rgba(0,0,0,0.12)",
-              transform: hovered ? "translateY(-1px)" : "translateY(0)",
-              transition: "box-shadow 260ms ease, transform 260ms ease",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+              backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600,
+              textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
+              transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
-            Get My Free Score
+            Start Your Assessment
           </Link>
-          <div
-            style={{
-              marginTop: 20,
-              fontSize: 14,
-              color: "rgba(244,241,234,0.40)",
-              letterSpacing: "0.02em",
-            }}
-          >
-            Free to start &#183; Under 2 minutes &#183; No bank connection
+          <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
+            Free to start &#183; Under 2 minutes &#183; $99 for the full report
           </div>
         </div>
       </div>
@@ -547,84 +457,17 @@ function CtaSection() {
   );
 }
 
-function BridgeLine() {
-  const mobile = useMobile();
-  return (
-    <section style={{ backgroundColor: B.sand, paddingTop: mobile ? 32 : 48, paddingBottom: mobile ? 32 : 48, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48, borderTop: `1px solid ${B.border}`, borderBottom: `1px solid ${B.border}` }}>
-      <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "center", alignItems: "center", gap: mobile ? 8 : 32, textAlign: "center" }}>
-        {["5 pages of analysis", "Interactive simulator", "Structural sliders", "Suggested language"].map((t) => (
-          <span key={t} style={{ fontSize: 14, fontWeight: 600, color: B.muted, letterSpacing: "-0.01em" }}>{t}</span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function SimulatorPreview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <section ref={ref} style={{ background: B.navy, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 28 : 48, paddingRight: mobile ? 28 : 48 }}>
-      <div style={{ maxWidth: 960, margin: "0 auto", display: mobile ? "block" : "flex", alignItems: "center", gap: 56 }}>
-        <div style={{ flex: 1, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 0.6s ease-out, transform 0.6s ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 14 }}>INCLUDED WITH YOUR REPORT</div>
-          <h3 style={{ fontSize: mobile ? 20 : 24, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>What happens if things change?</h3>
-          <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20 }}>
-            Model any scenario against your actual data. See the exact score impact, timeline projection, and generate a Stability Brief&#8482; to share with lenders, landlords, or partners.
-          </p>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", fontStyle: "italic", margin: 0 }}>
-            Loads automatically via QR code on your report.
-          </p>
-        </div>
-        <div style={{ flex: 1, maxWidth: mobile ? undefined : 420, marginTop: mobile ? 32 : 0, opacity: visible ? 1 : 0, transition: "opacity 0.8s ease-out 200ms" }}>
-          <SimulatorTeaser />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Page6Preview() {
-  const { ref, visible } = useInView();
-  const mobile = useMobile();
-  return (
-    <div ref={ref}>
-      <PagePreview
-        pageNum="6" title="Strategy and Next Steps" question="What are the tradeoffs?"
-        description="Every recommended action comes with an honest cost-benefit analysis. Plus reassessment triggers, suggested next-move language, and your verification record."
-        bullets={["Tradeoff analysis: the upside, the cost, and the net assessment for each move", "Suggested language: starting drafts for retainer pitches, client outreach, and advisor conversations", "Reassessment date, verification stamp, and record ID"]}
-        alignRight={false} visible={visible} mobile={mobile}
-        cardContent={<>
-          <h3 style={{ fontSize: 18, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, marginBottom: 12, marginTop: 8 }}>Strategy and Next Steps</h3>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>TRADEOFFS TO UNDERSTAND</div>
-          <div style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Reduce client concentration</div>
-            <div style={{ display: "flex", gap: 8 }}>
-              <div style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>UPSIDE</div><div style={{ fontSize: 11, color: B.muted }}>Removes single point of failure</div></div>
-              <div style={{ flex: 1 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.bandDeveloping }}>COST</div><div style={{ fontSize: 11, color: B.muted }}>Short-term income volatility</div></div>
-            </div>
-          </div>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginTop: 12, marginBottom: 6 }}>SUGGESTED LANGUAGE</div>
-          <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.5 }}>Retainer pitch &#183; Client outreach &#183; Pricing restructure</div>
-        </>}
-      />
-    </div>
-  );
-}
-
+/* ================================================================== */
+/* MAIN EXPORT                                                         */
+/* ================================================================== */
 export default function SampleReportPage() {
   return (
-    <div style={{ backgroundColor: "#F8F6F2" }}>
+    <div>
       <Hero />
-      <BridgeLine />
-      <Page1Preview />
+      <ReportPreview />
       <SimulatorPreview />
-      <Page2Preview />
-      <Page3Preview />
-      <Page4Preview />
-      <Page5Preview />
-      <Page6Preview />
-      <CtaSection />
+      <WhatsIncluded />
+      <Cta />
     </div>
   );
 }
