@@ -194,6 +194,7 @@ export default function InitializationPage() {
   const [portalRevealed, setPortalRevealed] = useState(false);
   const [showReadyScreen, setShowReadyScreen] = useState(false);
   const [readyVisible, setReadyVisible] = useState(false);
+  const [readyExiting, setReadyExiting] = useState(false);
 
   const goToStep = useCallback((nextStep: number) => {
     setTransitioning(true);
@@ -364,9 +365,9 @@ export default function InitializationPage() {
         padding: "0 32px",
       }}>
         <div style={{
-          opacity: readyVisible ? 1 : 0,
-          transform: readyVisible ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 800ms ease-out, transform 800ms ease-out",
+          opacity: readyExiting ? 0 : readyVisible ? 1 : 0,
+          transform: readyExiting ? "translateY(-16px)" : readyVisible ? "translateY(0)" : "translateY(20px)",
+          transition: readyExiting ? "opacity 1000ms ease-out, transform 1000ms ease-out" : "opacity 800ms ease-out, transform 800ms ease-out",
           maxWidth: 440,
           display: "flex", flexDirection: "column", alignItems: "center",
           minHeight: "80vh", justifyContent: "center", position: "relative",
@@ -391,7 +392,10 @@ export default function InitializationPage() {
             </p>
 
             <button
-              onClick={() => router.push("/diagnostic")}
+              onClick={() => {
+                setReadyExiting(true);
+                setTimeout(() => router.push("/diagnostic"), 1200);
+              }}
               style={{
                 height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
                 background: "#F4F1EA",
@@ -578,20 +582,20 @@ export default function InitializationPage() {
       {transitioning && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
-          background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
+          background: B.sand,
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
           animation: "portalCrossFade 800ms ease-in-out",
         }}>
           <style>{`
-            @keyframes portalCrossFade { 0% { opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+            @keyframes portalCrossFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 1; } }
           `}</style>
           <Image
-            src={logoWhite}
+            src={logoBlue}
             alt="RunPayway™"
-            width={140}
-            height={16}
-            style={{ height: "auto", opacity: 0.6 }}
+            width={160}
+            height={19}
+            style={{ height: "auto", opacity: 0.4 }}
           />
         </div>
       )}
