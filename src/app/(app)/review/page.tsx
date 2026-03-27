@@ -317,169 +317,7 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
 // PDF DOWNLOAD
 // ============================================================
 
-function findSafeCutRow(
-  canvas: HTMLCanvasElement,
-  targetY: number,
-  searchRange: number,
-): number {
-  const width = canvas.width;
-  const minY = Math.max(0, targetY - searchRange);
-  const maxY = targetY;
-  const searchHeight = maxY - minY;
-  if (searchHeight <= 0) return targetY;
-
-  const ctx = canvas.getContext("2d")!;
-  const imageData = ctx.getImageData(0, minY, width, searchHeight);
-  const pixels = imageData.data;
-  const sampleStep = Math.max(1, Math.floor(width / 80));
-  const threshold = 4;
-
-  for (let offset = 0; offset < searchHeight; offset++) {
-    const localRow = searchHeight - 1 - offset;
-    let nonWhiteCount = 0;
-    const rowStart = localRow * width * 4;
-
-    for (let x = 0; x < width; x += sampleStep) {
-      const idx = rowStart + x * 4;
-      if (pixels[idx] < 235 || pixels[idx + 1] < 230 || pixels[idx + 2] < 225) {
-        nonWhiteCount++;
-        if (nonWhiteCount > threshold) break;
-      }
-    }
-
-    if (nonWhiteCount <= threshold) {
-      return minY + localRow;
-    }
-  }
-
-  return targetY;
-}
-
-async function downloadPDF(record: AssessmentRecord) {
-  let html2canvas: typeof import("html2canvas").default;
-  let jsPDF: typeof import("jspdf").jsPDF;
-
-  try {
-    html2canvas = (await import("html2canvas")).default;
-    jsPDF = (await import("jspdf")).jsPDF;
-  } catch {
-    alert("Download libraries failed to load. Please check your connection and try again.");
-    return;
-  }
-
-  const reportContainer = document.getElementById("report-container");
-  if (!reportContainer) return;
-
-  const pdf = new jsPDF({ orientation: "portrait", unit: "in", format: "letter" });
-  pdf.setProperties({
-    title: `Income Stability Assessment — ${record.assessment_title || "Report"}`,
-    author: "RunPayway\u2122",
-    subject: "Income Stability Score\u2122 Report",
-    keywords: "income stability, assessment, RunPayway\u2122, income analysis",
-    creator: `RunPayway\u2122 Model ${record.model_version || "RP-2.0"}`,
-  });
-
-  const { captureW, scale: S, pageW: PW, pageH: PH, margin: M, footer: FT, contentW: CW } = PDF;
-  const pxPerInch = (captureW * S) / CW;
-  const maxContentH = PH - M - FT;
-
-  // Hide HTML page footers (PDF adds its own) and interactive-only sections
-  const htmlFooters = reportContainer.querySelectorAll(".report-page-footer") as NodeListOf<HTMLElement>;
-  htmlFooters.forEach((f) => { f.style.display = "none"; });
-  const noPrintEls = reportContainer.querySelectorAll(".no-print") as NodeListOf<HTMLElement>;
-  noPrintEls.forEach((el) => { el.style.display = "none"; });
-
-  // Make container visible for capture
-  const savedContainerStyle = {
-    maxWidth: reportContainer.style.maxWidth,
-    gap: (reportContainer as HTMLElement).style.gap,
-    opacity: reportContainer.style.opacity,
-    zIndex: reportContainer.style.zIndex,
-    position: reportContainer.style.position,
-  };
-  reportContainer.style.opacity = "1";
-  reportContainer.style.zIndex = "9999";
-  reportContainer.style.position = "absolute";
-  reportContainer.style.maxWidth = `${captureW}px`;
-  (reportContainer as HTMLElement).style.gap = "0px";
-
-  const pages = reportContainer.querySelectorAll(".report-page") as NodeListOf<HTMLElement>;
-  const savedPageStyles: Array<Record<string, string>> = [];
-  pages.forEach((el, i) => {
-    savedPageStyles[i] = { width: el.style.width, maxWidth: el.style.maxWidth, border: el.style.border, borderRadius: el.style.borderRadius, boxSizing: el.style.boxSizing, overflow: el.style.overflow };
-    el.style.width = `${captureW}px`;
-    el.style.maxWidth = `${captureW}px`;
-    el.style.boxSizing = "border-box";
-    el.style.border = "none";
-    el.style.borderRadius = "0";
-    el.style.overflow = "visible";
-  });
-
-  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-
-  // Capture each report page individually — one per PDF page
-  const pageCount = pages.length;
-  for (let i = 0; i < pageCount; i++) {
-    if (i > 0) pdf.addPage();
-
-    const pageEl = pages[i];
-    const canvas = await html2canvas(pageEl, {
-      scale: S,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      width: captureW,
-      windowWidth: captureW,
-    });
-
-    const imgW = CW;
-    const imgH = canvas.height / pxPerInch;
-    // Scale down if content is taller than the printable area
-    const scale = imgH > maxContentH ? maxContentH / imgH : 1;
-    const finalW = imgW * scale;
-    const finalH = imgH * scale;
-
-    pdf.addImage(canvas.toDataURL("image/png"), "PNG", M, M, finalW, finalH);
-  }
-
-  // Restore styles
-  pages.forEach((el, i) => { Object.assign(el.style, savedPageStyles[i]); });
-  htmlFooters.forEach((f) => { f.style.display = ""; });
-  noPrintEls.forEach((el) => { el.style.display = ""; });
-  reportContainer.style.maxWidth = savedContainerStyle.maxWidth;
-  (reportContainer as HTMLElement).style.gap = savedContainerStyle.gap;
-  reportContainer.style.opacity = savedContainerStyle.opacity;
-  reportContainer.style.zIndex = savedContainerStyle.zIndex;
-  reportContainer.style.position = savedContainerStyle.position;
-
-  // Add PDF footers to each page
-  for (let p = 1; p <= pageCount; p++) {
-    pdf.setPage(p);
-
-    pdf.setDrawColor(220, 218, 212);
-    pdf.setLineWidth(0.004);
-    pdf.line(M, PH - FT + 0.05, PW - M, PH - FT + 0.05);
-
-    pdf.setFont("helvetica", "italic");
-    pdf.setFontSize(7);
-    pdf.setTextColor(156, 163, 175);
-    pdf.text(
-      `Confidential — Prepared for ${record.assessment_title || "Assessment Subject"}`,
-      M,
-      PH - FT + 0.2,
-    );
-
-    pdf.setFont("helvetica", "normal");
-    pdf.text("support@runpayway.com", PW - M, PH - FT + 0.2, { align: "right" });
-
-    pdf.setFontSize(7.5);
-    pdf.setTextColor(156, 163, 175);
-    pdf.text(`Page ${p} of ${pageCount}`, PW / 2, PH - FT + 0.35, { align: "center" });
-  }
-
-  const shortId = record.record_id.slice(0, 8);
-  pdf.save(`RunPayway-Income-Stability-Report-${shortId}.pdf`);
-}
+// PDF generation handled by report-pdf.tsx vector renderer
 
 
 // ============================================================
@@ -929,7 +767,204 @@ export default function ReviewPage() {
     setDownloading(true);
     setDownloadError(null);
     try {
-      await downloadPDF(record);
+      const { generateReportPDF } = await import("./report-pdf");
+      const { ReportPDFData } = await import("./report-pdf") as { ReportPDFData: unknown };
+      void ReportPDFData; // type-only, suppress unused
+
+      // Build access code
+      const v2d = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
+      const nid = v2d?.normalized_inputs as Record<string, number | string> | undefined;
+      const accessCodePayload = nid ? btoa(JSON.stringify({ p: nid.income_persistence_pct, c: nid.largest_source_pct, s: nid.source_diversity_count, f: nid.forward_secured_pct, v: nid.income_variability_level, l: nid.labor_dependence_pct, q: (v2d?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" })) : "";
+
+      // Build diagnostic sentence
+      const diagSentence = (() => {
+        if (tier === "high") return "Your income is not invulnerable. But it is built to absorb a hit without forcing a crisis. That is rare.";
+        if (tier === "established") return "Your income is not fragile. But it still depends on a narrow set of conditions staying exactly as they are.";
+        if (dominantConstraint === "labor_dependence") return "Your income is not weak because you earn too little. It is weak because too much of it stops when your daily effort stops.";
+        if (dominantConstraint === "source_concentration") return "Your income is not weak because it is small. It is weak because too much of it depends on one source continuing to pay.";
+        if (dominantConstraint === "forward_visibility") return "Your income is not unstable because you lack skill. It is unstable because you cannot see far enough ahead to plan around a disruption.";
+        if (dominantConstraint === "low_continuity") return "Your income is not insecure because of what you earn. It is insecure because almost none of it would continue if you had to stop working tomorrow.";
+        if (dominantConstraint === "few_sources") return "Your income is not at risk because of how much you earn. It is at risk because losing any one source would change everything.";
+        return "Your income has structural weaknesses that are not visible in your day-to-day earnings. This report makes them visible.";
+      })();
+
+      // Build plain English
+      const plainEng = v2Explainability?.why_this_score || (() => {
+        const ctx = olFamilyLabel ? `As a ${olFamilyLabel.toLowerCase()}${olIndustryLabel ? ` in ${olIndustryLabel}` : ""}, ` : "";
+        return isHighScorer ? `${ctx}your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : `${ctx}your income is developing. ${nextBandName ? `${distanceToNext} points from ${nextBandName}.` : ""}`;
+      })();
+
+      // Build killer line for page 2
+      const killerLn = record.active_income_level + record.semi_persistent_income_level >= 80
+        ? `${record.active_income_level + record.semi_persistent_income_level}% of your income still requires you to keep re-earning it.`
+        : record.active_income_level >= 50
+          ? `${record.active_income_level}% of your income is earned once and stops. It does not repeat, renew, or survive interruption.`
+          : `${100 - record.active_income_level}% of your income continues without your daily effort. That is uncommon structural protection.`;
+
+      // Build fragility diagnostic
+      const fragDiag = (() => {
+        const fc = v2Fragility?.fragility_class;
+        if (fc === "brittle") return "A single disruption — one lost client, one slow month — could force a structural crisis. That is not a risk scenario. That is your current exposure.";
+        if (fc === "thin") return "You can likely absorb one mild setback. Two close together would create pressure fast.";
+        if (fc === "uneven") return "Parts of your income are well-protected. Other parts are not. That unevenness is where risk hides.";
+        if (fc === "supported") return "Most common disruptions would not break your structure. But the scenarios below show where your limits are.";
+        if (fc === "resilient") return "Your income can take a serious hit. The scenarios below show the few things that could still cause real damage.";
+        return "Your income has specific structural exposures. The scenarios below show exactly where they are.";
+      })();
+
+      // Build ranked factors
+      const sortedIndicators = v2Indicators ? [...v2Indicators].sort((a, b) => a.normalized_value - b.normalized_value) : [];
+      const weakest = sortedIndicators[0];
+      const strongest = sortedIndicators[sortedIndicators.length - 1];
+      const rankedF: Array<{ role: string; label: string; level: string; normalizedValue: number; explanation: string; roleColor: string; levelColor: string }> = [];
+      const getLevelColor = (level: string) => level === "critical" || level === "weak" ? B.bandLimited : level === "moderate" ? B.bandDeveloping : level === "strong" ? B.bandEstablished : B.bandHigh;
+      if (strongest && weakest && strongest.key !== weakest.key) {
+        rankedF.push({ role: "STRONGEST FACTOR", label: strongest.label, level: strongest.level, normalizedValue: strongest.normalized_value, explanation: "This is what is holding your structure together.", roleColor: B.teal, levelColor: getLevelColor(strongest.level) });
+      }
+      if (weakest) {
+        rankedF.push({ role: "WEAKEST FACTOR", label: weakest.label, level: weakest.level, normalizedValue: weakest.normalized_value, explanation: "This is the biggest structural gap in your income.", roleColor: B.bandLimited, levelColor: getLevelColor(weakest.level) });
+      }
+
+      // Build scenarios
+      const scenarioPlain: Record<string, string> = {
+        active_labor_interrupted: "You take two weeks off and have no backup revenue",
+        platform_dependency_shock: "One income source changes its terms or access",
+        forward_commitments_delayed: "New work arrives later than expected",
+        client_concentration_loss: "A major client pauses or ends work",
+        market_contraction: "Demand in your industry drops for two or more months",
+        high_volatility_month: "You have a slow month with no backup revenue",
+        key_client_loss: "You lose a key client or contract",
+        recurring_stream_degrades: "A repeating income stream weakens or stops",
+        referral_pipeline_dries: "New business or referrals dry up for a stretch",
+        contract_non_renewal: "A major contract is not renewed",
+        scope_reduction: "A client cuts the scope of your work significantly",
+        revenue_model_disruption: "Your primary way of earning income stops working",
+        pricing_pressure: "What you can charge drops due to market pressure",
+        regulatory_disruption: "A regulatory or policy change affects how you earn",
+        seasonal_revenue_gap: "A seasonal slowdown cuts your income for weeks",
+      };
+      const sortedScenarios = v2Scenarios ? [...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 4) : [];
+      const scenariosData = sortedScenarios.map(s => {
+        const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
+        return {
+          title: scenarioPlain[s.scenario_id] ?? s.label,
+          originalScore: s.original_score,
+          scenarioScore: s.scenario_score,
+          scoreDrop: s.score_drop,
+          narrative: olMatch?.why_it_matters || s.narrative,
+          bandShift: s.band_shift,
+          originalBand: s.original_band,
+          scenarioBand: s.scenario_band,
+        };
+      });
+
+      // Build action categories
+      const liftConcrete: Record<string, { title: string; how: string }> = {
+        reduce_labor_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables." },
+        reduce_active_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables." },
+        extend_forward_visibility: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, or standing agreements." },
+        improve_forward_secured: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, or standing agreements." },
+        reduce_concentration: { title: "Reduce dependence on your largest income source", how: "Add one new client or revenue stream that could reach 15%+ of income within 90 days." },
+        reduce_largest_source: { title: "Reduce dependence on your largest income source", how: "Add one new client or revenue stream that could reach 15%+ of income within 90 days." },
+        increase_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
+        increase_persistent_revenue: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
+        strengthen_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
+        add_income_sources: { title: "Add more independent income sources", how: "Identify one adjacent service or client type on a different cycle." },
+        diversify_sources: { title: "Spread income across more sources", how: "Identify one adjacent service or client type on a different cycle." },
+        reduce_variability: { title: "Smooth out month-to-month income swings", how: "Shift to retainers or phased billing with quarterly or annual pricing." },
+        increase_continuity: { title: "Extend how long income lasts if you stop working", how: "Build one stream that produces for 3+ months independently." },
+        extend_continuity: { title: "Extend how long income lasts if you stop working", how: "Build one stream that produces for 3+ months independently." },
+      };
+      const viable = v2Lift ? v2Lift.lift_scenarios.filter((s: { lift: number }) => s.lift > 0).sort((a: { lift: number }, b: { lift: number }) => b.lift - a.lift) : [];
+      const fastest = viable[0];
+      const easiest = viable.length > 1 ? viable[viable.length - 1] : null;
+      const actionCats: Array<{ tag: string; tagColor: string; title: string; how: string; scoreChange: string }> = [];
+      if (fastest) {
+        const c = liftConcrete[fastest.scenario_id];
+        actionCats.push({ tag: "FASTEST IMPROVEMENT", tagColor: B.purple, title: c?.title ?? fastest.label, how: c?.how ?? fastest.change_description ?? "", scoreChange: `${fastest.original_score} → ${fastest.projected_score} (+${fastest.lift})` });
+      }
+      if (easiest && easiest.scenario_id !== fastest?.scenario_id) {
+        const c = liftConcrete[easiest.scenario_id];
+        actionCats.push({ tag: "EASIEST TO START", tagColor: B.teal, title: c?.title ?? easiest.label, how: c?.how ?? easiest.change_description ?? "", scoreChange: `${easiest.original_score} → ${easiest.projected_score} (+${easiest.lift})` });
+      }
+
+      // Fragility details
+      const fragLabel = fragilityClassLabel[v2Fragility?.fragility_class || ""] || "";
+      const fragText = v2Explainability?.fragility_explanation || (() => {
+        const fc = v2Fragility?.fragility_class;
+        if (fc === "brittle") return "A single disruption could cause your score to collapse. There is no structural buffer.";
+        if (fc === "thin") return "You can absorb a minor hit. But two close together would create serious pressure.";
+        if (fc === "uneven") return "Some parts are well-protected. Others are fully exposed.";
+        if (fc === "supported") return "Your income can absorb most common disruptions without dropping a band.";
+        if (fc === "resilient") return "Your income can absorb a major client loss or a 90-day work stoppage.";
+        return "";
+      })();
+      const fragColor = v2Fragility?.fragility_class === "brittle" || v2Fragility?.fragility_class === "thin" ? B.bandLimited : v2Fragility?.fragility_class === "resilient" || v2Fragility?.fragility_class === "supported" ? B.teal : B.navy;
+      const failMode = v2Fragility?.primary_failure_mode ? ({
+        concentration_collapse: "too much income depends on one source",
+        labor_interruption: "income stops when your work stops",
+        visibility_gap: "no income is secured ahead of time",
+        durability_thinness: "repeating income is fragile and could end",
+      } as Record<string, string>)[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode : undefined;
+
+      const blob = await generateReportPDF({
+        assessmentTitle: record.assessment_title || "Assessment",
+        issuedDate,
+        formalDate,
+        finalScore: record.final_score,
+        stabilityBand: record.stability_band,
+        bandColor,
+        tier,
+        coverBandDesc: coverBandDesc[tier] || "",
+        accessCode: accessCodePayload,
+        diagnosticSentence: diagSentence,
+        plainEnglish: plainEng,
+        whyNotHigher: v2Explainability?.why_not_higher,
+        dominantConstraintText: dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "A structural weakness is limiting your score.",
+        whatToChangeFirst: v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`),
+        whatThatWouldDo: v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : "Estimated improvement available.",
+        nextBandName,
+        distanceToNext,
+        bandDistance,
+        bandDistanceText: bandDistance === "CLOSE" ? "You are close. One structural change could move you into the next band." : bandDistance === "MODERATE" ? "This gap is closeable. The constraint above is the fastest path." : bandDistance === "TOP_BAND" ? "You are in the highest stability band." : "This will take more than one change — but the constraint above is where to start.",
+        score,
+        pressureMap: record.pressure_map ? { operatingStructure: record.pressure_map.operating_structure || "", incomeModel: record.pressure_map.income_model || "", industry: record.pressure_map.industry || "", pressure: record.pressure_map.pressure, tailwind: record.pressure_map.tailwind, leverageMove: record.pressure_map.leverage_move } : undefined,
+        killerLine: killerLn,
+        activeIncome: record.active_income_level,
+        semiPersistentIncome: record.semi_persistent_income_level,
+        persistentIncome: record.persistent_income_level,
+        riskScenarioScore: Math.max(0, record.risk_scenario_score),
+        riskScenarioDrop: record.risk_scenario_drop,
+        continuityDisplay,
+        continuityText: record.income_continuity_months < 1 ? "Your income stops almost immediately." : record.income_continuity_months < 3 ? "Very little runway before income pressure begins." : record.income_continuity_months < 6 ? "Some runway, but not enough to absorb a serious disruption." : "Meaningful buffer before income pressure begins.",
+        riskSeverityText: record.risk_scenario_drop > score * 0.4 ? "That is a severe dependency on a single source." : "",
+        rankedFactors: rankedF,
+        strongestSupports: v2Explainability?.strongest_supports?.slice(0, 2) || [],
+        strongestSuppressors: v2Explainability?.strongest_suppressors?.slice(0, 2) || [],
+        fragilityDiagnostic: fragDiag,
+        scenarios: scenariosData,
+        fragilityLabel: fragLabel,
+        fragilityText: fragText,
+        fragilityColor: fragColor,
+        failureMode: failMode,
+        patternToWatch: v2BehavioralInsights?.[0] ? { pattern: v2BehavioralInsights[0].pattern, consequence: v2BehavioralInsights[0].consequence, reframe: v2BehavioralInsights[0].reframe } : undefined,
+        actionCategories: actionCats,
+        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? { projectedScore: v2Lift.combined_top_two.projected_score, lift: v2Lift.combined_top_two.lift, bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined, explanation: v2Explainability?.best_lift_explanation } : undefined,
+        tradeoff: v2TradeoffNarratives?.[0] ? { actionLabel: v2TradeoffNarratives[0].action_label, upside: v2TradeoffNarratives[0].upside, downside: v2TradeoffNarratives[0].downside, recommendation: v2TradeoffNarratives[0].net_recommendation } : undefined,
+        avoidActions: [...(v2AvoidActions ?? []).slice(0, 1).map((a: { label: string; reason: string }) => `${a.label}: ${a.reason}`), ...(olAvoid ?? []).slice(0, 1)],
+        roadmap: (v2ExecutionRoadmap ?? []).slice(0, 4).map(w => ({ week: w.week, action: w.action, detail: w.detail, target: w.success_metric })),
+        reassessDate,
+        reassessDaysLeft,
+        reassessTiming: `Typically ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months.`,
+        triggers: (olTriggers ?? []).slice(0, 3).map((t: { display_text: string }) => t.display_text),
+      });
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `RunPayway-Income-Stability-Report-${record.record_id.slice(0, 8)}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "PDF generation failed";
       setDownloadError(msg);
@@ -1634,56 +1669,6 @@ export default function ReviewPage() {
 
   return (
     <ReportErrorBoundary>
-    {/* Hidden container for PDF export — keeps all pages rendered */}
-    <div id="report-container" style={{ position: "fixed", left: 0, top: 0, width: PDF.captureW, zIndex: -1, opacity: 0, pointerEvents: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 32, maxWidth: PDF.captureW, padding: "0 0 40px" }}>
-      {pageContents.map((content, i) => (
-        <ReportPage key={i} record={record}>{content}</ReportPage>
-      ))}
-
-      {/* ── Print stylesheet + dark mode ── */}
-      <style>{`
-        @page {
-          size: letter;
-          margin: 0.5in;
-        }
-        @media print {
-          .no-print, .download-section { display: none !important; }
-          #report-container { position: static !important; left: auto !important; gap: 0 !important; opacity: 1 !important; z-index: auto !important; pointer-events: auto !important; width: 100% !important; }
-          #paginated-view { display: none !important; }
-          .report-page {
-            break-inside: auto;
-            page-break-inside: auto;
-            page-break-after: auto;
-            box-shadow: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            margin: 0 !important;
-            padding: 0.5in !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-height: auto !important;
-            overflow: visible !important;
-            color-adjust: exact;
-            -webkit-print-color-adjust: exact;
-          }
-          .report-page:last-child {
-            page-break-after: auto;
-          }
-          /* Prevent individual cards/sections from splitting across pages */
-          .report-page > div {
-            break-inside: avoid;
-            page-break-inside: avoid;
-          }
-          body { background: white !important; }
-        }
-        @media (prefers-color-scheme: dark) {
-          .report-page {
-            background-color: #ffffff !important;
-          }
-        }
-      `}</style>
-    </div>
-
     {/* On-screen paginated view */}
     <div id="paginated-view" style={{ maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 80px" }}>
       <div ref={pageContainerRef} style={{ minHeight: "60vh" }}>
