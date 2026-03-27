@@ -1136,18 +1136,21 @@ export default function ReviewPage() {
         <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IN PLAIN ENGLISH</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-            {v2Explainability?.why_this_score || (isHighScorer ? ({
-              C1: `Your income survives most common disruptions — a slow quarter, a lost mid-tier client. But a ${record.risk_scenario_drop}-point stress test drop means a major hit (top client loss, industry shift) would still damage you.`,
-              C2: `Your income holds up under pressure. You have ${record.income_continuity_months} months of runway and no single-source dependency. The remaining gaps are specific, not structural.`,
-              D1: `Your income can absorb a lost client, an illness, or a market downturn without crisis. ${record.income_continuity_months}+ months of continuity. Focus on maintaining what you have built.`,
-              D2: `${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten you.`,
-            })[subTier] || `Your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : ({
-              A1: `If your main income source changed tomorrow, you have ${continuityDisplay} of runway. This leaves very little margin for unexpected disruptions.`,
-              A2: `Your income is active but structurally exposed. A lost client, a slow month, or 2 weeks off work could create significant financial pressure. You have ${continuityDisplay} of runway.`,
-              A3: `You have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change — a lost client, a contract pause — sets you back hard.`,
-              B1: `Your income is developing. You could absorb a minor hit, but losing your biggest client would drop your score by ${record.risk_scenario_drop} points. You are ${nextBandThreshold - score} points away from Established Stability. That gap is realistic to close.`,
-              B2: `You are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
-            })[subTier] || `Your income is developing. ${nextBandThreshold - score} points from the next band.`)}
+            {v2Explainability?.why_this_score || (() => {
+              const ctx = olFamilyLabel ? `As a ${olFamilyLabel.toLowerCase()}${olIndustryLabel ? ` in ${olIndustryLabel}` : ""}, ` : "";
+              return isHighScorer ? ({
+                C1: `${ctx}your income survives most common disruptions — a slow quarter, a lost mid-tier client. But a ${record.risk_scenario_drop}-point stress test drop means a major hit would still damage your structure.`,
+                C2: `${ctx}your income holds up under pressure. You have ${record.income_continuity_months} months of runway and no single-source dependency. The remaining gaps are specific, not structural.`,
+                D1: `${ctx}your income can absorb a lost client, an illness, or a market downturn without crisis. ${record.income_continuity_months}+ months of continuity. Focus on maintaining what you have built.`,
+                D2: `${ctx}${record.income_continuity_months}+ months of continuity, diversified sources, strong forward visibility. Very few scenarios threaten your structure.`,
+              })[subTier] || `${ctx}your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : ({
+                A1: `${ctx}if your main income source changed tomorrow, you have ${continuityDisplay} of runway. This leaves very little margin for unexpected disruptions.`,
+                A2: `${ctx}your income is active but structurally exposed. A lost client, a slow month, or 2 weeks off work could create significant financial pressure. You have ${continuityDisplay} of runway.`,
+                A3: `${ctx}you have a starting foundation, but a ${record.risk_scenario_drop}-point stress test drop means one unexpected change sets you back hard.`,
+                B1: `${ctx}your income is developing. You could absorb a minor hit, but losing your biggest source would drop your score by ${record.risk_scenario_drop} points. You are ${nextBandThreshold - score} points away from Established Stability. That gap is realistic to close.`,
+                B2: `${ctx}you are ${nextBandThreshold - score} points from the next band. Your income handles small bumps but a sustained disruption — 60+ days of reduced income — would create real pressure.`,
+              })[subTier] || `${ctx}your income is developing. ${nextBandThreshold - score} points from the next band.`;
+            })()}
           </p>
           {v2Explainability?.why_not_higher && (
             <p style={{ ...T.small, color: B.muted, margin: "8px 0 0", lineHeight: 1.55 }}>
@@ -1248,7 +1251,11 @@ export default function ReviewPage() {
           ))}
         </div>
         <p style={{ ...T.meta, color: B.muted, marginBottom: 16, fontStyle: "italic" }}>
-          {record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working. When this percentage requires your daily effort, any disruption to your ability to work directly impacts your income.` : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort. If you get sick, take a break, or lose momentum — that income stops.` : `${100 - record.active_income_level}% of your income continues without your daily effort. That is real structural protection.`}
+          {(olExplanations as Record<string, string> | null)?.high_labor_dependence && record.active_income_level >= 70
+            ? (olExplanations as Record<string, string>).high_labor_dependence
+            : record.active_income_level >= 80 ? `${record.active_income_level}% of your income disappears the moment you stop working.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, this level of labor dependence is the primary structural ceiling.` : ""}`
+            : record.active_income_level >= 50 ? `${record.active_income_level}% of your income requires your daily effort.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, reducing this is typically the path to the next band.` : ""}`
+            : `${100 - record.active_income_level}% of your income continues without your daily effort.${olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures, this level of persistence is a meaningful structural advantage.` : ""}`}
         </p>
 
         {/* Stress Test + Continuity cards */}
@@ -1408,13 +1415,13 @@ export default function ReviewPage() {
               const sevColor = severity === "SEVERE" ? B.bandLimited : severity === "HIGH" ? B.bandDeveloping : B.muted;
               return (
                 <div key={s.scenario_id} style={{ padding: "12px 0", borderBottom: `1px solid ${B.stone}` }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{ ...T.micro, color: sevColor, minWidth: 60 }}>{severity}</span>
+                  <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 4 : 0, marginBottom: 4 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ ...T.micro, color: sevColor, minWidth: mobile ? 50 : 60 }}>{severity}</span>
                       <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
                     </div>
-                    <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
-                      Your score would drop from {s.original_score} to <span style={{ color: B.bandLimited }}>{s.scenario_score}</span>
+                    <span style={{ ...T.small, color: B.navy, flexShrink: 0, paddingLeft: mobile ? 58 : 0 }}>
+                      {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span> <span style={{ color: B.muted }}>(−{s.score_drop})</span>
                     </span>
                   </div>
                   {/* Why this risk matters — narrative + outcome layer */}
@@ -1449,13 +1456,16 @@ export default function ReviewPage() {
               {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
             </div>
             <div style={{ ...T.meta, color: B.muted }}>
-              {({
-                brittle: "A single disruption — lost client, slow month — could cause a score collapse.",
-                thin: "Can absorb a minor hit (one slow month), but not two in a row.",
-                uneven: "Protected in some dimensions, exposed in others. Vulnerable to targeted disruption.",
-                supported: "Can absorb most common disruptions without band change.",
-                resilient: "Can absorb a major client loss or 90-day work stoppage.",
-              })[v2Fragility.fragility_class] ?? ""}
+              {v2Explainability?.fragility_explanation || ((() => {
+                const fCtx = olFamilyLabel ? ` For ${olFamilyLabel.toLowerCase()} structures${olIndustryLabel ? ` in ${olIndustryLabel}` : ""}, this is ` : "";
+                return ({
+                  brittle: `A single disruption — lost client, slow month — could cause a score collapse.${fCtx ? `${fCtx}a critical vulnerability.` : ""}`,
+                  thin: `Can absorb a minor hit, but not two in a row.${fCtx ? `${fCtx}a common pattern that limits growth.` : ""}`,
+                  uneven: `Protected in some dimensions, exposed in others.${fCtx ? `${fCtx}typical when one structural area is strong but others lag.` : ""}`,
+                  supported: `Can absorb most common disruptions without band change.${fCtx ? `${fCtx}above-average structural protection.` : ""}`,
+                  resilient: `Can absorb a major client loss or 90-day work stoppage.${fCtx ? `${fCtx}strong structural resilience.` : ""}`,
+                })[v2Fragility.fragility_class] ?? "";
+              })())}
             </div>
             {v2Fragility.primary_failure_mode && (
               <div style={{ ...T.meta, color: B.muted, marginTop: 4 }}>
@@ -1570,16 +1580,18 @@ export default function ReviewPage() {
                 tradeoff: (a as Record<string, string>).tradeoff ?? "",
               }))
             : (() => {
+                const fam = olFamilyLabel ? olFamilyLabel.toLowerCase() : structureDesc;
+                const ind = olIndustryLabel || industrySector;
                 const priorities = isHighScorer ? [
-                  { key: "forward_visibility", title: "Maintain forward revenue visibility", copy: "Review your committed revenue quarterly. Ensure at least 60% of next quarter's income is already locked in." },
-                  { key: "source_concentration", title: "Monitor client concentration", copy: "No single client should exceed 25% of revenue. Review your client mix monthly and diversify proactively." },
-                  { key: "labor_dependence", title: "Protect income continuity", copy: "Ensure your passive and repeatable income streams are growing, not shrinking. Review annually." },
-                  { key: "low_continuity", title: "Extend your runway", copy: "Your continuity window is your safety margin. Every quarter, ask: could I sustain 6 months without new business?" },
+                  { key: "forward_visibility", title: "Maintain forward revenue visibility", copy: `As a ${fam} in ${ind}, review your committed revenue quarterly. Ensure at least 60% of next quarter's income is already locked in.` },
+                  { key: "source_concentration", title: "Monitor client concentration", copy: `For ${fam} structures, no single client should exceed 25% of revenue. Review your client mix monthly and diversify proactively.` },
+                  { key: "labor_dependence", title: "Protect income continuity", copy: `As a ${fam}, ensure your passive and repeatable income streams are growing, not shrinking. Review annually.` },
+                  { key: "low_continuity", title: "Extend your runway", copy: `For ${fam} structures in ${ind}, your continuity window is your safety margin. Every quarter, ask: could I sustain 6 months without new business?` },
                 ] : [
-                  { key: "forward_visibility", title: "This week: start locking in future income", copy: `Reach out to your top 3 clients or prospects about converting to retainers, multi-month contracts, or advance commitments. Your forward visibility is your biggest gap right now.` },
-                  { key: "source_concentration", title: "This month: add a second meaningful income source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your biggest source disappears. Identify one new client, product, or revenue stream that could reach 10%+ of your income within 90 days.` },
-                  { key: "labor_dependence", title: "This quarter: build one income stream that doesn't need you daily", copy: `${record.active_income_level}% of your income requires your daily effort. Pick one service, product, or arrangement you can convert into recurring or passive revenue this quarter.` },
-                  { key: "low_continuity", title: "This quarter: extend how long income lasts without work", copy: `Your income would continue for about ${continuityDisplay} if you stopped. Build at least one stream that would keep producing for 3+ months independently.` },
+                  { key: "forward_visibility", title: "This week: start locking in future income", copy: `As a ${fam} in ${ind}, reach out to your top 3 clients or prospects about converting to retainers, multi-month contracts, or advance commitments. Your forward visibility is your biggest gap right now.` },
+                  { key: "source_concentration", title: "This month: add a second meaningful income source", copy: `Your stress test shows a ${record.risk_scenario_drop}-point drop if your biggest source disappears. For ${fam} structures, identify one new client, product, or revenue stream that could reach 10%+ of your income within 90 days.` },
+                  { key: "labor_dependence", title: "This quarter: build one income stream that doesn't need you daily", copy: `${record.active_income_level}% of your income requires your daily effort. As a ${fam} in ${ind}, pick one service, product, or arrangement you can convert into recurring or passive revenue this quarter.` },
+                  { key: "low_continuity", title: "This quarter: extend how long income lasts without work", copy: `Your income would continue for about ${continuityDisplay} if you stopped. For ${fam} structures, build at least one stream that would keep producing for 3+ months independently.` },
                 ];
                 const sorted = [
                   ...priorities.filter(p => p.key === dominantConstraint),
@@ -1726,38 +1738,12 @@ export default function ReviewPage() {
           <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
         </div>
 
-        {/* Suggested Language for Your Next Move — browser-only */}
+        {/* Reference to simulator for suggested language */}
         {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
-          <div className="no-print" style={{ marginBottom: 20 }}>
-            <SectionDivider />
-            <Overline large>Suggested Language for Your Next Move</Overline>
-            <p style={{ ...T.small, color: B.muted, marginBottom: 12 }}>
-              These drafts are based on the structural weaknesses identified in your report. Use them as starting points and adjust them to fit your voice and situation.
-            </p>
-            {v2ScriptTemplates.slice(0, 3).map((script) => {
-              const isExpanded = expandedScript === script.id;
-              return (
-                <div key={script.id} style={{ marginBottom: 8, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                  <button onClick={() => setExpandedScript(isExpanded ? null : script.id)} style={{ width: "100%", padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", border: "none", cursor: "pointer", backgroundColor: isExpanded ? "rgba(75,63,174,0.04)" : B.bone, transition: "background-color 150ms ease" }}>
-                    <div style={{ textAlign: "left" }}>
-                      <div style={{ ...T.sectionLabel, color: B.navy }}>{script.title}</div>
-                      <div style={{ ...T.meta, color: B.muted }}>{script.context}</div>
-                    </div>
-                    <span style={{ ...T.sectionLabel, color: B.purple, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 150ms ease" }}>▾</span>
-                  </button>
-                  {isExpanded && (
-                    <div style={{ padding: "16px 20px", backgroundColor: "#fff", borderTop: `1px solid ${B.stone}` }}>
-                      <pre style={{ ...T.small, color: B.navy, margin: 0, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "inherit" }}>{script.script}</pre>
-                      <button onClick={() => { navigator.clipboard.writeText(script.script); setScriptCopied(script.id); setTimeout(() => setScriptCopied(null), 2000); }} style={{ marginTop: 10, padding: "6px 14px", fontSize: 11, fontWeight: 600, color: scriptCopied === script.id ? B.teal : B.purple, borderRadius: 6, border: `1px solid ${scriptCopied === script.id ? B.teal : B.purple}`, cursor: "pointer", backgroundColor: scriptCopied === script.id ? "rgba(31,109,122,0.06)" : "rgba(75,63,174,0.04)", transition: "all 150ms ease" }}>
-                        {scriptCopied === script.id ? "Copied" : "Copy to clipboard"}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-            <p style={{ ...T.meta, color: B.taupe, marginTop: 8, fontStyle: "italic" }}>
-              These are optional starting drafts — not advice, guarantees, or one-size-fits-all scripts.
+          <div className="no-print" style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.purple}` }}>
+            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Suggested Language for Your Next Move</div>
+            <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+              Starting drafts based on your structural weaknesses are available in your Score Simulator — along with your interactive sliders and scenario modeling tools.
             </p>
           </div>
         )}
