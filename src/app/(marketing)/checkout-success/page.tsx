@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
+import { createMonitoringSession, getSessionByEmail } from "@/lib/monitoring";
 
 const B = {
   navy: "#0E1A2B",
@@ -86,6 +87,12 @@ function CheckoutSuccessContent() {
         }
         // Store current plan for future upgrade detection
         localStorage.setItem("rp_previous_plan", planKey);
+        // Auto-create monitoring session for annual buyers so they can sign in by email
+        if (plan === "monitoring" && customerEmail) {
+          if (!getSessionByEmail(customerEmail)) {
+            createMonitoringSession(customerEmail);
+          }
+        }
         setReady(true);
       })
       .catch(() => {
@@ -106,6 +113,11 @@ function CheckoutSuccessContent() {
           localStorage.removeItem("rp_record");
         }
         localStorage.setItem("rp_previous_plan", planKey);
+        if (plan === "monitoring" && customerEmail) {
+          if (!getSessionByEmail(customerEmail)) {
+            createMonitoringSession(customerEmail);
+          }
+        }
         setReady(true);
       });
   }, [plan, stripeSessionId, customerEmail]);
@@ -204,7 +216,7 @@ function CheckoutSuccessContent() {
         {/* CTA — user clicks when ready */}
         {ready ? (
           <Link
-            href={hasExistingRecord ? "/unlock" : plan === "monitoring" ? "/create-account" : "/diagnostic-portal"}
+            href={hasExistingRecord ? "/unlock" : "/diagnostic-portal"}
             style={{
               display: "inline-flex",
               alignItems: "center",

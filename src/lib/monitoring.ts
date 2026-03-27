@@ -75,6 +75,13 @@ export function getSessionByCode(code: string): MonitoringSession | null {
   return sessions.find((s) => s.access_code === code) ?? null;
 }
 
+/** Look up a session by email (localStorage) */
+export function getSessionByEmail(email: string): MonitoringSession | null {
+  const sessions = readSessions();
+  const normalized = email.trim().toLowerCase();
+  return sessions.find((s) => s.email.toLowerCase() === normalized) ?? null;
+}
+
 /** Check if a session has expired */
 export function isExpired(session: MonitoringSession): boolean {
   return new Date() > new Date(session.expires_at);

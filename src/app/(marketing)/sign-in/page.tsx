@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSessionByCode, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
+import { getSessionByEmail, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -76,21 +76,21 @@ export default function SignInPage() {
   const singleAnim = useInView();
   const noticeAnim = useInView();
 
-  const [accessCode, setAccessCode] = useState("");
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
   const [nextBtnHovered, setNextBtnHovered] = useState(false);
   const [session, setSession] = useState<MonitoringSession | null>(null);
 
   const handleLookup = () => {
-    const code = accessCode.trim().toUpperCase();
-    if (!code) {
-      setError("Please enter your access code.");
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@")) {
+      setError("Please enter a valid email address.");
       return;
     }
-    const found = getSessionByCode(code);
+    const found = getSessionByEmail(trimmed);
     if (!found) {
-      setError("Access code not found. Please check your code and try again.");
+      setError("No Stability Monitoring plan found for this email. Check your email or purchase a plan.");
       return;
     }
     if (isExpired(found)) {
@@ -113,7 +113,7 @@ export default function SignInPage() {
       "rp_purchase_session",
       JSON.stringify({
         plan_key: "annual_monitoring",
-        price_cents: 9900,
+        price_cents: 14900,
         currency: "USD",
         intended_assessment_count: 3,
         status: "paid",
@@ -138,7 +138,6 @@ export default function SignInPage() {
           paddingBottom: mobile ? 72 : 100,
         }}
       >
-        {/* Grain overlay */}
         <div
           style={{
             position: "absolute",
@@ -193,7 +192,7 @@ export default function SignInPage() {
               marginBottom: 20,
             }}
           >
-            RunPayway™ Monitoring Portal
+            RunPayway&#8482; Monitoring Portal
           </h1>
 
           <p
@@ -205,7 +204,7 @@ export default function SignInPage() {
               margin: "0 auto 8px",
             }}
           >
-            Income Stability Score™
+            Sign in with your email to access your Stability Monitoring dashboard.
           </p>
 
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
@@ -215,7 +214,7 @@ export default function SignInPage() {
       </section>
 
       {/* ============================================================ */}
-      {/*  Access code form / Dashboard                                */}
+      {/*  Email login / Dashboard                                     */}
       {/* ============================================================ */}
       <section
         style={{
@@ -246,7 +245,7 @@ export default function SignInPage() {
             }}
           >
             {!session ? (
-              /* ---- Access code entry form ---- */
+              /* ---- Email login form ---- */
               <>
                 <h2
                   style={{
@@ -257,17 +256,14 @@ export default function SignInPage() {
                     marginBottom: 12,
                   }}
                 >
-                  Access Monitoring Portal
+                  Sign In
                 </h2>
 
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
-                  This portal is available to Stability Monitoring subscribers.
-                </p>
                 <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
-                  Enter your access code to view your monitoring timeline and take your next assessment.
+                  Enter the email you used when you purchased Stability Monitoring.
                 </p>
 
-                {/* Access Code */}
+                {/* Email */}
                 <div style={{ marginBottom: 28 }}>
                   <label
                     style={{
@@ -280,13 +276,13 @@ export default function SignInPage() {
                       marginBottom: 8,
                     }}
                   >
-                    Access Code
+                    Email Address
                   </label>
                   <input
-                    type="text"
-                    value={accessCode}
-                    onChange={(e) => setAccessCode(e.target.value)}
-                    placeholder="RP-XXXX-XXXX"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
                     style={{
                       width: "100%",
                       height: 48,
@@ -294,13 +290,11 @@ export default function SignInPage() {
                       borderRadius: 10,
                       border: "1px solid rgba(14,26,43,0.12)",
                       background: B.sand,
-                      fontSize: 16,
-                      fontFamily: "monospace",
+                      fontSize: 15,
                       color: B.navy,
                       outline: "none",
                       transition: "border-color 180ms ease",
                       boxSizing: "border-box",
-                      letterSpacing: "0.04em",
                     }}
                     onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
                     onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
@@ -336,9 +330,9 @@ export default function SignInPage() {
                   Access Monitoring Portal
                 </button>
 
-                {/* Don't have an account */}
+                {/* Don't have a plan */}
                 <div style={{ textAlign: "center", marginTop: 20 }}>
-                  <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have an access code? </span>
+                  <span style={{ fontSize: 13, color: B.muted }}>Don&apos;t have a plan yet? </span>
                   <Link
                     href="/pricing"
                     style={{
@@ -359,8 +353,8 @@ export default function SignInPage() {
                 {/* Security line */}
                 <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                  <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
-                  <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
+                  <span style={{ fontSize: 12, color: B.light }}>Email-based authentication</span>
+                  <span style={{ fontSize: 12, color: B.light }}>No password required</span>
                 </div>
               </>
             ) : (
@@ -391,10 +385,6 @@ export default function SignInPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
                     <span style={{ fontSize: 13, color: B.muted }}>Plan Expires</span>
                     <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{expiresDate}</span>
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
-                    <span style={{ fontSize: 13, color: B.muted }}>Access Code</span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: B.navy, fontFamily: "monospace" }}>{session.access_code}</span>
                   </div>
                   <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: B.sand }}>
                     <span style={{ fontSize: 13, color: B.muted }}>Email</span>
@@ -450,10 +440,8 @@ export default function SignInPage() {
                         You have used all 3 assessments in this monitoring plan. Purchase a new plan to continue tracking your income stability.
                       </p>
                     </div>
-                    <a
-                      href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
-                      target="_top"
-                      rel="noopener noreferrer"
+                    <Link
+                      href="/pricing"
                       style={{
                         display: "block",
                         width: "100%",
@@ -474,7 +462,7 @@ export default function SignInPage() {
                       }}
                     >
                       Purchase New Monitoring Plan
-                    </a>
+                    </Link>
                   </>
                 ) : (
                   <button
@@ -501,10 +489,10 @@ export default function SignInPage() {
                   </button>
                 )}
 
-                {/* Back to code entry */}
+                {/* Sign out */}
                 <div style={{ textAlign: "center", marginTop: 16 }}>
                   <button
-                    onClick={() => { setSession(null); setAccessCode(""); setError(""); }}
+                    onClick={() => { setSession(null); setEmail(""); setError(""); }}
                     style={{
                       background: "none",
                       border: "none",
@@ -515,15 +503,15 @@ export default function SignInPage() {
                       padding: 0,
                     }}
                   >
-                    Use a different access code
+                    Sign in with a different email
                   </button>
                 </div>
 
                 {/* Security line */}
                 <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
                 <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                  <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
-                  <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
+                  <span style={{ fontSize: 12, color: B.light }}>Email-based authentication</span>
+                  <span style={{ fontSize: 12, color: B.light }}>No password required</span>
                 </div>
               </>
             )}
@@ -567,13 +555,13 @@ export default function SignInPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Single Assessment Customers
+              Diagnostic Report Customers
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              Single Assessment reports are generated immediately after completing the diagnostic and do not require an access code.
+              Diagnostic Report purchases are delivered immediately after completing the assessment. No login required.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 24 }}>
-              To generate a new assessment, simply purchase another diagnostic.
+              To generate a new report, simply purchase another diagnostic.
             </p>
             <a
               href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
@@ -605,7 +593,7 @@ export default function SignInPage() {
               }}
             >
               <span className="tick tick-white" />
-              <span className="cta-label">Get Assessment</span>
+              <span className="cta-label">Get Diagnostic Report</span>
               <span className="cta-arrow cta-arrow-white" />
             </a>
           </div>
@@ -625,13 +613,13 @@ export default function SignInPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-              Portal Access Notice
+              How It Works
             </div>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12 }}>
-              The RunPayway™ Monitoring Portal is designed for subscribers who are tracking structural income stability over time.
+              Stability Monitoring subscribers sign in with the email they used at checkout. No access codes or passwords needed.
             </p>
             <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75 }}>
-              Assessments issued through the portal are generated using fixed scoring criteria defined under Structural Stability Model RP-2.0.
+              Your dashboard shows remaining assessments, plan expiration, and past assessment history.
             </p>
           </div>
         </div>

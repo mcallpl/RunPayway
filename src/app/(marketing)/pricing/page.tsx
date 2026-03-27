@@ -50,6 +50,7 @@ const PAD = { desktop: 56, mobile: 24 };
 const MAX = 1100;
 const DF = "'DM Serif Display', Georgia, serif";
 const STRIPE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
+const STRIPE_ANNUAL = "https://buy.stripe.com/PLACEHOLDER_ANNUAL_149"; // TODO: Replace with $149 Stripe link
 
 /* ================================================================== */
 /* 1. HERO                                                              */
@@ -258,7 +259,7 @@ function PricingCards() {
               ))}
             </div>
 
-            <Link href="/sign-in" style={{
+            <a href={STRIPE_ANNUAL} style={{
               display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
               background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy,
               fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
@@ -267,7 +268,7 @@ function PricingCards() {
               transform: annualHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
               Start Stability Monitoring — $149
-            </Link>
+            </a>
             <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
               Includes login access to your Monitoring Portal.
             </p>
