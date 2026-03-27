@@ -95,20 +95,23 @@ function Slider({ label, value, min, max, step, unit, onChange, accent }: {
   const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
   const c = accent || BRAND.teal;
   return (
-    <div style={{ marginBottom: 28 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: T.text, letterSpacing: "-0.01em" }}>{label}</span>
-        <span style={{ fontSize: 15, fontWeight: 700, color: c, fontVariantNumeric: "tabular-nums" }}>{value}{unit}</span>
+    <div style={{ marginBottom: 32 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: T.text, letterSpacing: "-0.01em" }}>{label}</span>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 2 }}>
+          <span style={{ fontSize: 20, fontWeight: 700, color: c, fontVariantNumeric: "tabular-nums", fontFamily: DISPLAY }}>{value}</span>
+          <span style={{ fontSize: 12, fontWeight: 500, color: T.textMuted }}>{unit}</span>
+        </div>
       </div>
-      <div style={{ position: "relative", height: 28 }}>
-        <div style={{ position: "absolute", top: 12, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
-        <div style={{ position: "absolute", top: 12, left: 0, width: `${pct}%`, height: 4, background: `linear-gradient(90deg, ${c}88, ${c})`, borderRadius: 2 }} />
-        <div style={{ position: "absolute", top: 6, left: `${pct}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", backgroundColor: c, border: `3px solid ${T.text}`, boxShadow: `0 2px 8px rgba(0,0,0,0.2), 0 0 12px ${c}44` }} />
-        <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 28, opacity: 0, cursor: "pointer", margin: 0 }} />
+      <div style={{ position: "relative", height: 32 }}>
+        <div style={{ position: "absolute", top: 14, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
+        <div style={{ position: "absolute", top: 14, left: 0, width: `${pct}%`, height: 4, background: `linear-gradient(90deg, ${c}66, ${c})`, borderRadius: 2, boxShadow: `0 0 8px ${c}33` }} />
+        <div style={{ position: "absolute", top: 7, left: `${pct}%`, transform: "translateX(-50%)", width: 20, height: 20, borderRadius: "50%", backgroundColor: c, border: `3px solid ${T.text}`, boxShadow: `0 2px 10px rgba(0,0,0,0.25), 0 0 16px ${c}44`, transition: "box-shadow 200ms ease" }} />
+        <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 32, opacity: 0, cursor: "pointer", margin: 0 }} />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-        <span style={{ fontSize: 10, color: T.textFaint }}>{min}{unit}</span>
-        <span style={{ fontSize: 10, color: T.textFaint }}>{max}{unit}</span>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
+        <span style={{ fontSize: 11, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{min}{unit}</span>
+        <span style={{ fontSize: 11, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{max}{unit}</span>
       </div>
     </div>
   );
@@ -120,9 +123,9 @@ function Slider({ label, value, min, max, step, unit, onChange, accent }: {
 function SectionLabel({ children, color, sub }: { children: string; color?: string; sub?: string }) {
   const T = useTheme();
   return (
-    <div style={{ marginBottom: sub ? 8 : 16 }}>
-      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || BRAND.teal }}>{children}</div>
-      {sub && <p style={{ fontSize: 13, color: T.textSecondary, margin: "6px 0 0", lineHeight: 1.5 }}>{sub}</p>}
+    <div style={{ marginBottom: sub ? 12 : 20 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || BRAND.teal }}>{children}</div>
+      {sub && <p style={{ fontSize: 14, color: T.textSecondary, margin: "8px 0 0", lineHeight: 1.55 }}>{sub}</p>}
     </div>
   );
 }
@@ -136,13 +139,14 @@ function Card({ children, glow, style, className }: { children: React.ReactNode;
     <div className={className} style={{
       backgroundColor: T.surface,
       border: `1px solid ${T.border}`,
-      borderRadius: 12,
-      padding: "24px 28px",
+      borderRadius: 14,
+      padding: "28px 28px",
       position: "relative",
       overflow: "hidden",
+      backdropFilter: "blur(8px)",
       ...style,
     }}>
-      {glow && <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`, pointerEvents: "none" }} />}
+      {glow && <div style={{ position: "absolute", top: -60, right: -60, width: 160, height: 160, background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`, pointerEvents: "none" }} />}
       {children}
     </div>
   );
@@ -600,19 +604,21 @@ function SimulatorContent() {
       `}</style>
 
       {/* ══════════ HEADER — Proprietary branded ══════════ */}
-      <header style={{ borderBottom: `1px solid ${T.headerBorder}`, backdropFilter: "blur(16px)", backgroundColor: T.headerBg, position: "sticky", top: 0, zIndex: 50 }}>
+      <header style={{ borderBottom: `1px solid ${T.headerBorder}`, backdropFilter: "blur(20px) saturate(180%)", WebkitBackdropFilter: "blur(20px) saturate(180%)", backgroundColor: "rgba(7,15,25,0.85)", position: "sticky", top: 0, zIndex: 50 }}>
         {/* Accent bar */}
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple}, ${BRAND.teal})` }} />
-        <div style={{ padding: "12px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <Image src={logoWhite} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto" }} />
-            <div style={{ width: 1, height: 20, backgroundColor: T.border }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
-              <span style={{ fontSize: 9, color: T.textFaint, letterSpacing: "0.06em" }}>MODEL RP-2.0</span>
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple} 50%, ${BRAND.teal})` }} />
+        <div style={{ padding: "14px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <Image src={logoWhite} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.9 }} />
+            <div style={{ width: 1, height: 24, background: `linear-gradient(180deg, transparent, ${T.border}, transparent)` }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
+              <span style={{ fontSize: 9, color: T.textFaint, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>Model RP-2.0</span>
             </div>
           </div>
-          <span style={{ fontSize: 11, color: T.textMuted }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 12, color: T.textMuted, fontWeight: 500 }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
+          </div>
         </div>
       </header>
 
@@ -651,8 +657,8 @@ function SimulatorContent() {
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
         {/* Lifetime access banner */}
-        <div style={{ fontSize: 13, color: T.textMuted, textAlign: "center" as const, padding: 12, borderBottom: `1px solid ${T.borderSubtle}`, marginBottom: 24 }}>
-          This simulator is yours for life. Come back anytime your income changes.
+        <div style={{ fontSize: 12, color: T.textFaint, textAlign: "center" as const, padding: "14px 20px", borderBottom: `1px solid ${T.borderSubtle}`, marginBottom: 32, letterSpacing: "0.04em" }}>
+          Lifetime access &#183; Your structure, your scenarios &#183; Come back anytime
         </div>
 
         {/* ══════════ ORIENTATION STRIP ══════════ */}
@@ -674,13 +680,13 @@ function SimulatorContent() {
         )}
 
         {/* ══════════ SCORE HERO ══════════ */}
-        <div className="sim-score-hero" style={{ marginBottom: 32 }}>
+        <div className="sim-score-hero" style={{ marginBottom: 36 }}>
           {/* Headline */}
-          <div style={{ marginBottom: 28 }}>
-            <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: T.text, lineHeight: 1.1, letterSpacing: "-0.025em", margin: "0 0 8px" }}>
+          <div style={{ marginBottom: 32 }}>
+            <h1 style={{ fontSize: 36, fontFamily: DISPLAY, fontWeight: 400, color: T.text, lineHeight: 1.1, letterSpacing: "-0.03em", margin: "0 0 10px" }}>
               {isModified ? "Projected Impact" : "Your Income Structure"}
             </h1>
-            <p style={{ fontSize: 14, color: T.textSecondary, margin: 0, maxWidth: 520 }}>
+            <p style={{ fontSize: 15, color: T.textSecondary, margin: 0, maxWidth: 520, lineHeight: 1.55 }}>
               {isModified
                 ? "How this change reshapes your income stability score and structural position."
                 : "Select a scenario below to see how structural changes affect your score over time."}
@@ -688,43 +694,47 @@ function SimulatorContent() {
           </div>
 
           {/* Score triptych */}
-          <div className="sim-triptych" style={{ display: "flex", gap: 2, borderRadius: 12, overflow: "hidden" }}>
+          <div className="sim-triptych" style={{ display: "flex", gap: 1, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
             {/* Current */}
-            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted, marginBottom: 10 }}>CURRENT</div>
-              <div className="sim-score-num" style={{ fontSize: 42, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
-              <div style={{ fontSize: 11, color: bandColor(base.band), fontWeight: 600, marginTop: 8 }}>{base.band}</div>
+            <div style={{ flex: 1, background: T.surface, padding: "32px 24px", textAlign: "center", position: "relative" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>CURRENT SCORE</div>
+              <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
+              <div style={{ fontSize: 12, color: bandColor(base.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{base.band}</div>
             </div>
 
             {/* Simulated */}
             <div style={{
-              flex: 1, padding: "28px 24px", textAlign: "center",
+              flex: 1.2, padding: "32px 24px", textAlign: "center", position: "relative",
               background: isModified
-                ? delta > 0 ? "rgba(26,122,109,0.06)" : delta < 0 ? "rgba(220,74,74,0.04)" : T.surface
-                : T.surface,
+                ? delta > 0 ? "rgba(26,122,109,0.08)" : delta < 0 ? "rgba(220,74,74,0.06)" : T.surfaceRaised
+                : T.surfaceRaised,
+              borderRight: `1px solid ${T.borderSubtle}`,
+              borderLeft: `1px solid ${T.borderSubtle}`,
             }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted, marginBottom: 10 }}>
+              {isModified && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : BRAND.purple }} />}
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: isModified ? (delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textMuted) : T.textFaint, marginBottom: 14 }}>
                 {isModified ? "SIMULATED" : "BASELINE"}
               </div>
               <div className="sim-score-num" style={{
-                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
+                fontSize: 56, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: isModified ? (delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.text) : T.text,
+                textShadow: isModified && delta !== 0 ? `0 0 24px ${delta > 0 ? BRAND.teal : BRAND.bandLimited}33` : "none",
               }}>
                 {sim.overall_score}
               </div>
-              <div style={{ fontSize: 11, color: bandColor(sim.band), fontWeight: 600, marginTop: 8 }}>{sim.band}</div>
+              <div style={{ fontSize: 12, color: bandColor(sim.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{sim.band}</div>
             </div>
 
             {/* Impact */}
-            <div style={{ flex: 1, background: T.surface, padding: "28px 24px", textAlign: "center" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: T.textMuted, marginBottom: 10 }}>IMPACT</div>
+            <div style={{ flex: 1, background: T.surface, padding: "32px 24px", textAlign: "center" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>IMPACT</div>
               <div className="sim-score-num" style={{
-                fontSize: 42, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
+                fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
                 color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint,
               }}>
                 {delta > 0 ? `+${delta}` : delta === 0 ? "\u2014" : String(delta)}
               </div>
-              <div style={{ fontSize: 11, color: T.textMuted, marginTop: 8 }}>{runway} day{runway !== 1 ? "s" : ""} runway</div>
+              <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>{runway} day{runway !== 1 ? "s" : ""} runway</div>
             </div>
           </div>
         </div>
@@ -794,21 +804,28 @@ function SimulatorContent() {
         )}
 
         {/* ══════════ MODE TOGGLE ══════════ */}
-        <div className="sim-mode-toggle" style={{ display: "flex", gap: 2, marginBottom: 28, borderRadius: 10, overflow: "hidden", border: `1px solid ${T.border}` }}>
-          {(["presets", "advanced"] as const).map((mode) => (
-            <button key={mode} onClick={() => {
-              setSimMode(mode);
-              if (mode === "presets") setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct });
-              else setSimPreset(null);
-            }} style={{
-              flex: 1, padding: "14px 16px", fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer", transition: "all 200ms",
-              backgroundColor: simMode === mode ? (mode === "presets" ? BRAND.tealGlow : BRAND.purpleGlow) : "transparent",
-              color: simMode === mode ? (mode === "presets" ? BRAND.teal : BRAND.purple) : T.textMuted,
-              borderBottom: simMode === mode ? `2px solid ${mode === "presets" ? BRAND.teal : BRAND.purple}` : "2px solid transparent",
-            }}>
-              {mode === "presets" ? "Quick Scenarios" : "Build Your Own"}
-            </button>
-          ))}
+        <div className="sim-mode-toggle" style={{ display: "flex", gap: 0, marginBottom: 32, borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}`, background: T.surface }}>
+          {(["presets", "advanced"] as const).map((mode) => {
+            const active = simMode === mode;
+            const color = mode === "presets" ? BRAND.teal : BRAND.purple;
+            return (
+              <button key={mode} onClick={() => {
+                setSimMode(mode);
+                if (mode === "presets") setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct });
+                else setSimPreset(null);
+              }} style={{
+                flex: 1, padding: "16px 20px", fontSize: 13, fontWeight: 600, letterSpacing: "0.02em",
+                border: "none", cursor: "pointer", transition: "all 250ms ease",
+                backgroundColor: active ? `${color}15` : "transparent",
+                color: active ? color : T.textMuted,
+                borderBottom: active ? `2px solid ${color}` : "2px solid transparent",
+                position: "relative",
+              }}>
+                {active && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: color }} />}
+                {mode === "presets" ? "Quick Scenarios" : "Build Your Own"}
+              </button>
+            );
+          })}
         </div>
 
         {/* ══════════ PRESETS ══════════ */}
@@ -825,17 +842,19 @@ function SimulatorContent() {
                 const isNeg = previewDelta < 0;
                 return (
                   <button key={preset.id} onClick={() => setSimPreset(ia ? null : preset.id)} style={{
-                    padding: "16px 18px", textAlign: "left", borderRadius: 10, cursor: "pointer", transition: "all 200ms",
+                    padding: "20px 20px", textAlign: "left", borderRadius: 12, cursor: "pointer", transition: "all 250ms ease",
                     border: `1px solid ${ia ? (isNeg ? BRAND.bandLimited : BRAND.purple) + "44" : T.border}`,
-                    backgroundColor: ia ? (isNeg ? "rgba(220,74,74,0.06)" : BRAND.purpleGlow) : T.surface,
+                    backgroundColor: ia ? (isNeg ? "rgba(220,74,74,0.08)" : "rgba(75,63,174,0.10)") : T.surface,
+                    transform: ia ? "scale(1.02)" : "scale(1)",
+                    boxShadow: ia ? `0 4px 20px ${isNeg ? "rgba(220,74,74,0.12)" : "rgba(75,63,174,0.15)"}` : "none",
                   }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: ia ? T.text : T.textSecondary }}>{preset.label}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: previewDelta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: ia ? T.text : T.textSecondary }}>{preset.label}</span>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: previewDelta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums", fontFamily: DISPLAY }}>
                         {fmt(previewDelta)}
                       </span>
                     </div>
-                    <p style={{ fontSize: 11, color: T.textMuted, margin: 0, lineHeight: 1.4 }}>{preset.description}</p>
+                    <p style={{ fontSize: 12, color: T.textMuted, margin: 0, lineHeight: 1.5 }}>{preset.description}</p>
                   </button>
                 );
               })}
@@ -1162,9 +1181,9 @@ function SimulatorContent() {
       )}
 
       {/* ══════════ FOOTER ══════════ */}
-      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "16px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 10, color: T.textFaint }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
-        <span style={{ fontSize: 10, color: T.textFaint }}>Deterministic &middot; Fixed Rules &middot; No AI</span>
+      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "20px 28px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
+        <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Deterministic &middot; Fixed Rules &middot; Versioned</span>
       </footer>
     </div>
     </ThemeCtx.Provider>
