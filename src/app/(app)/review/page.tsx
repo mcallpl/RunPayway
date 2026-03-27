@@ -1055,7 +1055,7 @@ export default function ReviewPage() {
           <div style={{ width: mobile ? "80%" : "60%", height: 1, backgroundColor: B.stone, marginBottom: mobile ? 20 : 32 }} />
 
           <div style={{ ...T.pageTitle, fontSize: mobile ? 22 : 28, marginBottom: 4 }}>Income Stability Report</div>
-          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24 }}>See where your income stands. Then see what to do next.</div>
+          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 24 }}>Structural assessment of how your income holds up under disruption, concentration, and interruption.</div>
 
           <div style={{ fontSize: mobile ? 18 : 24, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
           <div style={{ ...T.meta, color: B.muted, marginBottom: mobile ? 20 : 32 }}>{formalDate}</div>
