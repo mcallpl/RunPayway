@@ -359,7 +359,7 @@ function QRCodeImage({ recordId, authCode, score, band, date, model }: { recordI
   }, [recordId, authCode, score, band]);
 
   return (
-    <a href={simUrl} style={{ display: "block", cursor: "pointer" }} title="Open Score Simulator">
+    <a href={simUrl} style={{ display: "block", cursor: "pointer" }} title="Open RunPayway&#8482; Stability Simulator">
       <canvas ref={canvasRef} width={140} height={140} style={{ width: 80, height: 80 }} />
     </a>
   );
@@ -1764,7 +1764,7 @@ export default function ReviewPage() {
           <div className="no-print" style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.purple}` }}>
             <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Suggested Language for Your Next Move</div>
             <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-              Starting drafts based on your structural weaknesses are available in your Score Simulator — along with your interactive sliders and scenario modeling tools.
+              Starting drafts based on your structural weaknesses are available in your RunPayway&#8482; Stability Simulator — along with your interactive sliders and scenario modeling tools.
             </p>
           </div>
         )}

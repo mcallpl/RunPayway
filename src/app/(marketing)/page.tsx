@@ -834,7 +834,7 @@ function SimulatorShowcase({ visible, mobile }: { visible: boolean; mobile: bool
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal }}>
-          Score Simulator&#8482;
+          RunPayway&#8482; Stability Simulator
         </div>
         <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Lifetime access</div>
       </div>

@@ -185,7 +185,7 @@ function PricingCards() {
                 { text: "Tradeoff analysis for each move" },
                 { text: "Week-by-week execution roadmap" },
                 { text: "Assessment confidence and durability grade" },
-                { text: "Lifetime access to Score Simulator" },
+                { text: "Lifetime access to RunPayway&#8482; Stability Simulator" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
@@ -391,7 +391,7 @@ function Faq() {
 
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, a consequence sentence showing what your structure can absorb, and the single biggest structural factor limiting your score. No payment required." },
-    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the Score Simulator." },
+    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the RunPayway&#8482; Stability Simulator." },
     { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a complete 5-page diagnostic report. You sign in with your email anytime to take your next assessment or review your history. It\u2019s $149/year \u2014 saving $58 compared to purchasing three reports individually." },
     { q: "How is the score calculated?", a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },

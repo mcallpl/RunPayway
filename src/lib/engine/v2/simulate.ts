@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// RUNPAYWAY™ — Client-Safe Score Simulator
+// RUNPAYWAY™ — Client-Safe Stability Simulator
 // Pure functions for real-time "what-if" scoring in the browser.
 // No Node.js dependencies — safe for "use client" components.
 // ═══════════════════════════════════════════════════════════════

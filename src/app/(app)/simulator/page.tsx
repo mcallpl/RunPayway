@@ -502,7 +502,7 @@ function SimulatorContent() {
           <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg, ${BRAND.purple}22, ${BRAND.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", border: "1px solid rgba(244,241,234,0.08)" }}>
             <span style={{ fontSize: 20 }}>&#9672;</span>
           </div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>Score Simulator</div>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Simulator</div>
           <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 16 }}>
             This tool is included<br />with your report.
           </h1>
@@ -623,7 +623,7 @@ function SimulatorContent() {
             <Image src={logoWhite} alt="RunPayway&#8482;" width={140} height={16} style={{ height: "auto", opacity: 0.95 }} />
             <div style={{ width: 1, height: 28, background: `linear-gradient(180deg, transparent 0%, rgba(232,229,221,0.15) 50%, transparent 100%)` }} />
             <div>
-              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
+              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>RunPayway&#8482; RunPayway&#8482; Stability Simulator</span>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>

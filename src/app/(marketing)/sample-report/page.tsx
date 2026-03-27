@@ -334,7 +334,7 @@ function SimulatorPreview() {
     <section ref={ref} style={{ backgroundColor: B.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Score Simulator&#8482;</div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>RunPayway&#8482; RunPayway&#8482; Stability Simulator</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 8 }}>
             Model scenarios against your actual data.
           </h2>
@@ -379,7 +379,7 @@ function WhatsIncluded() {
     { cat: "Diagnosis", features: ["Score with plain-English interpretation", "Structural indicators with cross-factor effects", "Income composition breakdown", "Stress test with exact score drop", "Fragility classification"] },
     { cat: "Risks", features: ["Ranked risk scenarios by severity", "Predictive warnings", "Behavioral patterns to watch", "Band shift alerts"] },
     { cat: "Action", features: ["Prioritized actions with projected impact", "Tradeoff analysis for each move", "Week-by-week execution roadmap", "Reassessment triggers"] },
-    { cat: "Tools", features: ["Interactive Score Simulator (lifetime)", "Suggested language for your next move", "Structural context for your income model", "Assessment confidence and durability grade"] },
+    { cat: "Tools", features: ["Interactive RunPayway&#8482; Stability Simulator (lifetime)", "Suggested language for your next move", "Structural context for your income model", "Assessment confidence and durability grade"] },
   ];
 
   return (

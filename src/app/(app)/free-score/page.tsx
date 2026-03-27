@@ -156,7 +156,7 @@ export default function FreeScorePage() {
   };
 
   const features = [
-    { title: "Interactive Score Simulator", desc: "Model scenarios in real time — add a client, lose your top source, convert to retainers. See the score change instantly." },
+    { title: "Interactive RunPayway&#8482; Stability Simulator", desc: "Model scenarios in real time — add a client, lose your top source, convert to retainers. See the score change instantly." },
     { title: "Income Runway Calculator", desc: "How many days your income lasts if you stop working today — and exactly what to change to reach 90 days." },
     { title: "Suggested Language for Your Next Move", desc: "Starting drafts for retainer pitches, client outreach, and advisor conversations — based on your structure." },
     { title: "Risk Scenarios", desc: "What happens if your biggest client leaves? If you cannot work for 90 days? Each scenario scored with exact drops." },
