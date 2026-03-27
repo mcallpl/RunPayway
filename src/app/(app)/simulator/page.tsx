@@ -421,7 +421,6 @@ function SimulatorContent() {
   const [scriptTemplates, setScriptTemplates] = useState<Array<{ id: string; title: string; context: string; script: string }>>([]);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
-  const [pressureMap, setPressureMap] = useState<{ pressure: string; tailwind: string; leverage_move: string; generated_at: string; industry: string; operating_structure: string; income_model: string } | null>(null);
 
   useEffect(() => {
     const p = searchParams.get("p");
@@ -449,14 +448,6 @@ function SimulatorContent() {
         const scripts = getScriptsForSector(rawInd);
         if (scripts.length > 0) setScriptTemplates(scripts);
       }
-      // Load PressureMap from sessionStorage record if available
-      try {
-        const storedRec = sessionStorage.getItem("rp_record");
-        if (storedRec) {
-          const rec = JSON.parse(storedRec);
-          if (rec.pressure_map) setPressureMap(rec.pressure_map);
-        }
-      } catch { /* ignore */ }
       setLoaded(true);
       return;
     }
@@ -482,10 +473,6 @@ function SimulatorContent() {
             setScriptTemplates(industryScripts);
           } else if (v2.script_templates && Array.isArray(v2.script_templates)) {
             setScriptTemplates(v2.script_templates.slice(0, 3));
-          }
-          // Load PressureMap™ if available
-          if (record.pressure_map) {
-            setPressureMap(record.pressure_map);
           }
           setLoaded(true);
         }
@@ -1077,39 +1064,6 @@ function SimulatorContent() {
 
       </div>
 
-      {/* ══════════ PRESSUREMAP™ ══════════ */}
-      {pressureMap && (
-        <div style={{ padding: "40px 36px", borderTop: `1px solid ${T.border}` }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32 }}>
-            <div>
-              <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 6 }}>PressureMap&#8482;</div>
-              <div style={{ fontSize: 16, color: T.textSecondary, fontWeight: 500, lineHeight: 1.4 }}>Real-time structural intelligence for {pressureMap.industry}</div>
-            </div>
-            <div style={{ fontSize: 12, color: T.textFaint, whiteSpace: "nowrap" as const, marginTop: 4 }}>{new Date(pressureMap.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</div>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
-            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(220,74,74,0.06)", border: "1px solid rgba(220,74,74,0.15)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#DC4A4A", marginBottom: 12 }}>What&apos;s Pressuring Your Structure</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.pressure}</p>
-            </div>
-
-            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(26,122,109,0.06)", border: "1px solid rgba(26,122,109,0.15)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 12 }}>What&apos;s Structurally Favorable</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.tailwind}</p>
-            </div>
-
-            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(75,63,174,0.06)", border: "1px solid rgba(75,63,174,0.15)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 12 }}>Highest-Leverage Move Right Now</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.leverage_move}</p>
-            </div>
-          </div>
-
-          <p style={{ fontSize: 12, color: T.textFaint, marginTop: 24, fontStyle: "italic", letterSpacing: "0.01em" }}>
-            PressureMap&#8482; is contextual intelligence — it does not affect your score.
-          </p>
-        </div>
-      )}
 
       {/* ══════════ READY-TO-USE ACTION SCRIPTS ══════════ */}
       {scriptTemplates.length > 0 && (

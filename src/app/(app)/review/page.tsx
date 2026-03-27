@@ -1088,9 +1088,10 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
 
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
+        {/* ── 1. STATE THE SCORE ── */}
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
           <div style={{ ...T.overline, color: B.teal, marginBottom: 16, letterSpacing: "0.14em" }}>INCOME STABILITY ASSESSMENT</div>
-          <h1 style={{ ...T.pageTitle, marginBottom: 8, fontSize: 28 }}>{record.assessment_title || "Assessment"}</h1>
+          <h1 style={{ ...T.pageTitle, marginBottom: 4, fontSize: 28 }}>{record.assessment_title || "Assessment"}</h1>
           <div style={{ ...T.meta, color: B.taupe, marginBottom: 24 }}>
             {issuedDate} &middot; Model RP-2.0
           </div>
@@ -1103,42 +1104,26 @@ export default function ReviewPage() {
             <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ ...T.classification, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {nextBandName && <div style={{ ...T.meta, color: B.muted, marginTop: 6 }}>{distanceToNext} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ ...T.meta, color: B.muted, marginTop: 6 }}>{distanceToNext} points from {nextBandName} Stability</div>}
         </div>
 
-        <p style={{ fontSize: 15, color: B.muted, maxWidth: 480, marginBottom: 20, lineHeight: 1.6 }}>{p1Summary[tier]}</p>
-
-        {/* Band scale */}
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>WHAT YOUR SCORE MEANS</div>
-          <div style={{ display: "flex", gap: 2, height: 8, marginBottom: 8 }}>
-            {[
-              { w: 30, color: B.bandLimited },
-              { w: 20, color: B.bandDeveloping },
-              { w: 25, color: B.bandEstablished },
-              { w: 25, color: B.bandHigh },
-            ].map((seg, i) => (
-              <div key={i} style={{ width: `${seg.w}%`, backgroundColor: seg.color, borderRadius: i === 0 ? "3px 0 0 3px" : i === 3 ? "0 3px 3px 0" : 0, opacity: (tier === "limited" && i === 0) || (tier === "developing" && i === 1) || (tier === "established" && i === 2) || (tier === "high" && i === 3) ? 1 : 0.25 }} />
-            ))}
-          </div>
-          <div style={{ display: mobile ? "grid" : "flex", gridTemplateColumns: "1fr 1fr", gap: mobile ? 8 : 2 }}>
-            {[
-              { range: "0–29", label: "Limited", desc: "Your income is highly vulnerable to disruption", color: B.bandLimited, tier: "limited" as const },
-              { range: "30–49", label: "Developing", desc: "Some protection exists, but significant gaps still remain", color: B.bandDeveloping, tier: "developing" as const },
-              { range: "50–74", label: "Established", desc: "Your income has meaningful structural protection", color: B.bandEstablished, tier: "established" as const },
-              { range: "75–100", label: "High", desc: "Your income is well-protected against most disruptions", color: B.bandHigh, tier: "high" as const },
-            ].map((band) => (
-              <div key={band.range} style={{ flex: mobile ? undefined : 1, opacity: tier === band.tier ? 1 : 0.5 }}>
-                <div style={{ ...T.micro, color: band.color, fontWeight: tier === band.tier ? 700 : 500 }}>{band.range}</div>
-                <div style={{ ...T.meta, color: tier === band.tier ? B.navy : B.taupe, fontWeight: tier === band.tier ? 600 : 400 }}>{band.label}</div>
-                {tier === band.tier && <div style={{ ...T.meta, color: B.taupe, fontWeight: 400, lineHeight: 1.4, marginTop: 2 }}>{band.desc}</div>}
-              </div>
-            ))}
-          </div>
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 6, fontStyle: "italic" }}>Scores reflect structural patterns, not exact measurements. Very small score differences should be interpreted with caution.</div>
+        {/* ── 2. KILLER DIAGNOSTIC SENTENCE ── */}
+        <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: mobile ? "16px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
+            {(() => {
+              if (tier === "high") return "Your income is not invulnerable. But it is built to absorb a hit without forcing a crisis. That is rare.";
+              if (tier === "established") return "Your income is not fragile. But it still depends on a narrow set of conditions staying exactly as they are.";
+              if (dominantConstraint === "labor_dependence") return "Your income is not weak because you earn too little. It is weak because too much of it stops when your daily effort stops.";
+              if (dominantConstraint === "source_concentration") return "Your income is not weak because it is small. It is weak because too much of it depends on one source continuing to pay.";
+              if (dominantConstraint === "forward_visibility") return "Your income is not unstable because you lack skill. It is unstable because you cannot see far enough ahead to plan around a disruption.";
+              if (dominantConstraint === "low_continuity") return "Your income is not insecure because of what you earn. It is insecure because almost none of it would continue if you had to stop working tomorrow.";
+              if (dominantConstraint === "few_sources") return "Your income is not at risk because of how much you earn. It is at risk because losing any one source would change everything.";
+              return "Your income has structural weaknesses that are not visible in your day-to-day earnings. This report makes them visible.";
+            })()}
+          </p>
         </div>
 
-        {/* What this score means — engine-generated or template */}
+        {/* ── 3. IN PLAIN ENGLISH — WHY THE SCORE IS WHERE IT IS ── */}
         <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>IN PLAIN ENGLISH</div>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
@@ -1165,18 +1150,21 @@ export default function ReviewPage() {
           )}
         </div>
 
-        {/* Single key insight — structured vulnerability block */}
+        {/* ── 4. BIGGEST THING HOLDING IT DOWN ── */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `3px solid ${B.purple}`, borderRadius: 4, padding: "16px 20px", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 12 }}>PRIMARY STRUCTURAL CONSTRAINT</div>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>THE SINGLE BIGGEST THING HOLDING YOUR SCORE DOWN</div>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.6 }}>
+            {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "A structural weakness is limiting your score."}
+          </p>
           <div style={{ display: "flex", gap: 24, flexWrap: "wrap" as const }}>
             <div style={{ flex: 1, minWidth: 180 }}>
-              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Fastest score gain</div>
+              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>What to change first</div>
               <div style={{ ...T.body, color: B.navy, margin: 0 }}>
                 {v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`)}
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 140 }}>
-              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Projected impact</div>
+              <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>What that would do</div>
               <div style={{ ...T.body, color: B.navy, margin: 0 }}>
                 {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
               </div>
@@ -1184,58 +1172,60 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* Score trend — shown only if previous assessments exist */}
-        {(() => {
-          try {
-            const allRecords = JSON.parse(localStorage.getItem("rp_records") || "[]") as Array<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string }>;
-            const previous = allRecords.filter(r => r.record_id !== record.record_id && typeof r.final_score === "number").sort((a, b) => (b.assessment_date_utc || "").localeCompare(a.assessment_date_utc || ""));
-            if (previous.length === 0) return null;
-            const last = previous[0];
-            const diff = record.final_score - last.final_score;
-            return (
-              <div style={{ ...cardStyle, marginBottom: 12 }}>
-                <div style={{ ...T.overline, color: B.teal, marginBottom: 6 }}>SCORE TREND</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                  <span style={{ ...T.sectionLabel, color: B.navy }}>{last.final_score}</span>
-                  <span style={{ ...T.meta, color: B.taupe }}>→</span>
-                  <span style={{ ...T.sectionLabel, color: B.navy }}>{record.final_score}</span>
-                  <span style={{ ...T.small, fontWeight: 600, color: diff > 0 ? B.teal : diff < 0 ? B.bandLimited : B.muted }}>{diff > 0 ? `+${diff}` : diff === 0 ? "no change" : String(diff)} points</span>
-                </div>
-                <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0" }}>Compared with your previous assessment{last.assessment_date_utc ? ` from ${last.assessment_date_utc.split("T")[0]}` : ""}.</p>
-              </div>
-            );
-          } catch { return null; }
-        })()}
-
-        {/* PressureMap™ — Real-time structural intelligence */}
-        {record.pressure_map && (
-          <div style={{ ...cardStyle, marginTop: 16, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-              <Overline>PressureMap&#8482;</Overline>
-              <span style={{ ...T.meta, color: B.taupe, fontStyle: "italic" }}>Generated {new Date(record.pressure_map.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+        {/* ── 5. HOW FAR FROM STRONGER STABILITY ── */}
+        {nextBandName && (
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW FAR FROM STRONGER STABILITY</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{distanceToNext}</span>
+              <span style={{ ...T.body, color: B.navy }}>points to {nextBandName} Stability</span>
             </div>
-            <p style={{ ...T.small, color: B.muted, lineHeight: 1.55, marginBottom: 4, fontStyle: "italic" }}>
-              Real-time structural intelligence for {record.pressure_map.industry} — {record.pressure_map.operating_structure}, {record.pressure_map.income_model}.
+            <div style={{ display: "flex", gap: 2, height: 6, marginBottom: 8 }}>
+              <div style={{ width: `${score}%`, backgroundColor: bandColor, borderRadius: "3px 0 0 3px" }} />
+              <div style={{ width: `${distanceToNext}%`, backgroundColor: B.stone, borderRadius: "0 3px 3px 0" }} />
+            </div>
+            <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+              {bandDistance === "CLOSE" ? "You are close. One structural change could move you into the next band."
+                : bandDistance === "MODERATE" ? "This gap is closeable. The constraint above is the fastest path."
+                : "This will take more than one change — but the constraint above is where to start."}
             </p>
+          </div>
+        )}
+        {tier === "high" && (
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>STABILITY POSITION</div>
+            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.6 }}>You are in the highest stability band. The remaining pages show what is working, what could still improve, and how to maintain this position.</p>
+          </div>
+        )}
 
-            <div style={{ marginTop: 16 }}>
-              <div style={{ ...T.overline, color: "#DC4A4A", marginBottom: 6, fontSize: 10 }}>WHAT&#8217;S PRESSURING YOUR STRUCTURE</div>
-              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: "0 0 16px" }}>{record.pressure_map.pressure}</p>
+        {/* ── PRESSUREMAP™ — YOUR STRUCTURE + CURRENT CONDITIONS ── */}
+        {record.pressure_map && (
+          <div style={{ ...cardStyle, marginTop: 4, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
+            <div style={{ marginBottom: 12 }}>
+              <Overline>PressureMap&#8482;</Overline>
+              <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.4 }}>
+                Your structure as a {record.pressure_map.operating_structure?.toLowerCase()}{record.pressure_map.income_model ? ` earning through ${record.pressure_map.income_model.toLowerCase()}` : ""}{record.pressure_map.industry ? ` in ${record.pressure_map.industry}` : ""} — matched against current conditions.
+              </p>
+            </div>
+
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ ...T.overline, color: "#DC4A4A", marginBottom: 4, fontSize: 10 }}>WHAT IS MOST LIKELY TO DISRUPT YOU RIGHT NOW</div>
+              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.pressure}</p>
+            </div>
+
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ ...T.overline, color: B.teal, marginBottom: 4, fontSize: 10 }}>WHAT IS WORKING IN YOUR FAVOR</div>
+              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.tailwind}</p>
             </div>
 
             <div>
-              <div style={{ ...T.overline, color: B.teal, marginBottom: 6, fontSize: 10 }}>WHAT&#8217;S STRUCTURALLY FAVORABLE</div>
-              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: "0 0 16px" }}>{record.pressure_map.tailwind}</p>
-            </div>
-
-            <div>
-              <div style={{ ...T.overline, color: B.purple, marginBottom: 6, fontSize: 10 }}>HIGHEST-LEVERAGE MOVE RIGHT NOW</div>
+              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 10 }}>HIGHEST-LEVERAGE MOVE RIGHT NOW</div>
               <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0 }}>{record.pressure_map.leverage_move}</p>
             </div>
 
-            <div style={{ marginTop: 14, paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
-              <p style={{ ...T.meta, color: B.taupe, margin: 0, fontStyle: "italic", lineHeight: 1.5 }}>
-                PressureMap&#8482; is contextual intelligence — it does not affect your score. Generated using current market conditions applied to your structural profile.
+            <div style={{ marginTop: 12, paddingTop: 8, borderTop: `1px solid ${B.stone}` }}>
+              <p style={{ ...T.meta, color: B.taupe, margin: 0, fontStyle: "italic", lineHeight: 1.4 }}>
+                PressureMap&#8482; reflects current conditions applied to your structural profile. It does not affect your score.
               </p>
             </div>
           </div>
