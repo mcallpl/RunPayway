@@ -49,8 +49,8 @@ const SY = { desktop: 120, mobile: 72 };
 const PAD = { desktop: 56, mobile: 24 };
 const MAX = 1100;
 const DF = "'DM Serif Display', Georgia, serif";
-const STRIPE = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
-const STRIPE_ANNUAL = "https://buy.stripe.com/PLACEHOLDER_ANNUAL_149"; // TODO: Replace with $149 Stripe link
+const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
+const STRIPE_ANNUAL = "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
 
 /* ================================================================== */
 /* 1. HERO                                                              */

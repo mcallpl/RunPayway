@@ -62,7 +62,7 @@ const SP = {
   gap: 16,
 };
 
-const STRIPE_FULL_REPORT = "https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04";
+const STRIPE_FULL_REPORT = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 
 /* ------------------------------------------------------------------ */
 /*  Testimonial data (placeholder — replace with real quotes)          */

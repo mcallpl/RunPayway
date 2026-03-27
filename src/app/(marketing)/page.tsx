@@ -1466,7 +1466,7 @@ function PricingSection() {
               Full report &#183; Score simulator &#183; Action plan &#183; Suggested language
             </p>
             <a
-              href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
               className="inline-flex items-center justify-center font-semibold"
               style={{
                 width: "100%",

@@ -564,7 +564,7 @@ export default function SignInPage() {
               To generate a new report, simply purchase another diagnostic.
             </p>
             <a
-              href="https://buy.stripe.com/7sY8wHeNid726Bs8YV2Nq04"
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
               target="_top"
               rel="noopener noreferrer"
               className="cta-tick inline-flex items-center justify-center font-semibold"
