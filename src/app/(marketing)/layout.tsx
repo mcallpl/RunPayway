@@ -446,6 +446,19 @@ export default function MarketingLayout({
               </nav>
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
+                <Link
+                  href="/sign-in"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: scrolled ? B.navy : "#FFFFFF",
+                    textDecoration: "none",
+                    transition: "color 300ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Sign In
+                </Link>
                 <LanguageSelector mobile={false} />
                 <Link
                   href="/pricing"
@@ -596,6 +609,27 @@ export default function MarketingLayout({
                   {link.label}
                 </Link>
               ))}
+              <Link
+                key="sign-in"
+                href="/sign-in"
+                className="mobile-nav-item"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  fontSize: 17,
+                  fontWeight: 600,
+                  color: "#4B3FAE",
+                  padding: "18px 0",
+                  textDecoration: "none",
+                  borderBottom: "1px solid rgba(14,26,43,0.06)",
+                  display: "flex",
+                  alignItems: "center",
+                  transition: "color 200ms ease, padding-left 200ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+                onTouchStart={(e) => { e.currentTarget.style.paddingLeft = "8px"; }}
+                onTouchEnd={(e) => { e.currentTarget.style.paddingLeft = "0px"; }}
+              >
+                Sign In
+              </Link>
             </nav>
             <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
               <Link
@@ -686,6 +720,7 @@ export default function MarketingLayout({
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/verify", label: t.nav.verifyAScore },
                   { href: "/pricing", label: t.nav.pricing },
+                  { href: "/sign-in", label: "Sign In" },
                   { href: "/coming-soon", label: "Coming Soon" },
                   { href: "/faq", label: t.nav.faq },
                 ].map((link) => (
