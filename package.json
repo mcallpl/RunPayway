@@ -10,6 +10,7 @@
     "validate": "tsx tests/engine.test.ts"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.0",
     "next": "^15.1.0",
