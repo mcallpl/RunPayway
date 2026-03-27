@@ -4,7 +4,7 @@ import { useState, useEffect, useContext, createContext, Suspense } from "react"
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -31,20 +31,20 @@ interface ThemeColors {
 }
 
 const DARK: ThemeColors = {
-  bg: "#FAF9F6",
-  bgDeep: "#F5F2EC",
-  bgGradient: "linear-gradient(180deg, #FFFFFF 0%, #FAF9F6 30%, #F5F2EC 100%)",
-  surface: "#FFFFFF",
-  surfaceHover: "#F5F2EC",
-  surfaceRaised: "#FFFFFF",
-  border: "rgba(14,26,43,0.10)",
-  borderSubtle: "rgba(14,26,43,0.06)",
-  text: "#0E1A2B",
-  textSecondary: "rgba(14,26,43,0.65)",
-  textMuted: "rgba(14,26,43,0.45)",
-  textFaint: "rgba(14,26,43,0.25)",
-  headerBg: "rgba(255,255,255,0.92)",
-  headerBorder: "rgba(14,26,43,0.08)",
+  bg: "#0F1923",
+  bgDeep: "#0A1119",
+  bgGradient: "linear-gradient(180deg, #0A1119 0%, #0D1620 40%, #0F1923 100%)",
+  surface: "rgba(255,255,255,0.04)",
+  surfaceHover: "rgba(255,255,255,0.07)",
+  surfaceRaised: "rgba(255,255,255,0.06)",
+  border: "rgba(255,255,255,0.08)",
+  borderSubtle: "rgba(255,255,255,0.05)",
+  text: "#E8E5DD",
+  textSecondary: "rgba(232,229,221,0.70)",
+  textMuted: "rgba(232,229,221,0.45)",
+  textFaint: "rgba(232,229,221,0.22)",
+  headerBg: "rgba(10,17,25,0.88)",
+  headerBorder: "rgba(255,255,255,0.06)",
 };
 
 const BRAND = {
@@ -58,10 +58,10 @@ const BRAND = {
   bandHigh: "#1A7A6D",
 };
 
-// Legacy B alias — used by sub-components that don't receive theme
+// Legacy B alias
 const B = {
-  navy: "#0E1A2B", navyDeep: "#070F19", purple: BRAND.purple, purpleGlow: "rgba(75,63,174,0.06)",
-  teal: BRAND.teal, tealGlow: "rgba(26,122,109,0.06)", sand: "#F5F2EC", bone: "#FAF9F6", white: "#FFFFFF",
+  navy: "#0F1923", navyDeep: "#0A1119", purple: BRAND.purple, purpleGlow: "rgba(75,63,174,0.12)",
+  teal: BRAND.teal, tealGlow: "rgba(26,122,109,0.12)", sand: "#E8E5DD", bone: "#E8E5DD", white: "#FFFFFF",
   muted: DARK.textSecondary, dim: DARK.textMuted, faint: DARK.textFaint,
   ghost: DARK.border, whisper: DARK.surface,
   bandLimited: BRAND.bandLimited, bandDeveloping: BRAND.bandDeveloping,
@@ -106,7 +106,7 @@ function Slider({ label, value, min, max, step, unit, onChange, accent }: {
       <div style={{ position: "relative", height: 32 }}>
         <div style={{ position: "absolute", top: 14, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
         <div style={{ position: "absolute", top: 14, left: 0, width: `${pct}%`, height: 4, background: `linear-gradient(90deg, ${c}66, ${c})`, borderRadius: 2, boxShadow: `0 0 8px ${c}33` }} />
-        <div style={{ position: "absolute", top: 7, left: `${pct}%`, transform: "translateX(-50%)", width: 20, height: 20, borderRadius: "50%", backgroundColor: c, border: "3px solid #FFFFFF", boxShadow: `0 2px 10px rgba(14,26,43,0.20), 0 0 12px ${c}33`, transition: "box-shadow 200ms ease" }} />
+        <div style={{ position: "absolute", top: 7, left: `${pct}%`, transform: "translateX(-50%)", width: 20, height: 20, borderRadius: "50%", backgroundColor: c, border: `3px solid ${T.text}`, boxShadow: `0 2px 10px rgba(0,0,0,0.30), 0 0 16px ${c}44`, transition: "box-shadow 200ms ease" }} />
         <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 32, opacity: 0, cursor: "pointer", margin: 0 }} />
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
@@ -192,7 +192,7 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
           position: "absolute", top: "50%", left: `${indicatorPct}%`,
           transform: "translate(-50%, -50%)", zIndex: 2,
           width: 14, height: 14, borderRadius: "50%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: T.bg,
           border: `3px solid ${bands.find(b => b.name === currentBand)?.color || BRAND.teal}`,
           boxShadow: `0 0 10px ${bands.find(b => b.name === currentBand)?.color || BRAND.teal}66, 0 2px 4px rgba(0,0,0,0.2)`,
           transition: "left 400ms ease-out, background-color 400ms",
@@ -215,8 +215,8 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
             <div key={b.name} style={{
               padding: "14px 14px 12px",
               borderRadius: 10,
-              border: `1px solid ${isActive ? `${b.color}33` : T.border}`,
-              backgroundColor: isActive ? `${b.color}08` : "#FFFFFF",
+              border: `1px solid ${isActive ? `${b.color}44` : T.border}`,
+              backgroundColor: isActive ? `${b.color}10` : "rgba(255,255,255,0.03)",
               opacity: isActive ? 1 : 0.4,
               transition: "all 400ms ease-out",
               position: "relative",
@@ -615,20 +615,21 @@ function SimulatorContent() {
         }
       `}</style>
 
-      {/* ══════════ HEADER — Light, institutional ══════════ */}
-      <header style={{ borderBottom: `1px solid ${T.headerBorder}`, backdropFilter: "blur(20px) saturate(180%)", WebkitBackdropFilter: "blur(20px) saturate(180%)", backgroundColor: T.headerBg, position: "sticky", top: 0, zIndex: 50 }}>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal}, ${BRAND.purple} 50%, ${BRAND.teal})` }} />
-        <div style={{ padding: "16px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      {/* ══════════ HEADER ══════════ */}
+      <header style={{ borderBottom: `1px solid ${T.headerBorder}`, backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", backgroundColor: T.headerBg, position: "sticky", top: 0, zIndex: 50 }}>
+        <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal} 0%, ${BRAND.purple} 50%, ${BRAND.teal} 100%)` }} />
+        <div style={{ padding: "18px 36px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <Image src={logoBlue} alt="RunPayway&#8482;" width={150} height={18} style={{ height: "auto" }} />
-            <div style={{ width: 1, height: 28, background: "rgba(14,26,43,0.10)" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
-              <span style={{ fontSize: 10, color: T.textFaint, letterSpacing: "0.06em" }}>Model RP-2.0</span>
+            <Image src={logoWhite} alt="RunPayway&#8482;" width={140} height={16} style={{ height: "auto", opacity: 0.95 }} />
+            <div style={{ width: 1, height: 28, background: `linear-gradient(180deg, transparent 0%, rgba(232,229,221,0.15) 50%, transparent 100%)` }} />
+            <div>
+              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>Score Simulator&#8482;</span>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 13, color: T.textMuted, fontWeight: 500 }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span style={{ fontSize: 13, color: T.textMuted, fontWeight: 500, letterSpacing: "0.01em" }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
+            <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
+            <span style={{ fontSize: 10, color: T.textFaint, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>RP-2.0</span>
           </div>
         </div>
       </header>
@@ -652,15 +653,15 @@ function SimulatorContent() {
           textTransform: "uppercase" as const,
           color: T.textSecondary,
           textDecoration: "none",
-          borderRadius: "0 8px 8px 0",
-          backgroundColor: "#FFFFFF",
+          borderRadius: "0 10px 10px 0",
+          backgroundColor: "rgba(255,255,255,0.06)",
           border: `1px solid ${T.border}`,
           borderLeft: "none",
-          boxShadow: "2px 0 8px rgba(14,26,43,0.06)",
+          backdropFilter: "blur(12px)",
           transition: "color 200ms, background-color 200ms",
         }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = "#F5F2EC"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "#FFFFFF"; }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; }}
       >
         View Report &#8592;
       </Link>
@@ -671,9 +672,9 @@ function SimulatorContent() {
         <div className="sim-score-hero" style={{ marginBottom: 36, paddingTop: 8 }}>
 
           {/* Score triptych */}
-          <div className="sim-triptych" style={{ display: "flex", gap: 0, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}`, boxShadow: "0 4px 20px rgba(14,26,43,0.06)" }}>
+          <div className="sim-triptych" style={{ display: "flex", gap: 0, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
             {/* Current */}
-            <div style={{ flex: 1, background: "#FFFFFF", padding: "32px 24px", textAlign: "center", position: "relative", borderRight: `1px solid ${T.borderSubtle}` }}>
+            <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "36px 28px", textAlign: "center", position: "relative", borderRight: `1px solid ${T.borderSubtle}` }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>CURRENT SCORE</div>
               <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
               <div style={{ fontSize: 12, color: bandColor(base.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{base.band}</div>
@@ -681,10 +682,10 @@ function SimulatorContent() {
 
             {/* Simulated */}
             <div style={{
-              flex: 1.2, padding: "32px 24px", textAlign: "center", position: "relative",
+              flex: 1.2, padding: "36px 28px", textAlign: "center", position: "relative",
               background: isModified
-                ? delta > 0 ? "rgba(26,122,109,0.04)" : delta < 0 ? "rgba(220,74,74,0.03)" : "#FFFFFF"
-                : "#FFFFFF",
+                ? delta > 0 ? "rgba(26,122,109,0.08)" : delta < 0 ? "rgba(220,74,74,0.06)" : "rgba(255,255,255,0.03)"
+                : "rgba(255,255,255,0.03)",
               borderRight: `1px solid ${T.borderSubtle}`,
             }}>
               {isModified && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : BRAND.purple }} />}
@@ -702,7 +703,7 @@ function SimulatorContent() {
             </div>
 
             {/* Impact */}
-            <div style={{ flex: 1, background: "#FFFFFF", padding: "32px 24px", textAlign: "center" }}>
+            <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "36px 28px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>IMPACT</div>
               <div className="sim-score-num" style={{
                 fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
@@ -1078,33 +1079,33 @@ function SimulatorContent() {
 
       {/* ══════════ PRESSUREMAP™ ══════════ */}
       {pressureMap && (
-        <div style={{ padding: "32px 32px", borderTop: `1px solid ${T.border}`, background: "#FFFFFF" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 28 }}>
+        <div style={{ padding: "40px 36px", borderTop: `1px solid ${T.border}` }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32 }}>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 4 }}>PressureMap&#8482;</div>
-              <div style={{ fontSize: 15, color: T.textSecondary, fontWeight: 500 }}>Real-time structural intelligence for {pressureMap.industry}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 6 }}>PressureMap&#8482;</div>
+              <div style={{ fontSize: 16, color: T.textSecondary, fontWeight: 500, lineHeight: 1.4 }}>Real-time structural intelligence for {pressureMap.industry}</div>
             </div>
-            <div style={{ fontSize: 12, color: T.textFaint, whiteSpace: "nowrap" as const }}>{new Date(pressureMap.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</div>
+            <div style={{ fontSize: 12, color: T.textFaint, whiteSpace: "nowrap" as const, marginTop: 4 }}>{new Date(pressureMap.generated_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</div>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 20 }}>
-            <div style={{ padding: "24px 24px", borderRadius: 14, backgroundColor: "rgba(220,74,74,0.04)", border: "1px solid rgba(220,74,74,0.10)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "#DC4A4A", marginBottom: 10 }}>What&apos;s Pressuring Your Structure</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.7, margin: 0 }}>{pressureMap.pressure}</p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
+            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(220,74,74,0.06)", border: "1px solid rgba(220,74,74,0.15)" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#DC4A4A", marginBottom: 12 }}>What&apos;s Pressuring Your Structure</div>
+              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.pressure}</p>
             </div>
 
-            <div style={{ padding: "24px 24px", borderRadius: 14, backgroundColor: "rgba(26,122,109,0.04)", border: "1px solid rgba(26,122,109,0.10)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 10 }}>What&apos;s Structurally Favorable</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.7, margin: 0 }}>{pressureMap.tailwind}</p>
+            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(26,122,109,0.06)", border: "1px solid rgba(26,122,109,0.15)" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 12 }}>What&apos;s Structurally Favorable</div>
+              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.tailwind}</p>
             </div>
 
-            <div style={{ padding: "24px 24px", borderRadius: 14, backgroundColor: "rgba(75,63,174,0.04)", border: "1px solid rgba(75,63,174,0.10)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 10 }}>Highest-Leverage Move Right Now</div>
-              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.7, margin: 0 }}>{pressureMap.leverage_move}</p>
+            <div style={{ padding: "28px 28px", borderRadius: 14, backgroundColor: "rgba(75,63,174,0.06)", border: "1px solid rgba(75,63,174,0.15)" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 12 }}>Highest-Leverage Move Right Now</div>
+              <p style={{ fontSize: 15, color: T.text, lineHeight: 1.75, margin: 0 }}>{pressureMap.leverage_move}</p>
             </div>
           </div>
 
-          <p style={{ fontSize: 12, color: T.textFaint, marginTop: 20, fontStyle: "italic" }}>
+          <p style={{ fontSize: 12, color: T.textFaint, marginTop: 24, fontStyle: "italic", letterSpacing: "0.01em" }}>
             PressureMap&#8482; is contextual intelligence — it does not affect your score.
           </p>
         </div>
@@ -1112,10 +1113,10 @@ function SimulatorContent() {
 
       {/* ══════════ READY-TO-USE ACTION SCRIPTS ══════════ */}
       {scriptTemplates.length > 0 && (
-        <div style={{ padding: "32px 32px", borderTop: `1px solid ${T.border}`, background: "#FFFFFF" }}>
-          <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 4 }}>Ready-to-Use Action Scripts</div>
-            <div style={{ fontSize: 15, color: T.textSecondary, fontWeight: 500 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
+        <div style={{ padding: "40px 36px", borderTop: `1px solid ${T.border}` }}>
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 6 }}>Ready-to-Use Action Scripts</div>
+            <div style={{ fontSize: 16, color: T.textSecondary, fontWeight: 500, lineHeight: 1.4 }}>Operational language calibrated to your industry. Copy, adapt, and send.</div>
           </div>
           {scriptTemplates.map((script) => {
             const isExpanded = expandedScript === script.id;
@@ -1157,7 +1158,7 @@ function SimulatorContent() {
       )}
 
       {/* ══════════ FOOTER ══════════ */}
-      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "20px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#FFFFFF" }}>
+      <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "20px 36px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
         <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Deterministic &middot; Fixed Rules &middot; Versioned</span>
       </footer>
