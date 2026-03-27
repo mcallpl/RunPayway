@@ -566,7 +566,7 @@ export default function ReviewPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [mobile, setMobile] = useState(false);
   const monitoringTracked = useRef(false);
-  const totalPages = 6; // cover + 5 pages
+  const totalPages = 5; // cover + 4 pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -810,15 +810,12 @@ export default function ReviewPage() {
   // ── V2 engine data (must be before band-sensitive copy) ──
   const v2 = record._v2;
   const v2Fragility = v2?.fragility ?? null;
-  const v2Confidence = v2?.confidence ?? null;
-  const v2Quality = v2?.quality ?? null;
   const v2Sensitivity = v2?.sensitivity ?? null;
   const v2Interactions = v2?.interactions ?? null;
   const v2Constraints = v2?.constraints ?? null;
   const v2Scenarios = v2?.scenarios ?? null;
   const v2Lift = v2?.score_lift_projection ?? null;
   const v2AvoidActions = v2?.avoid_actions ?? null;
-  const v2Triggers = v2?.reassessment_triggers ?? null;
   const v2Benchmarks = v2?.benchmarks ?? null;
 
   // ── Strategic insight data (RP-2.1) ──
@@ -826,7 +823,6 @@ export default function ReviewPage() {
   const v2TradeoffNarratives = v2?.tradeoff_narratives ?? null;
   const v2OneThingThatMatters = v2?.one_thing_that_matters ?? null;
   const v2PredictiveWarnings = v2?.predictive_warnings ?? null;
-  const v2ScriptTemplates = v2?.script_templates ?? null;
   const v2NormalizedInputs = v2?.normalized_inputs ?? null;
 
   // ── Outcome layer ──
@@ -1043,7 +1039,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Your Score", "Income X-Ray", "Risks", "What To Do", "Methodology"];
+  const pageNames = ["Cover", "Your Score", "Your Income", "Pressure Test", "Action Plan"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1080,7 +1076,7 @@ export default function ReviewPage() {
           <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Scan to model changes using your actual assessment.</div>
           <QRCodeImage recordId={record.record_id} authCode={record.authorization_code} score={record.final_score} band={record.stability_band} date={issuedDate} model={record.model_version || "RP-2.0"} />
           <div style={{ ...T.meta, color: B.muted, marginTop: 6, fontSize: mobile ? 11 : 12 }}>Linked to your report</div>
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 12 }}>Model RP-2.0 · 5 Pages</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 12 }}>Model RP-2.0 · 4 Pages</div>
         </div>
     </>,
 
@@ -1231,13 +1227,13 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="Your Score" page={1} />
+        <PageFooter section="Your Score &amp; Structural Diagnosis" page={1} />
     </>,
 
     // Page 2: Income Structure
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Income X-Ray</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>How Your Income Actually Works</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>Where your income actually comes from, what repeats, and what disappears the moment you stop.</p>
 
         {/* ── KILLER LINE ── */}
@@ -1375,13 +1371,13 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="Income X-Ray" page={2} />
+        <PageFooter section="How Your Income Actually Works" page={2} />
     </>,
 
     // Page 3: Risks
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What Could Go Wrong</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Fragility &amp; Pressure Test</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 16 }}>The specific disruptions your income structure is most exposed to — ranked by how much damage they would do.</p>
 
         {/* ── HARD DIAGNOSTIC SENTENCE ── */}
@@ -1509,13 +1505,13 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="What Could Go Wrong" page={3} />
+        <PageFooter section="Fragility &amp; Pressure Test" page={3} />
     </>,
 
     // Page 4: Action Plan
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>What To Do About It</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Your Highest-Leverage Action Plan</h1>
         <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>Not just what could improve — how to decide which change to make first.</p>
 
         {/* ── DECISION FRAMEWORK — CATEGORIZED IMPROVEMENTS ── */}
@@ -1647,90 +1643,35 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="What To Do About It" page={4} />
-    </>,
-
-    // Page 5: Methodology
-    <>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 16 }}>Methodology and Next Steps</h1>
-
-        {/* Methodology */}
-        <div style={{ ...cardStyle, marginBottom: 20, borderLeft: `3px solid ${B.teal}` }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 8 }}>HOW THIS SCORE WAS CALCULATED</div>
-          <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.65 }}>
-            Your Income Stability Score is produced by Model RP-2.0, a deterministic scoring system that evaluates fixed structural dimensions of income. The same inputs always produce the same score. The model uses fixed rules and weights — no machine learning, no subjective judgment, and no access to your financial accounts. Full methodology is published at runpayway.com/methodology.
-          </p>
-        </div>
-
-        {/* Assessment quality — confidence + durability */}
-        {(v2Confidence || v2Quality) && (
-          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 16 }}>
-            {v2Confidence && (
-              <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>ASSESSMENT CONFIDENCE</div>
-                <div style={{ ...T.cardHeading, color: v2Confidence.confidence_level === "high" ? B.teal : v2Confidence.confidence_level === "moderate" ? B.navy : B.bandDeveloping, marginBottom: 4, textTransform: "capitalize" }}>{v2Confidence.confidence_level}</div>
-                {v2Confidence.deductions && v2Confidence.deductions.length > 0 && (
-                  <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>
-                    {v2Confidence.deductions.slice(0, 2).map((d: { reason: string }) => d.reason).join(". ")}.
-                  </p>
-                )}
-              </div>
-            )}
-            {v2Quality && (
-              <div style={{ flex: 1, ...cardStyle }}>
-                <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>INCOME DURABILITY</div>
-                <div style={{ ...T.cardHeading, color: v2Quality.durability_grade === "durable" || v2Quality.durability_grade === "robust" ? B.teal : v2Quality.durability_grade === "moderate" ? B.navy : B.bandDeveloping, marginBottom: 4, textTransform: "capitalize" }}>{v2Quality.durability_grade}</div>
-                <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Quality score: {v2Quality.quality_score}/100</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Industry-specific reassessment triggers */}
-        {olTriggers && olTriggers.length > 0 && (
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>When to retake this assessment</div>
-            {olTriggers.slice(0, 3).map((t) => (
-              <div key={t.trigger_id} style={{ ...T.small, color: B.muted, display: "flex", gap: 8, marginBottom: 4 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, marginTop: 6, flexShrink: 0 }} />
-                {t.display_text}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Reassessment + Verification */}
-        <div style={{ ...cardStyle, marginBottom: 16 }}>
+        {/* ── RETAKE TIMING ── */}
+        <SectionDivider />
+        <div style={{ ...cardStyle, marginBottom: 12 }}>
           <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
-          <div style={{ ...T.cardHeading, color: B.navy, marginBottom: 2 }}>{reassessDate}</div>
-          <div style={{ ...T.cardHeading, color: B.purple, marginBottom: 6 }}>{reassessDaysLeft} days from now</div>
-          <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>We suggest reassessing after you have made meaningful structural changes to your income — typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months. Retake after real structural improvement is active, not after a short-term earnings spike.</p>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
+            <div style={{ ...T.cardHeading, color: B.navy }}>{reassessDate}</div>
+            <div style={{ ...T.small, color: B.purple, fontWeight: 600 }}>{reassessDaysLeft} days from now</div>
+          </div>
+          <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake after real structural change — a new retainer signed, a source added, a dependency reduced. Not after a good month. Typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months.</p>
+          {olTriggers && olTriggers.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              {olTriggers.slice(0, 3).map((t) => (
+                <div key={t.trigger_id} style={{ ...T.meta, color: B.muted, display: "flex", gap: 6, marginBottom: 2 }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.purple, marginTop: 6, flexShrink: 0 }} />
+                  {t.display_text}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Reference to simulator for suggested language */}
-        {v2ScriptTemplates && v2ScriptTemplates.length > 0 && (
-          <div className="no-print" style={{ ...cardStyle, marginBottom: 16, borderLeft: `3px solid ${B.purple}` }}>
-            <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>Suggested Language for Your Next Move</div>
-            <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-              Starting drafts based on your structural weaknesses are available in your RunPayway&#8482; Stability Simulator — along with your interactive sliders and scenario modeling tools.
-            </p>
-          </div>
-        )}
-
-        <p style={{ ...T.meta, color: B.taupe, lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-          The Income Stability Score is a present-state income stability assessment based on information provided by the user. It does not provide financial advice and does not predict future financial outcomes. This report reflects a present-state structural interpretation under the RunPayway framework.
-        </p>
-
-        {/* Closing signature */}
-        <div style={{ marginTop: 24, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-          <p style={{ ...T.meta, color: B.taupe, margin: 0 }}>
-            This report was generated by RunPayway Model RP-2.0.
-            The methodology is published at runpayway.com/methodology.
+        {/* ── COMPACT METHODOLOGY FOOTER ── */}
+        <div style={{ marginTop: 8, paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
+          <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
+            Scored by Model RP-2.0 — a deterministic system using fixed rules and weights. No machine learning, no financial account access, no subjective judgment. Same inputs always produce the same score. Full methodology at runpayway.com/methodology. This is a present-state structural assessment, not financial advice.
           </p>
         </div>
 
-        <PageFooter section="Methodology and Next Steps" page={5} />
+        <PageFooter section="Your Highest-Leverage Action Plan" page={4} />
     </>,
 
   ];
