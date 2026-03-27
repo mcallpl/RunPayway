@@ -392,6 +392,7 @@ export default function InitializationPage() {
             </p>
 
             <button
+              className="cta-tick"
               onClick={() => {
                 setReadyExiting(true);
                 setTimeout(() => router.push("/diagnostic"), 1200);
@@ -407,6 +408,7 @@ export default function InitializationPage() {
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.25)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.20)"; }}
             >
+              <span className="tick tick-navy" />
               Begin Assessment
             </button>
 
@@ -520,6 +522,7 @@ export default function InitializationPage() {
 
           {/* CTA */}
           <button
+            className="cta-tick"
             disabled={!canContinueStep0}
             onClick={() => goToStep(1)}
             style={{
@@ -534,6 +537,7 @@ export default function InitializationPage() {
               transition: "all 300ms ease",
             }}
           >
+            <span className="tick tick-white" />
             Begin Profile Setup
           </button>
 
@@ -763,6 +767,7 @@ export default function InitializationPage() {
           </button>
           {step < 1 ? (
             <button
+              className="cta-tick"
               disabled={!canContinueStep1}
               onClick={() => goToStep(step + 1)}
               style={{
@@ -775,10 +780,12 @@ export default function InitializationPage() {
                 transition: "background 180ms ease, transform 180ms ease",
               }}
             >
+              <span className="tick tick-white" />
               Continue
             </button>
           ) : (
             <button
+              className="cta-tick"
               disabled={!isValid}
               onClick={handleBegin}
               style={{
@@ -793,6 +800,7 @@ export default function InitializationPage() {
                 transition: "all 300ms ease",
               }}
             >
+              <span className="tick tick-white" />
               Begin Assessment
             </button>
           )}

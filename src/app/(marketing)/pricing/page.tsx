@@ -133,12 +133,13 @@ function PricingCards() {
                 </div>
               ))}
             </div>
-            <Link href="/begin" style={{
+            <Link className="cta-tick" href="/begin" style={{
               display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
               background: freeHover ? B.navy : "#FFFFFF", color: freeHover ? "#FFFFFF" : B.navy,
               fontSize: 16, fontWeight: 600, textDecoration: "none", border: `1px solid ${B.navy}`,
               transition: "background 200ms ease, color 200ms ease",
             }}>
+              <span className="tick tick-navy" />
               Get My Free Score
             </Link>
             <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>Takes about 90 seconds</p>
@@ -193,7 +194,7 @@ function PricingCards() {
               ))}
             </div>
 
-            <a href={STRIPE} style={{
+            <a className="cta-tick" href={STRIPE} style={{
               display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
               background: B.gradient, color: "#FFFFFF",
               fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
@@ -201,6 +202,7 @@ function PricingCards() {
               transition: "box-shadow 260ms ease, transform 200ms ease",
               transform: fullHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
+              <span className="tick tick-white" />
               Get Diagnostic Report — $69
             </a>
             <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
@@ -258,7 +260,7 @@ function PricingCards() {
               ))}
             </div>
 
-            <a href={STRIPE_ANNUAL} style={{
+            <a className="cta-tick" href={STRIPE_ANNUAL} style={{
               display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
               background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy,
               fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
@@ -266,6 +268,7 @@ function PricingCards() {
               transition: "box-shadow 260ms ease, transform 200ms ease",
               transform: annualHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
+              <span className="tick tick-navy" />
               Start Stability Monitoring — $149
             </a>
             <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
@@ -445,7 +448,8 @@ function Cta() {
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
-          <Link href="/begin" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
+          <Link className="cta-tick" href="/begin" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
+            <span className="tick tick-navy" />
             Get My Free Score
           </Link>
           <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>

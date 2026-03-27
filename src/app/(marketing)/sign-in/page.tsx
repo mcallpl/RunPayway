@@ -157,6 +157,7 @@ export default function SignInPage() {
                 {error && <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                 <button
+                  className="cta-tick"
                   onClick={handleLookup}
                   onMouseEnter={() => canHover() && setBtnHovered(true)}
                   onMouseLeave={() => setBtnHovered(false)}
@@ -169,6 +170,7 @@ export default function SignInPage() {
                     transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
                   }}
                 >
+                  <span className="tick tick-white" />
                   Access Monitoring Portal
                 </button>
 
@@ -248,18 +250,20 @@ export default function SignInPage() {
                       <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 6 }}>All 3 Assessments Completed</div>
                       <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.55, margin: 0 }}>Purchase a new plan to continue tracking your income stability.</p>
                     </div>
-                    <Link href="/pricing" style={{
+                    <Link className="cta-tick" href="/pricing" style={{
                       display: "flex", alignItems: "center", justifyContent: "center",
                       width: "100%", height: 52, borderRadius: 10,
                       background: B.gradient, color: "#FFFFFF",
                       fontSize: 16, fontWeight: 600, textDecoration: "none",
                       boxShadow: "0 8px 24px rgba(75,63,174,0.20)",
                     }}>
+                      <span className="tick tick-white" />
                       Renew Stability Monitoring
                     </Link>
                   </>
                 ) : (
                   <button
+                    className="cta-tick"
                     onClick={handleTakeAssessment}
                     onMouseEnter={() => canHover() && setNextBtnHovered(true)}
                     onMouseLeave={() => setNextBtnHovered(false)}
@@ -272,6 +276,7 @@ export default function SignInPage() {
                       transform: nextBtnHovered ? "translateY(-2px)" : "translateY(0)",
                     }}
                   >
+                    <span className="tick tick-white" />
                     Take Next Assessment
                   </button>
                 )}

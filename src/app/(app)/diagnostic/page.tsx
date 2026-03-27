@@ -653,6 +653,7 @@ export default function DiagnosticPage() {
             Back to questions
           </button>
           <button
+            className="cta-tick"
             onClick={handleSubmit}
             disabled={!allAnswered || submitting}
             style={{
@@ -665,6 +666,7 @@ export default function DiagnosticPage() {
               transition: "background 180ms ease",
             }}
           >
+            <span className="tick tick-white" />
             {submitting ? "Processing..." : "Confirm & Generate Score"}
           </button>
         </div>
