@@ -495,23 +495,15 @@ function HeroVideo() {
 
 
 
-      {/* Dark overlay to mute bright video content */}
+      {/* Dark overlay to keep video dark */}
       <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-        background: "rgba(14,20,48,0.45)",
-      }} />
-      {/* Top edge blend — fades video into hero gradient above */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 80, zIndex: 3, pointerEvents: "none",
-        background: "linear-gradient(180deg, #161430 0%, transparent 100%)",
-      }} />
-      {/* Bottom edge blend — fades video into section below */}
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, zIndex: 3, pointerEvents: "none",
-        background: "linear-gradient(0deg, #1F6D7A 0%, transparent 100%)",
+        background: "rgba(14,20,48,0.40)",
       }} />
 
       {closing && (
         <>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: "#161430", zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", backgroundColor: "#161430", zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", background: C.heroGradient, zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: C.heroGradient, zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
         </>
       )}
 
