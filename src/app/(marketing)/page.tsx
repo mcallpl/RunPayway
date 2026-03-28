@@ -1044,7 +1044,7 @@ function WhatYourReportSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            A personalized diagnostic.<br />Written for your exact structure.
+            A structural diagnostic.<br />Interpreted from your exact inputs.
           </h2>
         </div>
 
@@ -1128,8 +1128,8 @@ function HowItWorksSection() {
       num: "03",
       time: "$69",
       title: "Unlock the full diagnostic",
-      hook: "Personalized to your structure. Not a template.",
-      desc: "Every section is written for your exact industry, operating structure, and income model. Ranked risk scenarios. Personalized action plan. Structural tradeoff analysis. An interactive simulator you keep forever.",
+      hook: "Interpreted using your structure. Not a template.",
+      desc: "Every section is generated from fixed structural inputs — your industry, operating structure, and income model. Same inputs always produce the same scoring outcome. Ranked risk scenarios. Structural action plan. Tradeoff analysis. An interactive simulator you keep forever.",
       color: B.navy,
     },
   ];
@@ -1661,7 +1661,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
     },
     {
       q: "What does the $69 report include?",
-      a: "A 4-page structural diagnostic personalized to your industry, operating structure, and income model. Includes PressureMap structural intelligence, a plain-English score interpretation, ranked risk scenarios, a prioritized action plan with projected score impact, tradeoff analysis, a 30-day roadmap, and lifetime access to the Stability Simulator. Every section is specific to your exact structure — not templates.",
+      a: "A 4-page structural diagnostic interpreted using your industry, operating structure, and income model. Same inputs always produce the same scoring outcome. Includes PressureMap structural intelligence, a plain-English score interpretation, ranked risk scenarios, a prioritized action plan with projected score impact, tradeoff analysis, a 30-day roadmap, and lifetime access to the Stability Simulator.",
     },
     {
       q: "How is this different from other income tools?",

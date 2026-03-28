@@ -108,11 +108,11 @@ function ReportPreview() {
           </div>
           <div style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.20)", marginBottom: 3, textTransform: "uppercase" as const }}>In Plain English</div>
-            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", lineHeight: 1.4 }}>Interpretation personalized to your industry and structure.</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", lineHeight: 1.4 }}>Interpreted using your industry and structure.</div>
           </div>
         </div>
       ),
-      desc: "Your score, plain-English interpretation personalized to your structure, biggest constraint, projected impact of fixing it, and distance to the next stability band.",
+      desc: "Your score, plain-English interpretation generated from your structural inputs, biggest constraint, projected impact of fixing it, and distance to the next stability band.",
     },
     {
       num: "02", title: "PressureMap & Income Structure", color: B.teal,
@@ -193,7 +193,7 @@ function ReportPreview() {
           ))}
         </div>
       ),
-      desc: "Personalized action plan, structural tradeoff analysis, 30-day execution roadmap, and retake timing.",
+      desc: "Structural action plan, tradeoff analysis, 30-day execution roadmap, and retake timing.",
     },
   ];
 
@@ -368,9 +368,9 @@ function WhatsIncluded() {
   const m = useMobile();
 
   const items = [
-    { cat: "Diagnosis", features: ["Plain-English interpretation personalized to your structure", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
+    { cat: "Diagnosis", features: ["Plain-English interpretation generated from your structural inputs", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
     { cat: "Risks", features: ["Ranked disruption scenarios with exact drops", "Structural absorbency assessment", "Behavioral pattern to watch", "Band shift warnings"] },
-    { cat: "Action", features: ["Personalized action plan for your structure", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
+    { cat: "Action", features: ["Structural action plan interpreted from your inputs", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
     { cat: "Tools", features: ["RunPayway\u2122 Stability Simulator (lifetime)", "Report delivered to your email", "Cloud-stored record (never lost)", "Deterministic scoring — same answers, same score"] },
   ];
 

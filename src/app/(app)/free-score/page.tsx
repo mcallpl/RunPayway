@@ -397,7 +397,7 @@ export default function FreeScorePage() {
               You have the score. Here is what you are missing.
             </h2>
             <p style={{ ...F.body, color: B.muted, textAlign: "center", maxWidth: 520, margin: "0 auto 40px" }}>
-              The full report includes all of this — personalized to your industry, income model, and operating structure.
+              The full report includes all of this — interpreted using your industry, income model, and operating structure.
             </p>
 
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 12 : 16 }}>
