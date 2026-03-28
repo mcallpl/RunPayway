@@ -1611,8 +1611,11 @@ function PricingSection() {
               If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
             </p>
           </div>
-          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)" }}>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginBottom: 8 }}>
             No bank connection &#183; No credit pull &#183; Private by default
+          </p>
+          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.30)" }}>
+            Deterministic scoring &#183; AI-powered interpretation &#183; Same answers always produce the same score
           </p>
         </div>
       </div>

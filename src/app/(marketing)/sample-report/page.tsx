@@ -107,7 +107,7 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "Your exact score, what it means in plain English, how far you are from the next band, and the single biggest structural factor to fix.",
+      desc: "Your score, AI-powered plain-English interpretation, biggest structural constraint, projected impact of fixing it, and distance to the next stability band.",
     },
     {
       num: "02", title: "PressureMap & Income Structure", color: B.teal,
@@ -136,16 +136,16 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "Income composition, stress test drop, continuity window, structural indicators, what\u2019s working, and what\u2019s holding you back.",
+      desc: "AI-generated PressureMap intelligence specific to your industry, income breakdown, biggest source loss impact, continuity window, strongest and weakest structural factors.",
     },
     {
       num: "03", title: "Fragility & Pressure Test", color: B.bandLimited,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {[
-            { severity: "SEVERE", title: "Largest client leaves", drop: "\u221229" },
-            { severity: "HIGH", title: "Work interruption (90 days)", drop: "\u221218" },
-            { severity: "MODERATE", title: "Pipeline slowdown", drop: "\u22128" },
+            { severity: "#1", title: "Your largest client stops paying", drop: "-29" },
+            { severity: "#2", title: "You cannot work for 90 days", drop: "-18" },
+            { severity: "#3", title: "New work arrives later than expected", drop: "-8" },
           ].map((s, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -160,26 +160,20 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "Ranked scenarios with exact score drops, fragility classification, behavioral patterns to watch, and predictive warnings.",
+      desc: "Ranked disruption scenarios with exact score drops, how much your income can absorb, and the structural pattern to watch.",
     },
     {
       num: "04", title: "Highest-Leverage Action Plan", color: B.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 10, textTransform: "uppercase" as const }}>What your score could be</div>
-          {[
-            { action: "Add recurring revenue", lift: "+8" },
-            { action: "Reduce concentration", lift: "+5" },
-            { action: "Extend visibility", lift: "+4" },
-          ].map((a, i) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
-              <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{a.action}</span>
-              <span style={{ fontSize: 16, fontWeight: 700, color: B.teal, fontFamily: DF }}>{a.lift}</span>
-            </div>
-          ))}
-          <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(75,63,174,0.08)", border: "1px solid rgba(75,63,174,0.15)" }}>
-            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Combined: 48 &#8594; 65 (+17 points)</div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 10, textTransform: "uppercase" as const }}>Highest-leverage change</div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.70)", lineHeight: 1.5, marginBottom: 10 }}>Convert your top client to a monthly retainer arrangement.</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(26,122,109,0.08)", marginBottom: 8 }}>
+            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Projected impact</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: B.teal, fontFamily: DF }}>48 to 60 (+12)</span>
           </div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 6, marginTop: 12, textTransform: "uppercase" as const }}>Supporting change</div>
+          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>Reduce largest source concentration below 40%</div>
         </div>
       ),
       desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.",
@@ -192,7 +186,7 @@ function ReportPreview() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Inside The Report</div>
           <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
-            Five pages. Every one earns its place.
+            Four pages. Every section written for you.
           </h2>
         </div>
 
@@ -357,10 +351,10 @@ function WhatsIncluded() {
   const m = useMobile();
 
   const items = [
-    { cat: "Diagnosis", features: ["Score with plain-English interpretation", "Structural indicators with cross-factor effects", "Income composition breakdown", "Stress test with exact score drop", "Fragility classification"] },
-    { cat: "Risks", features: ["Ranked risk scenarios by severity", "Predictive warnings", "Behavioral patterns to watch", "Band shift alerts"] },
-    { cat: "Action", features: ["Prioritized actions with projected impact", "Tradeoff analysis for each move", "Week-by-week execution roadmap", "Reassessment triggers"] },
-    { cat: "Tools", features: ["Interactive RunPayway\u2122 Stability Simulator (lifetime)", "Suggested language for your next move", "Structural context for your income model", "Assessment confidence and durability grade"] },
+    { cat: "Diagnosis", features: ["AI-powered plain-English interpretation", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
+    { cat: "Risks", features: ["Ranked disruption scenarios with exact drops", "Structural absorbency assessment", "Behavioral pattern to watch", "Band shift warnings"] },
+    { cat: "Action", features: ["AI-generated personalized action plan", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
+    { cat: "Tools", features: ["RunPayway\u2122 Stability Simulator (lifetime)", "Report delivered to your email", "Cloud-stored record (never lost)", "Deterministic scoring — same answers, same score"] },
   ];
 
   return (
