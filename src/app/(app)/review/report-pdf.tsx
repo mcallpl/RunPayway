@@ -338,7 +338,7 @@ function drawPage1Cover(doc: jsPDF, data: ReportPDFData) {
 
   // Subtitle
   y = 210;
-  const subtitle = "A structural assessment of income durability, diversification, and risk exposure.";
+  const subtitle = "A structural assessment of income resilience";
   y = drawWrappedText(doc, subtitle, PAGE_W / 2 - 200, y, 400, 10, {
     color: "#535D6B",
     align: "center",
@@ -413,12 +413,12 @@ function drawPage1Cover(doc: jsPDF, data: ReportPDFData) {
     charSpace: 1,
   });
 
-  // "Enter this code at ..."
+  // "Use this code at ..."
   y = 440;
   doc.setFont("Inter", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor("#535D6B");
-  doc.text(sanitize("Enter this code at runpayway.com/simulator"), PAGE_W / 2, y, {
+  doc.text(sanitize("Use this code at runpayway.com/simulator"), PAGE_W / 2, y, {
     align: "center",
   });
 
@@ -703,7 +703,7 @@ function drawPage3Income(doc: jsPDF, data: ReportPDFData) {
     doc.setFont("Inter", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor("#6B6155");
-    doc.text(sanitize("PressureMap(TM) is derived from structural inputs, not live market data."), ML, y);
+    doc.text(sanitize("PressureMap reflects structural inputs only and is not financial advice."), ML, y);
     y += 16;
 
     // Divider
@@ -724,12 +724,17 @@ function drawPage3Income(doc: jsPDF, data: ReportPDFData) {
   });
   y += klH + 16;
 
-  // "HOW YOUR INCOME BREAKS DOWN"
+  // "HOW YOUR INCOME ACTUALLY WORKS"
   doc.setFont("Inter-Bold", "normal");
   doc.setFontSize(14);
   doc.setTextColor("#0E1A2B");
-  doc.text(sanitize("HOW YOUR INCOME BREAKS DOWN"), ML, y);
-  y += 20;
+  doc.text(sanitize("HOW YOUR INCOME ACTUALLY WORKS"), ML, y);
+  y += 12;
+  doc.setFont("Inter", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor("#535D6B");
+  doc.text(sanitize("A breakdown of persistence, structural risk, and continuity"), ML, y);
+  y += 16;
 
   // Three-segment bar
   const barY = y;
@@ -755,9 +760,9 @@ function drawPage3Income(doc: jsPDF, data: ReportPDFData) {
 
   // Legend rows
   const legendItems = [
-    { color: "#0E1A2B", label: `${data.activeIncome}% - Active (earned by working)` },
-    { color: "#6B6155", label: `${data.semiPersistentIncome}% - Semi-Persistent (continues short-term)` },
-    { color: "#167B7D", label: `${data.persistentIncome}% - Persistent (continues without you)` },
+    { color: "#0E1A2B", label: `${data.activeIncome}% - Active income. Stops when work stops.` },
+    { color: "#6B6155", label: `${data.semiPersistentIncome}% - Semi-persistent income. Continues for a limited period.` },
+    { color: "#167B7D", label: `${data.persistentIncome}% - Persistent income. Continues regardless of immediate daily work.` },
   ];
   for (const item of legendItems) {
     doc.setFillColor(item.color);
@@ -920,48 +925,65 @@ function drawPage4Actions(doc: jsPDF, data: ReportPDFData) {
   });
   y += fragDiagH + 8;
 
-  // Top 3 scenarios
-  const scenariosToShow = data.scenarios.slice(0, 3);
-  const borderColors = ["#9B2C2C", "#92640A", "#E2E0DB"];
-
+  // Top 4 scenarios (compact)
+  const scenariosToShow = data.scenarios.slice(0, 4);
+  const borderColors = ["#9B2C2C", "#92640A", "#E2E0DB", "#E2E0DB"];
   for (let i = 0; i < scenariosToShow.length; i++) {
     const sc = scenariosToShow[i];
-    const hasNarrative = !!sc.narrative;
-    const narrativeH = hasNarrative
-      ? measureWrappedHeight(doc, sc.narrative!, CW - 32, 8)
-      : 0;
-    const scH = 20 + (hasNarrative ? narrativeH + 4 : 0);
+    const bandShiftNote = sc.bandShift ? `This would move the structure from ${sc.originalBand} to ${sc.scenarioBand}.` : "";
+    const narrativeText = [sc.narrative, bandShiftNote].filter(Boolean).join(" ");
+    const hasExtra = narrativeText.length > 0;
+    const extraH = hasExtra ? measureWrappedHeight(doc, narrativeText, CW - 32, 8) : 0;
+    const scH = 28 + (hasExtra ? extraH + 4 : 0);
     assertFitsOnPage(y, scH, `P4-scenario-${i}`);
-    drawCard(doc, ML, y, CW, scH, { borderLeftColor: borderColors[i], borderLeftWidth: 2 });
+    drawCard(doc, ML, y, CW, scH, { borderLeftColor: borderColors[i] || "#E2E0DB", borderLeftWidth: 2 });
 
     doc.setFont("Inter-SemiBold", "normal");
     doc.setFontSize(9.5);
     doc.setTextColor("#0E1A2B");
-    doc.text(sanitize(sc.title), ML + 12, y + 13);
+    doc.text(sanitize(sc.title), ML + 12, y + 12);
 
-    const scoreChangeText = `${sc.originalScore} to ${sc.scenarioScore} (-${sc.scoreDrop})`;
+    const scoreText = `${sc.originalScore} to ${sc.scenarioScore}`;
     doc.setFont("Inter", "normal");
     doc.setFontSize(9);
     doc.setTextColor("#535D6B");
-    doc.text(sanitize(scoreChangeText), ML + CW - 12, y + 13, { align: "right" });
+    doc.text(sanitize(scoreText), ML + CW - 12, y + 12, { align: "right" });
 
-    if (hasNarrative) {
-      drawWrappedText(doc, sc.narrative!, ML + 12, y + 24, CW - 32, 8, { color: "#535D6B" });
+    doc.setFont("Inter", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor("#535D6B");
+    doc.text(sanitize(`Decrease of ${sc.scoreDrop} points`), ML + CW - 12, y + 22, { align: "right" });
+
+    if (hasExtra) {
+      drawWrappedText(doc, narrativeText, ML + 12, y + 26, CW - 32, 8, { color: "#535D6B" });
     }
-    y += scH + 8;
+    y += scH + 6;
   }
 
-  // Absorbency line
+  // Absorbency section
+  doc.setFont("Inter-Bold", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor("#6B6155");
+  doc.text(sanitize("HOW MUCH CAN YOUR INCOME ABSORB?"), ML, y, { charSpace: 0.5 });
+  y += 14;
   doc.setFont("Inter-SemiBold", "normal");
   doc.setFontSize(10);
   doc.setTextColor(data.fragilityColor);
   doc.text(sanitize(data.fragilityLabel), ML, y);
-  const flW = doc.getTextWidth(sanitize(data.fragilityLabel));
-  doc.setFont("Inter", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor("#535D6B");
-  doc.text(sanitize(` - ${data.fragilityText}`), ML + flW, y);
-  y += 16;
+  y += 12;
+  const fragTextH = measureWrappedHeight(doc, data.fragilityText, CW, 9);
+  drawWrappedText(doc, data.fragilityText, ML, y, CW, 9, { color: "#535D6B" });
+  y += fragTextH;
+  if (data.failureMode) {
+    y += 4;
+    doc.setFont("Inter", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor("#535D6B");
+    doc.text(sanitize(`Failure mode: ${data.failureMode}.`), ML, y);
+    y += 12;
+  } else {
+    y += 8;
+  }
 
   // Divider
   doc.setDrawColor("#E2E0DB");
@@ -1004,31 +1026,39 @@ function drawPage4Actions(doc: jsPDF, data: ReportPDFData) {
     y += aCardH + 8;
   }
 
-  // "IF YOU DID BOTH" line
+  // COMBINED STRUCTURAL EFFECT
   if (data.combinedLift) {
     doc.setFont("Inter-Bold", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(8);
+    doc.setTextColor("#167B7D");
+    doc.text(sanitize("COMBINED STRUCTURAL EFFECT"), ML, y, { charSpace: 0.5 });
+    y += 12;
+    doc.setFont("Inter-SemiBold", "normal");
+    doc.setFontSize(9.5);
     doc.setTextColor("#0E1A2B");
-    doc.text(
-      sanitize(`If you did both: projected score ${data.combinedLift.projectedScore} (+${data.combinedLift.lift} points)`),
-      ML,
-      y
-    );
-    if (data.combinedLift.bandShift) {
-      const projW = doc.getTextWidth(
-        sanitize(`If you did both: projected score ${data.combinedLift.projectedScore} (+${data.combinedLift.lift} points)`)
-      );
-      doc.setFont("Inter", "normal");
-      doc.setFontSize(8.5);
-      doc.setTextColor("#7C5CBA");
-      doc.text(sanitize(` - ${data.combinedLift.bandShift}`), ML + projW, y);
+    doc.text(sanitize(`Projected score: ${data.combinedLift.projectedScore} (+${data.combinedLift.lift} points)`), ML, y);
+    y += 12;
+    if (data.combinedLift.explanation) {
+      drawWrappedText(doc, data.combinedLift.explanation, ML, y, CW, 8.5, { color: "#535D6B" });
+      y += measureWrappedHeight(doc, data.combinedLift.explanation, CW, 8.5) + 4;
     }
-    y += 16;
+    if (data.combinedLift.bandShift) {
+      doc.setFont("Inter-SemiBold", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor("#4B3FAE");
+      doc.text(sanitize(`Band shift: ${data.combinedLift.bandShift}`), ML, y);
+      y += 12;
+    }
+    y += 4;
   }
 
   // Tradeoff section (if exists)
   if (data.tradeoff) {
-    const tradeoffH = 56;
+    const tColW = (CW - 44) / 2;
+    const upsideH = measureWrappedHeight(doc, data.tradeoff.upside, tColW, 8);
+    const costH = measureWrappedHeight(doc, data.tradeoff.downside, tColW, 8);
+    const recH = measureWrappedHeight(doc, data.tradeoff.recommendation, CW - 32, 8.5);
+    const tradeoffH = 28 + Math.max(upsideH, costH) + 8 + recH + 16;
     assertFitsOnPage(y, tradeoffH, "P4-tradeoff");
     drawCard(doc, ML, y, CW, tradeoffH);
     let ty = y + 10;
@@ -1038,23 +1068,26 @@ function drawPage4Actions(doc: jsPDF, data: ReportPDFData) {
     doc.text(sanitize(data.tradeoff.actionLabel), ML + 12, ty);
     ty += 14;
 
-    const tColW = (CW - 44) / 2;
     doc.setFont("Inter-Bold", "normal");
     doc.setFontSize(7.5);
-    doc.setTextColor("#535D6B");
+    doc.setTextColor("#167B7D");
     doc.text("UPSIDE", ML + 12, ty);
+    doc.setTextColor("#92640A");
     doc.text("COST", ML + 12 + tColW + 20, ty);
     ty += 10;
-    doc.setFont("Inter", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor("#535D6B");
-    doc.text(sanitize(data.tradeoff.upside), ML + 12, ty);
-    doc.text(sanitize(data.tradeoff.downside), ML + 12 + tColW + 20, ty);
-    ty += 12;
-    doc.setFont("Inter-SemiBold", "normal");
-    doc.setFontSize(8.5);
-    doc.setTextColor("#0E1A2B");
-    doc.text(sanitize(data.tradeoff.recommendation), ML + 12, ty);
+    drawWrappedText(doc, data.tradeoff.upside, ML + 12, ty, tColW, 8, { color: "#535D6B" });
+    drawWrappedText(doc, data.tradeoff.downside, ML + 12 + tColW + 20, ty, tColW, 8, { color: "#535D6B" });
+    ty += Math.max(upsideH, costH) + 8;
+
+    // Divider inside card
+    doc.setDrawColor("#E2E0DB");
+    doc.setLineWidth(0.5);
+    doc.line(ML + 12, ty - 4, ML + CW - 12, ty - 4);
+
+    drawWrappedText(doc, data.tradeoff.recommendation, ML + 12, ty, CW - 32, 8.5, {
+      font: "Inter-SemiBold",
+      color: "#0E1A2B",
+    });
 
     y += tradeoffH + 8;
   }
@@ -1102,25 +1135,17 @@ function drawPage4Actions(doc: jsPDF, data: ReportPDFData) {
   doc.setFontSize(9.5);
   doc.setTextColor("#0E1A2B");
   doc.text(sanitize(data.reassessDate), ML, y);
-  const rdW = doc.getTextWidth(sanitize(data.reassessDate));
+  y += 10;
   doc.setFont("Inter", "normal");
   doc.setFontSize(8.5);
-  doc.setTextColor("#7C5CBA");
-  doc.text(sanitize(` (${data.reassessDaysLeft} days)`), ML + rdW, y);
-  y += 12;
-
-  doc.setFont("Inter", "normal");
-  doc.setFontSize(8);
   doc.setTextColor("#535D6B");
-  doc.text(sanitize(data.reassessTiming), ML, y);
+  doc.text(sanitize(`${data.reassessDaysLeft} days from now - ${data.reassessTiming}`), ML, y);
   y += 16;
 
   // Fine print
   const finePrint =
-    "This report is generated by the RunPayway(TM) Stability Simulator using Model RP-2.0. " +
-    "Scores are based on self-reported structural inputs and do not constitute financial advice. " +
-    "Income stability assessments reflect the structure of income sources at the time of assessment " +
-    "and may change as circumstances evolve. RunPayway is a product of PeopleStar, Inc.";
+    "This report was generated by RunPayway(TM) Model RP-2.0. It reflects structural inputs only and does not constitute " +
+    "financial, legal, or investment advice. Scores are deterministic: the same answers always produce the same score. No external data is used.";
   const fpH = measureWrappedHeight(doc, finePrint, CW, 7.5);
   if (y + fpH <= Y_LIMIT) {
     drawWrappedText(doc, finePrint, ML, y, CW, 7.5, { color: "#6B6155", lineHeight: 1.4 });
