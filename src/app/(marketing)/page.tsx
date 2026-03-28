@@ -383,7 +383,7 @@ input[type="range"]::-webkit-slider-thumb {
                 fontFamily: DISPLAY_FONT,
               }}
             >
-              <RevealText text="You know what you earn. You don&#8217;t know how it holds up." visible={visible} baseDelay={150} />
+              <RevealText text="Measure how stable your income structure actually is." visible={visible} baseDelay={150} />
             </h1>
 
             <p
@@ -397,7 +397,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 600ms ease-out 300ms",
               }}
             >
-              A diagnostic that reveals how fragile your income really is — and exactly what to fix first.
+              A fixed structural assessment based on how your income is built — not how much you make.
             </p>
 
             <div
@@ -443,12 +443,30 @@ input[type="range"]::-webkit-slider-thumb {
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
-              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
-                Six questions. Under two minutes. No bank connection required.
-              </p>
-              <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.30)", marginTop: 10, fontStyle: "italic" }}>
-                What happens to your score if your biggest client leaves tomorrow?
-              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: mobile ? "1fr 1fr" : "auto auto auto auto",
+                  gap: mobile ? "12px 16px" : 20,
+                  marginTop: 24,
+                }}
+              >
+                {["Six questions", "Under two minutes", "No bank connection", "No credit pull"].map((item) => (
+                  <div
+                    key={item}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      fontSize: S.fsMeta,
+                      color: "rgba(244,241,234,0.50)",
+                    }}
+                  >
+                    <span style={{ color: B.teal, fontSize: 14, lineHeight: 1 }}>&#x2713;</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
