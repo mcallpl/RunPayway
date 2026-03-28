@@ -232,8 +232,18 @@ export default function InitializationPage() {
         e.preventDefault();
       }
     };
+    const onPopState = () => {
+      if (form.assessment_title || form.industry_sector) {
+        window.history.pushState(null, "", window.location.href);
+      }
+    };
+    window.history.pushState(null, "", window.location.href);
     window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      window.removeEventListener("popstate", onPopState);
+    };
   }, [form.assessment_title, form.industry_sector]);
 
   useEffect(() => {

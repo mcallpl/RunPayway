@@ -150,12 +150,18 @@ const PROCESSING_STEPS = [
 /* ------------------------------------------------------------------ */
 
 function saveAnswersToStorage(answers: (string | null)[]) {
-  sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ answers }));
+  const data = JSON.stringify({ answers });
+  sessionStorage.setItem(STORAGE_KEY, data);
+  localStorage.setItem(STORAGE_KEY, data);
 }
 
 function loadAnswersFromStorage(): (string | null)[] | null {
   try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
+    let raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) sessionStorage.setItem(STORAGE_KEY, raw);
+    }
     if (!raw) return null;
     return JSON.parse(raw).answers;
   } catch {

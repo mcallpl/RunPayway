@@ -371,6 +371,24 @@ export default function ReviewPage() {
     pageContainerRef.current?.scrollTo(0, 0);
   }, [currentPage]);
 
+  // Protect against accidental navigation — back button and tab close
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+    const onPopState = () => {
+      // Push state back to prevent back navigation
+      window.history.pushState(null, "", window.location.href);
+    };
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("popstate", onPopState);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     let stored = sessionStorage.getItem("rp_record");
@@ -411,11 +429,8 @@ export default function ReviewPage() {
       }
     } catch { /* ignore */ }
 
-    // Clean up localStorage session data now that the report is delivered
-    try {
-      localStorage.removeItem("rp_purchase_session");
-      localStorage.removeItem("rp_profile");
-    } catch { /* ignore */ }
+    // Keep rp_record in localStorage permanently for report recovery
+    // Do NOT delete rp_purchase_session or rp_profile — customer may need to return
 
     if (!monitoringTracked.current) {
       monitoringTracked.current = true;
