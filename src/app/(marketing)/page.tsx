@@ -602,6 +602,20 @@ function WhatItMeasures() {
             );
           })}
         </div>
+
+        {/* Methodology link */}
+        <div style={{ marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 500) }}>
+          <Link href="/methodology" style={{
+            display: "inline-flex", alignItems: "center", gap: sp(1),
+            textDecoration: "none", transition: "opacity 200ms ease",
+          }}
+            onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          >
+            <span style={{ color: C.teal, fontSize: 18, lineHeight: 1, fontWeight: 600 }}>&#x203A;</span>
+            <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, letterSpacing: "-0.01em" }}>Methodology</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
