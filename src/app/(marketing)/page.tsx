@@ -282,9 +282,12 @@ input[type="range"]::-webkit-slider-thumb {
               </Link>
 
               <p style={{
-                ...T.meta, color: "rgba(244,241,234,0.30)", marginTop: sp(2.5), letterSpacing: "0.01em",
+                ...T.meta, color: "rgba(244,241,234,0.30)", marginTop: sp(2.5), letterSpacing: "0.02em",
               }}>
-                Six questions &bull; Under two minutes &bull; No bank connection &bull; No credit pull
+                Six questions{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
+                Under two minutes{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
+                No bank connection{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
+                No credit pull
               </p>
             </div>
           </div>
@@ -439,28 +442,37 @@ function ExamplePreview() {
   return (
     <section ref={ref} aria-label="Example result" style={{
       background: C.navy,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(6) : sp(8), paddingBottom: m ? sp(6) : sp(8),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: readW, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(1), flexWrap: "wrap" }}>
-          <span style={{ ...score(m), color: C.sand }}>48</span>
-          <span style={{ ...T.label, color: "rgba(244,241,234,0.45)" }}>&mdash;</span>
-          <span style={{ ...h3(m), color: "#92640A" }}>Developing Stability</span>
+      <div style={{ maxWidth: 620, margin: "0 auto", ...fadeIn(visible) }}>
+        <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.25)", marginBottom: sp(3) }}>
+          Example result
         </div>
-        <p style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginBottom: sp(3) }}>
-          12 points to Established
-        </p>
-        <p style={{ ...bodyLg(m), color: "rgba(244,241,234,0.65)", marginBottom: sp(3) }}>
-          Your income can likely absorb small disruptions, but one major source loss would place the structure under pressure quickly.
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
-          <span style={{ ...T.label, color: "rgba(244,241,234,0.40)" }}>
-            Primary constraint: Income concentration
-          </span>
-          <span style={{ ...T.label, color: "rgba(244,241,234,0.40)" }}>
-            Stress test: Largest source removed &#8594; projected score 21
-          </span>
+        <div style={{
+          border: "1px solid rgba(244,241,234,0.10)", borderRadius: sp(1.5),
+          padding: m ? sp(3) : sp(4),
+          background: "rgba(244,241,234,0.02)",
+        }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(1), flexWrap: "wrap" }}>
+            <span style={{ ...score(m), color: C.sand }}>48</span>
+            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>&mdash;</span>
+            <span style={{ ...h3(m), color: "#92640A" }}>Developing Stability</span>
+          </div>
+          <p style={{ ...T.meta, color: "rgba(244,241,234,0.35)", marginBottom: sp(3) }}>
+            12 points to Established
+          </p>
+          <p style={{ ...body(m), color: "rgba(244,241,234,0.55)", marginBottom: sp(3), lineHeight: 1.6 }}>
+            Your income can likely absorb small disruptions, but one major source loss would place the structure under pressure quickly.
+          </p>
+          <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", paddingTop: sp(2), display: "flex", flexDirection: "column", gap: sp(1) }}>
+            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>
+              Primary constraint: Income concentration
+            </span>
+            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>
+              Stress test: Largest source removed &#8594; projected score 21
+            </span>
+          </div>
         </div>
       </div>
     </section>
@@ -678,7 +690,7 @@ function WhatYouGet() {
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible) }}>
           <h2 style={{ ...h2(m), color: C.sand, marginBottom: sp(2.5) }}>
-            A complete structural diagnostic generated from your inputs.
+            A complete structural diagnostic generated from your submitted inputs.
           </h2>
         </div>
 
@@ -705,27 +717,33 @@ function WhatYouGet() {
 
           {/* Right — Simulator */}
           <div style={fadeIn(visible, 250)}>
-            <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1) }}>
-              Stability Simulator
-            </div>
-            <p style={{ ...T.label, color: "rgba(244,241,234,0.40)", marginBottom: sp(2.5) }}>
-              Included with your diagnostic.
-            </p>
-            <p style={{ ...body(m), color: "rgba(244,241,234,0.55)", marginBottom: sp(3) }}>
-              Test how structural changes may affect your score before you make them.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5) }}>
-              {[
-                "Model one change at a time",
-                "See projected impact",
-                "Compare current vs simulated score",
-                "Identify which change moves your score most",
-              ].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1) }}>
-                  <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
-                  <span style={{ ...body(m), color: "rgba(244,241,234,0.50)" }}>{item}</span>
-                </div>
-              ))}
+            <div style={{
+              border: "1px solid rgba(244,241,234,0.08)", borderRadius: sp(1.5),
+              padding: m ? sp(3) : sp(4),
+              background: "rgba(244,241,234,0.02)",
+            }}>
+              <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1) }}>
+                Stability Simulator
+              </div>
+              <p style={{ ...T.label, color: "rgba(244,241,234,0.35)", marginBottom: sp(2.5) }}>
+                Included with your diagnostic.
+              </p>
+              <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(3) }}>
+                Test how structural changes may affect your score before you make them.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5) }}>
+                {[
+                  "Model one change at a time",
+                  "See projected impact",
+                  "Compare current vs simulated score",
+                  "Identify which change moves your score most",
+                ].map((item) => (
+                  <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1) }}>
+                    <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
+                    <span style={{ ...T.label, color: "rgba(244,241,234,0.45)" }}>{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -757,9 +775,15 @@ function WhyNowSection() {
           Most income problems are not visible in revenue alone.<br />
           They surface when one source changes, one month slips, or one contract ends.
         </p>
-        <p style={{ ...body(m), color: C.muted }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(4) }}>
           This score is designed to reveal structural weakness before it becomes financial pain.
         </p>
+        <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: sp(3) }}>
+          <p style={{ ...T.label, color: C.light, fontStyle: "italic", margin: 0 }}>
+            The median small business holds just 27 days of cash buffer.
+            <span style={{ ...T.meta, fontStyle: "normal", marginLeft: sp(1) }}>&mdash; JPMorgan Chase Institute</span>
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -798,12 +822,12 @@ function ProofSection() {
               display: "flex", flexDirection: "column",
               ...fadeIn(visible, 150 + i * 100),
             }}>
-              <p style={{ ...body(m), color: "rgba(244,241,234,0.75)", fontStyle: "italic", margin: "0 0 24px", flex: 1 }}>
+              <p style={{ ...body(m), color: "rgba(244,241,234,0.70)", fontStyle: "italic", margin: `0 0 ${sp(2.5)}px`, flex: 1 }}>
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div>
-                <div style={{ ...T.label, fontWeight: 600, color: C.sand }}>{t.name}</div>
-                <div style={{ ...T.meta, color: "rgba(244,241,234,0.40)" }}>{t.role} &middot; Score: {t.score}</div>
+              <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", paddingTop: sp(2) }}>
+                <div style={{ ...T.label, fontWeight: 600, color: C.sand, marginBottom: 2 }}>{t.name}</div>
+                <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)" }}>{t.role} &middot; Score: {t.score}</div>
               </div>
             </div>
           ))}
@@ -1129,7 +1153,6 @@ export default function LandingPage() {
       <WhatYouGet />
       <WhyNowSection />
       <ProofSection />
-      <EvidenceStrip />
       <TrustStrip />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />

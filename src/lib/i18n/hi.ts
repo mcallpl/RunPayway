@@ -35,7 +35,7 @@ export const hi: Translations = {
     workEmail: "कार्य ईमेल",
     joinWaitlist: "प्रतीक्षा सूची में शामिल हों",
     incomeStabilityScore: "Income Stability Score™",
-    legal: "© 2026 RunPayway™। सर्वाधिकार सुरक्षित। RunPayway™ PeopleStar Enterprises, INC का उत्पाद है। Orange County, California, USA। Structural Stability Model RP-1.0",
+    legal: "© 2026 RunPayway™। सर्वाधिकार सुरक्षित। RunPayway™ PeopleStar Enterprises, LLC का उत्पाद है। Orange County, California, USA। Structural Stability Model RP-1.0",
   },
 
   // ── कुकी सहमति ──

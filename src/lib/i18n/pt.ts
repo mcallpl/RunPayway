@@ -35,7 +35,7 @@ export const pt: Translations = {
     workEmail: "E-mail profissional",
     joinWaitlist: "Inscrever-se na Lista de Espera",
     incomeStabilityScore: "Income Stability Score™",
-    legal: "© 2026 RunPayway™. Todos os direitos reservados. RunPayway™ é um produto da PeopleStar Enterprises, INC. Orange County, Califórnia, EUA. Structural Stability Model RP-1.0",
+    legal: "© 2026 RunPayway™. Todos os direitos reservados. RunPayway™ é um produto da PeopleStar Enterprises, LLC. Orange County, Califórnia, EUA. Structural Stability Model RP-1.0",
   },
 
   // ── Consentimento de Cookies ──
