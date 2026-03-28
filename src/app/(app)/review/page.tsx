@@ -971,8 +971,10 @@ export default function ReviewPage() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (err) {
+      console.error("PDF generation error:", err);
       const msg = err instanceof Error ? err.message : "PDF generation failed";
       setDownloadError(msg);
+      alert(`PDF Error: ${msg}`);
     } finally {
       setDownloading(false);
     }
