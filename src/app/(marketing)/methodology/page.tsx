@@ -37,24 +37,23 @@ function useMobile(bp = 768) {
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1A7A6D",
-  sand: "#F5F2EC",
-  bone: "#FAF9F6",
+  teal: "#1F6D7A",
+  sand: "#F4F1EA",
+  bone: "#F7F6F3",
   muted: "rgba(14,26,43,0.55)",
   light: "rgba(14,26,43,0.38)",
   border: "rgba(14,26,43,0.08)",
   borderMd: "rgba(14,26,43,0.12)",
-  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
+  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
-  bandHigh: "#1A7A6D",
+  bandHigh: "#1F6D7A",
 };
 
-const SY = { desktop: 120, mobile: 72 };
-const PAD = { desktop: 56, mobile: 24 };
-const MAX = 1100;
-const DF = "'DM Serif Display', Georgia, serif";
+const SY = { desktop: 120, mobile: 80 };
+const PAD = { desktop: 40, mobile: 20 };
+const MAX = 1200;
 
 /* ================================================================== */
 /* 1. HERO                                                              */
@@ -64,14 +63,13 @@ function Hero() {
   const m = useMobile();
   return (
     <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
           <div style={{ display: "inline-block", padding: "5px 16px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 24 }}>
             <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)" }}>Model RP-2.0 &#183; Methodology</span>
           </div>
-          <h1 style={{ fontSize: m ? 36 : 56, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 720, margin: "0 auto 24px" }}>
+          <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 720, margin: "0 auto 24px" }}>
             Engineered for precision.<br />Built on fixed rules.
           </h1>
           <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 540, margin: "0 auto 28px" }}>
@@ -100,7 +98,7 @@ function Purpose() {
         <div style={{ display: m ? "block" : "flex", gap: 64, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ flex: 1, marginBottom: m ? 28 : 0 }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>What It Measures</div>
-            <h2 style={{ fontSize: m ? 32 : 48, color: B.navy, fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, margin: 0 }}>
+            <h2 style={{ fontSize: m ? 32 : 48, color: B.navy, fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, margin: 0 }}>
               Not how much you earn.<br />How well it holds up.
             </h2>
           </div>
@@ -140,7 +138,7 @@ function Dimensions() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Structural Dimensions</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             What each dimension measures — in exact terms.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65 }}>
@@ -193,7 +191,7 @@ function ScoringFramework() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Mechanism</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Two blocks. One score. Zero subjectivity.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
@@ -244,7 +242,7 @@ function Interactions() {
         <div style={{ display: m ? "block" : "flex", gap: 56, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ flex: 1, marginBottom: m ? 28 : 0 }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Cross-Factor Logic</div>
-            <h2 style={{ fontSize: m ? 28 : 40, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0 }}>
+            <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", margin: 0 }}>
               Weaknesses compound. The model captures that.
             </h2>
           </div>
@@ -294,7 +292,7 @@ function Bands() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Four stability bands. Fixed thresholds.
           </h2>
         </div>
@@ -334,7 +332,7 @@ function TwoLayers() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>How the report is interpreted</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Same score. Your context.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
@@ -396,7 +394,7 @@ function Integrity() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Integrity</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
+          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
             What we will never do.
           </h2>
         </div>
@@ -431,7 +429,7 @@ function Cta() {
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
             See where your income stands.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
