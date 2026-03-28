@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { useAssessmentServer } from "@/lib/monitoring";
-// Simulator moved to standalone /simulator page — accessed via QR code
+import { generateTailoredCopy } from "@/lib/industry-tailoring";
 
 // ============================================================
 // ERROR BOUNDARY
@@ -657,6 +657,23 @@ export default function ReviewPage() {
     distanceToNext <= 4 ? "CLOSE" :
     distanceToNext <= 14 ? "MODERATE" : "FAR";
 
+  // ── Industry-tailored copy (no API — deterministic) ──
+  const v2ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
+  const tailored = generateTailoredCopy({
+    industry: industrySector,
+    structure: structureDesc,
+    incomeModel: incomeModelDesc,
+    score,
+    tier,
+    activeIncome: record.active_income_level,
+    concentration: (v2ni?.largest_source_pct as number) || record.risk_scenario_drop,
+    recurrence: (v2ni?.income_persistence_pct as number) || 0,
+    forwardVisibility: (v2ni?.forward_secured_pct as number) || 0,
+    laborDependence: (v2ni?.labor_dependence_pct as number) || 0,
+    continuityMonths: record.income_continuity_months,
+    dominantConstraint,
+  });
+
   // ── LAYER 4: Metric severity ──
   const continuitySeverity: string =
     record.income_continuity_months < 1 ? "very short" :
@@ -776,17 +793,8 @@ export default function ReviewPage() {
       const nid = v2d?.normalized_inputs as Record<string, number | string> | undefined;
       const accessCodePayload = nid ? btoa(JSON.stringify({ p: nid.income_persistence_pct, c: nid.largest_source_pct, s: nid.source_diversity_count, f: nid.forward_secured_pct, v: nid.income_variability_level, l: nid.labor_dependence_pct, q: (v2d?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" })) : "";
 
-      // Build diagnostic sentence
-      const diagSentence = (() => {
-        if (tier === "high") return "Your income is not invulnerable. But it is built to absorb a hit without forcing a crisis. That is rare.";
-        if (tier === "established") return "Your income is not fragile. But it still depends on a narrow set of conditions staying exactly as they are.";
-        if (dominantConstraint === "labor_dependence") return "Your income is not weak because you earn too little. It is weak because too much of it stops when your daily effort stops.";
-        if (dominantConstraint === "source_concentration") return "Your income is not weak because it is small. It is weak because too much of it depends on one source continuing to pay.";
-        if (dominantConstraint === "forward_visibility") return "Your income is not unstable because you lack skill. It is unstable because you cannot see far enough ahead to plan around a disruption.";
-        if (dominantConstraint === "low_continuity") return "Your income is not insecure because of what you earn. It is insecure because almost none of it would continue if you had to stop working tomorrow.";
-        if (dominantConstraint === "few_sources") return "Your income is not at risk because of how much you earn. It is at risk because losing any one source would change everything.";
-        return "Your income has structural weaknesses that are not visible in your day-to-day earnings. This report makes them visible.";
-      })();
+      // Use industry-tailored diagnostic sentence
+      const diagSentence = tailored.diagnosticSentence;
 
       // Build plain English
       const plainEng = v2Explainability?.why_this_score || (() => {
@@ -794,23 +802,11 @@ export default function ReviewPage() {
         return isHighScorer ? `${ctx}your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : `${ctx}your income is developing. ${nextBandName ? `${distanceToNext} points from ${nextBandName}.` : ""}`;
       })();
 
-      // Build killer line for page 2
-      const killerLn = record.active_income_level + record.semi_persistent_income_level >= 80
-        ? `${record.active_income_level + record.semi_persistent_income_level}% of your income still requires you to keep re-earning it.`
-        : record.active_income_level >= 50
-          ? `${record.active_income_level}% of your income is earned once and stops. It does not repeat, renew, or survive interruption.`
-          : `${100 - record.active_income_level}% of your income continues without your daily effort. That is uncommon structural protection.`;
+      // Use industry-tailored killer line
+      const killerLn = tailored.killerLine;
 
-      // Build fragility diagnostic
-      const fragDiag = (() => {
-        const fc = v2Fragility?.fragility_class;
-        if (fc === "brittle") return "A single disruption — one lost client, one slow month — could force a structural crisis. That is not a risk scenario. That is your current exposure.";
-        if (fc === "thin") return "You can likely absorb one mild setback. Two close together would create pressure fast.";
-        if (fc === "uneven") return "Parts of your income are well-protected. Other parts are not. That unevenness is where risk hides.";
-        if (fc === "supported") return "Most common disruptions would not break your structure. But the scenarios below show where your limits are.";
-        if (fc === "resilient") return "Your income can take a serious hit. The scenarios below show the few things that could still cause real damage.";
-        return "Your income has specific structural exposures. The scenarios below show exactly where they are.";
-      })();
+      // Use industry-tailored fragility diagnostic
+      const fragDiag = tailored.fragilityContext;
 
       // Build ranked factors
       const sortedIndicators = v2Indicators ? [...v2Indicators].sort((a, b) => a.normalized_value - b.normalized_value) : [];
@@ -1096,17 +1092,8 @@ export default function ReviewPage() {
 
         {/* ── 2. KILLER DIAGNOSTIC SENTENCE ── */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "16px 16px" : "24px 28px", marginBottom: 20, textAlign: "center" }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 15, fontWeight: 500 }}>
-            {(() => {
-              if (tier === "high") return "Your income is not invulnerable. But it is built to absorb a hit without forcing a crisis. That is rare.";
-              if (tier === "established") return "Your income is not fragile. But it still depends on a narrow set of conditions staying exactly as they are.";
-              if (dominantConstraint === "labor_dependence") return "Your income is not weak because you earn too little. It is weak because too much of it stops when your daily effort stops.";
-              if (dominantConstraint === "source_concentration") return "Your income is not weak because it is small. It is weak because too much of it depends on one source continuing to pay.";
-              if (dominantConstraint === "forward_visibility") return "Your income is not unstable because you lack skill. It is unstable because you cannot see far enough ahead to plan around a disruption.";
-              if (dominantConstraint === "low_continuity") return "Your income is not insecure because of what you earn. It is insecure because almost none of it would continue if you had to stop working tomorrow.";
-              if (dominantConstraint === "few_sources") return "Your income is not at risk because of how much you earn. It is at risk because losing any one source would change everything.";
-              return "Your income has structural weaknesses that are not visible in your day-to-day earnings. This report makes them visible.";
-            })()}
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: 15, fontWeight: 500 }}>
+            {tailored.diagnosticSentence}
           </p>
         </div>
 
@@ -1229,12 +1216,8 @@ export default function ReviewPage() {
 
         {/* ── KILLER LINE ── */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "14px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
-            {record.active_income_level + record.semi_persistent_income_level >= 80
-              ? `${record.active_income_level + record.semi_persistent_income_level}% of your income still requires you to keep re-earning it.`
-              : record.active_income_level >= 50
-                ? `${record.active_income_level}% of your income is earned once and stops. It does not repeat, renew, or survive interruption.`
-                : `${100 - record.active_income_level}% of your income continues without your daily effort. That is uncommon structural protection.`}
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: 15, fontWeight: 500 }}>
+            {tailored.killerLine}
           </p>
         </div>
 
@@ -1373,16 +1356,8 @@ export default function ReviewPage() {
 
         {/* ── HARD DIAGNOSTIC SENTENCE ── */}
         <div style={{ backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderLeft: `2px solid ${B.navy}`, borderRadius: 6, padding: mobile ? "14px 16px" : "20px 24px", marginBottom: 20, textAlign: "center" }}>
-          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: mobile ? 15 : 16, fontWeight: 500 }}>
-            {(() => {
-              const fc = v2Fragility?.fragility_class;
-              if (fc === "brittle") return "A single disruption — one lost client, one slow month — could force a structural crisis. That is not a risk scenario. That is your current exposure.";
-              if (fc === "thin") return "You can likely absorb one mild setback. Two close together would create pressure fast.";
-              if (fc === "uneven") return "Parts of your income are well-protected. Other parts are not. That unevenness is where risk hides.";
-              if (fc === "supported") return "Most common disruptions would not break your structure. But the scenarios below show where your limits are.";
-              if (fc === "resilient") return "Your income can take a serious hit. The scenarios below show the few things that could still cause real damage.";
-              return "Your income has specific structural exposures. The scenarios below show exactly where they are.";
-            })()}
+          <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7, fontSize: 15, fontWeight: 500 }}>
+            {tailored.fragilityContext}
           </p>
         </div>
 
