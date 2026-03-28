@@ -94,6 +94,7 @@ export default {
       if (path === "/save-record") return await handleSaveRecord(body, env, corsHeaders);
       if (path === "/get-record") return await handleGetRecord(body, env, corsHeaders);
       if (path === "/send-email") return await handleSendEmail(body, env, corsHeaders);
+      if (path === "/contact") return await handleContact(body, env, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,
@@ -471,6 +472,59 @@ Your 4-page diagnostic includes PressureMap intelligence, ranked risk scenarios,
 
   const result = await res.json();
   return new Response(JSON.stringify({ success: true, id: result.id }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// CONTACT FORM
+// ══════════════════════════════════════════════════════════
+
+async function handleContact(body, env, corsHeaders) {
+  if (!body.name || !body.email || !body.message) {
+    return new Response(JSON.stringify({ error: "Missing required fields" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  if (!env.RESEND_API_KEY) {
+    return new Response(JSON.stringify({ error: "Email not configured" }), {
+      status: 500, headers: corsHeaders,
+    });
+  }
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
+      to: "info@peoplestar.com",
+      reply_to: body.email,
+      subject: `[RunPayway Contact] ${body.subject || "General Inquiry"} - ${body.name}`,
+      html: `<div style="font-family:sans-serif;max-width:600px;">
+<h2 style="color:#0E1A2B;margin:0 0 16px;">New Contact Form Submission</h2>
+<table style="width:100%;border-collapse:collapse;">
+<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.name}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Email</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.email}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Subject</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.subject || "General"}</td></tr>
+</table>
+<div style="margin:16px 0;padding:16px;background:#F8F6F1;border-radius:8px;border:1px solid #E8E5DE;">
+<p style="margin:0;color:#0E1A2B;line-height:1.6;">${body.message.replace(/\n/g, "<br/>")}</p>
+</div>
+<p style="font-size:12px;color:#6B6155;margin:16px 0 0;">Reply directly to this email to respond to ${body.name}.</p>
+</div>`,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    return new Response(JSON.stringify({ error: "Send failed", detail: err }), {
+      status: 502, headers: corsHeaders,
+    });
+  }
+
+  return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
 }
 
 // ══════════════════════════════════════════════════════════

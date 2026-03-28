@@ -79,6 +79,31 @@ export default function ContactPage() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [sendError, setSendError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !email.trim() || !message.trim()) return;
+    setSending(true);
+    setSendError("");
+    try {
+      const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), subject, message: message.trim() }),
+      });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        setSendError("Failed to send. Please try again.");
+      }
+    } catch {
+      setSendError("Failed to send. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -320,27 +345,44 @@ export default function ContactPage() {
             </div>
 
             {/* Submit button */}
-            <button
-              onMouseEnter={() => canHover() && setBtnHovered(true)}
-              onMouseLeave={() => setBtnHovered(false)}
-              style={{
-                width: "100%",
-                height: 52,
-                borderRadius: 12,
-                background: btnHovered ? "#3D33A0" : B.purple,
-                color: "#FFFFFF",
-                fontSize: 16,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                border: "none",
-                cursor: "pointer",
-                boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease, transform 180ms ease",
-                transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
-              }}
-            >
-              {t.contact.submit}
-            </button>
+            {sent ? (
+              <div style={{
+                width: "100%", height: 52, borderRadius: 12,
+                background: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.20)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: B.teal, fontSize: 15, fontWeight: 600,
+              }}>
+                Message sent. We will be in touch.
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={handleSubmit}
+                  disabled={sending || !name.trim() || !email.trim() || !message.trim()}
+                  onMouseEnter={() => canHover() && setBtnHovered(true)}
+                  onMouseLeave={() => setBtnHovered(false)}
+                  style={{
+                    width: "100%",
+                    height: 52,
+                    borderRadius: 12,
+                    background: sending ? "rgba(75,63,174,0.5)" : btnHovered ? "#3D33A0" : B.purple,
+                    color: "#FFFFFF",
+                    fontSize: 16,
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                    border: "none",
+                    cursor: sending ? "wait" : "pointer",
+                    boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
+                    transition: "background 180ms ease, transform 180ms ease",
+                    transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
+                    opacity: (!name.trim() || !email.trim() || !message.trim()) ? 0.5 : 1,
+                  }}
+                >
+                  {sending ? "Sending..." : t.contact.submit}
+                </button>
+                {sendError && <p style={{ fontSize: 13, color: "#9B2C2C", marginTop: 8, textAlign: "center" }}>{sendError}</p>}
+              </>
+            )}
 
             {/* Security line */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
