@@ -98,7 +98,7 @@ function PricingCards() {
       <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out" }}>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.6 }}>
-            Your free score shows the problem. The report shows exactly what to fix — written by AI for your specific structure.
+            Your free score shows the problem. The report shows exactly what to fix — personalized to your industry, structure, and income model.
             <span style={{ color: B.teal, fontWeight: 600 }}> Under 2 minutes.</span>
           </p>
         </div>
@@ -179,7 +179,7 @@ function PricingCards() {
             <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
               {[
                 { text: "Everything in Free, plus:", bold: true },
-                { text: "AI-powered 4-page diagnostic written for your industry" },
+                { text: "4-page diagnostic personalized to your structure" },
                 { text: "PressureMap\u2122 structural intelligence specific to your profile" },
                 { text: "Personalized action plan with projected score impact" },
                 { text: "Risk scenarios ranked by damage to your structure" },

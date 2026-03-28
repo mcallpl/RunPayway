@@ -108,11 +108,11 @@ function ReportPreview() {
           </div>
           <div style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.20)", marginBottom: 3, textTransform: "uppercase" as const }}>In Plain English</div>
-            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", lineHeight: 1.4 }}>AI-generated interpretation specific to your industry and structure.</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", lineHeight: 1.4 }}>Interpretation personalized to your industry and structure.</div>
           </div>
         </div>
       ),
-      desc: "Your score, AI-powered plain-English interpretation, biggest structural constraint, projected impact of fixing it, and distance to the next stability band.",
+      desc: "Your score, plain-English interpretation personalized to your structure, biggest constraint, projected impact of fixing it, and distance to the next stability band.",
     },
     {
       num: "02", title: "PressureMap & Income Structure", color: B.teal,
@@ -149,7 +149,7 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "AI-generated PressureMap intelligence specific to your industry, income breakdown, biggest source loss impact, continuity window, strongest and weakest structural factors.",
+      desc: "PressureMap structural intelligence specific to your industry, income breakdown, biggest source loss impact, continuity window, strongest and weakest structural factors.",
     },
     {
       num: "03", title: "Fragility & Pressure Test", color: B.bandLimited,
@@ -193,7 +193,7 @@ function ReportPreview() {
           ))}
         </div>
       ),
-      desc: "AI-generated personalized action plan, structural tradeoff analysis, 30-day execution roadmap, and retake timing.",
+      desc: "Personalized action plan, structural tradeoff analysis, 30-day execution roadmap, and retake timing.",
     },
   ];
 
@@ -368,9 +368,9 @@ function WhatsIncluded() {
   const m = useMobile();
 
   const items = [
-    { cat: "Diagnosis", features: ["AI-powered plain-English interpretation", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
+    { cat: "Diagnosis", features: ["Plain-English interpretation personalized to your structure", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
     { cat: "Risks", features: ["Ranked disruption scenarios with exact drops", "Structural absorbency assessment", "Behavioral pattern to watch", "Band shift warnings"] },
-    { cat: "Action", features: ["AI-generated personalized action plan", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
+    { cat: "Action", features: ["Personalized action plan for your structure", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
     { cat: "Tools", features: ["RunPayway\u2122 Stability Simulator (lifetime)", "Report delivered to your email", "Cloud-stored record (never lost)", "Deterministic scoring — same answers, same score"] },
   ];
 
