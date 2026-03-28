@@ -558,7 +558,10 @@ function HeroVideo() {
           e.currentTarget.style.color = "rgba(255,255,255,0.70)";
         }}
       >
-        &#x2715;
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <line x1="4" y1="4" x2="12" y2="12" />
+          <line x1="12" y1="4" x2="4" y2="12" />
+        </svg>
       </button>
 
       {/* Curtain overlays — slide in from top and bottom */}

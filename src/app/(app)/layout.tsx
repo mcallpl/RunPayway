@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function AppLayout({
   children,
@@ -43,6 +46,7 @@ export default function AppLayout({
           </div>
         </div>
       </header>
+      <ScrollToTop />
       <main style={{ flex: 1, maxWidth: 860, width: "100%", margin: "0 auto", padding: "32px 24px 48px" }}>
         {children}
       </main>

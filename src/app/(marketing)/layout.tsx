@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
 import CookieConsent from "@/components/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
 
@@ -667,6 +668,7 @@ export default function MarketingLayout({
         )}
       </header>
 
+      <ScrollToTop />
       {/* Content */}
       <main className="flex-1">{children}</main>
 
