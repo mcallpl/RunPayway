@@ -529,18 +529,10 @@ function HowItWorksSection() {
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      background: "linear-gradient(180deg, #1F6D7A 0%, #3D2F9C 25%, #161430 55%, #0E1A2B 100%)",
-      position: "relative", overflow: "hidden",
-      paddingTop: m ? sp(8) : sp(10), paddingBottom: secY(m),
+      background: "#1C1C2E",
+      paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      {/* Ambient cosmic glow — matches hero energy */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 70% 40% at 50% 20%, rgba(31,109,122,0.15) 0%, transparent 50%)",
-      }} />
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 50% 60% at 60% 70%, rgba(75,63,174,0.12) 0%, transparent 50%)",
-      }} />
 
       <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
         <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
