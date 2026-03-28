@@ -477,53 +477,6 @@ function HeroVideo() {
 }
 
 
-/* ================================================================== */
-/* EXAMPLE RESULT PREVIEW                                              */
-/* ================================================================== */
-function ExamplePreview() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} aria-label="Example result" style={{
-      background: C.navy,
-      paddingTop: m ? sp(6) : sp(8), paddingBottom: m ? sp(6) : sp(8),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: 620, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: sp(3) }}>
-          Example result
-        </div>
-        <div style={{
-          border: "1px solid rgba(244,241,234,0.10)", borderRadius: sp(1.5),
-          padding: m ? sp(3) : sp(4),
-          background: "rgba(244,241,234,0.02)",
-        }}>
-          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(1), flexWrap: "wrap" }}>
-            <span style={{ ...score(m), color: C.sand }}>48</span>
-            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>&mdash;</span>
-            <span style={{ ...h3(m), color: "#92640A" }}>Developing Stability</span>
-          </div>
-          <p style={{ ...T.meta, color: "rgba(244,241,234,0.35)", marginBottom: sp(3) }}>
-            12 points to Established
-          </p>
-          <p style={{ ...body(m), color: "rgba(244,241,234,0.55)", marginBottom: sp(3), lineHeight: 1.6 }}>
-            Your income can likely absorb small disruptions, but one major source loss would place the structure under pressure quickly.
-          </p>
-          <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", paddingTop: sp(2), display: "flex", flexDirection: "column", gap: sp(1) }}>
-            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>
-              Primary constraint: Income concentration
-            </span>
-            <span style={{ ...T.label, color: "rgba(244,241,234,0.35)" }}>
-              Stress test: Largest source removed &#8594; projected score 21
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 
 /* ================================================================== */
 /* HOW IT WORKS                                                        */
