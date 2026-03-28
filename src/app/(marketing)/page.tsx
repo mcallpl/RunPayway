@@ -394,22 +394,7 @@ function HeroVideo() {
         </svg>
       </button>
 
-      {/* Overlay text */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 4, display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center", pointerEvents: "none",
-        background: "rgba(0,0,0,0.35)",
-      }}>
-        <p style={{ ...h2(m), fontWeight: 600, color: C.sand, textAlign: "center", margin: 0, letterSpacing: "-0.02em" }}>
-          Revenue is not stability.<br />Structure is.
-        </p>
-        <p style={{ ...T.body.desktop, fontWeight: 500, color: "rgba(244,241,234,0.60)", marginTop: sp(3), textAlign: "center" }}>
-          Measure your income stability.
-        </p>
-        <p style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginTop: sp(1) }}>
-          Six questions. Under two minutes.
-        </p>
-      </div>
+
 
       {closing && (
         <>
