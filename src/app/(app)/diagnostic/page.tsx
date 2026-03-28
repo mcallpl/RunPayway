@@ -371,7 +371,7 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // Generate PressureMap™ — Claude API only, fully personalized
+      // Generate PressureMap™ via Cloudflare Worker proxy (API key secured server-side)
       try {
         const adapted = record as Record<string, unknown>;
         const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
@@ -381,45 +381,38 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
-        const pmApiKey = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || "";
-        if (pmApiKey) {
-          const systemPrompt = "You are the PressureMap engine for RunPayway, an income stability assessment platform. You generate real-time structural intelligence briefings for individuals based on their specific industry, operating structure, income model, and assessment results. CRITICAL RULES: Never provide financial advice, investment recommendations, or predictions. Never mention specific companies, stocks, or investment vehicles. Never fabricate statistics — use directional language (rising, declining, accelerating) not fake numbers. Write in confident, institutional prose — like a strategy briefing, not a blog post. Address the user directly (your, you). Connect every observation back to the user's specific structural profile. Keep each section to 2-3 sentences maximum — concise, dense, no filler. Use present tense — this is about right now, not the future. Be SPECIFIC to the exact intersection of their industry, operating structure, and income model. Do NOT use generic language that could apply to any industry.";
-          const userPrompt = `Generate a PressureMap briefing for this individual:\n\nPROFILE:\n- Industry: ${profile.industry_sector || "General"}\n- Operating Structure: ${profile.operating_structure || "Independent"}\n- Income Model: ${profile.primary_income_model || "Mixed"}\n- Years in current structure: ${profile.years_in_structure || "Unknown"}\n- Income Stability Score: ${(adapted.final_score as number) || 0}/100 (${(adapted.stability_band as string) || "Unknown"})\n- Weakest structural factor: ${topConstraint.factor || topConstraint.label || "Unknown"} (current value: ${topConstraint.label || "Unknown"})\n\nSTRUCTURAL DATA:\n- Recurring revenue: ${(ni.income_persistence_pct as number) || 0}%\n- Top client concentration: ${(ni.largest_source_pct as number) || 0}%\n- Forward visibility: ${(ni.forward_secured_pct as number) || 0}%\n- Labor dependence: ${(ni.labor_dependence_pct as number) || 0}%\n- Earnings variability: ${(ni.income_variability_level as string) || "moderate"}\n\nReturn EXACTLY three sections in this JSON format:\n{\n  "pressure": "[2-3 sentences] What real-world forces in their SPECIFIC industry (${profile.industry_sector}), for their SPECIFIC operating structure (${profile.operating_structure}) and income model (${profile.primary_income_model}), are currently working AGAINST their weakest structural factor. Reference their exact numbers. Do NOT use language that could apply to any industry.",\n  "tailwind": "[2-3 sentences] What current condition in ${profile.industry_sector} specifically gives this ${profile.operating_structure} with a ${profile.primary_income_model} model a structural advantage or window of opportunity right now.",\n  "leverage_move": "[2-3 sentences] The single highest-leverage structural change this specific ${profile.operating_structure} in ${profile.industry_sector} earning through ${profile.primary_income_model} could make RIGHT NOW. Be operational and specific — name the exact type of arrangement, offer, or structural change that fits their profile."\n}\n\nReturn ONLY the JSON object, no other text.`;
+        const pmRes = await fetch("https://runpayway-pressuremap.cjmcallister.workers.dev", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            industry: profile.industry_sector || "",
+            operating_structure: profile.operating_structure || "",
+            income_model: profile.primary_income_model || "",
+            years_in_structure: profile.years_in_structure || "",
+            score: (adapted.final_score as number) || 0,
+            band: (adapted.stability_band as string) || "",
+            weakest_factor: topConstraint.factor || topConstraint.label || "",
+            weakest_factor_value: topConstraint.label || "",
+            recurrence_pct: (ni.income_persistence_pct as number) || 0,
+            concentration_pct: (ni.largest_source_pct as number) || 0,
+            forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
+            labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
+            variability_level: (ni.income_variability_level as string) || "moderate",
+          }),
+        });
 
-          const pmRes = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": pmApiKey,
-              "anthropic-version": "2023-06-01",
-              "anthropic-dangerous-direct-browser-access": "true",
-            },
-            body: JSON.stringify({
-              model: "claude-sonnet-4-5-20250514",
-              max_tokens: 600,
-              system: systemPrompt,
-              messages: [{ role: "user", content: userPrompt }],
-            }),
-          });
-
-          if (pmRes.ok) {
-            const pmData = await pmRes.json();
-            const pmText = pmData.content?.[0]?.text || "";
-            const jsonMatch = pmText.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              const parsed = JSON.parse(jsonMatch[0]);
-              if (parsed.pressure && parsed.tailwind && parsed.leverage_move) {
-                (record as Record<string, unknown>).pressure_map = {
-                  generated_at: new Date().toISOString(),
-                  industry: profile.industry_sector || "",
-                  operating_structure: profile.operating_structure || "",
-                  income_model: profile.primary_income_model || "",
-                  pressure: parsed.pressure,
-                  tailwind: parsed.tailwind,
-                  leverage_move: parsed.leverage_move,
-                };
-              }
-            }
+        if (pmRes.ok) {
+          const parsed = await pmRes.json();
+          if (parsed.pressure && parsed.tailwind && parsed.leverage_move) {
+            (record as Record<string, unknown>).pressure_map = {
+              generated_at: new Date().toISOString(),
+              industry: profile.industry_sector || "",
+              operating_structure: profile.operating_structure || "",
+              income_model: profile.primary_income_model || "",
+              pressure: parsed.pressure,
+              tailwind: parsed.tailwind,
+              leverage_move: parsed.leverage_move,
+            };
           }
         }
       } catch { /* PressureMap generation failed — report continues without it */ }
