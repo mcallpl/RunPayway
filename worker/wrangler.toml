@@ -3,7 +3,7 @@ main = "index.js"
 compatibility_date = "2024-01-01"
 
 [vars]
-ALLOWED_ORIGIN = "https://peoplestar.com"
+ALLOWED_ORIGIN = "*"
 
 [[d1_databases]]
 binding = "DB"

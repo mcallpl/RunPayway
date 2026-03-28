@@ -413,9 +413,14 @@ export default function DiagnosticPage() {
               tailwind: parsed.tailwind,
               leverage_move: parsed.leverage_move,
             };
+          } else {
+            console.error("PressureMap response incomplete:", parsed);
           }
+        } else {
+          const errText = await pmRes.text();
+          console.error("PressureMap Worker error:", pmRes.status, errText);
         }
-      } catch { /* PressureMap generation failed — report continues without it */ }
+      } catch (pmErr) { console.error("PressureMap fetch failed:", pmErr); }
 
       // Generate "In Plain English" via Claude Worker
       try {
