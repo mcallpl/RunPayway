@@ -520,6 +520,28 @@ export default function InitializationPage() {
             )}
           </div>
 
+          {/* Email field */}
+          <div style={{ position: "relative", marginBottom: 32 }}>
+            <input
+              type="email"
+              value={form.recipient_email}
+              onChange={(e) => update("recipient_email", e.target.value)}
+              placeholder="Email (optional - to receive your report)"
+              onFocus={focusHandler}
+              onBlur={blurHandler}
+              style={{
+                width: "100%", height: 52, padding: "0 20px",
+                borderRadius: 12, border: "1px solid rgba(255,255,255,0.10)",
+                background: "rgba(255,255,255,0.03)", color: "#F4F1EA",
+                fontSize: 15, fontWeight: 400, letterSpacing: "-0.01em",
+                outline: "none", boxSizing: "border-box",
+                transition: "border-color 200ms ease",
+                textAlign: "center",
+              }}
+              onKeyDown={(e) => { if (e.key === "Enter" && canContinueStep0) goToStep(1); }}
+            />
+          </div>
+
           {/* CTA */}
           <button
             className="cta-tick"
