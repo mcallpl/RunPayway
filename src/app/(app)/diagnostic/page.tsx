@@ -551,9 +551,20 @@ export default function DiagnosticPage() {
           const v2ForEmail = ((recForEmail._v2 || {}) as Record<string, unknown>);
           const explForEmail = (v2ForEmail.explainability || {}) as Record<string, string>;
           const constraintsForEmail = (v2ForEmail.constraints || {}) as Record<string, unknown>;
-          const topCEmail = (Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
-            ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
-            : "";
+          const rootConstraintEmail = (constraintsForEmail.root_constraint as string) || "";
+          const constraintLabels: Record<string, string> = {
+            high_concentration: "Too much income depends on one source",
+            weak_forward_visibility: "Not enough income secured ahead of time",
+            high_labor_dependence: "Too much income stops when work stops",
+            low_persistence: "Not enough income repeats on its own",
+            low_source_diversity: "Income comes from too few sources",
+            high_variability: "Income swings too much month to month",
+          };
+          const topCEmail = constraintLabels[rootConstraintEmail]
+            || ((Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
+              ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
+              : "")
+            || "Structural weakness identified";
           await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

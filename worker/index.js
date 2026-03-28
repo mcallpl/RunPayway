@@ -407,7 +407,7 @@ ${body.interpretation ? `<p style="font-size:13px;color:${muted};line-height:1.6
 <p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Structure</p>
 <p style="font-size:13px;font-weight:500;color:${navy};margin:0 0 16px;">${body.operating_structure || ""}</p>
 <p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Primary Constraint</p>
-<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.constraint || ""}</p>
+<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.constraint || "See your full report"}</p>
 </td>
 </tr>
 </table>
@@ -422,7 +422,7 @@ ${body.interpretation ? `<p style="font-size:13px;color:${muted};line-height:1.6
 <p style="font-size:12px;color:${muted};line-height:1.6;margin:0 0 16px;">
 Your 4-page diagnostic includes PressureMap intelligence, ranked risk scenarios, a personalized action plan, and lifetime access to the Stability Simulator.
 </p>
-<a href="https://peoplestar.com/RunPayway/review" style="display:inline-block;padding:10px 24px;background-color:${navy};color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;border-radius:8px;">View Full Report</a>
+<a href="https://peoplestar.com/RunPayway/" style="display:inline-block;padding:10px 24px;background-color:${navy};color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;border-radius:8px;">Go to RunPayway</a>
 </td></tr>
 </table>
 
