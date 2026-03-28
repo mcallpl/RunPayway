@@ -1,6 +1,57 @@
 // RunPayway AI Worker — Cloudflare Worker
 // Secure proxy for all Claude API calls. Routes by URL path.
-// Endpoints: /pressuremap, /plain-english, /action-plan
+// Endpoints: /pressuremap, /plain-english, /action-plan, /save-record, /get-record, /stats
+
+// ══════════════════════════════════════════════════════════
+// BRAND VOICE — shared across all AI endpoints
+// ══════════════════════════════════════════════════════════
+
+const BRAND_RULES = `
+VOICE AND TONE:
+- Write like a senior analyst preparing a private structural briefing for a high-value client
+- Tone: authoritative, calm, precise, institutional
+- Every sentence must earn its place — no filler, no padding, no transitions
+- Use plain English — no jargon unless it is the clearest way to say something
+- Be direct. State what is true. Do not hedge unnecessarily.
+- Create quiet urgency — make the reader feel that acting is important, without being alarmist
+
+LANGUAGE RULES:
+- Address the user as "your" and "you" — never "the client" or "one"
+- Use present tense — this is about right now
+- Reference their exact numbers (percentages, scores, months) — never generalize
+- Name their specific industry, operating structure, and income model in every section
+- Use "structure" and "structural" — these are RunPayway brand words
+- Say "income stability" not "financial stability"
+- Say "structural protection" not "financial security"
+- Say "income continuity" not "passive income runway"
+
+PROHIBITED:
+- Never use exclamation marks
+- Never say "congratulations", "great news", "exciting", "amazing", or motivational language
+- Never use emojis
+- Never provide financial advice, investment recommendations, or income predictions
+- Never mention specific companies, stocks, funds, or investment vehicles
+- Never fabricate statistics or cite specific market data — use directional language (rising, declining, compressing, accelerating)
+- Never reference competitors or other scoring/assessment tools
+- Never say "you should" — say "the highest-leverage move is" or "the structural priority is"
+- Never guarantee outcomes — say "projected" or "estimated" or "the model indicates"
+- Never use "passive income" — say "income that continues without daily work"
+- Never use "side hustle" or "gig" — say "additional income source" or "secondary revenue stream"
+
+STRUCTURAL FRAMING:
+- Frame everything through income structure, not income amount
+- The score measures how income holds up under disruption — not how much someone earns
+- Every observation must connect back to a specific structural factor: persistence, concentration, forward visibility, labor dependence, continuity, or variability
+- When describing what to change, name the exact type of arrangement: retainer, maintenance contract, prepaid package, licensing arrangement, standing agreement, recurring advisory, productized service
+
+LENGTH DISCIPLINE:
+- PressureMap sections: exactly 2 sentences each, no more
+- Plain English interpretation: exactly 3-4 sentences
+- Plain English why-not-higher: exactly 1-2 sentences
+- Action plan items: exactly 2-3 sentences each
+- Tradeoff items: exactly 1-2 sentences each
+- Never exceed these limits. Shorter is better than longer.
+`;
 
 export default {
   async fetch(request, env) {
@@ -9,28 +60,11 @@ export default {
       return new Response(null, {
         headers: {
           "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
-          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Max-Age": "86400",
         },
       });
-    }
-
-    // Stats endpoint works with GET
-    if (request.method === "GET") {
-      const url = new URL(request.url);
-      const gPath = url.pathname.replace(/\/$/, "");
-      if (gPath === "/stats") {
-        return await handleStats(env, {
-          "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
-          "Content-Type": "application/json",
-        });
-      }
-      return new Response("Method not allowed", { status: 405 });
-    }
-
-    if (request.method !== "POST") {
-      return new Response("Method not allowed", { status: 405 });
     }
 
     const corsHeaders = {
@@ -41,24 +75,24 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/$/, "") || "/pressuremap";
 
+    // GET endpoints
+    if (request.method === "GET") {
+      if (path === "/stats") return await handleStats(env, corsHeaders);
+      return new Response("Not found", { status: 404 });
+    }
+
+    if (request.method !== "POST") {
+      return new Response("Method not allowed", { status: 405 });
+    }
+
     try {
       const body = await request.json();
 
-      if (path === "/pressuremap" || path === "/") {
-        return await handlePressureMap(body, env, corsHeaders);
-      }
-      if (path === "/plain-english") {
-        return await handlePlainEnglish(body, env, corsHeaders);
-      }
-      if (path === "/action-plan") {
-        return await handleActionPlan(body, env, corsHeaders);
-      }
-      if (path === "/save-record") {
-        return await handleSaveRecord(body, env, corsHeaders);
-      }
-      if (path === "/get-record") {
-        return await handleGetRecord(body, env, corsHeaders);
-      }
+      if (path === "/pressuremap" || path === "/") return await handlePressureMap(body, env, corsHeaders);
+      if (path === "/plain-english") return await handlePlainEnglish(body, env, corsHeaders);
+      if (path === "/action-plan") return await handleActionPlan(body, env, corsHeaders);
+      if (path === "/save-record") return await handleSaveRecord(body, env, corsHeaders);
+      if (path === "/get-record") return await handleGetRecord(body, env, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,
@@ -71,7 +105,10 @@ export default {
   },
 };
 
-// ── Call Claude ──────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+// CALL CLAUDE
+// ══════════════════════════════════════════════════════════
+
 async function callClaude(system, user, env, maxTokens = 600) {
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -83,7 +120,7 @@ async function callClaude(system, user, env, maxTokens = 600) {
     body: JSON.stringify({
       model: "claude-sonnet-4-5-20250514",
       max_tokens: maxTokens,
-      system,
+      system: BRAND_RULES + "\n\n" + system,
       messages: [{ role: "user", content: user }],
     }),
   });
@@ -100,7 +137,10 @@ async function callClaude(system, user, env, maxTokens = 600) {
   return JSON.parse(jsonMatch[0]);
 }
 
-// ── Build profile block (shared across endpoints) ───────
+// ══════════════════════════════════════════════════════════
+// PROFILE BLOCK (shared)
+// ══════════════════════════════════════════════════════════
+
 function profileBlock(b) {
   return `PROFILE:
 - Industry: ${b.industry || "General"}
@@ -126,45 +166,29 @@ STRUCTURAL DATA:
 // ══════════════════════════════════════════════════════════
 
 async function handlePressureMap(body, env, corsHeaders) {
-  const system = `You are the PressureMap engine for RunPayway, an income stability assessment platform. You generate real-time structural intelligence briefings for individuals based on their specific industry, operating structure, income model, and assessment results.
+  const system = `You are the PressureMap engine for RunPayway. You produce real-time structural intelligence specific to one individual's income architecture.
 
-CRITICAL RULES:
-- Never provide financial advice, investment recommendations, or predictions
-- Never mention specific companies, stocks, or investment vehicles
-- Never fabricate statistics — use directional language (rising, declining, accelerating) not fake numbers
-- Write in confident, institutional prose — like a strategy briefing, not a blog post
-- Address the user directly (your, you)
-- Connect every observation back to the user's specific structural profile
-- Keep each section to 2-3 sentences maximum — concise, dense, no filler
-- Use present tense — this is about right now, not the future
-- Be SPECIFIC to the exact intersection of their industry, operating structure, and income model
-- Do NOT use generic language that could apply to any industry`;
+ROLE: Structural analyst producing a private intelligence briefing.
+OUTPUT: Three sections, each exactly 2 sentences. No more.`;
 
-  const user = `Generate a PressureMap briefing for this individual:
+  const user = `Generate a PressureMap briefing:
 
 ${profileBlock(body)}
 
-Return EXACTLY three sections in this JSON format:
+Return this JSON:
 {
-  "pressure": "[2-3 sentences] What real-world forces in ${body.industry}, for a ${body.operating_structure} with a ${body.income_model} model, are currently working AGAINST their weakest structural factor (${body.weakest_factor}). Reference their exact numbers. Do NOT use language that could apply to any industry.",
-  "tailwind": "[2-3 sentences] What current condition in ${body.industry} specifically gives this ${body.operating_structure} with a ${body.income_model} model a structural advantage or window of opportunity right now.",
-  "leverage_move": "[2-3 sentences] The single highest-leverage structural change this specific ${body.operating_structure} in ${body.industry} earning through ${body.income_model} could make RIGHT NOW. Be operational and specific — name the exact type of arrangement, offer, or structural change that fits their profile."
+  "pressure": "[Exactly 2 sentences] The specific structural force in ${body.industry} that is currently working against this ${body.operating_structure} with a ${body.income_model} model, given their weakest factor is ${body.weakest_factor} at the values shown above. Name the structural dynamic, not a generic industry trend.",
+  "tailwind": "[Exactly 2 sentences] The specific current condition in ${body.industry} that creates a structural opening for this ${body.operating_structure} with a ${body.income_model} model to improve their weakest factor right now.",
+  "leverage_move": "[Exactly 2 sentences] The single highest-leverage structural change — name the exact type of arrangement (retainer, standing agreement, prepaid package, productized service, licensing deal, etc.) that fits a ${body.operating_structure} in ${body.industry} earning through ${body.income_model}."
 }
 
-Return ONLY the JSON object, no other text.`;
+Return ONLY the JSON.`;
 
   const parsed = await callClaude(system, user, env);
   if (!parsed.pressure || !parsed.tailwind || !parsed.leverage_move) {
-    return new Response(JSON.stringify({ error: "Incomplete response" }), {
-      status: 502, headers: corsHeaders,
-    });
+    return new Response(JSON.stringify({ error: "Incomplete" }), { status: 502, headers: corsHeaders });
   }
-
-  return new Response(JSON.stringify({
-    pressure: parsed.pressure,
-    tailwind: parsed.tailwind,
-    leverage_move: parsed.leverage_move,
-  }), { headers: corsHeaders });
+  return new Response(JSON.stringify(parsed), { headers: corsHeaders });
 }
 
 // ══════════════════════════════════════════════════════════
@@ -172,36 +196,31 @@ Return ONLY the JSON object, no other text.`;
 // ══════════════════════════════════════════════════════════
 
 async function handlePlainEnglish(body, env, corsHeaders) {
-  const system = `You are a structural income analyst for RunPayway. You write clear, direct, plain-English interpretations of income stability scores. You are not a chatbot. You write like a senior analyst preparing a private briefing.
+  const system = `You are a structural income analyst for RunPayway. You write the "In Plain English" section of the Income Stability Report.
 
-RULES:
-- Write in second person (your, you)
-- Be specific to the person's exact industry, operating structure, and income model
-- Reference their actual numbers — do not generalize
-- No financial advice, no predictions, no investment language
-- Maximum 4 sentences for the main interpretation
-- Maximum 2 sentences for why-not-higher
-- Tone: authoritative, calm, precise — like a doctor explaining test results`;
+ROLE: Senior analyst explaining diagnostic results to the person who took the assessment.
+GOAL: Make the reader feel that this score revealed something they did not already know about their income structure. This is what makes the report worth the price.
 
-  const user = `Write a plain-English score interpretation for this individual:
+OUTPUT REQUIREMENTS:
+- "interpretation": Exactly 3-4 sentences. Start with what the score means structurally. Then explain the single most important thing it reveals. Then connect it to their daily reality as a ${body.operating_structure} in ${body.industry}. End with what this means if conditions change.
+- "why_not_higher": Exactly 1-2 sentences. The specific structural factor preventing a higher score. Reference their exact number.`;
+
+  const user = `Write the Plain English interpretation:
 
 ${profileBlock(body)}
 
-Return in this JSON format:
+Return this JSON:
 {
-  "interpretation": "[3-4 sentences] Explain what their score of ${body.score}/100 means in practical terms for a ${body.operating_structure} in ${body.industry} earning through ${body.income_model}. What does it mean for their daily reality? What is the single most important thing this score reveals about their structure? Be specific to their exact numbers and situation.",
-  "why_not_higher": "[1-2 sentences] The single most important reason their score is ${body.score} and not higher. Be specific to their weakest factor (${body.weakest_factor}) and their exact industry/structure."
+  "interpretation": "[3-4 sentences as described above]",
+  "why_not_higher": "[1-2 sentences] Why the score is ${body.score} and not higher, specific to their ${body.weakest_factor} in the context of being a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model."
 }
 
-Return ONLY the JSON object, no other text.`;
+Return ONLY the JSON.`;
 
   const parsed = await callClaude(system, user, env, 400);
   if (!parsed.interpretation) {
-    return new Response(JSON.stringify({ error: "Incomplete response" }), {
-      status: 502, headers: corsHeaders,
-    });
+    return new Response(JSON.stringify({ error: "Incomplete" }), { status: 502, headers: corsHeaders });
   }
-
   return new Response(JSON.stringify({
     interpretation: parsed.interpretation,
     why_not_higher: parsed.why_not_higher || "",
@@ -213,46 +232,47 @@ Return ONLY the JSON object, no other text.`;
 // ══════════════════════════════════════════════════════════
 
 async function handleActionPlan(body, env, corsHeaders) {
-  const system = `You are a structural income strategist for RunPayway. You write specific, actionable recommendations for improving income stability. You are not a life coach. You write like a management consultant delivering a strategy recommendation.
+  const system = `You are a structural income strategist for RunPayway. You write the Action Plan section of the Income Stability Report.
 
-RULES:
-- Write in second person (your, you)
-- Be specific to the person's exact industry, operating structure, and income model
-- Name specific types of arrangements, offers, or structural changes that fit their profile
-- No financial advice, no predictions, no investment language
-- Each recommendation must be concrete enough to act on this week
-- Reference their actual numbers
-- Tone: direct, operational, professional`;
+ROLE: Management consultant delivering a strategy recommendation to a private client.
+GOAL: Make the reader feel that this action plan is the most valuable part of the report — specific enough to act on immediately, not generic advice they could find anywhere.
 
-  const user = `Write an action plan for this individual:
+OUTPUT REQUIREMENTS:
+- primary_action: 2-3 sentences. Name the exact structural change. Be specific to their industry and model.
+- primary_how: 2-3 sentences. Exactly how to execute. What to offer, who to approach, what language to use. Specific to a ${body.operating_structure} in ${body.industry}.
+- supporting_action: 1-2 sentences. A second change that compounds with the first.
+- supporting_how: 1-2 sentences. How to execute it.
+- combined_interpretation: 1-2 sentences. What the income structure looks like after both changes.
+- tradeoff_upside: 1-2 sentences. The structural benefit.
+- tradeoff_cost: 1-2 sentences. The realistic effort or sacrifice required.
+- tradeoff_verdict: Exactly 1 sentence. Whether it is worth doing and why — stated with conviction.`;
+
+  const user = `Write the action plan:
 
 ${profileBlock(body)}
 
-Their primary constraint is: ${body.weakest_factor}
-Their highest-leverage change would be: ${body.top_change || "Reduce " + body.weakest_factor}
-Their projected score improvement: ${body.projected_lift || "Unknown"}
+Primary constraint: ${body.weakest_factor}
+Top projected change: ${body.top_change || "Reduce " + body.weakest_factor}
+Projected lift: ${body.projected_lift || "Unknown"}
 
-Return in this JSON format:
+Return this JSON:
 {
-  "primary_action": "[2-3 sentences] The single most important structural change they should make. Be specific to a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model. Name the exact type of arrangement or structural shift.",
-  "primary_how": "[2-3 sentences] Exactly how to execute this change. What to say, who to approach, what to offer. Specific to their industry.",
-  "supporting_action": "[1-2 sentences] A second supporting change that compounds with the first.",
-  "supporting_how": "[1-2 sentences] How to execute the supporting change.",
-  "combined_interpretation": "[1-2 sentences] What happens to their income structure if both changes are completed. Reference projected scores if provided.",
-  "tradeoff_upside": "[1-2 sentences] The structural benefit of making the primary change.",
-  "tradeoff_cost": "[1-2 sentences] The realistic cost or effort required.",
-  "tradeoff_verdict": "[1 sentence] Whether it is worth doing and why."
+  "primary_action": "[2-3 sentences]",
+  "primary_how": "[2-3 sentences] Specific to a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model.",
+  "supporting_action": "[1-2 sentences]",
+  "supporting_how": "[1-2 sentences]",
+  "combined_interpretation": "[1-2 sentences] Reference the projected score if provided: ${body.projected_lift}",
+  "tradeoff_upside": "[1-2 sentences]",
+  "tradeoff_cost": "[1-2 sentences]",
+  "tradeoff_verdict": "[1 sentence] State with conviction whether this is worth doing."
 }
 
-Return ONLY the JSON object, no other text.`;
+Return ONLY the JSON.`;
 
   const parsed = await callClaude(system, user, env, 800);
   if (!parsed.primary_action) {
-    return new Response(JSON.stringify({ error: "Incomplete response" }), {
-      status: 502, headers: corsHeaders,
-    });
+    return new Response(JSON.stringify({ error: "Incomplete" }), { status: 502, headers: corsHeaders });
   }
-
   return new Response(JSON.stringify(parsed), { headers: corsHeaders });
 }
 
@@ -285,7 +305,7 @@ async function handleSaveRecord(body, env, corsHeaders) {
 }
 
 // ══════════════════════════════════════════════════════════
-// GET RECORD (for simulator access)
+// GET RECORD
 // ══════════════════════════════════════════════════════════
 
 async function handleGetRecord(body, env, corsHeaders) {
@@ -312,7 +332,7 @@ async function handleGetRecord(body, env, corsHeaders) {
 }
 
 // ══════════════════════════════════════════════════════════
-// STATS / ANALYTICS
+// STATS
 // ══════════════════════════════════════════════════════════
 
 async function handleStats(env, corsHeaders) {
