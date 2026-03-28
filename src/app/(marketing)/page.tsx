@@ -220,7 +220,7 @@ function HeroSection() {
 
   return (
     <section ref={ref} aria-label="Hero" style={{
-      background: "linear-gradient(145deg, #0E1A2B 0%, #1A1248 25%, #4B3FAE 55%, #6B3FA0 75%, #1F6D7A 100%)",
+      background: C.heroGradient,
       position: "relative", overflow: "hidden",
     }}>
       {/* Multi-layer cosmic atmosphere */}
@@ -529,7 +529,7 @@ function HowItWorksSection() {
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      background: "linear-gradient(180deg, #1F6D7A 0%, #2A1A5E 20%, #1A1248 50%, #0E1A2B 100%)",
+      background: "linear-gradient(180deg, #1F6D7A 0%, #3D2F9C 25%, #161430 55%, #0E1A2B 100%)",
       position: "relative", overflow: "hidden",
       paddingTop: m ? sp(8) : sp(10), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
