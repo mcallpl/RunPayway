@@ -167,7 +167,7 @@ function PricingCards() {
               <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.10)", marginBottom: 16 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.purple }}>Most Popular</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>RunPayway&#8482; Diagnostic Report</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>RunPayway\u2122 Diagnostic Report</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$69</span>
                 <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
@@ -185,7 +185,7 @@ function PricingCards() {
                 { text: "Tradeoff analysis for each move" },
                 { text: "Week-by-week execution roadmap" },
                 { text: "Assessment confidence and durability grade" },
-                { text: "Lifetime access to RunPayway&#8482; Stability Simulator" },
+                { text: "Lifetime access to RunPayway\u2122 Stability Simulator" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
@@ -232,7 +232,7 @@ function PricingCards() {
               <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(26,122,109,0.15)", marginBottom: 16 }}>
                 <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Best Value</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>RunPayway\u2122 Stability Monitoring</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$149</span>
                 <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>/year</span>
