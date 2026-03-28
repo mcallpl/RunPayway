@@ -220,7 +220,7 @@ function HeroSection() {
 
   return (
     <section ref={ref} aria-label="Hero" style={{
-      position: "relative", overflow: "hidden",
+      position: "relative",
     }}>
       {/* Multi-layer cosmic atmosphere */}
       {/* Primary purple bloom — right side, behind card */}
@@ -1297,7 +1297,7 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
-      <div style={{ background: C.heroGradient, backgroundAttachment: "fixed" }}>
+      <div className="seamless-gradient" style={{ background: C.heroGradient, backgroundAttachment: "fixed" }}>
         <HeroSection />
         <HeroVideo />
         <HowItWorksSection />
