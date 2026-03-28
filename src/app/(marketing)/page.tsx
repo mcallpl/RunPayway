@@ -398,38 +398,72 @@ function HowItWorksSection() {
   return (
     <section ref={ref} aria-label="How it works" style={{
       background: C.sandBg,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(16),
+      paddingBottom: m ? sp(10) : sp(16),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.navy }}>
-            Three steps. No financial data required.
+        {/* Heading — big, bold, breathing */}
+        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
+          <h2 style={{
+            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
+            color: C.navy, letterSpacing: "-0.03em",
+            maxWidth: 700,
+          }}>
+            Three steps.<br />
+            No financial data required.
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(2.5) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(4) : sp(5) }}>
           {steps.map((s, i) => (
             <div key={s.num} style={{
-              padding: m ? sp(3) : sp(4), borderRadius: sp(1),
-              backgroundColor: C.white, border: `1px solid ${C.border}`,
-              display: "flex", flexDirection: "column",
-              ...fadeIn(visible, 100 + i * 100),
+              ...fadeIn(visible, 150 + i * 120),
             }}>
-              <div style={{ ...T.label, fontWeight: 600, color: C.teal, marginBottom: sp(2) }}>{s.num}</div>
-              <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
-              <p style={{ ...body(m), color: C.muted, margin: 0, flex: 1 }}>{s.desc}</p>
-              <div style={{ marginTop: sp(3), paddingTop: sp(2), borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: sp(1) }}>
+              {/* Step number — large, teal, standalone */}
+              <div style={{
+                fontSize: m ? 40 : 52, fontWeight: 600, color: C.teal,
+                letterSpacing: "-0.03em", lineHeight: 1,
+                marginBottom: sp(3),
+              }}>{s.num}</div>
+
+              {/* Title — bold, tight */}
+              <h3 style={{
+                fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy,
+                lineHeight: 1.2, letterSpacing: "-0.02em",
+                marginBottom: sp(2),
+              }}>{s.title}</h3>
+
+              {/* Description — lighter, generous line height */}
+              <p style={{
+                ...body(m), color: C.muted, margin: 0,
+                marginBottom: sp(4),
+              }}>{s.desc}</p>
+
+              {/* Trust line — separated, quiet */}
+              <div style={{
+                paddingTop: sp(3),
+                borderTop: `1px solid ${C.border}`,
+                display: "flex", alignItems: "center", gap: sp(1),
+              }}>
                 <span style={{ color: C.teal, fontSize: 14 }}>&#x2713;</span>
-                <span style={{ ...T.label, color: C.muted }}>{s.trust}</span>
+                <span style={{ ...T.label, color: C.light }}>{s.trust}</span>
               </div>
             </div>
           ))}
         </div>
 
-        <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(4), ...fadeIn(visible, 400) }}>
-          Same answers always produce the same score &bull; Deterministic scoring &bull; Methodology published
-        </p>
+        {/* Bottom trust strip — generous space above */}
+        <div style={{
+          marginTop: m ? sp(8) : sp(12),
+          paddingTop: sp(4),
+          borderTop: `1px solid ${C.border}`,
+          ...fadeIn(visible, 500),
+        }}>
+          <p style={{ ...T.meta, color: C.light, textAlign: m ? "left" : "center" }}>
+            Same answers always produce the same score &bull; Deterministic scoring &bull; Methodology published
+          </p>
+        </div>
       </div>
     </section>
   );
