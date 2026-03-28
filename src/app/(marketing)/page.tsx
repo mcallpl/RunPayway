@@ -105,7 +105,7 @@ const maxW = 1200;
 const readW = 740;
 const heroW = 660;
 const padX = { desktop: 40, mobile: 20 };
-const sectionGap = { desktop: sp(12), mobile: sp(9) };
+const sectionGap = { desktop: sp(15), mobile: sp(10) };
 
 /* Helpers */
 const h1 = (m: boolean) => m ? T.h1.mobile : T.h1.desktop;
@@ -610,32 +610,36 @@ function WhatItMeasures() {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
   const dims = [
-    { num: "01", label: "Recurring Income", accent: C.teal, metric: "0%", metricLabel: "recurring",
+    { num: "01", label: "Recurring Income", accent: C.teal, metric: "0%", metricLabel: "recurring", barPct: 0,
       title: "Recurring income proportion",
       desc: "What percentage of your income renews automatically through retainers, subscriptions, or standing contracts." },
-    { num: "02", label: "Concentration", accent: C.purple, metric: "55%", metricLabel: "one client",
+    { num: "02", label: "Concentration", accent: C.purple, metric: "55%", metricLabel: "one client", barPct: 55,
       title: "Income concentration",
       desc: "How much of your income depends on a single source. Higher concentration increases structural risk." },
-    { num: "03", label: "Visibility", accent: "#D4940A", metric: "<30", metricLabel: "days booked",
+    { num: "03", label: "Visibility", accent: "#D4940A", metric: "<30", metricLabel: "days booked", barPct: 25,
       title: "Forward income visibility",
       desc: "How far into the future your income is already committed — booked, contracted, or otherwise secured." },
-    { num: "04", label: "Continuity", accent: "#DC4A4A", metric: "100%", metricLabel: "labor",
+    { num: "04", label: "Continuity", accent: "#DC4A4A", metric: "100%", metricLabel: "labor", barPct: 100,
       title: "Income continuity without active labor",
       desc: "How long income continues if you stop working. Measures dependence on daily effort." },
   ];
 
   return (
     <section ref={ref} aria-label="What this score measures" style={{
-      background: C.white,
+      background: "#1C1C2E",
       paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ maxWidth: 560, marginBottom: sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>
+        {/* Centered header with eyebrow */}
+        <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
+          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#3DD8C5", marginBottom: sp(1.5) }}>
+            Four Dimensions of Stability
+          </div>
+          <h2 style={{ ...h2(m), color: "#FFFFFF", marginBottom: sp(2) }}>
             What this score measures.
           </h2>
-          <p style={{ ...body(m), color: C.muted }}>
+          <p style={{ ...body(m), color: "rgba(255,255,255,0.50)", maxWidth: 520, margin: "0 auto" }}>
             Six questions are used to evaluate four structural dimensions of income stability.
           </p>
         </div>
@@ -648,26 +652,62 @@ function WhatItMeasures() {
                 onMouseEnter={() => canHover() && setHoverIdx(i)}
                 onMouseLeave={() => setHoverIdx(null)}
                 style={{
-                  background: C.navy, borderRadius: sp(1.5),
-                  padding: m ? sp(3.5) : sp(4), position: "relative", overflow: "hidden",
-                  transform: hovered ? "translateY(-3px)" : "translateY(0)",
-                  boxShadow: hovered ? "0 12px 40px rgba(14,26,43,0.20)" : "0 4px 16px rgba(14,26,43,0.08)",
-                  transition: "transform 250ms ease, box-shadow 250ms ease",
-                  ...fadeIn(visible, 100 + i * 80),
+                  background: "rgba(255,255,255,0.04)",
+                  borderRadius: sp(2), position: "relative", overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  padding: m ? sp(3) : sp(4),
+                  transform: hovered ? "translateY(-4px)" : "translateY(0)",
+                  boxShadow: hovered
+                    ? `0 16px 48px rgba(0,0,0,0.25), 0 0 0 1px ${d.accent}30`
+                    : "0 4px 20px rgba(0,0,0,0.12)",
+                  transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease",
+                  ...fadeIn(visible, 100 + i * 100),
                 }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: d.accent, opacity: hovered ? 1 : 0.5, transition: "opacity 250ms" }} />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2) }}>
+                {/* Accent bar */}
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, height: 3,
+                  background: `linear-gradient(90deg, ${d.accent}, ${d.accent}60)`,
+                  opacity: hovered ? 1 : 0.6, transition: "opacity 300ms",
+                }} />
+
+                {/* Accent glow on hover */}
+                <div style={{
+                  position: "absolute", top: -40, right: -40, width: 120, height: 120,
+                  borderRadius: "50%",
+                  background: `radial-gradient(circle, ${d.accent}12 0%, transparent 70%)`,
+                  opacity: hovered ? 1 : 0, transition: "opacity 400ms",
+                  pointerEvents: "none",
+                }} />
+
+                {/* Header: number + label + metric */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2.5), position: "relative" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: sp(1.25) }}>
-                    <span style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.num}</span>
-                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{d.label}</span>
+                    <span style={{
+                      fontSize: m ? 22 : 26, fontWeight: 600, color: d.accent,
+                      letterSpacing: "-0.02em",
+                    }}>{d.num}</span>
+                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.35)" }}>{d.label}</span>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.metric}</div>
-                    <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
+                    <div style={{ fontSize: m ? 22 : 26, fontWeight: 600, color: d.accent, letterSpacing: "-0.02em" }}>{d.metric}</div>
+                    <div style={{ ...T.meta, color: "rgba(255,255,255,0.35)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
                   </div>
                 </div>
-                <h3 style={{ ...h3(m), fontWeight: 500, color: C.sand, marginBottom: sp(1.25) }}>{d.title}</h3>
-                <p style={{ ...body(m), color: "rgba(244,241,234,0.45)", margin: 0 }}>{d.desc}</p>
+
+                {/* Visual metric bar */}
+                <div style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.06)", marginBottom: sp(2.5), overflow: "hidden" }}>
+                  <div style={{
+                    height: "100%", borderRadius: 2,
+                    backgroundColor: d.accent,
+                    width: visible ? `${d.barPct}%` : "0%",
+                    transition: `width 1.5s cubic-bezier(0.16, 1, 0.3, 1) ${300 + i * 150}ms`,
+                    opacity: 0.7,
+                  }} />
+                </div>
+
+                {/* Title + description */}
+                <h3 style={{ ...h3(m), fontWeight: 500, color: "#FFFFFF", marginBottom: sp(1.25) }}>{d.title}</h3>
+                <p style={{ ...body(m), color: "rgba(255,255,255,0.45)", margin: 0 }}>{d.desc}</p>
               </div>
             );
           })}
