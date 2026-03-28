@@ -1297,7 +1297,7 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
-      <div style={{ background: C.heroGradient }}>
+      <div style={{ background: C.heroGradient, backgroundAttachment: "fixed" }}>
         <HeroSection />
         <HeroVideo />
         <HowItWorksSection />
