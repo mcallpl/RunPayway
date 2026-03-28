@@ -8,4 +8,4 @@ ALLOWED_ORIGIN = "https://peoplestar.com"
 [[d1_databases]]
 binding = "DB"
 database_name = "runpayway-records"
-database_id = "placeholder"
+database_id = "311e5994-7568-4461-b54f-447414737053"
