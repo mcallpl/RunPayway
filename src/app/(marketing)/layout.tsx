@@ -591,7 +591,7 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, ...MORE_LINKS].map((link, i) => (
+              {[...NAV_LINKS, ...MORE_LINKS].filter(link => link.href !== "/verify").map((link, i) => (
                 <Link
                   key={link.label}
                   href={link.href}
