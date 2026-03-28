@@ -688,6 +688,20 @@ function AuthorityBlock() {
           <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Model Version: RP-2.0</span>
           <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Assessment Type: Structural Income Stability Diagnostic</span>
         </div>
+
+        {/* Large methodology link */}
+        <div style={{ marginTop: m ? sp(8) : sp(10), ...fadeIn(visible, 400) }}>
+          <Link href="/methodology" style={{
+            display: "inline-flex", alignItems: "center", gap: sp(1.5),
+            textDecoration: "none", transition: "opacity 200ms ease",
+          }}
+            onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          >
+            <span style={{ color: C.teal, fontSize: m ? 32 : 44, lineHeight: 1, fontWeight: 600 }}>&#x203A;</span>
+            <span style={{ fontSize: m ? 28 : 40, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em" }}>View full methodology</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
