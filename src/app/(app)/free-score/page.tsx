@@ -365,23 +365,23 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ══ 4. PROVE IT — Testimonials (navy, dramatic) ══ */}
-        <section style={{ background: B.navy, paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop }}>
-          <div style={{ maxWidth: SP.maxW, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <h2 style={{ ...F.h2, fontSize: mobile ? 22 : 28, fontFamily: DISPLAY_FONT, color: "#F4F1EA", textAlign: "center", marginBottom: 36 }}>
+        {/* ══ 4. PROVE IT — Testimonials ══ */}
+        <section style={{ background: B.navy, paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64 }}>
+          <div style={{ maxWidth: 860, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <h2 style={{ ...F.h2, fontSize: mobile ? 20 : 24, fontFamily: DISPLAY_FONT, color: "#F4F1EA", textAlign: "center", marginBottom: mobile ? 24 : 32 }}>
               What customers say
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: SP.gap }}>
+            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: mobile ? 12 : 14 }}>
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: SP.cardRadius, display: "flex", flexDirection: "column" as const, justifyContent: "space-between", minHeight: mobile ? "auto" : 220 }}>
-                  <p style={{ ...F.body, color: "rgba(244,241,234,0.80)", margin: "0 0 auto", fontStyle: "italic", paddingBottom: 20, lineHeight: 1.65 }}>
+                <div key={t.name} style={{ padding: mobile ? "18px 20px" : "22px 24px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8, display: "flex", flexDirection: "column" as const, justifyContent: "space-between" }}>
+                  <p style={{ fontSize: 14, color: "rgba(244,241,234,0.75)", margin: "0 0 16px", fontStyle: "italic", lineHeight: 1.6, flex: 1 }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
-                    <img src={t.photo} alt={t.name} width={36} height={36} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }} />
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ ...F.small, fontWeight: 600, color: "#F4F1EA", whiteSpace: "nowrap" as const }}>{t.name}</div>
-                      <div style={{ ...F.small, color: "rgba(244,241,234,0.45)", whiteSpace: "nowrap" as const }}>{t.industry} &middot; Score: {t.score}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <img src={t.photo} alt={t.name} width={32} height={32} style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "1.5px solid rgba(255,255,255,0.08)" }} />
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
+                      <div style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>{t.industry} &middot; Score: {t.score}</div>
                     </div>
                   </div>
                 </div>
@@ -390,19 +390,19 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ══ 5. CONVERT — The ask (gradient, builds from navy above) ══ */}
-        <section style={{ background: "linear-gradient(180deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 100%)", paddingTop: mobile ? SP.section.mobile : SP.section.desktop, paddingBottom: mobile ? SP.section.mobile : SP.section.desktop, textAlign: "center" }}>
-          <div style={{ maxWidth: 520, margin: "0 auto", padding: `0 ${pad}px` }}>
-            <div style={{ fontSize: mobile ? 48 : 64, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 8 }}>{score}</div>
-            <p style={{ ...F.lead, color: "rgba(244,241,234,0.55)", marginBottom: 32 }}>
+        {/* ══ 5. CONVERT — The ask ══ */}
+        <section style={{ background: "linear-gradient(180deg, #0E1A2B 0%, #1A1540 50%, #4B3FAE 100%)", paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 56 : 72, textAlign: "center" }}>
+          <div style={{ maxWidth: 480, margin: "0 auto", padding: `0 ${pad}px` }}>
+            <div style={{ fontSize: mobile ? 44 : 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 8 }}>{score}</div>
+            <p style={{ fontSize: mobile ? 15 : 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 28 }}>
               Your score is {score}. The full report shows you why — and exactly what to do about it.
             </p>
 
-            <div style={{ display: "inline-block", padding: mobile ? "32px 28px" : "40px 48px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, marginBottom: 32 }}>
-              <div style={{ ...F.label, color: B.teal, marginBottom: 12 }}>FULL 4-PAGE REPORT</div>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 20 }}>
-                <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 600, color: "#F4F1EA" }}>$69</span>
-                <span style={{ ...F.body, color: "rgba(244,241,234,0.45)" }}>one-time</span>
+            <div style={{ padding: mobile ? "28px 24px" : "32px 40px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 10 }}>FULL 4-PAGE REPORT</div>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 16 }}>
+                <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 600, color: "#F4F1EA" }}>$69</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.40)" }}>one-time</span>
               </div>
               <a
                 href={STRIPE_FULL_REPORT}
@@ -412,29 +412,29 @@ export default function FreeScorePage() {
                   alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
-                  height: mobile ? 50 : 54,
+                  height: mobile ? 48 : 52,
                   borderRadius: 10,
                   background: "#4B3FAE",
                   color: "#FFFFFF",
-                  fontSize: mobile ? 15 : 16,
+                  fontSize: mobile ? 14 : 15,
                   fontWeight: 600,
                   textDecoration: "none",
                   letterSpacing: "-0.01em",
-                  border: "1px solid rgba(75,63,174,0.90)",
-                  boxShadow: "0 4px 16px rgba(75,63,174,0.25), 0 1px 3px rgba(75,63,174,0.12)",
+                  border: "1px solid rgba(75,63,174,0.85)",
+                  boxShadow: "0 4px 16px rgba(75,63,174,0.25)",
                   transition: "background 280ms cubic-bezier(0.22,1,0.36,1), transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms cubic-bezier(0.22,1,0.36,1)",
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = "#3D32A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(75,63,174,0.25), 0 1px 3px rgba(75,63,174,0.12)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(75,63,174,0.25)"; }}
               >
                 Get RunPayway&#8482; Diagnostic Report &mdash; $69
               </a>
             </div>
 
             {/* Deterministic notice */}
-            <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.15)", marginBottom: 16 }}>
-              <p style={{ ...F.small, color: "rgba(244,241,234,0.65)", margin: 0 }}>
-                Your full report is built from the answers you already gave. Same answers always produce the same score. You do not retake the assessment.
+            <div style={{ padding: "12px 24px", borderRadius: 8, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.10)" }}>
+              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.55)", margin: 0, lineHeight: 1.5 }}>
+                Your full report is built from the answers you already gave. Same answers always produce the same score.
               </p>
             </div>
 
