@@ -501,7 +501,7 @@ async function handleContact(body, env, corsHeaders) {
       from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
       to: "info@peoplestar.com",
       reply_to: body.email,
-      subject: `[RunPayway Contact] ${body.subject || "General Inquiry"} - ${body.name}`,
+      subject: `[RunPayway Contact] ${(body.subject || "General Inquiry").replace(/[\r\n]/g, "")} - ${(body.name || "").replace(/[\r\n]/g, "")}`,
       html: `<div style="font-family:sans-serif;max-width:600px;">
 <h2 style="color:#0E1A2B;margin:0 0 16px;">New Contact Form Submission</h2>
 <table style="width:100%;border-collapse:collapse;">

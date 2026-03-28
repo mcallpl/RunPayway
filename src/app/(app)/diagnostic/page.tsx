@@ -32,6 +32,14 @@ const ANSWER_MAP: Record<string, number> = {
 };
 
 const STORAGE_KEY = "runpayway_diagnostic_state";
+
+/** Fetch with timeout — prevents page hang if Worker is slow */
+function fetchWithTimeout(url: string, opts: RequestInit, timeoutMs = 15000): Promise<Response> {
+  return Promise.race([
+    fetch(url, opts),
+    new Promise<Response>((_, reject) => setTimeout(() => reject(new Error("Timeout")), timeoutMs)),
+  ]);
+}
 // sessionStorage: survives refresh (connection loss safety), clears on tab close (fresh every time)
 
 interface Question {
@@ -387,7 +395,7 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
-        const pmRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev", {
+        const pmRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -438,7 +446,7 @@ export default function DiagnosticPage() {
           ? (constraints2.ranked[0] as Record<string, string>).factor || "recurrence"
           : "recurrence";
 
-        const peRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+        const peRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -482,7 +490,7 @@ export default function DiagnosticPage() {
         const lift3 = v2Data3.score_lift_projection as Record<string, unknown> | undefined;
         const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
 
-        const apRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+        const apRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -519,7 +527,7 @@ export default function DiagnosticPage() {
       // Save record to cloud database (D1 via Worker)
       try {
         const recAdapted = record as Record<string, unknown>;
-        await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
+        await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -546,7 +554,7 @@ export default function DiagnosticPage() {
           const topCEmail = (Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
             ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
             : "";
-          await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
+          await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
