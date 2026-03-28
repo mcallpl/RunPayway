@@ -417,6 +417,48 @@ export default function DiagnosticPage() {
         }
       } catch { /* PressureMap generation failed — report continues without it */ }
 
+      // Generate "In Plain English" via Claude Worker
+      try {
+        const adapted2 = record as Record<string, unknown>;
+        const v2Data2 = (adapted2._v2 || {}) as Record<string, unknown>;
+        const ni2 = (v2Data2.normalized_inputs || {}) as Record<string, number | string>;
+        const constraints2 = (v2Data2.constraints || {}) as Record<string, unknown>;
+        const topC2 = (Array.isArray(constraints2.ranked) && constraints2.ranked.length > 0)
+          ? (constraints2.ranked[0] as Record<string, string>).factor || "recurrence"
+          : "recurrence";
+
+        const peRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            industry: profile.industry_sector || "",
+            operating_structure: profile.operating_structure || "",
+            income_model: profile.primary_income_model || "",
+            years_in_structure: profile.years_in_structure || "",
+            score: (adapted2.final_score as number) || 0,
+            band: (adapted2.stability_band as string) || "",
+            weakest_factor: topC2,
+            recurrence_pct: (ni2.income_persistence_pct as number) || 0,
+            concentration_pct: (ni2.largest_source_pct as number) || 0,
+            forward_visibility_pct: (ni2.forward_secured_pct as number) || 0,
+            labor_dependence_pct: (ni2.labor_dependence_pct as number) || 0,
+            variability_level: (ni2.income_variability_level as string) || "moderate",
+            active_income: (record as Record<string, unknown>).active_income_level || 0,
+            continuity_months: (record as Record<string, unknown>).income_continuity_months || 0,
+            risk_drop: (record as Record<string, unknown>).risk_scenario_drop || 0,
+          }),
+        });
+        if (peRes.ok) {
+          const peData = await peRes.json();
+          if (peData.interpretation) {
+            const expl = (v2Data2.explainability || {}) as Record<string, unknown>;
+            expl.why_this_score = peData.interpretation;
+            if (peData.why_not_higher) expl.why_not_higher = peData.why_not_higher;
+            (v2Data2 as Record<string, unknown>).explainability = expl;
+          }
+        }
+      } catch { /* Plain English generation failed — report uses template */ }
+
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
 

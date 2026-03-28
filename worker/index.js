@@ -1,5 +1,6 @@
-// RunPayway PressureMap Proxy — Cloudflare Worker
-// Holds the Anthropic API key securely. Client calls this instead of Anthropic directly.
+// RunPayway AI Worker — Cloudflare Worker
+// Secure proxy for all Claude API calls. Routes by URL path.
+// Endpoints: /pressuremap, /plain-english, /action-plan
 
 export default {
   async fetch(request, env) {
@@ -24,10 +25,89 @@ export default {
       "Content-Type": "application/json",
     };
 
+    const url = new URL(request.url);
+    const path = url.pathname.replace(/\/$/, "") || "/pressuremap";
+
     try {
       const body = await request.json();
 
-      const systemPrompt = `You are the PressureMap engine for RunPayway, an income stability assessment platform. You generate real-time structural intelligence briefings for individuals based on their specific industry, operating structure, income model, and assessment results.
+      if (path === "/pressuremap" || path === "/") {
+        return await handlePressureMap(body, env, corsHeaders);
+      }
+      if (path === "/plain-english") {
+        return await handlePlainEnglish(body, env, corsHeaders);
+      }
+      if (path === "/action-plan") {
+        return await handleActionPlan(body, env, corsHeaders);
+      }
+
+      return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
+        status: 404, headers: corsHeaders,
+      });
+    } catch (err) {
+      return new Response(JSON.stringify({ error: "Worker error", detail: String(err) }), {
+        status: 500, headers: corsHeaders,
+      });
+    }
+  },
+};
+
+// ── Call Claude ──────────────────────────────────────────
+async function callClaude(system, user, env, maxTokens = 600) {
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: maxTokens,
+      system,
+      messages: [{ role: "user", content: user }],
+    }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`Anthropic API ${response.status}: ${err}`);
+  }
+
+  const data = await response.json();
+  const text = data.content?.[0]?.text || "";
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) throw new Error("No JSON in response");
+  return JSON.parse(jsonMatch[0]);
+}
+
+// ── Build profile block (shared across endpoints) ───────
+function profileBlock(b) {
+  return `PROFILE:
+- Industry: ${b.industry || "General"}
+- Operating Structure: ${b.operating_structure || "Independent"}
+- Income Model: ${b.income_model || "Mixed"}
+- Years in current structure: ${b.years_in_structure || "Unknown"}
+- Income Stability Score: ${b.score || 0}/100 (${b.band || "Unknown"})
+- Weakest structural factor: ${b.weakest_factor || "Unknown"}
+
+STRUCTURAL DATA:
+- Recurring revenue: ${b.recurrence_pct || 0}%
+- Top client concentration: ${b.concentration_pct || 0}%
+- Forward visibility: ${b.forward_visibility_pct || 0}%
+- Labor dependence: ${b.labor_dependence_pct || 0}%
+- Earnings variability: ${b.variability_level || "moderate"}
+- Active income: ${b.active_income || 0}%
+- Continuity if work stops: ${b.continuity_months || 0} months
+- Risk scenario drop: ${b.risk_drop || 0} points`;
+}
+
+// ══════════════════════════════════════════════════════════
+// PRESSUREMAP
+// ══════════════════════════════════════════════════════════
+
+async function handlePressureMap(body, env, corsHeaders) {
+  const system = `You are the PressureMap engine for RunPayway, an income stability assessment platform. You generate real-time structural intelligence briefings for individuals based on their specific industry, operating structure, income model, and assessment results.
 
 CRITICAL RULES:
 - Never provide financial advice, investment recommendations, or predictions
@@ -41,81 +121,118 @@ CRITICAL RULES:
 - Be SPECIFIC to the exact intersection of their industry, operating structure, and income model
 - Do NOT use generic language that could apply to any industry`;
 
-      const userPrompt = `Generate a PressureMap briefing for this individual:
+  const user = `Generate a PressureMap briefing for this individual:
 
-PROFILE:
-- Industry: ${body.industry || "General"}
-- Operating Structure: ${body.operating_structure || "Independent"}
-- Income Model: ${body.income_model || "Mixed"}
-- Years in current structure: ${body.years_in_structure || "Unknown"}
-- Income Stability Score: ${body.score || 0}/100 (${body.band || "Unknown"})
-- Weakest structural factor: ${body.weakest_factor || "Unknown"} (current value: ${body.weakest_factor_value || "Unknown"})
-
-STRUCTURAL DATA:
-- Recurring revenue: ${body.recurrence_pct || 0}%
-- Top client concentration: ${body.concentration_pct || 0}%
-- Forward visibility: ${body.forward_visibility_pct || 0}%
-- Labor dependence: ${body.labor_dependence_pct || 0}%
-- Earnings variability: ${body.variability_level || "moderate"}
+${profileBlock(body)}
 
 Return EXACTLY three sections in this JSON format:
 {
-  "pressure": "[2-3 sentences] What real-world forces in their SPECIFIC industry (${body.industry}), for their SPECIFIC operating structure (${body.operating_structure}) and income model (${body.income_model}), are currently working AGAINST their weakest structural factor. Reference their exact numbers. Do NOT use language that could apply to any industry.",
+  "pressure": "[2-3 sentences] What real-world forces in ${body.industry}, for a ${body.operating_structure} with a ${body.income_model} model, are currently working AGAINST their weakest structural factor (${body.weakest_factor}). Reference their exact numbers. Do NOT use language that could apply to any industry.",
   "tailwind": "[2-3 sentences] What current condition in ${body.industry} specifically gives this ${body.operating_structure} with a ${body.income_model} model a structural advantage or window of opportunity right now.",
   "leverage_move": "[2-3 sentences] The single highest-leverage structural change this specific ${body.operating_structure} in ${body.industry} earning through ${body.income_model} could make RIGHT NOW. Be operational and specific — name the exact type of arrangement, offer, or structural change that fits their profile."
 }
 
 Return ONLY the JSON object, no other text.`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": env.ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-5-20250514",
-          max_tokens: 600,
-          system: systemPrompt,
-          messages: [{ role: "user", content: userPrompt }],
-        }),
-      });
+  const parsed = await callClaude(system, user, env);
+  if (!parsed.pressure || !parsed.tailwind || !parsed.leverage_move) {
+    return new Response(JSON.stringify({ error: "Incomplete response" }), {
+      status: 502, headers: corsHeaders,
+    });
+  }
 
-      if (!response.ok) {
-        const err = await response.text();
-        return new Response(JSON.stringify({ error: "Anthropic API error", detail: err }), {
-          status: 502, headers: corsHeaders,
-        });
-      }
+  return new Response(JSON.stringify({
+    pressure: parsed.pressure,
+    tailwind: parsed.tailwind,
+    leverage_move: parsed.leverage_move,
+  }), { headers: corsHeaders });
+}
 
-      const data = await response.json();
-      const text = data.content?.[0]?.text || "";
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
+// ══════════════════════════════════════════════════════════
+// PLAIN ENGLISH
+// ══════════════════════════════════════════════════════════
 
-      if (!jsonMatch) {
-        return new Response(JSON.stringify({ error: "Failed to parse response" }), {
-          status: 502, headers: corsHeaders,
-        });
-      }
+async function handlePlainEnglish(body, env, corsHeaders) {
+  const system = `You are a structural income analyst for RunPayway. You write clear, direct, plain-English interpretations of income stability scores. You are not a chatbot. You write like a senior analyst preparing a private briefing.
 
-      const parsed = JSON.parse(jsonMatch[0]);
-      if (!parsed.pressure || !parsed.tailwind || !parsed.leverage_move) {
-        return new Response(JSON.stringify({ error: "Incomplete response" }), {
-          status: 502, headers: corsHeaders,
-        });
-      }
+RULES:
+- Write in second person (your, you)
+- Be specific to the person's exact industry, operating structure, and income model
+- Reference their actual numbers — do not generalize
+- No financial advice, no predictions, no investment language
+- Maximum 4 sentences for the main interpretation
+- Maximum 2 sentences for why-not-higher
+- Tone: authoritative, calm, precise — like a doctor explaining test results`;
 
-      return new Response(JSON.stringify({
-        pressure: parsed.pressure,
-        tailwind: parsed.tailwind,
-        leverage_move: parsed.leverage_move,
-      }), { headers: corsHeaders });
+  const user = `Write a plain-English score interpretation for this individual:
 
-    } catch (err) {
-      return new Response(JSON.stringify({ error: "Worker error", detail: String(err) }), {
-        status: 500, headers: corsHeaders,
-      });
-    }
-  },
-};
+${profileBlock(body)}
+
+Return in this JSON format:
+{
+  "interpretation": "[3-4 sentences] Explain what their score of ${body.score}/100 means in practical terms for a ${body.operating_structure} in ${body.industry} earning through ${body.income_model}. What does it mean for their daily reality? What is the single most important thing this score reveals about their structure? Be specific to their exact numbers and situation.",
+  "why_not_higher": "[1-2 sentences] The single most important reason their score is ${body.score} and not higher. Be specific to their weakest factor (${body.weakest_factor}) and their exact industry/structure."
+}
+
+Return ONLY the JSON object, no other text.`;
+
+  const parsed = await callClaude(system, user, env, 400);
+  if (!parsed.interpretation) {
+    return new Response(JSON.stringify({ error: "Incomplete response" }), {
+      status: 502, headers: corsHeaders,
+    });
+  }
+
+  return new Response(JSON.stringify({
+    interpretation: parsed.interpretation,
+    why_not_higher: parsed.why_not_higher || "",
+  }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// ACTION PLAN
+// ══════════════════════════════════════════════════════════
+
+async function handleActionPlan(body, env, corsHeaders) {
+  const system = `You are a structural income strategist for RunPayway. You write specific, actionable recommendations for improving income stability. You are not a life coach. You write like a management consultant delivering a strategy recommendation.
+
+RULES:
+- Write in second person (your, you)
+- Be specific to the person's exact industry, operating structure, and income model
+- Name specific types of arrangements, offers, or structural changes that fit their profile
+- No financial advice, no predictions, no investment language
+- Each recommendation must be concrete enough to act on this week
+- Reference their actual numbers
+- Tone: direct, operational, professional`;
+
+  const user = `Write an action plan for this individual:
+
+${profileBlock(body)}
+
+Their primary constraint is: ${body.weakest_factor}
+Their highest-leverage change would be: ${body.top_change || "Reduce " + body.weakest_factor}
+Their projected score improvement: ${body.projected_lift || "Unknown"}
+
+Return in this JSON format:
+{
+  "primary_action": "[2-3 sentences] The single most important structural change they should make. Be specific to a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model. Name the exact type of arrangement or structural shift.",
+  "primary_how": "[2-3 sentences] Exactly how to execute this change. What to say, who to approach, what to offer. Specific to their industry.",
+  "supporting_action": "[1-2 sentences] A second supporting change that compounds with the first.",
+  "supporting_how": "[1-2 sentences] How to execute the supporting change.",
+  "combined_interpretation": "[1-2 sentences] What happens to their income structure if both changes are completed. Reference projected scores if provided.",
+  "tradeoff_upside": "[1-2 sentences] The structural benefit of making the primary change.",
+  "tradeoff_cost": "[1-2 sentences] The realistic cost or effort required.",
+  "tradeoff_verdict": "[1 sentence] Whether it is worth doing and why."
+}
+
+Return ONLY the JSON object, no other text.`;
+
+  const parsed = await callClaude(system, user, env, 800);
+  if (!parsed.primary_action) {
+    return new Response(JSON.stringify({ error: "Incomplete response" }), {
+      status: 502, headers: corsHeaders,
+    });
+  }
+
+  return new Response(JSON.stringify(parsed), { headers: corsHeaders });
+}
