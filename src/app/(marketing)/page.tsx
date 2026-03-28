@@ -418,6 +418,11 @@ function HowItWorksSection() {
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(4) : sp(5) }}>
           {steps.map((s, i) => (
             <div key={s.num} style={{
+              background: C.white,
+              borderRadius: sp(1.5),
+              padding: m ? sp(4) : sp(5),
+              boxShadow: "0 2px 4px rgba(14,26,43,0.04), 0 12px 40px rgba(14,26,43,0.06)",
+              display: "flex", flexDirection: "column",
               ...fadeIn(visible, 150 + i * 120),
             }}>
               {/* Step number — large, teal, standalone */}
@@ -436,12 +441,12 @@ function HowItWorksSection() {
 
               {/* Description — lighter, generous line height */}
               <p style={{
-                ...body(m), color: C.muted, margin: 0,
-                marginBottom: sp(4),
+                ...body(m), color: C.muted, margin: 0, flex: 1,
               }}>{s.desc}</p>
 
               {/* Trust line — separated, quiet */}
               <div style={{
+                marginTop: sp(4),
                 paddingTop: sp(3),
                 borderTop: `1px solid ${C.border}`,
                 display: "flex", alignItems: "center", gap: sp(1),
