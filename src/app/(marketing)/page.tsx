@@ -1471,13 +1471,16 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 200ms",
           }}
         >
+          <div style={{ fontSize: S.fsLabel, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>
+            Used by professionals in
+          </div>
           <div style={{
-            display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? "6px 12px" : "6px 20px",
-            maxWidth: 600, margin: "0 auto",
+            display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: mobile ? "6px 0" : "6px 0",
+            maxWidth: 640, margin: "0 auto",
           }}>
-            {["Real estate", "Consulting", "Freelance design", "Contract software", "Insurance", "Mortgage", "Creative services", "Solo legal practice"].map((ind) => (
+            {["Real estate", "Consulting", "Software contracting", "Insurance", "Mortgage", "Creative services", "Solo legal", "Financial advisory"].map((ind, i, arr) => (
               <span key={ind} style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.45)", fontWeight: 500 }}>
-                {ind}
+                {ind}{i < arr.length - 1 && <span style={{ margin: "0 10px", color: "rgba(244,241,234,0.20)" }}>&bull;</span>}
               </span>
             ))}
           </div>
