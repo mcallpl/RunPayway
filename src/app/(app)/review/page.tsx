@@ -833,204 +833,8 @@ export default function ReviewPage() {
   // ── Reassessment countdown ──
   const reassessDaysLeft = Math.max(0, Math.ceil((new Date(reassessDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
-  const handleDownload = async () => {
-    setDownloading(true);
-    setDownloadError(null);
-    try {
-      const { generateReportPDF } = await import("./report-pdf");
-      const { ReportPDFData } = await import("./report-pdf") as { ReportPDFData: unknown };
-      void ReportPDFData; // type-only, suppress unused
-
-      // Build access code
-      const v2d = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
-      const nid = v2d?.normalized_inputs as Record<string, number | string> | undefined;
-      const accessCodePayload = nid ? btoa(JSON.stringify({ p: nid.income_persistence_pct, c: nid.largest_source_pct, s: nid.source_diversity_count, f: nid.forward_secured_pct, v: nid.income_variability_level, l: nid.labor_dependence_pct, q: (v2d?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" })) : "";
-
-      // Use industry-tailored diagnostic sentence
-      const diagSentence = tailored.diagnosticSentence;
-
-      // Build plain English
-      const plainEng = v2Explainability?.why_this_score || (() => {
-        const ctx = olFamilyLabel ? `As a ${olFamilyLabel.toLowerCase()}${olIndustryLabel ? ` in ${olIndustryLabel}` : ""}, ` : "";
-        return isHighScorer ? `${ctx}your income has structural protection. The priority is strengthening specific weak points, not rebuilding.` : `${ctx}your income is developing. ${nextBandName ? `${distanceToNext} points from ${nextBandName}.` : ""}`;
-      })();
-
-      // Use industry-tailored killer line
-      const killerLn = tailored.killerLine;
-
-      // Use industry-tailored fragility diagnostic
-      const fragDiag = tailored.fragilityContext;
-
-      // Build ranked factors
-      const sortedIndicators = v2Indicators ? [...v2Indicators].sort((a, b) => a.normalized_value - b.normalized_value) : [];
-      const weakest = sortedIndicators[0];
-      const strongest = sortedIndicators[sortedIndicators.length - 1];
-      const rankedF: Array<{ role: string; label: string; level: string; normalizedValue: number; explanation: string; roleColor: string; levelColor: string }> = [];
-      const getLevelColor = (level: string) => level === "critical" || level === "weak" ? B.bandLimited : level === "moderate" ? B.bandDeveloping : level === "strong" ? B.bandEstablished : B.bandHigh;
-      if (strongest && weakest && strongest.key !== weakest.key) {
-        rankedF.push({ role: "STRONGEST FACTOR", label: strongest.label, level: strongest.level, normalizedValue: strongest.normalized_value, explanation: "This is what is holding your structure together.", roleColor: B.teal, levelColor: getLevelColor(strongest.level) });
-      }
-      if (weakest) {
-        rankedF.push({ role: "WEAKEST FACTOR", label: weakest.label, level: weakest.level, normalizedValue: weakest.normalized_value, explanation: "This is the biggest structural gap in your income.", roleColor: B.bandLimited, levelColor: getLevelColor(weakest.level) });
-      }
-
-      // Build scenarios
-      const scenarioPlain: Record<string, string> = {
-        active_labor_interrupted: "You take two weeks off and have no backup revenue",
-        platform_dependency_shock: "One income source changes its terms or access",
-        forward_commitments_delayed: "New work arrives later than expected",
-        client_concentration_loss: "A major client pauses or ends work",
-        market_contraction: "Demand in your industry drops for two or more months",
-        high_volatility_month: "You have a slow month with no backup revenue",
-        key_client_loss: "You lose a key client or contract",
-        recurring_stream_degrades: "A repeating income stream weakens or stops",
-        referral_pipeline_dries: "New business or referrals dry up for a stretch",
-        contract_non_renewal: "A major contract is not renewed",
-        scope_reduction: "A client cuts the scope of your work significantly",
-        revenue_model_disruption: "Your primary way of earning income stops working",
-        pricing_pressure: "What you can charge drops due to market pressure",
-        regulatory_disruption: "A regulatory or policy change affects how you earn",
-        seasonal_revenue_gap: "A seasonal slowdown cuts your income for weeks",
-      };
-      const sortedScenarios = v2Scenarios ? [...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop).slice(0, 4) : [];
-      const scenariosData = sortedScenarios.map(s => {
-        const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
-        return {
-          title: scenarioPlain[s.scenario_id] ?? s.label,
-          originalScore: s.original_score,
-          scenarioScore: s.scenario_score,
-          scoreDrop: s.score_drop,
-          narrative: olMatch?.why_it_matters || s.narrative,
-          bandShift: s.band_shift,
-          originalBand: s.original_band,
-          scenarioBand: s.scenario_band,
-        };
-      });
-
-      // Build action categories
-      const liftConcrete: Record<string, { title: string; how: string }> = {
-        reduce_labor_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables." },
-        reduce_active_dependence: { title: "Reduce how much income requires your daily effort", how: "Convert active services into retainers, productized packages, or licensed deliverables." },
-        extend_forward_visibility: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, or standing agreements." },
-        improve_forward_secured: { title: "Lock in revenue before each month starts", how: "Move clients to retainers, prepaid packages, or standing agreements." },
-        reduce_concentration: { title: "Reduce dependence on your largest income source", how: "Add one new client or revenue stream that could reach 15%+ of income within 90 days." },
-        reduce_largest_source: { title: "Reduce dependence on your largest income source", how: "Add one new client or revenue stream that could reach 15%+ of income within 90 days." },
-        increase_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
-        increase_persistent_revenue: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
-        strengthen_persistence: { title: "Build income that repeats without re-selling", how: "Introduce subscriptions, maintenance contracts, or membership models." },
-        add_income_sources: { title: "Add more independent income sources", how: "Identify one adjacent service or client type on a different cycle." },
-        diversify_sources: { title: "Spread income across more sources", how: "Identify one adjacent service or client type on a different cycle." },
-        reduce_variability: { title: "Smooth out month-to-month income swings", how: "Shift to retainers or phased billing with quarterly or annual pricing." },
-        increase_continuity: { title: "Extend how long income lasts if you stop working", how: "Build one stream that produces for 3+ months independently." },
-        extend_continuity: { title: "Extend how long income lasts if you stop working", how: "Build one stream that produces for 3+ months independently." },
-      };
-      const viable = v2Lift ? v2Lift.lift_scenarios.filter((s: { lift: number }) => s.lift > 0).sort((a: { lift: number }, b: { lift: number }) => b.lift - a.lift) : [];
-      const fastest = viable[0];
-      const easiest = viable.length > 1 ? viable[viable.length - 1] : null;
-      // Use AI action plan if available, otherwise use template
-      const aiPlan = v2?.ai_action_plan as Record<string, string> | undefined;
-      const actionCats: Array<{ tag: string; tagColor: string; title: string; how: string; scoreChange: string }> = [];
-      if (aiPlan?.primary_action) {
-        actionCats.push({ tag: "HIGHEST-LEVERAGE CHANGE", tagColor: B.purple, title: aiPlan.primary_action, how: aiPlan.primary_how || "", scoreChange: fastest ? `${fastest.original_score} to ${fastest.projected_score} (+${fastest.lift})` : "" });
-        if (aiPlan.supporting_action) {
-          actionCats.push({ tag: "SUPPORTING IMPROVEMENT", tagColor: B.teal, title: aiPlan.supporting_action, how: aiPlan.supporting_how || "", scoreChange: easiest ? `${easiest.original_score} to ${easiest.projected_score} (+${easiest.lift})` : "" });
-        }
-      } else {
-        if (fastest) {
-          const c = liftConcrete[fastest.scenario_id];
-          actionCats.push({ tag: "FASTEST IMPROVEMENT", tagColor: B.purple, title: c?.title ?? fastest.label, how: c?.how ?? fastest.change_description ?? "", scoreChange: `${fastest.original_score} to ${fastest.projected_score} (+${fastest.lift})` });
-        }
-        if (easiest && easiest.scenario_id !== fastest?.scenario_id) {
-          const c = liftConcrete[easiest.scenario_id];
-          actionCats.push({ tag: "EASIEST TO START", tagColor: B.teal, title: c?.title ?? easiest.label, how: c?.how ?? easiest.change_description ?? "", scoreChange: `${easiest.original_score} to ${easiest.projected_score} (+${easiest.lift})` });
-        }
-      }
-
-      // Fragility details
-      const fragLabel = fragilityClassLabel[v2Fragility?.fragility_class || ""] || "";
-      const fragText = v2Explainability?.fragility_explanation || (() => {
-        const fc = v2Fragility?.fragility_class;
-        if (fc === "brittle") return "A single disruption could cause your score to collapse. There is no structural buffer.";
-        if (fc === "thin") return "You can absorb a minor hit. But two close together would create serious pressure.";
-        if (fc === "uneven") return "Some parts are well-protected. Others are fully exposed.";
-        if (fc === "supported") return "Your income can absorb most common disruptions without dropping a band.";
-        if (fc === "resilient") return "Your income can absorb a major client loss or a 90-day work stoppage.";
-        return "";
-      })();
-      const fragColor = v2Fragility?.fragility_class === "brittle" || v2Fragility?.fragility_class === "thin" ? B.bandLimited : v2Fragility?.fragility_class === "resilient" || v2Fragility?.fragility_class === "supported" ? B.teal : B.navy;
-      const failMode = v2Fragility?.primary_failure_mode ? ({
-        concentration_collapse: "too much income depends on one source",
-        labor_interruption: "income stops when your work stops",
-        visibility_gap: "no income is secured ahead of time",
-        durability_thinness: "repeating income is fragile and could end",
-      } as Record<string, string>)[v2Fragility.primary_failure_mode] ?? v2Fragility.primary_failure_mode : undefined;
-
-      const blob = await generateReportPDF({
-        assessmentTitle: record.assessment_title || "Assessment",
-        issuedDate,
-        formalDate,
-        finalScore: record.final_score,
-        stabilityBand: record.stability_band,
-        bandColor,
-        tier,
-        coverBandDesc: coverBandDesc[tier] || "",
-        accessCode: accessCodePayload,
-        diagnosticSentence: diagSentence,
-        plainEnglish: plainEng,
-        whyNotHigher: v2Explainability?.why_not_higher,
-        dominantConstraintText: dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "A structural weakness is limiting your score.",
-        whatToChangeFirst: v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`),
-        whatThatWouldDo: v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : "Estimated improvement available.",
-        nextBandName,
-        distanceToNext,
-        bandDistance,
-        bandDistanceText: bandDistance === "CLOSE" ? "You are close. One structural change could move you into the next band." : bandDistance === "MODERATE" ? "This gap is closeable. The constraint above is the fastest path." : bandDistance === "TOP_BAND" ? "You are in the highest stability band." : "This will take more than one change — but the constraint above is where to start.",
-        score,
-        pressureMap: record.pressure_map ? { operatingStructure: record.pressure_map.operating_structure || "", incomeModel: record.pressure_map.income_model || "", industry: record.pressure_map.industry || "", pressure: record.pressure_map.pressure, tailwind: record.pressure_map.tailwind, leverageMove: record.pressure_map.leverage_move } : undefined,
-        killerLine: killerLn,
-        activeIncome: record.active_income_level,
-        semiPersistentIncome: record.semi_persistent_income_level,
-        persistentIncome: record.persistent_income_level,
-        riskScenarioScore: Math.max(0, record.risk_scenario_score),
-        riskScenarioDrop: record.risk_scenario_drop,
-        continuityDisplay,
-        continuityText: record.income_continuity_months < 1 ? "Your income stops almost immediately." : record.income_continuity_months < 3 ? "Very little runway before income pressure begins." : record.income_continuity_months < 6 ? "Some runway, but not enough to absorb a serious disruption." : "Meaningful buffer before income pressure begins.",
-        riskSeverityText: record.risk_scenario_drop > score * 0.4 ? "That is a severe dependency on a single source." : "",
-        rankedFactors: rankedF,
-        strongestSupports: v2Explainability?.strongest_supports?.slice(0, 2) || [],
-        strongestSuppressors: v2Explainability?.strongest_suppressors?.slice(0, 2) || [],
-        fragilityDiagnostic: fragDiag,
-        scenarios: scenariosData,
-        fragilityLabel: fragLabel,
-        fragilityText: fragText,
-        fragilityColor: fragColor,
-        failureMode: failMode,
-        patternToWatch: v2BehavioralInsights?.[0] ? { pattern: v2BehavioralInsights[0].pattern, consequence: v2BehavioralInsights[0].consequence, reframe: v2BehavioralInsights[0].reframe } : undefined,
-        actionCategories: actionCats,
-        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? { projectedScore: v2Lift.combined_top_two.projected_score, lift: v2Lift.combined_top_two.lift, bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined, explanation: aiPlan?.combined_interpretation || v2Explainability?.best_lift_explanation } : undefined,
-        tradeoff: aiPlan?.tradeoff_upside ? { actionLabel: aiPlan.primary_action || "Primary change", upside: aiPlan.tradeoff_upside, downside: aiPlan.tradeoff_cost || "", recommendation: aiPlan.tradeoff_verdict || "" } : v2TradeoffNarratives?.[0] ? { actionLabel: v2TradeoffNarratives[0].action_label, upside: v2TradeoffNarratives[0].upside, downside: v2TradeoffNarratives[0].downside, recommendation: v2TradeoffNarratives[0].net_recommendation } : undefined,
-        avoidActions: [...(v2AvoidActions ?? []).slice(0, 1).map((a: { label: string; reason: string }) => `${a.label}: ${a.reason}`), ...(olAvoid ?? []).slice(0, 1)],
-        roadmap: (v2ExecutionRoadmap ?? []).slice(0, 4).map(w => ({ week: w.week, action: w.action, detail: w.detail, target: w.success_metric })),
-        reassessDate,
-        reassessDaysLeft,
-        reassessTiming: `Typically ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months.`,
-        triggers: (olTriggers ?? []).slice(0, 3).map((t: { display_text: string }) => t.display_text),
-      });
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `RunPayway-Income-Stability-Report-${record.record_id.slice(0, 8)}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("PDF generation error:", err);
-      const msg = err instanceof Error ? err.message : "PDF generation failed";
-      setDownloadError(msg);
-      alert(`PDF Error: ${msg}`);
-    } finally {
-      setDownloading(false);
-    }
+  const handleDownload = () => {
+    window.print();
   };
 
   // ── Band color helper ──
@@ -1709,6 +1513,41 @@ export default function ReviewPage() {
 
   return (
     <ReportErrorBoundary>
+    {/* Print stylesheet */}
+    <style>{`
+      @media print {
+        @page {
+          size: letter;
+          margin: 0.5in 0.6in;
+        }
+        body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        #paginated-view { display: none !important; }
+        .print-report { display: block !important; }
+        .print-report .print-page {
+          page-break-after: always;
+          page-break-inside: avoid;
+          padding: 0;
+          margin: 0;
+        }
+        .print-report .print-page:last-child {
+          page-break-after: auto;
+        }
+        nav, footer, .no-print { display: none !important; }
+      }
+      @media not print {
+        .print-report { display: none !important; }
+      }
+    `}</style>
+
+    {/* Hidden print container — shows ALL pages when printing */}
+    <div className="print-report">
+      {pageContents.map((content, i) => (
+        <div key={i} className="print-page" style={{ backgroundColor: "#FFFFFF", padding: "0", maxWidth: "100%" }}>
+          {content}
+        </div>
+      ))}
+    </div>
+
     {/* On-screen paginated view */}
     <div id="paginated-view" style={{ maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 80px" }}>
       <div ref={pageContainerRef} style={{ minHeight: "60vh" }}>
@@ -1731,14 +1570,13 @@ export default function ReviewPage() {
         {!mobile && (
           <button
             onClick={handleDownload}
-            disabled={downloading}
             style={{
-              background: "none", border: "none", cursor: downloading ? "default" : "pointer",
+              background: "none", border: "none", cursor: "pointer",
               fontSize: 13, color: "rgba(14,26,43,0.58)",
               padding: "8px 12px", fontWeight: 500,
             }}
           >
-            {downloading ? "Generating..." : "Download PDF"}
+            Download PDF
           </button>
         )}
 
