@@ -395,18 +395,51 @@ export default function DiagnosticPage() {
           variability_level: (ni.income_variability_level as string) || "moderate",
         };
 
-        // Try API endpoint first (Claude-generated, customer-specific)
+        // Try Claude API directly (client-side, customer-specific PressureMap)
         let pressureMap = null;
-        try {
-          const pmRes = await fetch("/api/v1/pressure-map", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(pmPayload),
-          });
-          if (pmRes.ok) {
-            pressureMap = await pmRes.json();
-          }
-        } catch { /* API unavailable, fall through to client-side */ }
+        const pmApiKey = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || "";
+        if (pmApiKey) {
+          try {
+            const systemPrompt = "You are the PressureMap engine for RunPayway, an income stability assessment platform. You generate real-time structural intelligence briefings for individuals based on their industry, operating structure, income model, and assessment results. CRITICAL RULES: Never provide financial advice, investment recommendations, or predictions. Never mention specific companies, stocks, or investment vehicles. Never fabricate statistics — use directional language (rising, declining, accelerating) not fake numbers. Write in confident, institutional prose — like a strategy briefing, not a blog post. Address the user directly (your, you). Connect every observation back to the user's specific structural profile. Keep each section to 2-3 sentences maximum — concise, dense, no filler. Use present tense — this is about right now, not the future.";
+            const userPrompt = `Generate a PressureMap briefing for this individual:\n\nPROFILE:\n- Industry: ${pmPayload.industry}\n- Operating Structure: ${pmPayload.operating_structure}\n- Income Model: ${pmPayload.income_model}\n- Years in current structure: ${pmPayload.years_in_structure}\n- Income Stability Score: ${pmPayload.score}/100 (${pmPayload.band})\n- Weakest structural factor: ${pmPayload.weakest_factor} (current value: ${pmPayload.weakest_factor_value})\n\nSTRUCTURAL DATA:\n- Recurring revenue: ${pmPayload.recurrence_pct}%\n- Top client concentration: ${pmPayload.concentration_pct}%\n- Forward visibility: ${pmPayload.forward_visibility_pct}%\n- Labor dependence: ${pmPayload.labor_dependence_pct}%\n- Earnings variability: ${pmPayload.variability_level}\n\nReturn EXACTLY three sections in this JSON format:\n{\n  "pressure": "[2-3 sentences] What real-world forces in their specific industry, for their specific operating structure and income model, are currently working AGAINST their weakest structural factor. Be specific to the intersection of industry + structure + model. Do not be generic.",\n  "tailwind": "[2-3 sentences] What current condition in their industry gives this specific profile a structural advantage or window of opportunity right now. This should be genuinely favorable, not a silver lining on bad news.",\n  "leverage_move": "[2-3 sentences] The single highest-leverage structural change this person could make RIGHT NOW given their industry conditions, operating structure, income model, score, and weakest factor. Be specific and operational — not diversify your income but the exact type of diversification that makes sense for their profile."\n}\n\nReturn ONLY the JSON object, no other text.`;
+
+            const pmRes = await fetch("https://api.anthropic.com/v1/messages", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": pmApiKey,
+                "anthropic-version": "2023-06-01",
+                "anthropic-dangerous-direct-browser-access": "true",
+              },
+              body: JSON.stringify({
+                model: "claude-sonnet-4-5-20250514",
+                max_tokens: 600,
+                system: systemPrompt,
+                messages: [{ role: "user", content: userPrompt }],
+              }),
+            });
+
+            if (pmRes.ok) {
+              const pmData = await pmRes.json();
+              const pmText = pmData.content?.[0]?.text || "";
+              const jsonMatch = pmText.match(/\{[\s\S]*\}/);
+              if (jsonMatch) {
+                const parsed = JSON.parse(jsonMatch[0]);
+                if (parsed.pressure && parsed.tailwind && parsed.leverage_move) {
+                  pressureMap = {
+                    generated_at: new Date().toISOString(),
+                    industry: pmPayload.industry,
+                    operating_structure: pmPayload.operating_structure,
+                    income_model: pmPayload.income_model,
+                    pressure: parsed.pressure,
+                    tailwind: parsed.tailwind,
+                    leverage_move: parsed.leverage_move,
+                  };
+                }
+              }
+            }
+          } catch { /* Claude API unavailable, fall through to client-side */ }
+        }
 
         // Fallback to client-side deterministic generator
         if (!pressureMap || !pressureMap.pressure) {
