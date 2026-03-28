@@ -16,6 +16,19 @@ export default {
       });
     }
 
+    // Stats endpoint works with GET
+    if (request.method === "GET") {
+      const url = new URL(request.url);
+      const gPath = url.pathname.replace(/\/$/, "");
+      if (gPath === "/stats") {
+        return await handleStats(env, {
+          "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
+          "Content-Type": "application/json",
+        });
+      }
+      return new Response("Method not allowed", { status: 405 });
+    }
+
     if (request.method !== "POST") {
       return new Response("Method not allowed", { status: 405 });
     }
@@ -295,5 +308,32 @@ async function handleGetRecord(body, env, corsHeaders) {
   return new Response(JSON.stringify({
     success: true,
     record_data: row.record_data,
+  }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// STATS / ANALYTICS
+// ══════════════════════════════════════════════════════════
+
+async function handleStats(env, corsHeaders) {
+  const total = await env.DB.prepare("SELECT COUNT(*) as count FROM records").first();
+  const avgScore = await env.DB.prepare("SELECT AVG(score) as avg FROM records").first();
+  const byBand = await env.DB.prepare("SELECT band, COUNT(*) as count FROM records GROUP BY band ORDER BY count DESC").all();
+  const byIndustry = await env.DB.prepare("SELECT industry, COUNT(*) as count, ROUND(AVG(score),1) as avg_score FROM records GROUP BY industry ORDER BY count DESC LIMIT 20").all();
+  const byStructure = await env.DB.prepare("SELECT operating_structure, COUNT(*) as count, ROUND(AVG(score),1) as avg_score FROM records GROUP BY operating_structure ORDER BY count DESC LIMIT 10").all();
+  const byModel = await env.DB.prepare("SELECT income_model, COUNT(*) as count, ROUND(AVG(score),1) as avg_score FROM records GROUP BY income_model ORDER BY count DESC LIMIT 10").all();
+  const recent = await env.DB.prepare("SELECT id, created_at, assessment_title, industry, score, band FROM records ORDER BY created_at DESC LIMIT 25").all();
+  const today = new Date().toISOString().split("T")[0];
+  const todayCount = await env.DB.prepare("SELECT COUNT(*) as count FROM records WHERE created_at LIKE ?").bind(`${today}%`).first();
+
+  return new Response(JSON.stringify({
+    total_assessments: total?.count || 0,
+    today: todayCount?.count || 0,
+    average_score: Math.round((avgScore?.avg || 0) * 10) / 10,
+    by_band: byBand?.results || [],
+    by_industry: byIndustry?.results || [],
+    by_structure: byStructure?.results || [],
+    by_income_model: byModel?.results || [],
+    recent_assessments: recent?.results || [],
   }), { headers: corsHeaders });
 }
