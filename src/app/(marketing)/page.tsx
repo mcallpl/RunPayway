@@ -465,26 +465,24 @@ input[type="range"]::-webkit-slider-thumb {
               </Link>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: mobile ? "1fr 1fr" : "auto auto auto auto",
-                  gap: mobile ? "12px 16px" : 20,
-                  marginTop: 24,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: mobile ? "4px 0" : "4px 0",
+                  marginTop: 20,
                 }}
               >
-                {["Six questions", "Under two minutes", "No bank connection", "No credit pull"].map((item) => (
-                  <div
+                {["Six questions", "Under two minutes", "No bank connection", "No credit pull"].map((item, i, arr) => (
+                  <span
                     key={item}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      fontSize: S.fsMeta,
-                      color: "rgba(244,241,234,0.50)",
+                      fontSize: 12,
+                      color: "rgba(244,241,234,0.35)",
+                      letterSpacing: "0.02em",
                     }}
                   >
-                    <span style={{ color: B.teal, fontSize: 14, lineHeight: 1 }}>&#x2713;</span>
-                    {item}
-                  </div>
+                    {item}{i < arr.length - 1 && <span style={{ margin: "0 8px", color: "rgba(244,241,234,0.18)" }}>&bull;</span>}
+                  </span>
                 ))}
               </div>
             </div>
@@ -778,19 +776,16 @@ function FourFactorsSection() {
       <div style={{ maxWidth: S.maxW, margin: "0 auto" }}>
         {/* Section header */}
         <div style={{ maxWidth: 560, marginBottom: mobile ? S.sectionHeaderMb.mobile : S.sectionHeaderMb.desktop }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: S.lsLabel, color: B.teal, marginBottom: 16, opacity: visible ? 1 : 0, transition: "opacity 400ms ease-out" }}>
-            The Model
-          </div>
           <h2 style={{
             fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: 1.12,
             letterSpacing: "-0.025em", fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 16,
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            Structural dimensions measured.
+            What this score measures.
           </h2>
           <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
-            The score is derived from four fixed structural inputs. Each measures a different dimension of how your income holds up under pressure.
+            Six questions are used to evaluate four structural dimensions of income stability. Each measures a different aspect of how income holds up under pressure.
           </p>
         </div>
 
@@ -1064,7 +1059,7 @@ function WhatYourReportSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            A structural diagnostic.<br />Interpreted from your exact inputs.
+            A structural diagnostic.<br />Based on your actual income pattern.
           </h2>
         </div>
 
@@ -1366,7 +1361,7 @@ function TestimonialsSection() {
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <img
                   src={t.photo}
-                  alt={t.name}
+                  alt=""
                   width={44}
                   height={44}
                   style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }}
@@ -1474,16 +1469,19 @@ function PricingSection() {
           <div style={{ fontSize: S.fsLabel, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>
             Used by professionals in
           </div>
-          <div style={{
-            display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: mobile ? "6px 0" : "6px 0",
-            maxWidth: 640, margin: "0 auto",
+          <p style={{
+            fontSize: S.fsMeta, color: "rgba(244,241,234,0.45)", fontWeight: 500, lineHeight: 1.8,
+            maxWidth: 640, margin: "0 auto", textAlign: "center",
           }}>
-            {["Real estate", "Consulting", "Software contracting", "Insurance", "Mortgage", "Creative services", "Solo legal", "Financial advisory"].map((ind, i, arr) => (
-              <span key={ind} style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.45)", fontWeight: 500 }}>
-                {ind}{i < arr.length - 1 && <span style={{ margin: "0 10px", color: "rgba(244,241,234,0.20)" }}>&bull;</span>}
-              </span>
-            ))}
-          </div>
+            Real estate{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Consulting{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Software contracting{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Insurance{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Mortgage{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Creative services{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Solo legal{" "}<span style={{ color: "rgba(244,241,234,0.20)", margin: "0 6px" }}>&bull;</span>{" "}
+            Financial advisory
+          </p>
         </div>
 
         {/* Pricing cards */}
@@ -1576,22 +1574,6 @@ function PricingSection() {
             onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 28px 72px rgba(75,63,174,0.22), 0 12px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.08)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 20px 56px rgba(75,63,174,0.18), 0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 0 0 1px rgba(75,63,174,0.06)"; }}
           >
-            {/* FULL REPORT badge */}
-            <div
-              style={{
-                display: "inline-block",
-                fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                backgroundColor: B.purple,
-                color: "#FFFFFF",
-                padding: "3px 10px",
-                borderRadius: 100,
-                marginBottom: 12,
-              }}
-            >
-              Full Report
-            </div>
-
             <div
               style={{
                 fontSize: S.fsLabel, fontWeight: 600, textTransform: "uppercase",
@@ -1656,12 +1638,6 @@ function PricingSection() {
             <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
               30-day satisfaction guarantee. If the report does not deliver meaningful new insight into your income structure, request a full refund within 30 days.
             </p>
-          </div>
-          {/* Trust band — governance pulled up from footer */}
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? "6px 16px" : "6px 24px", marginTop: 8 }}>
-            {["Methodology published", "Model version controlled", "Deterministic scoring", "Private by default"].map((item) => (
-              <span key={item} style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.35)", fontWeight: 500 }}>{item}</span>
-            ))}
           </div>
         </div>
       </div>
@@ -2036,6 +2012,36 @@ function AuthorityBlock() {
 
 
 /* ================================================================== */
+/* TRUST STRIP — Governance credibility before pricing                  */
+/* ================================================================== */
+function TrustStrip() {
+  const mobile = useMobile();
+
+  return (
+    <section
+      aria-label="Trust indicators"
+      style={{
+        background: B.sand,
+        paddingTop: mobile ? 32 : 40,
+        paddingBottom: mobile ? 32 : 40,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+      }}
+    >
+      <div style={{
+        display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? "8px 20px" : "8px 36px",
+        maxWidth: S.maxW, margin: "0 auto",
+      }}>
+        {["Methodology published", "Model version controlled", "Deterministic scoring", "Private by default"].map((item) => (
+          <span key={item} style={{ fontSize: S.fsMeta, color: B.muted, fontWeight: 500 }}>{item}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* WHY NOW — Urgency before pricing                                    */
 /* ================================================================== */
 function WhyNowSection() {
@@ -2067,8 +2073,12 @@ function WhyNowSection() {
         <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 20 }}>
           Income looks strongest right before pressure arrives.
         </h2>
-        <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
+        <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 24 }}>
           Most income problems are not visible in revenue alone. They surface when one source changes, one month slips, or one contract ends. The score is designed to reveal structural weakness before it becomes financial pain.
+        </p>
+        <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.30)", margin: 0, fontStyle: "italic" }}>
+          The median small business holds just 27 days of cash buffer.
+          <span style={{ fontSize: 12, marginLeft: 6 }}>&mdash; JPMorgan Chase Institute, 2016</span>
         </p>
       </div>
     </section>
@@ -2126,13 +2136,13 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <HeroVideo />
+      <HowItWorksSection />
       <FourFactorsSection />
       <AuthorityBlock />
-      <HowItWorksSection />
       <WhatYourReportSection />
       <WhyNowSection />
       <TestimonialsSection />
-      <BridgeSection />
+      <TrustStrip />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
