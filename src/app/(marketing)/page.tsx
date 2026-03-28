@@ -19,10 +19,7 @@ function useInView(threshold = 0) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
     const obs = new IntersectionObserver(
       ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold },
@@ -66,7 +63,7 @@ function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
 }
 
 /* ================================================================== */
-/* DESIGN TOKENS — Inter only, 8px grid, institutional palette         */
+/* DESIGN TOKENS                                                       */
 /* ================================================================== */
 
 const C = {
@@ -82,21 +79,18 @@ const C = {
   heroGradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)",
 };
 
-/* 8px spacing grid */
 const sp = (n: number) => n * 8;
 
-/* Typography — Inter only, 400/500/600 */
 const T = {
   h1:    { desktop: { fontSize: 52, fontWeight: 600, lineHeight: 1.08 }, mobile: { fontSize: 30, fontWeight: 600, lineHeight: 1.1 } },
   h2:    { desktop: { fontSize: 32, fontWeight: 600, lineHeight: 1.15 }, mobile: { fontSize: 26, fontWeight: 600, lineHeight: 1.15 } },
   h3:    { desktop: { fontSize: 20, fontWeight: 600, lineHeight: 1.3 },  mobile: { fontSize: 18, fontWeight: 600, lineHeight: 1.3 } },
   bodyLg:{ desktop: { fontSize: 20, fontWeight: 400, lineHeight: 1.45 }, mobile: { fontSize: 18, fontWeight: 400, lineHeight: 1.5 } },
   body:  { desktop: { fontSize: 16, fontWeight: 400, lineHeight: 1.65 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
-  bodySm:{ desktop: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 },  mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
   label: { fontSize: 14, fontWeight: 500, lineHeight: 1.45 },
   meta:  { fontSize: 13, fontWeight: 500, lineHeight: 1.4 },
-  score: { desktop: { fontSize: 64, fontWeight: 600, lineHeight: 1 },    mobile: { fontSize: 48, fontWeight: 600, lineHeight: 1 } },
-  price: { desktop: { fontSize: 48, fontWeight: 600, lineHeight: 1 },    mobile: { fontSize: 40, fontWeight: 600, lineHeight: 1 } },
+  score: { desktop: { fontSize: 64, fontWeight: 600, lineHeight: 1 }, mobile: { fontSize: 48, fontWeight: 600, lineHeight: 1 } },
+  price: { desktop: { fontSize: 48, fontWeight: 600, lineHeight: 1 }, mobile: { fontSize: 40, fontWeight: 600, lineHeight: 1 } },
   nav:   { fontSize: 15, fontWeight: 500 },
   cta:   { fontSize: 15, fontWeight: 600 },
 };
@@ -105,9 +99,8 @@ const maxW = 1200;
 const readW = 740;
 const heroW = 660;
 const padX = { desktop: 40, mobile: 20 };
-const sectionGap = { desktop: sp(15), mobile: sp(10) };
+const sectionGap = { desktop: sp(12), mobile: sp(9) };
 
-/* Helpers */
 const h1 = (m: boolean) => m ? T.h1.mobile : T.h1.desktop;
 const h2 = (m: boolean) => m ? T.h2.mobile : T.h2.desktop;
 const h3 = (m: boolean) => m ? T.h3.mobile : T.h3.desktop;
@@ -118,18 +111,10 @@ const price = (m: boolean) => m ? T.price.mobile : T.price.desktop;
 const px = (m: boolean) => m ? padX.mobile : padX.desktop;
 const secY = (m: boolean) => m ? sectionGap.mobile : sectionGap.desktop;
 
-/* Fade-in helper style — smooth cubic-bezier for premium feel */
 const fadeIn = (visible: boolean, delay = 0) => ({
   opacity: visible ? 1 : 0,
-  transform: visible ? "translateY(0)" : "translateY(20px)",
-  transition: `opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 700ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
-});
-
-/* Scale-in for glass card — more dramatic entrance */
-const scaleIn = (visible: boolean, delay = 0) => ({
-  opacity: visible ? 1 : 0,
-  transform: visible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
-  transition: `opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+  transform: visible ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
 });
 
 
@@ -150,10 +135,9 @@ function StickyNav() {
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
       backdropFilter: "blur(16px)",
       backgroundColor: scrolled ? "rgba(14,26,43,0.88)" : "rgba(14,26,43,0.4)",
-      borderBottom: scrolled ? `1px solid rgba(244,241,234,0.08)` : "1px solid transparent",
+      borderBottom: scrolled ? "1px solid rgba(244,241,234,0.08)" : "1px solid transparent",
       transition: "background-color 300ms, border-color 300ms",
-      height: m ? 64 : 80,
-      display: "flex", alignItems: "center",
+      height: m ? 64 : 80, display: "flex", alignItems: "center",
       padding: `0 ${px(m)}px`,
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -200,244 +184,132 @@ function StickyNav() {
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const [animStart, setAnimStart] = useState(false);
-  const animatedScore = useAnimatedCounter(48, animStart, 2000);
+  const animatedScore = useAnimatedCounter(48, visible, 1500);
   const [showLabel, setShowLabel] = useState(false);
 
   useEffect(() => {
     if (!visible) return;
-    // Delay counter start to sync with ring stroke animation
-    const startTimer = setTimeout(() => setAnimStart(true), 500);
-    const labelTimer = setTimeout(() => setShowLabel(true), 2600);
-    return () => { clearTimeout(startTimer); clearTimeout(labelTimer); };
+    const t = setTimeout(() => setShowLabel(true), 1600);
+    return () => clearTimeout(t);
   }, [visible]);
 
-  const ringSize = m ? 220 : 300;
-  const radius = 68;
-  const strokeWidth = 10;
+  const ringSize = m ? 200 : 260;
+  const radius = 70;
+  const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
   const targetOffset = (1 - 48 / 100) * circumference;
 
   return (
-    <section ref={ref} aria-label="Hero" style={{
-      position: "relative",
-    }}>
-      {/* Multi-layer cosmic atmosphere */}
-      {/* Primary purple bloom — right side, behind card */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 70% 70% at 75% 45%, rgba(75,63,174,0.35) 0%, transparent 55%)",
-      }} />
-      {/* Teal bloom — bottom left */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 50% 60% at 25% 85%, rgba(31,109,122,0.18) 0%, transparent 45%)",
-      }} />
-      {/* Warm accent — top center */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 40% 30% at 50% 10%, rgba(107,63,160,0.20) 0%, transparent 50%)",
-      }} />
-      {/* Bright highlight — behind score card */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(circle 300px at 72% 50%, rgba(61,216,197,0.06) 0%, transparent 60%)",
-      }} />
-      {/* Subtle noise grain overlay */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.03,
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        backgroundSize: "200px 200px",
-      }} />
-
+    <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
       <div style={{
-        maxWidth: maxW, margin: "0 auto", position: "relative",
+        maxWidth: maxW, margin: "0 auto",
         paddingTop: m ? sp(14) : sp(16),
-        paddingBottom: m ? sp(6) : sp(8),
+        paddingBottom: m ? sp(9) : sp(12),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
           display: m ? "block" : "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: sp(6),
+          alignItems: "center", justifyContent: "space-between", gap: sp(8),
         }}>
           {/* Left — text */}
           <div style={{ maxWidth: heroW, textAlign: m ? "center" : "left" }}>
             <div style={{
-              ...fadeIn(visible, 0),
+              ...fadeIn(visible),
               ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
-              color: "#3DD8C5", marginBottom: sp(2),
+              color: C.teal, marginBottom: sp(3),
             }}>
               Income Stability Score&#8482;
             </div>
 
             <h1 style={{
-              ...fadeIn(visible, 120),
-              ...h1(m), color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: sp(3),
+              ...fadeIn(visible, 100),
+              ...h1(m), color: C.sand, letterSpacing: "-0.02em", marginBottom: sp(2.5),
             }}>
               Measure how stable your income structure actually is.
             </h1>
 
             <p style={{
-              ...fadeIn(visible, 250),
-              ...bodyLg(m), color: "rgba(255,255,255,0.55)", marginBottom: sp(5),
-              maxWidth: m ? undefined : 500,
+              ...fadeIn(visible, 200),
+              ...bodyLg(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(4.5),
+              maxWidth: m ? undefined : 480,
             }}>
               A fixed structural assessment based on how your income is built — not how much you make.
             </p>
 
-            <div style={fadeIn(visible, 380)}>
+            <div style={fadeIn(visible, 300)}>
               <Link
                 href="/pricing"
                 className="cta-tick inline-flex items-center justify-center"
                 style={{
                   height: sp(7), width: m ? "100%" : "auto",
-                  paddingLeft: sp(5), paddingRight: sp(5),
+                  paddingLeft: sp(4.5), paddingRight: sp(4.5),
                   borderRadius: sp(1.25),
-                  background: "#FFFFFF",
+                  background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
                   color: C.navy, ...T.cta, letterSpacing: "-0.01em",
-                  border: "none",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+                  border: `1px solid rgba(244,241,234,0.92)`,
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.20)",
                   transition: "transform 180ms ease, box-shadow 180ms ease",
                   textDecoration: "none",
                 }}
-                onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.30)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.25)"; }}
+                onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.4), 0 12px 32px rgba(0,0,0,0.25)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.20)"; }}
               >
                 <span className="tick tick-navy" />
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
 
-              {/* Trust row with checkmarks */}
-              <div style={{ marginTop: sp(3), display: "flex", flexDirection: "column", gap: sp(0.75) }}>
-                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: m ? "4px 0" : "4px 0" }}>
-                  <span style={{ color: "#3DD8C5", marginRight: 6, fontSize: 14 }}>&#x2713;</span>
-                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>Six questions</span>
-                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
-                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>Under two minutes</span>
-                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
-                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No bank connection</span>
-                </div>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <span style={{ color: "#3DD8C5", marginRight: 6, fontSize: 14 }}>&#x2713;</span>
-                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No bank connection</span>
-                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
-                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No credit pull</span>
-                </div>
-              </div>
+              <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(2.5) }}>
+                Six questions &bull; Under two minutes &bull; No bank connection &bull; No credit pull
+              </p>
             </div>
           </div>
 
-          {/* Right — Glass card with score ring + proof */}
+          {/* Right — score ring */}
           <div style={{
-            flexShrink: 0, marginTop: m ? sp(6) : 0,
-            position: "relative",
-            ...scaleIn(visible, 350),
+            flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
+            marginTop: m ? sp(7) : 0,
+            ...fadeIn(visible, 400),
           }}>
-            {/* Glow behind the card */}
-            <div style={{
-              position: "absolute", top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: m ? 280 : 400, height: m ? 280 : 400,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(75,63,174,0.30) 0%, rgba(61,216,197,0.08) 40%, transparent 65%)",
-              pointerEvents: "none", filter: "blur(40px)",
-            }} />
-            <div style={{
-              position: "relative",
-              background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-              backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(255,255,255,0.14)",
-              borderRadius: sp(2.5),
-              padding: m ? sp(3) : sp(4),
-              boxShadow: "0 24px 80px rgba(0,0,0,0.35), 0 8px 32px rgba(75,63,174,0.15), inset 0 1px 0 rgba(255,255,255,0.10)",
-              display: "flex", flexDirection: "column", alignItems: "center",
-            }}>
-              {/* Score ring */}
-              <div style={{ position: "relative", width: ringSize, height: ringSize, marginBottom: sp(2) }}>
-                {/* Outer glow */}
-                <div style={{
-                  position: "absolute", inset: -32, borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, rgba(107,63,160,0.08) 50%, transparent 70%)",
-                  animation: visible ? "ringGlow 4s ease-in-out infinite" : "none", pointerEvents: "none",
-                }} />
-                <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
-                  {/* Track */}
-                  <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth} />
-                  {/* Score arc */}
-                  <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#heroScoreGrad)" strokeWidth={strokeWidth}
-                    strokeLinecap="round" strokeDasharray={circumference}
-                    strokeDashoffset={visible ? targetOffset : circumference}
-                    style={{
-                      transition: "stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
-                      filter: "drop-shadow(0 0 8px rgba(75,63,174,0.50))",
-                    }}
-                  />
-                  {/* Bright tip glow */}
-                  <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#heroScoreGlow)" strokeWidth={strokeWidth + 6}
-                    strokeLinecap="round" strokeDasharray={circumference}
-                    strokeDashoffset={visible ? targetOffset : circumference}
-                    style={{
-                      transition: "stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
-                      opacity: 0.3,
-                    }}
-                  />
-                  <defs>
-                    <linearGradient id="heroScoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3DD8C5" />
-                      <stop offset="40%" stopColor={C.purple} />
-                      <stop offset="100%" stopColor="#A78BFA" />
-                    </linearGradient>
-                    <linearGradient id="heroScoreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3DD8C5" stopOpacity="0" />
-                      <stop offset="80%" stopColor="#A78BFA" stopOpacity="0.6" />
-                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.8" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{
-                    fontSize: m ? 56 : 80, fontWeight: 600, color: "#FFFFFF",
-                    letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
-                    textShadow: "0 2px 16px rgba(75,63,174,0.30)",
-                  }}>
-                    {animatedScore}
-                  </span>
-                </div>
+            <div style={{ position: "relative", width: ringSize, height: ringSize }}>
+              <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} />
+                <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
+                  strokeLinecap="round" strokeDasharray={circumference}
+                  strokeDashoffset={visible ? targetOffset : circumference}
+                  style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
+                />
+                <defs>
+                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ ...score(m), color: C.sand, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
+                  {animatedScore}
+                </span>
               </div>
+            </div>
 
-              {/* Proof card below ring */}
+            <div style={{
+              textAlign: "center", marginTop: sp(2),
+              opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
+              transition: "opacity 500ms ease-out, transform 500ms ease-out",
+            }}>
               <div style={{
-                width: "100%",
-                background: "rgba(14,26,43,0.50)",
-                borderRadius: sp(1.5),
-                padding: m ? sp(2) : sp(2.5),
-                border: "1px solid rgba(255,255,255,0.08)",
-                opacity: showLabel ? 1 : 0,
-                transform: showLabel ? "translateY(0)" : "translateY(8px)",
-                transition: "opacity 500ms ease-out, transform 500ms ease-out",
+                display: "inline-flex", alignItems: "center", gap: sp(1),
+                padding: `${sp(0.75)}px ${sp(2)}px`, borderRadius: 100,
+                backgroundColor: "rgba(146,100,10,0.15)", border: "1px solid rgba(146,100,10,0.25)",
+                marginBottom: sp(1),
               }}>
-                {/* Band badge */}
-                <div style={{ marginBottom: sp(1) }}>
-                  <span style={{
-                    display: "inline-flex", alignItems: "center", gap: sp(1),
-                    padding: `${sp(0.5)}px ${sp(1.5)}px`, borderRadius: 100,
-                    backgroundColor: "rgba(146,100,10,0.20)", border: "1px solid rgba(146,100,10,0.30)",
-                  }}>
-                    <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#D4940A" }} />
-                    <span style={{ ...T.label, fontWeight: 600, color: "#D4940A" }}>Developing Stability</span>
-                  </span>
-                </div>
-                <div style={{ ...T.label, color: "rgba(255,255,255,0.60)", marginBottom: sp(2) }}>
-                  12 points to Established
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
-                    <span style={{ color: "#3DD8C5", fontSize: 13, flexShrink: 0, marginTop: 1 }}>&#x2713;</span>
-                    <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>Primary constraint: Income concentration</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
-                    <span style={{ color: "#3DD8C5", fontSize: 13, flexShrink: 0, marginTop: 1 }}>&#x2713;</span>
-                    <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>Stress test: Largest source removed &#8594; projected 21</span>
-                  </div>
-                </div>
+                <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#92640A" }} />
+                <span style={{ ...T.label, fontWeight: 600, color: "#92640A" }}>Developing Stability</span>
+              </div>
+              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)", marginBottom: sp(2) }}>12 points to Established</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: sp(0.75), textAlign: "left" }}>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Primary constraint: Income concentration</span>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Stress test: Largest source removed &#8594; projected 21</span>
               </div>
             </div>
           </div>
@@ -468,40 +340,17 @@ function HeroVideo() {
     setTimeout(() => { setCollapsed(true); setTimeout(() => setDismissed(true), 400); }, 600);
   };
 
-  /* Luminous separator line — shared element */
-  const glowLine = (
-    <div aria-hidden="true" style={{
-      width: "100%", height: 1, position: "relative", zIndex: 6,
-    }}>
-      {/* Glow halo */}
-      <div style={{
-        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-        width: "60%", height: 12,
-        background: "radial-gradient(ellipse at center, rgba(75,63,174,0.30) 0%, rgba(61,216,197,0.10) 40%, transparent 70%)",
-        filter: "blur(4px)", pointerEvents: "none",
-      }} />
-      {/* Crisp line */}
-      <div style={{
-        position: "absolute", top: 0, left: "10%", right: "10%", height: 1,
-        background: "linear-gradient(90deg, transparent 0%, rgba(75,63,174,0.40) 20%, rgba(61,216,197,0.35) 50%, rgba(75,63,174,0.40) 80%, transparent 100%)",
-      }} />
-    </div>
-  );
-
-  if (dismissed) return glowLine;
+  if (dismissed) return null;
 
   return (
     <section aria-label="Brand video" style={{
-      backgroundColor: "transparent", lineHeight: 0, position: "relative", overflow: "hidden",
+      backgroundColor: "#000", lineHeight: 0, position: "relative", overflow: "hidden",
       maxHeight: collapsed ? 0 : 2000, opacity: collapsed ? 0 : 1,
       transition: collapsed ? "max-height 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease" : "none",
     }}>
-      {/* Top luminous line */}
-      {glowLine}
-
       <button type="button" onClick={handleClose} aria-label="Close video" style={{
         position: "absolute", top: m ? 12 : 20, right: m ? 12 : 24, zIndex: 10,
-        width: m ? 44 : 44, height: m ? 44 : 44, borderRadius: "50%",
+        width: 44, height: 44, borderRadius: "50%",
         border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)",
         backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
         color: "rgba(255,255,255,0.70)", cursor: "pointer",
@@ -516,32 +365,21 @@ function HeroVideo() {
         </svg>
       </button>
 
-
-
-      {/* Dark overlay to keep video dark */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
-        background: "rgba(14,20,48,0.40)",
-      }} />
-
       {closing && (
         <>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", background: C.heroGradient, zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", background: C.heroGradient, zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
         </>
       )}
 
       {videoSrc && (
-        <video autoPlay muted loop playsInline preload="auto" style={{ width: "100%", height: "auto", display: "block", position: "relative", zIndex: 1 }}>
+        <video autoPlay muted loop playsInline preload="auto" style={{ width: "100%", height: "auto", display: "block" }}>
           <source src={videoSrc} type="video/mp4" />
         </video>
       )}
-
-      {/* Bottom luminous line */}
-      {glowLine}
     </section>
   );
 }
-
 
 
 /* ================================================================== */
@@ -559,13 +397,13 @@ function HowItWorksSection() {
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      paddingTop: m ? sp(8) : sp(10), paddingBottom: secY(m),
+      background: C.sandBg,
+      paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-
-      <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: "#FFFFFF", marginBottom: 0 }}>
+          <h2 style={{ ...h2(m), color: C.navy }}>
             Three steps. No financial data required.
           </h2>
         </div>
@@ -573,57 +411,25 @@ function HowItWorksSection() {
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(2.5) }}>
           {steps.map((s, i) => (
             <div key={s.num} style={{
-              borderRadius: sp(2),
-              background: "rgba(255,255,255,0.05)",
-              backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              padding: m ? sp(3) : sp(4),
+              padding: m ? sp(3) : sp(4), borderRadius: sp(1),
+              backgroundColor: C.white, border: `1px solid ${C.border}`,
               display: "flex", flexDirection: "column",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.06)",
-              ...fadeIn(visible, 100 + i * 120),
+              ...fadeIn(visible, 100 + i * 100),
             }}>
-              {/* Glowing number badge */}
-              <div style={{
-                width: 56, height: 56, borderRadius: "50%",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                background: "rgba(75,63,174,0.20)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 0 20px rgba(61,216,197,0.15), 0 0 40px rgba(75,63,174,0.10)",
-                marginBottom: sp(3),
-                alignSelf: m ? "center" : "flex-start",
-              }}>
-                <span style={{ fontSize: 20, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em" }}>{s.num}</span>
-              </div>
-
-              <h3 style={{ ...h3(m), color: "#FFFFFF", marginBottom: sp(1.5) }}>{s.title}</h3>
-              <p style={{ ...body(m), color: "rgba(255,255,255,0.55)", margin: 0, flex: 1 }}>{s.desc}</p>
-
-              {/* Trust item inside card */}
-              <div style={{
-                marginTop: sp(3), paddingTop: sp(2),
-                borderTop: "1px solid rgba(255,255,255,0.06)",
-                display: "flex", alignItems: "center", gap: sp(1),
-              }}>
-                <span style={{ color: "#3DD8C5", fontSize: 14 }}>&#x2713;</span>
-                <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>{s.trust}</span>
+              <div style={{ ...T.label, fontWeight: 600, color: C.teal, marginBottom: sp(2) }}>{s.num}</div>
+              <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
+              <p style={{ ...body(m), color: C.muted, margin: 0, flex: 1 }}>{s.desc}</p>
+              <div style={{ marginTop: sp(3), paddingTop: sp(2), borderTop: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: sp(1) }}>
+                <span style={{ color: C.teal, fontSize: 14 }}>&#x2713;</span>
+                <span style={{ ...T.label, color: C.muted }}>{s.trust}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Trust row below */}
-        <div style={{
-          display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center",
-          gap: m ? "6px 0" : "6px 0",
-          marginTop: sp(5),
-          ...fadeIn(visible, 500),
-        }}>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Same answers always produce the same score</span>
-          <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Deterministic scoring</span>
-          <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Methodology published</span>
-        </div>
+        <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(4), ...fadeIn(visible, 400) }}>
+          Same answers always produce the same score &bull; Deterministic scoring &bull; Methodology published
+        </p>
       </div>
     </section>
   );
@@ -639,36 +445,33 @@ function WhatItMeasures() {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
   const dims = [
-    { num: "01", label: "Recurring Income", accent: C.teal, metric: "0%", metricLabel: "recurring", barPct: 0,
+    { num: "01", label: "Recurring Income", accent: C.teal, metric: "0%", metricLabel: "recurring",
       title: "Recurring income proportion",
       desc: "What percentage of your income renews automatically through retainers, subscriptions, or standing contracts." },
-    { num: "02", label: "Concentration", accent: C.purple, metric: "55%", metricLabel: "one client", barPct: 55,
+    { num: "02", label: "Concentration", accent: C.purple, metric: "55%", metricLabel: "one client",
       title: "Income concentration",
       desc: "How much of your income depends on a single source. Higher concentration increases structural risk." },
-    { num: "03", label: "Visibility", accent: "#D4940A", metric: "<30", metricLabel: "days booked", barPct: 25,
+    { num: "03", label: "Visibility", accent: "#D4940A", metric: "<30", metricLabel: "days booked",
       title: "Forward income visibility",
       desc: "How far into the future your income is already committed — booked, contracted, or otherwise secured." },
-    { num: "04", label: "Continuity", accent: "#DC4A4A", metric: "100%", metricLabel: "labor", barPct: 100,
+    { num: "04", label: "Continuity", accent: "#DC4A4A", metric: "100%", metricLabel: "labor",
       title: "Income continuity without active labor",
       desc: "How long income continues if you stop working. Measures dependence on daily effort." },
   ];
 
   return (
     <section ref={ref} aria-label="What this score measures" style={{
-      background: "#1C1C2E",
+      background: C.white,
       paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        {/* Centered header with eyebrow */}
-        <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
-          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#3DD8C5", marginBottom: sp(1.5) }}>
+        <div style={{ maxWidth: 560, marginBottom: sp(5), ...fadeIn(visible) }}>
+          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1.5) }}>
             Four Dimensions of Stability
           </div>
-          <h2 style={{ ...h2(m), color: "#FFFFFF", marginBottom: sp(2) }}>
-            What this score measures.
-          </h2>
-          <p style={{ ...body(m), color: "rgba(255,255,255,0.50)", maxWidth: 520, margin: "0 auto" }}>
+          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>What this score measures.</h2>
+          <p style={{ ...body(m), color: C.muted }}>
             Six questions are used to evaluate four structural dimensions of income stability.
           </p>
         </div>
@@ -681,62 +484,26 @@ function WhatItMeasures() {
                 onMouseEnter={() => canHover() && setHoverIdx(i)}
                 onMouseLeave={() => setHoverIdx(null)}
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  borderRadius: sp(2), position: "relative", overflow: "hidden",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  padding: m ? sp(3) : sp(4),
-                  transform: hovered ? "translateY(-4px)" : "translateY(0)",
-                  boxShadow: hovered
-                    ? `0 16px 48px rgba(0,0,0,0.25), 0 0 0 1px ${d.accent}30`
-                    : "0 4px 20px rgba(0,0,0,0.12)",
-                  transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease",
-                  ...fadeIn(visible, 100 + i * 100),
+                  background: C.navy, borderRadius: sp(1.5),
+                  padding: m ? sp(3.5) : sp(4), position: "relative", overflow: "hidden",
+                  transform: hovered ? "translateY(-3px)" : "translateY(0)",
+                  boxShadow: hovered ? "0 12px 40px rgba(14,26,43,0.20)" : "0 4px 16px rgba(14,26,43,0.08)",
+                  transition: "transform 250ms ease, box-shadow 250ms ease",
+                  ...fadeIn(visible, 100 + i * 80),
                 }}>
-                {/* Accent bar */}
-                <div style={{
-                  position: "absolute", top: 0, left: 0, right: 0, height: 3,
-                  background: `linear-gradient(90deg, ${d.accent}, ${d.accent}60)`,
-                  opacity: hovered ? 1 : 0.6, transition: "opacity 300ms",
-                }} />
-
-                {/* Accent glow on hover */}
-                <div style={{
-                  position: "absolute", top: -40, right: -40, width: 120, height: 120,
-                  borderRadius: "50%",
-                  background: `radial-gradient(circle, ${d.accent}12 0%, transparent 70%)`,
-                  opacity: hovered ? 1 : 0, transition: "opacity 400ms",
-                  pointerEvents: "none",
-                }} />
-
-                {/* Header: number + label + metric */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2.5), position: "relative" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: d.accent, opacity: hovered ? 1 : 0.5, transition: "opacity 250ms" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2) }}>
                   <div style={{ display: "flex", alignItems: "center", gap: sp(1.25) }}>
-                    <span style={{
-                      fontSize: m ? 22 : 26, fontWeight: 600, color: d.accent,
-                      letterSpacing: "-0.02em",
-                    }}>{d.num}</span>
-                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.35)" }}>{d.label}</span>
+                    <span style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.num}</span>
+                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)" }}>{d.label}</span>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: m ? 22 : 26, fontWeight: 600, color: d.accent, letterSpacing: "-0.02em" }}>{d.metric}</div>
-                    <div style={{ ...T.meta, color: "rgba(255,255,255,0.35)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
+                    <div style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.metric}</div>
+                    <div style={{ ...T.meta, color: "rgba(244,241,234,0.42)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
                   </div>
                 </div>
-
-                {/* Visual metric bar */}
-                <div style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.06)", marginBottom: sp(2.5), overflow: "hidden" }}>
-                  <div style={{
-                    height: "100%", borderRadius: 2,
-                    backgroundColor: d.accent,
-                    width: visible ? `${d.barPct}%` : "0%",
-                    transition: `width 1.5s cubic-bezier(0.16, 1, 0.3, 1) ${300 + i * 150}ms`,
-                    opacity: 0.7,
-                  }} />
-                </div>
-
-                {/* Title + description */}
-                <h3 style={{ ...h3(m), fontWeight: 500, color: "#FFFFFF", marginBottom: sp(1.25) }}>{d.title}</h3>
-                <p style={{ ...body(m), color: "rgba(255,255,255,0.45)", margin: 0 }}>{d.desc}</p>
+                <h3 style={{ ...h3(m), fontWeight: 500, color: C.sand, marginBottom: sp(1.25) }}>{d.title}</h3>
+                <p style={{ ...body(m), color: "rgba(244,241,234,0.45)", margin: 0 }}>{d.desc}</p>
               </div>
             );
           })}
@@ -775,10 +542,7 @@ function AuthorityBlock() {
 
         <div style={fadeIn(visible, 150)}>
           {items.map((item) => (
-            <div key={item.label} style={{
-              display: "flex", gap: sp(2), alignItems: "flex-start",
-              padding: `${sp(2)}px 0`, borderTop: `1px solid ${C.border}`,
-            }}>
+            <div key={item.label} style={{ display: "flex", gap: sp(2), alignItems: "flex-start", padding: `${sp(2)}px 0`, borderTop: `1px solid ${C.border}` }}>
               <span style={{ color: C.teal, fontSize: 14, lineHeight: "24px", flexShrink: 0 }}>&#x2713;</span>
               <div>
                 <div style={{ ...T.label, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{item.label}</div>
@@ -829,50 +593,30 @@ function WhatYouGet() {
           </h2>
         </div>
 
-        <div style={{
-          display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1.3fr",
-          gap: sp(5), flexDirection: "column",
-        }}>
-          {/* Left — report contents */}
+        <div style={{ display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1.3fr", gap: sp(5), flexDirection: "column" }}>
           <div style={fadeIn(visible, 100)}>
             <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)", marginBottom: sp(2.5) }}>
               Your report includes
             </div>
             {reportItems.map((item, i) => (
-              <div key={item} style={{
-                display: "flex", alignItems: "center", gap: sp(1.5),
-                padding: `${sp(1.5)}px 0`,
-                borderBottom: i < reportItems.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none",
-              }}>
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), padding: `${sp(1.5)}px 0`, borderBottom: i < reportItems.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
                 <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
                 <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{item}</span>
               </div>
             ))}
           </div>
 
-          {/* Right — Simulator */}
           <div style={fadeIn(visible, 250)}>
-            <div style={{
-              border: "1px solid rgba(244,241,234,0.08)", borderRadius: sp(1.5),
-              padding: m ? sp(3) : sp(4),
-              background: "rgba(244,241,234,0.02)",
-            }}>
+            <div style={{ border: "1px solid rgba(244,241,234,0.08)", borderRadius: sp(1.5), padding: m ? sp(3) : sp(4), background: "rgba(244,241,234,0.02)" }}>
               <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1) }}>
                 Stability Simulator
               </div>
-              <p style={{ ...T.label, color: "rgba(244,241,234,0.35)", marginBottom: sp(2.5) }}>
-                Included with your diagnostic.
-              </p>
+              <p style={{ ...T.label, color: "rgba(244,241,234,0.42)", marginBottom: sp(2.5) }}>Included with your diagnostic.</p>
               <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(3) }}>
                 Test how structural changes may affect your score before you make them.
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5) }}>
-                {[
-                  "Model one change at a time",
-                  "See projected impact",
-                  "Compare current vs simulated score",
-                  "Identify which change moves your score most",
-                ].map((item) => (
+                {["Model one change at a time", "See projected impact", "Compare current vs simulated score", "Identify which change moves your score most"].map((item) => (
                   <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1) }}>
                     <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
                     <span style={{ ...T.label, color: "rgba(244,241,234,0.45)" }}>{item}</span>
@@ -897,15 +641,11 @@ function WhyNowSection() {
 
   return (
     <section ref={ref} aria-label="Why this matters" style={{
-      background: C.white,
-      paddingTop: secY(m), paddingBottom: secY(m),
-      paddingLeft: px(m), paddingRight: px(m),
-      textAlign: "center",
+      background: C.white, paddingTop: secY(m), paddingBottom: secY(m),
+      paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
       <div style={{ maxWidth: readW, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>
-          Income looks strongest right before pressure arrives.
-        </h2>
+        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>Income looks strongest right before pressure arrives.</h2>
         <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(2) }}>
           Most income problems are not visible in revenue alone.<br />
           They surface when one source changes, one month slips, or one contract ends.
@@ -940,8 +680,7 @@ function ProofSection() {
 
   return (
     <section ref={ref} aria-label="Proof" style={{
-      background: C.navy,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      background: C.navy, paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -962,32 +701,12 @@ function ProofSection() {
               </p>
               <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", paddingTop: sp(2) }}>
                 <div style={{ ...T.label, fontWeight: 600, color: C.sand, marginBottom: 2 }}>{t.name}</div>
-                <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)" }}>{t.role} &middot; Score: {t.score}</div>
+                <div style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>{t.role} &middot; Score: {t.score}</div>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* EVIDENCE STRIP                                                      */
-/* ================================================================== */
-function EvidenceStrip() {
-  const m = useMobile();
-  return (
-    <section aria-label="Evidence" style={{
-      background: C.sandBg,
-      paddingTop: m ? sp(4) : sp(5), paddingBottom: m ? sp(4) : sp(5),
-      paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
-    }}>
-      <p style={{ ...T.label, color: C.light, fontStyle: "italic", margin: 0 }}>
-        The median small business holds just 27 days of cash buffer.
-        <span style={{ ...T.meta, fontStyle: "normal", marginLeft: sp(1) }}>&mdash; JPMorgan Chase Institute</span>
-      </p>
     </section>
   );
 }
@@ -1000,8 +719,7 @@ function TrustStrip() {
   const m = useMobile();
   return (
     <section aria-label="Trust" style={{
-      background: C.sandBg,
-      paddingTop: m ? sp(4) : sp(5), paddingBottom: m ? sp(4) : sp(5),
+      background: C.sandBg, paddingTop: m ? sp(4) : sp(5), paddingBottom: m ? sp(4) : sp(5),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: m ? `${sp(1)}px ${sp(2.5)}px` : `${sp(1)}px ${sp(4.5)}px`, maxWidth: maxW, margin: "0 auto" }}>
@@ -1023,43 +741,29 @@ function PricingSection() {
 
   return (
     <section ref={ref} aria-label="Pricing" style={{
-      background: C.navy,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      background: C.navy, paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        {/* Heading */}
         <div style={{ textAlign: "center", marginBottom: sp(3), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.sand, marginBottom: sp(2.5) }}>
-            Know your structure before it breaks
-          </h2>
+          <h2 style={{ ...h2(m), color: C.sand, marginBottom: sp(2.5) }}>Know your structure before it breaks</h2>
           <p style={{ ...bodyLg(m), color: "rgba(244,241,234,0.70)", marginBottom: sp(4) }}>
             Built for people whose income does not arrive on autopilot.
           </p>
         </div>
 
-        {/* Industries */}
         <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible, 100) }}>
           <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)", marginBottom: sp(1.5) }}>
             Used by professionals in
           </div>
-          <p style={{ ...T.label, color: "rgba(244,241,234,0.40)", lineHeight: 1.8, maxWidth: 640, margin: "0 auto" }}>
+          <p style={{ ...T.label, color: "rgba(244,241,234,0.45)", lineHeight: 1.8, maxWidth: 640, margin: "0 auto" }}>
             Real estate &bull; Consulting &bull; Software contracting &bull; Insurance &bull; Mortgage &bull; Creative services &bull; Solo legal &bull; Financial advisory
           </p>
         </div>
 
-        {/* Cards */}
-        <div style={{
-          display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr",
-          gap: sp(2.5), maxWidth: 720, margin: "0 auto",
-          ...fadeIn(visible, 200),
-        }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(2.5), maxWidth: 720, margin: "0 auto", ...fadeIn(visible, 200) }}>
           {/* Free */}
-          <div style={{
-            background: C.white, borderRadius: sp(1.5),
-            padding: m ? sp(3.5) : sp(4), border: `1px solid rgba(255,255,255,0.15)`,
-            boxShadow: "0 16px 48px rgba(0,0,0,0.18)",
-          }}>
+          <div style={{ background: C.white, borderRadius: sp(1.5), padding: m ? sp(3.5) : sp(4), border: "1px solid rgba(255,255,255,0.15)", boxShadow: "0 16px 48px rgba(0,0,0,0.18)" }}>
             <div style={{ ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
               Income Stability Score&#8482;
             </div>
@@ -1081,33 +785,17 @@ function PricingSection() {
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.color = C.white; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.color = C.navy; }}
-            >
-              Get My Free Score
-            </Link>
+            >Get My Free Score</Link>
           </div>
 
           {/* Paid */}
-          <div style={{
-            background: C.white, borderRadius: sp(1.5),
-            padding: m ? sp(3.5) : sp(4),
-            border: `1px solid rgba(75,63,174,0.15)`,
-            boxShadow: "0 20px 56px rgba(75,63,174,0.15), 0 8px 24px rgba(0,0,0,0.10)",
-          }}>
+          <div style={{ background: C.white, borderRadius: sp(1.5), padding: m ? sp(3.5) : sp(4), border: "1px solid rgba(75,63,174,0.15)", boxShadow: "0 20px 56px rgba(75,63,174,0.15), 0 8px 24px rgba(0,0,0,0.10)" }}>
             <div style={{ ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
               RunPayway&#8482; Diagnostic Report
             </div>
             <div style={{ ...price(m), color: C.navy, marginBottom: sp(2) }}>$69</div>
             <div style={{ marginBottom: sp(3) }}>
-              {[
-                "Industry-tailored 4-page diagnostic",
-                "PressureMap analysis",
-                "Plain-English interpretation",
-                "Ranked disruption scenarios",
-                "Best first improvement",
-                "30-day action roadmap",
-                "Stability Simulator access",
-                "Email delivery",
-              ].map((item) => (
+              {["Industry-tailored 4-page diagnostic", "PressureMap analysis", "Plain-English interpretation", "Ranked disruption scenarios", "Best first improvement", "30-day action roadmap", "Stability Simulator access", "Email delivery"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1), marginBottom: sp(0.75) }}>
                   <span style={{ color: C.purple, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
                   <span style={{ ...body(m), color: C.muted }}>{item}</span>
@@ -1118,22 +806,16 @@ function PricingSection() {
               display: "flex", alignItems: "center", justifyContent: "center",
               width: "100%", height: sp(7), borderRadius: sp(1),
               background: C.heroGradient, color: C.white, ...T.cta,
-              textDecoration: "none",
-              boxShadow: "0 8px 24px rgba(75,63,174,0.25)",
+              textDecoration: "none", boxShadow: "0 8px 24px rgba(75,63,174,0.25)",
               transition: "transform 180ms ease, box-shadow 180ms ease",
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(75,63,174,0.35)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.25)"; }}
-            >
-              Get Diagnostic Report — $69
-            </a>
-            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(1.5), marginBottom: 0 }}>
-              30-day satisfaction guarantee
-            </p>
+            >Get Diagnostic Report — $69</a>
+            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(1.5), marginBottom: 0 }}>30-day satisfaction guarantee</p>
           </div>
         </div>
 
-        {/* Guarantee */}
         <div style={{ textAlign: "center", marginTop: sp(5), ...fadeIn(visible, 350) }}>
           <div style={{ display: "inline-block", padding: `${sp(2)}px ${sp(4)}px`, borderRadius: sp(1.5), border: "1px solid rgba(244,241,234,0.10)" }}>
             <p style={{ ...body(m), color: "rgba(244,241,234,0.65)", margin: 0, fontWeight: 500 }}>
@@ -1167,8 +849,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
   return (
     <section ref={ref} aria-label="FAQ" style={{
-      background: C.sandBg,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      background: C.sandBg, paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
@@ -1182,35 +863,16 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
             const panelId = `faq-panel-${i}`;
             const btnId = `faq-btn-${i}`;
             return (
-              <div key={i} style={{
-                borderTop: `1px solid ${C.border}`,
-                backgroundColor: isOpen ? "rgba(75,63,174,0.02)" : "transparent",
-                transition: "background-color 200ms ease",
-              }}>
-                <button
-                  id={btnId}
-                  onClick={() => setOpenFaq(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  style={{
-                    width: "100%", padding: `${sp(2.5)}px ${sp(2)}px`,
-                    minHeight: 48,
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    background: "none", border: "none", cursor: "pointer", textAlign: "left",
-                  }}
-                >
+              <div key={i} style={{ borderTop: `1px solid ${C.border}`, backgroundColor: isOpen ? "rgba(75,63,174,0.02)" : "transparent", transition: "background-color 200ms ease" }}>
+                <button id={btnId} onClick={() => setOpenFaq(isOpen ? null : i)} aria-expanded={isOpen} aria-controls={panelId}
+                  style={{ width: "100%", padding: `${sp(2.5)}px ${sp(2)}px`, minHeight: 48, display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
                   <span style={{ ...h3(m), fontWeight: 500, color: C.navy, paddingRight: sp(2) }}>{faq.q}</span>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }} aria-hidden="true">
                     <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                     {!isOpen && <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />}
                   </svg>
                 </button>
-                <div
-                  id={panelId}
-                  role="region"
-                  aria-labelledby={btnId}
-                  style={{ maxHeight: isOpen ? 300 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}
-                >
+                <div id={panelId} role="region" aria-labelledby={btnId} style={{ maxHeight: isOpen ? 300 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
                   <p style={{ ...body(m), color: C.muted, margin: 0, padding: `0 ${sp(2)}px ${sp(2.5)}px` }}>{faq.a}</p>
                 </div>
               </div>
@@ -1239,8 +901,7 @@ function FinalCta() {
 
   return (
     <section ref={ref} aria-label="Final CTA" style={{
-      background: C.navy,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      background: C.navy, paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
       <div style={{ maxWidth: 540, margin: "0 auto", ...fadeIn(visible) }}>
@@ -1270,10 +931,8 @@ function DisclaimerSection() {
   const m = useMobile();
   return (
     <section aria-label="Disclaimer" style={{
-      background: C.navy,
-      paddingTop: m ? sp(5) : sp(6), paddingBottom: m ? sp(5) : sp(6),
-      paddingLeft: px(m), paddingRight: px(m),
-      borderTop: "1px solid rgba(244,241,234,0.06)",
+      background: C.navy, paddingTop: m ? sp(5) : sp(6), paddingBottom: m ? sp(5) : sp(6),
+      paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.06)",
     }}>
       <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", textAlign: "center", maxWidth: 640, margin: "0 auto", lineHeight: 1.6 }}>
         The Income Stability Score&#8482; is a structural income assessment based on information provided by the user.
@@ -1287,10 +946,8 @@ function DisclaimerSection() {
 /* ================================================================== */
 /* PAGE EXPORT                                                         */
 /* ================================================================== */
-/* Schema.org structured data */
 const FAQ_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
+  "@context": "https://schema.org", "@type": "FAQPage",
   mainEntity: [
     { "@type": "Question", name: "What does this measure?", acceptedAnswer: { "@type": "Answer", text: "Income structure stability — not revenue, not wealth." } },
     { "@type": "Question", name: "What does it not measure?", acceptedAnswer: { "@type": "Answer", text: "Net worth, creditworthiness, or financial outcomes." } },
@@ -1304,8 +961,7 @@ const FAQ_SCHEMA = {
 };
 
 const PRODUCT_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "Product",
+  "@context": "https://schema.org", "@type": "Product",
   name: "RunPayway Income Stability Score",
   description: "A fixed structural assessment that measures how stable your income structure is — not how much you make.",
   brand: { "@type": "Brand", name: "RunPayway" },
@@ -1323,11 +979,9 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
-      <div className="seamless-gradient" style={{ background: C.heroGradient, backgroundAttachment: "fixed" }}>
-        <HeroSection />
-        <HeroVideo />
-        <HowItWorksSection />
-      </div>
+      <HeroSection />
+      <HeroVideo />
+      <HowItWorksSection />
       <WhatItMeasures />
       <AuthorityBlock />
       <WhatYouGet />
