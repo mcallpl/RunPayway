@@ -459,6 +459,49 @@ export default function DiagnosticPage() {
         }
       } catch { /* Plain English generation failed — report uses template */ }
 
+      // Generate Action Plan via Claude Worker
+      try {
+        const adapted3 = record as Record<string, unknown>;
+        const v2Data3 = (adapted3._v2 || {}) as Record<string, unknown>;
+        const ni3 = (v2Data3.normalized_inputs || {}) as Record<string, number | string>;
+        const constraints3 = (v2Data3.constraints || {}) as Record<string, unknown>;
+        const topC3 = (Array.isArray(constraints3.ranked) && constraints3.ranked.length > 0)
+          ? (constraints3.ranked[0] as Record<string, string>).factor || "recurrence"
+          : "recurrence";
+        const lift3 = v2Data3.score_lift_projection as Record<string, unknown> | undefined;
+        const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
+
+        const apRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            industry: profile.industry_sector || "",
+            operating_structure: profile.operating_structure || "",
+            income_model: profile.primary_income_model || "",
+            years_in_structure: profile.years_in_structure || "",
+            score: (adapted3.final_score as number) || 0,
+            band: (adapted3.stability_band as string) || "",
+            weakest_factor: topC3,
+            recurrence_pct: (ni3.income_persistence_pct as number) || 0,
+            concentration_pct: (ni3.largest_source_pct as number) || 0,
+            forward_visibility_pct: (ni3.forward_secured_pct as number) || 0,
+            labor_dependence_pct: (ni3.labor_dependence_pct as number) || 0,
+            variability_level: (ni3.income_variability_level as string) || "moderate",
+            active_income: adapted3.active_income_level || 0,
+            continuity_months: adapted3.income_continuity_months || 0,
+            risk_drop: adapted3.risk_scenario_drop || 0,
+            top_change: topLift?.label || "",
+            projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "",
+          }),
+        });
+        if (apRes.ok) {
+          const apData = await apRes.json();
+          if (apData.primary_action) {
+            (v2Data3 as Record<string, unknown>).ai_action_plan = apData;
+          }
+        }
+      } catch { /* Action plan generation failed — report uses template */ }
+
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
 

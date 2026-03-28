@@ -874,14 +874,23 @@ export default function ReviewPage() {
       const viable = v2Lift ? v2Lift.lift_scenarios.filter((s: { lift: number }) => s.lift > 0).sort((a: { lift: number }, b: { lift: number }) => b.lift - a.lift) : [];
       const fastest = viable[0];
       const easiest = viable.length > 1 ? viable[viable.length - 1] : null;
+      // Use AI action plan if available, otherwise use template
+      const aiPlan = v2?.ai_action_plan as Record<string, string> | undefined;
       const actionCats: Array<{ tag: string; tagColor: string; title: string; how: string; scoreChange: string }> = [];
-      if (fastest) {
-        const c = liftConcrete[fastest.scenario_id];
-        actionCats.push({ tag: "FASTEST IMPROVEMENT", tagColor: B.purple, title: c?.title ?? fastest.label, how: c?.how ?? fastest.change_description ?? "", scoreChange: `${fastest.original_score} → ${fastest.projected_score} (+${fastest.lift})` });
-      }
-      if (easiest && easiest.scenario_id !== fastest?.scenario_id) {
-        const c = liftConcrete[easiest.scenario_id];
-        actionCats.push({ tag: "EASIEST TO START", tagColor: B.teal, title: c?.title ?? easiest.label, how: c?.how ?? easiest.change_description ?? "", scoreChange: `${easiest.original_score} → ${easiest.projected_score} (+${easiest.lift})` });
+      if (aiPlan?.primary_action) {
+        actionCats.push({ tag: "HIGHEST-LEVERAGE CHANGE", tagColor: B.purple, title: aiPlan.primary_action, how: aiPlan.primary_how || "", scoreChange: fastest ? `${fastest.original_score} to ${fastest.projected_score} (+${fastest.lift})` : "" });
+        if (aiPlan.supporting_action) {
+          actionCats.push({ tag: "SUPPORTING IMPROVEMENT", tagColor: B.teal, title: aiPlan.supporting_action, how: aiPlan.supporting_how || "", scoreChange: easiest ? `${easiest.original_score} to ${easiest.projected_score} (+${easiest.lift})` : "" });
+        }
+      } else {
+        if (fastest) {
+          const c = liftConcrete[fastest.scenario_id];
+          actionCats.push({ tag: "FASTEST IMPROVEMENT", tagColor: B.purple, title: c?.title ?? fastest.label, how: c?.how ?? fastest.change_description ?? "", scoreChange: `${fastest.original_score} to ${fastest.projected_score} (+${fastest.lift})` });
+        }
+        if (easiest && easiest.scenario_id !== fastest?.scenario_id) {
+          const c = liftConcrete[easiest.scenario_id];
+          actionCats.push({ tag: "EASIEST TO START", tagColor: B.teal, title: c?.title ?? easiest.label, how: c?.how ?? easiest.change_description ?? "", scoreChange: `${easiest.original_score} to ${easiest.projected_score} (+${easiest.lift})` });
+        }
       }
 
       // Fragility details
@@ -945,8 +954,8 @@ export default function ReviewPage() {
         failureMode: failMode,
         patternToWatch: v2BehavioralInsights?.[0] ? { pattern: v2BehavioralInsights[0].pattern, consequence: v2BehavioralInsights[0].consequence, reframe: v2BehavioralInsights[0].reframe } : undefined,
         actionCategories: actionCats,
-        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? { projectedScore: v2Lift.combined_top_two.projected_score, lift: v2Lift.combined_top_two.lift, bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined, explanation: v2Explainability?.best_lift_explanation } : undefined,
-        tradeoff: v2TradeoffNarratives?.[0] ? { actionLabel: v2TradeoffNarratives[0].action_label, upside: v2TradeoffNarratives[0].upside, downside: v2TradeoffNarratives[0].downside, recommendation: v2TradeoffNarratives[0].net_recommendation } : undefined,
+        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? { projectedScore: v2Lift.combined_top_two.projected_score, lift: v2Lift.combined_top_two.lift, bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined, explanation: aiPlan?.combined_interpretation || v2Explainability?.best_lift_explanation } : undefined,
+        tradeoff: aiPlan?.tradeoff_upside ? { actionLabel: aiPlan.primary_action || "Primary change", upside: aiPlan.tradeoff_upside, downside: aiPlan.tradeoff_cost || "", recommendation: aiPlan.tradeoff_verdict || "" } : v2TradeoffNarratives?.[0] ? { actionLabel: v2TradeoffNarratives[0].action_label, upside: v2TradeoffNarratives[0].upside, downside: v2TradeoffNarratives[0].downside, recommendation: v2TradeoffNarratives[0].net_recommendation } : undefined,
         avoidActions: [...(v2AvoidActions ?? []).slice(0, 1).map((a: { label: string; reason: string }) => `${a.label}: ${a.reason}`), ...(olAvoid ?? []).slice(0, 1)],
         roadmap: (v2ExecutionRoadmap ?? []).slice(0, 4).map(w => ({ week: w.week, action: w.action, detail: w.detail, target: w.success_metric })),
         reassessDate,
