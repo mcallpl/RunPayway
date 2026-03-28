@@ -272,7 +272,6 @@ export default function MarketingLayout({
 
   const MORE_LINKS = [
     { href: "/simulator", label: "Stability Simulator" },
-    { href: "/verify", label: t.nav.verifyAScore },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
@@ -591,7 +590,7 @@ export default function MarketingLayout({
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              {[...NAV_LINKS, ...MORE_LINKS].filter(link => link.href !== "/verify").map((link, i) => (
+              {[...NAV_LINKS, ...MORE_LINKS].map((link, i) => (
                 <Link
                   key={link.label}
                   href={link.href}
@@ -724,7 +723,6 @@ export default function MarketingLayout({
                   { href: "/sample-report", label: t.nav.sampleReport },
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/simulator", label: "Stability Simulator" },
-                  { href: "/verify", label: t.nav.verifyAScore },
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/sign-in", label: "Sign In" },
                   { href: "/coming-soon", label: "Coming Soon" },
