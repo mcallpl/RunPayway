@@ -118,7 +118,7 @@ async function callClaude(system, user, env, maxTokens = 600) {
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-20250514",
       max_tokens: maxTokens,
       system: BRAND_RULES + "\n\n" + system,
       messages: [{ role: "user", content: user }],
