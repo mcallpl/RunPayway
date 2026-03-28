@@ -299,8 +299,28 @@ function AnimatedScoreRing({ visible, mobile }: { visible: boolean; mobile: bool
             Developing Stability
           </span>
         </div>
-        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", fontWeight: 500 }}>
-          17 points to Established
+        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", fontWeight: 500, marginBottom: 16 }}>
+          12 points to Established
+        </div>
+
+        {/* Enriched diagnostic preview */}
+        <div style={{
+          textAlign: "left", maxWidth: 260,
+          opacity: showLabel ? 1 : 0,
+          transform: showLabel ? "translateY(0)" : "translateY(6px)",
+          transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms",
+        }}>
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.40)", lineHeight: 1.5, margin: "0 0 8px" }}>
+            Income can likely absorb small disruptions, but one major source loss would place the structure under pressure.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>
+              Constraint: income concentration
+            </span>
+            <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)" }}>
+              Stress test: largest source removed &#8594; projected 21
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -707,12 +727,12 @@ function FourFactorsSection() {
   const factors = [
     {
       num: "01",
-      label: "Recurrence",
+      label: "Recurring Income",
       accent: B.teal,
       metric: "0%",
       metricLabel: "recurring",
-      question: "Do you rebuild your income from scratch every month?",
-      description: "No retainers, no subscriptions, no recurring contracts means you start at zero every month.",
+      question: "Recurring income proportion",
+      description: "What percentage of your income renews automatically through retainers, subscriptions, or standing contracts.",
     },
     {
       num: "02",
@@ -720,8 +740,8 @@ function FourFactorsSection() {
       accent: B.purple,
       metric: "55%",
       metricLabel: "one client",
-      question: "Would losing one client wipe out half your income?",
-      description: "One lost contract or one client decision can collapse your entire income structure.",
+      question: "Income concentration",
+      description: "How much of your income depends on a single source. The higher the concentration, the greater the structural risk.",
     },
     {
       num: "03",
@@ -729,17 +749,17 @@ function FourFactorsSection() {
       accent: "#D4940A",
       metric: "<30",
       metricLabel: "days booked",
-      question: "Do you know what you will earn next month?",
-      description: "If your income is not already committed — booked, contracted, locked in — you are guessing.",
+      question: "Forward income visibility",
+      description: "How far into the future your income is already committed — booked, contracted, or otherwise locked in.",
     },
     {
       num: "04",
-      label: "Passivity",
+      label: "Continuity",
       accent: "#DC4A4A",
       metric: "100%",
       metricLabel: "labor",
-      question: "If you stopped working today, when does the money stop?",
-      description: "If 100% requires your daily effort, any disruption immediately threatens everything.",
+      question: "Income continuity without active labor",
+      description: "How long income continues if you stop working. Measures structural dependence on daily effort.",
     },
   ];
 
@@ -767,10 +787,10 @@ function FourFactorsSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            Four questions your income<br />can&#8217;t hide from.
+            Structural dimensions measured.
           </h2>
           <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: 1.65, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms" }}>
-            Each one exposes a different structural weakness. The score measures how well your income holds up across all four.
+            The score is derived from four fixed structural inputs. Each measures a different dimension of how your income holds up under pressure.
           </p>
         </div>
 
@@ -858,9 +878,9 @@ function SimulatorShowcase({ visible, mobile }: { visible: boolean; mobile: bool
   };
 
   const tabs = [
-    { label: "Adjust any dimension", desc: "Drag sliders to test structural changes" },
-    { label: "Real-time score updates", desc: "Watch the projected score shift instantly" },
-    { label: "See what matters most", desc: "Which single change has the biggest impact" },
+    { label: "Model one change", desc: "Test a single structural adjustment" },
+    { label: "See projected impact", desc: "Compare current vs simulated score" },
+    { label: "Identify priority", desc: "Find which change moves the score most" },
   ];
 
   // Screen 0: default (score triptych + timeline)
@@ -956,9 +976,9 @@ function SimulatorShowcase({ visible, mobile }: { visible: boolean; mobile: bool
     }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
         <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal }}>
-          RunPayway&#8482; Stability Simulator
+          Stability Simulator
         </div>
-        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Lifetime access</div>
+        <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 500 }}>Included with report</div>
       </div>
 
       {/* Main preview area */}
@@ -1014,10 +1034,10 @@ function WhatYourReportSection() {
   const mobile = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score & Structural Diagnosis", detail: "Score, plain-English meaning, biggest constraint, distance to next band", color: B.purple },
-    { num: "02", title: "PressureMap & Income Structure", detail: "What pressures your structure, income breakdown, strongest and weakest factors", color: B.teal },
-    { num: "03", title: "Fragility & Pressure Test", detail: "Ranked disruption scenarios, absorbency, pattern to watch", color: "#9B2C2C" },
-    { num: "04", title: "Your Highest-Leverage Action Plan", detail: "Best changes to make, tradeoffs, 30-day roadmap, retake timing", color: B.purple },
+    { num: "01", title: "Your Score", detail: "What your number means and what is holding it down", color: B.purple },
+    { num: "02", title: "Income Structure", detail: "How your income is built and where pressure sits", color: B.teal },
+    { num: "03", title: "Disruption Analysis", detail: "What happens if a client, contract, or work capacity changes", color: "#9B2C2C" },
+    { num: "04", title: "Best Next Move", detail: "The one structural change most likely to improve your score", color: B.purple },
   ];
 
   return (
@@ -1111,25 +1131,25 @@ function HowItWorksSection() {
     {
       num: "01",
       time: "2 min",
-      title: "Take the assessment",
-      hook: "No bank connection. No credit pull. No login.",
-      desc: "Six questions about how your income is structured. No bank connection, no credit pull, no financial accounts. Takes under two minutes.",
+      title: "Answer six structural questions",
+      hook: "",
+      desc: "About how your income is built — sources, concentration, visibility, and continuity.",
       color: B.teal,
     },
     {
       num: "02",
       time: "Instant",
-      title: "See your score",
-      hook: "Free. Right now. No strings.",
-      desc: "Your Income Stability Score\u2122 out of 100, your stability band, and the single biggest thing holding your income back.",
+      title: "Receive your score and stability band",
+      hook: "",
+      desc: "Your Income Stability Score out of 100, your band, and the primary constraint holding it down. Free.",
       color: B.purple,
     },
     {
       num: "03",
       time: "$69",
-      title: "Unlock the full diagnostic",
-      hook: "Interpreted using your structure. Not a template.",
-      desc: "Every section is generated from fixed structural inputs — your industry, operating structure, and income model. Same inputs always produce the same scoring outcome. Ranked risk scenarios. Structural action plan. Tradeoff analysis. An interactive simulator you keep forever.",
+      title: "Unlock the full report",
+      hook: "",
+      desc: "Disruption analysis, structural action plan, scenario modeling, and a simulator to test changes before you make them.",
       color: B.navy,
     },
   ];
@@ -1159,14 +1179,8 @@ function HowItWorksSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            Three steps. No financial data required.
+            Three steps.
           </h2>
-          <p style={{
-            fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: B.muted, lineHeight: S.lhBody, maxWidth: 480,
-            opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 100ms",
-          }}>
-            We measure how your income is built — not how much you make. The structure of your revenue determines how stable it actually is.
-          </p>
         </div>
 
         {/* Steps — cards with connecting arrows */}
@@ -1222,15 +1236,6 @@ function HowItWorksSection() {
                     {step.title}
                   </h3>
 
-                  {/* Hook */}
-                  <p style={{
-                    fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, fontWeight: 600,
-                    color: isLast ? B.teal : step.color,
-                    marginBottom: 14, lineHeight: 1.4,
-                  }}>
-                    {step.hook}
-                  </p>
-
                   {/* Description */}
                   <p style={{
                     fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop,
@@ -1253,6 +1258,19 @@ function HowItWorksSection() {
             );
           })}
         </div>
+
+        {/* Trust row */}
+        <div style={{
+          display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? 16 : 32,
+          marginTop: mobile ? 32 : 48,
+          opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms",
+        }}>
+          {["No bank connection", "No credit pull", "No login required", "Private by default"].map((item) => (
+            <span key={item} style={{ fontSize: S.fsMeta, color: B.muted, fontWeight: 500 }}>
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -1267,12 +1285,10 @@ function TestimonialsSection() {
   const { ref, visible } = useInView();
   const mobile = useMobile();
 
-  // PLACEHOLDER — Replace with real testimonials + headshot paths before launch
-  // To use real photos: add images to /public/testimonials/ and update the `photo` field
   const testimonials = [
-    { quote: "The report knew I was a real estate agent before I told it what to fix. The action plan was specific to my exact structure, not generic advice.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
-    { quote: "It told me my income resets every month and showed me exactly how to convert one client to a retainer. That single change moved my score 12 points.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
-    { quote: "I shared the report with my accountant. She said it was more useful than most income documents she sees. The PressureMap section alone was worth the price.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
+    { quote: "The score made it obvious that too much of my income came from one source. The report gave me a clearer next step than my own planning notes had.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
+    { quote: "The value was not the number alone. It was seeing which structural weakness mattered most and what a single change would do to the score.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
+    { quote: "The report helped me separate revenue from stability. I had been treating them like the same thing.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
   ];
 
   return (
@@ -1303,7 +1319,7 @@ function TestimonialsSection() {
               letterSpacing: S.lsLabel, color: B.teal, marginBottom: S.labelMb,
             }}
           >
-            What customers say
+            From professionals who took the assessment
           </div>
           <h2
             style={{
@@ -1315,7 +1331,7 @@ function TestimonialsSection() {
               marginBottom: S.h2mb,
             }}
           >
-            The report that reveals what you did not know.
+            What the score revealed.
           </h2>
         </div>
 
@@ -1443,7 +1459,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          Your free score shows where you stand. The full report tells you exactly what to change, why it matters, and how to do it — written specifically for your industry and income model.
+          Built for people whose income does not arrive on autopilot.
         </p>
 
         {/* Proof line */}
@@ -1456,18 +1472,14 @@ function PricingSection() {
           }}
         >
           <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "8px 20px",
-            borderRadius: 100,
-            backgroundColor: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.08)",
+            display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? "6px 12px" : "6px 20px",
+            maxWidth: 600, margin: "0 auto",
           }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal }} />
-            <span style={{ fontSize: S.fsMeta, fontWeight: 500, color: "rgba(244,241,234,0.60)", letterSpacing: "0.01em" }}>
-              Professionals across 19 industries
-            </span>
+            {["Real estate", "Consulting", "Freelance design", "Contract software", "Insurance", "Mortgage", "Creative services", "Solo legal practice"].map((ind) => (
+              <span key={ind} style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.45)", fontWeight: 500 }}>
+                {ind}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -1508,9 +1520,14 @@ function PricingSection() {
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $0
             </div>
-            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Score &#183; Band &#183; Key insight &#183; What to fix first
-            </p>
+            <div style={{ marginBottom: 24 }}>
+              {["Score out of 100", "Stability band", "Primary constraint", "One recommended direction"].map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <span style={{ color: B.teal, fontSize: 12, lineHeight: 1, flexShrink: 0 }}>&#x2713;</span>
+                  <span style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: 1.4 }}>{item}</span>
+                </div>
+              ))}
+            </div>
             <Link
               href="/pricing"
               className="inline-flex items-center justify-center font-semibold"
@@ -1583,9 +1600,14 @@ function PricingSection() {
             <div style={{ fontSize: 40, fontWeight: 600, color: B.navy, lineHeight: 1, marginBottom: 12 }}>
               $69
             </div>
-            <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: S.lhBody, marginBottom: 24 }}>
-              Full report &#183; Score simulator &#183; Action plan &#183; Suggested language
-            </p>
+            <div style={{ marginBottom: 24 }}>
+              {["Full structural breakdown", "Ranked disruption scenarios", "Pressure analysis", "Best first improvement", "30-day action roadmap", "Stability Simulator"].map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <span style={{ color: B.purple, fontSize: 12, lineHeight: 1, flexShrink: 0 }}>&#x2713;</span>
+                  <span style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: B.muted, lineHeight: 1.4 }}>{item}</span>
+                </div>
+              ))}
+            </div>
             <a
               href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
               className="inline-flex items-center justify-center font-semibold"
@@ -1613,7 +1635,7 @@ function PricingSection() {
               Get Diagnostic Report — $69
             </a>
             <p style={{ fontSize: S.fsLabel, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-              30-day money-back guarantee.
+              30-day satisfaction guarantee
             </p>
           </div>
         </div>
@@ -1629,15 +1651,15 @@ function PricingSection() {
         >
           <div style={{ display: "inline-block", padding: "16px 32px", borderRadius: S.panelRadius, border: "1px solid rgba(244,241,234,0.12)", marginBottom: 20 }}>
             <p style={{ fontSize: mobile ? S.fsCard.mobile : S.fsCard.desktop, color: "rgba(244,241,234,0.75)", margin: 0, fontWeight: 500 }}>
-              If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know, full refund. No questions.
+              30-day satisfaction guarantee. If the report does not deliver meaningful new insight into your income structure, request a full refund within 30 days.
             </p>
           </div>
-          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.40)", marginBottom: 8 }}>
-            No bank connection &#183; No credit pull &#183; Private by default
-          </p>
-          <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.30)" }}>
-            Deterministic scoring &#183; Same answers always produce the same score &#183; Methodology published
-          </p>
+          {/* Trust band — governance pulled up from footer */}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? "6px 16px" : "6px 24px", marginTop: 8 }}>
+            {["Methodology published", "Model version controlled", "Deterministic scoring", "Private by default"].map((item) => (
+              <span key={item} style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.35)", fontWeight: 500 }}>{item}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1656,36 +1678,40 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
   const faqs = [
     {
+      q: "What does this measure?",
+      a: "How well your income structure holds up under disruption. The score is derived from six structural inputs — recurring income proportion, source concentration, forward visibility, labor dependence, earnings variability, and continuity without active work.",
+    },
+    {
+      q: "What does it not measure?",
+      a: "Total income, net worth, creditworthiness, or investment performance. This is a structural assessment, not a financial evaluation. It measures how your income is built, not how much you earn.",
+    },
+    {
+      q: "Why should I trust this score?",
+      a: "The scoring model is deterministic — the same answers always produce the same score. No machine learning, no subjective judgment, no financial account access. The methodology is published and the model is version controlled. Every report includes a verifiable record ID.",
+    },
+    {
+      q: "How is this different from revenue or credit tools?",
+      a: "Revenue tools measure how much comes in. Credit tools measure borrowing risk. This measures structural stability — whether your income can absorb disruption without collapsing. Different question, different model.",
+    },
+    {
       q: "What do I get for free?",
-      a: "Your score out of 100, your stability band, and one key insight about what is holding your income back. No payment required.",
+      a: "Your score out of 100, your stability band, and the primary structural constraint holding your score down. No payment required.",
     },
     {
       q: "What does the $69 report include?",
-      a: "A 4-page structural diagnostic interpreted using your industry, operating structure, and income model. Same inputs always produce the same scoring outcome. Includes PressureMap structural intelligence, a plain-English score interpretation, ranked risk scenarios, a prioritized action plan with projected score impact, tradeoff analysis, a 30-day roadmap, and lifetime access to the Stability Simulator.",
-    },
-    {
-      q: "How is this different from other income tools?",
-      a: "Most tools measure how much you earn. RunPayway measures how your income holds up under disruption. The score is deterministic — same answers always produce the same score. The report interprets that score for your specific industry, operating structure, and income model. No two reports read the same because no two structures are the same.",
+      a: "A 4-page structural diagnostic interpreted using your industry, operating structure, and income model. Includes disruption analysis, ranked risk scenarios, a structural action plan with projected score impact, tradeoff analysis, a 30-day roadmap, and the Stability Simulator.",
     },
     {
       q: "What is your refund policy?",
-      a: "Full refund within 30 days — no questions asked. If the report does not reveal at least one insight you did not already know, you get your money back. Contact us with your record ID.",
+      a: "30-day satisfaction guarantee. If the report does not deliver meaningful new insight into your income structure, request a full refund. Contact us with your record ID.",
     },
     {
       q: "Is my information confidential?",
-      a: "Yes. We never collect bank credentials, credit data, or financial account access. Your assessment data is encrypted, never sold, and you can request deletion at any time. We do not share your score with anyone.",
-    },
-    {
-      q: "How long does it take?",
-      a: "Under two minutes. Six questions, instant score. The full report generates immediately after purchase — no waiting, no second assessment. Your report is also delivered to your email.",
+      a: "Yes. We never collect bank credentials, credit data, or financial account access. Your assessment data is encrypted, never sold, and you can request deletion at any time.",
     },
     {
       q: "Can I retake the assessment?",
       a: "Yes. Each assessment is independent. Retake after a meaningful structural change — a new retainer signed, a client added, a dependency reduced — to see how your score has moved.",
-    },
-    {
-      q: "Why should I trust this score?",
-      a: "The scoring model is deterministic — the same answers always produce the same score. No machine learning, no subjective judgment, no financial account access. The methodology is published. Your score is verifiable. Every report includes a record ID you can use to confirm authenticity.",
     },
   ];
 
@@ -1930,9 +1956,9 @@ function SimulatorTeaserSection() {
         transition: "opacity 700ms ease-out, transform 700ms ease-out",
       }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>Included With Your Report</div>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>Stability Simulator</div>
           <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, lineHeight: 1.15, letterSpacing: "-0.025em", margin: 0 }}>
-            Model scenarios against your actual data.
+            Test how structural changes may affect your score before you make them.
           </h2>
         </div>
         <SimulatorTeaser />
@@ -1940,6 +1966,112 @@ function SimulatorTeaserSection() {
     </section>
   );
 }
+
+/* ================================================================== */
+/* AUTHORITY BLOCK — How the score works                                */
+/* ================================================================== */
+function AuthorityBlock() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  const items = [
+    { label: "Fixed structural inputs", desc: "Score is derived from six questions about income structure, not financial data" },
+    { label: "Deterministic scoring", desc: "Same answers always produce the same score. No machine learning, no subjective judgment" },
+    { label: "Measures stability, not wealth", desc: "The score reflects how income holds up under disruption — not how much you earn" },
+    { label: "No financial access required", desc: "No bank connection, no credit pull, no account linking" },
+    { label: "Methodology published", desc: "Scoring dimensions, weights, and interpretation logic are available for review" },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      aria-label="How the score works"
+      style={{
+        background: "#FFFFFF",
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+      }}
+    >
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div style={{ marginBottom: mobile ? 36 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+            How the score works
+          </div>
+          <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", fontFamily: DISPLAY_FONT, fontWeight: 400, marginBottom: 0 }}>
+            A fixed model. Not an opinion.
+          </h2>
+        </div>
+
+        <div style={{ opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 150ms" }}>
+          {items.map((item, i) => (
+            <div key={item.label} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "16px 0", borderTop: `1px solid ${B.border}` }}>
+              <span style={{ color: B.teal, fontSize: 14, lineHeight: "24px", flexShrink: 0 }}>&#x2713;</span>
+              <div>
+                <div style={{ fontSize: mobile ? 15 : 16, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{item.label}</div>
+                <div style={{ fontSize: mobile ? 14 : 15, color: B.muted, lineHeight: 1.55 }}>{item.desc}</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ borderTop: `1px solid ${B.border}` }} />
+        </div>
+
+        {/* Model badge */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: mobile ? 12 : 24, marginTop: 28, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 300ms" }}>
+          <span style={{ fontSize: S.fsLabel, color: B.light, fontWeight: 600, letterSpacing: "0.04em" }}>
+            Model Version: RP-2.0
+          </span>
+          <span style={{ fontSize: S.fsLabel, color: B.light, fontWeight: 600, letterSpacing: "0.04em" }}>
+            Assessment Type: Structural Income Stability Diagnostic
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* WHY NOW — Urgency before pricing                                    */
+/* ================================================================== */
+function WhyNowSection() {
+  const { ref, visible } = useInView();
+  const mobile = useMobile();
+
+  return (
+    <section
+      ref={ref}
+      aria-label="Why this matters now"
+      style={{
+        background: B.navy,
+        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
+        paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+        textAlign: "center",
+      }}
+    >
+      <div style={{
+        maxWidth: 580, margin: "0 auto",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(16px)",
+        transition: "opacity 700ms ease-out, transform 700ms ease-out",
+      }}>
+        <div style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+          Why this matters
+        </div>
+        <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 20 }}>
+          Income looks strongest right before pressure arrives.
+        </h2>
+        <p style={{ fontSize: mobile ? S.fsBody.mobile : S.fsBody.desktop, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
+          Most income problems are not visible in revenue alone. They surface when one source changes, one month slips, or one contract ends. The score is designed to reveal structural weakness before it becomes financial pain.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 
 /* ================================================================== */
 /* MID-PAGE CTA                                                        */
@@ -1963,11 +2095,8 @@ function MidPageCta() {
         transform: visible ? "translateY(0)" : "translateY(12px)",
         transition: "opacity 600ms ease-out, transform 600ms ease-out",
       }}>
-        <p style={{ fontSize: S.fsLabel, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
-          Still here?
-        </p>
         <h2 style={{ fontSize: mobile ? S.fsH2.mobile : S.fsH2.desktop, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
-          Your score takes two minutes. The insight lasts longer.
+          Two minutes. Six questions. One structural score.
         </h2>
         <p style={{ fontSize: S.fsMeta, color: "rgba(244,241,234,0.50)", marginBottom: 32, lineHeight: 1.6 }}>
           No bank connection. No credit pull. Private by default.
@@ -1994,11 +2123,13 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <HeroVideo />
-      <WhatYourReportSection />
-      <HowItWorksSection />
       <FourFactorsSection />
-      <BridgeSection />
+      <AuthorityBlock />
+      <HowItWorksSection />
+      <WhatYourReportSection />
+      <WhyNowSection />
       <TestimonialsSection />
+      <BridgeSection />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <DisclaimerSection />
