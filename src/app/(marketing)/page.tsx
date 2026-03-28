@@ -203,8 +203,8 @@ function HeroSection() {
     <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
-        paddingTop: m ? sp(14) : sp(16),
-        paddingBottom: m ? sp(9) : sp(12),
+        paddingTop: m ? sp(16) : sp(20),
+        paddingBottom: m ? sp(10) : sp(16),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
@@ -212,37 +212,41 @@ function HeroSection() {
           alignItems: "center", justifyContent: "space-between", gap: sp(8),
         }}>
           {/* Left — text */}
-          <div style={{ maxWidth: heroW, textAlign: m ? "center" : "left" }}>
+          <div style={{ maxWidth: 720, textAlign: m ? "center" : "left" }}>
             <div style={{
               ...fadeIn(visible),
-              ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
-              color: C.teal, marginBottom: sp(3),
+              ...T.label, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+              color: C.teal, marginBottom: m ? sp(3) : sp(4),
             }}>
               Income Stability Score&#8482;
             </div>
 
             <h1 style={{
-              ...fadeIn(visible, 100),
-              ...h1(m), color: C.sand, letterSpacing: "-0.02em", marginBottom: sp(2.5),
+              ...fadeIn(visible, 120),
+              fontSize: m ? 38 : 64, fontWeight: 600, lineHeight: 1.04,
+              color: C.sand, letterSpacing: "-0.03em",
+              marginBottom: m ? sp(3) : sp(5),
             }}>
-              Measure how stable your income structure actually is.
+              Measure how stable<br />your income structure<br />actually is.
             </h1>
 
             <p style={{
-              ...fadeIn(visible, 200),
-              ...bodyLg(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(4.5),
-              maxWidth: m ? undefined : 480,
+              ...fadeIn(visible, 250),
+              fontSize: m ? 18 : 20, fontWeight: 400, lineHeight: 1.5,
+              color: "rgba(244,241,234,0.50)",
+              marginBottom: m ? sp(5) : sp(6),
+              maxWidth: m ? undefined : 500,
             }}>
               A fixed structural assessment based on how your income is built — not how much you make.
             </p>
 
-            <div style={fadeIn(visible, 300)}>
+            <div style={fadeIn(visible, 380)}>
               <Link
                 href="/pricing"
                 className="cta-tick inline-flex items-center justify-center"
                 style={{
                   height: sp(7), width: m ? "100%" : "auto",
-                  paddingLeft: sp(4.5), paddingRight: sp(4.5),
+                  paddingLeft: sp(5), paddingRight: sp(5),
                   borderRadius: sp(1.25),
                   background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
                   color: C.navy, ...T.cta, letterSpacing: "-0.01em",
@@ -259,7 +263,7 @@ function HeroSection() {
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
 
-              <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(2.5) }}>
+              <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(3) }}>
                 Six questions &bull; Under two minutes &bull; No bank connection &bull; No credit pull
               </p>
             </div>
