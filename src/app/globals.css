@@ -408,19 +408,18 @@ html {
     display: none !important;
   }
 
-  /* --- Hero Sections — all pages use similar pattern --- */
-  section h1 {
+  /* --- Typography scaling --- */
+  /* Landing page uses inline token system; these apply to app pages only */
+  section:not([aria-label]) h1 {
     font-size: 32px !important;
     line-height: 1.15 !important;
     letter-spacing: -0.02em !important;
   }
-
-  /* --- Typography scaling --- */
-  section h2 {
+  section:not([aria-label]) h2 {
     font-size: 26px !important;
     line-height: 1.18 !important;
   }
-  section h3 {
+  section:not([aria-label]) h3 {
     font-size: 17px !important;
   }
 
@@ -572,10 +571,10 @@ html {
    Extra-small screen refinements
    ============================================ */
 @media (max-width: 480px) {
-  section h1 {
+  section:not([aria-label]) h1 {
     font-size: 24px !important;
   }
-  section h2 {
+  section:not([aria-label]) h2 {
     font-size: 22px !important;
   }
 
@@ -633,6 +632,34 @@ html {
     padding-left: 32px !important;
     padding-right: 32px !important;
   }
+}
+
+/* ============================================
+   FOCUS STATES — keyboard accessibility
+   ============================================ */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #4B3FAE;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS — landing page
+   ============================================ */
+@keyframes ringGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes curtainTop {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes curtainBottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 /* ============================================

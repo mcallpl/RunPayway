@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../public/runpayway-logo-white.png";
-import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -48,6 +47,7 @@ function useMobile(bp = 768) {
 function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
   const [value, setValue] = useState(0);
   const animated = useRef(false);
+  const rafId = useRef(0);
   useEffect(() => {
     if (!trigger || animated.current) return;
     animated.current = true;
@@ -57,9 +57,10 @@ function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) rafId.current = requestAnimationFrame(step);
     };
-    requestAnimationFrame(step);
+    rafId.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafId.current);
   }, [trigger, target, duration]);
   return value;
 }
@@ -209,18 +210,6 @@ function HeroSection() {
 
   return (
     <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
-      <style>{`
-@keyframes ringGlow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.8; }
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #fff; border: 2px solid rgba(75,63,174,0.5);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2); cursor: pointer;
-}
-      `}</style>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
         paddingTop: m ? sp(14) : sp(16),
@@ -282,7 +271,7 @@ input[type="range"]::-webkit-slider-thumb {
               </Link>
 
               <p style={{
-                ...T.meta, color: "rgba(244,241,234,0.30)", marginTop: sp(2.5), letterSpacing: "0.02em",
+                ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(2.5), letterSpacing: "0.02em",
               }}>
                 Six questions{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
                 Under two minutes{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
@@ -377,9 +366,9 @@ function HeroVideo() {
       maxHeight: collapsed ? 0 : 2000, opacity: collapsed ? 0 : 1,
       transition: collapsed ? "max-height 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease" : "none",
     }}>
-      <button onClick={handleClose} aria-label="Close video" style={{
+      <button type="button" onClick={handleClose} aria-label="Close video" style={{
         position: "absolute", top: m ? 12 : 20, right: m ? 12 : 24, zIndex: 10,
-        width: m ? 36 : 40, height: m ? 36 : 40, borderRadius: "50%",
+        width: m ? 44 : 44, height: m ? 44 : 44, borderRadius: "50%",
         border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)",
         backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
         color: "rgba(255,255,255,0.70)", cursor: "pointer",
@@ -389,7 +378,7 @@ function HeroVideo() {
         onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.70)"; e.currentTarget.style.color = "rgba(255,255,255,0.95)"; }}
         onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.50)"; e.currentTarget.style.color = "rgba(255,255,255,0.70)"; }}
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
           <line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" />
         </svg>
       </button>
@@ -400,10 +389,6 @@ function HeroVideo() {
         <>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
-          <style>{`
-            @keyframes curtainTop { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-            @keyframes curtainBottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
-          `}</style>
         </>
       )}
 
@@ -431,7 +416,7 @@ function ExamplePreview() {
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 620, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.25)", marginBottom: sp(3) }}>
+        <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: sp(3) }}>
           Example result
         </div>
         <div style={{
@@ -578,11 +563,11 @@ function WhatItMeasures() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2) }}>
                   <div style={{ display: "flex", alignItems: "center", gap: sp(1.25) }}>
                     <span style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.num}</span>
-                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.25)" }}>{d.label}</span>
+                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)" }}>{d.label}</span>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.metric}</div>
-                    <div style={{ ...T.meta, color: "rgba(244,241,234,0.25)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
+                    <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
                   </div>
                 </div>
                 <h3 style={{ ...h3(m), fontWeight: 500, color: C.sand, marginBottom: sp(1.25) }}>{d.title}</h3>
@@ -685,7 +670,7 @@ function WhatYouGet() {
         }}>
           {/* Left — report contents */}
           <div style={fadeIn(visible, 100)}>
-            <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)", marginBottom: sp(2.5) }}>
+            <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)", marginBottom: sp(2.5) }}>
               Your report includes
             </div>
             {reportItems.map((item, i) => (
@@ -890,7 +875,7 @@ function PricingSection() {
 
         {/* Industries */}
         <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible, 100) }}>
-          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.30)", marginBottom: sp(1.5) }}>
+          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)", marginBottom: sp(1.5) }}>
             Used by professionals in
           </div>
           <p style={{ ...T.label, color: "rgba(244,241,234,0.40)", lineHeight: 1.8, maxWidth: 640, margin: "0 auto" }}>
@@ -964,7 +949,7 @@ function PricingSection() {
                 </div>
               ))}
             </div>
-            <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+            <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               width: "100%", height: sp(7), borderRadius: sp(1),
               background: C.heroGradient, color: C.white, ...T.cta,
@@ -1029,25 +1014,39 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         <div style={fadeIn(visible, 150)}>
           {faqs.map((faq, i) => {
             const isOpen = openFaq === i;
+            const panelId = `faq-panel-${i}`;
+            const btnId = `faq-btn-${i}`;
             return (
               <div key={i} style={{
                 borderTop: `1px solid ${C.border}`,
                 backgroundColor: isOpen ? "rgba(75,63,174,0.02)" : "transparent",
                 transition: "background-color 200ms ease",
               }}>
-                <button onClick={() => setOpenFaq(isOpen ? null : i)} style={{
-                  width: "100%", padding: `${sp(2.5)}px ${sp(0.5)}px`,
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  background: "none", border: "none", cursor: "pointer", textAlign: "left",
-                }}>
+                <button
+                  id={btnId}
+                  onClick={() => setOpenFaq(isOpen ? null : i)}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  style={{
+                    width: "100%", padding: `${sp(2.5)}px ${sp(2)}px`,
+                    minHeight: 48,
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                  }}
+                >
                   <span style={{ ...h3(m), fontWeight: 500, color: C.navy, paddingRight: sp(2) }}>{faq.q}</span>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }} aria-hidden="true">
                     <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                     {!isOpen && <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />}
                   </svg>
                 </button>
-                <div style={{ maxHeight: isOpen ? 200 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
-                  <p style={{ ...body(m), color: C.muted, margin: 0, padding: `0 ${sp(0.5)}px ${sp(2.5)}px` }}>{faq.a}</p>
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={btnId}
+                  style={{ maxHeight: isOpen ? 300 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}
+                >
+                  <p style={{ ...body(m), color: C.muted, margin: 0, padding: `0 ${sp(2)}px ${sp(2.5)}px` }}>{faq.a}</p>
                 </div>
               </div>
             );
@@ -1111,7 +1110,7 @@ function DisclaimerSection() {
       paddingLeft: px(m), paddingRight: px(m),
       borderTop: "1px solid rgba(244,241,234,0.06)",
     }}>
-      <p style={{ ...T.meta, color: "rgba(244,241,234,0.30)", textAlign: "center", maxWidth: 640, margin: "0 auto", lineHeight: 1.6 }}>
+      <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", textAlign: "center", maxWidth: 640, margin: "0 auto", lineHeight: 1.6 }}>
         The Income Stability Score&#8482; is a structural income assessment based on information provided by the user.
         It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
       </p>
@@ -1123,11 +1122,41 @@ function DisclaimerSection() {
 /* ================================================================== */
 /* PAGE EXPORT                                                         */
 /* ================================================================== */
+/* Schema.org structured data */
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    { "@type": "Question", name: "What does this measure?", acceptedAnswer: { "@type": "Answer", text: "Income structure stability — not revenue, not wealth." } },
+    { "@type": "Question", name: "What does it not measure?", acceptedAnswer: { "@type": "Answer", text: "Net worth, creditworthiness, or financial outcomes." } },
+    { "@type": "Question", name: "Why should I trust this score?", acceptedAnswer: { "@type": "Answer", text: "It is based on fixed structural inputs and deterministic scoring. The same inputs always produce the same result." } },
+    { "@type": "Question", name: "How is this different from revenue or credit tools?", acceptedAnswer: { "@type": "Answer", text: "Revenue measures how much you earn. Credit measures repayment behavior. This measures how stable your income structure is under disruption." } },
+    { "@type": "Question", name: "What do I get for free?", acceptedAnswer: { "@type": "Answer", text: "Your score, band, primary constraint, and one recommended direction." } },
+    { "@type": "Question", name: "What does the $69 report include?", acceptedAnswer: { "@type": "Answer", text: "Full diagnostic, disruption analysis, action plan, and simulator access." } },
+    { "@type": "Question", name: "Is my information confidential?", acceptedAnswer: { "@type": "Answer", text: "Yes. No bank connections. No external data access. Private by default." } },
+    { "@type": "Question", name: "Can I retake the assessment?", acceptedAnswer: { "@type": "Answer", text: "Yes. You can retake it anytime to reflect changes in your structure." } },
+  ],
+};
+
+const PRODUCT_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "RunPayway Income Stability Score",
+  description: "A fixed structural assessment that measures how stable your income structure is — not how much you make.",
+  brand: { "@type": "Brand", name: "RunPayway" },
+  offers: [
+    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score", description: "Score, band, primary constraint, and one recommended direction." },
+    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway Diagnostic Report", description: "Full diagnostic, disruption analysis, action plan, and simulator access." },
+  ],
+};
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
     <div className="overflow-x-hidden">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
       <HeroSection />
       <HeroVideo />
