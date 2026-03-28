@@ -179,7 +179,7 @@ function PricingCards() {
             <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
               {[
                 { text: "Everything in Free, plus:", bold: true },
-                { text: "5-page structural diagnostic report" },
+                { text: "4-page structural diagnostic report" },
                 { text: "Risk scenarios ranked by severity" },
                 { text: "Action plan with projected score impact" },
                 { text: "Tradeoff analysis for each move" },
@@ -249,7 +249,7 @@ function PricingCards() {
                 { text: "Everything in the Diagnostic Report, plus:", bold: true },
                 { text: "3 full assessments within 12 months" },
                 { text: "Take each assessment on your own schedule" },
-                { text: "Full 5-page report generated every time" },
+                { text: "Full 4-page report generated every time" },
                 { text: "Monitoring Portal with email sign-in" },
                 { text: "Save $58 vs. buying three reports separately" },
               ].map((f, i) => (
@@ -289,11 +289,10 @@ function ReportCovers() {
   const m = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score", desc: "What it means in plain English, how far you are from the next band, and the single biggest structural factor to fix.", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", desc: "Income composition, stress test, structural indicators, what\u2019s working, and what\u2019s holding you back.", color: B.teal },
-    { num: "03", title: "What Could Go Wrong", desc: "Ranked scenarios with exact score drops, fragility classification, behavioral patterns to watch.", color: B.purple },
-    { num: "04", title: "Your Action Plan", desc: "Projected score impact per action, tradeoff analysis, week-by-week execution roadmap.", color: B.teal },
-    { num: "05", title: "Methodology + Next Steps", desc: "Assessment confidence, income durability, reassessment triggers, and your verification record.", color: B.purple },
+    { num: "01", title: "Your Score & Structural Diagnosis", desc: "Score, plain-English interpretation, biggest constraint, distance to next band, PressureMap intelligence.", color: B.purple },
+    { num: "02", title: "PressureMap & Income Structure", desc: "What pressures your structure, income breakdown, strongest and weakest factors, what\u2019s working and holding you back.", color: B.teal },
+    { num: "03", title: "Fragility & Pressure Test", desc: "Ranked disruption scenarios with exact score drops, absorbency summary, pattern to watch.", color: B.purple },
+    { num: "04", title: "Your Highest-Leverage Action Plan", desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.", color: B.teal },
   ];
 
   return (
@@ -391,8 +390,8 @@ function Faq() {
 
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, a consequence sentence showing what your structure can absorb, and the single biggest structural factor limiting your score. No payment required." },
-    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 5-page structural diagnostic with risk scenarios, projected actions, tradeoff analysis, structural indicators with cross-factor effects, a week-by-week execution roadmap, assessment confidence, income durability grade, and lifetime access to the RunPayway&#8482; Stability Simulator." },
-    { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a complete 5-page diagnostic report. You sign in with your email anytime to take your next assessment or review your history. It\u2019s $149/year \u2014 saving $58 compared to purchasing three reports individually." },
+    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 4-page structural diagnostic with PressureMap intelligence, ranked risk scenarios, projected actions, tradeoff analysis, a 30-day roadmap, and lifetime access to the RunPayway\u2122 Stability Simulator." },
+    { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a complete 4-page diagnostic report. You sign in with your email anytime to take your next assessment or review your history. It\u2019s $149/year \u2014 saving $58 compared to purchasing three reports individually." },
     { q: "How is the score calculated?", a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
     { q: "Is my information confidential?", a: "Yes. We never collect bank credentials, credit data, or financial account access. Your data is encrypted, never sold, and you can request deletion at any time." },

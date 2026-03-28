@@ -892,11 +892,10 @@ function WhatYourReportSection() {
   const mobile = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score", detail: "What it means, what to fix first", color: B.purple },
-    { num: "02", title: "How Your Income Is Built", detail: "Composition, stress test, structural indicators", color: B.teal },
-    { num: "03", title: "Your Biggest Risks", detail: "Ranked scenarios with exact score drops", color: "#9B2C2C" },
-    { num: "04", title: "Your Action Plan", detail: "Projected impact, tradeoffs, week-by-week roadmap", color: B.purple },
-    { num: "05", title: "Methodology + Next Steps", detail: "Suggested language, confidence, reassessment", color: B.teal },
+    { num: "01", title: "Your Score & Structural Diagnosis", detail: "Score, plain-English meaning, biggest constraint, distance to next band", color: B.purple },
+    { num: "02", title: "PressureMap & Income Structure", detail: "What pressures your structure, income breakdown, strongest and weakest factors", color: B.teal },
+    { num: "03", title: "Fragility & Pressure Test", detail: "Ranked disruption scenarios, absorbency, pattern to watch", color: "#9B2C2C" },
+    { num: "04", title: "Your Highest-Leverage Action Plan", detail: "Best changes to make, tradeoffs, 30-day roadmap, retake timing", color: B.purple },
   ];
 
   return (
@@ -923,7 +922,7 @@ function WhatYourReportSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            A 5-page diagnostic.<br />Plus a simulator you keep forever.
+            A 4-page diagnostic.<br />Plus a simulator you keep forever.
           </h2>
         </div>
 
@@ -935,7 +934,7 @@ function WhatYourReportSection() {
           flexDirection: "column",
           alignItems: mobile ? "stretch" : undefined,
         }}>
-          {/* LEFT — 5 report pages as clean list */}
+          {/* LEFT — 4 report pages as clean list */}
           <div style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(16px)",

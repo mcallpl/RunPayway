@@ -91,7 +91,7 @@ function ReportPreview() {
 
   const pages = [
     {
-      num: "01", title: "Your Score", color: B.purple,
+      num: "01", title: "Score & Structural Diagnosis", color: B.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
           <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 4 }}>48</div>
@@ -110,7 +110,7 @@ function ReportPreview() {
       desc: "Your exact score, what it means in plain English, how far you are from the next band, and the single biggest structural factor to fix.",
     },
     {
-      num: "02", title: "How Your Income Is Built", color: B.teal,
+      num: "02", title: "PressureMap & Income Structure", color: B.teal,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 8, textTransform: "uppercase" as const }}>Income Structure</div>
@@ -139,7 +139,7 @@ function ReportPreview() {
       desc: "Income composition, stress test drop, continuity window, structural indicators, what\u2019s working, and what\u2019s holding you back.",
     },
     {
-      num: "03", title: "What Could Go Wrong", color: B.bandLimited,
+      num: "03", title: "Fragility & Pressure Test", color: B.bandLimited,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {[
@@ -163,7 +163,7 @@ function ReportPreview() {
       desc: "Ranked scenarios with exact score drops, fragility classification, behavioral patterns to watch, and predictive warnings.",
     },
     {
-      num: "04", title: "Your Action Plan", color: B.purple,
+      num: "04", title: "Highest-Leverage Action Plan", color: B.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 10, textTransform: "uppercase" as const }}>What your score could be</div>
@@ -182,26 +182,7 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "Projected score impact per action, tradeoff analysis, week-by-week execution roadmap, and what to avoid.",
-    },
-    {
-      num: "05", title: "Methodology + Next Steps", color: B.teal,
-      screen: (
-        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ padding: "10px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)", marginBottom: 10 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)" }}>Confidence: <span style={{ color: B.teal }}>High</span></div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)", marginTop: 4 }}>Durability: <span style={{ color: B.teal }}>Moderate</span></div>
-          </div>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 8, textTransform: "uppercase" as const }}>Reassess when</div>
-          {["Major client change", "Revenue model shift", "3 months post-action"].map((t, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0 }} />
-              <span style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>{t}</span>
-            </div>
-          ))}
-        </div>
-      ),
-      desc: "How the score was calculated, assessment confidence, income durability grade, reassessment triggers, and verification record.",
+      desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.",
     },
   ];
 

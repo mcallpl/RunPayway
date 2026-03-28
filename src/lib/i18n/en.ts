@@ -999,7 +999,7 @@ export const en: Translations = {
     s1P1: "By taking an assessment, purchasing a report, submitting an inquiry, or affirmatively indicating acceptance during checkout, you agree to these Terms of Use.",
     s1P2: "If you do not agree to these Terms, you may not access or use the RunPayway™ service.",
     s2Title: "Service Description",
-    s2P1: "RunPayway\u2122 provides access to the Income Stability Score\u2122, an income stability assessment generated under Model RP-2.0. The service is available as the free Income Stability Score\u2122 (score, band, percentile, and one key insight), the RunPayway\u2122 Diagnostic Report ($69 for a full 5-page diagnostic report), and RunPayway\u2122 Stability Monitoring ($149/year for three assessments with comparison tracking).",
+    s2P1: "RunPayway\u2122 provides access to the Income Stability Score\u2122, an income stability assessment generated under Model RP-2.0. The service is available as the free Income Stability Score\u2122 (score, band, percentile, and one key insight), the RunPayway\u2122 Diagnostic Report ($69 for a full 4-page diagnostic report), and RunPayway\u2122 Stability Monitoring ($149/year for three assessments with comparison tracking).",
     s2P2: "The Income Stability Score™ is a descriptive, point-in-time structural assessment based on user-provided information.",
     s2P3: "RunPayway™ is not a registered investment adviser and does not provide financial advice, investment advice, tax advice, or legal advice.",
     s3Title: "Eligibility",

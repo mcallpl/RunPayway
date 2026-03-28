@@ -149,18 +149,17 @@ function Journey() {
     },
     {
       num: "04", title: "You unlock the full diagnostic",
-      body: "The $69 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 5-page structural diagnosis with risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
+      body: "The $69 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 4-page structural diagnosis with PressureMap intelligence, risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
       detail: "Same score. Deeper interpretation. Practical action plan.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {[
-            { num: "01", title: "Your Score", color: B.purple },
-            { num: "02", title: "How Your Income Is Built", color: B.teal },
-            { num: "03", title: "What Could Go Wrong", color: B.bandLimited },
-            { num: "04", title: "Your Action Plan", color: B.purple },
-            { num: "05", title: "Methodology + Next Steps", color: B.teal },
+            { num: "01", title: "Score & Structural Diagnosis", color: B.purple },
+            { num: "02", title: "PressureMap & Income Structure", color: B.teal },
+            { num: "03", title: "Fragility & Pressure Test", color: B.bandLimited },
+            { num: "04", title: "Highest-Leverage Action Plan", color: B.purple },
           ].map((p, i) => (
-            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 4 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 3 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
               <span style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.60)" }}>{p.title}</span>
             </div>

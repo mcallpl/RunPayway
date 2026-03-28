@@ -312,7 +312,7 @@ export default function SignInPage() {
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20 }}>
             {[
               { num: "01", title: "Authenticate instantly", desc: "One email. Zero passwords. Your monitoring portal recognizes you the moment you arrive.", color: B.purple },
-              { num: "02", title: "Reassess on your terms", desc: "Each assessment captures a new structural snapshot \u2014 a full 5-page diagnostic calibrated to your current reality.", color: B.teal },
+              { num: "02", title: "Reassess on your terms", desc: "Each assessment captures a new structural snapshot \u2014 a full 4-page diagnostic calibrated to your current reality.", color: B.teal },
               { num: "03", title: "Observe the trajectory", desc: "Income structures evolve. Three assessments over 12 months reveal what changed, what held, and what to act on next.", color: B.purple },
             ].map((card, i) => (
               <div key={card.num} style={{
