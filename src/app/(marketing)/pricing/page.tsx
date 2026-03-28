@@ -179,12 +179,13 @@ function PricingCards() {
             <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
               {[
                 { text: "Everything in Free, plus:", bold: true },
-                { text: "4-page structural diagnostic report" },
-                { text: "Risk scenarios ranked by severity" },
-                { text: "Action plan with projected score impact" },
-                { text: "Tradeoff analysis for each move" },
-                { text: "Week-by-week execution roadmap" },
-                { text: "Assessment confidence and durability grade" },
+                { text: "AI-powered 4-page diagnostic written for your industry" },
+                { text: "PressureMap\u2122 structural intelligence specific to your profile" },
+                { text: "Personalized action plan with projected score impact" },
+                { text: "Risk scenarios ranked by damage to your structure" },
+                { text: "Structural tradeoff analysis" },
+                { text: "30-day execution roadmap" },
+                { text: "Report delivered to your email" },
                 { text: "Lifetime access to RunPayway\u2122 Stability Simulator" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>

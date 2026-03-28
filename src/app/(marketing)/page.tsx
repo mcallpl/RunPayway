@@ -397,7 +397,7 @@ input[type="range"]::-webkit-slider-thumb {
                 transition: "opacity 600ms ease-out 300ms",
               }}
             >
-              A structural diagnostic that scores how your income is built — not how much you make.
+              A diagnostic that reveals how fragile your income really is — and exactly what to fix first.
             </p>
 
             <div
@@ -1023,7 +1023,7 @@ function WhatYourReportSection() {
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)",
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}>
-            A 4-page diagnostic.<br />Plus a simulator you keep forever.
+            A personalized diagnostic.<br />Written for your exact structure.
           </h2>
         </div>
 
@@ -1092,7 +1092,7 @@ function HowItWorksSection() {
       time: "2 min",
       title: "Take the assessment",
       hook: "No bank connection. No credit pull. No login.",
-      desc: "A short structural diagnostic about how your income works — recurrence, concentration, visibility, and labor dependence. Quick and painless.",
+      desc: "Six questions about how your income is structured. No bank connection, no credit pull, no financial accounts. Takes under two minutes.",
       color: B.teal,
     },
     {
@@ -1107,8 +1107,8 @@ function HowItWorksSection() {
       num: "03",
       time: "$69",
       title: "Unlock the full diagnostic",
-      hook: "Five pages. One clear path forward.",
-      desc: "Risk scenarios with exact score drops. Actions with projected impact. Tradeoff analysis. Suggested language for your next move. An interactive simulator. This is not a static document — it is a diagnostic system.",
+      hook: "AI-powered. Specific to your structure.",
+      desc: "Every section is written for your exact industry, operating structure, and income model. Ranked risk scenarios. Personalized action plan. Structural tradeoff analysis. An interactive simulator you keep forever.",
       color: B.navy,
     },
   ];
@@ -1249,9 +1249,9 @@ function TestimonialsSection() {
   // PLACEHOLDER — Replace with real testimonials + headshot paths before launch
   // To use real photos: add images to /public/testimonials/ and update the `photo` field
   const testimonials = [
-    { quote: "I had no idea 92% of my income depended on one client. The stress test was a wake-up call.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
-    { quote: "The cross-factor breakdown showed me exactly why my score was being penalized. No other tool does that.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
-    { quote: "I shared the report with my accountant. She said it was more useful than most income documents she sees.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
+    { quote: "The report knew I was a real estate agent before I told it what to fix. The action plan was specific to my exact structure, not generic advice.", name: "Sarah M.", role: "Real Estate Agent", score: 28, photo: "https://i.pravatar.cc/88?img=32" },
+    { quote: "It told me my income resets every month and showed me exactly how to convert one client to a retainer. That single change moved my score 12 points.", name: "James R.", role: "Software Contractor", score: 44, photo: "https://i.pravatar.cc/88?img=12" },
+    { quote: "I shared the report with my accountant. She said it was more useful than most income documents she sees. The PressureMap section alone was worth the price.", name: "Priya K.", role: "Management Consultant", score: 61, photo: "https://i.pravatar.cc/88?img=25" },
   ];
 
   return (
@@ -1294,7 +1294,7 @@ function TestimonialsSection() {
               marginBottom: S.h2mb,
             }}
           >
-            Real people. Real scores. Real insight.
+            The report that reveals what you did not know.
           </h2>
         </div>
 
@@ -1406,7 +1406,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out, transform 600ms ease-out",
           }}
         >
-          Find out before it costs you
+          Know your structure before it breaks
         </h2>
 
         <p
@@ -1422,7 +1422,7 @@ function PricingSection() {
             transition: "opacity 600ms ease-out 100ms, transform 600ms ease-out 100ms",
           }}
         >
-          Your free score shows where you stand. The full report shows what to do about it.
+          Your free score shows where you stand. The full report tells you exactly what to change, why it matters, and how to do it — written specifically for your industry and income model.
         </p>
 
         {/* Proof line */}
