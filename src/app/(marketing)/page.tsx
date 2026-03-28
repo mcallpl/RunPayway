@@ -640,30 +640,53 @@ function AuthorityBlock() {
   return (
     <section ref={ref} aria-label="How the score works" style={{
       background: C.sandBg,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(16),
+      paddingBottom: m ? sp(10) : sp(16),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: readW, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>A fixed model. Not an opinion.</h2>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        {/* Heading — massive, breathing */}
+        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
+          <div style={{
+            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(2) : sp(3),
+          }}>
+            How The Score Works
+          </div>
+          <h2 style={{
+            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
+            color: C.navy, letterSpacing: "-0.03em",
+            maxWidth: 600,
+          }}>
+            A fixed model.<br />Not an opinion.
+          </h2>
         </div>
 
-        <div style={fadeIn(visible, 150)}>
-          {items.map((item) => (
-            <div key={item.label} style={{ display: "flex", gap: sp(2), alignItems: "flex-start", padding: `${sp(2)}px 0`, borderTop: `1px solid ${C.border}` }}>
-              <span style={{ color: C.teal, fontSize: 14, lineHeight: "24px", flexShrink: 0 }}>&#x2713;</span>
+        {/* Items — generous spacing */}
+        <div style={{ maxWidth: readW, ...fadeIn(visible, 150) }}>
+          {items.map((item, i) => (
+            <div key={item.label} style={{
+              display: "flex", gap: sp(2.5), alignItems: "flex-start",
+              padding: `${sp(3)}px 0`,
+              borderTop: `1px solid ${C.border}`,
+            }}>
+              <span style={{ color: C.teal, fontSize: 16, lineHeight: "28px", flexShrink: 0, fontWeight: 600 }}>&#x2713;</span>
               <div>
-                <div style={{ ...T.label, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{item.label}</div>
-                <div style={{ ...body(m), color: C.muted }}>{item.desc}</div>
+                <div style={{
+                  fontSize: m ? 17 : 20, fontWeight: 600, color: C.navy,
+                  letterSpacing: "-0.01em", marginBottom: sp(0.75),
+                }}>{item.label}</div>
+                <div style={{ ...bodyLg(m), color: C.muted }}>{item.desc}</div>
               </div>
             </div>
           ))}
           <div style={{ borderTop: `1px solid ${C.border}` }} />
         </div>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: sp(3), marginTop: sp(3.5), ...fadeIn(visible, 300) }}>
-          <span style={{ ...T.meta, color: C.light, fontWeight: 500 }}>Model Version: RP-2.0</span>
-          <span style={{ ...T.meta, color: C.light, fontWeight: 500 }}>Assessment Type: Structural Income Stability Diagnostic</span>
+        {/* Model badge — generous space */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: sp(4), marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 300) }}>
+          <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Model Version: RP-2.0</span>
+          <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Assessment Type: Structural Income Stability Diagnostic</span>
         </div>
       </div>
     </section>
