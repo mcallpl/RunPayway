@@ -529,6 +529,35 @@ export default function DiagnosticPage() {
         });
       } catch { /* Cloud save failed — local storage still works */ }
 
+      // Send report email if customer has an email address
+      try {
+        const emailAddr = profile.recipient_email || "";
+        if (emailAddr && emailAddr.includes("@")) {
+          const recForEmail = record as Record<string, unknown>;
+          const v2ForEmail = ((recForEmail._v2 || {}) as Record<string, unknown>);
+          const explForEmail = (v2ForEmail.explainability || {}) as Record<string, string>;
+          const constraintsForEmail = (v2ForEmail.constraints || {}) as Record<string, unknown>;
+          const topCEmail = (Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
+            ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
+            : "";
+          await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: emailAddr,
+              name: recForEmail.assessment_title || "",
+              score: recForEmail.final_score || 0,
+              band: recForEmail.stability_band || "",
+              industry: profile.industry_sector || "",
+              operating_structure: profile.operating_structure || "",
+              constraint: topCEmail,
+              interpretation: explForEmail.why_this_score || "",
+              record_id: recForEmail.record_id || "",
+            }),
+          });
+        }
+      } catch { /* Email send failed — non-blocking */ }
+
       // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
       const adapted = record as Record<string, unknown>;

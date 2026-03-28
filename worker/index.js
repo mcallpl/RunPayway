@@ -93,6 +93,7 @@ export default {
       if (path === "/action-plan") return await handleActionPlan(body, env, corsHeaders);
       if (path === "/save-record") return await handleSaveRecord(body, env, corsHeaders);
       if (path === "/get-record") return await handleGetRecord(body, env, corsHeaders);
+      if (path === "/send-email") return await handleSendEmail(body, env, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,
@@ -329,6 +330,147 @@ async function handleGetRecord(body, env, corsHeaders) {
     success: true,
     record_data: row.record_data,
   }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// SEND EMAIL (via Resend)
+// ══════════════════════════════════════════════════════════
+
+async function handleSendEmail(body, env, corsHeaders) {
+  if (!body.to || !body.score) {
+    return new Response(JSON.stringify({ error: "Missing to or score" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  if (!env.RESEND_API_KEY) {
+    return new Response(JSON.stringify({ error: "Email not configured" }), {
+      status: 500, headers: corsHeaders,
+    });
+  }
+
+  const navy = "#0E1A2B";
+  const purple = "#4B3FAE";
+  const teal = "#1F6D7A";
+  const muted = "rgba(14,26,43,0.58)";
+  const light = "rgba(14,26,43,0.42)";
+  const sand = "#F4F1EA";
+  const name = body.name || "Assessment";
+  const shortId = (body.record_id || "").slice(0, 8);
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background-color:#f7f6f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f6f3;">
+<tr><td align="center" style="padding:40px 16px;">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+<tr><td style="background:linear-gradient(135deg,${navy} 0%,${purple} 50%,${teal} 100%);height:4px;border-radius:12px 12px 0 0;">&nbsp;</td></tr>
+
+<tr><td style="background-color:#ffffff;padding:40px 36px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="padding-bottom:28px;border-bottom:1px solid ${sand};">
+<img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="160" height="19" style="display:inline-block;height:auto;"/>
+<span style="font-size:11px;color:${light};margin-left:8px;">Income Stability Assessment</span>
+</td></tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+<tr><td>
+<p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${muted};margin:0 0 10px;">INCOME STABILITY SCORE</p>
+<table role="presentation" cellpadding="0" cellspacing="0">
+<tr>
+<td style="font-size:52px;font-weight:700;color:${navy};line-height:1;padding-right:16px;">${body.score}</td>
+<td style="vertical-align:bottom;padding-bottom:6px;"><span style="font-size:16px;font-weight:600;color:${teal};">${body.band || ""}</span></td>
+</tr>
+</table>
+${body.interpretation ? `<p style="font-size:13px;color:${muted};line-height:1.6;margin:12px 0 0;">${body.interpretation}</p>` : ""}
+</td></tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+<tr><td style="height:1px;background-color:${sand};">&nbsp;</td></tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="50%" style="vertical-align:top;padding-right:12px;">
+<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Assessment</p>
+<p style="font-size:13px;font-weight:500;color:${navy};margin:0 0 16px;">${name}</p>
+<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Industry</p>
+<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.industry || ""}</p>
+</td>
+<td width="50%" style="vertical-align:top;padding-left:12px;">
+<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Structure</p>
+<p style="font-size:13px;font-weight:500;color:${navy};margin:0 0 16px;">${body.operating_structure || ""}</p>
+<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Primary Constraint</p>
+<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.constraint || ""}</p>
+</td>
+</tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+<tr><td style="height:1px;background-color:${sand};">&nbsp;</td></tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background-color:${sand};border-radius:8px;padding:20px 24px;">
+<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">Your full report is ready</p>
+<p style="font-size:12px;color:${muted};line-height:1.6;margin:0 0 16px;">
+Your 4-page diagnostic includes PressureMap intelligence, ranked risk scenarios, a personalized action plan, and lifetime access to the Stability Simulator.
+</p>
+<a href="https://peoplestar.com/RunPayway/review" style="display:inline-block;padding:10px 24px;background-color:${navy};color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;border-radius:8px;">View Full Report</a>
+</td></tr>
+</table>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
+<tr><td>
+<p style="font-size:10px;color:${light};margin:0;">Record ID: ${shortId}... | Model: RP-2.0 | Verify at peoplestar.com/RunPayway/verify</p>
+</td></tr>
+</table>
+
+</td></tr>
+
+<tr><td style="padding:24px 0;text-align:center;">
+<p style="font-size:11px;color:${light};margin:0 0 4px;">RunPayway - Income Stability Score - Model RP-2.0</p>
+<p style="font-size:10px;color:${light};margin:0;">Confidential - Prepared for ${name} - support@runpayway.com</p>
+</td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
+      to: body.to,
+      subject: `Your Income Stability Assessment - Score: ${body.score} (${body.band || "Assessment"})`,
+      html,
+      tags: [
+        { name: "type", value: "assessment-report" },
+        { name: "record_id", value: shortId },
+      ],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    return new Response(JSON.stringify({ error: "Email failed", detail: err }), {
+      status: 502, headers: corsHeaders,
+    });
+  }
+
+  const result = await res.json();
+  return new Response(JSON.stringify({ success: true, id: result.id }), { headers: corsHeaders });
 }
 
 // ══════════════════════════════════════════════════════════
