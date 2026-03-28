@@ -373,15 +373,15 @@ export default function FreeScorePage() {
             </h2>
             <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: SP.gap }}>
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: SP.cardRadius, display: "flex", flexDirection: "column" as const }}>
-                  <p style={{ ...F.body, color: "rgba(244,241,234,0.80)", margin: "0 0 20px", fontStyle: "italic", flex: 1 }}>
+                <div key={t.name} style={{ padding: mobile ? SP.cardPad.mobile : SP.cardPad.desktop, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: SP.cardRadius, display: "flex", flexDirection: "column" as const, justifyContent: "space-between", minHeight: mobile ? "auto" : 220 }}>
+                  <p style={{ ...F.body, color: "rgba(244,241,234,0.80)", margin: "0 0 auto", fontStyle: "italic", paddingBottom: 20, lineHeight: 1.65 }}>
                     &ldquo;{t.quote}&rdquo;
                   </p>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <img src={t.photo} alt={t.name} width={40} height={40} style={{ width: 40, height: 40, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }} />
-                    <div>
-                      <div style={{ ...F.small, fontWeight: 600, color: "#F4F1EA" }}>{t.name}</div>
-                      <div style={{ ...F.small, color: "rgba(244,241,234,0.45)" }}>{t.industry} &middot; Score: {t.score}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
+                    <img src={t.photo} alt={t.name} width={36} height={36} style={{ width: 36, height: 36, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,0.10)" }} />
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ ...F.small, fontWeight: 600, color: "#F4F1EA", whiteSpace: "nowrap" as const }}>{t.name}</div>
+                      <div style={{ ...F.small, color: "rgba(244,241,234,0.45)", whiteSpace: "nowrap" as const }}>{t.industry} &middot; Score: {t.score}</div>
                     </div>
                   </div>
                 </div>
@@ -399,33 +399,35 @@ export default function FreeScorePage() {
             </p>
 
             <div style={{ display: "inline-block", padding: mobile ? "32px 28px" : "40px 48px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, marginBottom: 32 }}>
-              <div style={{ ...F.label, color: B.teal, marginBottom: 12 }}>FULL 5-PAGE REPORT</div>
+              <div style={{ ...F.label, color: B.teal, marginBottom: 12 }}>FULL 4-PAGE REPORT</div>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 20 }}>
                 <span style={{ fontSize: mobile ? 44 : 52, fontWeight: 600, color: "#F4F1EA" }}>$69</span>
                 <span style={{ ...F.body, color: "rgba(244,241,234,0.45)" }}>one-time</span>
               </div>
               <a
                 href={STRIPE_FULL_REPORT}
+                className="cta-tick"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   width: "100%",
-                  height: mobile ? 52 : 56,
-                  borderRadius: 12,
-                  background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-                  color: B.navy,
-                  ...F.body,
+                  height: mobile ? 50 : 54,
+                  borderRadius: 10,
+                  background: "#4B3FAE",
+                  color: "#FFFFFF",
+                  fontSize: mobile ? 15 : 16,
                   fontWeight: 600,
                   textDecoration: "none",
                   letterSpacing: "-0.01em",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.30)",
-                  transition: "transform 200ms ease, box-shadow 200ms ease",
+                  border: "1px solid rgba(75,63,174,0.90)",
+                  boxShadow: "0 4px 16px rgba(75,63,174,0.25), 0 1px 3px rgba(75,63,174,0.12)",
+                  transition: "background 280ms cubic-bezier(0.22,1,0.36,1), transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms cubic-bezier(0.22,1,0.36,1)",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.35)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.30)"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#3D32A0"; e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.30)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(75,63,174,0.25), 0 1px 3px rgba(75,63,174,0.12)"; }}
               >
-                Get RunPayway&#8482; Diagnostic Report — $69
+                Get RunPayway&#8482; Diagnostic Report &mdash; $69
               </a>
             </div>
 
