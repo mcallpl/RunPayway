@@ -220,7 +220,6 @@ function HeroSection() {
 
   return (
     <section ref={ref} aria-label="Hero" style={{
-      background: C.heroGradient,
       position: "relative", overflow: "hidden",
     }}>
       {/* Multi-layer cosmic atmosphere */}
@@ -473,7 +472,7 @@ function HeroVideo() {
 
   return (
     <section aria-label="Brand video" style={{
-      backgroundColor: "#000", lineHeight: 0, position: "relative", overflow: "hidden",
+      backgroundColor: "transparent", lineHeight: 0, position: "relative", overflow: "hidden",
       maxHeight: collapsed ? 0 : 2000, opacity: collapsed ? 0 : 1,
       transition: collapsed ? "max-height 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease" : "none",
     }}>
@@ -498,8 +497,8 @@ function HeroVideo() {
 
       {closing && (
         <>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", backgroundColor: C.navy, zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: "#161430", zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "50%", backgroundColor: "#161430", zIndex: 5, animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
         </>
       )}
 
@@ -529,8 +528,7 @@ function HowItWorksSection() {
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      background: "#1C1C2E",
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(8) : sp(10), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
 
@@ -1294,9 +1292,11 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
-      <HeroSection />
-      <HeroVideo />
-      <HowItWorksSection />
+      <div style={{ background: C.heroGradient }}>
+        <HeroSection />
+        <HeroVideo />
+        <HowItWorksSection />
+      </div>
       <WhatItMeasures />
       <AuthorityBlock />
       <WhatYouGet />
