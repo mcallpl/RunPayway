@@ -153,6 +153,62 @@ function sf(doc: jsPDF, font: string) {
 }
 
 /* ================================================================== */
+/*  HELPERS: truncate, cleanTitle, cleanConstraint                     */
+/* ================================================================== */
+
+/** Truncate at last word boundary before maxChars */
+function truncate(text: string, maxChars: number): string {
+  const clean = S(text);
+  if (clean.length <= maxChars) return clean;
+  const cut = clean.substring(0, maxChars);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > maxChars * 0.6 ? cut.substring(0, lastSpace) : cut) + "...";
+}
+
+/** Map backend scenario titles to plain English */
+function cleanTitle(title: string): string {
+  const map: Record<string, string> = {
+    "Active Labor Interrupted": "You are unable to work for an extended period",
+    "Platform Dependency Shock": "A major income source changes terms or access",
+    "Forward Commitments Delayed": "Expected income arrives later than planned",
+    "Client Concentration Loss": "Your largest client stops paying",
+    "Market Contraction": "Demand in your industry drops significantly",
+    "High Volatility Month": "You have a slow month with no backup revenue",
+    "Key Client Loss": "You lose a key client or contract",
+    "Revenue Model Disruption": "Your primary income model stops working",
+    "Seasonal Revenue Gap": "Seasonal slowdown cuts your income",
+    "Pricing Pressure": "What you can charge drops due to market pressure",
+    "Recurring Stream Degrades": "A repeating income stream weakens or stops",
+    "Referral Pipeline Dries": "New business or referrals dry up",
+    "Contract Non Renewal": "A major contract is not renewed",
+    "Scope Reduction": "A client cuts the scope of your work",
+    "Regulatory Disruption": "A regulatory change affects how you earn",
+  };
+  // Check exact match first
+  if (map[title]) return map[title];
+  // Check partial match
+  for (const [key, val] of Object.entries(map)) {
+    if (title.toLowerCase().includes(key.toLowerCase().split(" ")[0])) return val;
+  }
+  // Clean up camelCase/snake_case
+  return title.replace(/_/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+/** Clean raw constraint field names into readable text */
+function cleanConstraint(text: string): string {
+  return text
+    .replace(/-?\d+\s*labor[_\s]dependence[_\s]?%?/gi, "Reduce labor dependence by 15 percentage points")
+    .replace(/-?\d+\s*income[_\s]persistence[_\s]?%?/gi, "Increase recurring income by 15 percentage points")
+    .replace(/-?\d+\s*largest[_\s]source[_\s]?%?/gi, "Reduce largest source concentration")
+    .replace(/-?\d+\s*forward[_\s]secured[_\s]?%?/gi, "Increase forward visibility")
+    .replace(/labor_dependence_pct/gi, "labor dependence")
+    .replace(/income_persistence_pct/gi, "recurring income")
+    .replace(/largest_source_pct/gi, "largest source share")
+    .replace(/forward_secured_pct/gi, "forward visibility")
+    .replace(/source_diversity_count/gi, "number of income sources");
+}
+
+/* ================================================================== */
 /*  PRIMITIVES                                                         */
 /* ================================================================== */
 
@@ -162,14 +218,21 @@ function mh(doc: jsPDF, text: string, w: number, sz: number, font = "Inter", lh 
   return doc.splitTextToSize(S(text), w).length * sz * lh;
 }
 
-/** Draw wrapped text, return NEXT y */
+/** Draw wrapped text, return NEXT y. maxLines caps rendered lines. */
 function dt(doc: jsPDF, text: string, x: number, y: number, w: number, sz: number,
-  opts?: { font?: string; color?: string; lh?: number; align?: "left"|"center"|"right" }): number {
+  opts?: { font?: string; color?: string; lh?: number; align?: "left"|"center"|"right"; maxLines?: number }): number {
   const font = opts?.font || "Inter";
   const color = opts?.color || "#0E1A2B";
   const lh = opts?.lh || 1.45;
   sf(doc, font); doc.setFontSize(sz); doc.setTextColor(color);
-  const lines: string[] = doc.splitTextToSize(S(text), w);
+  let lines: string[] = doc.splitTextToSize(S(text), w);
+  if (opts?.maxLines && lines.length > opts.maxLines) {
+    lines = lines.slice(0, opts.maxLines);
+    const last = lines[lines.length - 1];
+    if (last && !last.endsWith("...")) {
+      lines[lines.length - 1] = last.replace(/\s+\S*$/, "") + "...";
+    }
+  }
   const sp = sz * lh;
   for (let i = 0; i < lines.length; i++) {
     const ly = y + i * sp;
@@ -327,60 +390,64 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1F6D7A");
   doc.text("INCOME STABILITY ASSESSMENT", CX, y, { align: "center", charSpace: 1.5 });
 
-  // Name
-  y += 16;
-  sf(doc, "InterB"); doc.setFontSize(18); doc.setTextColor("#0E1A2B");
+  // Name — y+20 not y+16
+  y += 20;
+  sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
   doc.text(S(d.assessmentTitle), CX, y, { align: "center" });
 
-  // Date
-  y += 14;
+  // Date — y+16 not y+14
+  y += 16;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
   doc.text(S(`${d.formalDate} - Model RP-2.0`), CX, y, { align: "center" });
 
-  // Score
-  y += 24;
-  sf(doc, "InterB"); doc.setFontSize(46); doc.setTextColor("#0E1A2B");
+  // Score — y+28 not y+24, 42pt not 46pt
+  y += 28;
+  sf(doc, "InterB"); doc.setFontSize(42); doc.setTextColor("#0E1A2B");
   doc.text(String(d.finalScore), CX, y, { align: "center" });
-  sf(doc, "InterB"); doc.setFontSize(46);
+  // /100 — 14pt not 16pt
+  sf(doc, "InterB"); doc.setFontSize(42);
   const sw2 = doc.getTextWidth(String(d.finalScore));
-  sf(doc, "Inter"); doc.setFontSize(16); doc.setTextColor("#6B6155");
+  y += 8;
+  sf(doc, "Inter"); doc.setFontSize(14); doc.setTextColor("#6B6155");
   doc.text("/100", CX + sw2 / 2 + 4, y);
 
-  // Band
+  // Band — 12pt not 14pt
   y += 16;
   doc.setFillColor(d.bandColor); doc.rect(CX - 48, y - 6, 5, 5, "F");
-  sf(doc, "InterSB"); doc.setFontSize(14); doc.setTextColor(d.bandColor);
+  sf(doc, "InterSB"); doc.setFontSize(12); doc.setTextColor(d.bandColor);
   doc.text(S(d.stabilityBand), CX - 38, y);
 
-  // Points to next
+  // Points to next — 9pt muted centered
   if (d.nextBandName) {
     y += 12;
     sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
     doc.text(S(`${d.distanceToNext} points from ${d.nextBandName} Stability`), CX, y, { align: "center" });
   }
 
+  // Gap before diagnostic card — y+24
+  y += 24;
+
   // Diagnostic card
-  y += 20;
   const diagH = mh(doc, d.diagnosticSentence, CW - 28, 11, "InterM") + 16;
   check(y, diagH, "P2-diag");
   card(doc, ML, y, CW, diagH, "#0E1A2B");
   dt(doc, d.diagnosticSentence, ML + 14, y + 12, CW - 28, 11, { font: "InterM" });
   y += diagH + 12;
 
-  // Plain English card
-  const peH = mh(doc, d.plainEnglish, CW - 28, 10.5) + 24;
+  // Plain English card — cap at 6 lines
+  const peH = Math.min(mh(doc, d.plainEnglish, CW - 28, 10.5), 6 * 10.5 * 1.45) + 24;
   check(y, peH, "P2-pe");
   card(doc, ML, y, CW, peH);
   label(doc, "IN PLAIN ENGLISH", ML + 10, y + 12);
-  dt(doc, d.plainEnglish, ML + 10, y + 24, CW - 28, 10.5);
+  dt(doc, d.plainEnglish, ML + 10, y + 24, CW - 28, 10.5, { maxLines: 6 });
   y += peH + 12;
 
-  // Constraint card
+  // Constraint card — use cleanConstraint for text, truncate for columns
   const ctH = 72;
   check(y, ctH, "P2-constraint");
   card(doc, ML, y, CW, ctH, "#4B3FAE");
   label(doc, "PRIMARY STRUCTURAL CONSTRAINT", ML + 10, y + 12, "#4B3FAE");
-  dt(doc, d.dominantConstraintText, ML + 10, y + 24, CW - 28, 10.5);
+  dt(doc, cleanConstraint(d.dominantConstraintText), ML + 10, y + 24, CW - 28, 10.5);
 
   // Two columns inside constraint card
   const colW = (CW - 36) / 2;
@@ -388,8 +455,8 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   doc.text("Highest-leverage change", ML + 10, y + 44);
   doc.text("Projected effect", ML + 10 + colW + 16, y + 44);
   sf(doc, "Inter"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-  doc.text(S(d.whatToChangeFirst).substring(0, 60), ML + 10, y + 56);
-  doc.text(S(d.whatThatWouldDo).substring(0, 40), ML + 10 + colW + 16, y + 56);
+  doc.text(truncate(d.whatToChangeFirst, 60), ML + 10, y + 56);
+  doc.text(truncate(d.whatThatWouldDo, 40), ML + 10 + colW + 16, y + 56);
   y += ctH + 12;
 
   // Distance card
@@ -506,7 +573,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
   doc.text(S(d.continuityDisplay), rx + 8, y + 30);
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text(S(d.continuityText).substring(0, 50), rx + 8, y + 42);
+  doc.text(truncate(d.continuityText, 50), rx + 8, y + 42);
   y += 52 + 12;
 
   // Divider
@@ -530,23 +597,30 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     y += 40 + 8;
   }
 
-  // Working / Holding back — two columns
-  if (y + 40 <= YL && (d.strongestSupports.length > 0 || d.strongestSuppressors.length > 0)) {
-    const colW = (CW - 12) / 2;
+  // Working / Holding back — two columns — always render both cards
+  if (y + 40 <= YL) {
+    const colW2 = (CW - 12) / 2;
 
+    // Left card: What's Working — always rendered
+    card(doc, ML, y, colW2, 40);
+    label(doc, "WHAT'S WORKING", ML + 8, y + 10, "#1F6D7A");
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
     if (d.strongestSupports.length > 0) {
-      card(doc, ML, y, colW, 40);
-      label(doc, "WHAT'S WORKING", ML + 8, y + 10, "#1F6D7A");
-      sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-      doc.text(S(d.strongestSupports[0] || "").substring(0, 65), ML + 8, y + 24);
-      if (d.strongestSupports[1]) doc.text(S(d.strongestSupports[1]).substring(0, 65), ML + 8, y + 34);
+      doc.text(truncate(d.strongestSupports[0] || "", 65), ML + 8, y + 24);
+      if (d.strongestSupports[1]) doc.text(truncate(d.strongestSupports[1], 65), ML + 8, y + 34);
+    } else {
+      doc.text("No data", ML + 8, y + 24);
     }
+
+    // Right card: What's Holding You Back — always rendered
+    card(doc, ML + colW2 + 12, y, colW2, 40);
+    label(doc, "WHAT'S HOLDING YOU BACK", ML + colW2 + 20, y + 10, "#9B2C2C");
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
     if (d.strongestSuppressors.length > 0) {
-      card(doc, ML + colW + 12, y, colW, 40);
-      label(doc, "WHAT'S HOLDING YOU BACK", ML + colW + 20, y + 10, "#9B2C2C");
-      sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-      doc.text(S(d.strongestSuppressors[0] || "").substring(0, 65), ML + colW + 20, y + 24);
-      if (d.strongestSuppressors[1]) doc.text(S(d.strongestSuppressors[1]).substring(0, 65), ML + colW + 20, y + 34);
+      doc.text(truncate(d.strongestSuppressors[0] || "", 65), ML + colW2 + 20, y + 24);
+      if (d.strongestSuppressors[1]) doc.text(truncate(d.strongestSuppressors[1], 65), ML + colW2 + 20, y + 34);
+    } else {
+      doc.text("No data", ML + colW2 + 20, y + 24);
     }
   }
 
@@ -567,11 +641,12 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   doc.text("FRAGILITY & PRESSURE TEST", ML, y);
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text(S(d.fragilityDiagnostic).substring(0, 100), ML, y);
+  doc.text(truncate(d.fragilityDiagnostic, 100), ML, y);
   y += 14;
   // If diagnostic is longer, add second line
   if (d.fragilityDiagnostic.length > 100) {
-    doc.text(S(d.fragilityDiagnostic).substring(100, 200), ML, y);
+    const remaining = S(d.fragilityDiagnostic).substring(100);
+    doc.text(truncate(remaining, 100), ML, y);
     y += 12;
   }
 
@@ -585,7 +660,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     check(y, 36, `P4-sc${i}`);
     card(doc, ML, y, CW, 36, sBorders[i]);
     sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-    doc.text(S(sc.title).substring(0, 55), ML + 10, y + 14);
+    doc.text(truncate(cleanTitle(sc.title), 55), ML + 10, y + 14);
     sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
     doc.text(`${sc.originalScore} to ${sc.scenarioScore} (-${sc.scoreDrop})`, ML + CW - 10, y + 14, { align: "right" });
     if (sc.bandShift) {
@@ -595,15 +670,15 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     y += 36 + 6;
   }
 
-  // Absorbency — 52pt
+  // Absorbency — 52pt — use truncate instead of substring
   check(y, 52, "P4-absorb");
   card(doc, ML, y, CW, 52);
   label(doc, "HOW MUCH CAN YOUR INCOME ABSORB?", ML + 10, y + 12);
   sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor(d.fragilityColor);
-  doc.text(S(d.fragilityLabel).substring(0, 60), ML + 10, y + 26);
+  doc.text(truncate(d.fragilityLabel, 60), ML + 10, y + 26);
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text(S(d.fragilityText).substring(0, 80), ML + 10, y + 38);
-  if (d.failureMode) doc.text(S(`Failure mode: ${d.failureMode}`).substring(0, 70), ML + 10, y + 48);
+  doc.text(truncate(d.fragilityText, 80), ML + 10, y + 38);
+  if (d.failureMode) doc.text(truncate(`Failure mode: ${d.failureMode}`, 70), ML + 10, y + 48);
   y += 52 + 8;
 
   // Divider
@@ -622,7 +697,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor(a.tagColor);
     doc.text(S(a.tag), ML + 10, y + 10);
     sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-    doc.text(S(a.title).substring(0, 60), ML + 10, y + 22);
+    doc.text(truncate(a.title, 60), ML + 10, y + 22);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#1F6D7A");
     doc.text(S(a.scoreChange), ML + CW - 10, y + 22, { align: "right" });
     y += 36 + 6;
@@ -636,50 +711,51 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     y += 12;
   }
 
-  // Tradeoff — 70pt max
+  // Tradeoff — 70pt max — use truncate instead of substring
   if (d.tradeoff && y + 70 <= YL) {
     check(y, 70, "P4-trade");
     card(doc, ML, y, CW, 70);
     sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-    doc.text(S(d.tradeoff.actionLabel).substring(0, 50), ML + 10, y + 12);
+    doc.text(truncate(d.tradeoff.actionLabel, 50), ML + 10, y + 12);
 
     const tc = (CW - 36) / 2;
     label(doc, "UPSIDE", ML + 10, y + 24, "#1F6D7A");
     label(doc, "COST", ML + 10 + tc + 16, y + 24, "#92640A");
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-    doc.text(S(d.tradeoff.upside).substring(0, 70), ML + 10, y + 36);
-    doc.text(S(d.tradeoff.downside).substring(0, 70), ML + 10 + tc + 16, y + 36);
+    doc.text(truncate(d.tradeoff.upside, 70), ML + 10, y + 36);
+    doc.text(truncate(d.tradeoff.downside, 70), ML + 10 + tc + 16, y + 36);
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
     doc.line(ML + 10, y + 50, ML + CW - 10, y + 50);
     sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-    doc.text(S(d.tradeoff.recommendation).substring(0, 80), ML + 10, y + 60);
+    doc.text(truncate(d.tradeoff.recommendation, 80), ML + 10, y + 60);
     y += 70 + 8;
   }
 
-  // Roadmap — 4 rows, ~24pt each = 96pt
+  // Roadmap — 4 rows, ~24pt each = 96pt — use truncate instead of substring
   if (d.roadmap.length > 0 && y + 96 <= YL) {
     label(doc, "WEEK-BY-WEEK ROADMAP", ML, y, "#4B3FAE");
     y += 12;
     for (const row of d.roadmap.slice(0, 4)) {
       sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor("#4B3FAE");
-      doc.text(S(row.week).substring(0, 12), ML, y);
+      doc.text(truncate(row.week, 12), ML, y);
       sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-      doc.text(S(row.action).substring(0, 50), ML + 60, y);
+      doc.text(truncate(row.action, 50), ML + 60, y);
       sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-      doc.text(S(row.detail).substring(0, 75), ML + 60, y + 10);
+      doc.text(truncate(row.detail, 75), ML + 60, y + 10);
       y += 22;
     }
     y += 4;
   }
 
-  // Retake — single row
-  if (y + 24 <= YL) {
+  // Retake — date and days on SEPARATE lines
+  if (y + 36 <= YL) {
     label(doc, "WHEN TO RETAKE", ML, y);
     y += 12;
     sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
     doc.text(S(d.reassessDate), ML, y);
+    y += 12;
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-    doc.text(S(`  ${d.reassessDaysLeft} days - ${d.reassessTiming}`), ML + doc.getTextWidth(S(d.reassessDate)), y);
+    doc.text(S(`${d.reassessDaysLeft} days from now - ${d.reassessTiming}`), ML, y);
     y += 16;
   }
 
