@@ -202,16 +202,27 @@ function HeroSection() {
     return () => clearTimeout(t);
   }, [visible]);
 
-  const ringSize = m ? 200 : 260;
-  const radius = 70;
-  const strokeWidth = 6;
+  const ringSize = m ? 220 : 300;
+  const radius = 68;
+  const strokeWidth = 10;
   const circumference = 2 * Math.PI * radius;
   const targetOffset = (1 - 48 / 100) * circumference;
 
   return (
-    <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
+    <section ref={ref} aria-label="Hero" style={{
+      background: "linear-gradient(145deg, #0E1A2B 0%, #1A1248 25%, #4B3FAE 55%, #6B3FA0 75%, #1F6D7A 100%)",
+      position: "relative", overflow: "hidden",
+    }}>
+      {/* Cosmic ambient glow */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(75,63,174,0.25) 0%, transparent 60%)",
+      }} />
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 50% 80% at 30% 80%, rgba(31,109,122,0.12) 0%, transparent 50%)",
+      }} />
+
       <div style={{
-        maxWidth: maxW, margin: "0 auto",
+        maxWidth: maxW, margin: "0 auto", position: "relative",
         paddingTop: m ? sp(14) : sp(16),
         paddingBottom: m ? sp(9) : sp(12),
         paddingLeft: px(m), paddingRight: px(m),
@@ -220,29 +231,29 @@ function HeroSection() {
           display: m ? "block" : "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: sp(8),
+          gap: sp(6),
         }}>
           {/* Left — text */}
           <div style={{ maxWidth: heroW, textAlign: m ? "center" : "left" }}>
             <div style={{
               ...fadeIn(visible),
               ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
-              color: C.teal, marginBottom: sp(3),
+              color: "#3DD8C5", marginBottom: sp(2),
             }}>
               Income Stability Score&#8482;
             </div>
 
             <h1 style={{
               ...fadeIn(visible, 80),
-              ...h1(m), color: C.sand, letterSpacing: "-0.02em", marginBottom: sp(2.5),
+              ...h1(m), color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: sp(3),
             }}>
               Measure how stable your income structure actually is.
             </h1>
 
             <p style={{
               ...fadeIn(visible, 160),
-              ...bodyLg(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(4.5),
-              maxWidth: m ? undefined : 480,
+              ...bodyLg(m), color: "rgba(255,255,255,0.55)", marginBottom: sp(5),
+              maxWidth: m ? undefined : 500,
             }}>
               A fixed structural assessment based on how your income is built — not how much you make.
             </p>
@@ -253,82 +264,146 @@ function HeroSection() {
                 className="cta-tick inline-flex items-center justify-center"
                 style={{
                   height: sp(7), width: m ? "100%" : "auto",
-                  paddingLeft: sp(4.5), paddingRight: sp(4.5),
+                  paddingLeft: sp(5), paddingRight: sp(5),
                   borderRadius: sp(1.25),
-                  background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
+                  background: "#FFFFFF",
                   color: C.navy, ...T.cta, letterSpacing: "-0.01em",
-                  border: `1px solid rgba(244,241,234,0.92)`,
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.20)",
+                  border: "none",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
                   transition: "transform 180ms ease, box-shadow 180ms ease",
                   textDecoration: "none",
                 }}
-                onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.4), 0 12px 32px rgba(0,0,0,0.25)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.4), 0 8px 24px rgba(0,0,0,0.20)"; }}
+                onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.30)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.25)"; }}
               >
                 <span className="tick tick-navy" />
                 <span className="cta-label">Get My Free Score</span>
                 <span className="cta-arrow cta-arrow-navy" />
               </Link>
 
-              <p style={{
-                ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(2.5), letterSpacing: "0.02em",
-              }}>
-                Six questions{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
-                Under two minutes{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
-                No bank connection{" "}<span style={{ margin: "0 6px", opacity: 0.5 }}>&bull;</span>{" "}
-                No credit pull
-              </p>
+              {/* Trust row with checkmarks */}
+              <div style={{ marginTop: sp(3), display: "flex", flexDirection: "column", gap: sp(0.75) }}>
+                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: m ? "4px 0" : "4px 0" }}>
+                  <span style={{ color: "#3DD8C5", marginRight: 6, fontSize: 14 }}>&#x2713;</span>
+                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>Six questions</span>
+                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
+                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>Under two minutes</span>
+                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
+                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No bank connection</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <span style={{ color: "#3DD8C5", marginRight: 6, fontSize: 14 }}>&#x2713;</span>
+                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No bank connection</span>
+                  <span style={{ margin: "0 8px", color: "rgba(255,255,255,0.20)" }}>&bull;</span>
+                  <span style={{ ...T.meta, color: "rgba(255,255,255,0.50)" }}>No credit pull</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right — score ring */}
+          {/* Right — Glass card with score ring + proof */}
           <div style={{
-            flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
-            marginTop: m ? sp(7) : 0,
+            flexShrink: 0, marginTop: m ? sp(6) : 0,
             ...fadeIn(visible, 300),
           }}>
-            <div style={{ position: "relative", width: ringSize, height: ringSize }}>
-              <div style={{
-                position: "absolute", inset: -24, borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(75,63,174,0.10) 0%, rgba(31,109,122,0.05) 50%, transparent 70%)",
-                animation: visible ? "ringGlow 5s ease-in-out infinite" : "none", pointerEvents: "none",
-              }} />
-              <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} />
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
-                  strokeLinecap="round" strokeDasharray={circumference}
-                  strokeDashoffset={visible ? targetOffset : circumference}
-                  style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
-                />
-                <defs>
-                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ ...score(m), color: C.sand, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
-                  {animatedScore}
-                </span>
-              </div>
-            </div>
-
-            {/* Score label */}
             <div style={{
-              textAlign: "center", marginTop: sp(2),
-              opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
-              transition: "opacity 500ms ease-out, transform 500ms ease-out",
+              background: "rgba(255,255,255,0.06)",
+              backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: sp(2.5),
+              padding: m ? sp(3) : sp(4),
+              boxShadow: "0 24px 80px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
+              display: "flex", flexDirection: "column", alignItems: "center",
             }}>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: sp(1),
-                padding: `${sp(0.75)}px ${sp(2)}px`, borderRadius: 100,
-                backgroundColor: "rgba(146,100,10,0.15)", border: "1px solid rgba(146,100,10,0.25)",
-                marginBottom: sp(1),
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#92640A" }} />
-                <span style={{ ...T.label, fontWeight: 600, color: "#92640A" }}>Developing Stability</span>
+              {/* Score ring */}
+              <div style={{ position: "relative", width: ringSize, height: ringSize, marginBottom: sp(2) }}>
+                {/* Outer glow */}
+                <div style={{
+                  position: "absolute", inset: -32, borderRadius: "50%",
+                  background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, rgba(107,63,160,0.08) 50%, transparent 70%)",
+                  animation: visible ? "ringGlow 4s ease-in-out infinite" : "none", pointerEvents: "none",
+                }} />
+                <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
+                  {/* Track */}
+                  <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth} />
+                  {/* Score arc */}
+                  <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#heroScoreGrad)" strokeWidth={strokeWidth}
+                    strokeLinecap="round" strokeDasharray={circumference}
+                    strokeDashoffset={visible ? targetOffset : circumference}
+                    style={{
+                      transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)",
+                      filter: "drop-shadow(0 0 8px rgba(75,63,174,0.50))",
+                    }}
+                  />
+                  {/* Bright tip glow */}
+                  <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#heroScoreGlow)" strokeWidth={strokeWidth + 6}
+                    strokeLinecap="round" strokeDasharray={circumference}
+                    strokeDashoffset={visible ? targetOffset : circumference}
+                    style={{
+                      transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)",
+                      opacity: 0.3,
+                    }}
+                  />
+                  <defs>
+                    <linearGradient id="heroScoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#3DD8C5" />
+                      <stop offset="40%" stopColor={C.purple} />
+                      <stop offset="100%" stopColor="#A78BFA" />
+                    </linearGradient>
+                    <linearGradient id="heroScoreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#3DD8C5" stopOpacity="0" />
+                      <stop offset="80%" stopColor="#A78BFA" stopOpacity="0.6" />
+                      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.8" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{
+                    fontSize: m ? 56 : 80, fontWeight: 600, color: "#FFFFFF",
+                    letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
+                    textShadow: "0 2px 16px rgba(75,63,174,0.30)",
+                  }}>
+                    {animatedScore}
+                  </span>
+                </div>
               </div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)" }}>12 points to Established</div>
+
+              {/* Proof card below ring */}
+              <div style={{
+                width: "100%",
+                background: "rgba(14,26,43,0.50)",
+                borderRadius: sp(1.5),
+                padding: m ? sp(2) : sp(2.5),
+                border: "1px solid rgba(255,255,255,0.08)",
+                opacity: showLabel ? 1 : 0,
+                transform: showLabel ? "translateY(0)" : "translateY(8px)",
+                transition: "opacity 500ms ease-out, transform 500ms ease-out",
+              }}>
+                {/* Band badge */}
+                <div style={{ marginBottom: sp(1) }}>
+                  <span style={{
+                    display: "inline-flex", alignItems: "center", gap: sp(1),
+                    padding: `${sp(0.5)}px ${sp(1.5)}px`, borderRadius: 100,
+                    backgroundColor: "rgba(146,100,10,0.20)", border: "1px solid rgba(146,100,10,0.30)",
+                  }}>
+                    <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#D4940A" }} />
+                    <span style={{ ...T.label, fontWeight: 600, color: "#D4940A" }}>Developing Stability</span>
+                  </span>
+                </div>
+                <div style={{ ...T.label, color: "rgba(255,255,255,0.60)", marginBottom: sp(2) }}>
+                  12 points to Established
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
+                    <span style={{ color: "#3DD8C5", fontSize: 13, flexShrink: 0, marginTop: 1 }}>&#x2713;</span>
+                    <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>Primary constraint: Income concentration</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
+                    <span style={{ color: "#3DD8C5", fontSize: 13, flexShrink: 0, marginTop: 1 }}>&#x2713;</span>
+                    <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>Stress test: Largest source removed &#8594; projected 21</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1160,7 +1235,6 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <HeroVideo />
-      <ExamplePreview />
       <HowItWorksSection />
       <WhatItMeasures />
       <AuthorityBlock />
