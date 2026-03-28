@@ -118,11 +118,18 @@ const price = (m: boolean) => m ? T.price.mobile : T.price.desktop;
 const px = (m: boolean) => m ? padX.mobile : padX.desktop;
 const secY = (m: boolean) => m ? sectionGap.mobile : sectionGap.desktop;
 
-/* Fade-in helper style */
+/* Fade-in helper style — smooth cubic-bezier for premium feel */
 const fadeIn = (visible: boolean, delay = 0) => ({
   opacity: visible ? 1 : 0,
-  transform: visible ? "translateY(0)" : "translateY(12px)",
-  transition: `opacity 500ms ease-out ${delay}ms, transform 500ms ease-out ${delay}ms`,
+  transform: visible ? "translateY(0)" : "translateY(20px)",
+  transition: `opacity 700ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 700ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+});
+
+/* Scale-in for glass card — more dramatic entrance */
+const scaleIn = (visible: boolean, delay = 0) => ({
+  opacity: visible ? 1 : 0,
+  transform: visible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
+  transition: `opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms, transform 800ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
 });
 
 
@@ -193,13 +200,16 @@ function StickyNav() {
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const animatedScore = useAnimatedCounter(48, visible, 1500);
+  const [animStart, setAnimStart] = useState(false);
+  const animatedScore = useAnimatedCounter(48, animStart, 2000);
   const [showLabel, setShowLabel] = useState(false);
 
   useEffect(() => {
     if (!visible) return;
-    const t = setTimeout(() => setShowLabel(true), 1600);
-    return () => clearTimeout(t);
+    // Delay counter start to sync with ring stroke animation
+    const startTimer = setTimeout(() => setAnimStart(true), 500);
+    const labelTimer = setTimeout(() => setShowLabel(true), 2600);
+    return () => { clearTimeout(startTimer); clearTimeout(labelTimer); };
   }, [visible]);
 
   const ringSize = m ? 220 : 300;
@@ -213,18 +223,33 @@ function HeroSection() {
       background: "linear-gradient(145deg, #0E1A2B 0%, #1A1248 25%, #4B3FAE 55%, #6B3FA0 75%, #1F6D7A 100%)",
       position: "relative", overflow: "hidden",
     }}>
-      {/* Cosmic ambient glow */}
+      {/* Multi-layer cosmic atmosphere */}
+      {/* Primary purple bloom — right side, behind card */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 80% 60% at 70% 50%, rgba(75,63,174,0.25) 0%, transparent 60%)",
+        background: "radial-gradient(ellipse 70% 70% at 75% 45%, rgba(75,63,174,0.35) 0%, transparent 55%)",
       }} />
+      {/* Teal bloom — bottom left */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 50% 80% at 30% 80%, rgba(31,109,122,0.12) 0%, transparent 50%)",
+        background: "radial-gradient(ellipse 50% 60% at 25% 85%, rgba(31,109,122,0.18) 0%, transparent 45%)",
+      }} />
+      {/* Warm accent — top center */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 40% 30% at 50% 10%, rgba(107,63,160,0.20) 0%, transparent 50%)",
+      }} />
+      {/* Bright highlight — behind score card */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(circle 300px at 72% 50%, rgba(61,216,197,0.06) 0%, transparent 60%)",
+      }} />
+      {/* Subtle noise grain overlay */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.03,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+        backgroundSize: "200px 200px",
       }} />
 
       <div style={{
         maxWidth: maxW, margin: "0 auto", position: "relative",
         paddingTop: m ? sp(14) : sp(16),
-        paddingBottom: m ? sp(9) : sp(12),
+        paddingBottom: m ? sp(7) : sp(10),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
@@ -236,7 +261,7 @@ function HeroSection() {
           {/* Left — text */}
           <div style={{ maxWidth: heroW, textAlign: m ? "center" : "left" }}>
             <div style={{
-              ...fadeIn(visible),
+              ...fadeIn(visible, 0),
               ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
               color: "#3DD8C5", marginBottom: sp(2),
             }}>
@@ -244,21 +269,21 @@ function HeroSection() {
             </div>
 
             <h1 style={{
-              ...fadeIn(visible, 80),
+              ...fadeIn(visible, 120),
               ...h1(m), color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: sp(3),
             }}>
               Measure how stable your income structure actually is.
             </h1>
 
             <p style={{
-              ...fadeIn(visible, 160),
+              ...fadeIn(visible, 250),
               ...bodyLg(m), color: "rgba(255,255,255,0.55)", marginBottom: sp(5),
               maxWidth: m ? undefined : 500,
             }}>
               A fixed structural assessment based on how your income is built — not how much you make.
             </p>
 
-            <div style={fadeIn(visible, 240)}>
+            <div style={fadeIn(visible, 380)}>
               <Link
                 href="/pricing"
                 className="cta-tick inline-flex items-center justify-center"
@@ -304,15 +329,26 @@ function HeroSection() {
           {/* Right — Glass card with score ring + proof */}
           <div style={{
             flexShrink: 0, marginTop: m ? sp(6) : 0,
-            ...fadeIn(visible, 300),
+            position: "relative",
+            ...scaleIn(visible, 350),
           }}>
+            {/* Glow behind the card */}
             <div style={{
-              background: "rgba(255,255,255,0.06)",
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: m ? 280 : 400, height: m ? 280 : 400,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(75,63,174,0.30) 0%, rgba(61,216,197,0.08) 40%, transparent 65%)",
+              pointerEvents: "none", filter: "blur(40px)",
+            }} />
+            <div style={{
+              position: "relative",
+              background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
               backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: "1px solid rgba(255,255,255,0.14)",
               borderRadius: sp(2.5),
               padding: m ? sp(3) : sp(4),
-              boxShadow: "0 24px 80px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.08)",
+              boxShadow: "0 24px 80px rgba(0,0,0,0.35), 0 8px 32px rgba(75,63,174,0.15), inset 0 1px 0 rgba(255,255,255,0.10)",
               display: "flex", flexDirection: "column", alignItems: "center",
             }}>
               {/* Score ring */}
@@ -331,7 +367,7 @@ function HeroSection() {
                     strokeLinecap="round" strokeDasharray={circumference}
                     strokeDashoffset={visible ? targetOffset : circumference}
                     style={{
-                      transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)",
+                      transition: "stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
                       filter: "drop-shadow(0 0 8px rgba(75,63,174,0.50))",
                     }}
                   />
@@ -340,7 +376,7 @@ function HeroSection() {
                     strokeLinecap="round" strokeDasharray={circumference}
                     strokeDashoffset={visible ? targetOffset : circumference}
                     style={{
-                      transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)",
+                      transition: "stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
                       opacity: 0.3,
                     }}
                   />
@@ -493,14 +529,17 @@ function HowItWorksSection() {
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      background: "linear-gradient(160deg, #0E1A2B 0%, #1A1248 30%, #3D2F9C 60%, #4B3FAE 80%, #1F6D7A 100%)",
+      background: "linear-gradient(180deg, #1F6D7A 0%, #2A1A5E 20%, #1A1248 50%, #0E1A2B 100%)",
       position: "relative", overflow: "hidden",
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(8) : sp(10), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      {/* Ambient cosmic glow */}
+      {/* Ambient cosmic glow — matches hero energy */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-        background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(75,63,174,0.18) 0%, transparent 60%)",
+        background: "radial-gradient(ellipse 70% 40% at 50% 20%, rgba(31,109,122,0.15) 0%, transparent 50%)",
+      }} />
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 50% 60% at 60% 70%, rgba(75,63,174,0.12) 0%, transparent 50%)",
       }} />
 
       <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
