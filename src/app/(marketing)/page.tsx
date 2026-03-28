@@ -486,20 +486,26 @@ function HowItWorksSection() {
   const m = useMobile();
 
   const steps = [
-    { num: "01", title: "Answer six structural questions", desc: "About how your income is built — sources, concentration, visibility, and continuity." },
-    { num: "02", title: "Receive your score instantly", desc: "Your score out of 100, your stability band, and the primary constraint holding it down." },
-    { num: "03", title: "Unlock the full diagnostic", desc: "A tailored report, disruption analysis, action plan, and simulator to test changes before you make them." },
+    { num: "01", title: "Answer six structural questions", desc: "About how your income is built — sources, concentration, visibility, and continuity.", trust: "No bank connection" },
+    { num: "02", title: "Receive your score instantly", desc: "Your score out of 100, your stability band, and the primary constraint holding it down.", trust: "No credit pull" },
+    { num: "03", title: "Unlock the full diagnostic", desc: "A tailored report, disruption analysis, action plan, and simulator to test changes before you make them.", trust: "Private by default" },
   ];
 
   return (
     <section ref={ref} aria-label="How it works" style={{
-      background: C.sandBg,
+      background: "linear-gradient(160deg, #0E1A2B 0%, #1A1248 30%, #3D2F9C 60%, #4B3FAE 80%, #1F6D7A 100%)",
+      position: "relative", overflow: "hidden",
       paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ maxWidth: readW, marginBottom: sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>
+      {/* Ambient cosmic glow */}
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(75,63,174,0.18) 0%, transparent 60%)",
+      }} />
+
+      <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
+        <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
+          <h2 style={{ ...h2(m), color: "#FFFFFF", marginBottom: 0 }}>
             Three steps. No financial data required.
           </h2>
         </div>
@@ -507,26 +513,58 @@ function HowItWorksSection() {
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(2.5) }}>
           {steps.map((s, i) => (
             <div key={s.num} style={{
-              padding: m ? sp(3) : sp(4), borderRadius: sp(1),
-              backgroundColor: C.white, border: `1px solid ${C.border}`,
-              ...fadeIn(visible, 100 + i * 100),
+              borderRadius: sp(2),
+              background: "rgba(255,255,255,0.05)",
+              backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              padding: m ? sp(3) : sp(4),
+              display: "flex", flexDirection: "column",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.06)",
+              ...fadeIn(visible, 100 + i * 120),
             }}>
+              {/* Glowing number badge */}
               <div style={{
-                ...T.label, fontWeight: 600, color: C.teal,
-                marginBottom: sp(2),
-              }}>{s.num}</div>
-              <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
-              <p style={{ ...body(m), color: C.muted, margin: 0 }}>{s.desc}</p>
+                width: 56, height: 56, borderRadius: "50%",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "rgba(75,63,174,0.20)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "0 0 20px rgba(61,216,197,0.15), 0 0 40px rgba(75,63,174,0.10)",
+                marginBottom: sp(3),
+                alignSelf: m ? "center" : "flex-start",
+              }}>
+                <span style={{ fontSize: 20, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em" }}>{s.num}</span>
+              </div>
+
+              <h3 style={{ ...h3(m), color: "#FFFFFF", marginBottom: sp(1.5) }}>{s.title}</h3>
+              <p style={{ ...body(m), color: "rgba(255,255,255,0.55)", margin: 0, flex: 1 }}>{s.desc}</p>
+
+              {/* Trust item inside card */}
+              <div style={{
+                marginTop: sp(3), paddingTop: sp(2),
+                borderTop: "1px solid rgba(255,255,255,0.06)",
+                display: "flex", alignItems: "center", gap: sp(1),
+              }}>
+                <span style={{ color: "#3DD8C5", fontSize: 14 }}>&#x2713;</span>
+                <span style={{ ...T.label, color: "rgba(255,255,255,0.50)" }}>{s.trust}</span>
+              </div>
             </div>
           ))}
         </div>
 
-        <p style={{
-          ...T.meta, color: C.light, textAlign: "center", marginTop: sp(4),
-          ...fadeIn(visible, 400),
+        {/* Trust row below */}
+        <div style={{
+          display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center",
+          gap: m ? "6px 0" : "6px 0",
+          marginTop: sp(5),
+          ...fadeIn(visible, 500),
         }}>
-          No bank connection &bull; No credit pull &bull; Private by default
-        </p>
+          <span style={{ color: "#3DD8C5", fontSize: 14, marginRight: 6 }}>&#x2713;</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>No bank connection</span>
+          <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>No credit pull</span>
+          <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Private by default</span>
+        </div>
       </div>
     </section>
   );
