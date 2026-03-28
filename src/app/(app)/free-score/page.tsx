@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
+import type { CanonicalInput } from "@/lib/engine/v2/simulate";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -166,6 +168,34 @@ export default function FreeScorePage() {
     { title: "Structural Context + Category Framing", desc: "How your structure compares to typical patterns for your income model and industry." },
   ];
 
+  // ── Best Move Preview — show one scenario impact for free ──
+  const bestMovePreview = (() => {
+    const ni = (v2 as Record<string, unknown>)?.normalized_inputs as Record<string, number | string> | undefined;
+    if (!ni) return null;
+    const inputs: CanonicalInput = {
+      income_persistence_pct: (ni.income_persistence_pct as number) || 0,
+      largest_source_pct: (ni.largest_source_pct as number) || 0,
+      source_diversity_count: (ni.source_diversity_count as number) || 1,
+      forward_secured_pct: (ni.forward_secured_pct as number) || 0,
+      income_variability_level: ((ni.income_variability_level as string) || "moderate") as CanonicalInput["income_variability_level"],
+      labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
+    };
+    const qualityScore = ((v2 as Record<string, unknown>)?.quality as Record<string, number>)?.quality_score ?? 5;
+    const baseScore = simulateScore(inputs, qualityScore).overall_score;
+    // Find best positive preset
+    const positivePresets = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
+    let best = { label: "", lift: 0, newScore: 0 };
+    for (const p of positivePresets) {
+      const result = simulateScore(p.modify(inputs), qualityScore);
+      const lift = result.overall_score - baseScore;
+      if (lift > best.lift) {
+        best = { label: p.label, lift, newScore: result.overall_score };
+      }
+    }
+    if (best.lift <= 0) return null;
+    return best;
+  })();
+
   const issuedDate = ((record.issued_timestamp_utc as string) || (record.assessment_date_utc as string) || "").split("T")[0];
   const recordId = ((record.record_id as string) || "").slice(0, 8);
 
@@ -264,6 +294,19 @@ export default function FreeScorePage() {
             <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>KEY INSIGHT</div>
             <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, lineHeight: 1.5 }}>{insightText}</div>
           </div>
+
+          {/* Best Move Preview — the conversion hook */}
+          {bestMovePreview && (
+            <div style={{ backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.12)", borderRadius: 6, padding: "18px 20px", marginBottom: 24, textAlign: "center" }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>WHAT ONE CHANGE COULD DO</div>
+              <div style={{ fontSize: 15, fontWeight: 500, color: B.navy, lineHeight: 1.5, marginBottom: 8 }}>
+                If you {bestMovePreview.label.toLowerCase()}, your score would move from <span style={{ fontWeight: 700 }}>{score}</span> to <span style={{ fontWeight: 700, color: B.teal }}>{bestMovePreview.newScore}</span>.
+              </div>
+              <div style={{ fontSize: 12, color: "rgba(14,26,43,0.50)", lineHeight: 1.5 }}>
+                Your full report shows you exactly how to make this change for your industry — plus {score < 50 ? "the other moves that close the gap" : "what else is holding your score back"}.
+              </div>
+            </div>
+          )}
 
           {/* Metadata */}
           <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 20, borderTop: "1px solid rgba(14,26,43,0.08)", marginBottom: 24 }}>

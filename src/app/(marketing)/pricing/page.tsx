@@ -98,7 +98,7 @@ function PricingCards() {
       <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out" }}>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.6 }}>
-            Built for freelancers, contractors, and business owners across 19 industries.
+            Your free score shows the problem. The report shows exactly what to fix — written by AI for your specific structure.
             <span style={{ color: B.teal, fontWeight: 600 }}> Under 2 minutes.</span>
           </p>
         </div>
@@ -126,7 +126,7 @@ function PricingCards() {
             </div>
             <div style={{ height: 1, background: B.border, margin: "24px 0" }} />
             <div style={{ flex: 1, marginBottom: 28 }}>
-              {["Your score out of 100", "Your stability band", "Points to the next band", "Top limiting factor"].map(f => (
+              {["Your score out of 100", "Your stability band", "Points to the next band", "Top limiting factor", "Preview: what one change could do"].map(f => (
                 <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
                   <span style={{ fontSize: 15, color: B.muted, lineHeight: 1.55 }}>{f}</span>
