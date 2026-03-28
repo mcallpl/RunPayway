@@ -381,7 +381,7 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
-        const pmRes = await fetch("https://runpayway-pressuremap.cjmcallister.workers.dev", {
+        const pmRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
