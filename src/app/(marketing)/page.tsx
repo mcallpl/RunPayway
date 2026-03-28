@@ -248,7 +248,7 @@ function HeroSection() {
       <div style={{
         maxWidth: maxW, margin: "0 auto", position: "relative",
         paddingTop: m ? sp(14) : sp(16),
-        paddingBottom: m ? sp(7) : sp(10),
+        paddingBottom: m ? sp(6) : sp(8),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
@@ -495,6 +495,19 @@ function HeroVideo() {
 
 
 
+      {/* Dark overlay to mute bright video content */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+        background: "rgba(14,20,48,0.45)",
+      }} />
+      {/* Top edge blend — fades video into hero gradient above */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 80, zIndex: 3, pointerEvents: "none",
+        background: "linear-gradient(180deg, #161430 0%, transparent 100%)",
+      }} />
+      {/* Bottom edge blend — fades video into section below */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, zIndex: 3, pointerEvents: "none",
+        background: "linear-gradient(0deg, #1F6D7A 0%, transparent 100%)",
+      }} />
+
       {closing && (
         <>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "50%", backgroundColor: "#161430", zIndex: 5, animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards" }} />
@@ -503,7 +516,7 @@ function HeroVideo() {
       )}
 
       {videoSrc && (
-        <video autoPlay muted loop playsInline preload="auto" style={{ width: "100%", height: "auto", display: "block" }}>
+        <video autoPlay muted loop playsInline preload="auto" style={{ width: "100%", height: "auto", display: "block", position: "relative", zIndex: 1 }}>
           <source src={videoSrc} type="video/mp4" />
         </video>
       )}
