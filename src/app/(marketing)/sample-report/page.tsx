@@ -93,17 +93,22 @@ function ReportPreview() {
     {
       num: "01", title: "Score & Structural Diagnosis", color: B.purple,
       screen: (
-        <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
-          <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 4 }}>48</div>
-          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 10 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.bandDeveloping }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: B.bandDeveloping }}>Developing</span>
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ textAlign: "center", marginBottom: 12 }}>
+            <div style={{ fontSize: 42, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>48</div>
+            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 2 }}>/100</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.12)" }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.bandDeveloping }} />
+              <span style={{ fontSize: 12, fontWeight: 600, color: B.bandDeveloping }}>Developing Stability</span>
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", marginTop: 6 }}>6 points from Established</div>
           </div>
-          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)" }}>17 points to Established</div>
-          <div style={{ marginTop: 14, padding: "10px 12px", borderRadius: 8, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.06)", textAlign: "left" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 4, textTransform: "uppercase" as const }}>In Plain English</div>
-            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>Your income is developing. A major source loss would put pressure on the structure quickly.</div>
+          <div style={{ padding: "10px 12px", borderRadius: 6, borderLeft: "2px solid #F4F1EA", backgroundColor: "rgba(244,241,234,0.04)", marginBottom: 8 }}>
+            <div style={{ fontSize: 12, color: "rgba(244,241,234,0.55)", lineHeight: 1.5 }}>Your project-based income has limited forward visibility. Only 33% is secured ahead of time.</div>
+          </div>
+          <div style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.20)", marginBottom: 3, textTransform: "uppercase" as const }}>In Plain English</div>
+            <div style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", lineHeight: 1.4 }}>AI-generated interpretation specific to your industry and structure.</div>
           </div>
         </div>
       ),
@@ -113,25 +118,33 @@ function ReportPreview() {
       num: "02", title: "PressureMap & Income Structure", color: B.teal,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.25)", marginBottom: 8, textTransform: "uppercase" as const }}>Income Structure</div>
-          <div style={{ display: "flex", gap: 2, height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 12 }}>
-            <div style={{ flex: 72, backgroundColor: B.navy, border: "1px solid rgba(244,241,234,0.15)" }} />
-            <div style={{ flex: 18, backgroundColor: "rgba(244,241,234,0.25)" }} />
-            <div style={{ flex: 10, backgroundColor: B.teal }} />
-          </div>
-          {[{ label: "Active work", pct: "72%" }, { label: "Semi-persistent", pct: "18%" }, { label: "Persistent", pct: "10%" }].map(s => (
-            <div key={s.label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 4, fontSize: 13, color: "rgba(244,241,234,0.45)" }}>
-              <span>{s.label}</span><span style={{ fontWeight: 600, color: "rgba(244,241,234,0.60)" }}>{s.pct}</span>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 6, textTransform: "uppercase" as const }}>PressureMap&#8482;</div>
+          <div style={{ fontSize: 11, color: "rgba(244,241,234,0.35)", marginBottom: 10 }}>Independent Contractor - Contract-Based - Manufacturing</div>
+          {[
+            { label: "What is most likely to disrupt stability", color: "#9B2C2C" },
+            { label: "What is working in your favor", color: B.teal },
+            { label: "Highest-leverage move right now", color: B.purple },
+          ].map(s => (
+            <div key={s.label} style={{ marginBottom: 6 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: s.color, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>{s.label}</div>
+              <div style={{ height: 6, backgroundColor: "rgba(244,241,234,0.04)", borderRadius: 3, marginTop: 3 }} />
             </div>
           ))}
-          <div style={{ marginTop: 12, display: "flex", gap: 6 }}>
-            <div style={{ flex: 1, padding: "8px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)", textAlign: "center" }}>
-              <div style={{ fontSize: 18, fontWeight: 600, color: "#F4F1EA" }}>48</div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>Current</div>
+          <div style={{ height: 1, backgroundColor: "rgba(244,241,234,0.06)", margin: "10px 0" }} />
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.20)", marginBottom: 6, textTransform: "uppercase" as const }}>How your income breaks down</div>
+          <div style={{ display: "flex", gap: 1, height: 6, borderRadius: 3, overflow: "hidden", marginBottom: 6 }}>
+            <div style={{ flex: 63, backgroundColor: B.navy }} />
+            <div style={{ flex: 17, backgroundColor: "rgba(244,241,234,0.20)" }} />
+            <div style={{ flex: 20, backgroundColor: B.teal }} />
+          </div>
+          <div style={{ display: "flex", gap: 4 }}>
+            <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>48 to 26</div>
+              <div style={{ fontSize: 9, color: "rgba(244,241,234,0.25)" }}>If biggest source leaves</div>
             </div>
-            <div style={{ flex: 1, padding: "8px", borderRadius: 6, backgroundColor: "rgba(155,44,44,0.10)", textAlign: "center" }}>
-              <div style={{ fontSize: 18, fontWeight: 600, color: B.bandLimited }}>19</div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>Stress test</div>
+            <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA" }}>1.8 mo</div>
+              <div style={{ fontSize: 9, color: "rgba(244,241,234,0.25)" }}>If you stop working</div>
             </div>
           </div>
         </div>
@@ -142,21 +155,20 @@ function ReportPreview() {
       num: "03", title: "Fragility & Pressure Test", color: B.bandLimited,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: "rgba(244,241,234,0.20)", marginBottom: 8, textTransform: "uppercase" as const }}>Ranked by damage</div>
           {[
-            { severity: "#1", title: "Your largest client stops paying", drop: "-29" },
-            { severity: "#2", title: "You cannot work for 90 days", drop: "-18" },
-            { severity: "#3", title: "New work arrives later than expected", drop: "-8" },
+            { rank: "#1", title: "Your largest client stops paying", score: "48 to 26", color: B.bandLimited },
+            { rank: "#2", title: "You cannot work for 90 days", score: "48 to 30", color: B.bandDeveloping },
+            { rank: "#3", title: "New work arrives later than expected", score: "48 to 40", color: "rgba(244,241,234,0.15)" },
           ].map((s, i) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: i === 0 ? B.bandLimited : i === 1 ? B.bandDeveloping : "rgba(244,241,234,0.35)", minWidth: 65 }}>{s.severity}</span>
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{s.title}</span>
-              </div>
-              <span style={{ fontSize: 15, fontWeight: 700, color: B.bandLimited }}>{s.drop}</span>
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderLeft: `2px solid ${s.color}`, paddingLeft: 10, marginBottom: 4 }}>
+              <span style={{ fontSize: 12, fontWeight: 500, color: "rgba(244,241,234,0.55)" }}>{s.title}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.40)", flexShrink: 0, marginLeft: 8 }}>{s.score}</span>
             </div>
           ))}
-          <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.04)" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.40)" }}>Fragility: <span style={{ color: B.bandDeveloping }}>Thin</span></div>
+          <div style={{ marginTop: 8, padding: "8px 10px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em", textTransform: "uppercase" as const, marginBottom: 3 }}>How much can your income absorb?</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: B.bandDeveloping }}>Moderate resilience</div>
           </div>
         </div>
       ),
@@ -166,17 +178,22 @@ function ReportPreview() {
       num: "04", title: "Highest-Leverage Action Plan", color: B.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 10, textTransform: "uppercase" as const }}>Highest-leverage change</div>
-          <div style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.70)", lineHeight: 1.5, marginBottom: 10 }}>Convert your top client to a monthly retainer arrangement.</div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(26,122,109,0.08)", marginBottom: 8 }}>
-            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Projected impact</span>
-            <span style={{ fontSize: 16, fontWeight: 700, color: B.teal, fontFamily: DF }}>48 to 60 (+12)</span>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 8, textTransform: "uppercase" as const }}>Highest-leverage change</div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "rgba(244,241,234,0.60)", lineHeight: 1.5, marginBottom: 8 }}>Convert your top client relationship into a monthly retainer for ongoing advisory services.</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 10px", borderRadius: 4, backgroundColor: "rgba(26,122,109,0.08)", marginBottom: 10 }}>
+            <span style={{ fontSize: 11, color: "rgba(244,241,234,0.40)" }}>Projected impact</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: B.teal, fontFamily: DF }}>48 to 60 (+12)</span>
           </div>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 6, marginTop: 12, textTransform: "uppercase" as const }}>Supporting change</div>
-          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>Reduce largest source concentration below 40%</div>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 4, textTransform: "uppercase" as const }}>30-day roadmap</div>
+          {["Audit current structure", "Design one recurring offer", "Secure first retainer", "Measure and plan next move"].map((step, i) => (
+            <div key={i} style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 3 }}>
+              <span style={{ fontSize: 9, fontWeight: 700, color: B.purple, minWidth: 14 }}>{i + 1}</span>
+              <span style={{ fontSize: 11, color: "rgba(244,241,234,0.45)" }}>{step}</span>
+            </div>
+          ))}
         </div>
       ),
-      desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.",
+      desc: "AI-generated personalized action plan, structural tradeoff analysis, 30-day execution roadmap, and retake timing.",
     },
   ];
 
