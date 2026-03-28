@@ -409,6 +409,12 @@ function HowItWorksSection() {
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         {/* Heading — big, bold, breathing */}
         <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
+          <div style={{
+            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(2) : sp(3),
+          }}>
+            How It Works
+          </div>
           <h2 style={{
             fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
             color: C.navy, letterSpacing: "-0.03em",
@@ -462,12 +468,27 @@ function HowItWorksSection() {
           ))}
         </div>
 
+        {/* How It Works link */}
+        <div style={{ marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 500) }}>
+          <Link href="/how-it-works" style={{
+            display: "inline-flex", alignItems: "center", gap: sp(1),
+            textDecoration: "none",
+            transition: "opacity 200ms ease",
+          }}
+            onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          >
+            <span style={{ color: C.teal, fontSize: 18, lineHeight: 1, fontWeight: 600 }}>&#x203A;</span>
+            <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, letterSpacing: "-0.01em" }}>How It Works</span>
+          </Link>
+        </div>
+
         {/* Bottom trust strip — generous space above */}
         <div style={{
-          marginTop: m ? sp(8) : sp(12),
+          marginTop: m ? sp(6) : sp(8),
           paddingTop: sp(4),
           borderTop: `1px solid ${C.border}`,
-          ...fadeIn(visible, 500),
+          ...fadeIn(visible, 600),
         }}>
           <p style={{ ...T.meta, color: C.light, textAlign: m ? "left" : "center" }}>
             Same answers always produce the same score &bull; Deterministic scoring &bull; Methodology published
