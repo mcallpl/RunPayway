@@ -68,23 +68,15 @@ function CheckoutSuccessContent() {
         }
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
-        // Check if this is a free-to-paid upgrade
-        // Only count as upgrade if the PREVIOUS session was a free plan
+        // Check if customer already has an assessment (free-to-paid upgrade or retake)
         try {
-          const prevSession = localStorage.getItem("rp_previous_plan");
           const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-          if (prevSession === "free" && existingRecord) {
+          if (existingRecord) {
+            // Preserve existing record — customer can choose to use it or retake
             sessionStorage.setItem("rp_record", existingRecord);
             setHasExistingRecord(true);
-          } else {
-            // Not an upgrade — clear old record for fresh assessment
-            sessionStorage.removeItem("rp_record");
-            localStorage.removeItem("rp_record");
           }
-        } catch {
-          sessionStorage.removeItem("rp_record");
-          localStorage.removeItem("rp_record");
-        }
+        } catch { /* ignore */ }
         // Store current plan for future upgrade detection
         localStorage.setItem("rp_previous_plan", planKey);
         // Auto-create monitoring session for annual buyers so they can sign in by email
@@ -99,19 +91,12 @@ function CheckoutSuccessContent() {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         try {
-          const prevSession = localStorage.getItem("rp_previous_plan");
           const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-          if (prevSession === "free" && existingRecord) {
+          if (existingRecord) {
             sessionStorage.setItem("rp_record", existingRecord);
             setHasExistingRecord(true);
-          } else {
-            sessionStorage.removeItem("rp_record");
-            localStorage.removeItem("rp_record");
           }
-        } catch {
-          sessionStorage.removeItem("rp_record");
-          localStorage.removeItem("rp_record");
-        }
+        } catch { /* ignore */ }
         localStorage.setItem("rp_previous_plan", planKey);
         if (plan === "monitoring" && customerEmail) {
           if (!getSessionByEmail(customerEmail)) {
@@ -132,8 +117,8 @@ function CheckoutSuccessContent() {
     { num: "3", title: "3 assessments included", desc: "Take them whenever you want over the next 12 months. You decide when.", done: true },
   ] : hasExistingRecord ? [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
-    { num: "2", title: "Assessment already completed", desc: "Your answers are saved. No need to retake.", done: true },
-    { num: "3", title: "View your full report", desc: "Report, simulator, and action tools — unlocked instantly.", done: false },
+    { num: "2", title: "Your answers are saved", desc: "You can use your existing answers or retake the assessment if you want to change them.", done: true },
+    { num: "3", title: "Full report ready", desc: "Report, simulator, and action plan — unlocked instantly.", done: false },
   ] : [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure.", done: false },
@@ -225,8 +210,58 @@ function CheckoutSuccessContent() {
 
         {/* CTA — user clicks when ready */}
         {ready ? (
+          hasExistingRecord && !isMonitoring ? (
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, width: "100%", maxWidth: 360 }}>
+              <Link
+                href="/unlock"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: 52,
+                  borderRadius: 12,
+                  background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+                  color: B.navy,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  letterSpacing: "-0.01em",
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+                  transition: "transform 200ms ease, box-shadow 200ms ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
+              >
+                Use My Existing Answers
+              </Link>
+              <Link
+                href="/diagnostic-portal"
+                onClick={() => { sessionStorage.removeItem("rp_record"); localStorage.removeItem("rp_record"); }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: 44,
+                  borderRadius: 10,
+                  background: "transparent",
+                  color: "rgba(244,241,234,0.55)",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textDecoration: "none",
+                  border: "1px solid rgba(244,241,234,0.12)",
+                  transition: "color 200ms ease, border-color 200ms ease",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.25)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+              >
+                Retake Assessment
+              </Link>
+            </div>
+          ) : (
           <Link
-            href={isMonitoring ? "/sign-in" : hasExistingRecord ? "/unlock" : "/diagnostic-portal"}
+            href={isMonitoring ? "/sign-in" : "/diagnostic-portal"}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -247,8 +282,9 @@ function CheckoutSuccessContent() {
             onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
           >
-            {isMonitoring ? "Go to Monitoring Portal" : hasExistingRecord ? "View Full Report" : "Begin Assessment"}
+            {isMonitoring ? "Go to Monitoring Portal" : "Begin Assessment"}
           </Link>
+          )
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
             {[0, 1, 2].map((i) => (
