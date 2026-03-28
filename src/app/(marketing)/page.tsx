@@ -479,16 +479,33 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* ================================================================== */
 /* HERO VIDEO — 15s cinematic loop below hero                          */
+/* Dismissable with smooth curtain-close transition. Resets on leave.   */
 /* ================================================================== */
 function HeroVideo() {
   const mobile = useMobile();
   const [videoSrc, setVideoSrc] = useState("");
+  const [dismissed, setDismissed] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    // Detect basePath at runtime for static export compatibility
     const base = window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
     setVideoSrc(`${base}/hero-video.mp4`);
   }, []);
+
+  const handleClose = () => {
+    setClosing(true);
+    // Phase 1: curtain close (600ms)
+    setTimeout(() => {
+      setCollapsed(true);
+      // Phase 2: height collapse (400ms)
+      setTimeout(() => {
+        setDismissed(true);
+      }, 400);
+    }, 600);
+  };
+
+  if (dismissed) return null;
 
   return (
     <section
@@ -496,8 +513,92 @@ function HeroVideo() {
       style={{
         backgroundColor: "#000000",
         lineHeight: 0,
+        position: "relative",
+        overflow: "hidden",
+        maxHeight: collapsed ? 0 : 2000,
+        opacity: collapsed ? 0 : 1,
+        transition: collapsed ? "max-height 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease" : "none",
       }}
     >
+      {/* Close button */}
+      <button
+        onClick={handleClose}
+        aria-label="Close video"
+        style={{
+          position: "absolute",
+          top: mobile ? 12 : 20,
+          right: mobile ? 12 : 24,
+          zIndex: 10,
+          width: mobile ? 36 : 40,
+          height: mobile ? 36 : 40,
+          borderRadius: "50%",
+          border: "1px solid rgba(255,255,255,0.20)",
+          backgroundColor: "rgba(0,0,0,0.50)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          color: "rgba(255,255,255,0.70)",
+          fontSize: 18,
+          fontWeight: 300,
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "background-color 200ms ease, border-color 200ms ease, color 200ms ease",
+          padding: 0,
+          lineHeight: 1,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.70)";
+          e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)";
+          e.currentTarget.style.color = "rgba(255,255,255,0.95)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.50)";
+          e.currentTarget.style.borderColor = "rgba(255,255,255,0.20)";
+          e.currentTarget.style.color = "rgba(255,255,255,0.70)";
+        }}
+      >
+        &#x2715;
+      </button>
+
+      {/* Curtain overlays — slide in from top and bottom */}
+      {closing && (
+        <>
+          <div style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "50%",
+            backgroundColor: "#0E1A2B",
+            zIndex: 5,
+            transform: closing && !collapsed ? "translateY(0)" : "translateY(-100%)",
+            animation: "curtainTop 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
+          }} />
+          <div style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "50%",
+            backgroundColor: "#0E1A2B",
+            zIndex: 5,
+            transform: closing && !collapsed ? "translateY(0)" : "translateY(100%)",
+            animation: "curtainBottom 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards",
+          }} />
+          <style>{`
+            @keyframes curtainTop {
+              from { transform: translateY(-100%); }
+              to { transform: translateY(0); }
+            }
+            @keyframes curtainBottom {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+          `}</style>
+        </>
+      )}
+
       {videoSrc && (
         <video
           autoPlay
