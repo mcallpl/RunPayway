@@ -205,7 +205,7 @@ export default function DiagnosticPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Payment gate — check sessionStorage first, fall back to localStorage
+    // Payment gate — check sessionStorage first, fall back to localStorage, then allow free
     let session = sessionStorage.getItem("rp_purchase_session");
     if (!session) {
       const stored = localStorage.getItem("rp_purchase_session");
@@ -215,12 +215,15 @@ export default function DiagnosticPage() {
       }
     }
     if (!session) {
-      router.push("/pricing");
-      return;
+      // Allow free access — create a free session so users can take the assessment
+      const freeSession = JSON.stringify({ plan_key: "free", status: "paid" });
+      sessionStorage.setItem("rp_purchase_session", freeSession);
+      localStorage.setItem("rp_purchase_session", freeSession);
+      session = freeSession;
     }
     try {
       const parsed = JSON.parse(session);
-      if (parsed.status !== "paid") {
+      if (parsed.status !== "paid" && parsed.status !== "active") {
         router.push("/pricing");
         return;
       }

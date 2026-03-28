@@ -44,10 +44,14 @@ export default function BeginPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Create free session so diagnostic-portal allows entry
-    const existing = sessionStorage.getItem("rp_purchase_session");
+    // Create free session so diagnostic-portal and diagnostic allow entry
+    const existing = sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session");
     if (!existing) {
-      sessionStorage.setItem("rp_purchase_session", JSON.stringify({ plan_key: "free", status: "paid" }));
+      const freeSession = JSON.stringify({ plan_key: "free", status: "paid" });
+      sessionStorage.setItem("rp_purchase_session", freeSession);
+      localStorage.setItem("rp_purchase_session", freeSession);
+    } else if (!sessionStorage.getItem("rp_purchase_session")) {
+      sessionStorage.setItem("rp_purchase_session", existing);
     }
     // Mark as free plan for upgrade detection
     localStorage.setItem("rp_previous_plan", "free");
