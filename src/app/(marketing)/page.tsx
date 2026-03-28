@@ -589,12 +589,11 @@ function HowItWorksSection() {
           marginTop: sp(5),
           ...fadeIn(visible, 500),
         }}>
-          <span style={{ color: "#3DD8C5", fontSize: 14, marginRight: 6 }}>&#x2713;</span>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>No bank connection</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Same answers always produce the same score</span>
           <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>No credit pull</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Deterministic scoring</span>
           <span style={{ margin: "0 10px", color: "rgba(255,255,255,0.18)" }}>&bull;</span>
-          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Private by default</span>
+          <span style={{ ...T.meta, color: "rgba(255,255,255,0.42)" }}>Methodology published</span>
         </div>
       </div>
     </section>
