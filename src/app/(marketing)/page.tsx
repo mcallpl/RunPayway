@@ -468,7 +468,27 @@ function HeroVideo() {
     setTimeout(() => { setCollapsed(true); setTimeout(() => setDismissed(true), 400); }, 600);
   };
 
-  if (dismissed) return null;
+  /* Luminous separator line — shared element */
+  const glowLine = (
+    <div aria-hidden="true" style={{
+      width: "100%", height: 1, position: "relative", zIndex: 6,
+    }}>
+      {/* Glow halo */}
+      <div style={{
+        position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
+        width: "60%", height: 12,
+        background: "radial-gradient(ellipse at center, rgba(75,63,174,0.30) 0%, rgba(61,216,197,0.10) 40%, transparent 70%)",
+        filter: "blur(4px)", pointerEvents: "none",
+      }} />
+      {/* Crisp line */}
+      <div style={{
+        position: "absolute", top: 0, left: "10%", right: "10%", height: 1,
+        background: "linear-gradient(90deg, transparent 0%, rgba(75,63,174,0.40) 20%, rgba(61,216,197,0.35) 50%, rgba(75,63,174,0.40) 80%, transparent 100%)",
+      }} />
+    </div>
+  );
+
+  if (dismissed) return glowLine;
 
   return (
     <section aria-label="Brand video" style={{
@@ -476,6 +496,9 @@ function HeroVideo() {
       maxHeight: collapsed ? 0 : 2000, opacity: collapsed ? 0 : 1,
       transition: collapsed ? "max-height 400ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms ease" : "none",
     }}>
+      {/* Top luminous line */}
+      {glowLine}
+
       <button type="button" onClick={handleClose} aria-label="Close video" style={{
         position: "absolute", top: m ? 12 : 20, right: m ? 12 : 24, zIndex: 10,
         width: m ? 44 : 44, height: m ? 44 : 44, borderRadius: "50%",
@@ -512,6 +535,9 @@ function HeroVideo() {
           <source src={videoSrc} type="video/mp4" />
         </video>
       )}
+
+      {/* Bottom luminous line */}
+      {glowLine}
     </section>
   );
 }
