@@ -594,6 +594,7 @@ export default function ReviewPage() {
   const v2OneThingThatMatters = v2?.one_thing_that_matters ?? null;
   const v2PredictiveWarnings = v2?.predictive_warnings ?? null;
   const v2NormalizedInputs = v2?.normalized_inputs ?? null;
+  const aiPlan = v2?.ai_action_plan as Record<string, string> | undefined;
 
   // ── Outcome layer ──
   const ol = v2?.outcome_layer;
@@ -673,6 +674,43 @@ export default function ReviewPage() {
     continuityMonths: record.income_continuity_months,
     dominantConstraint,
   });
+
+  const cleanScenarioTitle = (title: string): string => {
+    const map: Record<string, string> = {
+      "Active Labor Interrupted": "You are unable to work for an extended period",
+      "Platform Dependency Shock": "A major income source changes terms or access",
+      "Forward Commitments Delayed": "Expected income arrives later than planned",
+      "Client Concentration Loss": "Your largest client stops paying",
+      "Market Contraction": "Demand in your industry drops significantly",
+      "High Volatility Month": "You have a slow month with no backup revenue",
+      "Key Client Loss": "You lose a key client or contract",
+      "Revenue Model Disruption": "Your primary income model stops working",
+      "Seasonal Revenue Gap": "Seasonal slowdown cuts your income",
+      "Pricing Pressure": "What you can charge drops due to market pressure",
+      "Recurring Stream Degrades": "A repeating income stream weakens or stops",
+      "Referral Pipeline Dries": "New business or referrals dry up",
+      "Contract Non Renewal": "A major contract is not renewed",
+      "Scope Reduction": "A client cuts the scope of your work",
+      "Regulatory Disruption": "A regulatory change affects how you earn",
+    };
+    for (const [key, val] of Object.entries(map)) {
+      if (title.toLowerCase().includes(key.toLowerCase().split(" ")[0].toLowerCase())) return val;
+    }
+    return title.replace(/_/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
+  };
+
+  const cleanConstraintText = (text: string): string => {
+    return text
+      .replace(/-?\d+\s*labor[_\s]dependence[_\s]?%?/gi, "Reduce labor dependence")
+      .replace(/-?\d+\s*income[_\s]persistence[_\s]?%?/gi, "Increase recurring income")
+      .replace(/-?\d+\s*largest[_\s]source[_\s]?%?/gi, "Reduce largest source concentration")
+      .replace(/-?\d+\s*forward[_\s]secured[_\s]?%?/gi, "Increase forward visibility")
+      .replace(/labor_dependence_pct/gi, "labor dependence")
+      .replace(/income_persistence_pct/gi, "recurring income")
+      .replace(/largest_source_pct/gi, "largest source share")
+      .replace(/forward_secured_pct/gi, "forward visibility")
+      .replace(/source_diversity_count/gi, "number of income sources");
+  };
 
   // ── LAYER 4: Metric severity ──
   const continuitySeverity: string =
@@ -1145,17 +1183,23 @@ export default function ReviewPage() {
             <div style={{ flex: 1, minWidth: 180 }}>
               <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>What to change first</div>
               <div style={{ ...T.body, color: B.navy, margin: 0 }}>
-                {v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`)}
+                {cleanConstraintText(v2Sensitivity?.tests?.[0]?.delta_description || (v2Lift?.highest_single_lift?.label ? `${v2Lift.highest_single_lift.label}.` : `Reduce ${dominantConstraintPlain[dominantConstraint]}.`))}
               </div>
             </div>
             <div style={{ flex: 1, minWidth: 140 }}>
               <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>What that would do</div>
               <div style={{ ...T.body, color: B.navy, margin: 0 }}>
-                {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} → ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} → ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
+                {v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} to ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift} points)` : v2Lift?.highest_single_lift ? `${score} to ${v2Lift.highest_single_lift.projected_score} (+${v2Lift.highest_single_lift.lift} points)` : `Estimated improvement available.`}
               </div>
             </div>
           </div>
         </div>
+
+        {tailored.constraintContext && (
+          <p style={{ ...T.meta, color: B.muted, margin: "0 0 14px", lineHeight: 1.5, fontStyle: "italic" }}>
+            {tailored.constraintContext}
+          </p>
+        )}
 
         {/* ── 5. HOW FAR FROM STRONGER STABILITY ── */}
         {nextBandName && (
@@ -1398,25 +1442,7 @@ export default function ReviewPage() {
             <div style={{ marginBottom: 20 }}>
               <Overline large>Ranked By Damage</Overline>
               {top.map((s, idx) => {
-                const title = scenarioPlain[s.scenario_id] ?? s.label
-                  .replace(/^Active Labor Interrupted$/i, "You take two weeks off and have no backup revenue")
-                  .replace(/^Platform Dependency Shock$/i, "One income source changes its terms or access")
-                  .replace(/^Forward Commitments Delayed$/i, "New work arrives later than expected")
-                  .replace(/^High Volatility Month$/i, "You have a slow month with no backup revenue")
-                  .replace(/^Client Concentration Loss$/i, "A major client pauses or ends work")
-                  .replace(/^Market Contraction$/i, "Demand in your industry drops for two or more months")
-                  .replace(/^Revenue Model Disruption$/i, "Your primary way of earning income stops working")
-                  .replace(/^Seasonal Revenue Gap$/i, "A seasonal slowdown cuts your income for weeks")
-                  .replace(/^Key Client Loss$/i, "You lose a key client or contract")
-                  .replace(/^Regulatory Disruption$/i, "A regulatory or policy change affects how you earn")
-                  .replace(/^Pricing Pressure$/i, "What you can charge drops due to market pressure")
-                  .replace(/^Recurring Stream Degrades$/i, "A repeating income stream weakens or stops")
-                  .replace(/^Referral Pipeline Dries$/i, "New business or referrals dry up for a stretch")
-                  .replace(/^Contract Non.?Renewal$/i, "A major contract is not renewed")
-                  .replace(/^Scope Reduction$/i, "A client cuts the scope of your work significantly");
-                const safeTitle = (/^[A-Z][a-z]+ [A-Z]/.test(title) && !title.includes("You ") && !title.includes("A ") && !title.includes("Your ") && !title.includes("One ") && !title.includes("New "))
-                  ? title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()
-                  : title;
+                const safeTitle = cleanScenarioTitle(scenarioPlain[s.scenario_id] || s.label);
                 const borderColor = idx === 0 ? B.bandLimited : idx === 1 ? B.bandDeveloping : "rgba(14,26,43,0.12)";
                 const olMatch = olSelectedScenarios?.find(os => s.scenario_id.toLowerCase().includes(os.scenario_id.toLowerCase().replace("rs-", "").replace(/-/g, "_")) || os.label.toLowerCase() === s.label?.toLowerCase());
                 const narrativeText = olMatch?.why_it_matters || s.narrative;
@@ -1425,7 +1451,7 @@ export default function ReviewPage() {
                     <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", justifyContent: "space-between", alignItems: mobile ? "flex-start" : "center", gap: mobile ? 4 : 0, marginBottom: 4 }}>
                       <span style={{ ...T.sectionLabel, color: B.navy }}>{safeTitle}</span>
                       <span style={{ ...T.small, color: B.navy, flexShrink: 0 }}>
-                        {s.original_score} → <span style={{ color: B.bandLimited }}>{s.scenario_score}</span> <span style={{ color: B.muted }}>(−{s.score_drop})</span>
+                        {s.original_score} to <span style={{ color: B.bandLimited }}>{s.scenario_score}</span> <span style={{ color: B.muted }}>(−{s.score_drop})</span>
                       </span>
                     </div>
                     {narrativeText && <p style={{ ...T.meta, color: B.muted, margin: "4px 0 0", lineHeight: 1.5 }}>{narrativeText}</p>}
@@ -1535,15 +1561,19 @@ export default function ReviewPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {categories.map(({ tag, tagColor, scenario }) => {
                   const concrete = liftConcrete[scenario.scenario_id];
-                  const title = concrete?.title ?? scenario.label;
-                  const how = concrete?.how ?? scenario.change_description ?? "";
+                  const title = aiPlan?.primary_action && tag === "FASTEST IMPROVEMENT" ? aiPlan.primary_action
+                    : aiPlan?.supporting_action && tag === "EASIEST TO START" ? aiPlan.supporting_action
+                    : concrete?.title ?? scenario.label;
+                  const how = aiPlan?.primary_how && tag === "FASTEST IMPROVEMENT" ? aiPlan.primary_how
+                    : aiPlan?.supporting_how && tag === "EASIEST TO START" ? aiPlan.supporting_how
+                    : concrete?.how ?? scenario.change_description ?? "";
                   return (
                     <div key={tag} style={{ ...cardStyle, padding: "16px 20px", borderLeft: `3px solid ${tagColor}` }}>
                       <div style={{ ...T.overline, color: tagColor, marginBottom: 6, fontSize: 10 }}>{tag}</div>
                       <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{title}</div>
                       {how && <p style={{ ...T.small, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{how}</p>}
                       <div style={{ ...T.small, color: B.teal, fontWeight: 500 }}>
-                        {scenario.original_score} → {scenario.projected_score} (+{scenario.lift} points){scenario.band_shift ? ` — moves you to ${scenario.projected_band}` : ""}
+                        {scenario.original_score} to {scenario.projected_score} (+{scenario.lift} points){scenario.band_shift ? ` — moves you to ${scenario.projected_band}` : ""}
                       </div>
                     </div>
                   );
@@ -1568,11 +1598,20 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* ── TRADEOFFS ── */}
-        {v2TradeoffNarratives && v2TradeoffNarratives.length > 0 && (
+        {/* Tradeoff — AI or engine */}
+        {(aiPlan?.tradeoff_upside || (v2TradeoffNarratives && v2TradeoffNarratives.length > 0)) && (
           <div style={{ marginBottom: 16 }}>
             <Overline large>Tradeoffs to Understand</Overline>
-            {v2TradeoffNarratives.slice(0, 1).map((t, i) => (
+            {aiPlan?.tradeoff_upside ? (
+              <div style={{ ...cardStyle, marginBottom: 8 }}>
+                <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{aiPlan.primary_action || "Primary change"}</div>
+                <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 8 }}>
+                  <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.teal, fontWeight: 600, marginBottom: 4 }}>THE UPSIDE</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{aiPlan.tradeoff_upside}</p></div>
+                  <div style={{ flex: mobile ? undefined : 1 }}><div style={{ ...T.meta, color: B.bandDeveloping, fontWeight: 600, marginBottom: 4 }}>THE COST</div><p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>{aiPlan.tradeoff_cost || ""}</p></div>
+                </div>
+                {aiPlan.tradeoff_verdict && <div style={{ borderTop: `1px solid ${B.stone}`, marginTop: 8, paddingTop: 6 }}><p style={{ ...T.meta, color: B.navy, margin: 0, fontWeight: 500 }}>{aiPlan.tradeoff_verdict}</p></div>}
+              </div>
+            ) : v2TradeoffNarratives && v2TradeoffNarratives.slice(0, 1).map((t, i) => (
               <div key={i} style={{ ...cardStyle, marginBottom: 8 }}>
                 <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 6 }}>{t.action_label}</div>
                 <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 12 : 8 }}>
