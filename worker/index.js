@@ -40,6 +40,12 @@ export default {
       if (path === "/action-plan") {
         return await handleActionPlan(body, env, corsHeaders);
       }
+      if (path === "/save-record") {
+        return await handleSaveRecord(body, env, corsHeaders);
+      }
+      if (path === "/get-record") {
+        return await handleGetRecord(body, env, corsHeaders);
+      }
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,
@@ -235,4 +241,59 @@ Return ONLY the JSON object, no other text.`;
   }
 
   return new Response(JSON.stringify(parsed), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// SAVE RECORD
+// ══════════════════════════════════════════════════════════
+
+async function handleSaveRecord(body, env, corsHeaders) {
+  if (!body.id || !body.record_data) {
+    return new Response(JSON.stringify({ error: "Missing id or record_data" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  await env.DB.prepare(
+    `INSERT OR REPLACE INTO records (id, created_at, assessment_title, industry, operating_structure, income_model, score, band, record_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    body.id,
+    new Date().toISOString(),
+    body.assessment_title || "",
+    body.industry || "",
+    body.operating_structure || "",
+    body.income_model || "",
+    body.score || 0,
+    body.band || "",
+    typeof body.record_data === "string" ? body.record_data : JSON.stringify(body.record_data),
+  ).run();
+
+  return new Response(JSON.stringify({ success: true, id: body.id }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// GET RECORD (for simulator access)
+// ══════════════════════════════════════════════════════════
+
+async function handleGetRecord(body, env, corsHeaders) {
+  if (!body.id) {
+    return new Response(JSON.stringify({ error: "Missing id" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  const row = await env.DB.prepare(
+    `SELECT record_data FROM records WHERE id = ?`
+  ).bind(body.id).first();
+
+  if (!row) {
+    return new Response(JSON.stringify({ error: "Record not found" }), {
+      status: 404, headers: corsHeaders,
+    });
+  }
+
+  return new Response(JSON.stringify({
+    success: true,
+    record_data: row.record_data,
+  }), { headers: corsHeaders });
 }

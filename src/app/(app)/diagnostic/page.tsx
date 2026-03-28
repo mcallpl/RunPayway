@@ -505,6 +505,25 @@ export default function DiagnosticPage() {
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
 
+      // Save record to cloud database (D1 via Worker)
+      try {
+        const recAdapted = record as Record<string, unknown>;
+        await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: recAdapted.record_id,
+            assessment_title: recAdapted.assessment_title || "",
+            industry: profile.industry_sector || "",
+            operating_structure: profile.operating_structure || "",
+            income_model: profile.primary_income_model || "",
+            score: recAdapted.final_score || 0,
+            band: recAdapted.stability_band || "",
+            record_data: JSON.stringify(record),
+          }),
+        });
+      } catch { /* Cloud save failed — local storage still works */ }
+
       // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
       const adapted = record as Record<string, unknown>;
