@@ -720,15 +720,11 @@ export default function MarketingLayout({
               <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
-                  { href: "/", label: t.footer.home },
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
                   { href: "/methodology", label: t.nav.methodology },
-                  { href: "/simulator", label: "Stability Simulator" },
                   { href: "/pricing", label: t.nav.pricing },
-                  { href: "/sign-in", label: "Sign In" },
-                  { href: "/coming-soon", label: "Coming Soon" },
-                  { href: "/faq", label: t.nav.faq },
+                  { href: "/simulator", label: "Simulator" },
                 ].map((link) => (
                   <Link
                     key={link.label}
