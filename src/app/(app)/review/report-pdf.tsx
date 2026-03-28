@@ -262,12 +262,26 @@ function footer(doc: jsPDF, section: string, page: number) {
   doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
-/** Draw interior page header */
-function header(doc: jsPDF) {
+/** Draw interior page header — score badge top right */
+function header(doc: jsPDF, score?: number, band?: string, bandColor?: string) {
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
   doc.text("RUNPAYWAY(TM)", ML, 40);
-  sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
-  doc.text("Income Stability Score  -  Model RP-2.0", ML + CW, 40, { align: "right" });
+
+  // Score badge top right
+  if (score !== undefined) {
+    sf(doc, "InterB"); doc.setFontSize(18); doc.setTextColor("#0E1A2B");
+    doc.text(String(score), ML + CW, 38, { align: "right" });
+    const scoreW = doc.getTextWidth(String(score));
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
+    doc.text("/100", ML + CW, 46, { align: "right" });
+    if (band && bandColor) {
+      doc.setFillColor(bandColor);
+      doc.rect(ML + CW - scoreW - 16, 33, 4, 4, "F");
+    }
+  } else {
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
+    doc.text("Model RP-2.0", ML + CW, 40, { align: "right" });
+  }
   doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
   doc.line(ML, 50, ML + CW, 50);
 }
@@ -294,88 +308,97 @@ function fits(y: number, h: number): boolean {
 /* ================================================================== */
 
 function page1(doc: jsPDF, d: ReportPDFData) {
-  let y = 150;
+  // ── TOP BAR — thin accent line ──
+  doc.setFillColor("#0E1A2B");
+  doc.rect(0, 0, W, 3, "F");
 
-  // Logo
-  sf(doc, "InterB"); doc.setFontSize(11); doc.setTextColor("#0E1A2B");
-  doc.text("RUNPAYWAY(TM)", CX, y, { align: "center", charSpace: 2 });
+  // ── LEFT-ALIGNED HEADER BLOCK ──
+  let y = 56;
+  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
+  doc.text("RUNPAYWAY", ML, y, { charSpace: 1.5 });
+  sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
+  doc.text("Income Stability Score  -  Model RP-2.0", ML + CW, y, { align: "right" });
 
-  // Divider
-  y += 16;
+  // Thin line
+  y += 12;
   doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-  doc.line(CX - 90, y, CX + 90, y);
+  doc.line(ML, y, ML + CW, y);
 
-  // Title
-  y += 32;
-  sf(doc, "InterB"); doc.setFontSize(28); doc.setTextColor("#0E1A2B");
-  doc.text("Income Stability Report", CX, y, { align: "center" });
+  // ── REPORT TITLE — large, left-aligned ──
+  y += 40;
+  sf(doc, "InterB"); doc.setFontSize(32); doc.setTextColor("#0E1A2B");
+  doc.text("Income Stability", ML, y);
+  y += 36;
+  doc.text("Report", ML, y);
 
-  // Subtitle
-  y += 16;
+  // ── SUBTITLE ──
+  y += 20;
   sf(doc, "Inter"); doc.setFontSize(10.5); doc.setTextColor("#535D6B");
-  doc.text("A structural assessment of income resilience", CX, y, { align: "center" });
+  doc.text("A structural assessment of income resilience", ML, y);
 
-  // Name
-  y += 32;
-  sf(doc, "InterM"); doc.setFontSize(18); doc.setTextColor("#0E1A2B");
-  doc.text(S(d.assessmentTitle), CX, y, { align: "center" });
+  // ── THIN LINE ──
+  y += 20;
+  doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+  doc.line(ML, y, ML + 160, y);
 
-  // Date
-  y += 16;
+  // ── PREPARED FOR ──
+  y += 24;
+  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
+  doc.text("Prepared for", ML, y);
+  y += 14;
+  sf(doc, "InterSB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+  doc.text(S(d.assessmentTitle), ML, y);
+  y += 14;
   sf(doc, "Inter"); doc.setFontSize(9.5); doc.setTextColor("#6B6155");
-  doc.text(S(d.formalDate), CX, y, { align: "center" });
+  doc.text(S(d.formalDate), ML, y);
 
-  // Score
-  y += 32;
-  sf(doc, "InterB"); doc.setFontSize(46); doc.setTextColor("#0E1A2B");
-  doc.text(String(d.finalScore), CX, y, { align: "center" });
-  // /100
-  sf(doc, "InterB"); doc.setFontSize(46);
-  const sw = doc.getTextWidth(String(d.finalScore));
-  sf(doc, "Inter"); doc.setFontSize(16); doc.setTextColor("#6B6155");
-  doc.text("/100", CX + sw / 2 + 4, y);
-
-  // Band
-  y += 24;
+  // ── SCORE BLOCK — right side, vertically centered with name ──
+  const scoreBlockY = y - 28;
+  sf(doc, "InterB"); doc.setFontSize(56); doc.setTextColor("#0E1A2B");
+  doc.text(String(d.finalScore), ML + CW, scoreBlockY + 20, { align: "right" });
+  sf(doc, "Inter"); doc.setFontSize(14); doc.setTextColor("#6B6155");
+  doc.text("/100", ML + CW, scoreBlockY + 36, { align: "right" });
   doc.setFillColor(d.bandColor);
-  doc.rect(CX - 48, y - 6, 5, 5, "F");
-  sf(doc, "InterSB"); doc.setFontSize(14); doc.setTextColor(d.bandColor);
-  doc.text(S(d.stabilityBand), CX - 38, y);
+  doc.rect(ML + CW - 4, scoreBlockY + 42, 4, 4, "F");
+  sf(doc, "InterSB"); doc.setFontSize(11); doc.setTextColor(d.bandColor);
+  doc.text(S(d.stabilityBand), ML + CW, scoreBlockY + 56, { align: "right" });
 
-  // Band desc
+  // ── BAND DESCRIPTION ──
+  y += 32;
+  doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+  doc.line(ML, y, ML + CW, y);
   y += 16;
-  const bdH = mh(doc, d.coverBandDesc, 320, 10.5);
-  dt(doc, d.coverBandDesc, CX - 160, y, 320, 10.5, { color: "#535D6B", align: "center" });
-  y += bdH;
+  dt(doc, d.coverBandDesc, ML, y, CW, 10.5, { color: "#535D6B" });
+  y += mh(doc, d.coverBandDesc, CW, 10.5);
 
-  // Model line
+  // ── MODEL + METHODOLOGY ──
   y += 24;
-  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
-  doc.text("Built from fixed structural questions under Model RP-2.0.", CX, y, { align: "center" });
+  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#6B6155");
+  doc.text("Built from fixed structural questions under Model RP-2.0.", ML, y);
+  y += 10;
+  doc.text("Deterministic scoring. Same answers always produce the same score.", ML, y);
 
-  // Simulator access
-  y += 24;
-  label(doc, "STABILITY SIMULATOR(TM) ACCESS", CX - 80, y, "#0E1A2B");
+  // ── SIMULATOR ACCESS ──
+  y += 28;
+  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
+  doc.text("STABILITY SIMULATOR ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
-  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text("Use this code at runpayway.com/simulator", CX, y, { align: "center" });
-
-  y += 12;
-  doc.setFont("Courier", "normal"); doc.setFontSize(7);
-  const codeLines: string[] = doc.splitTextToSize(S(d.accessCode), 400);
-  const codeH = codeLines.length * 10 + 12;
-  card(doc, CX - 210, y, 420, codeH);
-  doc.setFont("Courier", "normal"); doc.setFontSize(7); doc.setTextColor("#0E1A2B");
+  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+  doc.text("Use this code at runpayway.com/simulator to model structural changes.", ML, y);
+  y += 14;
+  doc.setFont("Courier", "normal"); doc.setFontSize(6.5);
+  const codeLines: string[] = doc.splitTextToSize(S(d.accessCode), CW - 20);
+  const codeH = codeLines.length * 9 + 10;
+  card(doc, ML, y, CW, codeH);
+  doc.setFont("Courier", "normal"); doc.setFontSize(6.5); doc.setTextColor("#0E1A2B");
   for (let i = 0; i < codeLines.length; i++) {
-    doc.text(codeLines[i], CX - 200, y + 10 + i * 10);
+    doc.text(codeLines[i], ML + 10, y + 8 + i * 9);
   }
-  y += codeH + 16;
 
-  // Model + pages
-  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
-  doc.text("Model RP-2.0 - 4 Pages", CX, y, { align: "center" });
-
-  footer(doc, "Cover", 1);
+  // ── FOOTER ──
+  sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
+  doc.text("Model RP-2.0  -  4 Pages  -  Confidential", ML, YF);
+  doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
 /* ================================================================== */
@@ -383,49 +406,20 @@ function page1(doc: jsPDF, d: ReportPDFData) {
 /* ================================================================== */
 
 function page2(doc: jsPDF, d: ReportPDFData) {
-  header(doc);
+  header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  // Overline
-  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1F6D7A");
-  doc.text("INCOME STABILITY ASSESSMENT", CX, y, { align: "center", charSpace: 1.5 });
+  // Page title — score is in header, so start with section title
+  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
+  doc.text("Score & Structural Diagnosis", ML, y);
 
-  // Name — y+20 not y+16
-  y += 20;
-  sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
-  doc.text(S(d.assessmentTitle), CX, y, { align: "center" });
-
-  // Date — y+16 not y+14
-  y += 16;
+  // Name + date + band on one line
+  y += 18;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
-  doc.text(S(`${d.formalDate} - Model RP-2.0`), CX, y, { align: "center" });
+  const metaLine = `${S(d.assessmentTitle)} - ${S(d.formalDate)} - ${S(d.stabilityBand)}${d.nextBandName ? ` - ${d.distanceToNext} points from ${d.nextBandName}` : ""}`;
+  doc.text(metaLine, ML, y);
 
-  // Score — y+28 not y+24, 42pt not 46pt
-  y += 28;
-  sf(doc, "InterB"); doc.setFontSize(42); doc.setTextColor("#0E1A2B");
-  doc.text(String(d.finalScore), CX, y, { align: "center" });
-  // /100 — 14pt not 16pt
-  sf(doc, "InterB"); doc.setFontSize(42);
-  const sw2 = doc.getTextWidth(String(d.finalScore));
-  y += 8;
-  sf(doc, "Inter"); doc.setFontSize(14); doc.setTextColor("#6B6155");
-  doc.text("/100", CX + sw2 / 2 + 4, y);
-
-  // Band — 12pt not 14pt
   y += 16;
-  doc.setFillColor(d.bandColor); doc.rect(CX - 48, y - 6, 5, 5, "F");
-  sf(doc, "InterSB"); doc.setFontSize(12); doc.setTextColor(d.bandColor);
-  doc.text(S(d.stabilityBand), CX - 38, y);
-
-  // Points to next — 9pt muted centered
-  if (d.nextBandName) {
-    y += 12;
-    sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-    doc.text(S(`${d.distanceToNext} points from ${d.nextBandName} Stability`), CX, y, { align: "center" });
-  }
-
-  // Gap before diagnostic card — y+24
-  y += 24;
 
   // Diagnostic card
   const diagH = mh(doc, d.diagnosticSentence, CW - 28, 11, "InterM") + 16;
@@ -455,7 +449,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   doc.text("Highest-leverage change", ML + 10, y + 44);
   doc.text("Projected effect", ML + 10 + colW + 16, y + 44);
   sf(doc, "Inter"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-  doc.text(truncate(d.whatToChangeFirst, 60), ML + 10, y + 56);
+  doc.text(truncate(cleanConstraint(d.whatToChangeFirst), 60), ML + 10, y + 56);
   doc.text(truncate(d.whatThatWouldDo, 40), ML + 10 + colW + 16, y + 56);
   y += ctH + 12;
 
@@ -486,7 +480,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
 /* ================================================================== */
 
 function page3(doc: jsPDF, d: ReportPDFData) {
-  header(doc);
+  header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
   // PressureMap
@@ -633,7 +627,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
 /* ================================================================== */
 
 function page4(doc: jsPDF, d: ReportPDFData) {
-  header(doc);
+  header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
   // Fragility intro — 34pt
