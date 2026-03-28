@@ -526,21 +526,34 @@ function WhatItMeasures() {
   return (
     <section ref={ref} aria-label="What this score measures" style={{
       background: C.white,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(16),
+      paddingBottom: m ? sp(10) : sp(16),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ maxWidth: 560, marginBottom: sp(5), ...fadeIn(visible) }}>
-          <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1.5) }}>
+        {/* Heading — massive, breathing */}
+        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
+          <div style={{
+            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(2) : sp(3),
+          }}>
             Four Dimensions of Stability
           </div>
-          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>What this score measures.</h2>
-          <p style={{ ...body(m), color: C.muted }}>
+          <h2 style={{
+            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
+            color: C.navy, letterSpacing: "-0.03em",
+            maxWidth: 700, marginBottom: m ? sp(3) : sp(4),
+          }}>
+            What this score measures.
+          </h2>
+          <p style={{
+            ...bodyLg(m), color: C.muted, maxWidth: 520,
+          }}>
             Six questions are used to evaluate four structural dimensions of income stability.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(2.5) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(3) : sp(4) }}>
           {dims.map((d, i) => {
             const hovered = hoverIdx === i;
             return (
@@ -548,26 +561,43 @@ function WhatItMeasures() {
                 onMouseEnter={() => canHover() && setHoverIdx(i)}
                 onMouseLeave={() => setHoverIdx(null)}
                 style={{
-                  background: C.navy, borderRadius: sp(1.5),
-                  padding: m ? sp(3.5) : sp(4), position: "relative", overflow: "hidden",
-                  transform: hovered ? "translateY(-3px)" : "translateY(0)",
-                  boxShadow: hovered ? "0 12px 40px rgba(14,26,43,0.20)" : "0 4px 16px rgba(14,26,43,0.08)",
-                  transition: "transform 250ms ease, box-shadow 250ms ease",
-                  ...fadeIn(visible, 100 + i * 80),
+                  background: C.purple, borderRadius: sp(1.5),
+                  padding: m ? sp(4) : sp(5), position: "relative", overflow: "hidden",
+                  transform: hovered ? "translateY(-4px)" : "translateY(0)",
+                  boxShadow: hovered
+                    ? "0 20px 60px rgba(75,63,174,0.25), 0 8px 24px rgba(14,26,43,0.10)"
+                    : "0 2px 4px rgba(75,63,174,0.06), 0 12px 40px rgba(75,63,174,0.10)",
+                  transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease",
+                  ...fadeIn(visible, 150 + i * 100),
                 }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: d.accent, opacity: hovered ? 1 : 0.5, transition: "opacity 250ms" }} />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: sp(2) }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: sp(1.25) }}>
-                    <span style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.num}</span>
-                    <span style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)" }}>{d.label}</span>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ ...h3(m), fontWeight: 600, color: d.accent }}>{d.metric}</div>
-                    <div style={{ ...T.meta, color: "rgba(244,241,234,0.42)", textTransform: "uppercase" as const, marginTop: 2 }}>{d.metricLabel}</div>
-                  </div>
+                {/* Number — massive, top-left anchor */}
+                <div style={{
+                  fontSize: m ? 44 : 56, fontWeight: 600, color: "rgba(255,255,255,0.15)",
+                  letterSpacing: "-0.03em", lineHeight: 1,
+                  marginBottom: sp(3),
+                }}>{d.num}</div>
+
+                {/* Metric — top-right */}
+                <div style={{
+                  position: "absolute", top: m ? sp(4) : sp(5), right: m ? sp(4) : sp(5),
+                  textAlign: "right",
+                }}>
+                  <div style={{ fontSize: m ? 28 : 36, fontWeight: 600, color: "rgba(255,255,255,0.90)", letterSpacing: "-0.02em", lineHeight: 1 }}>{d.metric}</div>
+                  <div style={{ ...T.meta, color: "rgba(255,255,255,0.40)", textTransform: "uppercase" as const, marginTop: 4 }}>{d.metricLabel}</div>
                 </div>
-                <h3 style={{ ...h3(m), fontWeight: 500, color: C.sand, marginBottom: sp(1.25) }}>{d.title}</h3>
-                <p style={{ ...body(m), color: "rgba(244,241,234,0.45)", margin: 0 }}>{d.desc}</p>
+
+                {/* Title */}
+                <h3 style={{
+                  fontSize: m ? 20 : 24, fontWeight: 600, color: "#FFFFFF",
+                  lineHeight: 1.2, letterSpacing: "-0.02em",
+                  marginBottom: sp(2),
+                }}>{d.title}</h3>
+
+                {/* Description */}
+                <p style={{
+                  fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6,
+                  color: "rgba(255,255,255,0.55)", margin: 0,
+                }}>{d.desc}</p>
               </div>
             );
           })}
