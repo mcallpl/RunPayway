@@ -382,7 +382,7 @@ function SimulatorContent() {
   const [qualityScore, setQualityScore] = useState(5);
   const [userName, setUserName] = useState("");
   const [industry, setIndustry] = useState("");
-  const T = DARK;
+  // T is now a module-level constant (unified light theme)
   const [incomeModel, setIncomeModel] = useState("");
   const [lastChangedSlider, setLastChangedSlider] = useState<string | null>(null);
   const [stressTestActive, setStressTestActive] = useState(false);
