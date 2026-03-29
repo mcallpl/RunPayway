@@ -10,6 +10,8 @@ import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 import { getScriptsForSector } from "@/lib/action-scripts";
 import { earnBadge } from "@/lib/gamification";
+import SuiteHeader from "@/components/SuiteHeader";
+import SuiteCTA from "@/components/SuiteCTA";
 
 /* ------------------------------------------------------------------ */
 /*  Design Tokens                                                      */
@@ -822,89 +824,9 @@ function SimulatorContent() {
       `}</style>
 
       {/* ══════════ HEADER ══════════ */}
-      <header style={{ borderBottom: `1px solid ${T.headerBorder}`, backdropFilter: "blur(24px) saturate(180%)", WebkitBackdropFilter: "blur(24px) saturate(180%)", backgroundColor: T.headerBg, position: "sticky", top: 0, zIndex: 50 }}>
-        <div style={{ height: 2, background: `linear-gradient(90deg, ${BRAND.teal} 0%, ${BRAND.purple} 50%, ${BRAND.teal} 100%)` }} />
-        <div style={{ padding: "18px 36px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <Image src={logoWhite} alt="RunPayway&#8482;" width={140} height={16} style={{ height: "auto", opacity: 0.95 }} />
-            <div style={{ width: 1, height: 28, background: `linear-gradient(180deg, transparent 0%, rgba(232,229,221,0.15) 50%, transparent 100%)` }} />
-            <div>
-              <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal }}>RunPayway&#8482; Stability Simulator</span>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <Link href="/tools" style={{ fontSize: 12, fontWeight: 600, color: BRAND.purple, textDecoration: "none", letterSpacing: "0.02em" }}>Suite</Link>
-            <Link href="/pressuremap" style={{ fontSize: 12, fontWeight: 500, color: BRAND.teal, textDecoration: "none", letterSpacing: "0.02em" }}>PressureMap</Link>
-            <Link href="/dashboard" style={{ fontSize: 12, fontWeight: 500, color: T.textMuted, textDecoration: "none", letterSpacing: "0.02em" }}>Dashboard</Link>
-            <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
-            <span style={{ fontSize: 13, color: T.textMuted, fontWeight: 500, letterSpacing: "0.01em" }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
-            <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
-            <span style={{ fontSize: 10, color: T.textFaint, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>RP-2.0</span>
-          </div>
-        </div>
-      </header>
+      <SuiteHeader current="simulator" />
 
-      {/* Floating side link — Suite */}
-      <Link
-        href="/tools"
-        className="sim-view-report"
-        style={{
-          position: "fixed",
-          right: 0,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 40,
-          writingMode: "vertical-rl",
-          textOrientation: "mixed",
-          padding: "16px 10px",
-          fontSize: 13,
-          fontWeight: 600,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase" as const,
-          color: T.textSecondary,
-          textDecoration: "none",
-          borderRadius: "10px 0 0 10px",
-          backgroundColor: "rgba(75,63,174,0.08)",
-          border: `1px solid rgba(75,63,174,0.15)`,
-          borderRight: "none",
-          backdropFilter: "blur(12px)",
-          transition: "color 200ms, background-color 200ms",
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.purple; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.15)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.08)"; }}
-      >
-        Suite &#8594;
-      </Link>
-      <Link
-        href="/review"
-        className="sim-view-report"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: "50%",
-          transform: "translateY(-50%)",
-          zIndex: 40,
-          writingMode: "vertical-rl",
-          textOrientation: "mixed",
-          padding: "16px 10px",
-          fontSize: 13,
-          fontWeight: 600,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase" as const,
-          color: T.textSecondary,
-          textDecoration: "none",
-          borderRadius: "0 10px 10px 0",
-          backgroundColor: "rgba(255,255,255,0.06)",
-          border: `1px solid ${T.border}`,
-          borderLeft: "none",
-          backdropFilter: "blur(12px)",
-          transition: "color 200ms, background-color 200ms",
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.teal; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; }}
-      >
-        View Report &#8592;
-      </Link>
+
 
       {/* ══════════ CELEBRATION TOAST ══════════ */}
       {celebrationMsg && (
@@ -1575,6 +1497,11 @@ function SimulatorContent() {
           </div>
           <span style={{ fontSize: 24, color: "#DC7814", opacity: 0.7, flexShrink: 0, marginLeft: 16 }}>&rarr;</span>
         </Link>
+      </div>
+
+      {/* ══════════ CTA ══════════ */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px" }}>
+        <SuiteCTA page="simulator" />
       </div>
 
       {/* ══════════ FOOTER ══════════ */}

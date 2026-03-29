@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { getBadges, recordVisit, checkActionProgress, getStreaks, earnBadge, getEarnedCount, type Badge } from "@/lib/gamification";
+import SuiteHeader from "@/components/SuiteHeader";
+import SuiteCTA from "@/components/SuiteCTA";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -204,19 +205,7 @@ export default function DashboardPage() {
         }
       `}</style>
 
-      {/* ── Header ── */}
-      <header style={{ borderBottom: "1px solid rgba(14,26,43,0.08)", padding: mobile ? "14px 16px" : "18px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, backgroundColor: "rgba(247,246,243,0.97)", backdropFilter: "blur(12px)", zIndex: 50 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <Image src={logoBlue} alt="RunPayway" width={110} height={13} style={{ height: "auto" }} />
-          <div style={{ width: 1, height: 20, backgroundColor: B.stone }} />
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal }}>Dashboard</span>
-        </div>
-        <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/tools" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Suite</Link>
-          <Link href="/pressuremap" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>PressureMap</Link>
-          <Link href="/simulator" style={{ fontSize: 13, fontWeight: 500, color: B.teal, textDecoration: "none" }}>Simulator</Link>
-        </div>
-      </header>
+      <SuiteHeader current="dashboard" />
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: mobile ? "28px 16px 80px" : "48px 28px 80px" }}>
 
@@ -438,10 +427,13 @@ export default function DashboardPage() {
           ))}
         </div>
 
+        {/* ── CTA ── */}
+        <div style={{ marginTop: 32, marginBottom: 24 }}><SuiteCTA page="dashboard" /></div>
+
         {/* ── Footer ── */}
-        <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
+        <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
           <p style={{ fontSize: 11, color: B.taupe, margin: 0, fontStyle: "italic" }}>
-            RunPayway&#8482; Stability Suite &mdash; Track your progress toward financial resilience. A proprietary tool by PeopleStar Enterprises.
+            RunPayway&#8482; Stability Suite &mdash; A proprietary tool by PeopleStar Enterprises.
           </p>
         </div>
       </div>
