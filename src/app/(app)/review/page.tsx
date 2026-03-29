@@ -1167,39 +1167,28 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* ── STABILITY SUITE CTA — direct to PressureMap (first step) ── */}
+        {/* ── STABILITY SUITE CTA — ink-light ── */}
         <div
           onClick={() => router.push("/pressuremap")}
           style={{
-            marginTop: 14, borderRadius: 8, overflow: "hidden", cursor: "pointer",
-            background: `linear-gradient(135deg, ${B.navy} 0%, #161430 50%, ${B.purple} 100%)`,
-            padding: mobile ? "20px 16px" : "22px 24px",
-            transition: "box-shadow 250ms ease, transform 250ms ease",
+            marginTop: 18, borderRadius: 8, cursor: "pointer",
+            border: `1px solid rgba(14,26,43,0.10)`,
+            borderLeft: `3px solid ${B.purple}`,
+            padding: mobile ? "16px 16px" : "18px 22px",
+            transition: "box-shadow 250ms ease",
           }}
-          onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 8px 28px rgba(75,63,174,0.25)"; el.style.transform = "translateY(-2px)"; }}
-          onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "none"; el.style.transform = "translateY(0)"; }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(75,63,174,0.08)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
         >
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 8, letterSpacing: "0.14em", fontSize: 10 }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>See exactly where your income is vulnerable</div>
-              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.55)", margin: 0, lineHeight: 1.5 }}>
-                Open your PressureMap&#8482; to explore your risk zones, then model fixes in the Simulator and track progress on your Dashboard.
+              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 9 }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 3 }}>See exactly where your income is vulnerable</div>
+              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+                PressureMap&#8482; &middot; Simulator &middot; Dashboard &mdash; runpayway.com/tools
               </p>
             </div>
-            <div style={{ fontSize: 24, color: "#F4F1EA", flexShrink: 0, marginLeft: 16, opacity: 0.7 }}>&rarr;</div>
-          </div>
-          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
-            {[
-              { label: "PressureMap&#8482;", color: B.purple, active: true },
-              { label: "Simulator", color: B.teal, active: false },
-              { label: "Dashboard", color: "#DC7814", active: false },
-            ].map((t) => (
-              <div key={t.label} style={{ display: "flex", alignItems: "center", gap: 4, padding: "3px 10px", borderRadius: 20, backgroundColor: t.active ? "rgba(244,241,234,0.12)" : "rgba(244,241,234,0.05)", border: `1px solid rgba(244,241,234,${t.active ? "0.18" : "0.06"})` }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: t.color }} />
-                <span style={{ fontSize: 10, fontWeight: 600, color: t.active ? "#F4F1EA" : "rgba(244,241,234,0.45)" }} dangerouslySetInnerHTML={{ __html: t.label }} />
-              </div>
-            ))}
+            <div style={{ fontSize: 18, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
           </div>
         </div>
 
@@ -1579,38 +1568,43 @@ export default function ReviewPage() {
       @media print {
         @page {
           size: letter;
-          margin: 0.5in 0.65in;
+          margin: 0;
         }
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
-        body { background: white !important; margin: 0; }
+        html, body { margin: 0 !important; padding: 0 !important; background: white !important; }
         #paginated-view { display: none !important; }
         .print-report { display: block !important; }
         .print-report .print-page {
+          width: 8.5in;
+          height: 11in;
+          padding: 0.6in 0.7in;
+          margin: 0;
           page-break-after: always;
           page-break-inside: avoid;
-          padding: 32px 0;
-          margin: 0;
+          box-sizing: border-box;
+          overflow: hidden;
+          position: relative;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        .print-report .print-page:first-child {
-          padding-top: 0;
+          display: flex;
+          flex-direction: column;
         }
         .print-report .print-page:last-child {
           page-break-after: auto;
         }
         .report-page-footer { margin-top: auto; }
-        nav, footer, .no-print, button { display: none !important; }
+        nav, footer, .no-print { display: none !important; }
         a { text-decoration: none !important; color: inherit !important; }
+        button { background: none !important; border: none !important; padding: 0 !important; color: inherit !important; }
       }
       @media not print {
         .print-report { display: none !important; }
       }
     `}</style>
 
-    {/* Hidden print container — shows ALL pages when printing */}
+    {/* Hidden print container — fixed-size pages for exact PDF output */}
     <div className="print-report">
       {pageContents.map((content, i) => (
-        <div key={i} className="print-page" style={{ backgroundColor: "#FFFFFF", padding: "0", maxWidth: "100%" }}>
+        <div key={i} className="print-page">
           {content}
         </div>
       ))}
