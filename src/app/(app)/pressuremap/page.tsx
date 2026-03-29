@@ -194,6 +194,7 @@ export default function PressureMapPage() {
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple }}>PressureMap&#8482;</span>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
+          <Link href="/dashboard" style={{ fontSize: 13, fontWeight: 500, color: B.teal, textDecoration: "none" }}>Dashboard</Link>
           <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>Report</Link>
           <Link href="/simulator" style={{ fontSize: 13, fontWeight: 500, color: B.purple, textDecoration: "none" }}>Simulator</Link>
         </div>

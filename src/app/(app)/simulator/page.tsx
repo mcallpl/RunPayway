@@ -426,6 +426,7 @@ function SimulatorContent() {
   const [accessError, setAccessError] = useState<string | null>(null);
   const [celebrationMsg, setCelebrationMsg] = useState<string | null>(null);
   const [prevScore, setPrevScore] = useState<number | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   // Helper to populate simulator state from data
   const populateFromData = (data: { normalized_inputs: { income_persistence_pct: number; largest_source_pct: number; source_diversity_count: number; forward_secured_pct: number; income_variability_level: string; labor_dependence_pct: number }; quality_score: number; assessment_title: string; industry_sector: string; primary_income_model: string }) => {
@@ -472,6 +473,8 @@ function SimulatorContent() {
         industry_sector: decoded.i || "",
         primary_income_model: decoded.m || "",
       });
+      // Show branded welcome screen
+      setShowWelcome(true);
     } catch {
       setAccessError("Invalid code. Make sure you copied the entire Access Code from your report.");
     }
@@ -574,6 +577,76 @@ function SimulatorContent() {
               <Link href="/pricing" style={{ color: BRAND.teal, textDecoration: "none", fontWeight: 500 }}>Get the Full Report</Link>
             </p>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ── Welcome screen after access code entry ── */
+  if (showWelcome && loaded && baseInputs) {
+    const welcomeScore = simulateScore(baseInputs, qualityScore);
+    return (
+      <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 40%)`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: INTER }}>
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+          @keyframes welcomeFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        `}</style>
+        <div style={{ textAlign: "center", maxWidth: 520, padding: 40, animation: "welcomeFadeIn 600ms ease-out" }}>
+          <Image src={logoWhite} alt="RunPayway" width={160} height={19} style={{ height: "auto", opacity: 0.95, marginBottom: 32 }} />
+
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 20 }}>EXCLUSIVE ACCESS VERIFIED</div>
+
+          <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
+            Welcome{userName ? `, ${userName}` : ""}
+          </h1>
+
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.65)", lineHeight: 1.65, marginBottom: 32 }}>
+            You now have access to the RunPayway&#8482; Stability Suite &mdash; premium tools designed exclusively for our report customers.
+          </p>
+
+          {/* Score preview */}
+          <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, marginBottom: 8 }}>
+            <span style={{ fontSize: 48, fontWeight: 300, color: "#F4F1EA", fontFamily: DISPLAY }}>{welcomeScore.overall_score}</span>
+            <span style={{ fontSize: 18, color: "rgba(244,241,234,0.4)" }}>/100</span>
+          </div>
+          <div style={{ fontSize: 13, color: bandColor(welcomeScore.band), fontWeight: 600, marginBottom: 32 }}>{welcomeScore.band}</div>
+
+          {/* Tool cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32, textAlign: "left" }}>
+            {[
+              { icon: "&#9881;", title: "Stability Simulator", desc: "Model scenarios and see how each change impacts your score in real time.", color: BRAND.teal },
+              { icon: "&#9881;", title: "PressureMap\u2122", desc: "Interactive risk zones showing exactly where your income is vulnerable.", color: BRAND.purple },
+              { icon: "&#9881;", title: "Progress Dashboard", desc: "Track your improvement over time with action tracking and badges.", color: "#DC7814" },
+            ].map((tool) => (
+              <div key={tool.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "14px 18px", borderRadius: 10, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)" }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${tool.color}15`, border: `1px solid ${tool.color}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontSize: 16, color: tool.color }} dangerouslySetInnerHTML={{ __html: tool.icon }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>{tool.title}</div>
+                  <p style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", margin: 0, lineHeight: 1.45 }}>{tool.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setShowWelcome(false)}
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 52, padding: "0 40px", borderRadius: 10,
+              background: `linear-gradient(135deg, ${BRAND.teal} 0%, ${BRAND.purple} 100%)`,
+              color: "#FFFFFF", fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em",
+              boxShadow: `0 4px 20px rgba(26,122,109,0.3)`,
+              border: "none", cursor: "pointer", width: "100%",
+              transition: "opacity 200ms ease",
+            }}
+          >
+            Launch Stability Simulator
+          </button>
+
+          <p style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", marginTop: 16 }}>
+            This is a premium experience available exclusively to RunPayway&#8482; customers.
+          </p>
         </div>
       </div>
     );
@@ -760,6 +833,9 @@ function SimulatorContent() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <Link href="/dashboard" style={{ fontSize: 12, fontWeight: 600, color: BRAND.teal, textDecoration: "none", letterSpacing: "0.02em" }}>Dashboard</Link>
+            <Link href="/pressuremap" style={{ fontSize: 12, fontWeight: 600, color: BRAND.purple, textDecoration: "none", letterSpacing: "0.02em" }}>PressureMap</Link>
+            <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
             <span style={{ fontSize: 13, color: T.textMuted, fontWeight: 500, letterSpacing: "0.01em" }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
             <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
             <span style={{ fontSize: 10, color: T.textFaint, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>RP-2.0</span>

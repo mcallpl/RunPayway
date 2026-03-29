@@ -1449,18 +1449,24 @@ export default function ReviewPage() {
         zIndex: 100,
         display: "flex", justifyContent: "center", alignItems: "center", gap: mobile ? 8 : 24,
       }}>
-        {/* Download PDF — hide on mobile to save space */}
+        {/* Tool links + Download PDF */}
         {!mobile && (
-          <button
-            onClick={handleDownload}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              fontSize: 13, color: "rgba(14,26,43,0.58)",
-              padding: "8px 12px", fontWeight: 500,
-            }}
-          >
-            Download PDF
-          </button>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <a href="/dashboard" style={{ fontSize: 12, color: "rgba(14,26,43,0.50)", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>Dashboard</a>
+            <a href="/pressuremap" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>PressureMap</a>
+            <a href="/simulator" style={{ fontSize: 12, color: "#1F6D7A", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>Simulator</a>
+            <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
+            <button
+              onClick={handleDownload}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                fontSize: 12, color: "rgba(14,26,43,0.50)",
+                padding: "6px 10px", fontWeight: 500,
+              }}
+            >
+              PDF
+            </button>
+          </div>
         )}
 
         {/* Left arrow */}
