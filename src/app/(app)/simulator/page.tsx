@@ -423,6 +423,8 @@ function SimulatorContent() {
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const [accessCode, setAccessCode] = useState("");
   const [accessError, setAccessError] = useState<string | null>(null);
+  const [celebrationMsg, setCelebrationMsg] = useState<string | null>(null);
+  const [prevScore, setPrevScore] = useState<number | null>(null);
 
   // Helper to populate simulator state from data
   const populateFromData = (data: { normalized_inputs: { income_persistence_pct: number; largest_source_pct: number; source_diversity_count: number; forward_secured_pct: number; income_variability_level: string; labor_dependence_pct: number }; quality_score: number; assessment_title: string; industry_sector: string; primary_income_model: string }) => {
@@ -592,6 +594,32 @@ function SimulatorContent() {
   const delta = sim.overall_score - base.overall_score;
   const isModified = simMode === "advanced" ? !!sliders : !!simPreset;
 
+  // ── Celebration feedback: detect score changes and show toast ──
+  useEffect(() => {
+    const currentScore = sim.overall_score;
+    if (prevScore !== null && currentScore !== prevScore && isModified) {
+      const diff = currentScore - prevScore;
+      if (diff > 0) {
+        const bandShifted = sim.band !== base.band && sim.overall_score > base.overall_score;
+        const nextThreshold = currentScore < 30 ? 30 : currentScore < 50 ? 50 : currentScore < 75 ? 75 : null;
+        const gap = nextThreshold ? nextThreshold - currentScore : null;
+        const msg = bandShifted
+          ? `+${diff} points! You moved to ${sim.band}!`
+          : gap !== null && gap <= 5
+            ? `+${diff} points! Only ${gap} points from the next band!`
+            : `+${diff} points! Score: ${currentScore}/100`;
+        setCelebrationMsg(msg);
+        const timer = setTimeout(() => setCelebrationMsg(null), 3000);
+        return () => clearTimeout(timer);
+      } else if (diff < 0) {
+        setCelebrationMsg(`${diff} points. Score: ${currentScore}/100`);
+        const timer = setTimeout(() => setCelebrationMsg(null), 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+    setPrevScore(currentScore);
+  }, [sim.overall_score, sim.band, base.band, base.overall_score, isModified, prevScore]);
+
   // Record ID
   const recordId = generateRecordId(baseInputs, userName);
 
@@ -738,6 +766,36 @@ function SimulatorContent() {
 
       {/* Floating "View Report" side link */}
       <Link
+        href="/pressuremap"
+        className="sim-view-report"
+        style={{
+          position: "fixed",
+          right: 0,
+          top: "50%",
+          transform: "translateY(-50%)",
+          zIndex: 40,
+          writingMode: "vertical-rl",
+          textOrientation: "mixed",
+          padding: "16px 10px",
+          fontSize: 13,
+          fontWeight: 600,
+          letterSpacing: "0.08em",
+          textTransform: "uppercase" as const,
+          color: T.textSecondary,
+          textDecoration: "none",
+          borderRadius: "10px 0 0 10px",
+          backgroundColor: "rgba(75,63,174,0.08)",
+          border: `1px solid rgba(75,63,174,0.15)`,
+          borderRight: "none",
+          backdropFilter: "blur(12px)",
+          transition: "color 200ms, background-color 200ms",
+        }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.purple; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.15)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.08)"; }}
+      >
+        PressureMap&#8482; &#8594;
+      </Link>
+      <Link
         href="/review"
         className="sim-view-report"
         style={{
@@ -767,6 +825,30 @@ function SimulatorContent() {
       >
         View Report &#8592;
       </Link>
+
+      {/* ══════════ CELEBRATION TOAST ══════════ */}
+      {celebrationMsg && (
+        <div style={{
+          position: "fixed", top: 24, left: "50%", transform: "translateX(-50%)", zIndex: 100,
+          padding: "14px 28px", borderRadius: 12,
+          background: celebrationMsg.startsWith("+")
+            ? `linear-gradient(135deg, rgba(26,122,109,0.95) 0%, rgba(75,63,174,0.90) 100%)`
+            : `linear-gradient(135deg, rgba(220,74,74,0.90) 0%, rgba(180,60,60,0.90) 100%)`,
+          color: "#FFFFFF", fontSize: 16, fontWeight: 700, letterSpacing: "-0.01em",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.3), 0 0 60px rgba(26,122,109,0.15)",
+          backdropFilter: "blur(16px)",
+          animation: "celebSlideIn 300ms ease-out",
+          fontFamily: INTER,
+        }}>
+          {celebrationMsg}
+        </div>
+      )}
+      <style>{`
+        @keyframes celebSlideIn {
+          from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.95); }
+          to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+      `}</style>
 
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
 
@@ -830,6 +912,52 @@ function SimulatorContent() {
             </div>
           </div>
         </div>
+
+        {/* ══════════ MICRO-GOAL PROGRESS BAR ══════════ */}
+        {(() => {
+          const currentScore = isModified ? sim.overall_score : base.overall_score;
+          const goalScore = currentScore < 30 ? 30 : currentScore < 50 ? 50 : currentScore < 75 ? 75 : 100;
+          const goalLabel = currentScore < 30 ? "Developing Stability" : currentScore < 50 ? "Established Stability" : currentScore < 75 ? "High Stability" : "Maximum Score";
+          const gap = goalScore - currentScore;
+          const progress = Math.min(100, (currentScore / goalScore) * 100);
+          const goalColor = currentScore < 30 ? BRAND.bandDeveloping : currentScore < 50 ? BRAND.bandEstablished : currentScore < 75 ? BRAND.bandHigh : BRAND.teal;
+          return (
+            <div style={{ marginBottom: 28, padding: "20px 24px", borderRadius: 12, backgroundColor: T.surface, border: `1px solid ${T.border}` }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: goalColor }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: T.text }}>
+                    {gap > 0 ? `${gap} points to ${goalLabel}` : `You are at ${goalLabel}!`}
+                  </span>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, color: goalColor, fontFamily: DISPLAY }}>{currentScore}/{goalScore}</span>
+              </div>
+              <div style={{ height: 6, backgroundColor: T.border, borderRadius: 3, overflow: "hidden" }}>
+                <div style={{
+                  height: "100%", borderRadius: 3,
+                  background: `linear-gradient(90deg, ${goalColor}88, ${goalColor})`,
+                  width: `${progress}%`,
+                  transition: "width 400ms ease-out",
+                  boxShadow: `0 0 8px ${goalColor}44`,
+                }} />
+              </div>
+              {isModified && delta > 0 && (
+                <div style={{ fontSize: 12, color: BRAND.teal, fontWeight: 600, marginTop: 8 }}>
+                  {sim.band !== base.band
+                    ? `This change moves you to ${sim.band}!`
+                    : gap <= delta
+                      ? `This change reaches ${goalLabel}!`
+                      : `${gap - delta} more points after this change to reach ${goalLabel}.`}
+                </div>
+              )}
+              {!isModified && bestMove && bestMove.lift > 0 && (
+                <div style={{ fontSize: 12, color: T.textMuted, marginTop: 8 }}>
+                  Best move: <span style={{ color: BRAND.teal, fontWeight: 600 }}>{bestMove.label}</span> would add +{bestMove.lift} points.
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* ══════════ BEST MOVE RIGHT NOW (primary position) ══════════ */}
         {bestMove && bestMove.lift > 0 && !isModified && (
