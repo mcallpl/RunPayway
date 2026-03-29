@@ -1027,27 +1027,35 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* ── PRESSUREMAP™ CTA — LINK TO DEDICATED PAGE ── */}
+        {/* ── STABILITY SUITE CTA — LINK TO TOOLS HUB ── */}
         <div
-          onClick={() => router.push("/pressuremap")}
+          onClick={() => router.push("/tools")}
           style={{ ...cardStyle, marginTop: 12, borderLeft: `3px solid ${B.purple}`, background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, cursor: "pointer", transition: "box-shadow 200ms ease" }}
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(75,63,174,0.12)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>PressureMap&#8482;: Your Financial Landscape</div>
+              <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>RunPayway&#8482; Stability Suite</div>
               <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.5 }}>
-                Explore your interactive risk map — see exactly where your income is vulnerable and what to do about it.
+                Access your premium tools — PressureMap&#8482;, Stability Simulator, and Progress Dashboard — to take action on this report.
               </p>
             </div>
             <div style={{ fontSize: 24, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
           </div>
-          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: "#DC4A4A" }} />
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: "#D4A017" }} />
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: B.teal }} />
-            <span style={{ ...T.meta, color: B.taupe }}>3 interactive action zones</span>
+          <div style={{ display: "flex", gap: 12, marginTop: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.purple }} />
+              <span style={{ ...T.meta, color: B.taupe }}>PressureMap</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.teal }} />
+              <span style={{ ...T.meta, color: B.taupe }}>Simulator</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: "#DC7814" }} />
+              <span style={{ ...T.meta, color: B.taupe }}>Dashboard</span>
+            </div>
           </div>
         </div>
 
@@ -1452,9 +1460,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="/dashboard" style={{ fontSize: 12, color: "rgba(14,26,43,0.50)", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>Dashboard</a>
-            <a href="/pressuremap" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>PressureMap</a>
-            <a href="/simulator" style={{ fontSize: 12, color: "#1F6D7A", textDecoration: "none", fontWeight: 500, padding: "6px 10px" }}>Simulator</a>
+            <a href="/tools" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>Stability Suite</a>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}
