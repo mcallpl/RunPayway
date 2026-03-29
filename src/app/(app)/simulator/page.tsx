@@ -529,130 +529,16 @@ function SimulatorContent() {
     } catch { /* ignore */ }
   }, [searchParams]);
 
-  /* ── Empty state — access code entry ── */
+  /* ── No data — load default inputs so the full UI renders (empty but visible) ── */
   if (!loaded || !baseInputs) {
-    return (
-      <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 40%)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');`}</style>
-        <div style={{ textAlign: "center", maxWidth: 440, padding: 40 }}>
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: `linear-gradient(135deg, ${BRAND.purple}22, ${BRAND.teal}22)`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", border: "1px solid rgba(244,241,234,0.08)" }}>
-            <span style={{ fontSize: 20 }}>&#9672;</span>
-          </div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Simulator</div>
-          <h1 style={{ fontSize: 34, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.1, letterSpacing: "-0.025em", marginBottom: 12 }}>
-            Enter your access code
-          </h1>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 28 }}>
-            Your Access Code is on the cover page of your report. Paste it below to load your assessment data.
-          </p>
-
-          <div style={{ marginBottom: 16, textAlign: "left" }}>
-            <label style={{ display: "block", fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>Access Code</label>
-            <textarea
-              value={accessCode}
-              onChange={(e) => { setAccessCode(e.target.value); setAccessError(null); }}
-              placeholder="Paste your access code here"
-              spellCheck={false}
-              autoComplete="off"
-              rows={3}
-              style={{ width: "100%", padding: "12px 14px", fontSize: 12, fontFamily: "monospace", color: "#F4F1EA", backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 8, outline: "none", letterSpacing: "0.01em", boxSizing: "border-box" as const, resize: "none" as const, lineHeight: 1.4 }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = BRAND.purple; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
-              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleAccessSubmit(); } }}
-            />
-          </div>
-
-          {accessError && (
-            <div style={{ fontSize: 13, color: "#DC4A4A", marginBottom: 12, lineHeight: 1.4 }}>{accessError}</div>
-          )}
-
-          <button
-            onClick={handleAccessSubmit}
-            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 36px", borderRadius: 10, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: "#0E1A2B", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", boxShadow: "0 4px 20px rgba(0,0,0,0.2)", border: "none", cursor: "pointer", width: "100%", transition: "opacity 200ms ease" }}
-          >
-            Load My Assessment
-          </button>
-
-          <div style={{ marginTop: 28, paddingTop: 20, borderTop: "1px solid rgba(244,241,234,0.08)" }}>
-            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", lineHeight: 1.5 }}>
-              Don&apos;t have a report yet?{" "}
-              <Link href="/pricing" style={{ color: BRAND.teal, textDecoration: "none", fontWeight: 500 }}>Get the Full Report</Link>
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    const defaultInputs: CanonicalInput = { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
+    setBaseInputs(defaultInputs);
+    setSliders({ recurrence: 25, topClient: 60, sources: 2, monthsBooked: 0.5, passive: 30 });
+    setLoaded(true);
+    return null;
   }
 
-  /* ── Welcome screen after access code entry ── */
-  if (showWelcome && loaded && baseInputs) {
-    const welcomeScore = simulateScore(baseInputs, qualityScore);
-    return (
-      <div style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.navyDeep} 0%, ${B.navy} 40%)`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: INTER }}>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
-          @keyframes welcomeFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        `}</style>
-        <div style={{ textAlign: "center", maxWidth: 520, padding: 40, animation: "welcomeFadeIn 600ms ease-out" }}>
-          <Image src={logoWhite} alt="RunPayway" width={160} height={19} style={{ height: "auto", opacity: 0.95, marginBottom: 32 }} />
 
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.teal, marginBottom: 20 }}>EXCLUSIVE ACCESS VERIFIED</div>
-
-          <h1 style={{ fontSize: 32, fontFamily: DISPLAY, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.15, letterSpacing: "-0.025em", marginBottom: 16 }}>
-            Welcome{userName ? `, ${userName}` : ""}
-          </h1>
-
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.65)", lineHeight: 1.65, marginBottom: 32 }}>
-            You now have access to the RunPayway&#8482; Stability Suite &mdash; premium tools designed exclusively for our report customers.
-          </p>
-
-          {/* Score preview */}
-          <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, marginBottom: 8 }}>
-            <span style={{ fontSize: 48, fontWeight: 300, color: "#F4F1EA", fontFamily: DISPLAY }}>{welcomeScore.overall_score}</span>
-            <span style={{ fontSize: 18, color: "rgba(244,241,234,0.4)" }}>/100</span>
-          </div>
-          <div style={{ fontSize: 13, color: bandColor(welcomeScore.band), fontWeight: 600, marginBottom: 32 }}>{welcomeScore.band}</div>
-
-          {/* Tool cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32, textAlign: "left" }}>
-            {[
-              { icon: "&#9881;", title: "Stability Simulator", desc: "Model scenarios and see how each change impacts your score in real time.", color: BRAND.teal },
-              { icon: "&#9881;", title: "PressureMap\u2122", desc: "Interactive risk zones showing exactly where your income is vulnerable.", color: BRAND.purple },
-              { icon: "&#9881;", title: "Progress Dashboard", desc: "Track your improvement over time with action tracking and badges.", color: "#DC7814" },
-            ].map((tool) => (
-              <div key={tool.title} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "14px 18px", borderRadius: 10, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)" }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${tool.color}15`, border: `1px solid ${tool.color}33`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontSize: 16, color: tool.color }} dangerouslySetInnerHTML={{ __html: tool.icon }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>{tool.title}</div>
-                  <p style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", margin: 0, lineHeight: 1.45 }}>{tool.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setShowWelcome(false)}
-            style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: 52, padding: "0 40px", borderRadius: 10,
-              background: `linear-gradient(135deg, ${BRAND.teal} 0%, ${BRAND.purple} 100%)`,
-              color: "#FFFFFF", fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em",
-              boxShadow: `0 4px 20px rgba(26,122,109,0.3)`,
-              border: "none", cursor: "pointer", width: "100%",
-              transition: "opacity 200ms ease",
-            }}
-          >
-            Launch Stability Simulator
-          </button>
-
-          <p style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", marginTop: 16 }}>
-            This is a premium experience available exclusively to RunPayway&#8482; customers.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   /* ── Computed values ── */
   const sl = sliders!;

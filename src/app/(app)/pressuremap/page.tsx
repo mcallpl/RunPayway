@@ -69,28 +69,29 @@ export default function PressureMapPage() {
   useEffect(() => {
     let stored = sessionStorage.getItem("rp_record");
     if (!stored) stored = localStorage.getItem("rp_record");
-    if (!stored) { router.push("/diagnostic-portal"); return; }
-    try {
-      const parsed = JSON.parse(stored);
-      if (!parsed || !parsed.record_id) { router.push("/diagnostic-portal"); return; }
-      setRecord(parsed);
-    } catch { router.push("/diagnostic-portal"); }
-  }, [router]);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.record_id) setRecord(parsed);
+      } catch { /* ignore */ }
+    }
+  }, []);
 
-  if (!record) return null;
+  // Show full UI even without data — just empty/sample state
+  const hasData = !!record;
 
-  // ── Extract data from record ──
-  const score = record.final_score as number;
-  const band = record.stability_band as string;
-  const v2 = record._v2 as Record<string, unknown> | undefined;
+  // ── Extract data from record (or defaults) ──
+  const score = (record?.final_score as number) || 0;
+  const band = (record?.stability_band as string) || "";
+  const v2 = record?._v2 as Record<string, unknown> | undefined;
   const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-  const pressureMap = record.pressure_map as { pressure: string; tailwind: string; leverage_move: string; operating_structure: string; income_model: string; industry: string } | undefined;
+  const pressureMap = record?.pressure_map as { pressure: string; tailwind: string; leverage_move: string; operating_structure: string; income_model: string; industry: string } | undefined;
   const constraints = v2?.constraints as { root_constraint: string; primary_constraint: string; secondary_constraint: string } | undefined;
   const sensitivity = v2?.sensitivity as { tests: Array<{ factor: string; lift: number; projected_score: number; delta_description: string }> } | undefined;
 
-  const industry = ((record.industry_sector as string) || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
-  const structure = (record.operating_structure as string) || "";
-  const incomeModel = (record.primary_income_model as string) || "";
+  const industry = ((record?.industry_sector as string) || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
+  const structure = (record?.operating_structure as string) || "";
+  const incomeModel = (record?.primary_income_model as string) || "";
 
   // ── Build canonical inputs for simulation ──
   const baseInputs: CanonicalInput | null = ni ? {
