@@ -453,47 +453,16 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   y = dt(doc, d.dominantConstraintText, ML + 10, y, CW - 20, 10, { maxLines: 3 });
   y += 12;
 
-  // PressureMap
-  if (d.pressureMap) {
-    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-    doc.line(ML, y, ML + CW, y);
-    y += 12;
-
-    sf(doc, "InterB"); doc.setFontSize(11); doc.setTextColor("#0E1A2B");
-    doc.text("PressureMap(TM): Your Financial Landscape", ML, y);
-    y += 14;
-
-    // Red zone
-    doc.setFillColor("#DC4A4A"); doc.rect(ML, y - 4, 8, 8, "F");
-    label(doc, "RED ZONES", ML + 14, y, "#DC4A4A");
-    y += 10;
-    const trunc2 = (t: string) => { const s = t.split(/\.\s+/); return s.slice(0, 2).join(". ") + "."; };
-    y = dt(doc, trunc2(d.pressureMap.pressure), ML + 14, y, CW - 24, 9, { maxLines: 2 });
-    y += 6;
-
-    // Yellow zone
-    doc.setFillColor("#D4A017"); doc.rect(ML, y - 4, 8, 8, "F");
-    label(doc, "YELLOW ZONES", ML + 14, y, "#92640A");
-    y += 10;
-    y = dt(doc, "Moderate risks that need attention before they grow.", ML + 14, y, CW - 24, 9);
-    y += 6;
-
-    // Green zone
-    doc.setFillColor("#1F6D7A"); doc.rect(ML, y - 4, 8, 8, "F");
-    label(doc, "GREEN ZONES", ML + 14, y, "#1F6D7A");
-    y += 10;
-    y = dt(doc, trunc2(d.pressureMap.tailwind), ML + 14, y, CW - 24, 9, { maxLines: 2 });
-    y += 6;
-
-    // Leverage move
-    label(doc, "HIGHEST-LEVERAGE MOVE", ML, y, "#4B3FAE");
-    y += 10;
-    y = dt(doc, trunc2(d.pressureMap.leverageMove), ML, y, CW, 9.5, { font: "InterSB", maxLines: 2 });
-    y += 8;
-
-    sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#6B6155");
-    doc.text("PressureMap(TM) reflects structural inputs only. Powered by RunPayway(TM) proprietary analysis.", ML, y);
-  }
+  // PressureMap CTA
+  doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+  doc.line(ML, y, ML + CW, y);
+  y += 12;
+  card(doc, ML, y, CW, 36, "#4B3FAE");
+  sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
+  doc.text("PressureMap(TM): Your Financial Landscape", ML + 10, y + 14);
+  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+  doc.text("Explore your interactive risk map at runpayway.com/pressuremap", ML + 10, y + 26);
+  y += 36;
 
   footer(doc, "Key Findings", 2);
 }

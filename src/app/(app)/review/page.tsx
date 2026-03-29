@@ -1027,58 +1027,29 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* ── PRESSUREMAP™ — YOUR FINANCIAL LANDSCAPE ── */}
-        {record.pressure_map && (
-          <div style={{ ...cardStyle, marginTop: 12, borderLeft: `3px solid ${B.purple}`, background: "rgba(75,63,174,0.02)" }}>
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 4, fontSize: 16 }}>PressureMap&#8482; Visualization: Your Financial Landscape</div>
-              <p style={{ ...T.small, color: B.muted, margin: "4px 0 12px", lineHeight: 1.6 }}>
-                Think of your income like a map. The red zones are where your income is vulnerable, and the green zones show where you have stable income. The PressureMap&#8482; helps you see where your risks are, so you can take action before they turn into bigger problems.
+        {/* ── PRESSUREMAP™ CTA — LINK TO DEDICATED PAGE ── */}
+        <div
+          onClick={() => router.push("/pressuremap")}
+          style={{ ...cardStyle, marginTop: 12, borderLeft: `3px solid ${B.purple}`, background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, cursor: "pointer", transition: "box-shadow 200ms ease" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(75,63,174,0.12)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>PressureMap&#8482;: Your Financial Landscape</div>
+              <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+                Explore your interactive risk map — see exactly where your income is vulnerable and what to do about it.
               </p>
             </div>
-
-            {/* Zone indicators */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ width: 12, height: 12, borderRadius: 2, backgroundColor: "#DC4A4A", flexShrink: 0, marginTop: 2 }} />
-                <div>
-                  <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>Red Zones:</span>
-                  <span style={{ ...T.small, color: B.navy }}> {record.pressure_map.pressure}</span>
-                </div>
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ width: 12, height: 12, borderRadius: 2, backgroundColor: "#D4A017", flexShrink: 0, marginTop: 2 }} />
-                <div>
-                  <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>Yellow Zones:</span>
-                  <span style={{ ...T.small, color: B.navy }}> {tailored.constraintContext || `Moderate risks like ${dominantConstraintPlain[dominantConstraint] || "inconsistent earnings"} that need attention.`}</span>
-                </div>
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ width: 12, height: 12, borderRadius: 2, backgroundColor: B.teal, flexShrink: 0, marginTop: 2 }} />
-                <div>
-                  <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>Green Zones:</span>
-                  <span style={{ ...T.small, color: B.navy }}> {record.pressure_map.tailwind}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Leverage move */}
-            <div style={{ backgroundColor: "rgba(31,109,122,0.06)", borderRadius: 4, padding: "12px 16px", marginBottom: 12 }}>
-              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 10 }}>HIGHEST-LEVERAGE MOVE RIGHT NOW</div>
-              <p style={{ ...T.small, color: B.navy, lineHeight: 1.6, margin: 0, fontWeight: 500 }}>{record.pressure_map.leverage_move}</p>
-            </div>
-
-            <p style={{ ...T.small, color: B.teal, margin: 0, fontWeight: 600, lineHeight: 1.5 }}>
-              Your Goal: Move as much of your income as possible from red zones to green zones. With just a few key changes, you can significantly improve your financial stability.
-            </p>
-
-            <div style={{ marginTop: 12, paddingTop: 8, borderTop: `1px solid ${B.stone}` }}>
-              <p style={{ ...T.meta, color: B.taupe, margin: 0, fontStyle: "italic", lineHeight: 1.4 }}>
-                PressureMap&#8482; reflects current conditions applied to your structural profile. It does not affect your score. Powered by RunPayway&#8482; proprietary analysis.
-              </p>
-            </div>
+            <div style={{ fontSize: 24, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
           </div>
-        )}
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: "#DC4A4A" }} />
+            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: "#D4A017" }} />
+            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: B.teal }} />
+            <span style={{ ...T.meta, color: B.taupe }}>3 interactive action zones</span>
+          </div>
+        </div>
 
         <PageFooter section="Key Findings &amp; Financial Landscape" page={1} />
     </>,
@@ -1228,7 +1199,7 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Stress Testing + Real-World Impact</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 6 }}>PressureMap&#8482;: Test Your Money Safety</p>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 6 }}>What happens when things go wrong — and how to prepare.</p>
         <p style={{ ...T.small, color: B.muted, marginBottom: 20, lineHeight: 1.6 }}>
           These are the specific disruptions your income is most exposed to — and what you can do about each one.
         </p>
@@ -1372,7 +1343,7 @@ export default function ReviewPage() {
         <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 16 }}>
           <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report is Worth $149</div>
           <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.7 }}>
-            This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income. You have clear guidance, a personalized PressureMap&#8482;, and an ongoing plan that will empower you to take immediate action and create stability in your financial life.
+            This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income. You have clear guidance, interactive tools, and an ongoing plan that will empower you to take immediate action and create stability in your financial life.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -1381,7 +1352,7 @@ export default function ReviewPage() {
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-              <span style={{ ...T.small, color: B.navy }}>Track your progress using the PressureMap&#8482; and revisit your plan every few months.</span>
+              <span style={{ ...T.small, color: B.navy }}>Track your progress using your PressureMap&#8482; and Simulator, and revisit your plan every few months.</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
