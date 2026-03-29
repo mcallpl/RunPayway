@@ -270,51 +270,77 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — score ring */}
+          {/* Right — iPad with score UI */}
           <div style={{
-            flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
-            marginTop: m ? sp(7) : 0,
+            flexShrink: 0,
+            marginTop: m ? sp(6) : 0,
+            position: "relative",
+            width: m ? "100%" : 420,
             ...fadeIn(visible, 400),
           }}>
-            <div style={{ position: "relative", width: ringSize, height: ringSize }}>
-              <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} />
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
-                  strokeLinecap="round" strokeDasharray={circumference}
-                  strokeDashoffset={visible ? targetOffset : circumference}
-                  style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
-                />
-                <defs>
-                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ ...score(m), color: C.sand, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
-                  {animatedScore}
-                </span>
-              </div>
-            </div>
+            {/* iPad frame */}
+            <img
+              src={`${typeof window !== "undefined" && window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : ""}/ipad-hero.png`}
+              alt="RunPayway on iPad"
+              width={420}
+              height={520}
+              style={{ width: "100%", height: "auto", display: "block", position: "relative", zIndex: 2 }}
+            />
 
+            {/* Score UI overlay — positioned on the iPad screen */}
             <div style={{
-              textAlign: "center", marginTop: sp(2),
-              opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
-              transition: "opacity 500ms ease-out, transform 500ms ease-out",
+              position: "absolute", zIndex: 3,
+              top: "8%", left: "12%", right: "12%", bottom: "12%",
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+              background: C.navy,
+              borderRadius: m ? 8 : 12,
+              padding: m ? sp(2) : sp(3),
             }}>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: sp(1),
-                padding: `${sp(0.75)}px ${sp(2)}px`, borderRadius: 100,
-                backgroundColor: "rgba(146,100,10,0.15)", border: "1px solid rgba(146,100,10,0.25)",
-                marginBottom: sp(1),
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#92640A" }} />
-                <span style={{ ...T.label, fontWeight: 600, color: "#92640A" }}>Developing Stability</span>
+              {/* Score ring */}
+              <div style={{ position: "relative", width: ringSize, height: ringSize }}>
+                <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
+                  <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} />
+                  <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
+                    strokeLinecap="round" strokeDasharray={circumference}
+                    strokeDashoffset={visible ? targetOffset : circumference}
+                    style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
+                  />
+                  <defs>
+                    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{
+                    fontSize: m ? 40 : 52, fontWeight: 600, color: C.sand,
+                    letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums",
+                  }}>
+                    {animatedScore}
+                  </span>
+                </div>
               </div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)", marginBottom: sp(2) }}>12 points to Established</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: sp(0.75), textAlign: "left" }}>
-                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Primary constraint: Income concentration</span>
-                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Stress test: Largest source removed &#8594; projected 21</span>
+
+              {/* Band + details */}
+              <div style={{
+                textAlign: "center", marginTop: sp(1.5),
+                opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
+                transition: "opacity 500ms ease-out, transform 500ms ease-out",
+              }}>
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "4px 12px", borderRadius: 100,
+                  backgroundColor: "rgba(146,100,10,0.15)", border: "1px solid rgba(146,100,10,0.25)",
+                  marginBottom: sp(0.75),
+                }}>
+                  <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: "#92640A" }} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#92640A" }}>Developing Stability</span>
+                </div>
+                <div style={{ fontSize: 11, color: "rgba(244,241,234,0.45)", marginBottom: sp(1.5) }}>12 points to Established</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, textAlign: "left", paddingLeft: sp(1) }}>
+                  <span style={{ fontSize: 11, color: "rgba(244,241,234,0.42)" }}>Primary constraint: Income concentration</span>
+                  <span style={{ fontSize: 11, color: "rgba(244,241,234,0.42)" }}>Stress test: Largest source removed &#8594; 21</span>
+                </div>
               </div>
             </div>
           </div>
