@@ -285,7 +285,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 14, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>Confidential — {section}</span>
-        <span style={{ fontSize: 9.5, fontWeight: 500, color: B.taupe }}>Page {page} of 3</span>
+        <span style={{ fontSize: 9.5, fontWeight: 500, color: B.taupe }}>Page {page} of 4</span>
         <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>support@runpayway.com</span>
       </div>
     </div>
@@ -337,7 +337,7 @@ export default function ReviewPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [mobile, setMobile] = useState(false);
   const monitoringTracked = useRef(false);
-  const totalPages = 4; // cover + 3 pages
+  const totalPages = 5; // cover + 4 pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -834,7 +834,11 @@ export default function ReviewPage() {
   // ── Reassessment countdown ──
   const reassessDaysLeft = Math.max(0, Math.ceil((new Date(reassessDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
+    window.print();
+  };
+
+  const handleDownloadLegacy = async () => {
     if (downloading) return;
     setDownloading(true);
     setDownloadError(null);
@@ -1006,7 +1010,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Key Findings", "Action Plan", "Stress Test"];
+  const pageNames = ["Cover", "Key Findings", "Action Plan", "Stress Test", "Next Steps"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1071,7 +1075,7 @@ export default function ReviewPage() {
             );
           })()}
 
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 24 }}>Model RP-2.0 &middot; 3 Pages &middot; Confidential</div>
+          <div style={{ ...T.meta, color: B.taupe, marginTop: 24 }}>Model RP-2.0 &middot; 4 Pages &middot; Confidential</div>
         </div>
     </>,
 
@@ -1463,6 +1467,15 @@ export default function ReviewPage() {
           </div>
         )}
 
+        <PageFooter section="Stress Testing" page={3} />
+    </>,
+
+    // Page 4: Real-World Impact & Next Steps
+    <>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Real-World Impact &amp; Next Steps</h1>
+        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>What your score means in practice — and what to do now.</p>
+
         {/* ── REAL-WORLD EXAMPLES ── */}
         <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 20 }}>
           <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandLimited}` }}>
@@ -1487,56 +1500,43 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* ── SHARE YOUR SCORE ── */}
-        <div style={{ ...cardStyle, marginBottom: 16, textAlign: "center" }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>SHARE YOUR ACHIEVEMENT</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", fontWeight: 500 }}>
-            You completed your RunPayway&#8482; Income Stability assessment and scored in the {record.stability_band} band.
+        {/* ── WHY THIS REPORT DELIVERS VALUE ── */}
+        <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 20 }}>
+          <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report Delivers Real Value</div>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.7 }}>
+            This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" as const }}>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://peoplestar.com/RunPayway")}&title=${encodeURIComponent(`I just completed my RunPayway Income Stability assessment. My income structure scored in the ${record.stability_band} band. Find out where you stand.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 6, backgroundColor: "#0A66C2", color: "#FFFFFF", fontSize: 12, fontWeight: 600, textDecoration: "none" }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-              Share on LinkedIn
-            </a>
-            <button
-              onClick={() => {
-                const subject = encodeURIComponent("My Income Stability Assessment");
-                const body = encodeURIComponent(`I just completed my RunPayway Income Stability assessment and scored in the ${record.stability_band} band.\n\nFind out where you stand: https://peoplestar.com/RunPayway`);
-                window.location.href = `mailto:?subject=${subject}&body=${body}`;
-              }}
-              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 6, backgroundColor: B.navy, color: "#FFFFFF", fontSize: 12, fontWeight: 600, border: "none", cursor: "pointer" }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              Share via Email
-            </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {[
+              "Commit to the steps in this report today.",
+              "Track your progress using your RunPayway\u2122 Stability Suite.",
+              `Reassess in ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months to see how much your score has improved.`,
+            ].map((text) => (
+              <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+                <span style={{ ...T.small, color: B.navy }}>{text}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* ── WHY THIS REPORT IS WORTH IT ── */}
-        <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 16 }}>
-          <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report Delivers Real Value</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.7 }}>
-            This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income. You have clear guidance, interactive tools, and an ongoing plan that will empower you to take immediate action and create stability in your financial life.
+        {/* ── SHARE VIA EMAIL ── */}
+        <div style={{ ...cardStyle, marginBottom: 20, textAlign: "center" }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>SHARE YOUR ACHIEVEMENT</div>
+          <p style={{ ...T.small, color: B.navy, margin: "0 0 12px" }}>
+            You scored in the {record.stability_band} band. Share your achievement.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-              <span style={{ ...T.small, color: B.navy }}>Commit to the steps in this report today.</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-              <span style={{ ...T.small, color: B.navy }}>Track your progress using your PressureMap&#8482; and Simulator, and revisit your plan every few months.</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-              <span style={{ ...T.small, color: B.navy }}>Reassess in {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months to see how much your score has improved.</span>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              const subject = encodeURIComponent("My Income Stability Assessment");
+              const bodyText = encodeURIComponent(`I just completed my RunPayway Income Stability assessment and scored in the ${record.stability_band} band.\n\nFind out where you stand: https://peoplestar.com/RunPayway`);
+              window.location.href = `mailto:?subject=${subject}&body=${bodyText}`;
+            }}
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 6, backgroundColor: B.navy, color: "#FFFFFF", fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Share via Email
+          </button>
         </div>
 
         {/* ── RETAKE TIMING ── */}
@@ -1566,7 +1566,7 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <PageFooter section="Stress Testing &amp; Real-World Impact" page={3} />
+        <PageFooter section="Real-World Impact &amp; Next Steps" page={4} />
     </>,
 
 
@@ -1579,21 +1579,28 @@ export default function ReviewPage() {
       @media print {
         @page {
           size: letter;
-          margin: 0.5in 0.6in;
+          margin: 0.5in 0.65in;
         }
-        body { background: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+        body { background: white !important; margin: 0; }
         #paginated-view { display: none !important; }
         .print-report { display: block !important; }
         .print-report .print-page {
           page-break-after: always;
           page-break-inside: avoid;
-          padding: 0;
+          padding: 32px 0;
           margin: 0;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .print-report .print-page:first-child {
+          padding-top: 0;
         }
         .print-report .print-page:last-child {
           page-break-after: auto;
         }
-        nav, footer, .no-print { display: none !important; }
+        .report-page-footer { margin-top: auto; }
+        nav, footer, .no-print, button { display: none !important; }
+        a { text-decoration: none !important; color: inherit !important; }
       }
       @media not print {
         .print-report { display: none !important; }
@@ -1634,14 +1641,13 @@ export default function ReviewPage() {
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}
-              disabled={downloading}
               style={{
-                background: "none", border: "none", cursor: downloading ? "wait" : "pointer",
-                fontSize: 12, color: downloading ? "rgba(14,26,43,0.30)" : "rgba(14,26,43,0.50)",
+                background: "none", border: "none", cursor: "pointer",
+                fontSize: 12, color: "rgba(14,26,43,0.50)",
                 padding: "6px 10px", fontWeight: 500,
               }}
             >
-              {downloading ? "Generating..." : downloadError ? "Retry PDF" : "Download PDF"}
+              Print / PDF
             </button>
           </div>
         )}
