@@ -18,7 +18,8 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   white: "#FFFFFF",
-  stone: "rgba(14,26,43,0.08)",
+  bg: "#FAFAFA",
+  border: "rgba(14,26,43,0.08)",
   taupe: "rgba(14,26,43,0.36)",
   muted: "rgba(14,26,43,0.52)",
   red: "#C53030",
@@ -27,6 +28,22 @@ const B = {
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
   bandHigh: "#1F6D7A",
+};
+
+/* ------------------------------------------------------------------ */
+/*  Typography helpers                                                  */
+/* ------------------------------------------------------------------ */
+const LABEL: React.CSSProperties = {
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+};
+
+const BODY: React.CSSProperties = {
+  fontSize: 13,
+  fontWeight: 400,
+  lineHeight: 1.65,
 };
 
 /* ------------------------------------------------------------------ */
@@ -164,35 +181,46 @@ export default function PressureMapPage() {
   ];
 
   const bandColor = displayScore >= 75 ? B.bandHigh : displayScore >= 50 ? B.bandEstablished : displayScore >= 30 ? B.bandDeveloping : B.bandLimited;
-  const previewScore = activeSegment ? segments.find(s => s.id === activeSegment)?.projected || displayScore : displayScore;
+  const bandLabel = band || baseResult.band;
 
+  /* ================================================================ */
+  /*  RENDER                                                           */
+  /* ================================================================ */
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA", fontFamily: "'Inter', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: "'Inter', system-ui, sans-serif" }}>
       <SuiteHeader current="pressuremap" />
-      <style>{`@keyframes segmentExpand { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 500px; } }`}</style>
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: mobile ? "28px 16px 60px" : "48px 28px 80px" }}>
 
-        {/* ── Header ── */}
-        <div style={{ marginBottom: 36 }}>
-          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
-          <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 8 }}>Your Income Structure</h1>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, maxWidth: 520, margin: 0 }}>
+        {/* ══════════ 1. HEADER ══════════ */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ ...LABEL, color: B.taupe, marginBottom: 8, letterSpacing: "0.14em" }}>
+            RUNPAYWAY&#8482; PRESSUREMAP&#8482;
+          </div>
+          <h1 style={{ fontSize: mobile ? 26 : 34, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.1, margin: "0 0 8px" }}>
+            Your Income X-Ray
+          </h1>
+          <p style={{ ...BODY, color: B.muted, maxWidth: 540, margin: 0, fontSize: 14, lineHeight: 1.6 }}>
             {isDemo
               ? "Explore how the PressureMap works with sample data. Select a stability band below to see different income structures."
-              : "This is how your income actually works — where it comes from, what repeats, and what disappears the moment you stop. Click each zone to see the risk and the fix."}
+              : "A diagnostic of your income architecture \u2014 where it comes from, what would survive a disruption, and what vanishes the moment you stop."}
           </p>
 
-          {/* ── Demo band selector ── */}
+          {/* Demo band selector */}
           {isDemo && (
-            <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" as const }}>
+            <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
               {SAMPLE_PROFILES.map((p, i) => (
-                <button key={p.id} onClick={() => { setDemoProfile(i); setActiveSegment(null); }}
+                <button
+                  key={p.id}
+                  onClick={() => { setDemoProfile(i); setActiveSegment(null); }}
                   style={{
-                    padding: "6px 14px", borderRadius: 6, fontSize: 12, fontWeight: demoProfile === i ? 600 : 400,
+                    padding: "6px 14px", borderRadius: 6, fontSize: 12,
+                    fontWeight: demoProfile === i ? 600 : 400,
                     color: demoProfile === i ? B.white : B.muted,
-                    backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent",
-                    border: `1px solid ${demoProfile === i ? "transparent" : B.stone}`,
+                    backgroundColor: demoProfile === i
+                      ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal)
+                      : "transparent",
+                    border: `1px solid ${demoProfile === i ? "transparent" : B.border}`,
                     cursor: "pointer", transition: "all 200ms",
                   }}
                 >{p.bandShort}</button>
@@ -201,173 +229,242 @@ export default function PressureMapPage() {
           )}
         </div>
 
-        {/* ── Sample data banner ── */}
+        {/* Sample data banner */}
         {isDemo && (
-          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.purple}06`, border: `1px solid ${B.purple}15`, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 11, fontWeight: 500, color: B.purple }}>SAMPLE DATA — Enter your access code on the <a href="/tools" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Suite page</a> to see your real numbers</span>
+          <div style={{
+            padding: "10px 16px", borderRadius: 6,
+            backgroundColor: `${B.purple}06`, border: `1px solid ${B.purple}15`,
+            marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center",
+          }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: B.purple }}>
+              SAMPLE DATA &mdash; Enter your access code on the{" "}
+              <Link href="/tools" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Suite page</Link>
+              {" "}to see your real numbers
+            </span>
           </div>
         )}
 
-        {/* ── SCORE GAUGE — animates on hover ── */}
-        <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 32, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
-          <div style={{ textAlign: "center", minWidth: 80 }}>
-            <div style={{ fontSize: 42, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1, transition: "color 300ms ease" }}>
-              <AnimatedNumber value={previewScore} />
-            </div>
-            <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginTop: 4 }}>
-              {activeSegment ? "PROJECTED" : "CURRENT"}
-            </div>
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-              <span style={{ fontSize: 12, fontWeight: 500, color: bandColor }}>{band || baseResult.band}</span>
-              {activeSegment && segments.find(s => s.id === activeSegment)?.lift ? (
-                <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>+{segments.find(s => s.id === activeSegment)?.lift} points</span>
-              ) : null}
-            </div>
-            <div style={{ height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden" }}>
-              <div style={{ height: "100%", borderRadius: 3, backgroundColor: bandColor, width: `${Math.min(100, previewScore)}%`, transition: "width 500ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-            </div>
-          </div>
-        </div>
+        {/* ══════════ 2. SCORE + INCOME BAR (one card) ══════════ */}
+        <div style={{
+          border: `1px solid ${B.border}`, borderRadius: 10,
+          backgroundColor: B.white, padding: mobile ? "20px 16px" : "24px 28px",
+          marginBottom: 28,
+        }}>
+          <div style={{
+            display: "flex",
+            flexDirection: mobile ? "column" : "row",
+            gap: mobile ? 24 : 32,
+            alignItems: mobile ? "stretch" : "center",
+          }}>
 
-        {/* ══════════ INCOME STRUCTURE BAR — THE MAP ══════════ */}
-        <div style={{ marginBottom: 12, fontSize: 11, fontWeight: 600, color: B.taupe, letterSpacing: "0.10em", textTransform: "uppercase" as const }}>YOUR INCOME MAP</div>
-        <div style={{ display: "flex", height: mobile ? 48 : 56, borderRadius: 8, overflow: "hidden", marginBottom: 8, cursor: "pointer", border: `1px solid ${B.stone}` }}>
-          {segments.map((seg) => {
-            if (seg.pct <= 0) return null;
-            const isActive = activeSegment === seg.id;
-            return (
-              <div
-                key={seg.id}
-                onClick={() => setActiveSegment(isActive ? null : seg.id)}
-                onMouseEnter={() => !mobile && setActiveSegment(seg.id)}
-                onMouseLeave={() => !mobile && setActiveSegment(null)}
-                style={{
-                  width: `${seg.pct}%`,
-                  backgroundColor: isActive ? seg.color : `${seg.color}22`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "background-color 300ms ease, transform 100ms ease",
-                  transform: isActive ? "scaleY(1.08)" : "scaleY(1)",
-                  position: "relative",
-                }}
-              >
-                <span style={{ fontSize: seg.pct < 15 ? 10 : 13, fontWeight: 600, color: isActive ? "#FFFFFF" : seg.color, transition: "color 300ms ease" }}>
-                  {seg.pct}%
-                </span>
+            {/* LEFT: Score + band */}
+            <div style={{ minWidth: mobile ? "auto" : 160, flexShrink: 0 }}>
+              <div style={{ ...LABEL, color: B.taupe, marginBottom: 10 }}>STABILITY SCORE</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+                <div style={{ fontSize: 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>
+                  <AnimatedNumber value={displayScore} />
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 600, color: bandColor }}>{bandLabel}</span>
               </div>
-            );
-          })}
+              {/* Band progress bar */}
+              <div style={{ height: 5, backgroundColor: B.border, borderRadius: 3, overflow: "hidden", maxWidth: 160 }}>
+                <div style={{
+                  height: "100%", borderRadius: 3, backgroundColor: bandColor,
+                  width: `${Math.min(100, displayScore)}%`,
+                  transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }} />
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div style={{
+              width: mobile ? "100%" : 1, height: mobile ? 1 : 64,
+              backgroundColor: B.border, flexShrink: 0,
+            }} />
+
+            {/* RIGHT: Income bar */}
+            <div style={{ flex: 1 }}>
+              <div style={{ ...LABEL, color: B.taupe, marginBottom: 10 }}>INCOME COMPOSITION</div>
+              {/* Horizontal bar */}
+              <div style={{
+                display: "flex", height: 32, borderRadius: 6, overflow: "hidden",
+                border: `1px solid ${B.border}`,
+              }}>
+                {segments.map((seg) => {
+                  if (seg.pct <= 0) return null;
+                  return (
+                    <div key={seg.id} style={{
+                      width: `${seg.pct}%`,
+                      backgroundColor: `${seg.color}20`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      borderRight: seg.id !== "persistent" ? `1px solid ${B.white}` : "none",
+                    }}>
+                      {seg.pct >= 10 && (
+                        <span style={{ fontSize: 11, fontWeight: 600, color: seg.color }}>{seg.pct}%</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Labels below each segment */}
+              <div style={{ display: "flex", marginTop: 6 }}>
+                {segments.map((seg) => {
+                  if (seg.pct <= 0) return null;
+                  return (
+                    <div key={seg.id} style={{ width: `${seg.pct}%`, paddingRight: 4 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: seg.color, flexShrink: 0 }} />
+                        <span style={{ fontSize: 10, fontWeight: 500, color: B.muted, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {seg.pct < 15 ? `${seg.pct}%` : seg.label}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Legend */}
-        <div style={{ display: "flex", gap: mobile ? 12 : 20, marginBottom: 32, flexWrap: "wrap" as const }}>
-          {segments.map((seg) => (
-            <div key={seg.id} style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }} onClick={() => setActiveSegment(activeSegment === seg.id ? null : seg.id)}>
-              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: seg.color }} />
-              <span style={{ fontSize: 12, color: activeSegment === seg.id ? B.navy : B.muted, fontWeight: activeSegment === seg.id ? 600 : 400, transition: "all 200ms" }}>{seg.label}</span>
+        {/* ══════════ 3. ZONE DETAIL PANELS (always visible) ══════════ */}
+        {segments.map((seg) => (
+          <div key={seg.id} style={{
+            marginBottom: 16,
+            border: `1px solid ${B.border}`,
+            borderLeft: `3px solid ${seg.color}`,
+            borderRadius: 10,
+            backgroundColor: B.white,
+            padding: mobile ? "18px 16px" : "22px 24px",
+          }}>
+            {/* Zone header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                <span style={{ ...LABEL, color: seg.color, margin: 0 }}>{seg.label}</span>
+                <span style={{ fontSize: 20, fontWeight: 300, color: seg.color }}>{seg.pct}%</span>
+              </div>
+            </div>
+
+            {/* Risk statement */}
+            <p style={{ ...BODY, color: B.navy, margin: "0 0 14px" }}>{seg.risk}</p>
+
+            {/* IF YOU FIX THIS row */}
+            {seg.lift > 0 && (
+              <div style={{
+                display: "flex", alignItems: "center", gap: mobile ? 10 : 16,
+                padding: "12px 16px", borderRadius: 6,
+                backgroundColor: B.bg, marginBottom: 14,
+                flexWrap: mobile ? "wrap" : "nowrap",
+              }}>
+                <div style={{ ...LABEL, color: B.taupe, margin: 0, flexShrink: 0, fontSize: 9 }}>IF YOU FIX THIS</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                  <span style={{ fontSize: 18, fontWeight: 300, color: B.navy }}>{displayScore}</span>
+                  <span style={{ fontSize: 13, color: B.taupe }}>&rarr;</span>
+                  <span style={{ fontSize: 18, fontWeight: 300, color: B.teal }}>{seg.projected}</span>
+                </div>
+                {/* Animated projection bar */}
+                <div style={{ flex: 1, minWidth: 80 }}>
+                  <div style={{ height: 5, backgroundColor: B.border, borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                    <div style={{
+                      position: "absolute", height: "100%", borderRadius: 3,
+                      backgroundColor: `${bandColor}30`, width: `${displayScore}%`,
+                    }} />
+                    <div style={{
+                      position: "absolute", height: "100%", borderRadius: 3,
+                      backgroundColor: B.teal,
+                      width: `${seg.projected}%`,
+                      transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    }} />
+                  </div>
+                </div>
+                <span style={{ fontSize: 14, fontWeight: 600, color: B.teal, flexShrink: 0 }}>+{seg.lift} pts</span>
+              </div>
+            )}
+
+            {/* Action button */}
+            {seg.presetId && (
+              <button
+                onClick={() => router.push("/simulator")}
+                style={{
+                  ...LABEL, fontSize: 11, letterSpacing: "0.08em",
+                  color: B.purple, backgroundColor: "transparent",
+                  border: `1px solid ${B.purple}22`, borderRadius: 6,
+                  padding: "8px 16px", cursor: "pointer",
+                  transition: "background-color 200ms",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = `${B.purple}08`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+              >
+                Model in Simulator &rarr;
+              </button>
+            )}
+          </div>
+        ))}
+
+        {/* ══════════ 4. KEY RISK METRICS ══════════ */}
+        <div style={{
+          display: "flex", gap: 12, marginTop: 28, marginBottom: 28,
+          flexDirection: mobile ? "column" : "row",
+        }}>
+          {[
+            {
+              label: "If top source leaves",
+              value: `\u2212${riskDrop} pts`,
+              color: B.red,
+            },
+            {
+              label: "Income runway",
+              value: continuityMonths < 1 ? "< 1 mo" : `${continuityMonths} mo`,
+              color: continuityMonths < 3 ? B.amber : B.teal,
+            },
+            {
+              label: "Fragility",
+              value: fragility?.fragility_class
+                ? fragility.fragility_class.charAt(0).toUpperCase() + fragility.fragility_class.slice(1)
+                : "\u2014",
+              color: fragility?.fragility_class === "brittle" || fragility?.fragility_class === "thin" ? B.red : B.teal,
+            },
+          ].map((m) => (
+            <div key={m.label} style={{
+              flex: 1, padding: "16px 20px",
+              border: `1px solid ${B.border}`, borderRadius: 10,
+              backgroundColor: B.white,
+            }}>
+              <div style={{ ...LABEL, color: B.taupe, marginBottom: 8 }}>{m.label}</div>
+              <div style={{ fontSize: 20, fontWeight: 300, color: m.color, letterSpacing: "-0.02em" }}>{m.value}</div>
             </div>
           ))}
         </div>
 
-        {/* ══════════ ZONE DETAIL PANELS ══════════ */}
-        {segments.map((seg) => {
-          const isOpen = activeSegment === seg.id;
-          if (!isOpen) return null;
-          return (
-            <div key={seg.id} style={{ marginBottom: 24, border: `1px solid ${seg.color}25`, borderLeft: `3px solid ${seg.color}`, borderRadius: 10, padding: mobile ? "20px 16px" : "24px 28px", backgroundColor: B.white, animation: "segmentExpand 300ms ease-out" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: seg.color, textTransform: "uppercase" as const, marginBottom: 4 }}>{seg.label} — {seg.pct}%</div>
-                  <div style={{ fontSize: 13, color: B.muted }}>{seg.description}</div>
-                </div>
-                <button onClick={() => setActiveSegment(null)} style={{ background: "none", border: "none", fontSize: 18, color: B.taupe, cursor: "pointer", padding: "0 4px" }}>&times;</button>
-              </div>
-
-              {/* Risk */}
-              <div style={{ padding: "14px 16px", borderRadius: 8, backgroundColor: `${seg.color}06`, marginBottom: 14 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: seg.color, marginBottom: 6 }}>WHAT THIS MEANS</div>
-                <p style={{ fontSize: 13, color: B.navy, margin: 0, lineHeight: 1.65 }}>{seg.risk}</p>
-              </div>
-
-              {/* Action */}
-              <div style={{ marginBottom: 14 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: B.teal, marginBottom: 6 }}>THE FIX</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{seg.action}</div>
-                <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.55 }}>{seg.actionDetail}</p>
-              </div>
-
-              {/* Before/After */}
-              {seg.lift > 0 && (
-                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, marginBottom: 14 }}>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 10, color: B.taupe }}>Now</div>
-                    <div style={{ fontSize: 22, fontWeight: 300, color: B.navy }}>{displayScore}</div>
-                  </div>
-                  <div style={{ fontSize: 16, color: B.taupe }}>&rarr;</div>
-                  <div style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 10, color: B.teal }}>After</div>
-                    <div style={{ fontSize: 22, fontWeight: 300, color: B.teal }}>{seg.projected}</div>
-                  </div>
-                  <div style={{ flex: 1, marginLeft: 8 }}>
-                    <div style={{ height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden", position: "relative" }}>
-                      <div style={{ position: "absolute", height: "100%", borderRadius: 3, backgroundColor: `${bandColor}44`, width: `${displayScore}%` }} />
-                      <div style={{ position: "absolute", height: "100%", borderRadius: 3, backgroundColor: B.teal, width: `${seg.projected}%`, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                    </div>
-                  </div>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>+{seg.lift}</span>
-                </div>
-              )}
-
-              {/* Simulator CTA */}
-              {seg.presetId && (
-                <button onClick={() => router.push("/simulator")} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}22`, borderRadius: 6, padding: "8px 16px", cursor: "pointer", transition: "all 200ms" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = `${B.purple}08`; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
-                >
-                  Model this change in the Simulator &rarr;
-                </button>
-              )}
-            </div>
-          );
-        })}
-
-        {/* ── Key metrics ── */}
-        {score > 0 && (
-          <div style={{ display: "flex", gap: 12, marginBottom: 32, flexDirection: mobile ? "column" : "row" }}>
-            {[
-              { label: "If top source leaves", value: `−${riskDrop} pts`, color: B.red },
-              { label: "Income runway", value: continuityMonths < 1 ? "< 1 month" : `${continuityMonths} months`, color: continuityMonths < 3 ? B.amber : B.teal },
-              { label: "Fragility", value: fragility?.fragility_class ? fragility.fragility_class.charAt(0).toUpperCase() + fragility.fragility_class.slice(1) : "—", color: fragility?.fragility_class === "brittle" || fragility?.fragility_class === "thin" ? B.red : B.teal },
-            ].map((m) => (
-              <div key={m.label} style={{ flex: 1, padding: "14px 18px", border: `1px solid ${B.stone}`, borderRadius: 8 }}>
-                <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 4 }}>{m.label}</div>
-                <div style={{ fontSize: 18, fontWeight: 300, color: m.color, letterSpacing: "-0.02em" }}>{m.value}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ── Next step ── */}
-        <div onClick={() => router.push("/simulator")} style={{ padding: "16px 20px", borderRadius: 8, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.teal}`, cursor: "pointer", marginBottom: 32, transition: "box-shadow 200ms" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(31,109,122,0.08)"; }}
+        {/* ══════════ 5. NEXT STEP CTA ══════════ */}
+        <div
+          onClick={() => router.push("/simulator")}
+          style={{
+            padding: "16px 20px", borderRadius: 10,
+            border: `1px solid ${B.border}`, borderLeft: `3px solid ${B.teal}`,
+            backgroundColor: B.white,
+            cursor: "pointer", marginBottom: 32,
+            transition: "box-shadow 200ms",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(31,109,122,0.08)"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 3 }}>NEXT STEP</div>
+              <div style={{ ...LABEL, color: B.teal, marginBottom: 4, fontSize: 9, letterSpacing: "0.14em" }}>NEXT STEP</div>
               <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Test these changes in the Stability Simulator</div>
             </div>
-            <span style={{ fontSize: 18, color: B.teal }}>&rarr;</span>
+            <span style={{ fontSize: 20, color: B.teal }}>&rarr;</span>
           </div>
         </div>
 
-        {/* ── CTA ── */}
+        {/* ══════════ 6. SUITE CTA ══════════ */}
         <SuiteCTA page="pressuremap" />
 
-        {/* ── Footer ── */}
-        <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-          <p style={{ fontSize: 10, color: B.taupe, margin: 0, fontStyle: "italic" }}>RunPayway&#8482; Stability Suite &mdash; PressureMap&#8482;. A proprietary tool by PeopleStar Enterprises.</p>
+        {/* ══════════ 7. FOOTER ══════════ */}
+        <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.border}`, textAlign: "center" }}>
+          <p style={{ fontSize: 10, color: B.taupe, margin: 0, fontStyle: "italic" }}>
+            RunPayway&#8482; Stability Suite &mdash; PressureMap&#8482;. A proprietary tool by PeopleStar Enterprises.
+          </p>
         </div>
       </div>
     </div>
