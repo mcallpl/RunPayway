@@ -1,7 +1,7 @@
 /* ================================================================== */
-/*  report-pdf.tsx — Fixed 4-page print document                      */
+/*  report-pdf.tsx — Fixed 4-page print document (Cover + 3 pages)    */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
-/*  RunPayway(TM) Income Stability Report · Model RP-2.0              */
+/*  RunPayway(TM) Stability Suite · Income Stability Report · RP-2.0  */
 /* ================================================================== */
 
 export interface ReportPDFData {
@@ -315,9 +315,9 @@ function page1(doc: jsPDF, d: ReportPDFData) {
   // ── LEFT-ALIGNED HEADER BLOCK ──
   let y = 56;
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
-  doc.text("RUNPAYWAY", ML, y, { charSpace: 1.5 });
+  doc.text("RUNPAYWAY(TM)", ML, y, { charSpace: 1.5 });
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
-  doc.text("Income Stability Score  -  Model RP-2.0", ML + CW, y, { align: "right" });
+  doc.text("Income Stability Score(TM)  -  Model RP-2.0", ML + CW, y, { align: "right" });
 
   // Thin line
   y += 12;
@@ -390,10 +390,10 @@ function page1(doc: jsPDF, d: ReportPDFData) {
   // ── SIMULATOR ACCESS ──
   y += 28;
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
-  doc.text("STABILITY SIMULATOR ACCESS", ML, y, { charSpace: 0.5 });
+  doc.text("RUNPAYWAY(TM) STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text("Use this code at runpayway.com/simulator to model structural changes.", ML, y);
+  doc.text("Use this code at runpayway.com/simulator to access your Stability Suite tools.", ML, y);
   y += 14;
   doc.setFont("Courier", "normal"); doc.setFontSize(6.5);
   const codeLines: string[] = doc.splitTextToSize(S(d.accessCode), CW - 20);
@@ -453,18 +453,21 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   y = dt(doc, d.dominantConstraintText, ML + 10, y, CW - 20, 10, { maxLines: 3 });
   y += 12;
 
-  // PressureMap CTA
+  // RunPayway Stability Suite CTA
   doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
   doc.line(ML, y, ML + CW, y);
   y += 12;
-  card(doc, ML, y, CW, 36, "#4B3FAE");
-  sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-  doc.text("PressureMap(TM): Your Financial Landscape", ML + 10, y + 14);
-  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text("Explore your interactive risk map at runpayway.com/pressuremap", ML + 10, y + 26);
-  y += 36;
+  // Dark gradient card
+  doc.setFillColor("#0E1A2B");
+  doc.roundedRect(ML, y, CW, 44, 3, 3, "F");
+  label(doc, "RUNPAYWAY(TM) STABILITY SUITE", ML + 10, y + 12, "#1F6D7A");
+  sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#F4F1EA");
+  doc.text("See exactly where your income is vulnerable", ML + 10, y + 24);
+  sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#8A8278");
+  doc.text("PressureMap(TM)  -  Stability Simulator  -  Progress Dashboard  |  runpayway.com/tools", ML + 10, y + 36);
+  y += 44;
 
-  footer(doc, "Key Findings", 2);
+  footer(doc, "Key Findings", 1);
 }
 
 /* ================================================================== */
@@ -547,7 +550,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     }
   }
 
-  footer(doc, "Stability Plan", 3);
+  footer(doc, "RunPayway(TM) Stability Plan", 2);
 }
 
 /* ================================================================== */
@@ -562,7 +565,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   doc.text("Stress Testing + Real-World Impact", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text("PressureMap(TM): Test Your Money Safety", ML, y);
+  doc.text("What happens when things go wrong - and how to prepare.", ML, y);
   y += 16;
 
   // 3 scenario cards with risk + solution
@@ -617,14 +620,14 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     y += 52 + 10;
   }
 
-  // Why Worth $149
+  // Why This Report Delivers Real Value
   if (y + 50 <= YL) {
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
     doc.line(ML, y, ML + CW, y); y += 10;
     sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-    doc.text("Why This Report is Worth $149", ML, y);
+    doc.text("Why This Report Delivers Real Value", ML, y);
     y += 12;
-    const valueText = "This report provides actionable steps, personalized recommendations, and the tools you need to future-proof your income. Clear guidance, a PressureMap(TM) analysis, and an ongoing plan to create lasting financial stability.";
+    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Stability Suite to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
     y = dt(doc, valueText, ML, y, CW, 9, { color: "#535D6B", maxLines: 3 });
     y += 8;
   }
@@ -640,11 +643,11 @@ function page4(doc: jsPDF, d: ReportPDFData) {
 
   // Fine print
   if (y + 20 <= YL) {
-    const fp = "This is a proprietary financial diagnostic tool developed by PeopleStar Enterprises. RunPayway(TM) Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
+    const fp = "RunPayway(TM) Stability Suite - a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
-  footer(doc, "Stress Test & Value", 4);
+  footer(doc, "Stress Testing & Real-World Impact", 3);
 }
 
 /* ================================================================== */
