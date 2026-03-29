@@ -267,11 +267,12 @@ export default function MarketingLayout({
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/sample-report", label: t.nav.sampleReport },
-    { href: "/methodology", label: t.nav.methodology },
+    { href: "/tools", label: "Stability Suite" },
     { href: "/pricing", label: t.nav.pricing },
   ];
 
   const MORE_LINKS = [
+    { href: "/methodology", label: t.nav.methodology },
     { href: "/simulator", label: "Stability Simulator" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
@@ -722,6 +723,7 @@ export default function MarketingLayout({
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
+                  { href: "/tools", label: "Stability Suite" },
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/simulator", label: "Simulator" },
