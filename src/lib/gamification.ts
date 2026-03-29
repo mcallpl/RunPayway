@@ -18,18 +18,18 @@ export interface Badge {
 }
 
 const BADGE_DEFS: Omit<Badge, "earnedAt">[] = [
-  { id: "first_report", label: "First Step", description: "Completed your first Income Stability Report", icon: "📊" },
-  { id: "simulator_explorer", label: "Stability Seeker", description: "Tested your first scenario in the Simulator", icon: "🔍" },
-  { id: "pressuremap_viewer", label: "Risk Navigator", description: "Explored your PressureMap zones", icon: "🗺️" },
-  { id: "action_starter", label: "Action Taker", description: "Completed your first action item", icon: "✅" },
-  { id: "action_half", label: "Halfway There", description: "Completed 50% of your action items", icon: "🏃" },
-  { id: "action_complete", label: "Plan Complete", description: "Completed all action items", icon: "🏆" },
-  { id: "score_up_5", label: "Rising Score", description: "Improved your score by 5+ points", icon: "📈" },
-  { id: "score_up_10", label: "Momentum Builder", description: "Improved your score by 10+ points", icon: "🚀" },
-  { id: "band_shift", label: "Band Breaker", description: "Moved to a higher stability band", icon: "⭐" },
-  { id: "streak_3", label: "Consistent", description: "Visited your dashboard 3 days in a row", icon: "🔥" },
-  { id: "streak_7", label: "Dedicated", description: "Visited your dashboard 7 days in a row", icon: "💎" },
-  { id: "two_assessments", label: "Progress Tracker", description: "Completed 2 assessments to track progress", icon: "📋" },
+  { id: "first_report", label: "First Step", description: "Completed your first Income Stability Report", icon: "first_report" },
+  { id: "simulator_explorer", label: "Stability Seeker", description: "Tested your first scenario in the Simulator", icon: "simulator_explorer" },
+  { id: "pressuremap_viewer", label: "Risk Navigator", description: "Explored your PressureMap zones", icon: "pressuremap_viewer" },
+  { id: "action_starter", label: "Action Taker", description: "Completed your first action item", icon: "action_starter" },
+  { id: "action_half", label: "Halfway There", description: "Completed 50% of your action items", icon: "action_half" },
+  { id: "action_complete", label: "Plan Complete", description: "Completed all action items", icon: "action_complete" },
+  { id: "score_up_5", label: "Rising Score", description: "Improved your score by 5+ points", icon: "score_up_5" },
+  { id: "score_up_10", label: "Momentum Builder", description: "Improved your score by 10+ points", icon: "score_up_10" },
+  { id: "band_shift", label: "Band Breaker", description: "Moved to a higher stability band", icon: "band_shift" },
+  { id: "streak_3", label: "Consistent", description: "Visited your dashboard 3 days in a row", icon: "streak_3" },
+  { id: "streak_7", label: "Dedicated", description: "Visited your dashboard 7 days in a row", icon: "streak_7" },
+  { id: "two_assessments", label: "Progress Tracker", description: "Completed 2 assessments to track progress", icon: "two_assessments" },
 ];
 
 /* ── Read/write helpers ── */

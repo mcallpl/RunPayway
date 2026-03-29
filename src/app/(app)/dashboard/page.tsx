@@ -7,6 +7,7 @@ import Link from "next/link";
 import { getBadges, recordVisit, checkActionProgress, getStreaks, earnBadge, getEarnedCount, type Badge } from "@/lib/gamification";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
+import BadgeIcon from "@/components/BadgeIcon";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -191,7 +192,7 @@ export default function DashboardPage() {
           color: "#FFFFFF", boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
           animation: "badgeSlideIn 300ms ease-out", fontFamily: INTER,
         }}>
-          <span style={{ fontSize: 28 }}>{newBadge.icon}</span>
+          <BadgeIcon iconId={newBadge.icon} size={32} earned={true} />
           <div>
             <div style={{ fontSize: 14, fontWeight: 700 }}>Badge Earned: {newBadge.label}!</div>
             <div style={{ fontSize: 12, opacity: 0.85 }}>{newBadge.description}</div>
@@ -223,6 +224,42 @@ export default function DashboardPage() {
             <span style={{ fontSize: 15, fontWeight: 600, color: bandColor(latestBand) }}>{latestBand}</span>
           </div>
         </div>
+
+        {/* ══════════ SCORE COMPARISON (2+ assessments) ══════════ */}
+        {assessments.length >= 2 && (() => {
+          const current = assessments[0];
+          const previous = assessments[1];
+          const diff = current.final_score - previous.final_score;
+          const improved = diff > 0;
+          return (
+            <div style={{ backgroundColor: B.white, borderRadius: 14, border: `1px solid ${improved ? "rgba(31,109,122,0.15)" : "rgba(14,26,43,0.06)"}`, padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: improved ? B.teal : B.bandLimited, marginBottom: 12 }}>
+                {improved ? "YOUR PROGRESS" : "SCORE CHANGE"}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 12, color: B.taupe, marginBottom: 2 }}>Previous</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: B.muted }}>{previous.final_score}</div>
+                </div>
+                <div style={{ fontSize: 20, color: B.taupe }}>&rarr;</div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 12, color: B.taupe, marginBottom: 2 }}>Current</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{current.final_score}</div>
+                </div>
+                <div style={{ padding: "6px 14px", borderRadius: 20, backgroundColor: improved ? "rgba(31,109,122,0.08)" : "rgba(155,44,44,0.08)", marginLeft: 8 }}>
+                  <span style={{ fontSize: 18, fontWeight: 700, color: improved ? B.teal : B.bandLimited }}>{improved ? "+" : ""}{diff}</span>
+                </div>
+              </div>
+              <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                {improved
+                  ? `Your score improved by ${diff} points since your last assessment${current.stability_band !== previous.stability_band ? `. You moved from ${previous.stability_band} to ${current.stability_band}.` : "."} Keep building on this momentum.`
+                  : diff === 0
+                    ? "Your score is the same as your last assessment. Review your action plan for the next steps to improve."
+                    : `Your score decreased by ${Math.abs(diff)} points. Review your PressureMap to identify what changed and how to recover.`}
+              </p>
+            </div>
+          );
+        })()}
 
         {/* ══════════ GOAL PROGRESS ══════════ */}
         <div style={{ backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
@@ -400,7 +437,7 @@ export default function DashboardPage() {
                   transition: "all 200ms",
                 }}
               >
-                <div style={{ fontSize: 24, marginBottom: 4 }}>{badge.icon}</div>
+                <div style={{ marginBottom: 4, display: "flex", justifyContent: "center" }}><BadgeIcon iconId={badge.icon} size={28} earned={!!badge.earnedAt} /></div>
                 <div style={{ fontSize: 10, fontWeight: 600, color: badge.earnedAt ? B.navy : B.taupe, lineHeight: 1.2 }}>{badge.label}</div>
               </div>
             ))}

@@ -187,6 +187,7 @@ export default function PressureMapPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: B.white, fontFamily: INTER }}>
+      <style>{`@keyframes zoneExpand { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
       <SuiteHeader current="pressuremap" />
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: mobile ? "28px 16px 80px" : "48px 28px 80px" }}>
@@ -259,7 +260,7 @@ export default function PressureMapPage() {
 
                 {/* Expanded detail */}
                 {isExpanded && (
-                  <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${z.color}22` }}>
+                  <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${z.color}22`, animation: "zoneExpand 300ms ease-out" }}>
                     {/* Recommendation */}
                     <div style={{ backgroundColor: `${z.color}0A`, borderRadius: 8, padding: "14px 18px", marginBottom: 14 }}>
                       <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: z.color, marginBottom: 6 }}>RECOMMENDED ACTION</div>
@@ -281,9 +282,13 @@ export default function PressureMapPage() {
                           <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{score}</span>
                           <span style={{ fontSize: 14, color: B.taupe }}>&rarr;</span>
                           <span style={{ fontSize: 22, fontWeight: 700, color: B.teal }}>{z.projectedScore}</span>
+                          <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, marginLeft: 4 }}>+{z.scoreLift}</span>
                         </div>
-                        <div style={{ flex: 1, height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden" }}>
-                          <div style={{ height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${bandColor}, ${B.teal})`, width: `${Math.min(100, z.projectedScore)}%`, transition: "width 400ms ease" }} />
+                        <div style={{ flex: 1, height: 8, backgroundColor: B.stone, borderRadius: 4, overflow: "hidden", position: "relative" }}>
+                          {/* Base score (static) */}
+                          <div style={{ position: "absolute", height: "100%", borderRadius: 4, backgroundColor: `${bandColor}66`, width: `${Math.min(100, score)}%` }} />
+                          {/* Projected score (animated) */}
+                          <div style={{ position: "absolute", height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${bandColor}, ${B.teal})`, width: `${Math.min(100, z.projectedScore)}%`, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)", boxShadow: `0 0 8px ${B.teal}44` }} />
                         </div>
                       </div>
                     )}

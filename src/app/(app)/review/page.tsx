@@ -1487,6 +1487,36 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
+        {/* ── SHARE YOUR SCORE ── */}
+        <div style={{ ...cardStyle, marginBottom: 16, textAlign: "center" }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>SHARE YOUR ACHIEVEMENT</div>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", fontWeight: 500 }}>
+            You completed your RunPayway&#8482; Income Stability assessment and scored in the {record.stability_band} band.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" as const }}>
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://peoplestar.com/RunPayway")}&title=${encodeURIComponent(`I just completed my RunPayway Income Stability assessment. My income structure scored in the ${record.stability_band} band. Find out where you stand.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 6, backgroundColor: "#0A66C2", color: "#FFFFFF", fontSize: 12, fontWeight: 600, textDecoration: "none" }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+              Share on LinkedIn
+            </a>
+            <button
+              onClick={() => {
+                const subject = encodeURIComponent("My Income Stability Assessment");
+                const body = encodeURIComponent(`I just completed my RunPayway Income Stability assessment and scored in the ${record.stability_band} band.\n\nFind out where you stand: https://peoplestar.com/RunPayway`);
+                window.location.href = `mailto:?subject=${subject}&body=${body}`;
+              }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 6, backgroundColor: B.navy, color: "#FFFFFF", fontSize: 12, fontWeight: 600, border: "none", cursor: "pointer" }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Share via Email
+            </button>
+          </div>
+        </div>
+
         {/* ── WHY THIS REPORT IS WORTH IT ── */}
         <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 16 }}>
           <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report Delivers Real Value</div>

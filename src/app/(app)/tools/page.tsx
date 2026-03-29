@@ -86,6 +86,7 @@ export default function ToolsHubPage() {
   const [accessCode, setAccessCode] = useState("");
   const [codeError, setCodeError] = useState<string | null>(null);
   const [codeSuccess, setCodeSuccess] = useState(false);
+  const [unlocking, setUnlocking] = useState(false);
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 768);
@@ -116,7 +117,8 @@ export default function ToolsHubPage() {
       const record = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: 0, stability_band: "", assessment_title: decoded.n || "", classification: "", operating_structure: "", primary_income_model: decoded.m || "", industry_sector: decoded.i || "", _v2: { normalized_inputs: { income_persistence_pct: decoded.p, largest_source_pct: decoded.c, source_diversity_count: decoded.s, forward_secured_pct: decoded.f, income_variability_level: decoded.v || "moderate", labor_dependence_pct: decoded.l }, quality: { quality_score: decoded.q || 5 } } };
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       sessionStorage.setItem("rp_sim_code", trimmed);
-      setUserName(decoded.n || ""); setCodeSuccess(true); setScore(null);
+      setUserName(decoded.n || ""); setUnlocking(true); setScore(null);
+      setTimeout(() => { setUnlocking(false); setCodeSuccess(true); }, 1200);
     } catch { setCodeError("Invalid code. Make sure you copied the entire Access Code."); }
   };
 
@@ -124,6 +126,11 @@ export default function ToolsHubPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.sandBg, fontFamily: "'Inter', system-ui, sans-serif" }}>
+      <style>{`
+        @keyframes unlockPulse { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes unlockSpin { from { transform: rotate(-180deg) scale(0.5); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }
+        @keyframes unlockFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
       <SuiteHeader current="suite" />
 
       {/* ══════════ HERO ══════════ */}
@@ -153,8 +160,22 @@ export default function ToolsHubPage() {
             </div>
           )}
 
-          {hasData && (
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 24px", borderRadius: 20, backgroundColor: "rgba(26,122,109,0.12)", border: "1px solid rgba(26,122,109,0.20)" }}>
+          {/* Unlock animation */}
+          {unlocking && (
+            <div style={{ animation: "unlockPulse 1200ms ease-out" }}>
+              <div style={{ width: 56, height: 56, margin: "0 auto 16px", borderRadius: "50%", background: `linear-gradient(135deg, ${C.teal} 0%, ${C.purple} 100%)`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 40px ${C.teal}44`, animation: "unlockSpin 800ms ease-out" }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4F1EA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
+                </svg>
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.sand, animation: "unlockFadeIn 600ms ease-out 400ms both" }}>
+                Unlocking your Stability Suite...
+              </div>
+            </div>
+          )}
+
+          {hasData && !unlocking && (
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 24px", borderRadius: 20, backgroundColor: "rgba(26,122,109,0.12)", border: "1px solid rgba(26,122,109,0.20)", animation: "unlockFadeIn 400ms ease-out" }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: C.teal }} />
               <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>Data loaded{userName ? ` for ${userName}` : ""} — your tools are ready</span>
             </div>
