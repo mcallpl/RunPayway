@@ -337,7 +337,7 @@ function HeroVideo() {
 
   useEffect(() => {
     const base = window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
-    setVideoSrc(`${base}/hero-video.mp4`);
+    setVideoSrc(`${base}/Hero-Video.mp4`);
   }, []);
 
   const handleClose = () => {
