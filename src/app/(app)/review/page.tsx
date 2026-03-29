@@ -6,6 +6,7 @@ import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 import { generateTailoredCopy } from "@/lib/industry-tailoring";
+import { generateReportPDF, type ReportPDFData } from "./report-pdf";
 
 // ============================================================
 // ERROR BOUNDARY
@@ -833,8 +834,143 @@ export default function ReviewPage() {
   // ── Reassessment countdown ──
   const reassessDaysLeft = Math.max(0, Math.ceil((new Date(reassessDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
-  const handleDownload = () => {
-    window.print();
+  const handleDownload = async () => {
+    if (downloading) return;
+    setDownloading(true);
+    setDownloadError(null);
+    try {
+      // Build access code
+      const v2ni = (record._v2 as Record<string, unknown>)?.normalized_inputs as Record<string, number | string> | undefined;
+      const v2q = ((record._v2 as Record<string, unknown>)?.quality as Record<string, number>)?.quality_score ?? 5;
+      const accessCodePayload = v2ni ? btoa(JSON.stringify({
+        p: v2ni.income_persistence_pct, c: v2ni.largest_source_pct, s: v2ni.source_diversity_count,
+        f: v2ni.forward_secured_pct, v: v2ni.income_variability_level, l: v2ni.labor_dependence_pct,
+        q: v2q, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
+      })) : "";
+
+      // Build ranked factors
+      const rankedFactors = (v2Indicators || []).sort((a, b) => a.normalized_value - b.normalized_value).slice(0, 3).map((ind, i) => ({
+        role: i === 0 ? "WEAKEST FACTOR" : i === 1 ? "MOST DANGEROUS" : "STRONGEST FACTOR",
+        label: ind.label,
+        level: ind.level,
+        normalizedValue: ind.normalized_value / 100,
+        explanation: "",
+        roleColor: i === 0 ? B.bandLimited : i === 1 ? "#DC4A4A" : B.teal,
+        levelColor: ind.level === "critical" || ind.level === "weak" ? B.bandLimited : ind.level === "moderate" ? B.bandDeveloping : B.teal,
+      }));
+
+      // Build scenarios
+      const scenarios = (v2Scenarios || []).sort((a, b) => b.score_drop - a.score_drop).slice(0, 3).map(s => ({
+        title: s.label, originalScore: s.original_score, scenarioScore: s.scenario_score,
+        scoreDrop: s.score_drop, narrative: s.narrative, bandShift: s.band_shift,
+        originalBand: s.original_band, scenarioBand: s.scenario_band,
+      }));
+
+      // Build action categories from lift scenarios
+      const actionCategories = (v2Lift?.lift_scenarios || []).filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map(s => ({
+        tag: `STEP`, tagColor: B.purple,
+        title: s.label, how: s.change_description || "",
+        scoreChange: `+${s.lift} points`,
+      }));
+
+      // Build roadmap
+      const roadmap = (v2ExecutionRoadmap || []).slice(0, 4).map(w => ({
+        week: w.week, action: w.action, detail: w.detail, target: w.success_metric,
+      }));
+
+      // Fragility
+      const fragilityClass = v2Fragility?.fragility_class || "uneven";
+      const fragilityLabel = ({
+        brittle: "One disruption could seriously damage your income",
+        thin: "You can handle a small setback, but not two in a row",
+        uneven: "Some parts are protected, others are not",
+        supported: "Multiple layers of protection",
+        resilient: "Can absorb a major hit and keep going",
+      } as Record<string, string>)[fragilityClass] || fragilityClass;
+      const fragilityColor = fragilityClass === "brittle" || fragilityClass === "thin" ? B.bandLimited : fragilityClass === "resilient" || fragilityClass === "supported" ? B.teal : B.navy;
+
+      const pdfData: ReportPDFData = {
+        assessmentTitle: record.assessment_title || "Assessment",
+        issuedDate,
+        formalDate,
+        finalScore: score,
+        stabilityBand: record.stability_band,
+        bandColor,
+        tier,
+        coverBandDesc: coverBandDesc[tier],
+        accessCode: accessCodePayload,
+        diagnosticSentence: tailored.diagnosticSentence,
+        plainEnglish: v2Explainability?.why_this_score || `Your income scores ${score}/100 for structural stability.`,
+        whyNotHigher: v2Explainability?.why_not_higher,
+        dominantConstraintText: dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Structural gaps limit your score.",
+        whatToChangeFirst: cleanConstraintText(v2Sensitivity?.tests?.[0]?.delta_description || "Address primary constraint"),
+        whatThatWouldDo: v2Sensitivity?.tests?.[0] ? `${v2Sensitivity.tests[0].original_score} to ${v2Sensitivity.tests[0].projected_score} (+${v2Sensitivity.tests[0].lift})` : "Improvement available",
+        nextBandName,
+        distanceToNext,
+        bandDistance,
+        bandDistanceText: "",
+        score,
+        pressureMap: record.pressure_map ? {
+          operatingStructure: (record.pressure_map as Record<string, string>).operating_structure || "",
+          incomeModel: (record.pressure_map as Record<string, string>).income_model || "",
+          industry: (record.pressure_map as Record<string, string>).industry || "",
+          pressure: (record.pressure_map as Record<string, string>).pressure || "",
+          tailwind: (record.pressure_map as Record<string, string>).tailwind || "",
+          leverageMove: (record.pressure_map as Record<string, string>).leverage_move || "",
+        } : undefined,
+        killerLine: tailored.killerLine,
+        activeIncome: record.active_income_level,
+        semiPersistentIncome: record.semi_persistent_income_level,
+        persistentIncome: record.persistent_income_level,
+        riskScenarioScore: Math.max(0, record.risk_scenario_score),
+        riskScenarioDrop: record.risk_scenario_drop,
+        continuityDisplay,
+        continuityText: record.income_continuity_months < 1 ? "Income stops almost immediately" : record.income_continuity_months < 3 ? "Very little runway" : "Some buffer before pressure",
+        riskSeverityText: sourceDropSeverity,
+        rankedFactors,
+        strongestSupports: v2Explainability?.strongest_supports || [],
+        strongestSuppressors: v2Explainability?.strongest_suppressors || [],
+        fragilityDiagnostic: tailored.fragilityContext,
+        scenarios,
+        fragilityLabel,
+        fragilityText: v2Explainability?.fragility_explanation || "",
+        fragilityColor,
+        failureMode: v2Fragility?.primary_failure_mode,
+        actionCategories,
+        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? {
+          projectedScore: v2Lift.combined_top_two.projected_score,
+          lift: v2Lift.combined_top_two.lift,
+          bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined,
+        } : undefined,
+        tradeoff: v2TradeoffNarratives?.[0] ? {
+          actionLabel: v2TradeoffNarratives[0].action_label,
+          upside: v2TradeoffNarratives[0].upside,
+          downside: v2TradeoffNarratives[0].downside,
+          recommendation: v2TradeoffNarratives[0].net_recommendation,
+        } : undefined,
+        avoidActions: [...(v2AvoidActions || []).map(a => `${a.label}: ${a.reason}`), ...(olAvoid || [])].slice(0, 3),
+        roadmap,
+        reassessDate,
+        reassessDaysLeft,
+        reassessTiming: tier === "limited" ? "2 months" : tier === "high" ? "6 months" : "3 months",
+        triggers: (olTriggers || []).map(t => t.display_text),
+      };
+
+      const blob = await generateReportPDF(pdfData);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `RunPayway-Income-Stability-Report-${record.assessment_title || "Assessment"}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      setDownloadError("PDF generation failed. Try using Print (Ctrl+P) instead.");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   // ── Band color helper ──
@@ -1468,13 +1604,14 @@ export default function ReviewPage() {
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}
+              disabled={downloading}
               style={{
-                background: "none", border: "none", cursor: "pointer",
-                fontSize: 12, color: "rgba(14,26,43,0.50)",
+                background: "none", border: "none", cursor: downloading ? "wait" : "pointer",
+                fontSize: 12, color: downloading ? "rgba(14,26,43,0.30)" : "rgba(14,26,43,0.50)",
                 padding: "6px 10px", fontWeight: 500,
               }}
             >
-              PDF
+              {downloading ? "Generating..." : downloadError ? "Retry PDF" : "Download PDF"}
             </button>
           </div>
         )}
