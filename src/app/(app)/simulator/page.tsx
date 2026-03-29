@@ -580,10 +580,10 @@ function SimulatorContent() {
   }, [sim.overall_score, sim.band, base.band, base.overall_score, isModified, prevScore]);
 
   // Record ID
-  const recordId = generateRecordId(baseInputs, userName);
+  const recordId = generateRecordId(effectiveBaseInputs, userName);
 
   // Income Timeline
-  const timeline: TimelinePoint[] = isModified ? projectTimeline(baseInputs, simInputs, qualityScore) : [];
+  const timeline: TimelinePoint[] = isModified ? projectTimeline(effectiveBaseInputs, simInputs, qualityScore) : [];
 
   // Stress tests
   const stLC = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(simInputs), qualityScore);
@@ -604,7 +604,7 @@ function SimulatorContent() {
 
   // ── Best Move + Structural impact for each preset ──
   const presetAnalysis = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id)).map(p => {
-    const modified = p.modify(baseInputs);
+    const modified = p.modify(effectiveBaseInputs);
     const result = simulateScore(modified, qualityScore);
     const lift = result.overall_score - base.overall_score;
     // Determine which structural factors changed
@@ -1011,7 +1011,7 @@ function SimulatorContent() {
               {SIMULATOR_PRESETS.map((preset) => {
                 const ia = simPreset === preset.id;
                 const analysis = presetAnalysis.find(p => p.id === preset.id);
-                const previewDelta = simulateScore(preset.modify(baseInputs), qualityScore).overall_score - base.overall_score;
+                const previewDelta = simulateScore(preset.modify(effectiveBaseInputs), qualityScore).overall_score - base.overall_score;
                 const isNeg = previewDelta < 0;
                 return (
                   <button key={preset.id} onClick={() => setSimPreset(ia ? null : preset.id)} style={{
