@@ -388,6 +388,7 @@ function SimulatorContent() {
   const [stressTestActive, setStressTestActive] = useState(false);
   const [savedScenarios, setSavedScenarios] = useState<{ name: string; score: number; band: string; sliders: typeof sliders }[]>([]);
   const [scriptTemplates, setScriptTemplates] = useState<Array<{ id: string; title: string; context: string; script: string }>>([]);
+  const [resumeBanner, setResumeBanner] = useState(false);
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [scriptCopied, setScriptCopied] = useState<string | null>(null);
   const [accessCode, setAccessCode] = useState("");
@@ -494,6 +495,40 @@ function SimulatorContent() {
       }
     } catch { /* ignore */ }
   }, [searchParams]);
+
+  // ── Save simulator state on changes ──
+  useEffect(() => {
+    if (simPreset || (sliders && baseInputs)) {
+      localStorage.setItem("rp_sim_state", JSON.stringify({ simMode, simPreset, sliders, timestamp: Date.now() }));
+    }
+  }, [simMode, simPreset, sliders, baseInputs]);
+
+  // ── Restore last session on load ──
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("rp_sim_state");
+      if (saved) {
+        const state = JSON.parse(saved);
+        const age = Date.now() - (state.timestamp || 0);
+        if (age < 7 * 24 * 60 * 60 * 1000) { // within 7 days
+          setResumeBanner(true);
+        }
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  const resumeLastSession = () => {
+    try {
+      const saved = localStorage.getItem("rp_sim_state");
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.simMode) setSimMode(state.simMode);
+        if (state.simPreset) setSimPreset(state.simPreset);
+        if (state.sliders) setSliders(state.sliders);
+      }
+    } catch { /* ignore */ }
+    setResumeBanner(false);
+  };
 
   /* ── No data — load defaults so full UI always renders ── */
   const effectiveBaseInputs: CanonicalInput = baseInputs || { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
@@ -700,6 +735,17 @@ function SimulatorContent() {
       `}</style>
 
       <div className="sim-container" style={{ maxWidth: 960, margin: "0 auto", padding: "40px 28px 80px" }}>
+
+        {/* Resume last session banner */}
+        {resumeBanner && (
+          <div style={{ padding: "10px 18px", borderRadius: 8, border: `1px solid ${B.tealGlow}`, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: `${BRAND.teal}04` }}>
+            <span style={{ fontSize: 12, color: T.text }}>You had a scenario in progress. Pick up where you left off?</span>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={resumeLastSession} style={{ fontSize: 11, fontWeight: 600, color: BRAND.teal, background: "none", border: `1px solid ${BRAND.teal}25`, borderRadius: 5, padding: "4px 12px", cursor: "pointer" }}>Resume</button>
+              <button onClick={() => setResumeBanner(false)} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer" }}>Dismiss</button>
+            </div>
+          </div>
+        )}
 
         {/* ══════════ SCORE HERO ══════════ */}
         <div className="sim-score-hero" style={{ marginBottom: 36, paddingTop: 8 }}>

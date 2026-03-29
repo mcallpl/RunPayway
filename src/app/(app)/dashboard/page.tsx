@@ -217,6 +217,18 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {/* ── Return notification ── */}
+        {!isDemo && daysSince > 0 && (
+          <div style={{ padding: "10px 18px", borderRadius: 6, border: `1px solid ${daysSince > 60 ? `${B.red}20` : `${B.teal}15`}`, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 12, color: daysSince > 60 ? B.red : B.navy }}>
+              {daysSince <= 7 ? `Welcome back. ${daysSince} days since your assessment.`
+                : daysSince <= 30 ? `${daysSince} days at score ${score}. Your top move: ${scenarios[0]?.label || "check your PressureMap"}.`
+                : `${daysSince} days since your assessment. ${scenarios[0] ? `+${scenarios[0].lift} points available.` : "Time to reassess."}`}
+            </span>
+            {scenarios[0] && <button onClick={() => router.push("/simulator")} style={{ fontSize: 11, fontWeight: 600, color: B.purple, background: "none", border: "none", cursor: "pointer", flexShrink: 0 }}>Model it &rarr;</button>}
+          </div>
+        )}
+
         {/* ══════════ HERO ROW: Score + Band + Gap + Metrics ══════════ */}
         <div style={{ display: "flex", gap: 16, marginBottom: 20, flexDirection: mobile ? "column" : "row" }}>
           {/* Score block — dominant */}
@@ -316,25 +328,35 @@ export default function DashboardPage() {
             )}
 
             {/* Trajectory */}
-            {timeline.length > 0 && (
-              <div style={{ padding: "18px 22px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
-                <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 10 }}>PROJECTED TRAJECTORY</div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: 64, gap: 4, marginBottom: 6 }}>
-                  <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
-                    <span style={{ fontSize: 13, fontWeight: 300, color: B.navy }}>{score}</span>
-                    <div style={{ width: "100%", height: `${Math.max(8, score * 0.6)}%`, backgroundColor: `${bandColor(score)}18`, borderRadius: "3px 3px 0 0" }} />
-                    <span style={{ fontSize: 8, color: B.taupe }}>Now</span>
-                  </div>
-                  {timeline.map((t, i) => (
-                    <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
-                      <span style={{ fontSize: 13, fontWeight: 300, color: B.teal }}>{t.score}</span>
-                      <div style={{ width: "100%", height: `${Math.max(8, t.score * 0.6)}%`, backgroundColor: `${B.teal}18`, borderRadius: "3px 3px 0 0" }} />
-                      <span style={{ fontSize: 8, color: B.taupe }}>{t.label || `${[3, 6, 12][i]}mo`}</span>
-                    </div>
-                  ))}
+            {timeline.length > 0 && (() => {
+              const points = [{ score, label: "Now" }, ...timeline.map((t, i) => ({ score: t.score, label: t.label || `${[3, 6, 12][i]}mo` }))];
+              const scores = points.map(p => p.score);
+              const minS = Math.min(...scores) - 8;
+              const maxS = Math.max(...scores) + 8;
+              const range = Math.max(maxS - minS, 20);
+              const w = 200;
+              const h = 60;
+              const coords = points.map((p, i) => ({ x: (i / (points.length - 1)) * w, y: h - ((p.score - minS) / range) * h }));
+              const linePath = coords.map((c, i) => `${i === 0 ? "M" : "L"}${c.x},${c.y}`).join(" ");
+              const areaPath = `${linePath} L${w},${h} L0,${h} Z`;
+              return (
+                <div style={{ padding: "18px 22px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
+                  <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>PROJECTED TRAJECTORY</div>
+                  <svg viewBox={`-10 -14 ${w + 20} ${h + 28}`} style={{ width: "100%", height: 90 }}>
+                    <defs><linearGradient id="tFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={B.teal} stopOpacity="0.12" /><stop offset="100%" stopColor={B.teal} stopOpacity="0" /></linearGradient></defs>
+                    <path d={areaPath} fill="url(#tFill)" />
+                    <path d={linePath} fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinejoin="round" />
+                    {coords.map((c, i) => (
+                      <g key={i}>
+                        <circle cx={c.x} cy={c.y} r="3" fill={i === 0 ? bandColor(score) : B.teal} stroke="#FFF" strokeWidth="1.5" />
+                        <text x={c.x} y={c.y - 8} textAnchor="middle" style={{ fontSize: 10, fontWeight: 300, fill: i === 0 ? B.navy : B.teal }}>{points[i].score}</text>
+                        <text x={c.x} y={h + 12} textAnchor="middle" style={{ fontSize: 8, fill: B.taupe }}>{points[i].label}</text>
+                      </g>
+                    ))}
+                  </svg>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Countdown */}
             <div style={{ padding: "14px 22px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
@@ -379,6 +401,22 @@ export default function DashboardPage() {
             </>
           )}
         </div>
+
+        {/* Download data */}
+        {!isDemo && (
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <button onClick={() => {
+              const stored = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
+              if (!stored) return;
+              const blob = new Blob([stored], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a"); a.href = url; a.download = "runpayway-assessment.json"; a.click();
+              URL.revokeObjectURL(url);
+            }} style={{ fontSize: 11, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 5, padding: "6px 14px", cursor: "pointer" }}>
+              Download Assessment Data (JSON)
+            </button>
+          </div>
+        )}
 
         {/* CTA */}
         <SuiteCTA page="dashboard" />

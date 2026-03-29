@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../public/runpayway-logo-blue.png";
+import CommandPalette from "./CommandPalette";
 
 const C = {
   navy: "#0E1A2B",
@@ -83,8 +84,16 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
               </Link>
             );
           })}
+          <button
+            onClick={() => { const e = new KeyboardEvent("keydown", { key: "k", metaKey: true }); window.dispatchEvent(e); }}
+            style={{ padding: "4px 10px", borderRadius: 5, border: `1px solid ${C.border}`, background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.muted }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <kbd style={{ fontSize: 10, color: C.muted }}>&#8984;K</kbd>
+          </button>
         </nav>
       </div>
+      <CommandPalette />
     </header>
   );
 }
