@@ -751,10 +751,10 @@ export default function ReviewPage() {
     A2: `This is the structural breakdown of your income. As a ${structureDesc} with ${revenueDesc}, here is what the data shows.`,
     A3: `You have early structure. Here is the composition of your ${incomeModelDesc} income in ${industrySector} — and where the gaps are.`,
     B1: `Your ${incomeModelDesc} income in ${industrySector} is developing. Here is the breakdown — what is working and what is exposed.`,
-    B2: `Your income structure is taking shape. Here is the composition — ${record.active_income_level}% active, ${record.persistent_income_level}% persistent.`,
+    B2: `Your income structure is taking shape. Here is the composition — ${record.active_income_level}% income that stops when you stop, ${record.persistent_income_level}% protected income.`,
     C1: `Your ${incomeModelDesc} structure in ${industrySector} has real protection. Here is the composition and where the remaining exposure sits.`,
     C2: `Established ${incomeModelDesc} structure. Here is how your income is composed — and the specific areas that still matter.`,
-    D1: `Strong ${incomeModelDesc} structure with ${record.persistent_income_level}% persistent income. Here is the full composition.`,
+    D1: `Strong ${incomeModelDesc} structure with ${record.persistent_income_level}% protected income. Here is the full composition.`,
     D2: `Exceptionally well-built. Here is the structural detail behind the ${score}/100 score.`,
   };
 
@@ -776,13 +776,13 @@ export default function ReviewPage() {
   // ── Consumer-friendly label maps ──
   const failureModeLabel: Record<string, string> = {
     concentration_collapse: "Too much weight on a single source",
-    labor_interruption: "Income stops when active work stops",
-    visibility_gap: "Not enough income is secured ahead",
+    labor_interruption: "Income stops when you stop working",
+    visibility_gap: "Not enough income locked in ahead",
     durability_thinness: "Recurring income is fragile or cancelable",
   };
   const constraintLabel: Record<string, string> = {
-    weak_forward_visibility: "Too little income secured ahead",
-    high_labor_dependence: "Too much dependence on active work",
+    weak_forward_visibility: "Too little income locked in ahead",
+    high_labor_dependence: "Too much depends on your daily work",
     high_concentration: "Too much dependence on one source",
     low_persistence: "Not enough recurring income",
     high_variability: "Too much earnings variability",

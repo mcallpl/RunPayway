@@ -112,11 +112,11 @@ export default function PressureMapPage() {
   const segments = [
     {
       id: "active" as const,
-      label: "Active Income",
+      label: "Income That Stops",
       pct: activeIncome,
       color: B.red,
       bgColor: `${B.red}12`,
-      description: "Earned once — stops when you stop working.",
+      description: "Stops the moment you stop working.",
       risk: `${activeIncome}% of your income resets to zero the moment you stop. A single disruption — illness, burnout, lost client — immediately affects ${activeIncome}% of your earnings.`,
       action: SIMULATOR_PRESETS.find(p => p.id === redPreset)?.label || "Reduce active income dependency",
       actionDetail: SIMULATOR_PRESETS.find(p => p.id === redPreset)?.description || "",
@@ -126,15 +126,15 @@ export default function PressureMapPage() {
     },
     {
       id: "semi" as const,
-      label: "Semi-Persistent",
+      label: "Recurring For Now",
       pct: semiIncome,
       color: B.amber,
       bgColor: `${B.amber}10`,
-      description: "Repeats for a while — retainers, short contracts, subscriptions.",
+      description: "Repeats for now — retainers, subscriptions, short contracts.",
       risk: semiIncome < 20
         ? `Only ${semiIncome}% of your income has any repeating structure. Most of your revenue must be re-earned every month.`
         : `${semiIncome}% of your income repeats, but it is cancelable. This provides a buffer, not a foundation.`,
-      action: "Convert semi-persistent to fully recurring",
+      action: "Convert recurring-for-now income to fully recurring",
       actionDetail: "Extend contract lengths, add auto-renewal clauses, convert monthly retainers to quarterly or annual agreements.",
       lift: 0,
       projected: displayScore,
@@ -142,16 +142,16 @@ export default function PressureMapPage() {
     },
     {
       id: "persistent" as const,
-      label: "Persistent Income",
+      label: "Protected Income",
       pct: persistentIncome,
       color: B.teal,
       bgColor: `${B.teal}10`,
-      description: "Continues without your daily effort — royalties, licensing, passive streams.",
+      description: "Keeps going without you — royalties, licensing, passive revenue.",
       risk: persistentIncome >= 30
-        ? `${persistentIncome}% of your income survives interruption. This is structural protection that most professionals do not have.`
+        ? `${persistentIncome}% of your income keeps going without you. This is structural protection that most professionals do not have.`
         : `Only ${persistentIncome}% of your income would continue if you stopped working. Building this zone is the single most durable improvement you can make.`,
-      action: greenResult.lift > 0 ? (SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.label || "Build persistent income") : "Build persistent income streams",
-      actionDetail: SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.description || "Create income that produces without your daily involvement.",
+      action: greenResult.lift > 0 ? (SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.label || "Build protected income") : "Build protected income streams",
+      actionDetail: SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.description || "Create income that keeps going without you.",
       lift: greenResult.lift,
       projected: greenResult.score,
       presetId: greenPreset,
