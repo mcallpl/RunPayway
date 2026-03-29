@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { getEarnedCount, getStreaks } from "@/lib/gamification";
 
 /* ================================================================== */
@@ -36,7 +34,8 @@ const T = {
   cta: { fontSize: 15, fontWeight: 600 },
 };
 
-const maxW = 1080;
+const maxW = 1200;
+const readW = 740;
 const px = (m: boolean) => m ? 20 : 40;
 const h1 = (m: boolean) => m ? T.h1.mobile : T.h1.desktop;
 const h2 = (m: boolean) => m ? T.h2.mobile : T.h2.desktop;
@@ -129,7 +128,6 @@ function ToolCard({ href, color, number, title, subtitle, features, cta, recomme
 /* ================================================================== */
 
 export default function ToolsHubPage() {
-  const router = useRouter();
   const [score, setScore] = useState<number | null>(null);
   const [band, setBand] = useState("");
   const [userName, setUserName] = useState("");
@@ -173,7 +171,6 @@ export default function ToolsHubPage() {
         setCodeError("Invalid code. Copy the full Access Code from your report.");
         return;
       }
-      // Build and save a minimal record so all tools can load
       const record = {
         record_id: `sim-${Date.now()}`,
         authorization_code: "",
@@ -200,11 +197,10 @@ export default function ToolsHubPage() {
         },
       };
       sessionStorage.setItem("rp_record", JSON.stringify(record));
-      // Also populate simulator data directly
       sessionStorage.setItem("rp_sim_code", trimmed);
       setUserName(decoded.n || "");
       setCodeSuccess(true);
-      setScore(null); // Will be calculated by individual tools
+      setScore(null);
     } catch {
       setCodeError("Invalid code. Make sure you copied the entire Access Code.");
     }
@@ -213,23 +209,13 @@ export default function ToolsHubPage() {
   const hasData = codeSuccess;
 
   return (
-    <div style={{ minHeight: "100vh", fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
-
-      {/* ══════════ HERO ══════════ */}
+    <>
+      {/* ══════════ HERO SECTION ══════════ */}
       <div style={{ background: C.heroGradient, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, opacity: 0.03, backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")", pointerEvents: "none" }} />
 
-        <header style={{ padding: `${sp(2.5)}px ${px(mobile)}px`, display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 2 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: sp(2) }}>
-            <Image src={logoWhite} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.95 }} />
-            <div style={{ width: 1, height: 24, background: "rgba(244,241,234,0.15)" }} />
-            <span style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const }}>Stability Suite</span>
-          </div>
-          <Link href="/review" style={{ ...T.meta, color: "rgba(244,241,234,0.55)", textDecoration: "none" }}>&larr; Back to Report</Link>
-        </header>
-
-        <div style={{ maxWidth: maxW, margin: "0 auto", padding: `${sp(6)}px ${px(mobile)}px ${sp(8)}px`, textAlign: "center", position: "relative", zIndex: 2 }}>
-          <div style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const, marginBottom: sp(2) }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
+        <div style={{ maxWidth: maxW, margin: "0 auto", padding: `${sp(8)}px ${px(mobile)}px ${sp(10)}px`, textAlign: "center", position: "relative", zIndex: 2 }}>
+          <div style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const, marginBottom: sp(2.5) }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
           <h1 style={{ ...h1(mobile), color: C.sand, marginBottom: sp(2), letterSpacing: "-0.03em" }}>
             Your Premium Financial Tools
           </h1>
@@ -239,7 +225,7 @@ export default function ToolsHubPage() {
               : "Three premium tools that turn your Income Stability Report into a living action plan. Enter your access code to load your personalized data."}
           </p>
 
-          {/* ── ACCESS CODE INPUT (central hub) ── */}
+          {/* ── ACCESS CODE INPUT ── */}
           {!hasData && (
             <div style={{ maxWidth: 480, margin: `0 auto ${sp(3)}px`, textAlign: "left" }}>
               <div style={{ backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.12)", borderRadius: 14, padding: mobile ? "20px 16px" : "24px 28px", backdropFilter: "blur(8px)" }}>
@@ -284,7 +270,7 @@ export default function ToolsHubPage() {
           )}
 
           {/* Score bar — shown when data is loaded */}
-          {hasData && score !== null && (
+          {hasData && score !== null && score > 0 && (
             <div style={{ display: "inline-flex", alignItems: "center", gap: mobile ? sp(2) : sp(3.5), padding: `${sp(2)}px ${sp(4)}px`, borderRadius: 14, backgroundColor: "rgba(244,241,234,0.06)", border: "1px solid rgba(244,241,234,0.10)", backdropFilter: "blur(8px)" }}>
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 32, fontWeight: 600, color: C.sand, lineHeight: 1 }}>{score}</div>
@@ -319,8 +305,7 @@ export default function ToolsHubPage() {
             </div>
           )}
 
-          {/* Loaded confirmation */}
-          {hasData && score === null && (
+          {hasData && (score === null || score === 0) && (
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "10px 24px", borderRadius: 20, backgroundColor: "rgba(26,122,109,0.12)", border: "1px solid rgba(26,122,109,0.20)" }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: C.teal }} />
               <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>Data loaded{userName ? ` for ${userName}` : ""} &mdash; your tools are ready</span>
@@ -330,114 +315,99 @@ export default function ToolsHubPage() {
       </div>
 
       {/* ══════════ TOOL CARDS ══════════ */}
-      <div style={{ backgroundColor: C.sandBg }}>
-        <div style={{ maxWidth: maxW, margin: "0 auto", padding: `${sp(6)}px ${px(mobile)}px ${sp(5)}px` }}>
+      <section style={{ maxWidth: maxW, margin: "0 auto", padding: `${sp(8)}px ${px(mobile)}px ${sp(6)}px` }}>
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: sp(2.5), marginBottom: sp(6) }}>
+          <ToolCard
+            mobile={mobile}
+            href="/pressuremap"
+            color={C.purple}
+            number="1"
+            title="PressureMap&#8482;"
+            subtitle="Your income is not equally vulnerable everywhere. PressureMap reveals the exact fault lines &mdash; the specific areas where one disruption could cascade into real financial pressure."
+            features={[
+              "3 interactive risk zones (Red, Yellow, Green)",
+              "AI-powered recommendations tailored to your structure",
+              "Live score preview showing each fix's impact",
+              "One-click launch into the Simulator to test changes",
+            ]}
+            cta="Explore Your Risk Zones &rarr;"
+            recommended
+          />
+          <ToolCard
+            mobile={mobile}
+            href="/simulator"
+            color={C.teal}
+            number="2"
+            title="Stability Simulator"
+            subtitle="What would happen if you secured a retainer? Added a new client? Shifted 20% to passive? The Simulator answers instantly &mdash; with real-time projections."
+            features={[
+              "Score updates in real time as you drag each slider",
+              "6 pre-built scenarios ranked by effort and impact",
+              "Forward projections at 3, 6, and 12 months",
+              "Stress tests: lose top client, can't work 90 days",
+            ]}
+            cta="Launch Simulator &rarr;"
+          />
+          <ToolCard
+            mobile={mobile}
+            href="/dashboard"
+            color="#DC7814"
+            number="3"
+            title="Progress Dashboard"
+            subtitle="Knowing your score is step one. Improving it is the journey. Track actions, earn badges, and watch your score climb over time."
+            features={[
+              "Action checklist from your report's recommendations",
+              "Score history chart across multiple assessments",
+              "12 achievement badges earned by taking real action",
+              "Daily streaks and goal progress toward next band",
+            ]}
+            cta="View Your Progress &rarr;"
+          />
+        </div>
 
-          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: sp(2.5), marginBottom: sp(5) }}>
-            <ToolCard
-              mobile={mobile}
-              href="/pressuremap"
-              color={C.purple}
-              number="1"
-              title="PressureMap&#8482;"
-              subtitle="Your income is not equally vulnerable everywhere. PressureMap reveals the exact fault lines &mdash; the specific areas where one disruption could cascade into real financial pressure."
-              features={[
-                "3 interactive risk zones (Red, Yellow, Green)",
-                "AI-powered recommendations tailored to your structure",
-                "Live score preview showing each fix's impact",
-                "One-click launch into the Simulator to test changes",
-              ]}
-              cta="Explore Your Risk Zones &rarr;"
-              recommended
-            />
-            <ToolCard
-              mobile={mobile}
-              href="/simulator"
-              color={C.teal}
-              number="2"
-              title="Stability Simulator"
-              subtitle="What would happen if you secured a retainer? Added a new client? Shifted 20% to passive? The Simulator answers instantly &mdash; with real-time projections."
-              features={[
-                "Score updates in real time as you drag each slider",
-                "6 pre-built scenarios ranked by effort and impact",
-                "Forward projections at 3, 6, and 12 months",
-                "Stress tests: lose top client, can't work 90 days",
-              ]}
-              cta="Launch Simulator &rarr;"
-            />
-            <ToolCard
-              mobile={mobile}
-              href="/dashboard"
-              color="#DC7814"
-              number="3"
-              title="Progress Dashboard"
-              subtitle="Knowing your score is step one. Improving it is the journey. Track actions, earn badges, and watch your score climb over time."
-              features={[
-                "Action checklist from your report's recommendations",
-                "Score history chart across multiple assessments",
-                "12 achievement badges earned by taking real action",
-                "Daily streaks and goal progress toward next band",
-              ]}
-              cta="View Your Progress &rarr;"
-            />
-          </div>
-
-          {/* ── CTA for non-customers ── */}
-          {!hasData && (
-            <div style={{ textAlign: "center", padding: `${sp(5)}px ${sp(3)}px`, borderRadius: 16, background: `linear-gradient(135deg, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.04) 100%)`, border: `1px solid ${C.border}`, marginBottom: sp(4) }}>
-              <div style={{ ...T.label, color: C.purple, textTransform: "uppercase" as const, marginBottom: sp(2) }}>UNLOCK YOUR STABILITY SUITE</div>
-              <h2 style={{ ...h2(mobile), color: C.navy, marginBottom: sp(1.5) }}>Get Your Income Stability Report</h2>
-              <p style={{ ...body(mobile), color: C.muted, maxWidth: 480, margin: `0 auto ${sp(3)}px`, lineHeight: 1.65 }}>
-                Your report generates a personalized access code that pre-loads all three tools with your data. No generic advice &mdash; every recommendation, simulation, and action step is built from your specific income structure.
-              </p>
-              <Link href="/pricing" style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 52, padding: "0 36px", borderRadius: 12,
-                background: `linear-gradient(135deg, ${C.navy} 0%, ${C.purple} 100%)`,
-                color: C.white, ...T.cta, letterSpacing: "-0.01em",
-                boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
-                textDecoration: "none",
-              }}>
-                Get Started &mdash; From $69 &rarr;
-              </Link>
-            </div>
-          )}
-
-          {/* ── Recommended flow ── */}
-          <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, boxShadow: "0 1px 3px rgba(14,26,43,0.04)", marginBottom: sp(4) }}>
-            <div style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const, marginBottom: sp(2) }}>RECOMMENDED FLOW</div>
-            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? sp(2) : sp(3), alignItems: mobile ? "flex-start" : "center" }}>
-              {[
-                { step: "1", text: "Explore your PressureMap&#8482; zones to understand where you are most vulnerable", color: C.purple },
-                { step: "2", text: "Test improvements in the Simulator to see which changes have the most impact", color: C.teal },
-                { step: "3", text: "Track your actions on the Dashboard and watch your stability score climb", color: "#DC7814" },
-              ].map((s, i) => (
-                <div key={s.step} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), flex: 1 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: `${s.color}10`, border: `1.5px solid ${s.color}25`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: s.color }}>{s.step}</span>
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ ...T.meta, color: C.navy, margin: 0, lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: s.text }} />
-                  </div>
-                  {i < 2 && !mobile && <span style={{ fontSize: 18, color: C.light, flexShrink: 0, marginLeft: sp(1) }}>&rarr;</span>}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Back to report ── */}
-          <div style={{ textAlign: "center", marginBottom: sp(4) }}>
-            <Link href="/review" style={{ ...T.meta, color: C.muted, textDecoration: "none" }}>&larr; Back to Your Income Stability Report</Link>
-          </div>
-
-          {/* ── Footer ── */}
-          <div style={{ paddingTop: sp(2), borderTop: `1px solid ${C.border}`, textAlign: "center" }}>
-            <p style={{ fontSize: 12, color: C.light, margin: 0, lineHeight: 1.5 }}>
-              RunPayway&#8482; Stability Suite &mdash; Premium tools available exclusively to report customers. A proprietary product by PeopleStar Enterprises.
+        {/* ── CTA for non-customers ── */}
+        {!hasData && (
+          <div style={{ textAlign: "center", padding: `${sp(6)}px ${sp(3)}px`, borderRadius: 16, background: `linear-gradient(135deg, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.04) 100%)`, border: `1px solid ${C.border}`, marginBottom: sp(6) }}>
+            <div style={{ ...T.label, color: C.purple, textTransform: "uppercase" as const, marginBottom: sp(2) }}>UNLOCK YOUR STABILITY SUITE</div>
+            <h2 style={{ ...h2(mobile), color: C.navy, marginBottom: sp(1.5) }}>Get Your Income Stability Report</h2>
+            <p style={{ ...body(mobile), color: C.muted, maxWidth: readW, margin: `0 auto ${sp(3)}px`, lineHeight: 1.65 }}>
+              Your report generates a personalized access code that pre-loads all three tools with your data. No generic advice &mdash; every recommendation, simulation, and action step is built from your specific income structure.
             </p>
+            <Link href="/pricing" style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 52, padding: "0 36px", borderRadius: 12,
+              background: `linear-gradient(135deg, ${C.navy} 0%, ${C.purple} 100%)`,
+              color: C.white, ...T.cta, letterSpacing: "-0.01em",
+              boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
+              textDecoration: "none",
+            }}>
+              Get Started &mdash; From $69 &rarr;
+            </Link>
+          </div>
+        )}
+
+        {/* ── Recommended flow ── */}
+        <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, boxShadow: "0 1px 3px rgba(14,26,43,0.04)", marginBottom: sp(6) }}>
+          <div style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const, marginBottom: sp(2) }}>RECOMMENDED FLOW</div>
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? sp(2) : sp(3), alignItems: mobile ? "flex-start" : "center" }}>
+            {[
+              { step: "1", text: "Explore your PressureMap&#8482; zones to understand where you are most vulnerable", color: C.purple },
+              { step: "2", text: "Test improvements in the Simulator to see which changes have the most impact", color: C.teal },
+              { step: "3", text: "Track your actions on the Dashboard and watch your stability score climb", color: "#DC7814" },
+            ].map((s, i) => (
+              <div key={s.step} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), flex: 1 }}>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: `${s.color}10`, border: `1.5px solid ${s.color}25`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: s.color }}>{s.step}</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ ...T.meta, color: C.navy, margin: 0, lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: s.text }} />
+                </div>
+                {i < 2 && !mobile && <span style={{ fontSize: 18, color: C.light, flexShrink: 0, marginLeft: sp(1) }}>&rarr;</span>}
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
