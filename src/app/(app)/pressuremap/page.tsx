@@ -194,9 +194,9 @@ export default function PressureMapPage() {
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.purple }}>PressureMap&#8482;</span>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/dashboard" style={{ fontSize: 13, fontWeight: 500, color: B.teal, textDecoration: "none" }}>Dashboard</Link>
-          <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>Report</Link>
-          <Link href="/simulator" style={{ fontSize: 13, fontWeight: 500, color: B.purple, textDecoration: "none" }}>Simulator</Link>
+          <Link href="/tools" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Suite</Link>
+          <Link href="/simulator" style={{ fontSize: 13, fontWeight: 500, color: B.teal, textDecoration: "none" }}>Simulator</Link>
+          <Link href="/dashboard" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>Dashboard</Link>
         </div>
       </header>
 
@@ -204,7 +204,7 @@ export default function PressureMapPage() {
 
         {/* ── Hero ── */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>PRESSUREMAP&#8482; &mdash; YOUR FINANCIAL LANDSCAPE</div>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>RUNPAYWAY&#8482; STABILITY SUITE &mdash; PRESSUREMAP&#8482;</div>
           <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, marginBottom: 8, lineHeight: 1.2 }}>
             Where Your Income Is Vulnerable &mdash; And What To Do About It
           </h1>
@@ -337,10 +337,32 @@ export default function PressureMapPage() {
           </p>
         </div>
 
+        {/* ── Next step: Simulator ── */}
+        <div
+          onClick={() => router.push("/simulator")}
+          style={{
+            marginTop: 24, borderRadius: 12, overflow: "hidden", cursor: "pointer",
+            background: `linear-gradient(135deg, ${B.navy} 0%, #161430 50%, ${B.teal} 100%)`,
+            padding: mobile ? "18px 16px" : "20px 24px",
+            transition: "box-shadow 250ms ease, transform 250ms ease",
+          }}
+          onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 8px 28px rgba(31,109,122,0.25)"; el.style.transform = "translateY(-2px)"; }}
+          onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "none"; el.style.transform = "translateY(0)"; }}
+        >
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>NEXT STEP</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>Test these changes in the Stability Simulator</div>
+              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", margin: 0 }}>Model each scenario and see your score update in real time.</p>
+            </div>
+            <span style={{ fontSize: 24, color: "#F4F1EA", opacity: 0.7, flexShrink: 0, marginLeft: 16 }}>&rarr;</span>
+          </div>
+        </div>
+
         {/* ── Footer ── */}
         <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
           <p style={{ fontSize: 11, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
-            PressureMap&#8482; reflects current conditions applied to your structural profile. It does not affect your score. This is a proprietary financial diagnostic tool developed by PeopleStar Enterprises.
+            RunPayway&#8482; Stability Suite &mdash; PressureMap&#8482; reflects current conditions applied to your structural profile. A proprietary tool by PeopleStar Enterprises.
           </p>
         </div>
       </div>

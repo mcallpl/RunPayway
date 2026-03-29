@@ -212,8 +212,8 @@ export default function DashboardPage() {
           <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal }}>Dashboard</span>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
-          <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>Report</Link>
-          <Link href="/pressuremap" style={{ fontSize: 13, fontWeight: 500, color: B.purple, textDecoration: "none" }}>PressureMap</Link>
+          <Link href="/tools" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Suite</Link>
+          <Link href="/pressuremap" style={{ fontSize: 13, fontWeight: 500, color: B.muted, textDecoration: "none" }}>PressureMap</Link>
           <Link href="/simulator" style={{ fontSize: 13, fontWeight: 500, color: B.teal, textDecoration: "none" }}>Simulator</Link>
         </div>
       </header>
@@ -222,7 +222,7 @@ export default function DashboardPage() {
 
         {/* ══════════ SCORE HERO ══════════ */}
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>YOUR INCOME STABILITY DASHBOARD</div>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>RUNPAYWAY&#8482; STABILITY SUITE &mdash; DASHBOARD</div>
 
           <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, marginBottom: 8 }}>
             <span style={{ fontSize: mobile ? 56 : 72, fontWeight: 300, color: B.navy, lineHeight: 1, fontFamily: DISPLAY }}>{latestScore}</span>
@@ -441,7 +441,7 @@ export default function DashboardPage() {
         {/* ── Footer ── */}
         <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
           <p style={{ fontSize: 11, color: B.taupe, margin: 0, fontStyle: "italic" }}>
-            RunPayway&#8482; Dashboard &mdash; Track your progress toward financial resilience. A proprietary tool by PeopleStar Enterprises.
+            RunPayway&#8482; Stability Suite &mdash; Track your progress toward financial resilience. A proprietary tool by PeopleStar Enterprises.
           </p>
         </div>
       </div>

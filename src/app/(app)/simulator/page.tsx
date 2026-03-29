@@ -833,8 +833,9 @@ function SimulatorContent() {
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <Link href="/dashboard" style={{ fontSize: 12, fontWeight: 600, color: BRAND.teal, textDecoration: "none", letterSpacing: "0.02em" }}>Dashboard</Link>
-            <Link href="/pressuremap" style={{ fontSize: 12, fontWeight: 600, color: BRAND.purple, textDecoration: "none", letterSpacing: "0.02em" }}>PressureMap</Link>
+            <Link href="/tools" style={{ fontSize: 12, fontWeight: 600, color: BRAND.purple, textDecoration: "none", letterSpacing: "0.02em" }}>Suite</Link>
+            <Link href="/pressuremap" style={{ fontSize: 12, fontWeight: 500, color: BRAND.teal, textDecoration: "none", letterSpacing: "0.02em" }}>PressureMap</Link>
+            <Link href="/dashboard" style={{ fontSize: 12, fontWeight: 500, color: T.textMuted, textDecoration: "none", letterSpacing: "0.02em" }}>Dashboard</Link>
             <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
             <span style={{ fontSize: 13, color: T.textMuted, fontWeight: 500, letterSpacing: "0.01em" }}>{[userName, industry].filter(Boolean).join(" \u00B7 ")}</span>
             <div style={{ width: 1, height: 16, background: T.borderSubtle }} />
@@ -843,9 +844,9 @@ function SimulatorContent() {
         </div>
       </header>
 
-      {/* Floating "View Report" side link */}
+      {/* Floating side link — Suite */}
       <Link
-        href="/pressuremap"
+        href="/tools"
         className="sim-view-report"
         style={{
           position: "fixed",
@@ -872,7 +873,7 @@ function SimulatorContent() {
         onMouseEnter={(e) => { e.currentTarget.style.color = BRAND.purple; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.15)"; }}
         onMouseLeave={(e) => { e.currentTarget.style.color = T.textSecondary; e.currentTarget.style.backgroundColor = "rgba(75,63,174,0.08)"; }}
       >
-        PressureMap&#8482; &#8594;
+        Suite &#8594;
       </Link>
       <Link
         href="/review"
@@ -1558,9 +1559,27 @@ function SimulatorContent() {
         </div>
       )}
 
+      {/* ══════════ NEXT STEP: DASHBOARD ══════════ */}
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 28px 40px" }}>
+        <Link href="/dashboard" style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "18px 24px", borderRadius: 12, textDecoration: "none",
+          background: `linear-gradient(135deg, rgba(220,120,20,0.08) 0%, rgba(220,120,20,0.04) 100%)`,
+          border: "1px solid rgba(220,120,20,0.15)",
+          transition: "box-shadow 250ms ease, transform 250ms ease",
+        }}>
+          <div>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#DC7814", marginBottom: 4 }}>NEXT STEP</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 2 }}>Track your progress on the Dashboard</div>
+            <p style={{ fontSize: 12, color: T.textMuted, margin: 0 }}>Check off actions, earn badges, and watch your score climb over time.</p>
+          </div>
+          <span style={{ fontSize: 24, color: "#DC7814", opacity: 0.7, flexShrink: 0, marginLeft: 16 }}>&rarr;</span>
+        </Link>
+      </div>
+
       {/* ══════════ FOOTER ══════════ */}
       <footer className="sim-footer" style={{ borderTop: `1px solid ${T.border}`, padding: "20px 36px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Income Stability Score&#8482; &middot; Model RP-2.0</span>
+        <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>RunPayway&#8482; Stability Suite &middot; Model RP-2.0</span>
         <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Deterministic &middot; Fixed Rules &middot; Versioned</span>
       </footer>
     </div>

@@ -1027,35 +1027,39 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* ── STABILITY SUITE CTA — LINK TO TOOLS HUB ── */}
+        {/* ── STABILITY SUITE CTA — direct to PressureMap (first step) ── */}
         <div
-          onClick={() => router.push("/tools")}
-          style={{ ...cardStyle, marginTop: 12, borderLeft: `3px solid ${B.purple}`, background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, cursor: "pointer", transition: "box-shadow 200ms ease" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(75,63,174,0.12)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+          onClick={() => router.push("/pressuremap")}
+          style={{
+            marginTop: 14, borderRadius: 8, overflow: "hidden", cursor: "pointer",
+            background: `linear-gradient(135deg, ${B.navy} 0%, #161430 50%, ${B.purple} 100%)`,
+            padding: mobile ? "20px 16px" : "22px 24px",
+            transition: "box-shadow 250ms ease, transform 250ms ease",
+          }}
+          onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 8px 28px rgba(75,63,174,0.25)"; el.style.transform = "translateY(-2px)"; }}
+          onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "none"; el.style.transform = "translateY(0)"; }}
         >
+          <div style={{ ...T.overline, color: B.teal, marginBottom: 8, letterSpacing: "0.14em", fontSize: 10 }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ ...T.sectionLabel, color: B.purple, marginBottom: 4 }}>RunPayway&#8482; Stability Suite</div>
-              <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.5 }}>
-                Access your premium tools — PressureMap&#8482;, Stability Simulator, and Progress Dashboard — to take action on this report.
+              <div style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>See exactly where your income is vulnerable</div>
+              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.55)", margin: 0, lineHeight: 1.5 }}>
+                Open your PressureMap&#8482; to explore your risk zones, then model fixes in the Simulator and track progress on your Dashboard.
               </p>
             </div>
-            <div style={{ fontSize: 24, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
+            <div style={{ fontSize: 24, color: "#F4F1EA", flexShrink: 0, marginLeft: 16, opacity: 0.7 }}>&rarr;</div>
           </div>
-          <div style={{ display: "flex", gap: 12, marginTop: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.purple }} />
-              <span style={{ ...T.meta, color: B.taupe }}>PressureMap</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.teal }} />
-              <span style={{ ...T.meta, color: B.taupe }}>Simulator</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: "#DC7814" }} />
-              <span style={{ ...T.meta, color: B.taupe }}>Dashboard</span>
-            </div>
+          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+            {[
+              { label: "PressureMap&#8482;", color: B.purple, active: true },
+              { label: "Simulator", color: B.teal, active: false },
+              { label: "Dashboard", color: "#DC7814", active: false },
+            ].map((t) => (
+              <div key={t.label} style={{ display: "flex", alignItems: "center", gap: 4, padding: "3px 10px", borderRadius: 20, backgroundColor: t.active ? "rgba(244,241,234,0.12)" : "rgba(244,241,234,0.05)", border: `1px solid rgba(244,241,234,${t.active ? "0.18" : "0.06"})` }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: t.color }} />
+                <span style={{ fontSize: 10, fontWeight: 600, color: t.active ? "#F4F1EA" : "rgba(244,241,234,0.45)" }} dangerouslySetInnerHTML={{ __html: t.label }} />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -1460,7 +1464,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="/tools" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>Stability Suite</a>
+            <a href="/tools" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Stability Suite</a>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}

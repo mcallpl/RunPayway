@@ -200,7 +200,7 @@ export default function ToolsHubPage() {
           <div style={{ display: "flex", alignItems: "center", gap: sp(2) }}>
             <Image src={logoWhite} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.95 }} />
             <div style={{ width: 1, height: 24, background: "rgba(244,241,234,0.15)" }} />
-            <span style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const }}>Stability Suite</span>
+            <span style={{ ...T.label, color: C.teal, textTransform: "uppercase" as const }}>RunPayway&#8482; Stability Suite</span>
           </div>
           <Link href="/review" style={{ ...T.meta, color: "rgba(244,241,234,0.55)", textDecoration: "none" }}>&larr; Back to Report</Link>
         </header>
