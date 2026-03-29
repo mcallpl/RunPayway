@@ -214,8 +214,9 @@ export default function ToolsHubPage() {
           </h1>
 
           <p style={{ ...bodyLg(mobile), color: "rgba(244,241,234,0.60)", maxWidth: 560, margin: `0 auto ${sp(4)}px`, letterSpacing: "-0.01em" }}>
-            {userName ? `${userName}, three` : "Three"} powerful tools designed exclusively for RunPayway&#8482; report customers.
-            Understand your risks. Model improvements. Track your progress.
+            {score !== null
+              ? `${userName ? `${userName}, your` : "Your"} report unlocked three premium tools built to transform your score from insight into action. Each one is pre-loaded with your data.`
+              : "Three premium tools that turn your Income Stability Report into a living action plan. Get your report to unlock personalized access."}
           </p>
 
           {/* Score bar */}
@@ -273,51 +274,72 @@ export default function ToolsHubPage() {
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: sp(2.5), marginBottom: sp(5) }}>
             <ToolCard
               mobile={mobile}
-              href="/pressuremap"
+              href={score !== null ? "/pressuremap" : "/pricing"}
               color={C.purple}
               number="1"
               title="PressureMap&#8482;"
-              subtitle="See exactly where your income is vulnerable and what action to take for each risk zone."
+              subtitle="Your income is not equally vulnerable everywhere. PressureMap reveals the exact fault lines — the specific areas where one disruption could cascade into real financial pressure. Stop guessing where you are exposed. See it mapped out, zone by zone, with the precise action to fix each one."
               features={[
-                "3 interactive risk zones (Red, Yellow, Green)",
-                "Specific recommendations per zone",
-                "Score impact preview for each action",
-                "Direct link to test changes in the Simulator",
+                "3 interactive zones: Red (critical), Yellow (moderate), Green (protected)",
+                "AI-powered recommendations tailored to your industry and income model",
+                "Live score preview showing exactly how each fix impacts your number",
+                "One-click launch into the Simulator to test before you commit",
               ]}
-              cta="Explore Your Risk Zones &rarr;"
+              cta={score !== null ? "Explore Your Risk Zones &rarr;" : "Get Your Report to Unlock &rarr;"}
               recommended
             />
             <ToolCard
               mobile={mobile}
-              href="/simulator"
+              href={score !== null ? "/simulator" : "/pricing"}
               color={C.teal}
               number="2"
               title="Stability Simulator"
-              subtitle="Model what-if scenarios and see exactly how each change would impact your stability score."
+              subtitle="What would happen if you secured a retainer? Added a new client? Shifted 20% of income to passive? The Simulator answers these questions instantly — pre-loaded with your actual assessment data. No guesswork. Just clear, real-time projections of what each structural change would do to your score."
               features={[
-                "Real-time score updates as you adjust",
-                "Pre-built scenarios ranked by impact",
-                "3, 6, and 12-month projections",
-                "Stress test your income structure",
+                "Score updates in real time as you drag each slider",
+                "6 pre-built scenarios ranked by effort, speed, and impact",
+                "Forward projections at 3, 6, and 12 months with compounding effects",
+                "Built-in stress tests: what happens if you lose your top client or can't work for 90 days",
               ]}
-              cta="Launch Simulator &rarr;"
+              cta={score !== null ? "Launch Simulator &rarr;" : "Get Your Report to Unlock &rarr;"}
             />
             <ToolCard
               mobile={mobile}
-              href="/dashboard"
+              href={score !== null ? "/dashboard" : "/pricing"}
               color="#DC7814"
               number="3"
               title="Progress Dashboard"
-              subtitle="Track your improvement over time with action tracking, achievement badges, and score history."
+              subtitle="Knowing your score is step one. Improving it is the journey. The Dashboard turns your report's recommendations into a trackable action plan — complete with check-off items, achievement badges, streak tracking, and a visual record of every assessment you have taken. Watch your score climb over time."
               features={[
-                "Action checklist with completion tracking",
-                "Score history across assessments",
-                "Achievement badges and daily streaks",
-                "Goal progress toward next band",
+                "Personalized action checklist pulled from your report's recommendations",
+                "Score history chart across multiple assessments",
+                "12 achievement badges earned by taking real action",
+                "Daily visit streaks and goal progress toward the next stability band",
               ]}
-              cta="View Your Progress &rarr;"
+              cta={score !== null ? "View Your Progress &rarr;" : "Get Your Report to Unlock &rarr;"}
             />
           </div>
+
+          {/* Non-customer CTA */}
+          {score === null && (
+            <div style={{ textAlign: "center", padding: `${sp(5)}px ${sp(3)}px`, borderRadius: 16, background: `linear-gradient(135deg, rgba(75,63,174,0.06) 0%, rgba(31,109,122,0.04) 100%)`, border: `1px solid ${C.border}`, marginBottom: sp(4) }}>
+              <div style={{ ...T.label, color: C.purple, textTransform: "uppercase" as const, marginBottom: sp(2) }}>UNLOCK YOUR STABILITY SUITE</div>
+              <h2 style={{ ...h2(mobile), color: C.navy, marginBottom: sp(1.5) }}>Get Your Income Stability Report</h2>
+              <p style={{ ...body(mobile), color: C.muted, maxWidth: 480, margin: `0 auto ${sp(3)}px`, lineHeight: 1.65 }}>
+                Your report generates a personalized access code that pre-loads all three tools with your data. No generic advice — every recommendation, simulation, and action step is built from your specific income structure.
+              </p>
+              <Link href="/pricing" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: 52, padding: "0 36px", borderRadius: 12,
+                background: `linear-gradient(135deg, ${C.navy} 0%, ${C.purple} 100%)`,
+                color: C.white, ...T.cta, letterSpacing: "-0.01em",
+                boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
+                textDecoration: "none",
+              }}>
+                Get Started &mdash; $149 &rarr;
+              </Link>
+            </div>
+          )}
 
           {/* Recommended flow */}
           <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, boxShadow: "0 1px 3px rgba(14,26,43,0.04)", marginBottom: sp(4) }}>
