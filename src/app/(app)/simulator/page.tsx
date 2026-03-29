@@ -1354,7 +1354,7 @@ function SimulatorContent() {
                         borderRadius: 8,
                         border: `1px solid ${scriptCopied === script.id ? BRAND.teal : T.border}`,
                         cursor: "pointer",
-                        backgroundColor: scriptCopied === script.id ? BRAND.tealGlow : T.surface,
+                        backgroundColor: scriptCopied === script.id ? `${BRAND.teal}10` : T.surface,
                         transition: "all 200ms ease",
                       }}
                     >
