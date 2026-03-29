@@ -258,7 +258,7 @@ function footer(doc: jsPDF, section: string, page: number) {
   doc.line(ML, 740, ML + CW, 740);
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
   doc.text(S(`Confidential - ${section}`), ML, YF);
-  doc.text(`Page ${page} of 4`, CX, YF, { align: "center" });
+  doc.text(`Page ${page} of 3`, CX, YF, { align: "center" });
   doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
@@ -333,8 +333,11 @@ function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── SUBTITLE ──
   y += 20;
+  sf(doc, "InterSB"); doc.setFontSize(14); doc.setTextColor("#1F6D7A");
+  doc.text("Your Path to Financial Resilience", ML, y);
+  y += 16;
   sf(doc, "Inter"); doc.setFontSize(10.5); doc.setTextColor("#535D6B");
-  doc.text("A structural assessment of income resilience", ML, y);
+  doc.text("Your Personalized Income Stability Score", ML, y);
 
   // ── THIN LINE ──
   y += 20;
@@ -361,7 +364,13 @@ function page1(doc: jsPDF, d: ReportPDFData) {
   doc.setFillColor(d.bandColor);
   doc.rect(ML + CW - 4, scoreBlockY + 42, 4, 4, "F");
   sf(doc, "InterSB"); doc.setFontSize(11); doc.setTextColor(d.bandColor);
-  doc.text(S(d.stabilityBand), ML + CW, scoreBlockY + 56, { align: "right" });
+  doc.text(S(`Stability Level: ${d.stabilityBand}`), ML + CW, scoreBlockY + 56, { align: "right" });
+
+  // Improvement potential
+  if (d.nextBandName) {
+    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#1F6D7A");
+    doc.text(S(`Improvement Potential: ${d.distanceToNext} points to ${d.nextBandName} Stability`), ML + CW, scoreBlockY + 68, { align: "right" });
+  }
 
   // ── BAND DESCRIPTION ──
   y += 32;
@@ -397,369 +406,276 @@ function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── FOOTER ──
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
-  doc.text("Model RP-2.0  -  4 Pages  -  Confidential", ML, YF);
+  doc.text("Model RP-2.0  -  3 Pages  -  Confidential", ML, YF);
   doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
 /* ================================================================== */
-/*  PAGE 2 — SCORE & DIAGNOSIS                                        */
+/*  PAGE 2 — KEY FINDINGS                                              */
 /* ================================================================== */
 
 function page2(doc: jsPDF, d: ReportPDFData) {
   header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  // Page title — score is in header, so start with section title
+  // Page title
   sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
-  doc.text("Score & Structural Diagnosis", ML, y);
+  doc.text("Key Findings & Financial Landscape", ML, y);
 
-  // Name + date + band on one line
   y += 18;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
-  const metaLine = `${S(d.assessmentTitle)} - ${S(d.formalDate)} - ${S(d.stabilityBand)}${d.nextBandName ? ` - ${d.distanceToNext} points from ${d.nextBandName}` : ""}`;
+  const metaLine = `${S(d.assessmentTitle)} - ${S(d.formalDate)} - Stability Level: ${S(d.stabilityBand)}${d.nextBandName ? ` - ${d.distanceToNext} points to ${d.nextBandName}` : ""}`;
   doc.text(metaLine, ML, y);
 
   y += 16;
 
-  // Diagnostic card
-  const diagH = mh(doc, d.diagnosticSentence, CW - 28, 11, "InterM") + 16;
-  check(y, diagH, "P2-diag");
-  card(doc, ML, y, CW, diagH, "#0E1A2B");
-  dt(doc, d.diagnosticSentence, ML + 14, y + 12, CW - 28, 11, { font: "InterM" });
-  y += diagH + 12;
+  // Key Takeaway card
+  const ktH = mh(doc, d.diagnosticSentence, CW - 28, 11, "InterM") + 28;
+  check(y, ktH, "P2-kt");
+  card(doc, ML, y, CW, ktH, "#4B3FAE");
+  label(doc, "KEY TAKEAWAY", ML + 10, y + 12, "#4B3FAE");
+  dt(doc, d.diagnosticSentence, ML + 14, y + 24, CW - 28, 11, { font: "InterM" });
+  y += ktH + 12;
 
-  // Plain English card — cap at 6 lines
-  const peH = Math.min(mh(doc, d.plainEnglish, CW - 28, 10.5), 6 * 10.5 * 1.45) + 24;
-  check(y, peH, "P2-pe");
-  card(doc, ML, y, CW, peH);
-  label(doc, "IN PLAIN ENGLISH", ML + 10, y + 12);
-  dt(doc, d.plainEnglish, ML + 10, y + 24, CW - 28, 10.5, { maxLines: 6 });
-  y += peH + 12;
+  // In Plain English — Good News / Bad News
+  label(doc, "IN PLAIN ENGLISH", ML, y);
+  y += 14;
 
-  // Constraint card — use cleanConstraint for text, truncate for columns
-  const ctH = 72;
-  check(y, ctH, "P2-constraint");
-  card(doc, ML, y, CW, ctH, "#4B3FAE");
-  label(doc, "PRIMARY STRUCTURAL CONSTRAINT", ML + 10, y + 12, "#4B3FAE");
-  dt(doc, cleanConstraint(d.dominantConstraintText), ML + 10, y + 24, CW - 28, 10.5);
+  // Good News
+  label(doc, "THE GOOD NEWS", ML + 10, y, "#1F6D7A");
+  y += 12;
+  y = dt(doc, d.plainEnglish, ML + 10, y, CW - 20, 10, { maxLines: 3 });
+  y += 8;
 
-  // Two columns inside constraint card
-  const colW = (CW - 36) / 2;
-  sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#6B6155");
-  doc.text("Highest-leverage change", ML + 10, y + 44);
-  doc.text("Projected effect", ML + 10 + colW + 16, y + 44);
-  sf(doc, "Inter"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-  doc.text(truncate(cleanConstraint(d.whatToChangeFirst), 60), ML + 10, y + 56);
-  doc.text(truncate(d.whatThatWouldDo, 40), ML + 10 + colW + 16, y + 56);
-  y += ctH + 12;
+  // Bad News
+  label(doc, "THE BAD NEWS", ML + 10, y, "#9B2C2C");
+  y += 12;
+  y = dt(doc, d.dominantConstraintText, ML + 10, y, CW - 20, 10, { maxLines: 3 });
+  y += 12;
 
-  // Distance card
-  if (d.nextBandName) {
-    const distH = 52;
-    check(y, distH, "P2-dist");
-    card(doc, ML, y, CW, distH);
-    label(doc, "DISTANCE TO STRONGER STABILITY", ML + 10, y + 12, "#1F6D7A");
-    sf(doc, "InterB"); doc.setFontSize(20); doc.setTextColor("#0E1A2B");
-    doc.text(String(d.distanceToNext), ML + 10, y + 32);
-    const nw = doc.getTextWidth(String(d.distanceToNext));
-    sf(doc, "Inter"); doc.setFontSize(10.5); doc.setTextColor("#0E1A2B");
-    doc.text(S(` points to ${d.nextBandName} Stability`), ML + 10 + nw, y + 32);
-    // Bar
-    const bw = CW - 20;
-    const fill = Math.min(1, d.score / 100);
-    doc.setFillColor(d.bandColor); doc.roundedRect(ML + 10, y + 40, bw * fill, 4, 2, 2, "F");
-    doc.setFillColor("#E2E0DB"); doc.roundedRect(ML + 10 + bw * fill, y + 40, bw * (1 - fill), 4, 2, 2, "F");
-    y += distH;
+  // PressureMap
+  if (d.pressureMap) {
+    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+    doc.line(ML, y, ML + CW, y);
+    y += 12;
+
+    sf(doc, "InterB"); doc.setFontSize(11); doc.setTextColor("#0E1A2B");
+    doc.text("PressureMap(TM): Your Financial Landscape", ML, y);
+    y += 14;
+
+    // Red zone
+    doc.setFillColor("#DC4A4A"); doc.rect(ML, y - 4, 8, 8, "F");
+    label(doc, "RED ZONES", ML + 14, y, "#DC4A4A");
+    y += 10;
+    const trunc2 = (t: string) => { const s = t.split(/\.\s+/); return s.slice(0, 2).join(". ") + "."; };
+    y = dt(doc, trunc2(d.pressureMap.pressure), ML + 14, y, CW - 24, 9, { maxLines: 2 });
+    y += 6;
+
+    // Yellow zone
+    doc.setFillColor("#D4A017"); doc.rect(ML, y - 4, 8, 8, "F");
+    label(doc, "YELLOW ZONES", ML + 14, y, "#92640A");
+    y += 10;
+    y = dt(doc, "Moderate risks that need attention before they grow.", ML + 14, y, CW - 24, 9);
+    y += 6;
+
+    // Green zone
+    doc.setFillColor("#1F6D7A"); doc.rect(ML, y - 4, 8, 8, "F");
+    label(doc, "GREEN ZONES", ML + 14, y, "#1F6D7A");
+    y += 10;
+    y = dt(doc, trunc2(d.pressureMap.tailwind), ML + 14, y, CW - 24, 9, { maxLines: 2 });
+    y += 6;
+
+    // Leverage move
+    label(doc, "HIGHEST-LEVERAGE MOVE", ML, y, "#4B3FAE");
+    y += 10;
+    y = dt(doc, trunc2(d.pressureMap.leverageMove), ML, y, CW, 9.5, { font: "InterSB", maxLines: 2 });
+    y += 8;
+
+    sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#6B6155");
+    doc.text("PressureMap(TM) reflects structural inputs only. Powered by RunPayway(TM) proprietary analysis.", ML, y);
   }
 
-  footer(doc, "Score & Diagnosis", 2);
+  footer(doc, "Key Findings", 2);
 }
 
 /* ================================================================== */
-/*  PAGE 3 — PRESSUREMAP + INCOME STRUCTURE                            */
+/*  PAGE 3 — STABILITY PLAN + ROADMAP                                  */
 /* ================================================================== */
 
 function page3(doc: jsPDF, d: ReportPDFData) {
   header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  // PressureMap
-  if (d.pressureMap) {
-    label(doc, "PRESSUREMAP(TM)", ML, y, "#1F6D7A");
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-    doc.text(S(`${d.pressureMap.operatingStructure} - ${d.pressureMap.incomeModel} - ${d.pressureMap.industry}`), ML + 100, y);
-    y += 16;
-
-    // Truncate pressure map text to max 2 sentences each
-    const trunc = (t: string) => { const s = t.split(/\.\s+/); return s.slice(0, 2).join(". ") + (s.length > 0 ? "." : ""); };
-
-    label(doc, "WHAT IS MOST LIKELY TO DISRUPT STABILITY", ML, y, "#9B2C2C");
-    y += 12;
-    y = dt(doc, trunc(d.pressureMap.pressure), ML, y, CW, 9.5, { color: "#0E1A2B" });
-    y += 12;
-
-    label(doc, "WHAT IS WORKING IN YOUR FAVOR", ML, y, "#1F6D7A");
-    y += 12;
-    y = dt(doc, trunc(d.pressureMap.tailwind), ML, y, CW, 9.5, { color: "#0E1A2B" });
-    y += 12;
-
-    label(doc, "HIGHEST-LEVERAGE MOVE RIGHT NOW", ML, y, "#4B3FAE");
-    y += 12;
-    y = dt(doc, trunc(d.pressureMap.leverageMove), ML, y, CW, 9.5, { color: "#0E1A2B" });
-    y += 8;
-
-    sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#6B6155");
-    doc.text("PressureMap reflects structural inputs only and is not financial advice.", ML, y);
-    y += 12;
-
-    // Divider
-    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-    doc.line(ML, y, ML + CW, y);
-    y += 12;
-  }
-
-  // Killer line
-  const klH = mh(doc, d.killerLine, CW - 28, 10.5, "InterM") + 16;
-  check(y, klH, "P3-killer");
-  card(doc, ML, y, CW, klH, "#0E1A2B");
-  dt(doc, d.killerLine, ML + 14, y + 10, CW - 28, 10.5, { font: "InterM" });
-  y += klH + 12;
-
-  // Income heading
-  sf(doc, "InterB"); doc.setFontSize(12.5); doc.setTextColor("#0E1A2B");
-  doc.text("HOW YOUR INCOME BREAKS DOWN", ML, y);
+  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
+  doc.text("Your RunPayway(TM) Stability Plan", ML, y);
+  y += 14;
+  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
+  doc.text("Take Action Now to Secure Your Future", ML, y);
   y += 16;
 
-  // Bar
-  const bh = 5;
-  if (d.activeIncome > 0) { doc.setFillColor("#0E1A2B"); doc.rect(ML, y, CW * d.activeIncome / 100, bh, "F"); }
-  if (d.semiPersistentIncome > 0) { doc.setFillColor("#6B6155"); doc.rect(ML + CW * d.activeIncome / 100, y, CW * d.semiPersistentIncome / 100, bh, "F"); }
-  if (d.persistentIncome > 0) { doc.setFillColor("#1F6D7A"); doc.rect(ML + CW * (d.activeIncome + d.semiPersistentIncome) / 100, y, CW * d.persistentIncome / 100, bh, "F"); }
-  y += bh + 8;
-
-  // Legend
-  const leg = [
-    { c: "#0E1A2B", t: `${d.activeIncome}% - Active. Stops when work stops.` },
-    { c: "#6B6155", t: `${d.semiPersistentIncome}% - Semi-persistent. Continues briefly.` },
-    { c: "#1F6D7A", t: `${d.persistentIncome}% - Persistent. Continues without daily work.` },
-  ];
-  for (const l of leg) {
-    doc.setFillColor(l.c); doc.rect(ML, y - 5, 7, 7, "F");
-    sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-    doc.text(S(l.t), ML + 12, y); y += 12;
+  // Action steps — max 3
+  const stepColors = ["#4B3FAE", "#1F6D7A", "#0E1A2B"];
+  const actions = d.actionCategories.slice(0, 3);
+  for (let i = 0; i < actions.length; i++) {
+    const a = actions[i];
+    const h = 50;
+    check(y, h, `P3-step${i}`);
+    card(doc, ML, y, CW, h, stepColors[i]);
+    label(doc, `STEP ${i + 1}`, ML + 10, y + 10, stepColors[i]);
+    sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
+    doc.text(truncate(a.title, 70), ML + 10, y + 22);
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+    doc.text(truncate(a.how, 90), ML + 10, y + 34);
+    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1F6D7A");
+    doc.text(S(`Impact: ${a.scoreChange}`), ML + 10, y + 44);
+    y += h + 6;
   }
-  y += 4;
 
-  // Two impact cards side by side — 52pt each
-  const cw2 = (CW - 12) / 2;
-  check(y, 52, "P3-impact");
-
-  card(doc, ML, y, cw2, 52);
-  label(doc, "IF BIGGEST SOURCE GOES AWAY", ML + 8, y + 12);
-  sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
-  doc.text(`${d.score} to ${d.riskScenarioScore}`, ML + 8, y + 30);
-  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text(S(`-${d.riskScenarioDrop} points`), ML + 8, y + 42);
-
-  const rx = ML + cw2 + 12;
-  card(doc, rx, y, cw2, 52);
-  label(doc, "IF YOU STOP WORKING ENTIRELY", rx + 8, y + 12);
-  sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
-  doc.text(S(d.continuityDisplay), rx + 8, y + 30);
-  sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text(truncate(d.continuityText, 50), rx + 8, y + 42);
-  y += 52 + 12;
+  // Combined lift
+  if (d.combinedLift) {
+    y += 4;
+    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
+    const cText = `Combined Impact: ${d.combinedLift.projectedScore} (+${d.combinedLift.lift} points)${d.combinedLift.bandShift ? ` - moves to ${d.combinedLift.bandShift}` : ""}`;
+    doc.text(S(cText), ML, y);
+    y += 16;
+  }
 
   // Divider
   doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-  doc.line(ML, y, ML + CW, y); y += 8;
+  doc.line(ML, y, ML + CW, y); y += 12;
 
-  // Factor cards — max 2, 40pt each
-  const factors = d.rankedFactors.slice(0, 2);
-  for (const f of factors) {
-    check(y, 40, "P3-factor");
-    card(doc, ML, y, CW, 40, f.roleColor);
-    sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#6B6155");
-    doc.text(S(f.role), ML + 10, y + 10);
-    sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-    doc.text(S(f.label), ML + 10, y + 22);
-    sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor(f.levelColor);
-    doc.text(S(f.level), ML + CW - 10, y + 22, { align: "right" });
-    // Bar
-    doc.setFillColor(f.roleColor); doc.roundedRect(ML + 10, y + 28, (CW - 20) * f.normalizedValue, 3, 1, 1, "F");
-    doc.setFillColor("#E2E0DB"); doc.roundedRect(ML + 10 + (CW - 20) * f.normalizedValue, y + 28, (CW - 20) * (1 - f.normalizedValue), 3, 1, 1, "F");
-    y += 40 + 8;
+  // Roadmap
+  label(doc, "YOUR PERSONALIZED ROADMAP", ML, y, "#4B3FAE");
+  y += 14;
+  sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
+  doc.text("Commit to Your Financial Future", ML, y);
+  y += 14;
+
+  for (const row of d.roadmap.slice(0, 4)) {
+    if (y + 22 > YL) break;
+    sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor("#4B3FAE");
+    doc.text(truncate(row.week, 12), ML, y);
+    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
+    doc.text(truncate(row.action, 50), ML + 60, y);
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
+    doc.text(truncate(row.detail, 75), ML + 60, y + 10);
+    if (row.target) {
+      sf(doc, "InterSB"); doc.setFontSize(7.5); doc.setTextColor("#1F6D7A");
+      doc.text(S(`Goal: ${truncate(row.target, 60)}`), ML + 60, y + 19);
+    }
+    y += row.target ? 26 : 22;
   }
 
-  // Working / Holding back — two columns — always render both cards
-  if (y + 40 <= YL) {
-    const colW2 = (CW - 12) / 2;
-
-    // Left card: What's Working — always rendered
-    card(doc, ML, y, colW2, 40);
-    label(doc, "WHAT'S WORKING", ML + 8, y + 10, "#1F6D7A");
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-    if (d.strongestSupports.length > 0) {
-      doc.text(truncate(d.strongestSupports[0] || "", 65), ML + 8, y + 24);
-      if (d.strongestSupports[1]) doc.text(truncate(d.strongestSupports[1], 65), ML + 8, y + 34);
-    } else {
-      doc.text("No data", ML + 8, y + 24);
-    }
-
-    // Right card: What's Holding You Back — always rendered
-    card(doc, ML + colW2 + 12, y, colW2, 40);
-    label(doc, "WHAT'S HOLDING YOU BACK", ML + colW2 + 20, y + 10, "#9B2C2C");
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-    if (d.strongestSuppressors.length > 0) {
-      doc.text(truncate(d.strongestSuppressors[0] || "", 65), ML + colW2 + 20, y + 24);
-      if (d.strongestSuppressors[1]) doc.text(truncate(d.strongestSuppressors[1], 65), ML + colW2 + 20, y + 34);
-    } else {
-      doc.text("No data", ML + colW2 + 20, y + 24);
+  // Avoid actions
+  if (d.avoidActions.length > 0 && y + 30 <= YL) {
+    y += 4;
+    label(doc, "WHAT TO AVOID", ML, y, "#9B2C2C");
+    y += 10;
+    for (const a of d.avoidActions.slice(0, 2)) {
+      sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+      doc.text(S(`- ${truncate(a, 90)}`), ML, y);
+      y += 10;
     }
   }
 
-  footer(doc, "Income Structure", 3);
+  footer(doc, "Stability Plan", 3);
 }
 
 /* ================================================================== */
-/*  PAGE 4 — FRAGILITY + ACTION PLAN                                   */
-/*  Budget: 628pt. Every pt accounted for.                             */
+/*  PAGE 4 — STRESS TEST + VALUE                                       */
 /* ================================================================== */
 
 function page4(doc: jsPDF, d: ReportPDFData) {
   header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  // Fragility intro — 34pt
   sf(doc, "InterB"); doc.setFontSize(12.5); doc.setTextColor("#0E1A2B");
-  doc.text("FRAGILITY & PRESSURE TEST", ML, y);
-  y += 12;
-  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text(truncate(d.fragilityDiagnostic, 100), ML, y);
+  doc.text("Stress Testing + Real-World Impact", ML, y);
   y += 14;
-  // If diagnostic is longer, add second line
-  if (d.fragilityDiagnostic.length > 100) {
-    const remaining = S(d.fragilityDiagnostic).substring(100);
-    doc.text(truncate(remaining, 100), ML, y);
-    y += 12;
-  }
+  sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
+  doc.text("PressureMap(TM): Test Your Money Safety", ML, y);
+  y += 16;
 
-  // 3 disruption rows — ~120pt total (40pt each)
-  label(doc, "RANKED BY DAMAGE", ML, y);
-  y += 12;
+  // 3 scenario cards with risk + solution
   const scenarios = d.scenarios.slice(0, 3);
-  const sBorders = ["#9B2C2C", "#92640A", "#E2E0DB"];
+  const sBorders = ["#9B2C2C", "#92640A", "#0E1A2B"];
   for (let i = 0; i < scenarios.length; i++) {
     const sc = scenarios[i];
-    check(y, 36, `P4-sc${i}`);
-    card(doc, ML, y, CW, 36, sBorders[i]);
-    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(cleanTitle(sc.title), 55), ML + 10, y + 14);
-    sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-    doc.text(`${sc.originalScore} to ${sc.scenarioScore} (-${sc.scoreDrop})`, ML + CW - 10, y + 14, { align: "right" });
+    const h = 48;
+    check(y, h, `P4-sc${i}`);
+    card(doc, ML, y, CW, h, sBorders[i]);
+    label(doc, `SCENARIO ${i + 1}: ${truncate(cleanTitle(sc.title), 45).toUpperCase()}`, ML + 10, y + 10, sBorders[i]);
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
+    doc.text(S(`Risk: Score drops by ${sc.scoreDrop} points (${sc.originalScore} to ${sc.scenarioScore})`), ML + 10, y + 22);
     if (sc.bandShift) {
-      sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#9B2C2C");
-      doc.text(S(`Drops to ${sc.scenarioBand}`), ML + CW - 10, y + 26, { align: "right" });
+      sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#9B2C2C");
+      doc.text(S(`Drops from ${sc.originalBand} to ${sc.scenarioBand}`), ML + 10, y + 32);
     }
-    y += 36 + 6;
+    if (sc.narrative) {
+      sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#1F6D7A");
+      doc.text(truncate(sc.narrative, 85), ML + 10, y + (sc.bandShift ? 42 : 34));
+    }
+    y += h + 6;
   }
 
-  // Absorbency — 52pt — use truncate instead of substring
-  check(y, 52, "P4-absorb");
-  card(doc, ML, y, CW, 52);
-  label(doc, "HOW MUCH CAN YOUR INCOME ABSORB?", ML + 10, y + 12);
+  // Absorbency
+  check(y, 44, "P4-absorb");
+  card(doc, ML, y, CW, 44);
+  label(doc, "HOW MUCH CAN YOUR INCOME ABSORB?", ML + 10, y + 10);
   sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor(d.fragilityColor);
-  doc.text(truncate(d.fragilityLabel, 60), ML + 10, y + 26);
+  doc.text(truncate(d.fragilityLabel, 60), ML + 10, y + 22);
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text(truncate(d.fragilityText, 80), ML + 10, y + 38);
-  if (d.failureMode) doc.text(truncate(`Failure mode: ${d.failureMode}`, 70), ML + 10, y + 48);
-  y += 52 + 8;
+  doc.text(truncate(d.fragilityText, 80), ML + 10, y + 34);
+  y += 44 + 8;
 
-  // Divider
-  doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-  doc.line(ML, y, ML + CW, y); y += 8;
-
-  // Action plan header — 20pt
-  label(doc, "ACTION PLAN", ML, y, "#1F6D7A");
-  y += 12;
-
-  // Action cards — max 2, ~36pt each = 72pt + gaps
-  const actions = d.actionCategories.slice(0, 2);
-  for (const a of actions) {
-    check(y, 36, "P4-action");
-    card(doc, ML, y, CW, 36);
-    sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor(a.tagColor);
-    doc.text(S(a.tag), ML + 10, y + 10);
-    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(a.title, 60), ML + 10, y + 22);
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#1F6D7A");
-    doc.text(S(a.scoreChange), ML + CW - 10, y + 22, { align: "right" });
-    y += 36 + 6;
-  }
-
-  // Combined lift — single line
-  if (d.combinedLift) {
-    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-    const cText = `Combined effect: ${d.combinedLift.projectedScore} (+${d.combinedLift.lift} points)${d.combinedLift.bandShift ? ` - moves to ${d.combinedLift.bandShift}` : ""}`;
-    doc.text(S(cText), ML, y);
-    y += 12;
-  }
-
-  // Tradeoff — 70pt max — use truncate instead of substring
-  if (d.tradeoff && y + 70 <= YL) {
-    check(y, 70, "P4-trade");
-    card(doc, ML, y, CW, 70);
-    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(d.tradeoff.actionLabel, 50), ML + 10, y + 12);
-
-    const tc = (CW - 36) / 2;
-    label(doc, "UPSIDE", ML + 10, y + 24, "#1F6D7A");
-    label(doc, "COST", ML + 10 + tc + 16, y + 24, "#92640A");
-    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-    doc.text(truncate(d.tradeoff.upside, 70), ML + 10, y + 36);
-    doc.text(truncate(d.tradeoff.downside, 70), ML + 10 + tc + 16, y + 36);
-    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-    doc.line(ML + 10, y + 50, ML + CW - 10, y + 50);
-    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(d.tradeoff.recommendation, 80), ML + 10, y + 60);
-    y += 70 + 8;
-  }
-
-  // Roadmap — 4 rows, ~24pt each = 96pt — use truncate instead of substring
-  if (d.roadmap.length > 0 && y + 96 <= YL) {
-    label(doc, "WEEK-BY-WEEK ROADMAP", ML, y, "#4B3FAE");
-    y += 12;
-    for (const row of d.roadmap.slice(0, 4)) {
-      sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor("#4B3FAE");
-      doc.text(truncate(row.week, 12), ML, y);
-      sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-      doc.text(truncate(row.action, 50), ML + 60, y);
-      sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-      doc.text(truncate(row.detail, 75), ML + 60, y + 10);
-      y += 22;
-    }
-    y += 4;
-  }
-
-  // Retake — date and days on SEPARATE lines
-  if (y + 36 <= YL) {
-    label(doc, "WHEN TO RETAKE", ML, y);
-    y += 12;
-    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-    doc.text(S(d.reassessDate), ML, y);
-    y += 12;
+  // Real-world impact cards
+  const cw2 = (CW - 12) / 2;
+  if (y + 52 <= YL) {
+    card(doc, ML, y, cw2, 52, "#9B2C2C");
+    label(doc, "IF BIGGEST SOURCE GOES AWAY", ML + 8, y + 10);
+    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+    doc.text(`${d.score} to ${d.riskScenarioScore}`, ML + 8, y + 28);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-    doc.text(S(`${d.reassessDaysLeft} days from now - ${d.reassessTiming}`), ML, y);
-    y += 16;
+    doc.text(S(`-${d.riskScenarioDrop} points`), ML + 8, y + 40);
+
+    const rx = ML + cw2 + 12;
+    card(doc, rx, y, cw2, 52, "#92640A");
+    label(doc, "IF YOU STOP WORKING", rx + 8, y + 10);
+    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+    doc.text(S(d.continuityDisplay), rx + 8, y + 28);
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+    doc.text(truncate(d.continuityText, 50), rx + 8, y + 40);
+    y += 52 + 10;
   }
 
-  // Fine print — max 3 lines
+  // Why Worth $149
+  if (y + 50 <= YL) {
+    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+    doc.line(ML, y, ML + CW, y); y += 10;
+    sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
+    doc.text("Why This Report is Worth $149", ML, y);
+    y += 12;
+    const valueText = "This report provides actionable steps, personalized recommendations, and the tools you need to future-proof your income. Clear guidance, a PressureMap(TM) analysis, and an ongoing plan to create lasting financial stability.";
+    y = dt(doc, valueText, ML, y, CW, 9, { color: "#535D6B", maxLines: 3 });
+    y += 8;
+  }
+
+  // Retake
   if (y + 24 <= YL) {
-    const fp = "This report was generated by RunPayway(TM) Model RP-2.0. It reflects structural inputs only and does not constitute financial, legal, or investment advice. Scores are deterministic.";
+    label(doc, "WHEN TO RETAKE", ML, y);
+    y += 10;
+    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
+    doc.text(S(`${d.reassessDate} (${d.reassessDaysLeft} days from now)`), ML, y);
+    y += 14;
+  }
+
+  // Fine print
+  if (y + 20 <= YL) {
+    const fp = "This is a proprietary financial diagnostic tool developed by PeopleStar Enterprises. RunPayway(TM) Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
-  footer(doc, "Action Plan", 4);
+  footer(doc, "Stress Test & Value", 4);
 }
 
 /* ================================================================== */
