@@ -6,6 +6,7 @@ import Link from "next/link";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
+import AnimatedNumber from "@/components/AnimatedNumber";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 
 /* ------------------------------------------------------------------ */
@@ -183,7 +184,7 @@ export default function PressureMapPage() {
         <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 32, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
           <div style={{ textAlign: "center", minWidth: 80 }}>
             <div style={{ fontSize: 42, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1, transition: "color 300ms ease" }}>
-              {previewScore}
+              <AnimatedNumber value={previewScore} />
             </div>
             <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginTop: 4 }}>
               {activeSegment ? "PROJECTED" : "CURRENT"}

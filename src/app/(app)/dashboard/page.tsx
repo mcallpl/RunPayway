@@ -7,6 +7,7 @@ import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -222,7 +223,7 @@ export default function DashboardPage() {
           <div style={{ flex: 1, padding: "24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
             <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 8 }}>INCOME STABILITY SCORE</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{hasData ? score : "—"}</span>
+              {hasData ? <AnimatedNumber value={score} style={{ fontSize: 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }} /> : <span style={{ fontSize: 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>—</span>}
               {hasData && <span style={{ fontSize: 16, fontWeight: 300, color: B.taupe }}>/100</span>}
             </div>
             {hasData && (

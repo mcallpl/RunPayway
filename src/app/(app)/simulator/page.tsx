@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useContext, createContext, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
+
 import Link from "next/link";
-import logoWhite from "../../../../public/runpayway-logo-white.png";
+
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -12,69 +12,42 @@ import { getScriptsForSector } from "@/lib/action-scripts";
 import { earnBadge } from "@/lib/gamification";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 /* ------------------------------------------------------------------ */
-/*  Design Tokens                                                      */
+/*  Design Tokens — Unified Suite Light Theme                          */
 /* ------------------------------------------------------------------ */
-interface ThemeColors {
-  bg: string;
-  bgDeep: string;
-  bgGradient: string;
-  surface: string;
-  surfaceHover: string;
-  surfaceRaised: string;
-  border: string;
-  borderSubtle: string;
-  text: string;
-  textSecondary: string;
-  textMuted: string;
-  textFaint: string;
-  headerBg: string;
-  headerBorder: string;
-}
-
-const DARK: ThemeColors = {
-  bg: "#0F1923",
-  bgDeep: "#0A1119",
-  bgGradient: "linear-gradient(180deg, #0A1119 0%, #0D1620 40%, #0F1923 100%)",
-  surface: "rgba(255,255,255,0.04)",
-  surfaceHover: "rgba(255,255,255,0.07)",
-  surfaceRaised: "rgba(255,255,255,0.06)",
-  border: "rgba(255,255,255,0.08)",
-  borderSubtle: "rgba(255,255,255,0.05)",
-  text: "#E8E5DD",
-  textSecondary: "rgba(232,229,221,0.70)",
-  textMuted: "rgba(232,229,221,0.45)",
-  textFaint: "rgba(232,229,221,0.22)",
-  headerBg: "rgba(10,17,25,0.88)",
-  headerBorder: "rgba(255,255,255,0.06)",
-};
-
 const BRAND = {
   purple: "#4B3FAE",
-  purpleGlow: "rgba(75,63,174,0.08)",
-  teal: "#1A7A6D",
-  tealGlow: "rgba(26,122,109,0.10)",
-  bandLimited: "#DC4A4A",
-  bandDeveloping: "#D4940A",
-  bandEstablished: "#3B82F6",
-  bandHigh: "#1A7A6D",
+  teal: "#1F6D7A",
+  bandLimited: "#C53030",
+  bandDeveloping: "#B7791F",
+  bandEstablished: "#2B5EA7",
+  bandHigh: "#1F6D7A",
 };
 
-// Legacy B alias
+const T = {
+  bg: "#FAFAFA",
+  surface: "#FFFFFF",
+  border: "rgba(14,26,43,0.08)",
+  borderSubtle: "rgba(14,26,43,0.05)",
+  text: "#0E1A2B",
+  textSecondary: "rgba(14,26,43,0.52)",
+  textMuted: "rgba(14,26,43,0.36)",
+  textFaint: "rgba(14,26,43,0.20)",
+  headerBg: "rgba(250,250,250,0.97)",
+  headerBorder: "rgba(14,26,43,0.06)",
+};
+
 const B = {
-  navy: "#0F1923", navyDeep: "#0A1119", purple: BRAND.purple, purpleGlow: "rgba(75,63,174,0.12)",
-  teal: BRAND.teal, tealGlow: "rgba(26,122,109,0.12)", sand: "#E8E5DD", bone: "#E8E5DD", white: "#FFFFFF",
-  muted: DARK.textSecondary, dim: DARK.textMuted, faint: DARK.textFaint,
-  ghost: DARK.border, whisper: DARK.surface,
+  navy: "#0E1A2B", navyDeep: "#0E1A2B", purple: BRAND.purple, purpleGlow: "rgba(75,63,174,0.06)",
+  teal: BRAND.teal, tealGlow: "rgba(31,109,122,0.06)", sand: "#FAFAFA", bone: "#FFFFFF", white: "#FFFFFF",
+  muted: T.textSecondary, dim: T.textMuted, faint: T.textFaint,
+  ghost: T.border, whisper: T.surface,
   bandLimited: BRAND.bandLimited, bandDeveloping: BRAND.bandDeveloping,
   bandEstablished: BRAND.bandEstablished, bandHigh: BRAND.bandHigh,
 };
 
-const ThemeCtx = createContext<ThemeColors>(DARK);
-function useTheme() { return useContext(ThemeCtx); }
-
-const DISPLAY = "'DM Serif Display', Georgia, serif";
 const INTER = "'Inter', system-ui, -apple-system, sans-serif";
 
 /* ------------------------------------------------------------------ */
@@ -89,32 +62,31 @@ const bandColor = (band: string) =>
 const fmt = (n: number) => n > 0 ? `+${n}` : String(n);
 
 /* ------------------------------------------------------------------ */
-/*  Slider component                                                   */
+/*  Slider component — light theme                                     */
 /* ------------------------------------------------------------------ */
 function Slider({ label, value, min, max, step, unit, onChange, accent }: {
   label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void; accent?: string;
 }) {
-  const T = useTheme();
   const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
   const c = accent || BRAND.teal;
   return (
-    <div style={{ marginBottom: 32 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
-        <span style={{ fontSize: 14, fontWeight: 600, color: T.text, letterSpacing: "-0.01em" }}>{label}</span>
+    <div style={{ marginBottom: 28 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: T.text, letterSpacing: "-0.01em" }}>{label}</span>
         <div style={{ display: "flex", alignItems: "baseline", gap: 2 }}>
-          <span style={{ fontSize: 20, fontWeight: 700, color: c, fontVariantNumeric: "tabular-nums", fontFamily: DISPLAY }}>{value}</span>
-          <span style={{ fontSize: 12, fontWeight: 500, color: T.textMuted }}>{unit}</span>
+          <span style={{ fontSize: 18, fontWeight: 300, color: c, fontVariantNumeric: "tabular-nums" }}>{value}</span>
+          <span style={{ fontSize: 11, fontWeight: 400, color: T.textMuted }}>{unit}</span>
         </div>
       </div>
-      <div style={{ position: "relative", height: 32 }}>
-        <div style={{ position: "absolute", top: 14, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
-        <div style={{ position: "absolute", top: 14, left: 0, width: `${pct}%`, height: 4, background: `linear-gradient(90deg, ${c}66, ${c})`, borderRadius: 2, boxShadow: `0 0 8px ${c}33` }} />
-        <div style={{ position: "absolute", top: 7, left: `${pct}%`, transform: "translateX(-50%)", width: 20, height: 20, borderRadius: "50%", backgroundColor: c, border: `3px solid ${T.text}`, boxShadow: `0 2px 10px rgba(0,0,0,0.30), 0 0 16px ${c}44`, transition: "box-shadow 200ms ease" }} />
-        <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 32, opacity: 0, cursor: "pointer", margin: 0 }} />
+      <div style={{ position: "relative", height: 28 }}>
+        <div style={{ position: "absolute", top: 12, left: 0, right: 0, height: 4, backgroundColor: T.border, borderRadius: 2 }} />
+        <div style={{ position: "absolute", top: 12, left: 0, width: `${pct}%`, height: 4, backgroundColor: c, borderRadius: 2, transition: "width 100ms ease" }} />
+        <div style={{ position: "absolute", top: 6, left: `${pct}%`, transform: "translateX(-50%)", width: 16, height: 16, borderRadius: "50%", backgroundColor: T.surface, border: `2px solid ${c}`, boxShadow: "0 1px 4px rgba(14,26,43,0.12)", transition: "box-shadow 200ms ease" }} />
+        <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 28, opacity: 0, cursor: "pointer", margin: 0 }} />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-        <span style={{ fontSize: 11, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{min}{unit}</span>
-        <span style={{ fontSize: 11, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{max}{unit}</span>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+        <span style={{ fontSize: 10, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{min}{unit}</span>
+        <span style={{ fontSize: 10, color: T.textFaint, fontVariantNumeric: "tabular-nums" }}>{max}{unit}</span>
       </div>
     </div>
   );
@@ -124,32 +96,26 @@ function Slider({ label, value, min, max, step, unit, onChange, accent }: {
 /*  Section header                                                     */
 /* ------------------------------------------------------------------ */
 function SectionLabel({ children, color, sub }: { children: string; color?: string; sub?: string }) {
-  const T = useTheme();
   return (
     <div style={{ marginBottom: sub ? 12 : 20 }}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || BRAND.teal }}>{children}</div>
-      {sub && <p style={{ fontSize: 14, color: T.textSecondary, margin: "8px 0 0", lineHeight: 1.55 }}>{sub}</p>}
+      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: color || T.textMuted }}>{children}</div>
+      {sub && <p style={{ fontSize: 13, color: T.textSecondary, margin: "8px 0 0", lineHeight: 1.55 }}>{sub}</p>}
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Card wrapper                                                       */
+/*  Card wrapper — white, thin border                                  */
 /* ------------------------------------------------------------------ */
-function Card({ children, glow, style, className }: { children: React.ReactNode; glow?: string; style?: React.CSSProperties; className?: string }) {
-  const T = useTheme();
+function Card({ children, style, className }: { children: React.ReactNode; glow?: string; style?: React.CSSProperties; className?: string }) {
   return (
     <div className={className} style={{
       backgroundColor: T.surface,
       border: `1px solid ${T.border}`,
-      borderRadius: 14,
-      padding: "28px 28px",
-      position: "relative",
-      overflow: "hidden",
-      backdropFilter: "blur(8px)",
+      borderRadius: 10,
+      padding: "24px 24px",
       ...style,
     }}>
-      {glow && <div style={{ position: "absolute", top: -60, right: -60, width: 160, height: 160, background: `radial-gradient(circle, ${glow} 0%, transparent 70%)`, pointerEvents: "none" }} />}
       {children}
     </div>
   );
@@ -160,7 +126,7 @@ function Card({ children, glow, style, className }: { children: React.ReactNode;
 /*  Active band lights up, others are greyed out.                      */
 /* ------------------------------------------------------------------ */
 function ClassificationScale({ currentBand, currentScore }: { currentBand: string; currentScore: number }) {
-  const T = useTheme();
+
   const bands = [
     { name: "Limited Stability", min: 0, max: 29, range: "0–29", color: BRAND.bandLimited, desc: "High dependence on single sources or labor with minimal forward visibility." },
     { name: "Developing Stability", min: 30, max: 49, range: "30–49", color: BRAND.bandDeveloping, desc: "Foundational structure in place. Gaps remain in recurring revenue or predictability." },
@@ -219,7 +185,7 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
               padding: "14px 14px 12px",
               borderRadius: 10,
               border: `1px solid ${isActive ? `${b.color}44` : T.border}`,
-              backgroundColor: isActive ? `${b.color}10` : "rgba(255,255,255,0.03)",
+              backgroundColor: isActive ? `${b.color}10` : "#FFFFFF",
               opacity: isActive ? 1 : 0.4,
               transition: "all 400ms ease-out",
               position: "relative",
@@ -251,7 +217,7 @@ function ClassificationScale({ currentBand, currentScore }: { currentBand: strin
 /*  Income Timeline visualization                                      */
 /* ------------------------------------------------------------------ */
 function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; baseScore: number }) {
-  const T = useTheme();
+
   if (timeline.length === 0) return null;
 
   const allScores = [baseScore, ...timeline.map(t => t.score)];
@@ -274,7 +240,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
           </p>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 20 }}>
-          <div style={{ fontSize: 24, fontWeight: 700, color: accentColor, lineHeight: 1, fontFamily: DISPLAY }}>
+          <div style={{ fontSize: 24, fontWeight: 700, color: accentColor, lineHeight: 1, fontFamily: INTER }}>
             {fmt(timeline[timeline.length - 1].delta)}
           </div>
           <div style={{ fontSize: 10, fontWeight: 600, color: T.textMuted, marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>12-MONTH</div>
@@ -286,7 +252,7 @@ function IncomeTimeline({ timeline, baseScore }: { timeline: TimelinePoint[]; ba
         <svg viewBox="0 0 400 120" style={{ width: "100%", height: "100%" }} preserveAspectRatio="none">
           {/* Grid lines */}
           {[0, 25, 50, 75, 100].map(pct => (
-            <line key={pct} x1="0" y1={`${pct}%`} x2="400" y2={`${pct}%`} stroke="rgba(244,241,234,0.04)" strokeWidth="0.5" />
+            <line key={pct} x1="0" y1={`${pct}%`} x2="400" y2={`${pct}%`} stroke="rgba(14,26,43,0.03)" strokeWidth="0.5" />
           ))}
 
           {/* Trajectory line */}
@@ -663,10 +629,10 @@ function SimulatorContent() {
   }
 
   return (
-    <ThemeCtx.Provider value={T}>
-    <div style={{ minHeight: "100vh", background: T.bgGradient, fontFamily: INTER }}>
+    <>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: INTER }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body{margin:0;} *{box-sizing:border-box;}
         @media(max-width:680px){
           .sim-view-report{
@@ -678,13 +644,13 @@ function SimulatorContent() {
             bottom:16px!important;
             transform:translateX(-50%)!important;
             border-radius:8px!important;
-            border:1px solid rgba(244,241,234,0.10)!important;
+            border:1px solid rgba(14,26,43,0.08)!important;
             padding:10px 20px!important;
             font-size:13px!important;
-            background-color:rgba(244,241,234,0.12)!important;
+            background-color:rgba(14,26,43,0.04)!important;
           }
           .sim-triptych{flex-direction:column!important;}
-          .sim-triptych>div{border-right:none!important;border-bottom:1px solid rgba(244,241,234,0.06);}
+          .sim-triptych>div{border-right:none!important;border-bottom:1px solid rgba(14,26,43,0.04);}
           .sim-triptych>div:last-child{border-bottom:none!important;}
           .sim-bands{grid-template-columns:repeat(2,1fr)!important;}
           .sim-timeline-ms{flex-direction:column!important;}
@@ -741,9 +707,9 @@ function SimulatorContent() {
           {/* Score triptych */}
           <div className="sim-triptych" style={{ display: "flex", gap: 0, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
             {/* Current */}
-            <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "36px 28px", textAlign: "center", position: "relative", borderRight: `1px solid ${T.borderSubtle}` }}>
+            <div style={{ flex: 1, background: "#FFFFFF", padding: "36px 28px", textAlign: "center", position: "relative", borderRight: `1px solid ${T.borderSubtle}` }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: T.textFaint, marginBottom: 14 }}>CURRENT SCORE</div>
-              <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: DISPLAY }}>{base.overall_score}</div>
+              <AnimatedNumber value={base.overall_score} className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, color: T.text, lineHeight: 1, fontFamily: INTER, display: "block" }} />
               <div style={{ fontSize: 12, color: bandColor(base.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{base.band}</div>
             </div>
 
@@ -751,30 +717,27 @@ function SimulatorContent() {
             <div style={{
               flex: 1.2, padding: "36px 28px", textAlign: "center", position: "relative",
               background: isModified
-                ? delta > 0 ? "rgba(26,122,109,0.08)" : delta < 0 ? "rgba(220,74,74,0.06)" : "rgba(255,255,255,0.03)"
-                : "rgba(255,255,255,0.03)",
+                ? delta > 0 ? "rgba(26,122,109,0.08)" : delta < 0 ? "rgba(220,74,74,0.06)" : "#FFFFFF"
+                : "#FFFFFF",
               borderRight: `1px solid ${T.borderSubtle}`,
             }}>
               {isModified && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : BRAND.purple }} />}
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: isModified ? (delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textMuted) : T.textFaint, marginBottom: 14 }}>
                 {isModified ? "SIMULATED" : "BASELINE"}
               </div>
-              <div className="sim-score-num" style={{
-                fontSize: 56, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY,
+              <AnimatedNumber value={sim.overall_score} className="sim-score-num" style={{
+                fontSize: 56, fontWeight: 300, lineHeight: 1, fontFamily: INTER, display: "block",
                 color: isModified ? (delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.text) : T.text,
-                textShadow: isModified && delta !== 0 ? `0 0 24px ${delta > 0 ? BRAND.teal : BRAND.bandLimited}33` : "none",
-              }}>
-                {sim.overall_score}
-              </div>
+              }} />
               <div style={{ fontSize: 12, color: bandColor(sim.band), fontWeight: 600, marginTop: 10, letterSpacing: "-0.01em" }}>{sim.band}</div>
             </div>
 
             {/* Third card: Points to Next Band / Impact */}
-            <div style={{ flex: 1, background: "rgba(255,255,255,0.03)", padding: "36px 28px", textAlign: "center" }}>
+            <div style={{ flex: 1, background: "#FFFFFF", padding: "36px 28px", textAlign: "center" }}>
               {isModified ? (
                 <>
                   <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint, marginBottom: 14 }}>IMPACT</div>
-                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint }}>
+                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: INTER, color: delta > 0 ? BRAND.teal : delta < 0 ? BRAND.bandLimited : T.textFaint }}>
                     {delta > 0 ? `+${delta}` : delta === 0 ? "\u2014" : String(delta)}
                   </div>
                   <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>{sim.band !== base.band ? `Moves to ${sim.band}` : `Stays in ${base.band}`}</div>
@@ -784,7 +747,7 @@ function SimulatorContent() {
                   <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 14 }}>
                     {bandGap ? "POINTS TO NEXT BAND" : "STABILITY POSITION"}
                   </div>
-                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: DISPLAY, color: BRAND.purple }}>
+                  <div className="sim-score-num" style={{ fontSize: 52, fontWeight: 300, lineHeight: 1, fontFamily: INTER, color: BRAND.purple }}>
                     {bandGap ? bandGap : base.overall_score}
                   </div>
                   <div style={{ fontSize: 12, color: T.textMuted, marginTop: 10 }}>
@@ -813,7 +776,7 @@ function SimulatorContent() {
                     {gap > 0 ? `${gap} points to ${goalLabel}` : `You are at ${goalLabel}!`}
                   </span>
                 </div>
-                <span style={{ fontSize: 13, fontWeight: 700, color: goalColor, fontFamily: DISPLAY }}>{currentScore}/{goalScore}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: goalColor, fontFamily: INTER }}>{currentScore}/{goalScore}</span>
               </div>
               <div style={{ height: 6, backgroundColor: T.border, borderRadius: 3, overflow: "hidden" }}>
                 <div style={{
@@ -848,7 +811,7 @@ function SimulatorContent() {
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: BRAND.purple, marginBottom: 14 }}>BEST MOVE FOR YOUR STRUCTURE RIGHT NOW</div>
             <div style={{ fontSize: 22, fontWeight: 600, color: T.text, marginBottom: 8, lineHeight: 1.3 }}>{bestMove.label}</div>
             <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 14 }}>
-              <span style={{ fontSize: 24, fontWeight: 700, color: BRAND.teal, fontFamily: DISPLAY }}>+{bestMove.lift} points</span>
+              <span style={{ fontSize: 24, fontWeight: 700, color: BRAND.teal, fontFamily: INTER }}>+{bestMove.lift} points</span>
               {bestMove.bandShift && <span style={{ fontSize: 13, fontWeight: 600, color: BRAND.purple, padding: "3px 10px", backgroundColor: "rgba(75,63,174,0.10)", borderRadius: 20 }}>Moves you to {bestMove.bandShift}</span>}
               <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, fontStyle: "italic" }}>{bestMove.realism}</span>
             </div>
@@ -858,8 +821,8 @@ function SimulatorContent() {
               {bestMove.tags.map(tag => (
                 <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: BRAND.teal, backgroundColor: "rgba(26,122,109,0.10)", padding: "4px 12px", borderRadius: 20, letterSpacing: "0.02em" }}>{tag}</span>
               ))}
-              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "4px 12px", borderRadius: 20 }}>Effort: {bestMove.effort}</span>
-              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "4px 12px", borderRadius: 20 }}>Speed: {bestMove.speed}</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(14,26,43,0.04)", padding: "4px 12px", borderRadius: 20 }}>Effort: {bestMove.effort}</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(14,26,43,0.04)", padding: "4px 12px", borderRadius: 20 }}>Speed: {bestMove.speed}</span>
             </div>
           </div>
         )}
@@ -985,7 +948,7 @@ function SimulatorContent() {
             {/* ── Effort vs Impact table ── */}
             {!simPreset && presetAnalysis.length > 0 && (
               <div style={{ marginBottom: 20, borderRadius: 12, overflow: "hidden", border: `1px solid ${T.border}` }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 70px 70px 60px 60px", padding: "10px 16px", backgroundColor: "rgba(244,241,234,0.04)", borderBottom: `1px solid ${T.border}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 70px 70px 60px 60px", padding: "10px 16px", backgroundColor: "rgba(14,26,43,0.03)", borderBottom: `1px solid ${T.border}` }}>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint }}>ACTION</span>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>EFFORT</span>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: T.textFaint, textAlign: "center" }}>SPEED</span>
@@ -1001,7 +964,7 @@ function SimulatorContent() {
                     <span style={{ fontSize: 12, color: p.effort === "High" ? B.bandDeveloping : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.effort}</span>
                     <span style={{ fontSize: 12, color: p.speed === "Fast" ? B.teal : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.speed}</span>
                     <span style={{ fontSize: 12, color: p.impact === "High" ? B.teal : p.impact === "Medium" ? B.bandEstablished : T.textMuted, textAlign: "center", fontWeight: 500 }}>{p.impact}</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: B.teal, textAlign: "center", fontFamily: DISPLAY }}>+{p.lift}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: B.teal, textAlign: "center", fontFamily: INTER }}>+{p.lift}</span>
                   </button>
                 ))}
               </div>
@@ -1023,7 +986,7 @@ function SimulatorContent() {
                   }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                       <span style={{ fontSize: 14, fontWeight: 600, color: ia ? T.text : T.textSecondary }}>{preset.label}</span>
-                      <span style={{ fontSize: 14, fontWeight: 700, color: previewDelta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums", fontFamily: DISPLAY }}>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: previewDelta >= 0 ? B.teal : B.bandLimited, fontVariantNumeric: "tabular-nums", fontFamily: INTER }}>
                         {fmt(previewDelta)}
                       </span>
                     </div>
@@ -1049,7 +1012,7 @@ function SimulatorContent() {
                 <Card glow={delta > 0 ? "rgba(75,63,174,0.10)" : "rgba(220,74,74,0.06)"}>
                   <div style={{ fontSize: 15, fontWeight: 600, color: T.text, marginBottom: 6 }}>{ap.label}</div>
                   {delta !== 0 && (
-                    <div style={{ fontSize: 18, color: delta > 0 ? B.teal : B.bandLimited, fontWeight: 700, marginBottom: 10, fontFamily: DISPLAY }}>
+                    <div style={{ fontSize: 18, color: delta > 0 ? B.teal : B.bandLimited, fontWeight: 700, marginBottom: 10, fontFamily: INTER }}>
                       {delta > 0 ? `+${delta} points` : `${delta} points`}
                       {sim.band !== base.band ? ` \u2014 ${delta > 0 ? "rises" : "drops"} to ${sim.band}` : ""}
                     </div>
@@ -1064,8 +1027,8 @@ function SimulatorContent() {
                         {analysis.tags.map(tag => (
                           <span key={tag} style={{ fontSize: 11, fontWeight: 600, color: delta > 0 ? B.teal : B.bandLimited, backgroundColor: delta > 0 ? "rgba(26,122,109,0.10)" : "rgba(220,74,74,0.08)", padding: "3px 10px", borderRadius: 20 }}>{tag}</span>
                         ))}
-                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "3px 10px", borderRadius: 20 }}>{analysis.realism}</span>
-                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(244,241,234,0.06)", padding: "3px 10px", borderRadius: 20 }}>Effort: {analysis.effort} · Speed: {analysis.speed}</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(14,26,43,0.04)", padding: "3px 10px", borderRadius: 20 }}>{analysis.realism}</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, backgroundColor: "rgba(14,26,43,0.04)", padding: "3px 10px", borderRadius: 20 }}>Effort: {analysis.effort} · Speed: {analysis.speed}</span>
                       </div>
                     </div>
                   )}
@@ -1253,7 +1216,7 @@ function SimulatorContent() {
                   YOUR STRUCTURAL FLOOR
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginBottom: 16 }}>
-                  <div style={{ fontSize: 48, fontWeight: 300, fontFamily: DISPLAY, color: BRAND.bandLimited, lineHeight: 1 }}>
+                  <div style={{ fontSize: 48, fontWeight: 300, fontFamily: INTER, color: BRAND.bandLimited, lineHeight: 1 }}>
                     {stressResult.overall_score}
                   </div>
                   <div>
@@ -1391,13 +1354,13 @@ function SimulatorContent() {
         <span style={{ fontSize: 11, color: T.textFaint, letterSpacing: "0.02em" }}>Deterministic &middot; Fixed Rules &middot; Versioned</span>
       </footer>
     </div>
-    </ThemeCtx.Provider>
+    </>
   );
 }
 
 export default function SimulatorPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#070F19", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)" }}>Loading simulator...</p></div>}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#FAFAFA", display: "flex", alignItems: "center", justifyContent: "center" }}><p style={{ fontSize: 14, color: "rgba(14,26,43,0.30)" }}>Loading simulator...</p></div>}>
       <SimulatorContent />
     </Suspense>
   );
