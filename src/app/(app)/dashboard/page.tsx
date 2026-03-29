@@ -8,6 +8,7 @@ import type { CanonicalInput } from "@/lib/engine/v2/types";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import { SAMPLE_PROFILES, IS_SAMPLE } from "@/lib/sample-data";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -55,6 +56,7 @@ export default function DashboardPage() {
   const [planType, setPlanType] = useState<"single" | "monitoring">("single");
   const [assessmentsUsed, setAssessmentsUsed] = useState(1);
   const [assessmentsTotal, setAssessmentsTotal] = useState(1);
+  const [demoProfile, setDemoProfile] = useState(1);
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 640);
@@ -89,20 +91,23 @@ export default function DashboardPage() {
     } catch { /* */ }
   }, []);
 
-  // ── Derived data ──
-  const score = (record?.final_score as number) || 0;
-  const band = (record?.stability_band as string) || "";
-  const v2 = record?._v2 as Record<string, unknown> | undefined;
-  const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-  const hasData = !!record && score > 0;
+  // ── Use real data or sample ──
+  const isDemo = IS_SAMPLE(record);
+  const r = isDemo ? SAMPLE_PROFILES[demoProfile].record : record!;
 
-  const activeIncome = (record?.active_income_level as number) || 0;
-  const semiIncome = (record?.semi_persistent_income_level as number) || 0;
-  const persistentIncome = (record?.persistent_income_level as number) || 0;
-  const issuedDate = (record?.issued_timestamp_utc as string) || (record?.assessment_date_utc as string) || "";
+  const score = (r?.final_score as number) || 0;
+  const band = (r?.stability_band as string) || "";
+  const v2 = r?._v2 as Record<string, unknown> | undefined;
+  const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
+  const hasData = score > 0;
+
+  const activeIncome = (r?.active_income_level as number) || 0;
+  const semiIncome = (r?.semi_persistent_income_level as number) || 0;
+  const persistentIncome = (r?.persistent_income_level as number) || 0;
+  const issuedDate = (r?.issued_timestamp_utc as string) || (r?.assessment_date_utc as string) || "";
   const daysSince = issuedDate ? Math.floor((Date.now() - new Date(issuedDate).getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  const continuityMonths = (record?.income_continuity_months as number) || 0;
-  const riskDrop = (record?.risk_scenario_drop as number) || 0;
+  const continuityMonths = (r?.income_continuity_months as number) || 0;
+  const riskDrop = (r?.risk_scenario_drop as number) || 0;
 
   // ── Inputs for simulation ──
   const baseInputs: CanonicalInput = ni ? {
@@ -174,7 +179,31 @@ export default function DashboardPage() {
         <div style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>RUNPAYWAY&#8482; DASHBOARD</div>
           <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 0 }}>Your Financial Command Center</h1>
+
+          {/* Demo band selector */}
+          {isDemo && (
+            <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" as const }}>
+              {SAMPLE_PROFILES.map((p, i) => (
+                <button key={p.id} onClick={() => setDemoProfile(i)}
+                  style={{
+                    padding: "6px 14px", borderRadius: 6, fontSize: 12, fontWeight: demoProfile === i ? 600 : 400,
+                    color: demoProfile === i ? "#FFFFFF" : B.muted,
+                    backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent",
+                    border: `1px solid ${demoProfile === i ? "transparent" : B.stone}`,
+                    cursor: "pointer", transition: "all 200ms",
+                  }}
+                >{p.bandShort}</button>
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Sample banner */}
+        {isDemo && (
+          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.purple}06`, border: `1px solid ${B.purple}15`, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: B.purple }}>SAMPLE DATA — Enter your access code on the <a href="/tools" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Suite page</a> to see your real numbers</span>
+          </div>
+        )}
 
         {/* ══════════ #1 PRIORITY — single focus ══════════ */}
         {hasData && scenarios.length > 0 && (

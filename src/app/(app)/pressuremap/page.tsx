@@ -8,6 +8,7 @@ import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
+import { SAMPLE_PROFILES, IS_SAMPLE } from "@/lib/sample-data";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -36,6 +37,7 @@ export default function PressureMapPage() {
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [activeSegment, setActiveSegment] = useState<"active" | "semi" | "persistent" | null>(null);
   const [mobile, setMobile] = useState(false);
+  const [demoProfile, setDemoProfile] = useState(1); // index into SAMPLE_PROFILES
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 640);
@@ -55,20 +57,22 @@ export default function PressureMapPage() {
     }
   }, []);
 
-  // ── Extract data ──
-  const score = (record?.final_score as number) || 0;
-  const band = (record?.stability_band as string) || "";
-  const v2 = record?._v2 as Record<string, unknown> | undefined;
+  // ── Use real data or sample profile ──
+  const isDemo = IS_SAMPLE(record);
+  const r = isDemo ? SAMPLE_PROFILES[demoProfile].record : record!;
+
+  const score = (r.final_score as number) || 0;
+  const band = (r.stability_band as string) || "";
+  const v2 = r._v2 as Record<string, unknown> | undefined;
   const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
   const constraints = v2?.constraints as { root_constraint: string; secondary_constraint?: string } | undefined;
   const fragility = v2?.fragility as { fragility_score: number; fragility_class: string; primary_failure_mode: string } | undefined;
 
-  const activeIncome = (record?.active_income_level as number) || 65;
-  const semiIncome = (record?.semi_persistent_income_level as number) || 20;
-  const persistentIncome = (record?.persistent_income_level as number) || 15;
-  const riskDrop = (record?.risk_scenario_drop as number) || 0;
-  const continuityMonths = (record?.income_continuity_months as number) || 0;
-  const hasData = !!record && score > 0;
+  const activeIncome = (r.active_income_level as number) || 65;
+  const semiIncome = (r.semi_persistent_income_level as number) || 20;
+  const persistentIncome = (r.persistent_income_level as number) || 15;
+  const riskDrop = (r.risk_scenario_drop as number) || 0;
+  const continuityMonths = (r.income_continuity_months as number) || 0;
 
   // ── Build canonical inputs for simulation ──
   const baseInputs: CanonicalInput = ni ? {
@@ -82,7 +86,7 @@ export default function PressureMapPage() {
 
   const qualityScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
   const baseResult = simulateScore(baseInputs, qualityScore);
-  const displayScore = hasData ? score : baseResult.overall_score;
+  const displayScore = score > 0 ? score : baseResult.overall_score;
 
   // ── Compute projected scores for each zone fix ──
   const getPresetResult = (presetId: string) => {
@@ -174,11 +178,35 @@ export default function PressureMapPage() {
           <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
           <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 8 }}>Your Income Structure</h1>
           <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, maxWidth: 520, margin: 0 }}>
-            {hasData
-              ? "This is how your income actually works — where it comes from, what repeats, and what disappears the moment you stop. Click each zone to see the risk and the fix."
-              : "Enter your access code on the Suite page to load your personalized income data."}
+            {isDemo
+              ? "Explore how the PressureMap works with sample data. Select a stability band below to see different income structures."
+              : "This is how your income actually works — where it comes from, what repeats, and what disappears the moment you stop. Click each zone to see the risk and the fix."}
           </p>
+
+          {/* ── Demo band selector ── */}
+          {isDemo && (
+            <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" as const }}>
+              {SAMPLE_PROFILES.map((p, i) => (
+                <button key={p.id} onClick={() => { setDemoProfile(i); setActiveSegment(null); }}
+                  style={{
+                    padding: "6px 14px", borderRadius: 6, fontSize: 12, fontWeight: demoProfile === i ? 600 : 400,
+                    color: demoProfile === i ? B.white : B.muted,
+                    backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent",
+                    border: `1px solid ${demoProfile === i ? "transparent" : B.stone}`,
+                    cursor: "pointer", transition: "all 200ms",
+                  }}
+                >{p.bandShort}</button>
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* ── Sample data banner ── */}
+        {isDemo && (
+          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.purple}06`, border: `1px solid ${B.purple}15`, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 11, fontWeight: 500, color: B.purple }}>SAMPLE DATA — Enter your access code on the <a href="/tools" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Suite page</a> to see your real numbers</span>
+          </div>
+        )}
 
         {/* ── SCORE GAUGE — animates on hover ── */}
         <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 32, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
@@ -305,7 +333,7 @@ export default function PressureMapPage() {
         })}
 
         {/* ── Key metrics ── */}
-        {hasData && (
+        {score > 0 && (
           <div style={{ display: "flex", gap: 12, marginBottom: 32, flexDirection: mobile ? "column" : "row" }}>
             {[
               { label: "If top source leaves", value: `−${riskDrop} pts`, color: B.red },
