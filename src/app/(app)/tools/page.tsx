@@ -336,7 +336,7 @@ export default function ToolsHubPage() {
                 boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
                 textDecoration: "none",
               }}>
-                Get Started &mdash; $149 &rarr;
+                Get Started &mdash; From $69 &rarr;
               </Link>
             </div>
           )}

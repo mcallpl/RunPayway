@@ -1347,9 +1347,9 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* ── WHY THIS REPORT IS WORTH $149 ── */}
+        {/* ── WHY THIS REPORT IS WORTH IT ── */}
         <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 16 }}>
-          <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report is Worth $149</div>
+          <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report Delivers Real Value</div>
           <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.7 }}>
             This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income. You have clear guidance, interactive tools, and an ongoing plan that will empower you to take immediate action and create stability in your financial life.
           </p>
