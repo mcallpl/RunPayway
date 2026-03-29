@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { getBadges, recordVisit, checkActionProgress, getStreaks, earnBadge, getEarnedCount, type Badge } from "@/lib/gamification";
+import { useRouter } from "next/navigation";
+import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
+import type { CanonicalInput } from "@/lib/engine/v2/types";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
-import BadgeIcon from "@/components/BadgeIcon";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -16,53 +15,32 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  bone: "#F8F6F1",
   white: "#FFFFFF",
-  stone: "rgba(14,26,43,0.12)",
-  taupe: "rgba(14,26,43,0.42)",
-  muted: "rgba(14,26,43,0.58)",
+  stone: "rgba(14,26,43,0.08)",
+  taupe: "rgba(14,26,43,0.36)",
+  muted: "rgba(14,26,43,0.52)",
+  red: "#C53030",
+  amber: "#B7791F",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
   bandHigh: "#1F6D7A",
 };
 
-const INTER = "'Inter', system-ui, -apple-system, sans-serif";
-const DISPLAY = "'DM Serif Display', Georgia, serif";
-
 interface AssessmentSummary {
   record_id: string;
-  authorization_code?: string;
-  model_version?: string;
   final_score: number;
   stability_band: string;
   assessment_date_utc: string;
   issued_timestamp_utc?: string;
 }
 
-interface ActionItem {
-  id: string;
-  label: string;
-  description: string;
-  impact: string;
-  completed: boolean;
+function bandColor(s: number): string {
+  return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
-function bandColor(band: string): string {
-  if (band.includes("High")) return B.bandHigh;
-  if (band.includes("Established")) return B.bandEstablished;
-  if (band.includes("Developing")) return B.bandDeveloping;
-  return B.bandLimited;
-}
-
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-  } catch { return dateStr; }
+function formatDate(d: string): string {
+  try { return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); } catch { return d; }
 }
 
 /* ------------------------------------------------------------------ */
@@ -70,13 +48,9 @@ function formatDate(dateStr: string): string {
 /* ------------------------------------------------------------------ */
 export default function DashboardPage() {
   const router = useRouter();
+  const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [assessments, setAssessments] = useState<AssessmentSummary[]>([]);
-  const [currentRecord, setCurrentRecord] = useState<Record<string, unknown> | null>(null);
-  const [actions, setActions] = useState<ActionItem[]>([]);
   const [mobile, setMobile] = useState(false);
-  const [badges, setBadges] = useState<Badge[]>([]);
-  const [newBadge, setNewBadge] = useState<Badge | null>(null);
-  const [streakData, setStreakData] = useState<{ currentStreak: number; totalVisits: number }>({ currentStreak: 0, totalVisits: 0 });
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 640);
@@ -86,143 +60,134 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    // Load assessment history from localStorage
+    // Load current record
+    let stored = sessionStorage.getItem("rp_record");
+    if (!stored) stored = localStorage.getItem("rp_record");
+    if (stored) { try { setRecord(JSON.parse(stored)); } catch { /* */ } }
+
+    // Load history
     try {
       const records = JSON.parse(localStorage.getItem("rp_records") || "[]") as AssessmentSummary[];
       setAssessments(records.sort((a, b) => new Date(b.assessment_date_utc || b.issued_timestamp_utc || "").getTime() - new Date(a.assessment_date_utc || a.issued_timestamp_utc || "").getTime()));
-    } catch { /* ignore */ }
-
-    // Load current record for action plan
-    let stored = sessionStorage.getItem("rp_record");
-    if (!stored) stored = localStorage.getItem("rp_record");
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setCurrentRecord(parsed);
-
-        // Build action items from v2 recommended_actions
-        const v2 = parsed._v2 as Record<string, unknown> | undefined;
-        const recommended = v2?.recommended_actions as Array<{ action_id: string; label: string; description: string; expected_impact: string }> | undefined;
-        const savedActions = JSON.parse(localStorage.getItem("rp_action_progress") || "[]") as string[];
-
-        if (recommended && recommended.length > 0) {
-          setActions(recommended.slice(0, 5).map(a => ({
-            id: a.action_id,
-            label: a.label,
-            description: a.description,
-            impact: a.expected_impact,
-            completed: savedActions.includes(a.action_id),
-          })));
-        } else {
-          // Fallback actions based on constraints
-          const constraints = v2?.constraints as { root_constraint: string } | undefined;
-          const root = constraints?.root_constraint || "weak_forward_visibility";
-          const fallbackActions: ActionItem[] = [
-            { id: "fa-1", label: root === "high_concentration" ? "Add a new income source" : root === "high_labor_dependence" ? "Create a passive income stream" : "Lock in a retainer or recurring agreement", description: "Take the single highest-impact action for your structure.", impact: "High", completed: savedActions.includes("fa-1") },
-            { id: "fa-2", label: "Reduce largest source dependency", description: "Ensure no single client represents more than 40% of your income.", impact: "Medium", completed: savedActions.includes("fa-2") },
-            { id: "fa-3", label: "Secure forward commitments", description: "Get at least one client to commit to 3+ months of work.", impact: "Medium", completed: savedActions.includes("fa-3") },
-          ];
-          setActions(fallbackActions);
-        }
-      } catch { /* ignore */ }
-    }
-
-    // Initialize gamification
-    setBadges(getBadges());
-    setStreakData(getStreaks());
-
-    // Record visit and check for new streak badges
-    const visitBadges = recordVisit();
-    // Earn first_report badge if we have any assessments
-    const firstReport = earnBadge("first_report");
-
-    const allNew = [...visitBadges];
-    if (firstReport) allNew.push(firstReport);
-
-    if (allNew.length > 0) {
-      setNewBadge(allNew[0]);
-      setBadges(getBadges());
-      setStreakData(getStreaks());
-      setTimeout(() => setNewBadge(null), 4000);
-    }
+    } catch { /* */ }
   }, []);
 
-  const toggleAction = (actionId: string) => {
-    setActions(prev => {
-      const updated = prev.map(a => a.id === actionId ? { ...a, completed: !a.completed } : a);
-      const completedIds = updated.filter(a => a.completed).map(a => a.id);
-      localStorage.setItem("rp_action_progress", JSON.stringify(completedIds));
+  // ── Derived data ──
+  const score = (record?.final_score as number) || 0;
+  const band = (record?.stability_band as string) || "";
+  const v2 = record?._v2 as Record<string, unknown> | undefined;
+  const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
+  const hasData = !!record && score > 0;
 
-      // Check for action badges
-      const newBadges = checkActionProgress(completedIds.length, updated.length);
-      if (newBadges.length > 0) {
-        setNewBadge(newBadges[0]);
-        setBadges(getBadges());
-        setTimeout(() => setNewBadge(null), 4000);
-      }
+  const activeIncome = (record?.active_income_level as number) || 0;
+  const semiIncome = (record?.semi_persistent_income_level as number) || 0;
+  const persistentIncome = (record?.persistent_income_level as number) || 0;
+  const issuedDate = (record?.issued_timestamp_utc as string) || (record?.assessment_date_utc as string) || "";
+  const daysSince = issuedDate ? Math.floor((Date.now() - new Date(issuedDate).getTime()) / (1000 * 60 * 60 * 24)) : 0;
+  const continuityMonths = (record?.income_continuity_months as number) || 0;
+  const riskDrop = (record?.risk_scenario_drop as number) || 0;
 
+  // ── Inputs for simulation ──
+  const baseInputs: CanonicalInput = ni ? {
+    income_persistence_pct: ni.income_persistence_pct as number,
+    largest_source_pct: ni.largest_source_pct as number,
+    source_diversity_count: ni.source_diversity_count as number,
+    forward_secured_pct: ni.forward_secured_pct as number,
+    income_variability_level: (ni.income_variability_level || "moderate") as CanonicalInput["income_variability_level"],
+    labor_dependence_pct: ni.labor_dependence_pct as number,
+  } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
+
+  const qualityScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
+
+  // ── Top 3 scenario quick-launches ──
+  const scenarios = SIMULATOR_PRESETS
+    .filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id))
+    .map(p => {
+      const result = simulateScore(p.modify(baseInputs), qualityScore);
+      return { ...p, lift: result.overall_score - (hasData ? score : result.overall_score), projected: result.overall_score };
+    })
+    .filter(p => p.lift > 0)
+    .sort((a, b) => b.lift - a.lift)
+    .slice(0, 3);
+
+  // ── Timeline projection ──
+  const bestPreset = SIMULATOR_PRESETS.find(p => p.id === scenarios[0]?.id);
+  const timeline = bestPreset ? projectTimeline(baseInputs, bestPreset.modify(baseInputs), qualityScore) : [];
+
+  // ── Goal ──
+  const nextThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
+  const nextBandLabel = score < 30 ? "Developing" : score < 50 ? "Established" : score < 75 ? "High" : "Maximum";
+  const gap = nextThreshold - score;
+  const progress = Math.min(100, (score / nextThreshold) * 100);
+
+  // ── Reassessment readiness ──
+  const reassessChecks = [
+    { label: "Signed a new retainer or recurring agreement", key: "retainer" },
+    { label: "Added a new independent income source", key: "source" },
+    { label: "Reduced your largest client below 40% of income", key: "concentration" },
+    { label: "Created a passive or semi-passive income stream", key: "passive" },
+  ];
+  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  useEffect(() => {
+    try { setCheckedItems(JSON.parse(localStorage.getItem("rp_reassess_checks") || "[]")); } catch { /* */ }
+  }, []);
+  const toggleCheck = (key: string) => {
+    setCheckedItems(prev => {
+      const updated = prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key];
+      localStorage.setItem("rp_reassess_checks", JSON.stringify(updated));
       return updated;
     });
   };
 
-  // ── Derived values ──
-  const latestScore = assessments.length > 0 ? assessments[0].final_score : (currentRecord?.final_score as number) || 0;
-  const latestBand = assessments.length > 0 ? assessments[0].stability_band : (currentRecord?.stability_band as string) || "Limited Stability";
-  const nextBandThreshold = latestScore < 30 ? 30 : latestScore < 50 ? 50 : latestScore < 75 ? 75 : 100;
-  const nextBandLabel = latestScore < 30 ? "Developing" : latestScore < 50 ? "Established" : latestScore < 75 ? "High" : "Maximum";
-  const gap = nextBandThreshold - latestScore;
-  const progress = Math.min(100, (latestScore / nextBandThreshold) * 100);
-  const completedActions = actions.filter(a => a.completed).length;
-  const totalActions = actions.length;
-  const actionProgress = totalActions > 0 ? Math.round((completedActions / totalActions) * 100) : 0;
-
-  // Score history for mini chart
-  const scoreHistory = assessments.length > 1
-    ? assessments.slice().reverse().map(a => a.final_score)
-    : [latestScore];
+  // ── Countdown message ──
+  const countdownMsg = daysSince === 0 ? "Your action plan is fresh. Start today."
+    : daysSince <= 7 ? `${daysSince} days since your assessment. Your plan is still new.`
+    : daysSince <= 30 ? `${daysSince} days. Have you made a structural change yet?`
+    : daysSince <= 60 ? `${daysSince} days at the same score. Time to take action.`
+    : daysSince <= 90 ? `${daysSince} days. Your competitors are moving. Are you?`
+    : `${daysSince} days since your last assessment. It is time to reassess.`;
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: B.sand, fontFamily: INTER }}>
-      {/* ── Badge celebration toast ── */}
-      {newBadge && (
-        <div style={{
-          position: "fixed", top: 24, left: "50%", transform: "translateX(-50%)", zIndex: 100,
-          padding: "14px 24px", borderRadius: 12, display: "flex", alignItems: "center", gap: 12,
-          background: "linear-gradient(135deg, rgba(75,63,174,0.95) 0%, rgba(31,109,122,0.90) 100%)",
-          color: "#FFFFFF", boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-          animation: "badgeSlideIn 300ms ease-out", fontFamily: INTER,
-        }}>
-          <BadgeIcon iconId={newBadge.icon} size={32} earned={true} />
-          <div>
-            <div style={{ fontSize: 14, fontWeight: 700 }}>Badge Earned: {newBadge.label}!</div>
-            <div style={{ fontSize: 12, opacity: 0.85 }}>{newBadge.description}</div>
-          </div>
-        </div>
-      )}
-      <style>{`
-        @keyframes badgeSlideIn {
-          from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.95); }
-          to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-        }
-      `}</style>
-
+    <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA", fontFamily: "'Inter', system-ui, sans-serif" }}>
       <SuiteHeader current="dashboard" />
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: mobile ? "28px 16px 80px" : "48px 28px 80px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: mobile ? "28px 16px 60px" : "48px 28px 80px" }}>
 
-        {/* ══════════ SCORE HERO ══════════ */}
-        <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>RUNPAYWAY&#8482; STABILITY SUITE &mdash; DASHBOARD</div>
+        {/* ── Header ── */}
+        <div style={{ marginBottom: 36 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>RUNPAYWAY&#8482; DASHBOARD</div>
+          <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 0 }}>Your Financial Command Center</h1>
+        </div>
 
-          <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, marginBottom: 8 }}>
-            <span style={{ fontSize: mobile ? 56 : 72, fontWeight: 300, color: B.navy, lineHeight: 1, fontFamily: DISPLAY }}>{latestScore}</span>
-            <span style={{ fontSize: 20, fontWeight: 400, color: B.taupe }}>/100</span>
+        {/* ══════════ SCORE + GOAL ══════════ */}
+        <div style={{ display: "flex", gap: 16, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
+          {/* Score */}
+          <div style={{ flex: 1, padding: "24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
+            <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 8 }}>INCOME STABILITY SCORE</div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+              <span style={{ fontSize: 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{hasData ? score : "—"}</span>
+              {hasData && <span style={{ fontSize: 16, fontWeight: 300, color: B.taupe }}>/100</span>}
+            </div>
+            {hasData && (
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 8 }}>
+                <div style={{ width: 6, height: 6, borderRadius: 1, backgroundColor: bandColor(score) }} />
+                <span style={{ fontSize: 12, fontWeight: 500, color: bandColor(score) }}>{band}</span>
+              </div>
+            )}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor(latestBand) }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: bandColor(latestBand) }}>{latestBand}</span>
-          </div>
+          {/* Goal progress */}
+          {hasData && (
+            <div style={{ flex: 1, padding: "24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
+              <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 8 }}>
+                {gap > 0 ? `${gap} POINTS TO ${nextBandLabel.toUpperCase()}` : "HIGHEST BAND"}
+              </div>
+              <div style={{ height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden", marginBottom: 10 }}>
+                <div style={{ height: "100%", borderRadius: 3, backgroundColor: bandColor(score), width: `${progress}%`, transition: "width 600ms ease" }} />
+              </div>
+              <div style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}>{countdownMsg}</div>
+            </div>
+          )}
         </div>
 
         {/* ══════════ SCORE COMPARISON (2+ assessments) ══════════ */}
@@ -230,248 +195,162 @@ export default function DashboardPage() {
           const current = assessments[0];
           const previous = assessments[1];
           const diff = current.final_score - previous.final_score;
-          const improved = diff > 0;
           return (
-            <div style={{ backgroundColor: B.white, borderRadius: 14, border: `1px solid ${improved ? "rgba(31,109,122,0.15)" : "rgba(14,26,43,0.06)"}`, padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: improved ? B.teal : B.bandLimited, marginBottom: 12 }}>
-                {improved ? "YOUR PROGRESS" : "SCORE CHANGE"}
+            <div style={{ padding: "18px 24px", border: `1px solid ${diff > 0 ? `${B.teal}20` : B.stone}`, borderRadius: 10, marginBottom: 24 }}>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: diff > 0 ? B.teal : B.red, marginBottom: 10 }}>
+                {diff > 0 ? "SCORE IMPROVED" : diff === 0 ? "NO CHANGE" : "SCORE DECREASED"}
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 12, color: B.taupe, marginBottom: 2 }}>Previous</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: B.muted }}>{previous.final_score}</div>
-                </div>
-                <div style={{ fontSize: 20, color: B.taupe }}>&rarr;</div>
-                <div style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 12, color: B.taupe, marginBottom: 2 }}>Current</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: B.navy }}>{current.final_score}</div>
-                </div>
-                <div style={{ padding: "6px 14px", borderRadius: 20, backgroundColor: improved ? "rgba(31,109,122,0.08)" : "rgba(155,44,44,0.08)", marginLeft: 8 }}>
-                  <span style={{ fontSize: 18, fontWeight: 700, color: improved ? B.teal : B.bandLimited }}>{improved ? "+" : ""}{diff}</span>
-                </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                <span style={{ fontSize: 24, fontWeight: 300, color: B.taupe }}>{previous.final_score}</span>
+                <span style={{ fontSize: 14, color: B.taupe }}>&rarr;</span>
+                <span style={{ fontSize: 24, fontWeight: 300, color: B.navy }}>{current.final_score}</span>
+                <span style={{ fontSize: 16, fontWeight: 600, color: diff > 0 ? B.teal : diff < 0 ? B.red : B.taupe, marginLeft: 4 }}>{diff > 0 ? "+" : ""}{diff}</span>
               </div>
-              <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-                {improved
-                  ? `Your score improved by ${diff} points since your last assessment${current.stability_band !== previous.stability_band ? `. You moved from ${previous.stability_band} to ${current.stability_band}.` : "."} Keep building on this momentum.`
-                  : diff === 0
-                    ? "Your score is the same as your last assessment. Review your action plan for the next steps to improve."
-                    : `Your score decreased by ${Math.abs(diff)} points. Review your PressureMap to identify what changed and how to recover.`}
-              </p>
             </div>
           );
         })()}
 
-        {/* ══════════ GOAL PROGRESS ══════════ */}
-        <div style={{ backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>
-              {gap > 0 ? `${gap} points to ${nextBandLabel} Stability` : "Highest band achieved!"}
-            </span>
-            <span style={{ fontSize: 14, fontWeight: 700, color: bandColor(latestBand), fontFamily: DISPLAY }}>{latestScore}/{nextBandThreshold}</span>
-          </div>
-          <div style={{ height: 8, backgroundColor: "rgba(14,26,43,0.06)", borderRadius: 4, overflow: "hidden", marginBottom: 10 }}>
-            <div style={{
-              height: "100%", borderRadius: 4,
-              background: `linear-gradient(90deg, ${bandColor(latestBand)}88, ${bandColor(latestBand)})`,
-              width: `${progress}%`,
-              transition: "width 600ms ease-out",
-            }} />
-          </div>
-          {gap > 0 && gap <= 10 && (
-            <p style={{ fontSize: 12, color: B.teal, fontWeight: 600, margin: 0 }}>
-              You are close! A single structural change could move you to the next band.
-            </p>
-          )}
-        </div>
-
-        {/* ══════════ TWO-COLUMN: ACTIONS + SCORE HISTORY ══════════ */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, marginBottom: 20 }}>
-
-          {/* Action Tracker */}
-          <div style={{ flex: 1, backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>ACTION PROGRESS</span>
-              <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>{completedActions}/{totalActions} done</span>
+        {/* ══════════ INCOME STRUCTURE SNAPSHOT ══════════ */}
+        {hasData && (
+          <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10, marginBottom: 24 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, marginBottom: 12 }}>INCOME STRUCTURE</div>
+            <div style={{ display: "flex", height: 32, borderRadius: 6, overflow: "hidden", marginBottom: 10, border: `1px solid ${B.stone}` }}>
+              {activeIncome > 0 && <div style={{ width: `${activeIncome}%`, backgroundColor: `${B.red}22`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 10, fontWeight: 600, color: B.red }}>{activeIncome}%</span></div>}
+              {semiIncome > 0 && <div style={{ width: `${semiIncome}%`, backgroundColor: `${B.amber}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 10, fontWeight: 600, color: B.amber }}>{semiIncome}%</span></div>}
+              {persistentIncome > 0 && <div style={{ width: `${persistentIncome}%`, backgroundColor: `${B.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 10, fontWeight: 600, color: B.teal }}>{persistentIncome}%</span></div>}
             </div>
-
-            {/* Progress ring */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-              <div style={{ position: "relative", width: 56, height: 56, flexShrink: 0 }}>
-                <svg viewBox="0 0 36 36" style={{ width: 56, height: 56, transform: "rotate(-90deg)" }}>
-                  <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth="3" />
-                  <circle cx="18" cy="18" r="15.5" fill="none" stroke={B.teal} strokeWidth="3" strokeDasharray={`${actionProgress} ${100 - actionProgress}`} strokeLinecap="round" style={{ transition: "stroke-dasharray 400ms ease" }} />
-                </svg>
-                <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: 13, fontWeight: 700, color: B.navy }}>{actionProgress}%</span>
-              </div>
-              <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>
-                  {completedActions === 0 ? "Get started!" : completedActions === totalActions ? "All actions complete!" : "Keep going!"}
-                </div>
-                <p style={{ fontSize: 12, color: B.muted, margin: 0 }}>
-                  {completedActions === 0 ? "Check off actions as you complete them." : `${totalActions - completedActions} action${totalActions - completedActions !== 1 ? "s" : ""} remaining.`}
-                </p>
-              </div>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 11, color: B.muted }}><span style={{ color: B.red, fontWeight: 600 }}>{activeIncome}%</span> stops when you stop</span>
+              <span style={{ fontSize: 11, color: B.muted }}><span style={{ color: B.amber, fontWeight: 600 }}>{semiIncome}%</span> repeats briefly</span>
+              <span style={{ fontSize: 11, color: B.muted }}><span style={{ color: B.teal, fontWeight: 600 }}>{persistentIncome}%</span> survives interruption</span>
             </div>
+            <div style={{ marginTop: 10, fontSize: 12, color: B.muted }}>
+              <Link href="/pressuremap" style={{ color: B.purple, fontWeight: 500, textDecoration: "none" }}>See full breakdown in PressureMap &rarr;</Link>
+            </div>
+          </div>
+        )}
 
-            {/* Action items */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {actions.map((a) => (
-                <div
-                  key={a.id}
-                  onClick={() => toggleAction(a.id)}
-                  style={{
-                    display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px",
-                    borderRadius: 8, cursor: "pointer",
-                    backgroundColor: a.completed ? "rgba(31,109,122,0.04)" : "rgba(14,26,43,0.02)",
-                    border: `1px solid ${a.completed ? "rgba(31,109,122,0.15)" : "rgba(14,26,43,0.06)"}`,
-                    transition: "all 200ms",
-                  }}
+        {/* ══════════ SCENARIO QUICK-LAUNCH ══════════ */}
+        {scenarios.length > 0 && (
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, marginBottom: 12 }}>YOUR TOP MOVES</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {scenarios.map((s, i) => (
+                <div key={s.id} onClick={() => router.push("/simulator")}
+                  style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${i === 0 ? B.purple : i === 1 ? B.teal : B.navy}`, borderRadius: 8, cursor: "pointer", transition: "box-shadow 200ms" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(14,26,43,0.06)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
                 >
-                  <div style={{
-                    width: 20, height: 20, borderRadius: 4, flexShrink: 0, marginTop: 1,
-                    border: `2px solid ${a.completed ? B.teal : "rgba(14,26,43,0.20)"}`,
-                    backgroundColor: a.completed ? B.teal : "transparent",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    transition: "all 200ms",
-                  }}>
-                    {a.completed && <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span>}
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{s.label}</div>
+                    <div style={{ fontSize: 11, color: B.muted }}>{s.description}</div>
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 500, color: a.completed ? B.teal : B.navy, textDecoration: a.completed ? "line-through" : "none" }}>{a.label}</div>
-                    <span style={{ fontSize: 11, color: B.taupe }}>Impact: {a.impact}</span>
+                  <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 16 }}>
+                    <div style={{ fontSize: 16, fontWeight: 300, color: B.teal }}>+{s.lift}</div>
+                    <div style={{ fontSize: 9, color: B.taupe }}>points</div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+        )}
 
-          {/* Score History */}
-          <div style={{ flex: 1, backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>SCORE HISTORY</div>
-
-            {assessments.length <= 1 ? (
-              <div style={{ textAlign: "center", padding: "24px 0" }}>
-                <div style={{ fontSize: 40, fontWeight: 300, color: B.navy, fontFamily: DISPLAY, marginBottom: 8 }}>{latestScore}</div>
-                <p style={{ fontSize: 13, color: B.muted, margin: "0 0 16px" }}>This is your first assessment. Retake in a few months to track progress.</p>
-                <Link href="/pricing" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Take New Assessment &rarr;</Link>
+        {/* ══════════ TIMELINE PROJECTION ══════════ */}
+        {hasData && timeline.length > 0 && (
+          <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10, marginBottom: 24 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, marginBottom: 14 }}>PROJECTED TRAJECTORY</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", height: 80, gap: 2, marginBottom: 8 }}>
+              {/* Current */}
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <span style={{ fontSize: 14, fontWeight: 300, color: B.navy }}>{score}</span>
+                <div style={{ width: "100%", height: `${Math.max(10, score * 0.7)}%`, backgroundColor: `${bandColor(score)}22`, borderRadius: "4px 4px 0 0" }} />
+                <span style={{ fontSize: 9, color: B.taupe }}>Now</span>
               </div>
-            ) : (
-              <>
-                {/* Mini chart */}
-                <div style={{ position: "relative", height: 100, marginBottom: 16 }}>
-                  <svg viewBox={`0 0 ${(scoreHistory.length - 1) * 100} 100`} style={{ width: "100%", height: "100%" }} preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id="scoreGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor={B.teal} stopOpacity="0.15" />
-                        <stop offset="100%" stopColor={B.teal} stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    {scoreHistory.length > 1 && (() => {
-                      const minS = Math.min(...scoreHistory) - 10;
-                      const maxS = Math.max(...scoreHistory) + 10;
-                      const range = Math.max(maxS - minS, 20);
-                      const points = scoreHistory.map((s, i) => `${i * 100},${100 - ((s - minS) / range) * 100}`).join(" ");
-                      const areaPoints = points + ` ${(scoreHistory.length - 1) * 100},100 0,100`;
-                      return (
-                        <>
-                          <polygon points={areaPoints} fill="url(#scoreGrad)" />
-                          <polyline points={points} fill="none" stroke={B.teal} strokeWidth="2" strokeLinejoin="round" />
-                          {scoreHistory.map((s, i) => (
-                            <circle key={i} cx={i * 100} cy={100 - ((s - minS) / range) * 100} r="4" fill={B.teal} stroke={B.white} strokeWidth="2" />
-                          ))}
-                        </>
-                      );
-                    })()}
-                  </svg>
+              {timeline.map((t, i) => (
+                <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                  <span style={{ fontSize: 14, fontWeight: 300, color: t.delta > 0 ? B.teal : B.navy }}>{t.score}</span>
+                  <div style={{ width: "100%", height: `${Math.max(10, t.score * 0.7)}%`, backgroundColor: `${B.teal}22`, borderRadius: "4px 4px 0 0" }} />
+                  <span style={{ fontSize: 9, color: B.taupe }}>{t.label || `${[3, 6, 12][i]}mo`}</span>
                 </div>
-
-                {/* Assessment list */}
-                {assessments.slice(0, 5).map((a, i) => {
-                  const prevScore = i < assessments.length - 1 ? assessments[i + 1].final_score : null;
-                  const diff = prevScore !== null ? a.final_score - prevScore : null;
-                  return (
-                    <div key={a.record_id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < assessments.length - 1 ? `1px solid rgba(14,26,43,0.04)` : "none" }}>
-                      <div>
-                        <span style={{ fontSize: 13, fontWeight: 500, color: B.navy }}>{formatDate(a.assessment_date_utc || a.issued_timestamp_utc || "")}</span>
-                        <span style={{ fontSize: 11, color: B.taupe, marginLeft: 8 }}>{a.stability_band}</span>
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontSize: 15, fontWeight: 700, color: bandColor(a.stability_band), fontFamily: DISPLAY }}>{a.final_score}</span>
-                        {diff !== null && diff !== 0 && (
-                          <span style={{ fontSize: 11, fontWeight: 600, color: diff > 0 ? B.teal : B.bandLimited }}>{diff > 0 ? `+${diff}` : diff}</span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* ══════════ BADGES & STREAKS ══════════ */}
-        <div style={{ backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>ACHIEVEMENTS</span>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              {streakData.currentStreak > 0 && (
-                <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "3px 10px", borderRadius: 20, backgroundColor: "rgba(220,120,20,0.08)", border: "1px solid rgba(220,120,20,0.15)" }}>
-                  <span style={{ fontSize: 12 }}>🔥</span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#DC7814" }}>{streakData.currentStreak} day streak</span>
-                </div>
-              )}
-              <span style={{ fontSize: 12, color: B.muted }}>{getEarnedCount().earned}/{getEarnedCount().total} earned</span>
+              ))}
             </div>
+            <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+              If you implement your top recommended action, structural improvements compound over time. Early gains unlock interaction bonuses.
+            </p>
           </div>
+        )}
 
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(3, 1fr)" : "repeat(6, 1fr)", gap: 8 }}>
-            {badges.map((badge) => (
-              <div
-                key={badge.id}
-                title={badge.description}
-                style={{
-                  textAlign: "center", padding: "12px 8px", borderRadius: 10,
-                  backgroundColor: badge.earnedAt ? "rgba(75,63,174,0.04)" : "rgba(14,26,43,0.02)",
-                  border: `1px solid ${badge.earnedAt ? "rgba(75,63,174,0.12)" : "rgba(14,26,43,0.04)"}`,
-                  opacity: badge.earnedAt ? 1 : 0.4,
-                  transition: "all 200ms",
-                }}
-              >
-                <div style={{ marginBottom: 4, display: "flex", justifyContent: "center" }}><BadgeIcon iconId={badge.icon} size={28} earned={!!badge.earnedAt} /></div>
-                <div style={{ fontSize: 10, fontWeight: 600, color: badge.earnedAt ? B.navy : B.taupe, lineHeight: 1.2 }}>{badge.label}</div>
+        {/* ══════════ KEY METRICS ══════════ */}
+        {hasData && (
+          <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
+            {[
+              { label: "Income runway", value: continuityMonths < 1 ? "< 1 month" : `${continuityMonths} months`, color: continuityMonths < 3 ? B.red : B.teal },
+              { label: "Biggest source risk", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
+              { label: "Days since assessment", value: String(daysSince), color: daysSince > 90 ? B.red : daysSince > 30 ? B.amber : B.teal },
+            ].map((m) => (
+              <div key={m.label} style={{ flex: 1, padding: "14px 18px", border: `1px solid ${B.stone}`, borderRadius: 8 }}>
+                <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 4 }}>{m.label}</div>
+                <div style={{ fontSize: 20, fontWeight: 300, color: m.color, letterSpacing: "-0.02em" }}>{m.value}</div>
               </div>
             ))}
           </div>
-        </div>
+        )}
 
-        {/* ══════════ QUICK LINKS ══════════ */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12 }}>
-          {[
-            { label: "View Full Report", desc: "Your complete Income Stability Report", href: "/review", color: B.navy },
-            { label: "PressureMap", desc: "Interactive risk zones and actions", href: "/pressuremap", color: B.purple },
-            { label: "Stability Simulator", desc: "Model changes and see score impact", href: "/simulator", color: B.teal },
-          ].map((link) => (
-            <Link key={link.href} href={link.href} style={{
-              flex: 1, padding: "16px 20px", borderRadius: 12,
-              backgroundColor: B.white, border: "1px solid rgba(14,26,43,0.06)",
-              textDecoration: "none", transition: "box-shadow 200ms",
-              boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
-              display: "block",
-            }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: link.color, marginBottom: 4 }}>{link.label}</div>
-              <p style={{ fontSize: 12, color: B.muted, margin: 0 }}>{link.desc}</p>
-            </Link>
-          ))}
-        </div>
+        {/* ══════════ REASSESSMENT READINESS ══════════ */}
+        {hasData && (
+          <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10, marginBottom: 24 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, marginBottom: 12 }}>REASSESSMENT READINESS</div>
+            <p style={{ fontSize: 12, color: B.muted, margin: "0 0 14px", lineHeight: 1.5 }}>Have you made any of these structural changes since your last assessment?</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {reassessChecks.map((check) => (
+                <div key={check.key} onClick={() => toggleCheck(check.key)}
+                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderRadius: 6, cursor: "pointer", border: `1px solid ${checkedItems.includes(check.key) ? `${B.teal}25` : B.stone}`, transition: "all 200ms" }}>
+                  <div style={{ width: 18, height: 18, borderRadius: 4, border: `1.5px solid ${checkedItems.includes(check.key) ? B.teal : "rgba(14,26,43,0.18)"}`, backgroundColor: checkedItems.includes(check.key) ? B.teal : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 200ms", flexShrink: 0 }}>
+                    {checkedItems.includes(check.key) && <span style={{ color: B.white, fontSize: 11, fontWeight: 700 }}>&#10003;</span>}
+                  </div>
+                  <span style={{ fontSize: 13, color: checkedItems.includes(check.key) ? B.navy : B.muted, fontWeight: checkedItems.includes(check.key) ? 500 : 400 }}>{check.label}</span>
+                </div>
+              ))}
+            </div>
+            {checkedItems.length >= 2 && (
+              <div style={{ marginTop: 14, padding: "12px 16px", borderRadius: 6, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}15` }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: B.teal, marginBottom: 4 }}>You may be ready to reassess.</div>
+                <p style={{ fontSize: 12, color: B.muted, margin: "0 0 8px" }}>With {checkedItems.length} structural changes, a new assessment could show meaningful score improvement.</p>
+                <Link href="/pricing" style={{ fontSize: 12, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Get a new assessment &rarr;</Link>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ══════════ SCORE HISTORY ══════════ */}
+        {assessments.length > 0 && (
+          <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10, marginBottom: 32 }}>
+            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: B.taupe, marginBottom: 12 }}>ASSESSMENT HISTORY</div>
+            {assessments.slice(0, 5).map((a, i) => {
+              const prev = i < assessments.length - 1 ? assessments[i + 1].final_score : null;
+              const diff = prev !== null ? a.final_score - prev : null;
+              return (
+                <div key={a.record_id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < Math.min(assessments.length, 5) - 1 ? `1px solid ${B.stone}` : "none" }}>
+                  <div>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: B.navy }}>{formatDate(a.assessment_date_utc || a.issued_timestamp_utc || "")}</span>
+                    <span style={{ fontSize: 11, color: B.taupe, marginLeft: 8 }}>{a.stability_band}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 16, fontWeight: 300, color: bandColor(a.final_score) }}>{a.final_score}</span>
+                    {diff !== null && diff !== 0 && <span style={{ fontSize: 11, fontWeight: 600, color: diff > 0 ? B.teal : B.red }}>{diff > 0 ? `+${diff}` : diff}</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* ── CTA ── */}
-        <div style={{ marginTop: 32, marginBottom: 24 }}><SuiteCTA page="dashboard" /></div>
+        <SuiteCTA page="dashboard" />
 
         {/* ── Footer ── */}
-        <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: B.taupe, margin: 0, fontStyle: "italic" }}>
-            RunPayway&#8482; Stability Suite &mdash; A proprietary tool by PeopleStar Enterprises.
-          </p>
+        <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
+          <p style={{ fontSize: 10, color: B.taupe, margin: 0, fontStyle: "italic" }}>RunPayway&#8482; Stability Suite &mdash; Dashboard. A proprietary tool by PeopleStar Enterprises.</p>
         </div>
       </div>
     </div>

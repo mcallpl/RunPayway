@@ -2,12 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
 import SuiteHeader from "@/components/SuiteHeader";
 import SuiteCTA from "@/components/SuiteCTA";
-import { earnBadge } from "@/lib/gamification";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 
 /* ------------------------------------------------------------------ */
@@ -17,37 +15,17 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  bone: "#F8F6F1",
   white: "#FFFFFF",
-  stone: "rgba(14,26,43,0.12)",
-  taupe: "rgba(14,26,43,0.42)",
-  muted: "rgba(14,26,43,0.58)",
-  red: "#DC4A4A",
-  yellow: "#D4A017",
+  stone: "rgba(14,26,43,0.08)",
+  taupe: "rgba(14,26,43,0.36)",
+  muted: "rgba(14,26,43,0.52)",
+  red: "#C53030",
+  amber: "#B7791F",
   bandLimited: "#9B2C2C",
   bandDeveloping: "#92640A",
   bandEstablished: "#2B5EA7",
   bandHigh: "#1F6D7A",
 };
-
-const INTER = "'Inter', system-ui, -apple-system, sans-serif";
-
-/* ------------------------------------------------------------------ */
-/*  Zone card type                                                     */
-/* ------------------------------------------------------------------ */
-interface ZoneData {
-  zone: "red" | "yellow" | "green";
-  color: string;
-  label: string;
-  headline: string;
-  description: string;
-  recommendation: string;
-  example: string;
-  scoreLift: number;
-  projectedScore: number;
-  presetId: string | null;
-}
 
 /* ------------------------------------------------------------------ */
 /*  Main page                                                          */
@@ -55,8 +33,7 @@ interface ZoneData {
 export default function PressureMapPage() {
   const router = useRouter();
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
-  const [expandedZone, setExpandedZone] = useState<"red" | "yellow" | "green" | null>(null);
-  const [badgeEarned, setBadgeEarned] = useState(false);
+  const [activeSegment, setActiveSegment] = useState<"active" | "semi" | "persistent" | null>(null);
   const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
@@ -72,50 +49,51 @@ export default function PressureMapPage() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (parsed && parsed.record_id) setRecord(parsed);
+        if (parsed) setRecord(parsed);
       } catch { /* ignore */ }
     }
   }, []);
 
-  // Show full UI even without data — just empty/sample state
-  const hasData = !!record;
-
-  // ── Extract data from record (or defaults) ──
+  // ── Extract data ──
   const score = (record?.final_score as number) || 0;
   const band = (record?.stability_band as string) || "";
   const v2 = record?._v2 as Record<string, unknown> | undefined;
   const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-  const pressureMap = record?.pressure_map as { pressure: string; tailwind: string; leverage_move: string; operating_structure: string; income_model: string; industry: string } | undefined;
-  const constraints = v2?.constraints as { root_constraint: string; primary_constraint: string; secondary_constraint: string } | undefined;
-  const sensitivity = v2?.sensitivity as { tests: Array<{ factor: string; lift: number; projected_score: number; delta_description: string }> } | undefined;
+  const constraints = v2?.constraints as { root_constraint: string; secondary_constraint?: string } | undefined;
+  const fragility = v2?.fragility as { fragility_score: number; fragility_class: string; primary_failure_mode: string } | undefined;
 
-  const industry = ((record?.industry_sector as string) || "").replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
-  const structure = (record?.operating_structure as string) || "";
-  const incomeModel = (record?.primary_income_model as string) || "";
+  const activeIncome = (record?.active_income_level as number) || 65;
+  const semiIncome = (record?.semi_persistent_income_level as number) || 20;
+  const persistentIncome = (record?.persistent_income_level as number) || 15;
+  const riskDrop = (record?.risk_scenario_drop as number) || 0;
+  const continuityMonths = (record?.income_continuity_months as number) || 0;
+  const hasData = !!record && score > 0;
 
   // ── Build canonical inputs for simulation ──
-  const baseInputs: CanonicalInput | null = ni ? {
+  const baseInputs: CanonicalInput = ni ? {
     income_persistence_pct: ni.income_persistence_pct as number,
     largest_source_pct: ni.largest_source_pct as number,
     source_diversity_count: ni.source_diversity_count as number,
     forward_secured_pct: ni.forward_secured_pct as number,
     income_variability_level: (ni.income_variability_level || "moderate") as CanonicalInput["income_variability_level"],
     labor_dependence_pct: ni.labor_dependence_pct as number,
-  } : null;
+  } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
 
-  // ── Calculate lifts for each zone ──
-  const getPresetLift = (presetId: string): { lift: number; projected: number } => {
-    if (!baseInputs) return { lift: 0, projected: score };
-    const qualityScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
+  const qualityScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
+  const baseResult = simulateScore(baseInputs, qualityScore);
+  const displayScore = hasData ? score : baseResult.overall_score;
+
+  // ── Compute projected scores for each zone fix ──
+  const getPresetResult = (presetId: string) => {
     const preset = SIMULATOR_PRESETS.find(p => p.id === presetId);
-    if (!preset) return { lift: 0, projected: score };
+    if (!preset) return { score: displayScore, lift: 0 };
     const result = simulateScore(preset.modify(baseInputs), qualityScore);
-    return { lift: Math.max(0, result.overall_score - score), projected: result.overall_score };
+    return { score: result.overall_score, lift: Math.max(0, result.overall_score - displayScore) };
   };
 
-  // ── Determine primary constraint to map to red zone ──
+  // ── Zone data — driven by real assessment data ──
   const rootConstraint = constraints?.root_constraint || "weak_forward_visibility";
-  const constraintToPreset: Record<string, string> = {
+  const constraintPreset: Record<string, string> = {
     high_concentration: "add_client",
     weak_forward_visibility: "lock_forward",
     high_labor_dependence: "build_passive",
@@ -124,244 +102,243 @@ export default function PressureMapPage() {
     high_variability: "convert_retainer",
   };
 
-  const constraintLabels: Record<string, string> = {
-    high_concentration: "Too much income from one source",
-    weak_forward_visibility: "Not enough income secured ahead of time",
-    high_labor_dependence: "Income stops when you stop working",
-    low_persistence: "Not enough recurring or repeating income",
-    low_source_diversity: "Too few independent income sources",
-    high_variability: "Income swings too much month to month",
-  };
+  const redPreset = constraintPreset[rootConstraint] || "convert_retainer";
+  const redResult = getPresetResult(redPreset);
 
-  const secondaryConstraint = constraints?.secondary_constraint || (rootConstraint === "weak_forward_visibility" ? "high_labor_dependence" : "weak_forward_visibility");
+  const greenPreset = rootConstraint === "high_labor_dependence" ? "lock_forward" : "build_passive";
+  const greenResult = getPresetResult(greenPreset);
 
-  // ── Build the 3 zone cards ──
-  const redPresetId = constraintToPreset[rootConstraint] || "convert_retainer";
-  const redLift = getPresetLift(redPresetId);
-
-  const yellowPresetId = constraintToPreset[secondaryConstraint] || "lock_forward";
-  const yellowLift = getPresetLift(yellowPresetId);
-
-  const greenPresetId = rootConstraint === "high_labor_dependence" ? "lock_forward" : "build_passive";
-  const greenLift = getPresetLift(greenPresetId);
-
-  const zones: ZoneData[] = [
+  // ── Segment data ──
+  const segments = [
     {
-      zone: "red",
+      id: "active" as const,
+      label: "Active Income",
+      pct: activeIncome,
       color: B.red,
-      label: "RED ZONE",
-      headline: constraintLabels[rootConstraint] || "Primary structural vulnerability",
-      description: pressureMap?.pressure || "This is the area where your income is most exposed to disruption.",
-      recommendation: pressureMap?.leverage_move || sensitivity?.tests?.[0]?.delta_description || "Address your primary structural weakness to see the biggest score improvement.",
-      example: SIMULATOR_PRESETS.find(p => p.id === redPresetId)?.description || "",
-      scoreLift: redLift.lift,
-      projectedScore: redLift.projected,
-      presetId: redPresetId,
+      bgColor: `${B.red}12`,
+      description: "Earned once — stops when you stop working.",
+      risk: `${activeIncome}% of your income resets to zero the moment you stop. A single disruption — illness, burnout, lost client — immediately affects ${activeIncome}% of your earnings.`,
+      action: SIMULATOR_PRESETS.find(p => p.id === redPreset)?.label || "Reduce active income dependency",
+      actionDetail: SIMULATOR_PRESETS.find(p => p.id === redPreset)?.description || "",
+      lift: redResult.lift,
+      projected: redResult.score,
+      presetId: redPreset,
     },
     {
-      zone: "yellow",
-      color: B.yellow,
-      label: "YELLOW ZONE",
-      headline: constraintLabels[secondaryConstraint] || "Secondary risk area",
-      description: `This is a moderate risk that amplifies the damage of your primary vulnerability. Addressing it builds a second layer of protection.`,
-      recommendation: sensitivity?.tests?.[1]?.delta_description || "Strengthen your secondary structural factor to reduce compounding risk.",
-      example: SIMULATOR_PRESETS.find(p => p.id === yellowPresetId)?.description || "",
-      scoreLift: yellowLift.lift,
-      projectedScore: yellowLift.projected,
-      presetId: yellowPresetId,
+      id: "semi" as const,
+      label: "Semi-Persistent",
+      pct: semiIncome,
+      color: B.amber,
+      bgColor: `${B.amber}10`,
+      description: "Repeats for a while — retainers, short contracts, subscriptions.",
+      risk: semiIncome < 20
+        ? `Only ${semiIncome}% of your income has any repeating structure. Most of your revenue must be re-earned every month.`
+        : `${semiIncome}% of your income repeats, but it is cancelable. This provides a buffer, not a foundation.`,
+      action: "Convert semi-persistent to fully recurring",
+      actionDetail: "Extend contract lengths, add auto-renewal clauses, convert monthly retainers to quarterly or annual agreements.",
+      lift: 0,
+      projected: displayScore,
+      presetId: null,
     },
     {
-      zone: "green",
+      id: "persistent" as const,
+      label: "Persistent Income",
+      pct: persistentIncome,
       color: B.teal,
-      label: "GREEN ZONE",
-      headline: pressureMap?.tailwind ? "What is already working in your favor" : "Building long-term resilience",
-      description: pressureMap?.tailwind || "These are the areas where your income is most protected. The goal is to expand this zone.",
-      recommendation: "Continue building passive and recurring income streams to lock in long-term stability.",
-      example: SIMULATOR_PRESETS.find(p => p.id === greenPresetId)?.description || "",
-      scoreLift: greenLift.lift,
-      projectedScore: greenLift.projected,
-      presetId: greenPresetId,
+      bgColor: `${B.teal}10`,
+      description: "Continues without your daily effort — royalties, licensing, passive streams.",
+      risk: persistentIncome >= 30
+        ? `${persistentIncome}% of your income survives interruption. This is structural protection that most professionals do not have.`
+        : `Only ${persistentIncome}% of your income would continue if you stopped working. Building this zone is the single most durable improvement you can make.`,
+      action: greenResult.lift > 0 ? (SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.label || "Build persistent income") : "Build persistent income streams",
+      actionDetail: SIMULATOR_PRESETS.find(p => p.id === greenPreset)?.description || "Create income that produces without your daily involvement.",
+      lift: greenResult.lift,
+      projected: greenResult.score,
+      presetId: greenPreset,
     },
   ];
 
-  const bandColor = score >= 75 ? B.bandHigh : score >= 50 ? B.bandEstablished : score >= 30 ? B.bandDeveloping : B.bandLimited;
+  const bandColor = displayScore >= 75 ? B.bandHigh : displayScore >= 50 ? B.bandEstablished : displayScore >= 30 ? B.bandDeveloping : B.bandLimited;
+  const previewScore = activeSegment ? segments.find(s => s.id === activeSegment)?.projected || displayScore : displayScore;
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: B.white, fontFamily: INTER }}>
-      <style>{`@keyframes zoneExpand { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+    <div style={{ minHeight: "100vh", backgroundColor: "#FAFAFA", fontFamily: "'Inter', system-ui, sans-serif" }}>
       <SuiteHeader current="pressuremap" />
+      <style>{`@keyframes segmentExpand { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 500px; } }`}</style>
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: mobile ? "28px 16px 80px" : "48px 28px 80px" }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: mobile ? "28px 16px 60px" : "48px 28px 80px" }}>
 
-        {/* ── Hero ── */}
-        <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: B.purple, marginBottom: 12 }}>RUNPAYWAY&#8482; STABILITY SUITE &mdash; PRESSUREMAP&#8482;</div>
-          <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 700, color: B.navy, marginBottom: 8, lineHeight: 1.2 }}>
-            Where Your Income Is Vulnerable &mdash; And What To Do About It
-          </h1>
-          <p style={{ fontSize: 15, color: B.muted, maxWidth: 540, margin: "0 auto 20px", lineHeight: 1.65 }}>
-            Your income scored <span style={{ fontWeight: 700, color: bandColor }}>{score}/100</span> ({band}).
-            {industry ? ` As a ${structure.toLowerCase()} in ${industry}, ` : " "}
-            tap each zone below to see your specific risks and the exact action to take.
+        {/* ── Header ── */}
+        <div style={{ marginBottom: 36 }}>
+          <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", color: B.taupe, textTransform: "uppercase" as const, marginBottom: 8 }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
+          <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 8 }}>Your Income Structure</h1>
+          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, maxWidth: 520, margin: 0 }}>
+            {hasData
+              ? "This is how your income actually works — where it comes from, what repeats, and what disappears the moment you stop. Click each zone to see the risk and the fix."
+              : "Enter your access code on the Suite page to load your personalized income data."}
           </p>
+        </div>
 
-          {/* Zone indicator bar */}
-          <div style={{ display: "flex", height: 8, borderRadius: 4, overflow: "hidden", maxWidth: 400, margin: "0 auto" }}>
-            <div style={{ flex: 1, backgroundColor: B.red }} />
-            <div style={{ flex: 1, backgroundColor: B.yellow }} />
-            <div style={{ flex: 1, backgroundColor: B.teal }} />
+        {/* ── SCORE GAUGE — animates on hover ── */}
+        <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 32, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 10 }}>
+          <div style={{ textAlign: "center", minWidth: 80 }}>
+            <div style={{ fontSize: 42, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1, transition: "color 300ms ease" }}>
+              {previewScore}
+            </div>
+            <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginTop: 4 }}>
+              {activeSegment ? "PROJECTED" : "CURRENT"}
+            </div>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ fontSize: 12, fontWeight: 500, color: bandColor }}>{band || baseResult.band}</span>
+              {activeSegment && segments.find(s => s.id === activeSegment)?.lift ? (
+                <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>+{segments.find(s => s.id === activeSegment)?.lift} points</span>
+              ) : null}
+            </div>
+            <div style={{ height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden" }}>
+              <div style={{ height: "100%", borderRadius: 3, backgroundColor: bandColor, width: `${Math.min(100, previewScore)}%`, transition: "width 500ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
+            </div>
           </div>
         </div>
 
-        {/* ── 3 ACTION CARDS ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {zones.map((z) => {
-            const isExpanded = expandedZone === z.zone;
+        {/* ══════════ INCOME STRUCTURE BAR — THE MAP ══════════ */}
+        <div style={{ marginBottom: 12, fontSize: 11, fontWeight: 600, color: B.taupe, letterSpacing: "0.10em", textTransform: "uppercase" as const }}>YOUR INCOME MAP</div>
+        <div style={{ display: "flex", height: mobile ? 48 : 56, borderRadius: 8, overflow: "hidden", marginBottom: 8, cursor: "pointer", border: `1px solid ${B.stone}` }}>
+          {segments.map((seg) => {
+            if (seg.pct <= 0) return null;
+            const isActive = activeSegment === seg.id;
             return (
               <div
-                key={z.zone}
-                onClick={() => {
-                  setExpandedZone(isExpanded ? null : z.zone);
-                  if (!isExpanded && !badgeEarned) {
-                    earnBadge("pressuremap_viewer");
-                    setBadgeEarned(true);
-                  }
-                }}
+                key={seg.id}
+                onClick={() => setActiveSegment(isActive ? null : seg.id)}
+                onMouseEnter={() => !mobile && setActiveSegment(seg.id)}
+                onMouseLeave={() => !mobile && setActiveSegment(null)}
                 style={{
-                  borderRadius: 14,
-                  border: `1px solid ${isExpanded ? z.color + "44" : "rgba(14,26,43,0.08)"}`,
-                  borderLeft: `4px solid ${z.color}`,
-                  backgroundColor: isExpanded ? `${z.color}08` : B.white,
-                  padding: mobile ? "20px 16px" : "24px 28px",
-                  cursor: "pointer",
-                  transition: "all 250ms ease",
-                  boxShadow: isExpanded ? `0 4px 20px ${z.color}15` : "none",
+                  width: `${seg.pct}%`,
+                  backgroundColor: isActive ? seg.color : `${seg.color}22`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "background-color 300ms ease, transform 100ms ease",
+                  transform: isActive ? "scaleY(1.08)" : "scaleY(1)",
+                  position: "relative",
                 }}
               >
-                {/* Card header — always visible */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                      <div style={{ width: 14, height: 14, borderRadius: 3, backgroundColor: z.color }} />
-                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: z.color }}>{z.label}</span>
-                    </div>
-                    <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.35 }}>{z.headline}</div>
-                    <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-                      {z.description.length > 120 && !isExpanded ? z.description.substring(0, 120) + "..." : z.description}
-                    </p>
-                  </div>
-                  <div style={{ textAlign: "right", flexShrink: 0, marginLeft: 16 }}>
-                    {z.scoreLift > 0 && (
-                      <div style={{ fontSize: 20, fontWeight: 700, color: B.teal, lineHeight: 1 }}>+{z.scoreLift}</div>
-                    )}
-                    <div style={{ fontSize: 11, color: B.muted, marginTop: 2 }}>points</div>
-                    <div style={{ fontSize: 18, color: B.navy, marginTop: 8, transition: "transform 200ms", transform: isExpanded ? "rotate(180deg)" : "rotate(0)" }}>&darr;</div>
-                  </div>
-                </div>
-
-                {/* Expanded detail */}
-                {isExpanded && (
-                  <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${z.color}22`, animation: "zoneExpand 300ms ease-out" }}>
-                    {/* Recommendation */}
-                    <div style={{ backgroundColor: `${z.color}0A`, borderRadius: 8, padding: "14px 18px", marginBottom: 14 }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: z.color, marginBottom: 6 }}>RECOMMENDED ACTION</div>
-                      <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.6, fontWeight: 500 }}>{z.recommendation}</p>
-                    </div>
-
-                    {/* Example */}
-                    {z.example && (
-                      <div style={{ marginBottom: 14 }}>
-                        <span style={{ fontSize: 12, color: B.muted, fontWeight: 600 }}>How: </span>
-                        <span style={{ fontSize: 13, color: B.navy, lineHeight: 1.55 }}>{z.example}</span>
-                      </div>
-                    )}
-
-                    {/* Impact preview */}
-                    {z.scoreLift > 0 && (
-                      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                          <span style={{ fontSize: 22, fontWeight: 700, color: B.navy }}>{score}</span>
-                          <span style={{ fontSize: 14, color: B.taupe }}>&rarr;</span>
-                          <span style={{ fontSize: 22, fontWeight: 700, color: B.teal }}>{z.projectedScore}</span>
-                          <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, marginLeft: 4 }}>+{z.scoreLift}</span>
-                        </div>
-                        <div style={{ flex: 1, height: 8, backgroundColor: B.stone, borderRadius: 4, overflow: "hidden", position: "relative" }}>
-                          {/* Base score (static) */}
-                          <div style={{ position: "absolute", height: "100%", borderRadius: 4, backgroundColor: `${bandColor}66`, width: `${Math.min(100, score)}%` }} />
-                          {/* Projected score (animated) */}
-                          <div style={{ position: "absolute", height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${bandColor}, ${B.teal})`, width: `${Math.min(100, z.projectedScore)}%`, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)", boxShadow: `0 0 8px ${B.teal}44` }} />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* CTA: Try in Simulator */}
-                    {z.presetId && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push("/simulator");
-                        }}
-                        style={{
-                          display: "inline-flex", alignItems: "center", gap: 8,
-                          padding: "10px 20px", borderRadius: 8,
-                          backgroundColor: B.navy, color: B.white,
-                          fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer",
-                          transition: "background-color 200ms",
-                        }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = B.purple; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = B.navy; }}
-                      >
-                        Try This in the Simulator &rarr;
-                      </button>
-                    )}
-                  </div>
-                )}
+                <span style={{ fontSize: seg.pct < 15 ? 10 : 13, fontWeight: 600, color: isActive ? "#FFFFFF" : seg.color, transition: "color 300ms ease" }}>
+                  {seg.pct}%
+                </span>
               </div>
             );
           })}
         </div>
 
-        {/* ── Combined impact ── */}
-        <div style={{ marginTop: 28, padding: "20px 24px", borderRadius: 12, background: `linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>YOUR GOAL</div>
-          <p style={{ fontSize: 15, fontWeight: 600, color: B.navy, margin: "0 0 8px", lineHeight: 1.5 }}>
-            Move as much of your income as possible from red zones to green zones.
-          </p>
-          <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-            With just a few key changes, you can significantly improve your financial stability. Use the <Link href="/simulator" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Stability Simulator</Link> to model each change and see your score update in real time.
-          </p>
+        {/* Legend */}
+        <div style={{ display: "flex", gap: mobile ? 12 : 20, marginBottom: 32, flexWrap: "wrap" as const }}>
+          {segments.map((seg) => (
+            <div key={seg.id} style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }} onClick={() => setActiveSegment(activeSegment === seg.id ? null : seg.id)}>
+              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: seg.color }} />
+              <span style={{ fontSize: 12, color: activeSegment === seg.id ? B.navy : B.muted, fontWeight: activeSegment === seg.id ? 600 : 400, transition: "all 200ms" }}>{seg.label}</span>
+            </div>
+          ))}
         </div>
 
-        {/* ── Next step: Simulator ── */}
-        <div
-          onClick={() => router.push("/simulator")}
-          style={{
-            marginTop: 24, borderRadius: 12, overflow: "hidden", cursor: "pointer",
-            background: `linear-gradient(135deg, ${B.navy} 0%, #161430 50%, ${B.teal} 100%)`,
-            padding: mobile ? "18px 16px" : "20px 24px",
-            transition: "box-shadow 250ms ease, transform 250ms ease",
-          }}
-          onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 8px 28px rgba(31,109,122,0.25)"; el.style.transform = "translateY(-2px)"; }}
-          onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "none"; el.style.transform = "translateY(0)"; }}
+        {/* ══════════ ZONE DETAIL PANELS ══════════ */}
+        {segments.map((seg) => {
+          const isOpen = activeSegment === seg.id;
+          if (!isOpen) return null;
+          return (
+            <div key={seg.id} style={{ marginBottom: 24, border: `1px solid ${seg.color}25`, borderLeft: `3px solid ${seg.color}`, borderRadius: 10, padding: mobile ? "20px 16px" : "24px 28px", backgroundColor: B.white, animation: "segmentExpand 300ms ease-out" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: seg.color, textTransform: "uppercase" as const, marginBottom: 4 }}>{seg.label} — {seg.pct}%</div>
+                  <div style={{ fontSize: 13, color: B.muted }}>{seg.description}</div>
+                </div>
+                <button onClick={() => setActiveSegment(null)} style={{ background: "none", border: "none", fontSize: 18, color: B.taupe, cursor: "pointer", padding: "0 4px" }}>&times;</button>
+              </div>
+
+              {/* Risk */}
+              <div style={{ padding: "14px 16px", borderRadius: 8, backgroundColor: `${seg.color}06`, marginBottom: 14 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: seg.color, marginBottom: 6 }}>WHAT THIS MEANS</div>
+                <p style={{ fontSize: 13, color: B.navy, margin: 0, lineHeight: 1.65 }}>{seg.risk}</p>
+              </div>
+
+              {/* Action */}
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: B.teal, marginBottom: 6 }}>THE FIX</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{seg.action}</div>
+                <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.55 }}>{seg.actionDetail}</p>
+              </div>
+
+              {/* Before/After */}
+              {seg.lift > 0 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, marginBottom: 14 }}>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 10, color: B.taupe }}>Now</div>
+                    <div style={{ fontSize: 22, fontWeight: 300, color: B.navy }}>{displayScore}</div>
+                  </div>
+                  <div style={{ fontSize: 16, color: B.taupe }}>&rarr;</div>
+                  <div style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 10, color: B.teal }}>After</div>
+                    <div style={{ fontSize: 22, fontWeight: 300, color: B.teal }}>{seg.projected}</div>
+                  </div>
+                  <div style={{ flex: 1, marginLeft: 8 }}>
+                    <div style={{ height: 6, backgroundColor: B.stone, borderRadius: 3, overflow: "hidden", position: "relative" }}>
+                      <div style={{ position: "absolute", height: "100%", borderRadius: 3, backgroundColor: `${bandColor}44`, width: `${displayScore}%` }} />
+                      <div style={{ position: "absolute", height: "100%", borderRadius: 3, backgroundColor: B.teal, width: `${seg.projected}%`, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>+{seg.lift}</span>
+                </div>
+              )}
+
+              {/* Simulator CTA */}
+              {seg.presetId && (
+                <button onClick={() => router.push("/simulator")} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}22`, borderRadius: 6, padding: "8px 16px", cursor: "pointer", transition: "all 200ms" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = `${B.purple}08`; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+                >
+                  Model this change in the Simulator &rarr;
+                </button>
+              )}
+            </div>
+          );
+        })}
+
+        {/* ── Key metrics ── */}
+        {hasData && (
+          <div style={{ display: "flex", gap: 12, marginBottom: 32, flexDirection: mobile ? "column" : "row" }}>
+            {[
+              { label: "If top source leaves", value: `−${riskDrop} pts`, color: B.red },
+              { label: "Income runway", value: continuityMonths < 1 ? "< 1 month" : `${continuityMonths} months`, color: continuityMonths < 3 ? B.amber : B.teal },
+              { label: "Fragility", value: fragility?.fragility_class ? fragility.fragility_class.charAt(0).toUpperCase() + fragility.fragility_class.slice(1) : "—", color: fragility?.fragility_class === "brittle" || fragility?.fragility_class === "thin" ? B.red : B.teal },
+            ].map((m) => (
+              <div key={m.label} style={{ flex: 1, padding: "14px 18px", border: `1px solid ${B.stone}`, borderRadius: 8 }}>
+                <div style={{ fontSize: 10, color: B.taupe, fontWeight: 500, marginBottom: 4 }}>{m.label}</div>
+                <div style={{ fontSize: 18, fontWeight: 300, color: m.color, letterSpacing: "-0.02em" }}>{m.value}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ── Next step ── */}
+        <div onClick={() => router.push("/simulator")} style={{ padding: "16px 20px", borderRadius: 8, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.teal}`, cursor: "pointer", marginBottom: 32, transition: "box-shadow 200ms" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(31,109,122,0.08)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
         >
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>NEXT STEP</div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 2 }}>Test these changes in the Stability Simulator</div>
-              <p style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", margin: 0 }}>Model each scenario and see your score update in real time.</p>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.12em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 3 }}>NEXT STEP</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Test these changes in the Stability Simulator</div>
             </div>
-            <span style={{ fontSize: 24, color: "#F4F1EA", opacity: 0.7, flexShrink: 0, marginLeft: 16 }}>&rarr;</span>
+            <span style={{ fontSize: 18, color: B.teal }}>&rarr;</span>
           </div>
         </div>
 
         {/* ── CTA ── */}
-        <div style={{ marginTop: 40, marginBottom: 24 }}><SuiteCTA page="pressuremap" /></div>
+        <SuiteCTA page="pressuremap" />
 
         {/* ── Footer ── */}
-        <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
-            RunPayway&#8482; Stability Suite &mdash; PressureMap&#8482;. A proprietary tool by PeopleStar Enterprises.
-          </p>
+        <div style={{ marginTop: 32, paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
+          <p style={{ fontSize: 10, color: B.taupe, margin: 0, fontStyle: "italic" }}>RunPayway&#8482; Stability Suite &mdash; PressureMap&#8482;. A proprietary tool by PeopleStar Enterprises.</p>
         </div>
       </div>
     </div>
