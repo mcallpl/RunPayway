@@ -353,7 +353,7 @@ export default function DashboardPage() {
               <div style={{ textAlign: "center", padding: "24px 0" }}>
                 <div style={{ fontSize: 40, fontWeight: 300, color: B.navy, fontFamily: DISPLAY, marginBottom: 8 }}>{latestScore}</div>
                 <p style={{ fontSize: 13, color: B.muted, margin: "0 0 16px" }}>This is your first assessment. Retake in a few months to track progress.</p>
-                <Link href="/diagnostic-portal" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Take New Assessment &rarr;</Link>
+                <Link href="/pricing" style={{ fontSize: 13, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Take New Assessment &rarr;</Link>
               </div>
             ) : (
               <>

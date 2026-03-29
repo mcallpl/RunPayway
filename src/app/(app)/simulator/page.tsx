@@ -529,38 +529,24 @@ function SimulatorContent() {
     } catch { /* ignore */ }
   }, [searchParams]);
 
-  /* ── No data — show loading briefly then load defaults via effect ── */
-  useEffect(() => {
-    if (!loaded && !baseInputs) {
-      const defaultInputs: CanonicalInput = { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
-      setBaseInputs(defaultInputs);
-      setSliders({ recurrence: 25, topClient: 60, sources: 2, monthsBooked: 0.5, passive: 30 });
-      setLoaded(true);
-    }
-  }, [loaded, baseInputs]);
-
-  if (!loaded || !baseInputs) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#0F1923", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)" }}>Loading simulator...</p>
-      </div>
-    );
-  }
+  /* ── No data — load defaults so full UI always renders ── */
+  const effectiveBaseInputs: CanonicalInput = baseInputs || { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
+  const effectiveSliders = sliders || { recurrence: 25, topClient: 60, sources: 2, monthsBooked: 0.5, passive: 30 };
 
 
 
   /* ── Computed values ── */
-  const sl = sliders!;
+  const sl = effectiveSliders;
   let simInputs: CanonicalInput;
   if (simMode === "advanced" && sliders) {
     const gt = sl.sources <= 1 ? 100 : Math.max(Math.round(100 / sl.sources), sl.topClient);
-    simInputs = { income_persistence_pct: sl.recurrence, largest_source_pct: gt, source_diversity_count: sl.sources, forward_secured_pct: Math.min(100, Math.round(sl.monthsBooked / 6 * 100)), income_variability_level: baseInputs.income_variability_level, labor_dependence_pct: Math.max(0, 100 - sl.passive) };
+    simInputs = { income_persistence_pct: sl.recurrence, largest_source_pct: gt, source_diversity_count: sl.sources, forward_secured_pct: Math.min(100, Math.round(sl.monthsBooked / 6 * 100)), income_variability_level: effectiveBaseInputs.income_variability_level, labor_dependence_pct: Math.max(0, 100 - sl.passive) };
   } else {
     const ap = SIMULATOR_PRESETS.find(p => p.id === simPreset);
-    simInputs = ap ? ap.modify(baseInputs) : baseInputs;
+    simInputs = ap ? ap.modify(effectiveBaseInputs) : effectiveBaseInputs;
   }
 
-  const base = simulateScore(baseInputs, qualityScore);
+  const base = simulateScore(effectiveBaseInputs, qualityScore);
   const sim = simulateScore(simInputs, qualityScore);
   const delta = sim.overall_score - base.overall_score;
   const isModified = simMode === "advanced" ? !!sliders : !!simPreset;
@@ -607,11 +593,11 @@ function SimulatorContent() {
   // Insights
   const insights: string[] = [];
   if (simMode === "advanced" && sliders) {
-    const rd = sl.recurrence - baseInputs.income_persistence_pct;
-    const cd = sl.topClient - baseInputs.largest_source_pct;
-    const pd = sl.passive - (100 - baseInputs.labor_dependence_pct);
+    const rd = sl.recurrence - effectiveBaseInputs.income_persistence_pct;
+    const cd = sl.topClient - effectiveBaseInputs.largest_source_pct;
+    const pd = sl.passive - (100 - effectiveBaseInputs.labor_dependence_pct);
     if (rd >= 15) insights.push(`+${rd}% recurring adds ${Math.round(rd * 0.03 * 30)} days of runway`);
-    if (cd <= -15) insights.push(`Top client ${baseInputs.largest_source_pct}% \u2192 ${sl.topClient}%`);
+    if (cd <= -15) insights.push(`Top client ${effectiveBaseInputs.largest_source_pct}% \u2192 ${sl.topClient}%`);
     if (pd >= 15) insights.push(`${sl.passive}% passive — continues if you stop`);
     if (sim.band !== base.band) insights.push(`Crossed into ${sim.band}`);
   }
@@ -623,11 +609,11 @@ function SimulatorContent() {
     const lift = result.overall_score - base.overall_score;
     // Determine which structural factors changed
     const tags: string[] = [];
-    if (modified.income_persistence_pct > baseInputs.income_persistence_pct) tags.push("Persistence \u2191");
-    if (modified.largest_source_pct < baseInputs.largest_source_pct) tags.push("Concentration \u2193");
-    if (modified.source_diversity_count > baseInputs.source_diversity_count) tags.push("Diversification \u2191");
-    if (modified.forward_secured_pct > baseInputs.forward_secured_pct) tags.push("Visibility \u2191");
-    if (modified.labor_dependence_pct < baseInputs.labor_dependence_pct) tags.push("Labor dependence \u2193");
+    if (modified.income_persistence_pct > effectiveBaseInputs.income_persistence_pct) tags.push("Persistence \u2191");
+    if (modified.largest_source_pct < effectiveBaseInputs.largest_source_pct) tags.push("Concentration \u2193");
+    if (modified.source_diversity_count > effectiveBaseInputs.source_diversity_count) tags.push("Diversification \u2191");
+    if (modified.forward_secured_pct > effectiveBaseInputs.forward_secured_pct) tags.push("Visibility \u2191");
+    if (modified.labor_dependence_pct < effectiveBaseInputs.labor_dependence_pct) tags.push("Labor dependence \u2193");
     // Effort, speed, and realism
     const effort: "Low" | "Medium" | "High" = p.id === "lock_forward" ? "Medium" : p.id === "convert_retainer" ? "Medium" : "High";
     const impact: "Low" | "Medium" | "High" = lift >= 10 ? "High" : lift >= 5 ? "Medium" : "Low";
@@ -912,16 +898,16 @@ function SimulatorContent() {
             <p style={{ fontSize: 15, color: T.text, lineHeight: 1.7, margin: 0 }}>
               {(() => {
                 const changes: string[] = [];
-                if (sliders && sliders.recurrence !== Math.round(baseInputs.income_persistence_pct))
-                  changes.push(`${sliders.recurrence > baseInputs.income_persistence_pct ? "increased" : "decreased"} recurring income to ${sliders.recurrence}%`);
-                if (sliders && sliders.topClient !== Math.round(baseInputs.largest_source_pct))
-                  changes.push(`${sliders.topClient < baseInputs.largest_source_pct ? "reduced" : "increased"} your largest source to ${sliders.topClient}% of revenue`);
-                if (sliders && sliders.sources !== baseInputs.source_diversity_count)
-                  changes.push(`${sliders.sources > baseInputs.source_diversity_count ? "added" : "reduced to"} ${sliders.sources} income source${sliders.sources !== 1 ? "s" : ""}`);
-                if (sliders && sliders.monthsBooked !== Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2)
+                if (sliders && sliders.recurrence !== Math.round(effectiveBaseInputs.income_persistence_pct))
+                  changes.push(`${sliders.recurrence > effectiveBaseInputs.income_persistence_pct ? "increased" : "decreased"} recurring income to ${sliders.recurrence}%`);
+                if (sliders && sliders.topClient !== Math.round(effectiveBaseInputs.largest_source_pct))
+                  changes.push(`${sliders.topClient < effectiveBaseInputs.largest_source_pct ? "reduced" : "increased"} your largest source to ${sliders.topClient}% of revenue`);
+                if (sliders && sliders.sources !== effectiveBaseInputs.source_diversity_count)
+                  changes.push(`${sliders.sources > effectiveBaseInputs.source_diversity_count ? "added" : "reduced to"} ${sliders.sources} income source${sliders.sources !== 1 ? "s" : ""}`);
+                if (sliders && sliders.monthsBooked !== Math.round(effectiveBaseInputs.forward_secured_pct / 100 * 6 * 2) / 2)
                   changes.push(`booked income ${sliders.monthsBooked} months ahead`);
-                if (sliders && sliders.passive !== (100 - baseInputs.labor_dependence_pct))
-                  changes.push(`${sliders.passive > (100 - baseInputs.labor_dependence_pct) ? "increased" : "decreased"} passive income to ${sliders.passive}%`);
+                if (sliders && sliders.passive !== (100 - effectiveBaseInputs.labor_dependence_pct))
+                  changes.push(`${sliders.passive > (100 - effectiveBaseInputs.labor_dependence_pct) ? "increased" : "decreased"} passive income to ${sliders.passive}%`);
 
                 const changeText = changes.length === 0
                   ? "applied this scenario"
@@ -972,7 +958,7 @@ function SimulatorContent() {
             return (
               <button key={mode} onClick={() => {
                 setSimMode(mode);
-                if (mode === "presets") setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct });
+                if (mode === "presets") setSliders({ recurrence: effectiveBaseInputs.income_persistence_pct, topClient: effectiveBaseInputs.largest_source_pct, sources: effectiveBaseInputs.source_diversity_count, monthsBooked: Math.round(effectiveBaseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - effectiveBaseInputs.labor_dependence_pct });
                 else setSimPreset(null);
               }} style={{
                 flex: 1, padding: "16px 20px", fontSize: 13, fontWeight: 600, letterSpacing: "0.02em",
@@ -1120,18 +1106,18 @@ function SimulatorContent() {
                 <Slider label="Passive income" value={sl.passive} min={0} max={100} step={5} unit="%" onChange={(v) => { setSliders({ ...sl, passive: v }); setLastChangedSlider("passive"); }} accent={B.purple} />
               </Card>
 
-              <button onClick={() => { setSliders({ recurrence: baseInputs.income_persistence_pct, topClient: baseInputs.largest_source_pct, sources: baseInputs.source_diversity_count, monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - baseInputs.labor_dependence_pct }); setLastChangedSlider(null); }} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
+              <button onClick={() => { setSliders({ recurrence: effectiveBaseInputs.income_persistence_pct, topClient: effectiveBaseInputs.largest_source_pct, sources: effectiveBaseInputs.source_diversity_count, monthsBooked: Math.round(effectiveBaseInputs.forward_secured_pct / 100 * 6 * 2) / 2, passive: 100 - effectiveBaseInputs.labor_dependence_pct }); setLastChangedSlider(null); }} style={{ fontSize: 11, color: T.textMuted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: "12px 0 0", marginTop: 4 }}>
                 Reset to current
               </button>
 
               {/* ── Voice of the Model ── */}
               {isModified && simMode === "advanced" && lastChangedSlider && (() => {
                 const baseSliderMap: Record<string, number> = {
-                  recurrence: baseInputs.income_persistence_pct,
-                  topClient: baseInputs.largest_source_pct,
-                  sources: baseInputs.source_diversity_count,
-                  monthsBooked: Math.round(baseInputs.forward_secured_pct / 100 * 6 * 2) / 2,
-                  passive: 100 - baseInputs.labor_dependence_pct,
+                  recurrence: effectiveBaseInputs.income_persistence_pct,
+                  topClient: effectiveBaseInputs.largest_source_pct,
+                  sources: effectiveBaseInputs.source_diversity_count,
+                  monthsBooked: Math.round(effectiveBaseInputs.forward_secured_pct / 100 * 6 * 2) / 2,
+                  passive: 100 - effectiveBaseInputs.labor_dependence_pct,
                 };
                 const currentSliderMap: Record<string, number> = {
                   recurrence: sl.recurrence,
@@ -1251,7 +1237,7 @@ function SimulatorContent() {
               largest_source_pct: stressedTopClient,
               source_diversity_count: sl.sources,
               forward_secured_pct: Math.min(100, Math.round(stressedMonthsBooked / 6 * 100)),
-              income_variability_level: baseInputs.income_variability_level,
+              income_variability_level: effectiveBaseInputs.income_variability_level,
               labor_dependence_pct: Math.max(0, 100 - sl.passive),
             };
             const stressResult = simulateScore(stressedInputs, qualityScore);
