@@ -273,7 +273,6 @@ export default function MarketingLayout({
 
   const MORE_LINKS = [
     { href: "/methodology", label: t.nav.methodology },
-    { href: "/simulator", label: "Stability Simulator" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
@@ -726,7 +725,6 @@ export default function MarketingLayout({
                   { href: "/tools", label: "Stability Suite" },
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/pricing", label: t.nav.pricing },
-                  { href: "/simulator", label: "Simulator" },
                 ].map((link) => (
                   <Link
                     key={link.label}
