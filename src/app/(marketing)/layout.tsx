@@ -272,7 +272,7 @@ export default function MarketingLayout({
   ];
 
   const MORE_LINKS = [
-    { href: "/methodology", label: t.nav.methodology },
+    { href: "/tools", label: "Stability Suite" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
