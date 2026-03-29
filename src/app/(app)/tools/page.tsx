@@ -100,6 +100,11 @@ export default function ToolsHubPage() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
+        if (parsed && parsed.final_score > 0) {
+          // Customer has data — redirect to Dashboard (the real hub)
+          router.replace("/dashboard");
+          return;
+        }
         setScore(parsed.final_score ?? null); setBand(parsed.stability_band ?? "");
         setUserName(parsed.assessment_title ?? ""); setCodeSuccess(true);
       } catch { /* ignore */ }
@@ -118,7 +123,7 @@ export default function ToolsHubPage() {
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       sessionStorage.setItem("rp_sim_code", trimmed);
       setUserName(decoded.n || ""); setUnlocking(true); setScore(null);
-      setTimeout(() => { setUnlocking(false); setCodeSuccess(true); }, 1200);
+      setTimeout(() => { router.replace("/dashboard"); }, 1200);
     } catch { setCodeError("Invalid code. Make sure you copied the entire Access Code."); }
   };
 

@@ -57,6 +57,8 @@ export default function DashboardPage() {
   const [assessmentsUsed, setAssessmentsUsed] = useState(1);
   const [assessmentsTotal, setAssessmentsTotal] = useState(1);
   const [demoProfile, setDemoProfile] = useState(1);
+  const [accessCode, setAccessCode] = useState("");
+  const [codeError, setCodeError] = useState<string | null>(null);
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 640);
@@ -161,6 +163,21 @@ export default function DashboardPage() {
     });
   };
 
+  // ── Access code handler (for customers landing directly on Dashboard) ──
+  const handleCodeSubmit = () => {
+    setCodeError(null);
+    const trimmed = accessCode.trim();
+    if (!trimmed) { setCodeError("Paste your Access Code."); return; }
+    try {
+      const decoded = JSON.parse(atob(trimmed));
+      if (typeof decoded.p !== "number" || typeof decoded.c !== "number" || typeof decoded.l !== "number") { setCodeError("Invalid code."); return; }
+      const newRecord = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: 0, stability_band: "", assessment_title: decoded.n || "", classification: "", operating_structure: "", primary_income_model: decoded.m || "", industry_sector: decoded.i || "", _v2: { normalized_inputs: { income_persistence_pct: decoded.p, largest_source_pct: decoded.c, source_diversity_count: decoded.s, forward_secured_pct: decoded.f, income_variability_level: decoded.v || "moderate", labor_dependence_pct: decoded.l }, quality: { quality_score: decoded.q || 5 } } };
+      sessionStorage.setItem("rp_record", JSON.stringify(newRecord));
+      sessionStorage.setItem("rp_sim_code", trimmed);
+      window.location.reload();
+    } catch { setCodeError("Invalid code. Copy the full code from your report."); }
+  };
+
   // ── Countdown message ──
   const countdownMsg = daysSince === 0 ? "Your action plan is fresh. Start today."
     : daysSince <= 7 ? `${daysSince} days since your assessment. Your plan is still new.`
@@ -198,10 +215,26 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Sample banner */}
+        {/* Sample banner with inline code input */}
         {isDemo && (
-          <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.purple}06`, border: `1px solid ${B.purple}15`, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 11, fontWeight: 500, color: B.purple }}>SAMPLE DATA — Enter your access code on the <a href="/tools" style={{ color: B.purple, fontWeight: 600, textDecoration: "none" }}>Suite page</a> to see your real numbers</span>
+          <div style={{ padding: "16px 20px", borderRadius: 8, backgroundColor: `${B.purple}05`, border: `1px solid ${B.purple}12`, marginBottom: 24 }}>
+            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, alignItems: mobile ? "stretch" : "center" }}>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em" }}>SAMPLE DATA</span>
+                <p style={{ fontSize: 12, color: B.muted, margin: "4px 0 0" }}>Enter your access code to load your real numbers.</p>
+              </div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input
+                  value={accessCode}
+                  onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }}
+                  placeholder="Paste access code"
+                  style={{ padding: "8px 12px", fontSize: 11, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 6, outline: "none", width: mobile ? "100%" : 200, boxSizing: "border-box" as const }}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
+                />
+                <button onClick={handleCodeSubmit} style={{ padding: "8px 16px", fontSize: 12, fontWeight: 600, color: B.white, backgroundColor: B.purple, border: "none", borderRadius: 6, cursor: "pointer", whiteSpace: "nowrap" as const }}>Load</button>
+              </div>
+            </div>
+            {codeError && <div style={{ fontSize: 11, color: B.red, marginTop: 6 }}>{codeError}</div>}
           </div>
         )}
 
