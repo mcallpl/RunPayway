@@ -174,17 +174,17 @@ interface AssessmentRecord {
 }
 
 // ============================================================
-// BRAND — Refined Institutional Design System
+// BRAND — Premium Institutional Design (ink-light)
 // ============================================================
 const B = {
   navy: "#0E1A2B",
-  ink: "#0E1A2B",
+  ink: "#1A2332",
   sand: "#FFFFFF",
-  bone: "#F8F6F1",
+  bone: "#FFFFFF",
   white: "#FFFFFF",
-  stone: "rgba(14,26,43,0.12)",
-  taupe: "rgba(14,26,43,0.42)",
-  muted: "rgba(14,26,43,0.58)",
+  stone: "rgba(14,26,43,0.08)",
+  taupe: "rgba(14,26,43,0.36)",
+  muted: "rgba(14,26,43,0.52)",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   bandLimited: "#9B2C2C",
@@ -196,47 +196,46 @@ const B = {
 // ============================================================
 // SPACING + TYPOGRAPHY TOKENS
 // ============================================================
-// ── Spacing: strict 4px grid ──
 const R = {
-  pagePad: "52px 56px 40px",     // top right/left bottom — premium margins
-  headerMb: 20,
-  sectionGap: 32,
-  sectionMb: 24,
-  cardMb: 16,
-  labelMb: 10,
-  paraMb: 12,
-  itemGap: 12,
-  cardGap: 14,
-  rowGap: 16,
-  dividerMy: 24,
-  footerMt: 16,
-  cardPad: "18px 22px" as string,
+  pagePad: "48px 52px 36px",
+  headerMb: 28,
+  sectionGap: 36,
+  sectionMb: 28,
+  cardMb: 18,
+  labelMb: 12,
+  paraMb: 14,
+  itemGap: 14,
+  cardGap: 16,
+  rowGap: 18,
+  dividerMy: 28,
+  footerMt: 20,
+  cardPad: "20px 24px" as string,
 };
 
-// ── Reusable card style ──
+// ── Card: white with thin border, no fill ──
 const cardStyle: React.CSSProperties = {
-  backgroundColor: B.bone,
-  border: "1px solid rgba(14,26,43,0.06)",
-  borderRadius: 6,
+  backgroundColor: "#FFFFFF",
+  border: "1px solid rgba(14,26,43,0.07)",
+  borderRadius: 8,
   padding: R.cardPad,
 };
 
 const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 
-// ── Typography: 7-step scale optimized for print clarity ──
+// ── Typography: premium scale — lighter weights, bigger contrast ──
 const T = {
-  score: { fontSize: 64, fontWeight: 700, lineHeight: 1 },
-  pageTitle: { fontSize: 26, fontWeight: 700, lineHeight: 1.2, color: B.navy },
-  sectionTitle: { fontSize: 18, fontWeight: 700, lineHeight: 1.3, color: B.navy },
-  classification: { fontSize: 16, fontWeight: 600, lineHeight: 1.3 },
-  overline: { fontSize: 10, fontWeight: 700, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4 },
+  score: { fontSize: 68, fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" },
+  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.15, color: B.navy, letterSpacing: "-0.02em" },
+  sectionTitle: { fontSize: 18, fontWeight: 600, lineHeight: 1.3, color: B.navy, letterSpacing: "-0.01em" },
+  classification: { fontSize: 15, fontWeight: 500, lineHeight: 1.3 },
+  overline: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.14em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.01em" },
   cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },
-  cardHero: { fontSize: 22, fontWeight: 700, lineHeight: 1.1 },
-  body: { fontSize: 12.5, fontWeight: 400, lineHeight: 1.7 },
-  small: { fontSize: 11.5, fontWeight: 400, lineHeight: 1.6 },
-  meta: { fontSize: 10.5, fontWeight: 400, lineHeight: 1.5 },
-  micro: { fontSize: 10, fontWeight: 700, lineHeight: 1.3 },
+  cardHero: { fontSize: 24, fontWeight: 300, lineHeight: 1.1, letterSpacing: "-0.02em" },
+  body: { fontSize: 13, fontWeight: 400, lineHeight: 1.75 },
+  small: { fontSize: 12, fontWeight: 400, lineHeight: 1.65 },
+  meta: { fontSize: 11, fontWeight: 400, lineHeight: 1.5 },
+  micro: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.04em" },
 };
 
 // ── PDF page dimensions ──
@@ -261,32 +260,30 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 12, borderBottom: "1px solid rgba(14,26,43,0.10)" }}>
-      <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto" }} />
-      <div style={{ textAlign: "right" }}>
-        <div style={{ fontSize: 10, fontWeight: 500, color: B.taupe, letterSpacing: "0.02em" }}>Income Stability Score™ · Model RP-2.0</div>
-      </div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
+      <Image src={logoBlue} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", opacity: 0.85 }} />
+      <div style={{ fontSize: 9.5, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
     </div>
   );
 }
 
 function Overline({ children, large }: { children: React.ReactNode; large?: boolean }) {
   return large
-    ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10 }}>{children}</div>
-    : <div style={{ ...T.overline, color: B.taupe, marginBottom: 6 }}>{children}</div>;
+    ? <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 12 }}>{children}</div>
+    : <div style={{ ...T.overline, color: "rgba(14,26,43,0.34)", marginBottom: 8 }}>{children}</div>;
 }
 
 function SectionDivider() {
-  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.06)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
+  return <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.05)", marginTop: R.dividerMy, marginBottom: R.dividerMy }} />;
 }
 
 function PageFooter({ section, page }: { section: string; page: number }) {
   return (
-    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 14, borderTop: "1px solid rgba(14,26,43,0.08)" }}>
+    <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.05)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>Confidential — {section}</span>
-        <span style={{ fontSize: 9.5, fontWeight: 500, color: B.taupe }}>Page {page} of 4</span>
-        <span style={{ fontSize: 9.5, fontWeight: 400, color: B.taupe }}>support@runpayway.com</span>
+        <span style={{ fontSize: 9, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
+        <span style={{ fontSize: 9, fontWeight: 500, color: "rgba(14,26,43,0.28)" }}>Page {page} of 4</span>
+        <span style={{ fontSize: 9, fontWeight: 400, color: "rgba(14,26,43,0.28)" }}>support@runpayway.com</span>
       </div>
     </div>
   );
@@ -1015,67 +1012,70 @@ export default function ReviewPage() {
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
   const pageContents: ReactNode[] = [
-    // Page 0: Cover
+    // Page 0: Cover — premium institutional
     <>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : "auto", textAlign: "center", padding: mobile ? "0 8px" : "60px 0 40px" }}>
-          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 140 : 180} height={21} style={{ height: "auto", marginBottom: mobile ? 20 : 44 }} />
-          <div style={{ width: mobile ? "80%" : "60%", height: 1, backgroundColor: B.stone, marginBottom: mobile ? 20 : 48 }} />
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : "auto", textAlign: "center", padding: mobile ? "0 12px" : "56px 0 36px" }}>
 
-          <div style={{ ...T.pageTitle, fontSize: mobile ? 22 : 30, fontWeight: 700, marginBottom: 4 }}>Income Stability Report</div>
-          <div style={{ ...T.sectionTitle, fontSize: mobile ? 16 : 20, fontWeight: 600, color: B.teal, marginBottom: 6 }}>Your Path to Financial Resilience</div>
-          <div style={{ ...T.small, color: B.muted, marginBottom: mobile ? 16 : 10 }}>Your Personalized Income Stability Score</div>
+          {/* Logo — understated */}
+          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.8, marginBottom: mobile ? 24 : 40 }} />
 
-          <div style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
-          <div style={{ ...T.meta, color: B.muted, marginBottom: mobile ? 12 : 20 }}>{formalDate}</div>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: mobile ? 16 : 28 }}>RunPayway&#8482; &mdash; Structural Assessment for Sustainable Income</div>
+          {/* Thin rule */}
+          <div style={{ width: mobile ? 100 : 120, height: 1, backgroundColor: "rgba(14,26,43,0.10)", marginBottom: mobile ? 28 : 44 }} />
 
-          {/* Score block */}
-          <div style={{ marginBottom: 12 }}>
-            <span style={{ ...T.score, fontSize: mobile ? 56 : 64, color: B.navy }}>{record.final_score}</span>
-            <span style={{ fontSize: mobile ? 18 : 24, fontWeight: 400, color: B.taupe }}>/100</span>
+          {/* Title block */}
+          <div style={{ fontSize: mobile ? 26 : 36, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 6 }}>Income Stability Report</div>
+          <div style={{ fontSize: mobile ? 13 : 15, fontWeight: 500, color: B.teal, letterSpacing: "0.02em", marginBottom: mobile ? 16 : 24 }}>Your Path to Financial Resilience</div>
+
+          {/* Name + date */}
+          <div style={{ fontSize: mobile ? 17 : 20, fontWeight: 500, color: B.navy, marginBottom: 4, letterSpacing: "-0.01em" }}>{record.assessment_title}</div>
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.32)", marginBottom: mobile ? 20 : 32 }}>{formalDate}</div>
+
+          {/* Score — elegant light weight */}
+          <div style={{ marginBottom: 10 }}>
+            <span style={{ ...T.score, fontSize: mobile ? 60 : 72, color: B.navy }}>{record.final_score}</span>
+            <span style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: "rgba(14,26,43,0.25)", marginLeft: 2 }}>/100</span>
           </div>
+
+          {/* Band — minimal */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
-            <div style={{ ...T.classification, color: bandColor }}>Stability Level: {record.stability_band}</div>
+            <div style={{ width: 6, height: 6, borderRadius: 1, backgroundColor: bandColor }} />
+            <div style={{ fontSize: 13, fontWeight: 500, color: bandColor, letterSpacing: "0.01em" }}>{record.stability_band}</div>
           </div>
+
           {nextBandName && (
-            <div style={{ ...T.body, color: B.teal, fontWeight: 600, marginBottom: mobile ? 16 : 28 }}>Improvement Potential: {distanceToNext} points to {nextBandName} Stability</div>
+            <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 28, letterSpacing: "0.01em" }}>{distanceToNext} points to {nextBandName} Stability</div>
           )}
           {tier === "high" && (
-            <div style={{ ...T.body, color: B.teal, fontWeight: 600, marginBottom: mobile ? 16 : 28 }}>You are in the highest stability band.</div>
+            <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 28 }}>Highest stability band achieved</div>
           )}
 
-          {/* Simulator access code */}
+          {/* Thin rule */}
+          <div style={{ width: mobile ? 60 : 80, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: mobile ? 20 : 28 }} />
+
+          {/* Access code — subtle */}
           {(() => {
-            const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
-            const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-            if (!ni) return null;
+            const v2Cover = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
+            const niCover = v2Cover?.normalized_inputs as Record<string, number | string> | undefined;
+            if (!niCover) return null;
             const payload = {
-              p: ni.income_persistence_pct,
-              c: ni.largest_source_pct,
-              s: ni.source_diversity_count,
-              f: ni.forward_secured_pct,
-              v: ni.income_variability_level,
-              l: ni.labor_dependence_pct,
-              q: (v2?.quality as Record<string, number>)?.quality_score ?? 5,
-              n: record.assessment_title || "",
-              i: record.industry_sector || "",
-              m: record.primary_income_model || "",
+              p: niCover.income_persistence_pct, c: niCover.largest_source_pct, s: niCover.source_diversity_count,
+              f: niCover.forward_secured_pct, v: niCover.income_variability_level, l: niCover.labor_dependence_pct,
+              q: (v2Cover?.quality as Record<string, number>)?.quality_score ?? 5,
+              n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
             };
             const code = btoa(JSON.stringify(payload));
             return (
-              <>
-                <div style={{ ...T.overline, color: B.navy, marginBottom: 6, letterSpacing: 1, fontSize: mobile ? 10 : 11 }}>STABILITY SIMULATOR&#8482; ACCESS</div>
-                <div style={{ ...T.meta, color: B.muted, marginBottom: 8, fontSize: mobile ? 11 : 12 }}>Enter this code at runpayway.com/simulator to model changes.</div>
-                <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, backgroundColor: B.bone, border: "1px solid rgba(14,26,43,0.06)", borderRadius: 4, padding: "12px 20px", textAlign: "left", maxWidth: mobile ? "90%" : 420 }}>
-                  <div style={{ ...T.meta, color: B.taupe, fontSize: 10 }}>Access Code</div>
-                  <div style={{ fontFamily: "monospace", fontSize: mobile ? 8 : 9, color: B.navy, letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+              <div style={{ maxWidth: mobile ? "90%" : 400 }}>
+                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 6 }}>RUNPAYWAY&#8482; STABILITY SUITE ACCESS</div>
+                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/tools to access your interactive tools.</div>
+                <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
+                  <div style={{ fontFamily: "monospace", fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
-              </>
+              </div>
             );
           })()}
 
-          <div style={{ ...T.meta, color: B.taupe, marginTop: 24 }}>Model RP-2.0 &middot; 4 Pages &middot; Confidential</div>
+          <div style={{ fontSize: 9, color: "rgba(14,26,43,0.22)", marginTop: 28, letterSpacing: "0.06em" }}>Model RP-2.0 &middot; 4 Pages &middot; Confidential</div>
         </div>
     </>,
 
