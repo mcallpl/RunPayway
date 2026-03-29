@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import { getBadges, recordVisit, checkActionProgress, getStreaks, earnBadge, getEarnedCount, type Badge } from "@/lib/gamification";
 
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
@@ -71,6 +72,9 @@ export default function DashboardPage() {
   const [currentRecord, setCurrentRecord] = useState<Record<string, unknown> | null>(null);
   const [actions, setActions] = useState<ActionItem[]>([]);
   const [mobile, setMobile] = useState(false);
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [newBadge, setNewBadge] = useState<Badge | null>(null);
+  const [streakData, setStreakData] = useState<{ currentStreak: number; totalVisits: number }>({ currentStreak: 0, totalVisits: 0 });
 
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= 640);
@@ -120,13 +124,41 @@ export default function DashboardPage() {
         }
       } catch { /* ignore */ }
     }
+
+    // Initialize gamification
+    setBadges(getBadges());
+    setStreakData(getStreaks());
+
+    // Record visit and check for new streak badges
+    const visitBadges = recordVisit();
+    // Earn first_report badge if we have any assessments
+    const firstReport = earnBadge("first_report");
+
+    const allNew = [...visitBadges];
+    if (firstReport) allNew.push(firstReport);
+
+    if (allNew.length > 0) {
+      setNewBadge(allNew[0]);
+      setBadges(getBadges());
+      setStreakData(getStreaks());
+      setTimeout(() => setNewBadge(null), 4000);
+    }
   }, []);
 
   const toggleAction = (actionId: string) => {
     setActions(prev => {
       const updated = prev.map(a => a.id === actionId ? { ...a, completed: !a.completed } : a);
-      const completed = updated.filter(a => a.completed).map(a => a.id);
-      localStorage.setItem("rp_action_progress", JSON.stringify(completed));
+      const completedIds = updated.filter(a => a.completed).map(a => a.id);
+      localStorage.setItem("rp_action_progress", JSON.stringify(completedIds));
+
+      // Check for action badges
+      const newBadges = checkActionProgress(completedIds.length, updated.length);
+      if (newBadges.length > 0) {
+        setNewBadge(newBadges[0]);
+        setBadges(getBadges());
+        setTimeout(() => setNewBadge(null), 4000);
+      }
+
       return updated;
     });
   };
@@ -149,6 +181,29 @@ export default function DashboardPage() {
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: B.sand, fontFamily: INTER }}>
+      {/* ── Badge celebration toast ── */}
+      {newBadge && (
+        <div style={{
+          position: "fixed", top: 24, left: "50%", transform: "translateX(-50%)", zIndex: 100,
+          padding: "14px 24px", borderRadius: 12, display: "flex", alignItems: "center", gap: 12,
+          background: "linear-gradient(135deg, rgba(75,63,174,0.95) 0%, rgba(31,109,122,0.90) 100%)",
+          color: "#FFFFFF", boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
+          animation: "badgeSlideIn 300ms ease-out", fontFamily: INTER,
+        }}>
+          <span style={{ fontSize: 28 }}>{newBadge.icon}</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700 }}>Badge Earned: {newBadge.label}!</div>
+            <div style={{ fontSize: 12, opacity: 0.85 }}>{newBadge.description}</div>
+          </div>
+        </div>
+      )}
+      <style>{`
+        @keyframes badgeSlideIn {
+          from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.95); }
+          to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+      `}</style>
+
       {/* ── Header ── */}
       <header style={{ borderBottom: "1px solid rgba(14,26,43,0.08)", padding: mobile ? "14px 16px" : "18px 36px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, backgroundColor: "rgba(247,246,243,0.97)", backdropFilter: "blur(12px)", zIndex: 50 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -325,6 +380,41 @@ export default function DashboardPage() {
                 })}
               </>
             )}
+          </div>
+        </div>
+
+        {/* ══════════ BADGES & STREAKS ══════════ */}
+        <div style={{ backgroundColor: B.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)", padding: mobile ? "20px 16px" : "24px 28px", marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.04)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>ACHIEVEMENTS</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              {streakData.currentStreak > 0 && (
+                <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "3px 10px", borderRadius: 20, backgroundColor: "rgba(220,120,20,0.08)", border: "1px solid rgba(220,120,20,0.15)" }}>
+                  <span style={{ fontSize: 12 }}>🔥</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#DC7814" }}>{streakData.currentStreak} day streak</span>
+                </div>
+              )}
+              <span style={{ fontSize: 12, color: B.muted }}>{getEarnedCount().earned}/{getEarnedCount().total} earned</span>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: mobile ? "repeat(3, 1fr)" : "repeat(6, 1fr)", gap: 8 }}>
+            {badges.map((badge) => (
+              <div
+                key={badge.id}
+                title={badge.description}
+                style={{
+                  textAlign: "center", padding: "12px 8px", borderRadius: 10,
+                  backgroundColor: badge.earnedAt ? "rgba(75,63,174,0.04)" : "rgba(14,26,43,0.02)",
+                  border: `1px solid ${badge.earnedAt ? "rgba(75,63,174,0.12)" : "rgba(14,26,43,0.04)"}`,
+                  opacity: badge.earnedAt ? 1 : 0.4,
+                  transition: "all 200ms",
+                }}
+              >
+                <div style={{ fontSize: 24, marginBottom: 4 }}>{badge.icon}</div>
+                <div style={{ fontSize: 10, fontWeight: 600, color: badge.earnedAt ? B.navy : B.taupe, lineHeight: 1.2 }}>{badge.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 import { getScriptsForSector } from "@/lib/action-scripts";
+import { earnBadge } from "@/lib/gamification";
 
 /* ------------------------------------------------------------------ */
 /*  Design Tokens                                                      */
@@ -600,6 +601,8 @@ function SimulatorContent() {
     if (prevScore !== null && currentScore !== prevScore && isModified) {
       const diff = currentScore - prevScore;
       if (diff > 0) {
+        // Earn simulator badge on first interaction
+        earnBadge("simulator_explorer");
         const bandShifted = sim.band !== base.band && sim.overall_score > base.overall_score;
         const nextThreshold = currentScore < 30 ? 30 : currentScore < 50 ? 50 : currentScore < 75 ? 75 : null;
         const gap = nextThreshold ? nextThreshold - currentScore : null;

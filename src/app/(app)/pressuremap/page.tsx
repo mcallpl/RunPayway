@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
+import { earnBadge } from "@/lib/gamification";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 
 /* ------------------------------------------------------------------ */
@@ -54,6 +55,7 @@ export default function PressureMapPage() {
   const router = useRouter();
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [expandedZone, setExpandedZone] = useState<"red" | "yellow" | "green" | null>(null);
+  const [badgeEarned, setBadgeEarned] = useState(false);
   const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
@@ -226,7 +228,13 @@ export default function PressureMapPage() {
             return (
               <div
                 key={z.zone}
-                onClick={() => setExpandedZone(isExpanded ? null : z.zone)}
+                onClick={() => {
+                  setExpandedZone(isExpanded ? null : z.zone);
+                  if (!isExpanded && !badgeEarned) {
+                    earnBadge("pressuremap_viewer");
+                    setBadgeEarned(true);
+                  }
+                }}
                 style={{
                   borderRadius: 14,
                   border: `1px solid ${isExpanded ? z.color + "44" : "rgba(14,26,43,0.08)"}`,
