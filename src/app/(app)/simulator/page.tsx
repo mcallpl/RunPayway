@@ -529,13 +529,22 @@ function SimulatorContent() {
     } catch { /* ignore */ }
   }, [searchParams]);
 
-  /* ── No data — load default inputs so the full UI renders (empty but visible) ── */
+  /* ── No data — show loading briefly then load defaults via effect ── */
+  useEffect(() => {
+    if (!loaded && !baseInputs) {
+      const defaultInputs: CanonicalInput = { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
+      setBaseInputs(defaultInputs);
+      setSliders({ recurrence: 25, topClient: 60, sources: 2, monthsBooked: 0.5, passive: 30 });
+      setLoaded(true);
+    }
+  }, [loaded, baseInputs]);
+
   if (!loaded || !baseInputs) {
-    const defaultInputs: CanonicalInput = { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate", labor_dependence_pct: 70 };
-    setBaseInputs(defaultInputs);
-    setSliders({ recurrence: 25, topClient: 60, sources: 2, monthsBooked: 0.5, passive: 30 });
-    setLoaded(true);
-    return null;
+    return (
+      <div style={{ minHeight: "100vh", background: "#0F1923", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)" }}>Loading simulator...</p>
+      </div>
+    );
   }
 
 
