@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../public/runpayway-logo-white.png";
+import SimulatorTeaser from "@/components/SimulatorTeaser";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -716,45 +717,86 @@ function WhatYouGet() {
   return (
     <section ref={ref} aria-label="What you get" style={{
       background: C.navy,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(16),
+      paddingBottom: m ? sp(16) : sp(24),
       paddingLeft: px(m), paddingRight: px(m),
+      position: "relative", overflow: "visible",
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.sand, marginBottom: sp(2.5) }}>
-            A complete structural diagnostic generated from your submitted inputs.
+      {/* Abstract gradient orbs — background atmosphere */}
+      <div style={{ position: "absolute", top: -120, right: "10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: -80, left: "5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
+        {/* Heading — massive, breathing */}
+        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
+          <div style={{
+            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(2) : sp(3),
+          }}>
+            What You Get
+          </div>
+          <h2 style={{
+            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
+            color: C.sand, letterSpacing: "-0.03em",
+            maxWidth: 700,
+          }}>
+            A complete structural<br />diagnostic generated from<br />your submitted inputs.
           </h2>
         </div>
 
-        <div style={{ display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1.3fr", gap: sp(5), flexDirection: "column" }}>
-          <div style={fadeIn(visible, 100)}>
-            <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.42)", marginBottom: sp(2.5) }}>
+        {/* Two-column: report list left, simulator right */}
+        <div style={{
+          display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1fr",
+          gap: m ? sp(6) : sp(8), flexDirection: "column",
+          alignItems: "start",
+        }}>
+          {/* Left — report items */}
+          <div style={fadeIn(visible, 150)}>
+            <div style={{
+              ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+              color: "rgba(244,241,234,0.42)", marginBottom: sp(4),
+            }}>
               Your report includes
             </div>
             {reportItems.map((item, i) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), padding: `${sp(1.5)}px 0`, borderBottom: i < reportItems.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
-                <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
-                <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{item}</span>
+              <div key={item} style={{
+                display: "flex", alignItems: "center", gap: sp(2),
+                padding: `${sp(2.5)}px 0`,
+                borderBottom: i < reportItems.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none",
+              }}>
+                <span style={{ color: C.teal, fontSize: 16, flexShrink: 0, fontWeight: 600 }}>&#x2713;</span>
+                <span style={{ fontSize: m ? 17 : 20, fontWeight: 500, color: "rgba(244,241,234,0.70)" }}>{item}</span>
               </div>
             ))}
           </div>
 
-          <div style={fadeIn(visible, 250)}>
-            <div style={{ border: "1px solid rgba(244,241,234,0.08)", borderRadius: sp(1.5), padding: m ? sp(3) : sp(4), background: "rgba(244,241,234,0.02)" }}>
-              <div style={{ ...T.meta, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(1) }}>
-                Stability Simulator
+          {/* Right — Simulator floating card, overlapping into next section */}
+          <div style={{
+            ...fadeIn(visible, 350),
+            position: "relative",
+            marginTop: m ? 0 : sp(8),
+          }}>
+            {/* The simulator — scaled up, with shadow for depth */}
+            <div style={{
+              transform: m ? "none" : "translateY(80px)",
+              position: "relative", zIndex: 10,
+            }}>
+              <div style={{
+                borderRadius: 20,
+                overflow: "hidden",
+                boxShadow: "0 32px 80px rgba(0,0,0,0.30), 0 12px 32px rgba(75,63,174,0.15)",
+                border: "1px solid rgba(244,241,234,0.08)",
+              }}>
+                <SimulatorTeaser />
               </div>
-              <p style={{ ...T.label, color: "rgba(244,241,234,0.42)", marginBottom: sp(2.5) }}>Included with your diagnostic.</p>
-              <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", marginBottom: sp(3) }}>
-                Test how structural changes may affect your score before you make them.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5) }}>
-                {["Model one change at a time", "See projected impact", "Compare current vs simulated score", "Identify which change moves your score most"].map((item) => (
-                  <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1) }}>
-                    <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
-                    <span style={{ ...T.label, color: "rgba(244,241,234,0.45)" }}>{item}</span>
-                  </div>
-                ))}
+
+              {/* Floating label below simulator */}
+              <div style={{
+                marginTop: sp(3), textAlign: "center",
+              }}>
+                <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", margin: 0 }}>
+                  Included with your diagnostic. Test changes before you make them.
+                </p>
               </div>
             </div>
           </div>

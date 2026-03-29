@@ -4,11 +4,10 @@ import Link from "next/link";
 
 /* ── Shared simulator teaser — CSS-rendered mini UI preview ── */
 
-const DISPLAY = "'DM Serif Display', Georgia, serif";
 const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
-  teal: "#1A7A6D",
+  teal: "#1F6D7A",
 };
 
 export default function SimulatorTeaser({ variant = "default" }: { variant?: "default" | "compact" | "dark-on-light" }) {
@@ -49,7 +48,7 @@ export default function SimulatorTeaser({ variant = "default" }: { variant?: "de
         ].map(col => (
           <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: isCompact ? "8px 6px" : "10px 8px", textAlign: "center" }}>
             <div style={{ fontSize: 6, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.25)", marginBottom: 3 }}>{col.label}</div>
-            <div style={{ fontSize: isCompact ? 16 : 18, fontWeight: 300, color: col.color, fontFamily: DISPLAY, lineHeight: 1 }}>{col.value}</div>
+            <div style={{ fontSize: isCompact ? 16 : 18, fontWeight: 300, color: col.color, fontWeight: 600, lineHeight: 1 }}>{col.value}</div>
           </div>
         ))}
       </div>
