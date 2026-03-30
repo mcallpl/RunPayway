@@ -71,7 +71,11 @@ const SECTOR_MAP: Record<string, string> = {
   "education_training": "education_training",
   "fitness_wellness": "fitness_wellness",
 };
-function normSector(raw: string): string { return SECTOR_MAP[raw] || SECTOR_MAP[raw.toLowerCase()] || "default"; }
+function normSector(raw: string): string {
+  const match = SECTOR_MAP[raw] || SECTOR_MAP[raw.toLowerCase()];
+  if (!match && raw && raw !== "default") console.warn(`[RunPayway] Unmapped sector: "${raw}". Add it to SECTOR_MAP.`);
+  return match || "default";
+}
 
 /*  TYPE SCALE — 6 levels only
     Display: handled by ScoreRing (44px)
@@ -242,7 +246,11 @@ function constraintNarrative(c: string, i: CanonicalInput): string {
     weak_durability: `Your income quality score indicates structural fragility. The contracts and agreements backing your income may not withstand market pressure.`,
     shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
   };
-  return n[c] || `Your primary structural factor — ${c.replace(/_/g, " ")} — is the biggest lever for improving your score.`;
+  if (n[c]) return n[c];
+  // Anti-fallback: never return generic text. Use the constraint key to generate a meaningful sentence.
+  const readable = c.replace(/_/g, " ");
+  console.warn(`[RunPayway] Missing constraint narrative for: "${c}". Add it to constraintNarrative().`);
+  return `Your primary structural factor — ${readable} — is the biggest lever for improving your score. Addressing this directly will have more impact than any other change.`;
 }
 
 /* ================================================================== */
@@ -414,16 +422,43 @@ function DashboardContent() {
   const grnP = rootCon === "high_labor_dependence" ? "lock_forward" : "build_passive";
   const grnR = liftOf(grnP);
 
+  /* ── Stress drops for consequence pairing ── */
+  const stLCDrop = dScore - simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(base), qScore).overall_score;
+  const stNWDrop = dScore - simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(base), qScore).overall_score;
+
+  const indName = indLabel || "your sector";
+  const severity = (pct: number, avg: number): "critical" | "elevated" | "managed" => pct > avg + 10 ? "critical" : pct > avg - 5 ? "elevated" : "managed";
+  const redSev = severity(activeInc, indData.redAvg);
+  const grnSev = severity(indData.greenAvg, persInc); // inverted: low protected = bad
+
+  const redAction = SIMULATOR_PRESETS.find(p => p.id === redP);
+  const grnAction = SIMULATOR_PRESETS.find(p => p.id === grnP);
+
   const zones = [
-    { id: "active", label: "Income That Stops", pct: activeInc, color: B.red, lift: redR.l,
-      txt: activeInc >= 70 ? `${activeInc}% of your income disappears the moment you stop. This is your most exposed zone.` : activeInc >= 40 ? `${activeInc}% requires active daily work. A sustained disruption creates significant pressure.` : `${activeInc}% active income is relatively well-managed.`,
-      peer: activeInc > indData.redAvg ? `${activeInc - indData.redAvg}% above your sector avg of ${indData.redAvg}%` : `${indData.redAvg - activeInc}% below your sector avg of ${indData.redAvg}%` },
-    { id: "semi", label: "Recurring For Now", pct: semiInc, color: B.amber, lift: 0,
-      txt: semiInc < 15 ? `Only ${semiInc}% has any repeating structure.` : semiInc < 35 ? `${semiInc}% repeats on short cycles. Cancelable, but a working buffer.` : `${semiInc}% recurring is a solid foundation.`,
-      peer: null as string | null },
-    { id: "persistent", label: "Protected Income", pct: persInc, color: B.teal, lift: grnR.l,
-      txt: persInc < 10 ? `Only ${persInc}% would continue if you stopped entirely.` : persInc < 25 ? `${persInc}% protected gives some runway.` : `${persInc}% protected is a structural advantage.`,
-      peer: persInc > indData.greenAvg ? `${persInc - indData.greenAvg}% above your sector avg of ${indData.greenAvg}%` : `${indData.greenAvg - persInc}% below your sector avg of ${indData.greenAvg}%` },
+    { id: "active", label: "Income That Stops", pct: activeInc, color: B.red, lift: redR.l, sev: redSev,
+      txt: activeInc >= 70
+        ? `In ${indName.toLowerCase()}, ${activeInc}% active income is critically high. If you cannot work for 90 days, your score drops by ${stNWDrop} points. Most ${indName.toLowerCase()} professionals average ${indData.redAvg}% — you are ${activeInc - indData.redAvg}% above that.`
+        : activeInc >= 40
+        ? `${activeInc}% of your income requires active daily work. In ${indName.toLowerCase()}, the average is ${indData.redAvg}%. ${activeInc > indData.redAvg ? `You are ${activeInc - indData.redAvg}% more exposed than your peers.` : `You are ${indData.redAvg - activeInc}% below average — better than most.`}`
+        : `${activeInc}% active income is well below the ${indName.toLowerCase()} average of ${indData.redAvg}%. Your structure has meaningful protection against work stoppages.`,
+      peer: `${Math.abs(activeInc - indData.redAvg)}% ${activeInc > indData.redAvg ? "above" : "below"} ${indName.toLowerCase()} avg (${indData.redAvg}%)`,
+      action: redAction ? `Fix: ${redAction.label}` : null },
+    { id: "semi", label: "Recurring For Now", pct: semiInc, color: B.amber, lift: 0, sev: "elevated" as const,
+      txt: semiInc < 15
+        ? `Only ${semiInc}% has any repeating structure. In ${indName.toLowerCase()}, this leaves you re-earning almost everything from scratch each month.`
+        : semiInc < 35
+        ? `${semiInc}% repeats on short cycles — retainers, subscriptions, or month-to-month contracts. Cancelable, but a working buffer for ${indName.toLowerCase()} professionals.`
+        : `${semiInc}% recurring is a solid foundation. The next step for ${indName.toLowerCase()} professionals is converting this to fully protected income with longer commitments.`,
+      peer: null as string | null,
+      action: null as string | null },
+    { id: "persistent", label: "Protected Income", pct: persInc, color: B.teal, lift: grnR.l, sev: grnSev,
+      txt: persInc < 10
+        ? `Only ${persInc}% would continue if you stopped entirely. The ${indName.toLowerCase()} average is ${indData.greenAvg}%. Building this zone is the single most durable improvement available.`
+        : persInc < 25
+        ? `${persInc}% protected gives some runway. ${persInc > indData.greenAvg ? `You are ${persInc - indData.greenAvg}% ahead of the ${indName.toLowerCase()} average.` : `Most ${indName.toLowerCase()} professionals average ${indData.greenAvg}% — you are ${indData.greenAvg - persInc}% behind.`}`
+        : `${persInc}% protected is a structural advantage in ${indName.toLowerCase()}. This zone keeps generating revenue through disruptions, illness, and market shifts.`,
+      peer: `${Math.abs(persInc - indData.greenAvg)}% ${persInc > indData.greenAvg ? "above" : "below"} ${indName.toLowerCase()} avg (${indData.greenAvg}%)`,
+      action: grnAction ? `Fix: ${grnAction.label}` : null },
   ];
 
   /* ── Top moves ── */
@@ -617,9 +652,12 @@ function DashboardContent() {
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: `${B.red}03`, marginBottom: 16 }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 8 }}>ROOT CONSTRAINT</div>
-              <p style={{ fontSize: 15, color: B.navy, margin: 0, lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 13, color: B.red, margin: "0 0 4px", fontWeight: 500 }}>
+                Consequence: If your top source leaves, your score drops from {dScore} to {dScore - stLCDrop}{dScore - stLCDrop < 30 && dScore >= 30 ? " — crossing into Limited Stability." : "."}
+              </p>
               {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
@@ -631,16 +669,23 @@ function DashboardContent() {
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "16px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${z.color}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 8 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+              <div key={z.id} style={{ padding: mobile ? "16px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${z.color}`, borderRadius: 12, backgroundColor: z.sev === "critical" ? `${z.color}04` : B.surface, marginBottom: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
                     <span style={{ fontSize: 22, fontWeight: 300, color: z.color }}>{z.pct}%</span>
+                    {/* Severity indicator */}
+                    <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: z.sev === "critical" ? `${B.red}10` : z.sev === "elevated" ? `${B.amber}08` : `${B.teal}08`, color: z.sev === "critical" ? B.red : z.sev === "elevated" ? B.amber : B.teal }}>
+                      {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
+                    </span>
                   </div>
-                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>+{z.lift} if fixed</span>}
+                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>+{z.lift} pts</span>}
                 </div>
-                <p style={{ fontSize: 15, color: B.navy, margin: "0 0 4px", lineHeight: 1.6 }}>{z.txt}</p>
-                {z.peer && <p style={{ fontSize: 13, color: B.taupe, margin: 0, fontStyle: "italic" }}>{z.peer}</p>}
+                <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6 }}>{z.txt}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
+                  {z.peer && <span style={{ fontSize: 13, color: B.taupe, fontStyle: "italic" }}>{z.peer}</span>}
+                  {z.action && <span style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>↓ {z.action}</span>}
+                </div>
               </div>
             ))}
           </section>
