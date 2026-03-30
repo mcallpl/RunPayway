@@ -785,7 +785,7 @@ export default function DiagnosticPage() {
           {/* Purchase validation line — Change 5 */}
           <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transition: "opacity 600ms ease", marginBottom: 8 }}>
             <p style={{ fontSize: 13, color: "rgba(14,26,43,0.30)", letterSpacing: "0.02em", margin: "0 0 8px" }}>
-              We analyzed 6 structural factors across 20 engines to generate your diagnosis.
+              Analyzed across 6 structural dimensions. Scored by Model RP-2.0.
             </p>
           </div>
 

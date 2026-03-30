@@ -393,10 +393,10 @@ function DashboardContent() {
 
   /* ── Quick progress ── */
   const qActions = [
-    { id: "client", label: "Added a new client or income source", pid: "add_client" },
-    { id: "retainer", label: "Signed a retainer or recurring agreement", pid: "convert_retainer" },
-    { id: "passive", label: "Created passive or semi-passive income", pid: "build_passive" },
-    { id: "forward", label: "Secured next quarter with commitments", pid: "lock_forward" },
+    { id: "client", label: "Added a new client", pid: "add_client" },
+    { id: "retainer", label: "Signed a retainer", pid: "convert_retainer" },
+    { id: "passive", label: "Built passive income", pid: "build_passive" },
+    { id: "forward", label: "Secured forward revenue", pid: "lock_forward" },
   ];
   let qInputs = { ...base };
   const qCount = Object.values(quickToggles).filter(Boolean).length;
@@ -518,13 +518,43 @@ function DashboardContent() {
                     ))}
                   </div>
                   <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as const }}>
-                    {!isDemo && <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: B.navy, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: 36 }}>View Report</Link>}
                     <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>Share Score ↓</button>
                   </div>
                 </div>
               </div>
             </div>
           </section>
+
+          {/* ── VIEW REPORT — prominent, easy to find ── */}
+          {!isDemo && (
+            <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
+              <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.purple}30`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>View Your Report</div>
+                    <div style={{ fontSize: 12, color: B.taupe }}>Full diagnostic with key findings</div>
+                  </div>
+                </div>
+                <span style={{ fontSize: 17, color: B.purple }}>→</span>
+              </Link>
+              <button onClick={handleShare} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.teal}30`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                </div>
+                <div style={{ textAlign: "left" as const }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>Share Score</div>
+                  <div style={{ fontSize: 12, color: B.taupe }}>Download as image</div>
+                </div>
+              </button>
+            </div>
+          )}
 
           {/* 2. PRESSUREMAP™ */}
           <section>
@@ -695,10 +725,16 @@ function DashboardContent() {
                 transition: "border-radius 200ms",
               }}
             >
-              <div style={{ textAlign: "left" as const }}>
+              <div style={{ textAlign: "left" as const, flex: 1 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
                 <div style={{ fontSize: 15, color: B.muted }}>Test your options — what would happen if you changed something?</div>
               </div>
+              {!whatIfOpen && topMoves[0] && (
+                <div style={{ textAlign: "right" as const, flexShrink: 0, marginLeft: 16, marginRight: 8 }}>
+                  <div style={{ fontSize: 17, fontWeight: 300, color: B.teal }}>+{topMoves[0].lift}</div>
+                  <div style={{ fontSize: 11, color: B.taupe }}>best move</div>
+                </div>
+              )}
               <span style={{ fontSize: 17, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
             </button>
 
