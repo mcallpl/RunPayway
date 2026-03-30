@@ -12,40 +12,6 @@ export default function AppLayout({
 }) {
   return (
     <div style={{ background: "#F7F6F3", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <header
-        style={{
-          background: "#FFFFFF",
-          borderBottom: "1px solid rgba(14,26,43,0.08)",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 860,
-            margin: "0 auto",
-            padding: "0 24px",
-            height: 64,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
-            <Image
-              src={logoBlue}
-              alt="RunPayway&#8482;"
-              width={150}
-              height={18}
-              style={{ height: "auto" }}
-            />
-          </Link>
-          <div style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.04em" }}>
-            Model RP-2.0
-          </div>
-        </div>
-      </header>
       <ScrollToTop />
       <main style={{ flex: 1, maxWidth: 860, width: "100%", margin: "0 auto", padding: "32px 24px 48px" }}>
         {children}
@@ -66,11 +32,17 @@ export default function AppLayout({
             justifyContent: "space-between",
           }}
         >
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
+            <Image
+              src={logoBlue}
+              alt="RunPayway™"
+              width={120}
+              height={14}
+              style={{ height: "auto" }}
+            />
+          </Link>
           <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-            RunPayway™ Income Stability Assessment
-          </span>
-          <span style={{ fontSize: 11, color: "#9CA3AF" }}>
-            Structural Stability Model RP-2.0
+            Model RP-2.0
           </span>
         </div>
       </footer>
