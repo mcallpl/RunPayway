@@ -700,10 +700,6 @@ export default function DiagnosticPage() {
 
       sessionStorage.removeItem(STORAGE_KEY);
       setAssessmentTitle(profile.assessment_title || "");
-      setReviewExiting(true);
-      setShowOverlay(true);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setShowOverlay(false);
       setShowLoading(true);
       // Route based on plan type
       const planKey = (() => {
