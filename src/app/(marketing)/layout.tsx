@@ -272,7 +272,6 @@ export default function MarketingLayout({
   ];
 
   const MORE_LINKS = [
-    { href: "/dashboard", label: "Command Center" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
