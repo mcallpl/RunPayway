@@ -185,6 +185,37 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
+function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activeStep: number; completedSteps?: number[] }) {
+  const steps = [
+    { num: "①", label: "Profile" },
+    { num: "②", label: "Assessment" },
+    { num: "③", label: "Results" },
+  ];
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 24 }}>
+      {steps.map((s, i) => {
+        const isActive = i + 1 === activeStep;
+        const isCompleted = completedSteps.includes(i + 1);
+        return (
+          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
+            <span style={{
+              fontSize: 11,
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              letterSpacing: "0.01em",
+            }}>
+              {isCompleted ? "✓" : s.num} {s.label}
+            </span>
+            {i < steps.length - 1 && (
+              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>——</span>
+            )}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function InitializationPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
@@ -464,6 +495,15 @@ export default function InitializationPage() {
           pointerEvents: "none",
         }} />
 
+        {/* Step breadcrumb */}
+        <div style={{
+          position: "absolute", top: 32, left: 0, right: 0, zIndex: 2,
+          opacity: portalRevealed ? 1 : 0,
+          transition: "opacity 800ms ease",
+        }}>
+          <StepBreadcrumb activeStep={1} completedSteps={[]} />
+        </div>
+
         {/* Content */}
         <div style={{
           maxWidth: 520, width: "100%", padding: "0 32px",
@@ -694,6 +734,10 @@ export default function InitializationPage() {
 
       {/* Form content */}
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "40px 24px 60px" }}>
+        {/* Global step breadcrumb */}
+        <div style={{ marginBottom: 8 }}>
+          <StepBreadcrumb activeStep={1} completedSteps={[]} />
+        </div>
         {/* Step header */}
         <div style={{ marginBottom: 32 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: B.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>

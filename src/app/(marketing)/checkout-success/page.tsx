@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { createMonitoringSession, getSessionByEmail } from "@/lib/monitoring";
@@ -22,7 +23,40 @@ const PLAN_INFO: Record<string, { title: string; price: string }> = {
   single: { title: "RunPayway\u2122 Diagnostic Report", price: "$69" },
 };
 
+function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activeStep: number; completedSteps?: number[] }) {
+  const steps = [
+    { num: "①", label: "Profile" },
+    { num: "②", label: "Assessment" },
+    { num: "③", label: "Results" },
+  ];
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 24 }}>
+      {steps.map((s, i) => {
+        const isActive = i + 1 === activeStep;
+        const isCompleted = completedSteps.includes(i + 1);
+        const isFuture = !isActive && !isCompleted;
+        return (
+          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
+            <span style={{
+              fontSize: 11,
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              letterSpacing: "0.01em",
+            }}>
+              {isCompleted ? "✓" : s.num} {s.label}
+            </span>
+            {i < steps.length - 1 && (
+              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>——</span>
+            )}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 function CheckoutSuccessContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") || "single";
   const stripeSessionId = searchParams.get("session_id") || "";
@@ -30,6 +64,7 @@ function CheckoutSuccessContent() {
   const [ready, setReady] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hasExistingRecord, setHasExistingRecord] = useState(false);
+  const [countdown, setCountdown] = useState(5);
 
   const info = PLAN_INFO[plan] || PLAN_INFO.single;
 
@@ -107,9 +142,17 @@ function CheckoutSuccessContent() {
       });
   }, [plan, stripeSessionId, customerEmail]);
 
-  // No auto-redirect — user clicks "Begin Assessment" when ready
-
+  // Auto-advance countdown for standard flow
   const isMonitoring = plan === "monitoring";
+  useEffect(() => {
+    if (!ready || hasExistingRecord || isMonitoring) return;
+    if (countdown <= 0) {
+      router.push("/diagnostic-portal");
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [ready, countdown, hasExistingRecord, isMonitoring, router]);
 
   const steps = isMonitoring ? [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}/year`, done: true },
@@ -159,6 +202,9 @@ function CheckoutSuccessContent() {
           transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
         }}
       >
+        {/* Step breadcrumb */}
+        <StepBreadcrumb activeStep={1} completedSteps={[]} />
+
         {/* Checkmark */}
         <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(31,109,122,0.15)", border: "2px solid rgba(31,109,122,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 32px" }}>
           <span style={{ fontSize: 24, color: B.teal }}>&#10003;</span>
@@ -259,31 +305,68 @@ function CheckoutSuccessContent() {
                 Retake Assessment
               </Link>
             </div>
+          ) : isMonitoring ? (
+            <Link
+              href="/sign-in"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                maxWidth: 360,
+                height: 52,
+                borderRadius: 12,
+                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+                color: B.navy,
+                fontSize: 16,
+                fontWeight: 600,
+                textDecoration: "none",
+                letterSpacing: "-0.01em",
+                boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+                transition: "transform 200ms ease, box-shadow 200ms ease",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
+            >
+              Go to Monitoring Portal
+            </Link>
           ) : (
-          <Link
-            href={isMonitoring ? "/sign-in" : "/diagnostic-portal"}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              maxWidth: 360,
-              height: 52,
-              borderRadius: 12,
-              background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-              color: B.navy,
-              fontSize: 16,
-              fontWeight: 600,
-              textDecoration: "none",
-              letterSpacing: "-0.01em",
-              boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
-              transition: "transform 200ms ease, box-shadow 200ms ease",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
-          >
-            {isMonitoring ? "Go to Monitoring Portal" : "Begin Assessment"}
-          </Link>
+            <button
+              onClick={() => router.push("/diagnostic-portal")}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
+                width: "100%",
+                maxWidth: 360,
+                height: 52,
+                borderRadius: 12,
+                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
+                color: B.navy,
+                fontSize: 16,
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
+                transition: "transform 200ms ease, box-shadow 200ms ease",
+                position: "relative",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
+            >
+              {/* Progress ring */}
+              <svg width="20" height="20" viewBox="0 0 20 20" style={{ flexShrink: 0 }}>
+                <circle cx="10" cy="10" r="8" fill="none" stroke="rgba(14,26,43,0.10)" strokeWidth="2" />
+                <circle cx="10" cy="10" r="8" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"
+                  strokeDasharray={`${(2 * Math.PI * 8)}`}
+                  strokeDashoffset={`${(2 * Math.PI * 8) * (countdown / 5)}`}
+                  style={{ transition: "stroke-dashoffset 1s linear", transform: "rotate(-90deg)", transformOrigin: "center" }}
+                />
+              </svg>
+              Starting in {countdown}...
+            </button>
           )
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>

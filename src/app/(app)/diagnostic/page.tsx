@@ -191,6 +191,52 @@ function loadAnswersFromStorage(): (string | null)[] | null {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Step breadcrumb                                                    */
+/* ------------------------------------------------------------------ */
+
+function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activeStep: number; completedSteps?: number[] }) {
+  const steps = [
+    { num: "\u2460", label: "Profile" },
+    { num: "\u2461", label: "Assessment" },
+    { num: "\u2462", label: "Results" },
+  ];
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 8 }}>
+      {steps.map((s, i) => {
+        const isActive = i + 1 === activeStep;
+        const isCompleted = completedSteps.includes(i + 1);
+        return (
+          <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
+            <span style={{
+              fontSize: 11,
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              letterSpacing: "0.01em",
+            }}>
+              {isCompleted ? "\u2713" : s.num} {s.label}
+            </span>
+            {i < steps.length - 1 && (
+              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>\u2014\u2014</span>
+            )}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Band celebration messages                                          */
+/* ------------------------------------------------------------------ */
+
+const BAND_MESSAGES: Record<string, string> = {
+  "High Stability": "Exceptional structure.",
+  "Established Stability": "Strong foundation.",
+  "Developing Stability": "Room to build.",
+  "Limited Stability": "A clear starting point.",
+};
+
+/* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
@@ -693,28 +739,39 @@ export default function DiagnosticPage() {
     const revealColor = revealScore >= 75 ? "#1F6D7A" : revealScore >= 50 ? "#2B5EA7" : revealScore >= 30 ? "#92640A" : "#9B2C2C";
     const nextBand = revealScore < 30 ? "Developing" : revealScore < 50 ? "Established" : revealScore < 75 ? "High" : null;
     const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
+    const bandMessage = BAND_MESSAGES[revealBand] || "";
 
     return (
       <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <style>{`
+          @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        `}</style>
         <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
         <div style={{ textAlign: "center", maxWidth: 480, padding: "0 24px", position: "relative", zIndex: 1 }}>
 
-          {/* Score number — counts up */}
-          <div style={{ marginBottom: 8 }}>
+          {/* Score number — counts up with pulse on reveal */}
+          <div style={{ marginBottom: 8, animation: revealPhase >= 1 ? "revealPulse 0.6s ease-out" : "none" }}>
             <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: "#0E1A2B", letterSpacing: "-0.05em", lineHeight: 1, fontFamily: "'Inter', system-ui, sans-serif" }}>0</span>
             <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(14,26,43,0.20)", marginLeft: 4 }}>/100</span>
           </div>
 
           {/* Band name — fades in */}
-          <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 24 }}>
+          <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 8 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 20px", borderRadius: 24, border: `1px solid ${revealColor}30`, backgroundColor: `${revealColor}08` }}>
               <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: revealColor }} />
               <span style={{ fontSize: 17, fontWeight: 600, color: revealColor }}>{revealBand}</span>
             </div>
           </div>
 
+          {/* Band-specific human message */}
+          {bandMessage && (
+            <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transition: "opacity 600ms ease", marginBottom: 24 }}>
+              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.40)", margin: 0 }}>{bandMessage}</p>
+            </div>
+          )}
+
           {/* Gap + message — fades in */}
-          <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 32 }}>
+          <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 8 }}>
             {nextBand && (
               <p style={{ fontSize: 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
                 {gap} points from {nextBand} Stability
@@ -724,6 +781,16 @@ export default function DiagnosticPage() {
               Your full diagnosis and action plan are ready.
             </p>
           </div>
+
+          {/* Purchase validation line — Change 5 */}
+          <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transition: "opacity 600ms ease", marginBottom: 8 }}>
+            <p style={{ fontSize: 13, color: "rgba(14,26,43,0.30)", letterSpacing: "0.02em", margin: "0 0 8px" }}>
+              We analyzed 6 structural factors across 20 engines to generate your diagnosis.
+            </p>
+          </div>
+
+          {/* Spacer before CTA */}
+          <div style={{ marginBottom: 24 }} />
 
           {/* CTA — fades in */}
           <div style={{ opacity: revealPhase >= 3 ? 1 : 0, transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease" }}>
@@ -834,6 +901,11 @@ export default function DiagnosticPage() {
                 animation: "loadProgress 3.4s ease-in-out forwards",
               }}
             />
+          </div>
+
+          {/* Social proof */}
+          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.25)", marginTop: 20, marginBottom: 0, textAlign: "center" }}>
+            Join 2,400+ professionals who have assessed their income structure.
           </div>
 
           {/* Rotating branded quotes */}
@@ -1042,6 +1114,18 @@ export default function DiagnosticPage() {
       </div>
     </div>
     <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+      {/* Step breadcrumb */}
+      <div style={{ marginBottom: 16, marginTop: 4 }}>
+        <StepBreadcrumb activeStep={2} completedSteps={[1]} />
+      </div>
+
+      {/* Time estimate — only on first question */}
+      {currentQuestion === 0 && (
+        <div style={{ fontSize: 13, color: "rgba(14,26,43,0.35)", textAlign: "center", marginBottom: 16 }}>
+          6 questions &middot; About 90 seconds
+        </div>
+      )}
+
       {/* Top bar — factor label + progress */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
