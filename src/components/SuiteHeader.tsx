@@ -13,13 +13,6 @@ const C = {
   border: "rgba(14,26,43,0.08)",
 };
 
-const NAV_ITEMS = [
-  { href: "/tools", label: "Suite", color: C.purple },
-  { href: "/pressuremap", label: "PressureMap", color: C.muted },
-  { href: "/simulator", label: "Simulator", color: C.teal },
-  { href: "/dashboard", label: "Dashboard", color: C.muted },
-];
-
 export default function SuiteHeader({ current }: { current: "suite" | "pressuremap" | "simulator" | "dashboard" }) {
   return (
     <header style={{
@@ -39,7 +32,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
         justifyContent: "space-between",
         alignItems: "center",
       }}>
-        {/* Left: Logo + Page name */}
+        {/* Left: Logo + Page label */}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
             <Image src={logoBlue} alt="RunPayway" width={140} height={16} style={{ height: "auto" }} />
@@ -50,40 +43,23 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
             fontWeight: 700,
             letterSpacing: "0.10em",
             textTransform: "uppercase" as const,
-            color: current === "suite" ? C.purple
-              : current === "simulator" ? C.teal
-              : current === "pressuremap" ? C.purple
-              : "#DC7814",
+            color: C.purple,
           }}>
-            {current === "suite" ? "STABILITY SUITE"
-              : current === "pressuremap" ? "PRESSUREMAP"
-              : current === "simulator" ? "SIMULATOR"
-              : "DASHBOARD"}
+            COMMAND CENTER
           </span>
         </div>
 
-        {/* Right: Nav links */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          {NAV_ITEMS.map((item) => {
-            const isActive = item.href === (current === "suite" ? "/tools" : `/${current}`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                style={{
-                  fontSize: 14,
-                  fontWeight: isActive ? 600 : 500,
-                  color: isActive ? C.purple : C.muted,
-                  textDecoration: "none",
-                  transition: "color 200ms ease",
-                  borderBottom: isActive ? `2px solid ${C.purple}` : "2px solid transparent",
-                  paddingBottom: 2,
-                }}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        {/* Right: Links */}
+        <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <Link href="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none", borderBottom: `2px solid ${C.purple}`, paddingBottom: 2 }}>
+            Dashboard
+          </Link>
+          <Link href="/review" style={{ fontSize: 14, fontWeight: 500, color: C.muted, textDecoration: "none" }}>
+            Report
+          </Link>
+          <Link href="/pricing" style={{ fontSize: 14, fontWeight: 500, color: C.muted, textDecoration: "none" }}>
+            Pricing
+          </Link>
           <button
             onClick={() => { const e = new KeyboardEvent("keydown", { key: "k", metaKey: true }); window.dispatchEvent(e); }}
             style={{ padding: "4px 10px", borderRadius: 5, border: `1px solid ${C.border}`, background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.muted }}

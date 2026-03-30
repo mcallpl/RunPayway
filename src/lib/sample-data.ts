@@ -46,6 +46,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
         quality: { quality_score: 3 },
         constraints: { root_constraint: "high_concentration", secondary_constraint: "high_labor_dependence" },
         fragility: { fragility_score: 18, fragility_class: "brittle", primary_failure_mode: "concentration_collapse" },
+        benchmarking: { peer_percentile: 12, cluster_label: "Solo Consultants", cluster_average_score: 38 },
         sensitivity: { tests: [
           { factor: "largest_source_pct", delta_description: "Add a second income source", lift: 9, projected_score: 31, original_score: 22, rank: 1 },
           { factor: "labor_dependence_pct", delta_description: "Create any income that does not require your daily work", lift: 6, projected_score: 28, original_score: 22, rank: 2 },
@@ -77,6 +78,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
         quality: { quality_score: 5 },
         constraints: { root_constraint: "weak_forward_visibility", secondary_constraint: "high_concentration" },
         fragility: { fragility_score: 38, fragility_class: "fragile", primary_failure_mode: "visibility_gap" },
+        benchmarking: { peer_percentile: 38, cluster_label: "Professional Services", cluster_average_score: 44 },
         sensitivity: { tests: [
           { factor: "forward_secured_pct", delta_description: "Lock in 3 more months of income ahead", lift: 6, projected_score: 48, original_score: 42, rank: 1 },
           { factor: "income_persistence_pct", delta_description: "Convert one client to a monthly retainer", lift: 5, projected_score: 47, original_score: 42, rank: 2 },
@@ -108,6 +110,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
         quality: { quality_score: 7 },
         constraints: { root_constraint: "high_labor_dependence", secondary_constraint: "low_persistence" },
         fragility: { fragility_score: 62, fragility_class: "moderate", primary_failure_mode: "labor_interruption" },
+        benchmarking: { peer_percentile: 68, cluster_label: "Established Consultants", cluster_average_score: 52 },
         sensitivity: { tests: [
           { factor: "labor_dependence_pct", delta_description: "Reduce how much depends on your daily work by 20%", lift: 5, projected_score: 67, original_score: 62, rank: 1 },
           { factor: "income_persistence_pct", delta_description: "Increase protected income by 15%", lift: 4, projected_score: 66, original_score: 62, rank: 2 },
@@ -139,6 +142,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
         quality: { quality_score: 8 },
         constraints: { root_constraint: "low_persistence", secondary_constraint: "high_concentration" },
         fragility: { fragility_score: 82, fragility_class: "resilient", primary_failure_mode: "durability_thinness" },
+        benchmarking: { peer_percentile: 91, cluster_label: "Senior Advisors", cluster_average_score: 58 },
         sensitivity: { tests: [
           { factor: "income_persistence_pct", delta_description: "Increase protected income by 10%", lift: 3, projected_score: 84, original_score: 81, rank: 1 },
           { factor: "largest_source_pct", delta_description: "Further diversify income sources", lift: 2, projected_score: 83, original_score: 81, rank: 2 },
