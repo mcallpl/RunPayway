@@ -1066,8 +1066,8 @@ export default function ReviewPage() {
             const code = btoa(JSON.stringify(payload));
             return (
               <div style={{ maxWidth: mobile ? "90%" : 400 }}>
-                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 6 }}>RUNPAYWAY&#8482; STABILITY SUITE ACCESS</div>
-                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/tools to access your interactive tools.</div>
+                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 6 }}>RUNPAYWAY&#8482; DASHBOARD ACCESS</div>
+                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
                   <div style={{ fontFamily: "monospace", fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
@@ -1182,10 +1182,10 @@ export default function ReviewPage() {
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
-              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 9 }}>RUNPAYWAY&#8482; STABILITY SUITE</div>
+              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 9 }}>RUNPAYWAY&#8482; DASHBOARD</div>
               <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 3 }}>See exactly where your income is vulnerable</div>
               <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>
-                PressureMap&#8482; &middot; Simulator &middot; Dashboard &mdash; runpayway.com/tools
+                Income X-Ray &middot; Scenario Lab &middot; Action Plan &mdash; runpayway.com/dashboard
               </p>
             </div>
             <div style={{ fontSize: 18, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
@@ -1498,7 +1498,7 @@ export default function ReviewPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
               "Commit to the steps in this report today.",
-              "Track your progress using your RunPayway\u2122 Stability Suite.",
+              "Track your progress using your RunPayway\u2122 Dashboard.",
               `Reassess in ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months to see how much your score has improved.`,
             ].map((text) => (
               <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -1631,7 +1631,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="/tools" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Stability Suite</a>
+            <a href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Dashboard</a>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}

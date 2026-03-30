@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const exported = {
       export_version: "1.0",
       exported_at: new Date().toISOString(),
-      platform: "RunPayway™ Stability Suite",
+      platform: "RunPayway™",
       model_version: body.model_version || "RP-2.0",
       assessment: {
         record_id: body.record_id,

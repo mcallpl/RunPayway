@@ -24,7 +24,7 @@ interface FollowUpRequest {
 }
 
 const SUBJECTS: Record<string, string> = {
-  day7: "Have you explored your Stability Suite yet?",
+  day7: "Have you explored your Dashboard yet?",
   day30: "30 days since your assessment — here's what to focus on",
   day90: "It's time to see how much you've improved",
 };
@@ -39,7 +39,7 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
       subject: SUBJECTS.day7,
       html: `
         <div style="font-family: 'Inter', system-ui, sans-serif; max-width: 560px; margin: 0 auto; padding: 40px 20px;">
-          <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #1F6D7A; text-transform: uppercase; margin-bottom: 20px;">RUNPAYWAY™ STABILITY SUITE</div>
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #1F6D7A; text-transform: uppercase; margin-bottom: 20px;">RUNPAYWAY™</div>
           <h1 style="font-size: 24px; font-weight: 300; color: #0E1A2B; letter-spacing: -0.02em; margin-bottom: 16px;">Hi ${displayName},</h1>
           <p style="font-size: 15px; color: rgba(14,26,43,0.55); line-height: 1.65; margin-bottom: 20px;">
             Your Income Stability Score is <strong style="color: #0E1A2B;">${score}/100</strong> (${band}). Your report included three interactive tools designed to help you take action — have you tried them yet?
@@ -49,7 +49,7 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
             <div style="font-size: 15px; font-weight: 600; color: #0E1A2B;">${topAction || "Open your PressureMap to see where your income is most vulnerable"}</div>
             ${topActionLift ? `<div style="font-size: 13px; color: #1F6D7A; font-weight: 500; margin-top: 4px;">Potential impact: +${topActionLift} points</div>` : ""}
           </div>
-          <a href="https://peoplestar.com/RunPayway/tools" style="display: inline-block; padding: 14px 28px; background: #0E1A2B; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Stability Suite &rarr;</a>
+          <a href="https://peoplestar.com/RunPayway/dashboard" style="display: inline-block; padding: 14px 28px; background: #0E1A2B; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Dashboard &rarr;</a>
           <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px; line-height: 1.5;">RunPayway™ — A proprietary financial diagnostic tool by PeopleStar Enterprises.</p>
         </div>`,
     };

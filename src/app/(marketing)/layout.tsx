@@ -267,12 +267,12 @@ export default function MarketingLayout({
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/sample-report", label: t.nav.sampleReport },
-    { href: "/tools", label: "Stability Suite" },
+    { href: "/dashboard", label: "Dashboard" },
     { href: "/pricing", label: t.nav.pricing },
   ];
 
   const MORE_LINKS = [
-    { href: "/tools", label: "Stability Suite" },
+    { href: "/dashboard", label: "Dashboard" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
@@ -722,7 +722,7 @@ export default function MarketingLayout({
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
-                  { href: "/tools", label: "Stability Suite" },
+                  { href: "/dashboard", label: "Dashboard" },
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/pricing", label: t.nav.pricing },
                 ].map((link) => (

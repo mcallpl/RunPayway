@@ -1,7 +1,7 @@
 /* ================================================================== */
 /*  report-pdf.tsx — Fixed 4-page print document (Cover + 3 pages)    */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
-/*  RunPayway(TM) Stability Suite · Income Stability Report · RP-2.0  */
+/*  RunPayway(TM) Dashboard · Income Stability Report · RP-2.0  */
 /* ================================================================== */
 
 export interface ReportPDFData {
@@ -394,7 +394,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   doc.text("RUNPAYWAY(TM) STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text("Use this code at runpayway.com/simulator to access your Stability Suite tools.", ML, y);
+  doc.text("Use this code at runpayway.com/simulator to access your Dashboard tools.", ML, y);
   y += 14;
   // QR code + access code side by side
   const qrSize = 72;
@@ -413,11 +413,11 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   // QR code — render to data URL and embed
   try {
     const base = typeof window !== "undefined" && window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
-    const suiteUrl = `https://peoplestar.com${base}/tools?code=${encodeURIComponent(d.accessCode)}`;
+    const suiteUrl = `https://peoplestar.com${base}/dashboard?code=${encodeURIComponent(d.accessCode)}`;
     const qrDataUrl = await QRCode.toDataURL(suiteUrl, { width: qrSize * 3, margin: 1, color: { dark: "#0E1A2B", light: "#F8F6F1" } });
     doc.addImage(qrDataUrl, "PNG", ML + CW - qrSize - 4, y + 4, qrSize, qrSize);
     sf(doc, "Inter"); doc.setFontSize(6.5); doc.setTextColor("#6B6155");
-    doc.text("Scan to open Suite", ML + CW - qrSize / 2 - 4, y + qrSize + 12, { align: "center" });
+    doc.text("Scan to open Dashboard", ML + CW - qrSize / 2 - 4, y + qrSize + 12, { align: "center" });
   } catch { /* QR generation failed — code text is still there */ }
 
   // ── FOOTER ──
@@ -469,7 +469,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   y = dt(doc, d.dominantConstraintText, ML + 10, y, CW - 20, 10, { maxLines: 3 });
   y += 12;
 
-  // RunPayway Stability Suite CTA
+  // RunPayway Dashboard CTA
   doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
   doc.line(ML, y, ML + CW, y);
   y += 12;
@@ -480,7 +480,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#F4F1EA");
   doc.text("See exactly where your income is vulnerable", ML + 10, y + 24);
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#8A8278");
-  doc.text("PressureMap(TM)  -  Stability Simulator  -  Progress Dashboard  |  runpayway.com/tools", ML + 10, y + 36);
+  doc.text("Income X-Ray  -  Scenario Lab  -  Action Plan  |  runpayway.com/dashboard", ML + 10, y + 36);
   y += 44;
 
   footer(doc, "Key Findings", 1);
@@ -643,7 +643,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
     doc.text("Why This Report Delivers Real Value", ML, y);
     y += 12;
-    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Stability Suite to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
+    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Dashboard to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
     y = dt(doc, valueText, ML, y, CW, 9, { color: "#535D6B", maxLines: 3 });
     y += 8;
   }
@@ -659,7 +659,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
 
   // Fine print
   if (y + 20 <= YL) {
-    const fp = "RunPayway(TM) Stability Suite - a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
+    const fp = "RunPayway(TM) Dashboard - a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
