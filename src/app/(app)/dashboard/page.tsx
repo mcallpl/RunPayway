@@ -759,7 +759,7 @@ export default function DashboardPage() {
         {/* FOOTER                                                     */}
         {/* ═══════════════════════════════════════════════════════════ */}
         <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-          <p style={{ fontSize: 11, color: B.taupe, margin: 0 }}>RunPayway&#8482; &mdash; A proprietary financial diagnostic by PeopleStar Enterprises.</p>
+          <p style={{ fontSize: 11, color: B.taupe, margin: 0 }}>RunPayway&#8482; Command Center &mdash; A proprietary financial diagnostic by PeopleStar Enterprises.</p>
         </div>
       </div>
     </div>
