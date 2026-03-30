@@ -1172,8 +1172,8 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>What To Do Next</h1>
-        <p style={{ ...T.small, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
-          Based on your score of {score}/100, these are your highest-impact structural changes. Your Command Center has the full action plan, scripts, and simulator.
+        <p style={{ ...T.small, color: B.muted, marginBottom: 16, lineHeight: 1.5 }}>
+          Based on your score of {score}/100, these are your highest-impact changes. Full action plan and scripts in your Command Center.
         </p>
 
         {/* ── 3 ACTION STEPS ── */}
@@ -1201,23 +1201,23 @@ export default function ReviewPage() {
           const steps = viable.slice(0, 3);
 
           return (
-            <div style={{ marginBottom: 24 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {steps.map((scenario, idx) => {
                   const concrete = liftConcrete[scenario.scenario_id];
                   const aiAction = idx === 0 ? aiPlan?.primary_action : idx === 1 ? aiPlan?.supporting_action : null;
                   const goal = aiAction || concrete?.goal || scenario.label;
                   const action = concrete?.action || scenario.change_description || "";
                   return (
-                    <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "16px 22px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+                    <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "12px 18px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 4 }}>STEP {idx + 1}</div>
-                        <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{goal}</div>
-                        <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{action.length > 120 ? action.substring(0, 120) + "..." : action}</p>
+                        <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 2 }}>STEP {idx + 1}</div>
+                        <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{goal}</div>
+                        <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.45 }}>{action.length > 100 ? action.substring(0, 100) + "..." : action}</p>
                       </div>
                       <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
-                        <div style={{ fontSize: 24, fontWeight: 300, color: stepColors[idx], lineHeight: 1 }}>+{scenario.lift}</div>
-                        <div style={{ fontSize: 11, color: B.muted }}>points</div>
+                        <div style={{ fontSize: 22, fontWeight: 300, color: stepColors[idx], lineHeight: 1 }}>+{scenario.lift}</div>
+                        <div style={{ fontSize: 11, color: B.muted }}>pts</div>
                       </div>
                     </div>
                   );
@@ -1229,37 +1229,36 @@ export default function ReviewPage() {
 
         {/* ── COMBINED IMPACT — brief ── */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-          <div style={{ background: `linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "16px 20px", marginBottom: 24 }}>
-            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>Combined Impact</div>
-            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-              Together, these changes would raise your score to approximately <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
+          <div style={{ border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "12px 18px", marginBottom: 16 }}>
+            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Combined Impact</div>
+            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5 }}>
+              Together, these changes would raise your score to <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift}).{v2Lift.combined_top_two.band_shift ? ` Moves to ${v2Lift.combined_top_two.projected_band}.` : ""}
             </p>
           </div>
         )}
 
         <SectionDivider />
 
-        {/* ── COMMAND CENTER CTA ── */}
+        {/* ── COMMAND CENTER CTA — minimal, print-friendly ── */}
         <div
           onClick={() => router.push("/dashboard")}
           style={{
-            textAlign: "center", padding: mobile ? "32px 20px" : "40px 32px", borderRadius: 10,
-            background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`,
-            cursor: "pointer", marginBottom: 24,
+            textAlign: "center", padding: "20px 24px", borderRadius: 8,
+            border: `1px solid ${B.purple}20`, cursor: "pointer", marginBottom: 16,
           }}
         >
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: "rgba(31,109,122,0.80)", marginBottom: 12 }}>YOUR NEXT STEP</div>
-          <h2 style={{ fontSize: 22, fontWeight: 600, color: "#F4F1EA", margin: "0 0 8px" }}>Open Your Command Center</h2>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", margin: "0 0 20px", lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
-            Your 12-week roadmap, ready-to-use scripts, income simulator, and progress tracker are waiting. This report is the diagnosis. The Command Center is where you take action.
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>YOUR NEXT STEP</div>
+          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Open Your Command Center</div>
+          <p style={{ fontSize: 12, color: B.muted, margin: "0 0 12px", lineHeight: 1.5 }}>
+            Your roadmap, scripts, simulator, and progress tracker are ready at runpayway.com/dashboard
           </p>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", color: "#F4F1EA", fontSize: 15, fontWeight: 600 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 24px", borderRadius: 8, border: `1px solid ${B.navy}`, color: B.navy, fontSize: 14, fontWeight: 600 }}>
             Go to Command Center &rarr;
           </div>
         </div>
 
         {/* ── METHODOLOGY ── */}
-        <div style={{ paddingTop: 14, borderTop: `1px solid ${B.stone}` }}>
+        <div style={{ paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
           <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
             Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. Not financial advice.
           </p>
