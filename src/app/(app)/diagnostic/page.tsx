@@ -818,120 +818,39 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", overflowY: "auto" }}>
-      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        <div style={{ textAlign: "center", maxWidth: 420, padding: "0 24px" }}>
-          {/* Spinner */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(14,26,43,0.08)", borderTopColor: "#4B3FAE", margin: "0 auto 28px", animation: "rp-spin 0.8s linear infinite" }} />
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <style>{`
+          @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }
+        `}</style>
 
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.35)", marginBottom: 16 }}>
-            GENERATING YOUR ASSESSMENT
-          </div>
-
-          <h2 style={{ fontSize: 24, fontWeight: 600, color: "#0E1A2B", letterSpacing: "-0.02em", marginBottom: 8 }}>
-            Income Stability Score&#8482;
-          </h2>
-          {assessmentTitle && (
-            <p style={{ fontSize: 15, fontWeight: 500, color: "rgba(14,26,43,0.50)", marginBottom: 32 }}>
-              Preparing report for {assessmentTitle}
-            </p>
-          )}
-
-          {/* Processing steps */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 0, textAlign: "left", marginBottom: 32 }}>
-            {PROCESSING_STEPS.map((step, i) => (
-              <div
-                key={step}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 14,
-                  padding: "12px 0",
-                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(14,26,43,0.05)" : "none",
-                  opacity: i <= loadingStep ? 1 : 0.3,
-                  transition: "opacity 400ms ease",
-                }}
-              >
-                <div
-                  style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: i < loadingStep ? "rgba(31,109,122,0.15)" : i === loadingStep ? "rgba(75,63,174,0.12)" : "rgba(14,26,43,0.04)",
-                    border: `1px solid ${i < loadingStep ? "rgba(31,109,122,0.25)" : i === loadingStep ? "rgba(75,63,174,0.25)" : "rgba(14,26,43,0.06)"}`,
-                    transition: "background 400ms ease, border-color 400ms ease",
-                    flexShrink: 0,
-                  }}
-                >
-                  {i < loadingStep ? (
-                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                      <path d="M1 4L3.5 6.5L9 1" stroke="#1F6D7A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : i === loadingStep ? (
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4B3FAE", animation: "rp-pulse 1s ease-in-out infinite" }} />
-                  ) : null}
-                </div>
-                <span style={{ fontSize: 14, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? "#0E1A2B" : "rgba(14,26,43,0.25)" }}>
-                  {step}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress bar */}
-          <div style={{ height: 2, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
-            <div
-              style={{
-                height: "100%",
-                borderRadius: 2,
-                background: "linear-gradient(90deg, #4B3FAE, #1F6D7A)",
-                animation: "loadProgress 3.4s ease-in-out forwards",
-              }}
-            />
-          </div>
-
-          {/* Social proof */}
-          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.25)", marginTop: 20, marginBottom: 0, textAlign: "center" }}>
-            Join 2,400+ professionals who have assessed their income structure.
-          </div>
-
-          {/* Rotating branded quotes */}
-          <div style={{ marginTop: 40, maxWidth: 380, margin: "40px auto 0", textAlign: "center", minHeight: 80 }}>
-            <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 400ms ease" }}>
-              <p style={{ fontSize: 15, fontWeight: 400, color: "rgba(14,26,43,0.50)", lineHeight: 1.65, margin: "0 0 8px", fontStyle: "italic" }}>
+        {/* Quote — the hero of this page */}
+        <div style={{ maxWidth: 520, padding: "0 32px", textAlign: "center" }}>
+          <div style={{ minHeight: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 500ms ease" }}>
+              <p style={{ fontSize: 22, fontWeight: 300, color: "#0E1A2B", lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
                 &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
               </p>
-              <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", color: "rgba(75,63,174,0.50)" }}>
-                {LOADING_QUOTES[quoteIdx]?.attr}
+              <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(75,63,174,0.45)" }}>
+                RUNPAYWAY
               </span>
             </div>
           </div>
 
-          <style>{`
-            @keyframes loadProgress {
-              0% { width: 0%; }
-              30% { width: 40%; }
-              70% { width: 80%; }
-              100% { width: 100%; }
-            }
-            @keyframes rp-spin { to { transform: rotate(360deg); } }
-            @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-          `}</style>
+          {/* Thin progress bar */}
+          <div style={{ width: 200, height: 2, borderRadius: 1, background: "rgba(14,26,43,0.06)", margin: "40px auto 24px", overflow: "hidden" }}>
+            <div style={{ height: "100%", borderRadius: 1, background: "rgba(75,63,174,0.30)", animation: "quoteLoadBar 6s ease-in-out forwards" }} />
+          </div>
+
+          {/* Subtle status */}
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", letterSpacing: "0.06em" }}>
+            {assessmentTitle ? `Generating diagnosis for ${assessmentTitle}` : "Generating your diagnosis"}
+          </div>
+
+          {/* Social proof */}
+          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.20)", marginTop: 32 }}>
+            Join 2,400+ professionals who have assessed their income structure.
+          </div>
         </div>
-      </div>
       </div>
     );
   }
