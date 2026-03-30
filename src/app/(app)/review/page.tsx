@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { useAssessmentServer } from "@/lib/monitoring";
@@ -1339,7 +1340,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Command Center</a>
+            <Link href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Command Center</Link>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}
