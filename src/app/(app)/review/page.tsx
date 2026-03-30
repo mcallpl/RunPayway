@@ -345,7 +345,7 @@ export default function ReviewPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [mobile, setMobile] = useState(false);
   const monitoringTracked = useRef(false);
-  const totalPages = 5; // cover + 4 pages
+  const totalPages = 3; // cover + 2 pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
   const pageContainerRef = useRef<HTMLDivElement>(null);
