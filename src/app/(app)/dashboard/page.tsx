@@ -34,28 +34,43 @@ const B = {
 const INTER = "'Inter', system-ui, -apple-system, sans-serif";
 
 function bc(s: number): string {
-  return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited;
+  return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : s >= 0 ? B.bandLimited : B.bandLimited;
 }
 
 /* ================================================================== */
-/*  INDUSTRY CONTEXT — one-liner insights by sector                    */
+/*  INDUSTRY CONTEXT                                                   */
 /* ================================================================== */
-const INDUSTRY_INSIGHTS: Record<string, string> = {
-  consulting: "In consulting, 72% of income instability comes from client concentration and project-based billing cycles.",
-  consulting_professional_services: "In professional services, firms with 3+ retainer clients score 40% higher on average.",
-  real_estate: "In real estate, agents with recurring property management income score 2x higher than transaction-only agents.",
-  technology: "In tech, professionals with SaaS or licensing revenue score 35% higher than those on project-based billing.",
-  healthcare: "In healthcare, practitioners with membership models average 28 points higher than fee-for-service only.",
-  sales_brokerage: "In sales, brokers with managed account channels score 45% higher than pure commission earners.",
-  finance_banking: "In finance, advisors with AUM-based recurring fees score 50% higher than transaction-based professionals.",
-  insurance: "In insurance, agents with renewal books score 38% higher than those dependent on new policy sales.",
-  legal_services: "In legal services, firms with general counsel retainers average 32 points higher than hourly-billing practices.",
-  creative_media: "In creative work, professionals with licensing or royalty income score 40% higher than project-only creators.",
-  education_training: "In education, trainers with course licensing or subscription models score 35% higher than per-session billing.",
-  fitness_wellness: "In fitness, coaches with membership models average 30 points higher than session-based billing.",
-  construction_trades: "In trades, contractors with maintenance agreements score 28 points higher than bid-only businesses.",
-  default: "Across all sectors, professionals with at least one recurring income source score 35% higher on average.",
+const INDUSTRY_INSIGHTS: Record<string, { general: string; redAvg: number; greenAvg: number }> = {
+  consulting: { general: "In consulting, 72% of income instability comes from client concentration and project-based billing.", redAvg: 55, greenAvg: 12 },
+  consulting_professional_services: { general: "In professional services, firms with 3+ retainer clients score 40% higher on average.", redAvg: 52, greenAvg: 15 },
+  real_estate: { general: "In real estate, agents with recurring property management income score 2x higher than transaction-only.", redAvg: 65, greenAvg: 8 },
+  technology: { general: "In tech, professionals with SaaS or licensing revenue score 35% higher than project-based billing.", redAvg: 48, greenAvg: 18 },
+  healthcare: { general: "In healthcare, practitioners with membership models average 28 points higher than fee-for-service.", redAvg: 58, greenAvg: 10 },
+  sales_brokerage: { general: "In sales, brokers with managed account channels score 45% higher than pure commission earners.", redAvg: 62, greenAvg: 8 },
+  finance_banking: { general: "In finance, advisors with AUM-based recurring fees score 50% higher than transaction-based.", redAvg: 45, greenAvg: 20 },
+  insurance: { general: "In insurance, agents with renewal books score 38% higher than those dependent on new policy sales.", redAvg: 50, greenAvg: 18 },
+  legal_services: { general: "In legal services, firms with general counsel retainers average 32 points higher than hourly billing.", redAvg: 58, greenAvg: 10 },
+  creative_media: { general: "In creative work, professionals with licensing or royalty income score 40% higher than project-only.", redAvg: 60, greenAvg: 10 },
+  education_training: { general: "In education, trainers with course licensing or subscriptions score 35% higher than per-session.", redAvg: 55, greenAvg: 12 },
+  fitness_wellness: { general: "In fitness, coaches with membership models average 30 points higher than session-based billing.", redAvg: 62, greenAvg: 8 },
+  construction_trades: { general: "In trades, contractors with maintenance agreements score 28 points higher than bid-only.", redAvg: 68, greenAvg: 6 },
+  default: { general: "Across all sectors, professionals with at least one recurring income source score 35% higher.", redAvg: 58, greenAvg: 12 },
 };
+
+/* ================================================================== */
+/*  CONSTRAINT NARRATIVES — AI-style dynamic analysis                  */
+/* ================================================================== */
+function getConstraintNarrative(constraint: string, inputs: CanonicalInput): string {
+  const narratives: Record<string, string> = {
+    high_concentration: `Your largest source represents ${inputs.largest_source_pct}% of income. If that single relationship changes — they cut budget, switch providers, or pause — ${inputs.largest_source_pct}% of your revenue disappears in one decision. This is concentration risk.`,
+    weak_forward_visibility: `Only ${inputs.forward_secured_pct}% of your income is committed forward. You are re-selling your time every month. The structural fix is locking revenue before the month starts — retainers, prepaid packages, or signed commitments.`,
+    high_labor_dependence: `${inputs.labor_dependence_pct}% of your income requires your active daily work. If illness, burnout, or a personal event stops you for 90 days, ${inputs.labor_dependence_pct}% of income stops with you. Building any income that continues without you changes the math.`,
+    low_persistence: `Only ${inputs.income_persistence_pct}% of your income repeats automatically. The rest must be re-earned from scratch each month. Converting even one client to a recurring agreement structurally changes your income foundation.`,
+    low_source_diversity: `You have ${inputs.source_diversity_count} income source${inputs.source_diversity_count === 1 ? "" : "s"}. With this level of concentration, a single client decision has outsized power over your financial stability. Adding one diversified source reduces systemic risk.`,
+    high_variability: `Your income variability is ${inputs.income_variability_level}. Month-to-month swings make it harder to plan, save, and invest. The structural fix is converting variable project revenue to predictable recurring agreements.`,
+  };
+  return narratives[constraint] || `Your primary structural constraint is limiting your score. Addressing it is the single highest-leverage change you can make.`;
+}
 
 /* ================================================================== */
 /*  MAIN PAGE                                                          */
@@ -156,11 +171,54 @@ export default function DashboardPage() {
   const baseResult = simulateScore(baseInputs, qualityScore);
   const displayScore = score > 0 ? score : baseResult.overall_score;
 
-  /* ── Industry insight ── */
-  const industryInsight = INDUSTRY_INSIGHTS[industrySector] || INDUSTRY_INSIGHTS.default;
+  /* ── Industry data ── */
+  const industryData = INDUSTRY_INSIGHTS[industrySector] || INDUSTRY_INSIGHTS.default;
 
   /* ── Industry scripts ── */
   const scripts = industrySector ? getScriptsForSector(industrySector) : [];
+
+  /* ── PressureMap zones ── */
+  const rootConstraint = constraints?.root_constraint || "weak_forward_visibility";
+  const secondaryConstraint = constraints?.secondary_constraint || "";
+  const constraintPreset: Record<string, string> = {
+    high_concentration: "add_client", weak_forward_visibility: "lock_forward",
+    high_labor_dependence: "build_passive", low_persistence: "convert_retainer",
+    low_source_diversity: "add_client", high_variability: "convert_retainer",
+  };
+  const getPresetLift = (presetId: string) => {
+    const preset = SIMULATOR_PRESETS.find(p => p.id === presetId);
+    if (!preset) return { score: displayScore, lift: 0 };
+    const result = simulateScore(preset.modify(baseInputs), qualityScore);
+    return { score: result.overall_score, lift: Math.max(0, result.overall_score - displayScore) };
+  };
+  const redPreset = constraintPreset[rootConstraint] || "convert_retainer";
+  const redResult = getPresetLift(redPreset);
+  const greenPreset = rootConstraint === "high_labor_dependence" ? "lock_forward" : "build_passive";
+  const greenResult = getPresetLift(greenPreset);
+
+  const zones = [
+    { id: "active" as const, label: "Income That Stops", pct: activeIncome, color: B.red, lift: redResult.lift, projected: redResult.score, presetId: redPreset,
+      narrative: activeIncome >= 70
+        ? `${activeIncome}% of your income disappears the moment you stop working. This is your most exposed zone — illness, burnout, or one lost client immediately threatens ${activeIncome}% of earnings.`
+        : activeIncome >= 40
+          ? `${activeIncome}% of your income requires active daily work to maintain. You have some buffer, but a sustained disruption still creates significant pressure.`
+          : `${activeIncome}% active income is relatively well-managed. Your structure has meaningful protection against work stoppages.`,
+      peerCompare: activeIncome > industryData.redAvg ? `${activeIncome - industryData.redAvg}% above your sector average of ${industryData.redAvg}%.` : `${industryData.redAvg - activeIncome}% below your sector average of ${industryData.redAvg}%.` },
+    { id: "semi" as const, label: "Recurring For Now", pct: semiIncome, color: B.amber, lift: 0, projected: displayScore, presetId: null as string | null,
+      narrative: semiIncome < 15
+        ? `Only ${semiIncome}% of income has any repeating structure. Almost everything must be re-earned from scratch each month.`
+        : semiIncome < 35
+          ? `${semiIncome}% of income repeats on a short cycle — retainers, subscriptions, or month-to-month contracts. Cancelable, but it provides a working buffer.`
+          : `${semiIncome}% recurring is a solid foundation. The next step is converting this to fully protected income with longer commitments.`,
+      peerCompare: null },
+    { id: "persistent" as const, label: "Protected Income", pct: persistentIncome, color: B.teal, lift: greenResult.lift, projected: greenResult.score, presetId: greenPreset,
+      narrative: persistentIncome < 10
+        ? `Only ${persistentIncome}% of income would continue if you stopped working entirely. Building this zone is the single most durable improvement available.`
+        : persistentIncome < 25
+          ? `${persistentIncome}% protected income gives you some runway. Most professionals in your sector average ${industryData.greenAvg}% — you are ${persistentIncome > industryData.greenAvg ? "ahead" : "behind"}.`
+          : `${persistentIncome}% protected income is a structural advantage. This zone keeps generating revenue through disruptions, illness, and market shifts.`,
+      peerCompare: persistentIncome > industryData.greenAvg ? `${persistentIncome - industryData.greenAvg}% above your sector average of ${industryData.greenAvg}%.` : `${industryData.greenAvg - persistentIncome}% below your sector average of ${industryData.greenAvg}%.` },
+  ];
 
   /* ── Top moves (ranked presets, positive only) ── */
   const topMoves = SIMULATOR_PRESETS
@@ -219,30 +277,6 @@ export default function DashboardPage() {
   const quickResult = simulateScore(quickInputs, qualityScore);
   const quickLift = activeQuickCount > 0 ? quickResult.overall_score - displayScore : 0;
 
-  /* ── Zone data (Income X-Ray) ── */
-  const rootConstraint = constraints?.root_constraint || "weak_forward_visibility";
-  const constraintPreset: Record<string, string> = {
-    high_concentration: "add_client", weak_forward_visibility: "lock_forward",
-    high_labor_dependence: "build_passive", low_persistence: "convert_retainer",
-    low_source_diversity: "add_client", high_variability: "convert_retainer",
-  };
-  const getPresetLift = (presetId: string) => {
-    const preset = SIMULATOR_PRESETS.find(p => p.id === presetId);
-    if (!preset) return { score: displayScore, lift: 0 };
-    const result = simulateScore(preset.modify(baseInputs), qualityScore);
-    return { score: result.overall_score, lift: Math.max(0, result.overall_score - displayScore) };
-  };
-  const redPreset = constraintPreset[rootConstraint] || "convert_retainer";
-  const redResult = getPresetLift(redPreset);
-  const greenPreset = rootConstraint === "high_labor_dependence" ? "lock_forward" : "build_passive";
-  const greenResult = getPresetLift(greenPreset);
-
-  const zones = [
-    { id: "active", label: "Stops When You Stop", pct: activeIncome, color: B.red, lift: redResult.lift },
-    { id: "semi", label: "Recurring For Now", pct: semiIncome, color: B.amber, lift: 0 },
-    { id: "persistent", label: "Protected", pct: persistentIncome, color: B.teal, lift: greenResult.lift },
-  ];
-
   /* ── Scenario Lab ── */
   const activePresetObj = SIMULATOR_PRESETS.find(p => p.id === activePreset);
   const scenarioInputs = activePresetObj ? activePresetObj.modify(baseInputs) : baseInputs;
@@ -275,14 +309,13 @@ export default function DashboardPage() {
     });
   };
 
-  /* ── Return trigger message ── */
   const returnTrigger = checkedItems.length >= 2
     ? "You have made enough structural changes to warrant a reassessment."
     : topMoves[0]
       ? `Come back after you ${topMoves[0].label.toLowerCase()}. That single change is worth +${topMoves[0].lift} points.`
       : "Come back after making a structural change to your income.";
 
-  /* ── Copy script helper ── */
+  /* ── Copy script ── */
   const copyScript = (text: string, id: string) => {
     navigator.clipboard.writeText(text).then(() => {
       setCopiedScript(id);
@@ -291,7 +324,7 @@ export default function DashboardPage() {
   };
 
   /* ================================================================ */
-  /*  RENDER                                                           */
+  /*  RENDER — Cognitive flow: Orient → Decide → Act → Monitor         */
   /* ================================================================ */
   return (
     <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: INTER }}>
@@ -307,9 +340,7 @@ export default function DashboardPage() {
 
       <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px" }}>
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* DEMO CONTROLS                                              */}
-        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* DEMO CONTROLS */}
         {isDemo && (
           <div style={{ padding: "14px 20px", borderRadius: 10, backgroundColor: `${B.purple}05`, border: `1px solid ${B.purple}12`, marginBottom: 28 }}>
             <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, alignItems: mobile ? "stretch" : "center" }}>
@@ -331,10 +362,12 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 1. SCORE + BENCHMARKING                                    */}
-        {/* ═══════════════════════════════════════════════════════════ */}
-        <section style={{ marginBottom: 36 }}>
+        {/* ══════════════════════════════════════════════════════════════ */}
+        {/*  ORIENT — "Where am I?"                                      */}
+        {/* ══════════════════════════════════════════════════════════════ */}
+
+        {/* 1. SCORE + BENCHMARKING */}
+        <section style={{ marginBottom: 28 }}>
           <div style={{ padding: mobile ? "28px 20px" : "32px 36px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface }}>
             <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 20 }}>
               <div>
@@ -353,15 +386,12 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Benchmarking */}
             {benchmarking && (
               <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: `${B.purple}05`, border: `1px solid ${B.purple}08`, marginBottom: 16 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 4 }}>PEER RANKING</div>
-                    <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>
-                      Top {100 - benchmarking.peer_percentile}% of {benchmarking.cluster_label}
-                    </div>
+                    <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>Top {100 - benchmarking.peer_percentile}% of {benchmarking.cluster_label}</div>
                   </div>
                   <div style={{ textAlign: "right" as const }}>
                     <div style={{ fontSize: 14, color: B.muted }}>Cluster avg: <span style={{ fontWeight: 600, color: B.navy }}>{benchmarking.cluster_average_score}</span></div>
@@ -373,7 +403,6 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Quick metrics row */}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" as const }} className="d-metrics">
               {[
                 { label: "Runway", value: continuityMonths < 1 ? "< 1 mo" : `${continuityMonths.toFixed(1)} mo`, color: continuityMonths < 3 ? B.red : B.teal },
@@ -386,20 +415,70 @@ export default function DashboardPage() {
                 </div>
               ))}
             </div>
-
-            {/* Industry context */}
-            <p style={{ fontSize: 13, color: B.taupe, margin: "16px 0 0", lineHeight: 1.5, fontStyle: "italic" }}>{industryInsight}</p>
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 2. YOUR #1 MOVE — with script right there                  */}
-        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* 2. PRESSUREMAP™ — AI-powered income diagnostic */}
+        <section style={{ marginBottom: 36 }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
+              <p style={{ fontSize: 14, color: B.muted, margin: "4px 0 0" }}>Where your income is vulnerable — and what to do about it.</p>
+            </div>
+          </div>
+
+          {/* Root constraint callout */}
+          <div style={{ padding: mobile ? "20px 16px" : "22px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 8 }}>ROOT CONSTRAINT</div>
+            <p style={{ fontSize: 15, color: B.navy, margin: 0, lineHeight: 1.65 }}>{getConstraintNarrative(rootConstraint, baseInputs)}</p>
+            {secondaryConstraint && (
+              <p style={{ fontSize: 13, color: B.muted, margin: "10px 0 0", lineHeight: 1.5, fontStyle: "italic" }}>
+                Secondary constraint: {secondaryConstraint.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+              </p>
+            )}
+          </div>
+
+          {/* Composition bar */}
+          <div style={{ padding: mobile ? "20px 16px" : "22px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 12 }}>
+            <div style={{ display: "flex", height: 40, borderRadius: 8, overflow: "hidden", border: `1px solid ${B.stone}`, marginBottom: 14 }}>
+              {zones.map((z) => z.pct > 0 ? (
+                <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}18`, display: "flex", alignItems: "center", justifyContent: "center", borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }}>
+                  {z.pct >= 12 && <span style={{ fontSize: 14, fontWeight: 600, color: z.color }}>{z.pct}%</span>}
+                </div>
+              ) : null)}
+            </div>
+
+            <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>{industryData.general}</p>
+          </div>
+
+          {/* Zone cards — AI narratives */}
+          {zones.map((zone) => (
+            <div key={zone.id} style={{ padding: mobile ? "18px 16px" : "20px 28px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${zone.color}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: zone.color }}>{zone.label.toUpperCase()}</span>
+                  <span style={{ fontSize: 22, fontWeight: 300, color: zone.color }}>{zone.pct}%</span>
+                </div>
+                {zone.lift > 0 && <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>+{zone.lift} pts if fixed</span>}
+              </div>
+              <p style={{ fontSize: 14, color: B.navy, margin: "0 0 6px", lineHeight: 1.6 }}>{zone.narrative}</p>
+              {zone.peerCompare && (
+                <p style={{ fontSize: 12, color: B.taupe, margin: 0, fontStyle: "italic" }}>{zone.peerCompare}</p>
+              )}
+            </div>
+          ))}
+        </section>
+
+        {/* ══════════════════════════════════════════════════════════════ */}
+        {/*  DECIDE — "What should I do?"                                */}
+        {/* ══════════════════════════════════════════════════════════════ */}
+
+        {/* 3. YOUR #1 PRIORITY + SCRIPT */}
         {topMoves.length > 0 && (() => {
           const move = topMoves[0];
           const script = getScriptForPreset(move.id);
           return (
-            <section style={{ marginBottom: 36 }}>
+            <section style={{ marginBottom: 28 }}>
               <div style={{ border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.purple}`, borderRadius: 14, backgroundColor: B.surface, overflow: "hidden" }}>
                 <div style={{ padding: mobile ? "24px 20px" : "28px 32px" }}>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>YOUR #1 PRIORITY</div>
@@ -414,7 +493,6 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                {/* Script — always visible for #1 priority */}
                 {script && (
                   <div style={{ padding: mobile ? "20px 20px" : "24px 32px", borderTop: `1px solid ${B.stone}`, backgroundColor: `${B.purple}02` }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -435,13 +513,10 @@ export default function DashboardPage() {
           );
         })()}
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 3. 12-WEEK ACTION ROADMAP                                  */}
-        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* 4. 12-WEEK ROADMAP */}
         {roadmapSteps.length > 1 && (
           <section style={{ marginBottom: 36 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>YOUR 12-WEEK ROADMAP</div>
-
             <div style={{ border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface, overflow: "hidden" }}>
               {roadmapSteps.map((step, i) => {
                 const script = getScriptForPreset(step.presetId);
@@ -449,15 +524,12 @@ export default function DashboardPage() {
                 return (
                   <div key={i} style={{ borderBottom: i < roadmapSteps.length - 1 ? `1px solid ${B.stone}` : "none" }}>
                     <div style={{ padding: mobile ? "18px 16px" : "20px 28px", display: "flex", gap: 16, alignItems: "flex-start" }}>
-                      {/* Phase indicator */}
                       <div style={{ flexShrink: 0, textAlign: "center" as const, minWidth: 56 }}>
                         <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `1.5px solid ${i === 0 ? B.purple : B.teal}25`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 4px" }}>
                           <span style={{ fontSize: 12, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>
                         </div>
                         <div style={{ fontSize: 10, fontWeight: 600, color: B.taupe, lineHeight: 1.2 }}>{step.weeks}</div>
                       </div>
-
-                      {/* Action */}
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{step.action}</div>
                         <p style={{ fontSize: 13, color: B.muted, margin: "0 0 8px", lineHeight: 1.5 }}>{step.description}</p>
@@ -472,8 +544,6 @@ export default function DashboardPage() {
                         </div>
                       </div>
                     </div>
-
-                    {/* Expanded script */}
                     {isExpanded && script && (
                       <div style={{ padding: mobile ? "16px 16px 20px" : "16px 28px 24px", backgroundColor: `${B.purple}02` }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
@@ -493,88 +563,15 @@ export default function DashboardPage() {
           </section>
         )}
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 4. QUICK PROGRESS CHECK                                    */}
-        {/* ═══════════════════════════════════════════════════════════ */}
-        <section style={{ marginBottom: 36, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>PROGRESS CHECK</div>
-          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Has anything changed since your assessment?</div>
-          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 18px", lineHeight: 1.5 }}>Toggle what you have done. Your estimated score updates instantly.</p>
+        {/* ══════════════════════════════════════════════════════════════ */}
+        {/*  ACT — "Let me test it"                                      */}
+        {/* ══════════════════════════════════════════════════════════════ */}
 
-          <div style={{ display: "flex", gap: 20, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
-              {quickActions.map((action) => (
-                <button key={action.id} onClick={() => setQuickToggles(prev => ({ ...prev, [action.id]: !prev[action.id] }))}
-                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 10, cursor: "pointer", border: `1px solid ${quickToggles[action.id] ? `${B.teal}30` : B.stone}`, backgroundColor: quickToggles[action.id] ? `${B.teal}05` : "transparent", transition: "all 200ms", textAlign: "left" as const }}>
-                  <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${quickToggles[action.id] ? B.teal : B.faint}`, backgroundColor: quickToggles[action.id] ? B.teal : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 200ms" }}>
-                    {quickToggles[action.id] && <span style={{ color: "#FFF", fontSize: 11, fontWeight: 700 }}>&#10003;</span>}
-                  </div>
-                  <span style={{ fontSize: 14, fontWeight: quickToggles[action.id] ? 600 : 400, color: quickToggles[action.id] ? B.navy : B.muted }}>{action.label}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Estimated score */}
-            <div style={{ flex: 0, minWidth: mobile ? "auto" : 190, textAlign: "center" as const, padding: "28px 20px", borderRadius: 12, backgroundColor: activeQuickCount > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${activeQuickCount > 0 ? `${B.teal}18` : B.stone}`, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              {activeQuickCount > 0 ? (
-                <>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 14 }}>ESTIMATED</div>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 8 }}>
-                    <span style={{ fontSize: 22, fontWeight: 300, color: B.taupe }}>{displayScore}</span>
-                    <span style={{ fontSize: 16, color: B.taupe }}>→</span>
-                    <span style={{ fontSize: 34, fontWeight: 300, color: B.teal }}>{quickResult.overall_score}</span>
-                  </div>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: B.teal }}>+{quickLift}</div>
-                  {quickResult.band !== (band || baseResult.band) && (
-                    <div style={{ fontSize: 13, color: B.purple, fontWeight: 600, marginTop: 8 }}>→ {quickResult.band}</div>
-                  )}
-                  <div style={{ fontSize: 12, color: B.taupe, marginTop: 14 }}>Directional estimate — not a full reassessment.</div>
-                </>
-              ) : (
-                <>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 10 }}>CURRENT</div>
-                  <div style={{ fontSize: 40, fontWeight: 300, color: B.navy, lineHeight: 1 }}>{displayScore}</div>
-                </>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 5. INCOME STRUCTURE                                        */}
-        {/* ═══════════════════════════════════════════════════════════ */}
-        <section style={{ marginBottom: 36, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>INCOME STRUCTURE</div>
-
-          {/* Composition bar */}
-          <div style={{ display: "flex", height: 40, borderRadius: 8, overflow: "hidden", border: `1px solid ${B.stone}`, marginBottom: 14 }}>
-            {zones.map((z) => z.pct > 0 ? (
-              <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}18`, display: "flex", alignItems: "center", justifyContent: "center", borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }}>
-                {z.pct >= 12 && <span style={{ fontSize: 14, fontWeight: 600, color: z.color }}>{z.pct}%</span>}
-              </div>
-            ) : null)}
-          </div>
-
-          {/* Zone legend + lift */}
-          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" as const }}>
-            {zones.map((z) => z.pct > 0 ? (
-              <div key={z.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: z.color }} />
-                <span style={{ fontSize: 14, color: B.navy }}><strong style={{ color: z.color }}>{z.pct}%</strong> {z.label.toLowerCase()}</span>
-                {z.lift > 0 && <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginLeft: 4 }}>+{z.lift} if fixed</span>}
-              </div>
-            ) : null)}
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 6. WHAT-IF EXPLORER                                        */}
-        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* 5. WHAT-IF EXPLORER */}
         <section style={{ marginBottom: 36 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>WHAT-IF EXPLORER</div>
           <p style={{ fontSize: 14, color: B.muted, margin: "0 0 16px", lineHeight: 1.5 }}>Test a change before you make it. Save up to 3 paths to compare side by side.</p>
 
-          {/* Preset cards */}
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 10, marginBottom: 16 }} className="d-3col">
             {SIMULATOR_PRESETS.map((preset) => {
               const result = simulateScore(preset.modify(baseInputs), qualityScore);
@@ -594,7 +591,6 @@ export default function DashboardPage() {
             })}
           </div>
 
-          {/* Active scenario detail + save */}
           {activePreset && activePresetObj && (
             <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap" as const }}>
@@ -614,8 +610,6 @@ export default function DashboardPage() {
                   </button>
                 )}
               </div>
-
-              {/* Timeline */}
               {scenarioTimeline.length > 0 && (
                 <div style={{ marginTop: 20 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 10 }}>PROJECTED TRAJECTORY</div>
@@ -637,7 +631,6 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Saved scenarios comparison */}
           {savedScenarios.length > 0 && (
             <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -665,13 +658,57 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* 7. PROGRESS & READINESS                                    */}
-        {/* ═══════════════════════════════════════════════════════════ */}
-        <section style={{ marginBottom: 36 }}>
-          <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+        {/* ══════════════════════════════════════════════════════════════ */}
+        {/*  MONITOR — "Am I making progress?"                           */}
+        {/* ══════════════════════════════════════════════════════════════ */}
 
-            {/* Reassessment readiness */}
+        {/* 6. PROGRESS CHECK + REASSESSMENT + STRESS + TIMING */}
+        <section style={{ marginBottom: 36 }}>
+          {/* Quick progress check */}
+          <div style={{ padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface, marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 6 }}>PROGRESS CHECK</div>
+            <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Has anything changed since your assessment?</div>
+            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 18px", lineHeight: 1.5 }}>Toggle what you have done. Your estimated score updates instantly.</p>
+
+            <div style={{ display: "flex", gap: 20, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+                {quickActions.map((action) => (
+                  <button key={action.id} onClick={() => setQuickToggles(prev => ({ ...prev, [action.id]: !prev[action.id] }))}
+                    style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 10, cursor: "pointer", border: `1px solid ${quickToggles[action.id] ? `${B.teal}30` : B.stone}`, backgroundColor: quickToggles[action.id] ? `${B.teal}05` : "transparent", transition: "all 200ms", textAlign: "left" as const }}>
+                    <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${quickToggles[action.id] ? B.teal : B.faint}`, backgroundColor: quickToggles[action.id] ? B.teal : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 200ms" }}>
+                      {quickToggles[action.id] && <span style={{ color: "#FFF", fontSize: 11, fontWeight: 700 }}>&#10003;</span>}
+                    </div>
+                    <span style={{ fontSize: 14, fontWeight: quickToggles[action.id] ? 600 : 400, color: quickToggles[action.id] ? B.navy : B.muted }}>{action.label}</span>
+                  </button>
+                ))}
+              </div>
+              <div style={{ flex: 0, minWidth: mobile ? "auto" : 190, textAlign: "center" as const, padding: "28px 20px", borderRadius: 12, backgroundColor: activeQuickCount > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${activeQuickCount > 0 ? `${B.teal}18` : B.stone}`, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                {activeQuickCount > 0 ? (
+                  <>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 14 }}>ESTIMATED</div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 8 }}>
+                      <span style={{ fontSize: 22, fontWeight: 300, color: B.taupe }}>{displayScore}</span>
+                      <span style={{ fontSize: 16, color: B.taupe }}>→</span>
+                      <span style={{ fontSize: 34, fontWeight: 300, color: B.teal }}>{quickResult.overall_score}</span>
+                    </div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: B.teal }}>+{quickLift}</div>
+                    {quickResult.band !== (band || baseResult.band) && (
+                      <div style={{ fontSize: 13, color: B.purple, fontWeight: 600, marginTop: 8 }}>→ {quickResult.band}</div>
+                    )}
+                    <div style={{ fontSize: 12, color: B.taupe, marginTop: 14 }}>Directional estimate — not a full reassessment.</div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 10 }}>CURRENT</div>
+                    <div style={{ fontSize: 40, fontWeight: 300, color: B.navy, lineHeight: 1 }}>{displayScore}</div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Reassessment + stress + timing — two columns */}
+          <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
             <div style={{ flex: 1, padding: mobile ? "24px 20px" : "28px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>REASSESSMENT READINESS</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
@@ -694,9 +731,7 @@ export default function DashboardPage() {
               )}
             </div>
 
-            {/* Right column: history + timing */}
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
-              {/* Score comparison */}
               {assessments.length >= 2 && (() => {
                 const diff = assessments[0].final_score - assessments[1].final_score;
                 return (
@@ -710,7 +745,6 @@ export default function DashboardPage() {
                 );
               })()}
 
-              {/* Stress awareness — compact */}
               <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>STRESS RESILIENCE</div>
                 {[
@@ -724,7 +758,6 @@ export default function DashboardPage() {
                 ))}
               </div>
 
-              {/* Days counter */}
               <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? B.red : B.taupe, marginBottom: 6 }}>
                   {daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}
@@ -738,7 +771,6 @@ export default function DashboardPage() {
                 </p>
               </div>
 
-              {/* Download */}
               {!isDemo && (
                 <button onClick={() => {
                   const stored = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
@@ -755,14 +787,11 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════════════════════ */}
-        {/* FOOTER                                                     */}
-        {/* ═══════════════════════════════════════════════════════════ */}
+        {/* FOOTER */}
         <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
           <p style={{ fontSize: 11, color: B.taupe, margin: 0 }}>RunPayway&#8482; Command Center &mdash; A proprietary financial diagnostic by PeopleStar Enterprises.</p>
         </div>
       </div>
     </div>
   );
-
 }
