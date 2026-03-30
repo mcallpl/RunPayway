@@ -22,7 +22,7 @@ export default function UnlockPage() {
     }
 
     const timer = setTimeout(() => {
-      router.push("/review");
+      router.push("/dashboard");
     }, 3000);
 
     return () => clearTimeout(timer);

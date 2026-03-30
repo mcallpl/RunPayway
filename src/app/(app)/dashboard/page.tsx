@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -229,7 +230,7 @@ function generateScoreImage(score: number, bandLabel: string, name: string, colo
 /* ================================================================== */
 /*  MAIN                                                               */
 /* ================================================================== */
-export default function DashboardPage() {
+function DashboardContent() {
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [assessments, setAssessments] = useState<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc?: string }[]>([]);
   const [mobile, setMobile] = useState(false);
@@ -274,19 +275,37 @@ export default function DashboardPage() {
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
+  /* ── Load data from storage or URL ?code= parameter ── */
+  const searchParams = useSearchParams();
   useEffect(() => {
+    // Check for ?code= in URL (bookmarkable unique link)
+    const urlCode = searchParams.get("code");
+    if (urlCode) {
+      try {
+        const d = JSON.parse(atob(urlCode));
+        if (typeof d.p === "number" && typeof d.c === "number" && typeof d.l === "number") {
+          const nr = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: 0, stability_band: "", assessment_title: d.n || "", classification: "", operating_structure: "", primary_income_model: d.m || "", industry_sector: d.i || "", _v2: { normalized_inputs: { income_persistence_pct: d.p, largest_source_pct: d.c, source_diversity_count: d.s, forward_secured_pct: d.f, income_variability_level: d.v || "moderate", labor_dependence_pct: d.l }, quality: { quality_score: d.q || 5 } } };
+          sessionStorage.setItem("rp_record", JSON.stringify(nr));
+          sessionStorage.setItem("rp_sim_code", urlCode);
+          setRecord(nr);
+          if (!localStorage.getItem("rp_cc_visited")) { setShowWelcome(true); }
+          localStorage.setItem("rp_cc_visited", "1");
+          return; // skip normal loading
+        }
+      } catch { /* invalid code, fall through to normal loading */ }
+    }
+
     let stored = sessionStorage.getItem("rp_record");
     if (!stored) stored = localStorage.getItem("rp_record");
     if (stored) { try { setRecord(JSON.parse(stored)); } catch { /* */ } }
     try { const recs = JSON.parse(localStorage.getItem("rp_records") || "[]"); setAssessments(recs.sort((a: { assessment_date_utc: string; issued_timestamp_utc?: string }, b: { assessment_date_utc: string; issued_timestamp_utc?: string }) => new Date(b.assessment_date_utc || b.issued_timestamp_utc || "").getTime() - new Date(a.assessment_date_utc || a.issued_timestamp_utc || "").getTime())); } catch { /* */ }
     try { setCheckedItems(JSON.parse(localStorage.getItem("rp_reassess_checks") || "[]")); } catch { /* */ }
     try { setCompletedSteps(JSON.parse(localStorage.getItem("rp_roadmap_steps") || "[]")); } catch { /* */ }
-    // Welcome only on first visit WITH data (not repeat visits, not demo-only)
     const hasVisited = localStorage.getItem("rp_cc_visited");
     const hasData = !!stored && stored !== "null";
     if (!hasVisited && hasData) { setShowWelcome(true); }
     localStorage.setItem("rp_cc_visited", "1");
-  }, []);
+  }, [searchParams]);
 
   const handleCodeSubmit = () => {
     setCodeError(null); const trimmed = accessCode.trim();
@@ -498,9 +517,10 @@ export default function DashboardPage() {
                       </div>
                     ))}
                   </div>
-                  <button onClick={handleShare} style={{ marginTop: 12, fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>
-                    Share Your Score ↓
-                  </button>
+                  <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as const }}>
+                    {!isDemo && <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: B.navy, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 16px", textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: 36 }}>View Report</Link>}
+                    <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>Share Score ↓</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -867,4 +887,8 @@ export default function DashboardPage() {
       </div>
     </>
   );
+}
+
+export default function DashboardPage() {
+  return <Suspense><DashboardContent /></Suspense>;
 }

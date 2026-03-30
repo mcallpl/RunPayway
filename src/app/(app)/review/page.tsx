@@ -1168,13 +1168,12 @@ export default function ReviewPage() {
         <PageFooter section="Key Findings &amp; Financial Landscape" page={1} />
     </>,
 
-    // Page 2: Action Plan & Roadmap
+    // Page 2: What To Do Next — brief summary + CTA to Command Center
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Your RunPayway&#8482; Stability Plan</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 6 }}>Take Action Now to Secure Your Future</p>
+        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>What To Do Next</h1>
         <p style={{ ...T.small, color: B.muted, marginBottom: 20, lineHeight: 1.6 }}>
-          Based on your Income Stability Score&#8482; of {score}/100, these are the highest-impact changes you can make to strengthen your financial resilience.
+          Based on your score of {score}/100, these are your highest-impact structural changes. Your Command Center has the full action plan, scripts, and simulator.
         </p>
 
         {/* ── 3 ACTION STEPS ── */}
@@ -1237,156 +1236,45 @@ export default function ReviewPage() {
           );
         })()}
 
-        {/* ── IF YOU DID BOTH / ALL ── */}
+        {/* ── COMBINED IMPACT — brief ── */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-          <div style={{ background: `linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "16px 20px", marginBottom: 20 }}>
+          <div style={{ background: `linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "16px 20px", marginBottom: 24 }}>
             <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 6 }}>Combined Impact</div>
             <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-              By implementing the top changes together, your score would rise to approximately <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
+              Together, these changes would raise your score to approximately <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
             </p>
           </div>
         )}
 
         <SectionDivider />
 
-        {/* ── YOUR PERSONALIZED ROADMAP FOR ACTION ── */}
-        <div style={{ marginBottom: 16 }}>
-          <Overline large>Your Personalized Roadmap for Action</Overline>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 16px", lineHeight: 1.65, fontWeight: 500 }}>
-            Commit to Your Financial Future: Now that you have your personalized plan, it is time to commit to making it happen. Take small steps toward implementing these recommendations, and you will see progress over time.
+        {/* ── COMMAND CENTER CTA ── */}
+        <div
+          onClick={() => router.push("/dashboard")}
+          style={{
+            textAlign: "center", padding: mobile ? "32px 20px" : "40px 32px", borderRadius: 10,
+            background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`,
+            cursor: "pointer", marginBottom: 20,
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: "rgba(31,109,122,0.80)", marginBottom: 12 }}>YOUR NEXT STEP</div>
+          <h2 style={{ fontSize: 22, fontWeight: 600, color: "#F4F1EA", margin: "0 0 8px" }}>Open Your Command Center</h2>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", margin: "0 0 20px", lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
+            Your 12-week roadmap, ready-to-use scripts, income simulator, and progress tracker are waiting. This report is the diagnosis. The Command Center is where you take action.
           </p>
-
-          {v2ExecutionRoadmap && v2ExecutionRoadmap.length > 0 ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {v2ExecutionRoadmap.slice(0, 4).map((w, i) => (
-                <div key={i} style={{ ...cardStyle, padding: "16px 20px", borderLeft: `3px solid ${i === 0 ? B.purple : i === 1 ? B.teal : i === 2 ? B.navy : B.bandDeveloping}` }}>
-                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                    <span style={{ ...T.micro, color: i === 0 ? B.purple : i === 1 ? B.teal : i === 2 ? B.navy : B.bandDeveloping, minWidth: mobile ? 60 : 70, flexShrink: 0 }}>{w.week}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{w.action}</div>
-                      <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{w.detail}</p>
-                      {w.success_metric && <p style={{ ...T.meta, color: B.teal, margin: "6px 0 0", fontWeight: 600 }}>Goal: {w.success_metric}</p>}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {[
-                { week: "Week 1", title: "Start with Predictable Revenue", detail: "Look at your current clients and identify who would benefit from an ongoing arrangement. Offer them long-term retainers or monthly service packages.", goal: "Secure 1 retainer or recurring agreement by the end of the week." },
-                { week: "Week 2–3", title: "Transition to Recurring Revenue", detail: "Convert at least 15% of your services to subscription-based or recurring models. Start with services you know clients will need continuously.", goal: "Secure 1 recurring client or subscription package." },
-                { week: "Week 4", title: "Build Backup Revenue", detail: "Begin creating passive or semi-passive income sources like online courses, digital products, templates, or content that can be licensed.", goal: "Launch 1 passive income project or side revenue stream." },
-              ].map((w, i) => (
-                <div key={i} style={{ ...cardStyle, padding: "16px 20px", borderLeft: `3px solid ${i === 0 ? B.purple : i === 1 ? B.teal : B.navy}` }}>
-                  <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                    <span style={{ ...T.micro, color: i === 0 ? B.purple : i === 1 ? B.teal : B.navy, minWidth: mobile ? 60 : 70, flexShrink: 0 }}>{w.week}</span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{w.title}</div>
-                      <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{w.detail}</p>
-                      <p style={{ ...T.meta, color: B.teal, margin: "6px 0 0", fontWeight: 600 }}>Goal: {w.goal}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* ── WHAT TO AVOID ── */}
-        {((v2AvoidActions && v2AvoidActions.length > 0) || (olAvoid && olAvoid.length > 0)) && (
-          <div style={{ ...cardStyle, marginBottom: 14, borderLeft: `3px solid ${B.bandLimited}` }}>
-            <div style={{ ...T.overline, color: B.bandLimited, marginBottom: 8 }}>WHAT TO AVOID</div>
-            {(v2AvoidActions ?? []).slice(0, 2).map((a) => (
-              <div key={a.action_id} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>&mdash; <span style={{ fontWeight: 500 }}>{a.label}:</span> {a.reason}</div>
-            ))}
-            {(olAvoid ?? []).slice(0, 2).map((text) => (
-              <div key={text} style={{ ...T.small, color: B.muted, marginBottom: 4 }}>&mdash; {text}</div>
-            ))}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", color: "#F4F1EA", fontSize: 15, fontWeight: 600 }}>
+            Go to Command Center &rarr;
           </div>
-        )}
-
-        <SectionDivider />
-
-        {/* ── RESILIENCE SNAPSHOT ── */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 16 }}>
-          <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandLimited}` }}>
-            <Overline>IF YOUR BIGGEST SOURCE GOES AWAY</Overline>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-              <span style={{ ...T.cardHero, color: B.navy }}>{record.final_score}</span>
-              <span style={{ ...T.sectionLabel, color: B.taupe }}>&rarr;</span>
-              <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
-            </div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              A drop of {record.risk_scenario_drop} points. {record.risk_scenario_drop > 15 ? "This is a critical vulnerability." : "Manageable, but worth addressing."}
-            </p>
-          </div>
-          <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandDeveloping}` }}>
-            <Overline>IF YOU STOP WORKING ENTIRELY</Overline>
-            <div style={{ ...T.cardHero, color: B.navy, marginBottom: 6 }}>{continuityDisplay}</div>
-            <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              {Number(String(continuityDisplay).replace(/[^0-9.]/g, "")) < 2 ? "Your income has almost no runway without active work." : "You have some buffer, but building passive income extends this significantly."}
-            </p>
-          </div>
-        </div>
-
-        {/* ── FRAGILITY ── */}
-        {v2Fragility && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>INCOME RESILIENCE</div>
-            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16 }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
-                  {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
-                </div>
-                <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-                  {v2Explainability?.fragility_explanation || ({
-                    brittle: "A single disruption could cause your score to collapse.",
-                    thin: "You can absorb a minor hit, but not two in a row.",
-                    uneven: "Some parts of your income are protected, others are fully exposed.",
-                    supported: "Your income can absorb most common disruptions.",
-                    resilient: "Your income can absorb a major hit and keep going.",
-                  })[v2Fragility.fragility_class] || ""}
-                </p>
-              </div>
-              <div style={{ flex: mobile ? undefined : 1 }}>
-                <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Primary Vulnerability</div>
-                <p style={{ ...T.small, color: B.navy, margin: 0 }}>
-                  {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Structural gaps that limit resilience."}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── WHEN TO RETAKE ── */}
-        <div style={{ ...cardStyle, marginBottom: 14 }}>
-          <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-            <div style={{ ...T.cardHeading, color: B.navy }}>{reassessDate}</div>
-            <div style={{ ...T.small, color: B.purple, fontWeight: 600 }}>{reassessDaysLeft} days from now</div>
-          </div>
-          <p style={{ ...T.meta, color: B.muted, margin: 0, lineHeight: 1.5 }}>Retake after real structural change — a new retainer signed, a source added, a dependency reduced. Typically {tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months.</p>
-          {olTriggers && olTriggers.length > 0 && (
-            <div style={{ marginTop: 8 }}>
-              {olTriggers.slice(0, 3).map((t) => (
-                <div key={t.trigger_id} style={{ ...T.meta, color: B.muted, display: "flex", gap: 6, marginBottom: 2 }}>
-                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.purple, marginTop: 6, flexShrink: 0 }} />
-                  {t.display_text}
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* ── METHODOLOGY ── */}
-        <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${B.stone}` }}>
+        <div style={{ paddingTop: 14, borderTop: `1px solid ${B.stone}` }}>
           <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
-            This is a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. This is a present-state structural assessment, not financial advice.
+            Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. Not financial advice.
           </p>
         </div>
 
-        <PageFooter section="RunPayway&#8482; Stability Plan" page={2} />
+        <PageFooter section="What To Do Next" page={2} />
     </>,
 
   ];

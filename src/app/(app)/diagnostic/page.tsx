@@ -643,7 +643,7 @@ export default function DiagnosticPage() {
       setTimeout(async () => {
         setLoadingStep(PROCESSING_STEPS.length);
         await new Promise(resolve => setTimeout(resolve, 800));
-        router.push(planKey === "free" ? "/free-score" : "/review");
+        router.push(planKey === "free" ? "/free-score" : "/dashboard");
       }, 5000);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
