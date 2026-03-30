@@ -1083,23 +1083,21 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
 
-        {/* ── SCORE HEADER ── */}
-        <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <div style={{ ...T.overline, color: B.teal, marginBottom: 12, letterSpacing: "0.14em" }}>RUNPAYWAY&#8482; INCOME STABILITY SCORE&#8482;</div>
-          <h1 style={{ ...T.pageTitle, marginBottom: 6 }}>{record.assessment_title || "Assessment"}</h1>
-          <div style={{ ...T.meta, color: B.taupe, marginBottom: 20 }}>
-            {issuedDate} &middot; Model RP-2.0
-          </div>
+        {/* ── SCORE HEADER — enterprise compact ── */}
+        <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8, letterSpacing: "0.14em", fontSize: 9 }}>RUNPAYWAY&#8482; INCOME STABILITY SCORE&#8482;</div>
+          <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em", margin: "0 0 2px" }}>{record.assessment_title || "Assessment"}</h1>
+          <div style={{ fontSize: 11, color: B.taupe, marginBottom: 14 }}>{issuedDate} &middot; Model RP-2.0</div>
 
-          <div style={{ marginBottom: 8 }}>
-            <span style={{ ...T.score, color: B.navy }}>{animatedScore}</span>
-            <span style={{ fontSize: 24, fontWeight: 400, color: B.taupe }}>/100</span>
+          <div style={{ marginBottom: 6 }}>
+            <span style={{ fontSize: 52, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{animatedScore}</span>
+            <span style={{ fontSize: 18, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-            <div style={{ width: 10, height: 10, borderRadius: 2, backgroundColor: bandColor }} />
-            <div style={{ ...T.classification, color: bandColor }}>Stability Level: {record.stability_band}</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
+            <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {nextBandName && <div style={{ ...T.body, color: B.teal, fontWeight: 600, marginTop: 6 }}>Improvement Potential: {distanceToNext} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 4 }}>{distanceToNext} points to {nextBandName} Stability</div>}
         </div>
 
         {/* ── KEY TAKEAWAY ── */}
@@ -1164,31 +1162,6 @@ export default function ReviewPage() {
                 ? `Without enough predictable income sources like retainers or subscriptions, you are still exposed to uncertain income and could be caught off-guard if clients stop paying or projects end. Your biggest vulnerability: ${dominantConstraintPlain[dominantConstraint] || "structural gaps that limit your score"}.`
                 : `Your income structure has significant gaps. ${dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Key structural weaknesses are limiting your financial security."} Without changes, you are exposed to disruptions that could create real financial pressure.`}
             </p>
-          </div>
-        </div>
-
-        {/* ── STABILITY SUITE CTA — ink-light ── */}
-        <div
-          onClick={() => router.push("/pressuremap")}
-          style={{
-            marginTop: 18, borderRadius: 8, cursor: "pointer",
-            border: `1px solid rgba(14,26,43,0.10)`,
-            borderLeft: `3px solid ${B.purple}`,
-            padding: mobile ? "16px 16px" : "18px 22px",
-            transition: "box-shadow 250ms ease",
-          }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(75,63,174,0.08)"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <div style={{ ...T.overline, color: B.purple, marginBottom: 4, fontSize: 9 }}>RUNPAYWAY&#8482; DASHBOARD</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 3 }}>See exactly where your income is vulnerable</div>
-              <p style={{ fontSize: 11, color: B.muted, margin: 0, lineHeight: 1.5 }}>
-                Income X-Ray &middot; Scenario Lab &middot; Action Plan &mdash; runpayway.com/dashboard
-              </p>
-            </div>
-            <div style={{ fontSize: 18, color: B.purple, flexShrink: 0, marginLeft: 16 }}>&rarr;</div>
           </div>
         </div>
 
