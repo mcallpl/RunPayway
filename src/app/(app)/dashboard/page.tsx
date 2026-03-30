@@ -74,7 +74,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 function PhaseSep({ label, color, tint, children }: { label: string; color: string; tint?: string; children?: React.ReactNode }) {
   return (
-    <div className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2 }}>
+    <div className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "48px 0 24px" }}>
         <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
@@ -339,7 +339,7 @@ export default function DashboardPage() {
         <SuiteHeader current="dashboard" />
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
-        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px" }}>
+        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px", overflow: "hidden" }}>
 
           {/* Personalized header */}
           {!isDemo && custName && (
@@ -358,10 +358,10 @@ export default function DashboardPage() {
                 Select a stability band to see how the Command Center works for different income structures. Have your report? Paste your access code to load your real data.
               </p>
               <div style={{ fontSize: 13, fontWeight: 600, color: B.taupe, marginBottom: 8 }}>Select a sample profile:</div>
-              <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" as const }}>
+              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 24 }}>
                 {SAMPLE_PROFILES.map((p, i) => (
                   <button key={p.id} onClick={() => { setDemoProfile(i); setActivePreset(null); setSavedScenarios([]); setQuickToggles({}); }}
-                    style={{ padding: "12px 24px", borderRadius: 10, fontSize: 15, fontWeight: demoProfile === i ? 600 : 400, color: demoProfile === i ? "#FFF" : B.navy, backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent", border: `2px solid ${demoProfile === i ? "transparent" : B.stone}`, cursor: "pointer", transition: "all 200ms", minHeight: 48, flex: mobile ? "1 1 45%" : "none" }}
+                    style={{ padding: "12px 16px", borderRadius: 10, fontSize: 15, fontWeight: demoProfile === i ? 600 : 400, color: demoProfile === i ? "#FFF" : B.navy, backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent", border: `2px solid ${demoProfile === i ? "transparent" : B.stone}`, cursor: "pointer", transition: "all 200ms", minHeight: 48 }}
                   >{p.label}</button>
                 ))}
               </div>
