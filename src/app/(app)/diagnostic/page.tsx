@@ -153,6 +153,19 @@ const PROCESSING_STEPS = [
   "Compiling assessment record",
 ];
 
+const LOADING_QUOTES = [
+  { text: "Income stability is not about how much you earn. It is about how your income is structured.", attr: "RunPayway" },
+  { text: "The professionals who weather disruptions are the ones who built recurring revenue before they needed it.", attr: "RunPayway" },
+  { text: "Your income has an architecture. Most people have never seen the blueprint.", attr: "RunPayway" },
+  { text: "One client at 60% of revenue is not a business relationship. It is a structural dependency.", attr: "RunPayway" },
+  { text: "The difference between a $50K year and a $50K year is whether you knew it was coming.", attr: "RunPayway" },
+  { text: "Stability is not the absence of risk. It is the presence of structure.", attr: "RunPayway" },
+  { text: "Every income has a fragility score. Most people discover theirs after a disruption.", attr: "RunPayway" },
+  { text: "The goal is not to eliminate active income. It is to ensure it is not the only kind you have.", attr: "RunPayway" },
+  { text: "Forward visibility is the single most undervalued metric in personal finance.", attr: "RunPayway" },
+  { text: "Your competitors are not other businesses. Your competitor is structural vulnerability.", attr: "RunPayway" },
+];
+
 /* ------------------------------------------------------------------ */
 /*  Storage                                                            */
 /* ------------------------------------------------------------------ */
@@ -195,6 +208,8 @@ export default function DiagnosticPage() {
   const [assessmentTitle, setAssessmentTitle] = useState("");
   const [elapsed, setElapsed] = useState(0);
   const [entered, setEntered] = useState(false);
+  const [quoteIdx, setQuoteIdx] = useState(0);
+  const [quoteFade, setQuoteFade] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [reviewExiting, setReviewExiting] = useState(false);
 
@@ -272,6 +287,20 @@ export default function DiagnosticPage() {
     if (showLoading) return;
     const timer = setInterval(() => setElapsed((s) => s + 1), 1000);
     return () => clearInterval(timer);
+  }, [showLoading]);
+
+  // Quote rotation
+  useEffect(() => {
+    if (!showLoading) return;
+    setQuoteIdx(Math.floor(Math.random() * LOADING_QUOTES.length));
+    const interval = setInterval(() => {
+      setQuoteFade(false);
+      setTimeout(() => {
+        setQuoteIdx(prev => (prev + 1) % LOADING_QUOTES.length);
+        setQuoteFade(true);
+      }, 400);
+    }, 4000);
+    return () => clearInterval(interval);
   }, [showLoading]);
 
   // Processing step animation
@@ -711,6 +740,18 @@ export default function DiagnosticPage() {
                 animation: "loadProgress 3.4s ease-in-out forwards",
               }}
             />
+          </div>
+
+          {/* Rotating branded quotes */}
+          <div style={{ marginTop: 40, maxWidth: 380, margin: "40px auto 0", textAlign: "center", minHeight: 80 }}>
+            <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 400ms ease" }}>
+              <p style={{ fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.65)", lineHeight: 1.65, margin: "0 0 8px", fontStyle: "italic" }}>
+                &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
+              </p>
+              <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", color: "rgba(31,109,122,0.70)" }}>
+                {LOADING_QUOTES[quoteIdx]?.attr}
+              </span>
+            </div>
           </div>
 
           <style>{`
