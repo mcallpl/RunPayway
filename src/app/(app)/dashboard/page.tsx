@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -529,9 +528,7 @@ export default function DashboardPage() {
                   {quickResult.band !== (band || baseResult.band) && (
                     <div style={{ fontSize: 13, color: B.purple, fontWeight: 600, marginTop: 8 }}>→ {quickResult.band}</div>
                   )}
-                  <Link href="/pricing" style={{ fontSize: 12, fontWeight: 600, color: B.purple, textDecoration: "none", marginTop: 14 }}>
-                    Verify with full reassessment →
-                  </Link>
+                  <div style={{ fontSize: 12, color: B.taupe, marginTop: 14 }}>Directional estimate — not a full reassessment.</div>
                 </>
               ) : (
                 <>
@@ -690,8 +687,7 @@ export default function DashboardPage() {
               </div>
               {checkedItems.length >= 2 ? (
                 <div style={{ padding: "14px 16px", borderRadius: 8, backgroundColor: `${B.teal}05`, border: `1px solid ${B.teal}12` }}>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>You may be ready to reassess. </span>
-                  <Link href="/pricing" style={{ fontSize: 14, fontWeight: 600, color: B.purple, textDecoration: "none" }}>Get a new assessment →</Link>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>You may be ready to reassess.</span>
                 </div>
               ) : (
                 <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>{returnTrigger}</p>

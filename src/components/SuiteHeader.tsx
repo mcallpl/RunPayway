@@ -54,12 +54,6 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
           <Link href="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none", borderBottom: `2px solid ${C.purple}`, paddingBottom: 2 }}>
             Dashboard
           </Link>
-          <Link href="/review" style={{ fontSize: 14, fontWeight: 500, color: C.muted, textDecoration: "none" }}>
-            Report
-          </Link>
-          <Link href="/pricing" style={{ fontSize: 14, fontWeight: 500, color: C.muted, textDecoration: "none" }}>
-            Pricing
-          </Link>
           <button
             onClick={() => { const e = new KeyboardEvent("keydown", { key: "k", metaKey: true }); window.dispatchEvent(e); }}
             style={{ padding: "4px 10px", borderRadius: 5, border: `1px solid ${C.border}`, background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.muted }}
