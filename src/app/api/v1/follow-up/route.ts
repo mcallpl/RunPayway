@@ -24,7 +24,7 @@ interface FollowUpRequest {
 }
 
 const SUBJECTS: Record<string, string> = {
-  day7: "Have you explored your Dashboard yet?",
+  day7: "Have you explored your Command Center yet?",
   day30: "30 days since your assessment — here's what to focus on",
   day90: "It's time to see how much you've improved",
 };
@@ -49,7 +49,7 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
             <div style="font-size: 15px; font-weight: 600; color: #0E1A2B;">${topAction || "Open your PressureMap to see where your income is most vulnerable"}</div>
             ${topActionLift ? `<div style="font-size: 13px; color: #1F6D7A; font-weight: 500; margin-top: 4px;">Potential impact: +${topActionLift} points</div>` : ""}
           </div>
-          <a href="https://peoplestar.com/RunPayway/dashboard" style="display: inline-block; padding: 14px 28px; background: #0E1A2B; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Dashboard &rarr;</a>
+          <a href="https://peoplestar.com/RunPayway/dashboard" style="display: inline-block; padding: 14px 28px; background: #0E1A2B; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Command Center &rarr;</a>
           <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px; line-height: 1.5;">RunPayway™ — A proprietary financial diagnostic tool by PeopleStar Enterprises.</p>
         </div>`,
     };

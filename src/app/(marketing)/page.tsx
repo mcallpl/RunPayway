@@ -148,7 +148,7 @@ function StickyNav() {
         {!m && (
           <div style={{ display: "flex", alignItems: "center", gap: sp(3.5) }}>
             {[
-              { label: "Dashboard", href: "/dashboard" },
+              { label: "Command Center", href: "/dashboard" },
               { label: "Sample Report", href: "/sample-report" },
               { label: "Pricing", href: "/pricing" },
             ].map(link => (

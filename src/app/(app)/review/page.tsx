@@ -1498,7 +1498,7 @@ export default function ReviewPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
               "Commit to the steps in this report today.",
-              "Track your progress using your RunPayway\u2122 Dashboard.",
+              "Track your progress using your RunPayway\u2122 Command Center.",
               `Reassess in ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months to see how much your score has improved.`,
             ].map((text) => (
               <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -1631,7 +1631,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <a href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Dashboard</a>
+            <a href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Command Center</a>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}

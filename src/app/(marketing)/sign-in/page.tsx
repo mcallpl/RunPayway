@@ -189,10 +189,10 @@ export default function SignInPage() {
                 </div>
               </>
             ) : (
-              /* ─── Dashboard ─── */
+              /* ─── Command Center ─── */
               <>
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Monitoring Dashboard</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Command Center</div>
                   <h2 style={{ fontSize: m ? 28 : 36, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
                     Welcome back.
                   </h2>

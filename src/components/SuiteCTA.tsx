@@ -33,7 +33,7 @@ const ANGLES: Record<string, { label: string; headline: string; body: string; ct
   dashboard: {
     label: "PROGRESS REQUIRES A STARTING POINT",
     headline: "You Cannot Track What You Have Not Measured.",
-    body: "The Dashboard is built to show your improvement over time — but it starts with your first assessment. Get your report to establish your baseline score, unlock your action plan, and begin tracking real progress.",
+    body: "The Command Center is built to show your improvement over time — but it starts with your first assessment. Get your report to establish your baseline score, unlock your action plan, and begin tracking real progress.",
     cta: "Establish Your Baseline — From $69",
   },
 };
