@@ -16,11 +16,11 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   white: "#FFFFFF",
-  bg: "#FAFAFA",
-  surface: "#FFFFFF",
-  stone: "rgba(14,26,43,0.08)",
+  bg: "#F7F5F0",
+  surface: "#FEFEFE",
+  stone: "rgba(14,26,43,0.06)",
   taupe: "rgba(14,26,43,0.36)",
-  muted: "rgba(14,26,43,0.52)",
+  muted: "rgba(14,26,43,0.58)",
   faint: "rgba(14,26,43,0.20)",
   red: "#C53030",
   amber: "#B7791F",
@@ -63,13 +63,15 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 /*  PHASE SEPARATOR — branded left edge mark                           */
 /* ================================================================== */
-function PhaseSep({ label, color }: { label: string; color: string }) {
+function PhaseSep({ label, color, tint, children }: { label: string; color: string; tint?: string; children?: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "44px 0 22px" }}>
-      {/* Left corner edge mark */}
-      <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
-      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
-      <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
+    <div className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 28px", backgroundColor: tint || "transparent", borderRadius: 2 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "44px 0 22px" }}>
+        <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
+        <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
+      </div>
+      {children}
     </div>
   );
 }
@@ -360,6 +362,7 @@ export default function DashboardPage() {
           .d-metrics{flex-direction:column!important;}
           .d-compare{flex-direction:column!important;}
           .d-score-hero{flex-direction:column!important;align-items:center!important;text-align:center!important;}
+          .d-phase{margin:0 -16px!important;padding:0 16px 28px!important;}
           .d-score-ring{width:130px!important;height:130px!important;}
         }
         @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -432,7 +435,7 @@ export default function DashboardPage() {
         )}
 
         {/* ══════════════ ORIENT — "Where am I?" ══════════════ */}
-        <PhaseSep label="Your Diagnosis" color={B.purple} />
+        <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)">
 
         {/* 1. SCORE + BENCHMARKING */}
         <section style={{ marginBottom: 28 }}>
@@ -514,8 +517,10 @@ export default function DashboardPage() {
           ))}
         </section>
 
+        </PhaseSep>
+
         {/* ══════════════ DECIDE — "What should I do?" ══════════════ */}
-        <PhaseSep label="Your Plan" color={B.navy} />
+        <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)">
 
         {/* 3. #1 PRIORITY + SCRIPT */}
         {topMoves.length > 0 && (() => {
@@ -594,8 +599,10 @@ export default function DashboardPage() {
           </section>
         )}
 
+        </PhaseSep>
+
         {/* ══════════════ ACT — "Let me test it" ══════════════ */}
-        <PhaseSep label="Test Your Options" color={B.teal} />
+        <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)">
 
         {/* 5. WHAT-IF EXPLORER */}
         <section style={{ marginBottom: 28 }}>
@@ -678,8 +685,10 @@ export default function DashboardPage() {
           )}
         </section>
 
+        </PhaseSep>
+
         {/* ══════════════ MONITOR — "Am I progressing?" ══════════════ */}
-        <PhaseSep label="Track Progress" color={B.taupe} />
+        <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)">
 
         {/* 6. PROGRESS CHECK */}
         <section style={{ marginBottom: 16, padding: mobile ? "24px 18px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: B.surface }}>
@@ -774,6 +783,8 @@ export default function DashboardPage() {
             )}
           </div>
         </div>
+
+        </PhaseSep>
 
         {/* FOOTER */}
         <div style={{ paddingTop: 16, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
