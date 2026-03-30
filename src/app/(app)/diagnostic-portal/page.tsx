@@ -443,7 +443,7 @@ export default function InitializationPage() {
                 background: "#0E1A2B",
                 color: "#F4F1EA", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
                 border: "none", cursor: "pointer",
-                boxShadow: "0 8px 28px rgba(14,26,43,0.15)",
+                boxShadow: "none",
                 transition: "transform 200ms ease, box-shadow 200ms ease",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.25)"; }}
@@ -463,11 +463,11 @@ export default function InitializationPage() {
           {/* Logo at bottom center */}
           <div style={{ paddingBottom: 40, paddingTop: 32 }}>
             <Image
-              src={logoWhite}
+              src={logoBlue}
               alt="RunPayway"
               width={100}
               height={12}
-              style={{ height: "auto", opacity: 0.3 }}
+              style={{ height: "auto", opacity: 0.25 }}
             />
           </div>
         </div>
@@ -491,7 +491,7 @@ export default function InitializationPage() {
         <div style={{
           position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)",
           width: 600, height: 600, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, rgba(75,63,174,0) 70%)",
+          background: "radial-gradient(circle, rgba(75,63,174,0.03) 0%, transparent 70%)",
           pointerEvents: "none",
         }} />
 
@@ -515,10 +515,10 @@ export default function InitializationPage() {
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <div style={{
               display: "inline-block", padding: "6px 16px", borderRadius: 20,
-              border: "1px solid rgba(75,63,174,0.30)",
-              background: "rgba(75,63,174,0.08)",
+              border: "1px solid rgba(14,26,43,0.08)",
+              background: "rgba(14,26,43,0.03)",
             }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.14em", textTransform: "uppercase" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.10em", textTransform: "uppercase" }}>
                 Income Stability Score&#8482; &middot; Model RP-2.0
               </span>
             </div>
@@ -550,24 +550,15 @@ export default function InitializationPage() {
               onBlur={blurHandler}
               style={{
                 width: "100%", height: 56, padding: "0 20px",
-                borderRadius: 12, border: "1px solid rgba(75,63,174,0.30)",
-                background: "rgba(14,26,43,0.03)", color: "#0E1A2B",
+                borderRadius: 10, border: "1px solid rgba(14,26,43,0.12)",
+                background: "#FEFEFE", color: "#0E1A2B",
                 fontSize: 17, fontWeight: 400, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
-                transition: "border-color 200ms ease, box-shadow 200ms ease",
+                transition: "border-color 200ms ease",
                 textAlign: "center",
               }}
               onKeyDown={(e) => { if (e.key === "Enter" && canContinueStep0) goToStep(1); }}
             />
-            {/* Glow ring */}
-            {form.assessment_title.trim() && (
-              <div style={{
-                position: "absolute", inset: -2, borderRadius: 14,
-                border: "1px solid rgba(75,63,174,0.40)",
-                boxShadow: "0 0 20px rgba(75,63,174,0.15)",
-                pointerEvents: "none",
-              }} />
-            )}
           </div>
 
           {/* Email field */}
@@ -581,8 +572,8 @@ export default function InitializationPage() {
               onBlur={blurHandler}
               style={{
                 width: "100%", height: 52, padding: "0 20px",
-                borderRadius: 12, border: "1px solid rgba(255,255,255,0.10)",
-                background: "rgba(14,26,43,0.03)", color: "#0E1A2B",
+                borderRadius: 10, border: "1px solid rgba(14,26,43,0.08)",
+                background: "#FEFEFE", color: "#0E1A2B",
                 fontSize: 15, fontWeight: 400, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
                 transition: "border-color 200ms ease",
@@ -598,15 +589,12 @@ export default function InitializationPage() {
             disabled={!canContinueStep0}
             onClick={() => goToStep(1)}
             style={{
-              width: "100%", height: 52, borderRadius: 12, border: "none",
-              background: canContinueStep0
-                ? "linear-gradient(135deg, #4B3FAE 0%, #3d35a0 50%, #1F6D7A 100%)"
-                : "rgba(255,255,255,0.06)",
-              color: canContinueStep0 ? "#FFFFFF" : "rgba(255,255,255,0.25)",
+              width: "100%", height: 52, borderRadius: 10, border: "none",
+              background: canContinueStep0 ? "#0E1A2B" : "rgba(14,26,43,0.06)",
+              color: canContinueStep0 ? "#F4F1EA" : "rgba(14,26,43,0.25)",
               fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
               cursor: canContinueStep0 ? "pointer" : "not-allowed",
-              boxShadow: canContinueStep0 ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
-              transition: "all 300ms ease",
+              transition: "all 200ms ease",
             }}
           >
             <span className="tick tick-white" />
@@ -618,15 +606,16 @@ export default function InitializationPage() {
             display: "flex", justifyContent: "center", gap: 24, marginTop: 40,
           }}>
             {["Confidential", "Under 2 minutes", "No financial data required"].map((t) => (
-              <span key={t} style={{ fontSize: 11, color: "rgba(14,26,43,0.20)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
 
         {/* CSS animations */}
         <style>{`
-          input::placeholder { color: rgba(14,26,43,0.20); }
-          input:focus { border-color: rgba(75,63,174,0.60) !important; box-shadow: 0 0 24px rgba(75,63,174,0.12) !important; }
+          input::placeholder { color: rgba(14,26,43,0.30); }
+          select::placeholder { color: rgba(14,26,43,0.30); }
+          input:focus, select:focus { border-color: rgba(14,26,43,0.25) !important; }
         `}</style>
       </div>
     );
