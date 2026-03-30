@@ -223,19 +223,27 @@ const cardStyle: React.CSSProperties = {
 const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 
 // ── Typography: premium scale — lighter weights, bigger contrast ──
+/*  REPORT TYPE SCALE — 6 levels (matches Command Center)
+    Display: 48px — score on cover
+    H1: 24px — page titles
+    H2: 17px — section headings, key takeaway
+    Body: 14px — primary readable text
+    Small: 12px — secondary text, examples, metadata
+    Label: 11px — uppercase overlines, tags
+*/
 const T = {
-  score: { fontSize: 68, fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" },
-  pageTitle: { fontSize: 28, fontWeight: 600, lineHeight: 1.15, color: B.navy, letterSpacing: "-0.02em" },
-  sectionTitle: { fontSize: 18, fontWeight: 600, lineHeight: 1.3, color: B.navy, letterSpacing: "-0.01em" },
-  classification: { fontSize: 15, fontWeight: 500, lineHeight: 1.3 },
-  overline: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.14em", textTransform: "uppercase" as const },
-  sectionLabel: { fontSize: 13, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.01em" },
-  cardHeading: { fontSize: 15, fontWeight: 600, lineHeight: 1.35 },
+  score: { fontSize: 48, fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" },
+  pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.15, color: B.navy, letterSpacing: "-0.02em" },
+  sectionTitle: { fontSize: 17, fontWeight: 600, lineHeight: 1.3, color: B.navy, letterSpacing: "-0.01em" },
+  classification: { fontSize: 14, fontWeight: 500, lineHeight: 1.3 },
+  overline: { fontSize: 11, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.01em" },
+  cardHeading: { fontSize: 14, fontWeight: 600, lineHeight: 1.35 },
   cardHero: { fontSize: 24, fontWeight: 300, lineHeight: 1.1, letterSpacing: "-0.02em" },
-  body: { fontSize: 13, fontWeight: 400, lineHeight: 1.75 },
+  body: { fontSize: 14, fontWeight: 400, lineHeight: 1.75 },
   small: { fontSize: 12, fontWeight: 400, lineHeight: 1.65 },
   meta: { fontSize: 11, fontWeight: 400, lineHeight: 1.5 },
-  micro: { fontSize: 10, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.04em" },
+  micro: { fontSize: 11, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.04em" },
 };
 
 // ── PDF page dimensions ──
@@ -260,9 +268,9 @@ const PDF = {
 
 function ReportHeader() {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 14, borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
-      <Image src={logoBlue} alt="RunPayway&#8482;" width={100} height={12} style={{ height: "auto", opacity: 0.85 }} />
-      <div style={{ fontSize: 9.5, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 16, borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
+      <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
+      <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
     </div>
   );
 }
@@ -281,9 +289,9 @@ function PageFooter({ section, page }: { section: string; page: number }) {
   return (
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.05)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 9, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
-        <span style={{ fontSize: 9, fontWeight: 500, color: "rgba(14,26,43,0.28)" }}>Page {page} of 4</span>
-        <span style={{ fontSize: 9, fontWeight: 400, color: "rgba(14,26,43,0.28)" }}>support@runpayway.com</span>
+        <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
+        <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)" }}>Page {page} of 2</span>
+        <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)" }}>support@runpayway.com</span>
       </div>
     </div>
   );
@@ -1007,7 +1015,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Key Findings", "Action Plan", "Stress Test", "Next Steps"];
+  const pageNames = ["Cover", "Key Findings", "What To Do Next"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1023,21 +1031,21 @@ export default function ReviewPage() {
           <div style={{ width: mobile ? 100 : 120, height: 1, backgroundColor: "rgba(14,26,43,0.10)", marginBottom: mobile ? 28 : 44 }} />
 
           {/* Title block */}
-          <div style={{ fontSize: mobile ? 26 : 36, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 6 }}>Income Stability Report</div>
-          <div style={{ fontSize: mobile ? 13 : 15, fontWeight: 500, color: B.teal, letterSpacing: "0.02em", marginBottom: mobile ? 16 : 24 }}>Your Path to Financial Resilience</div>
+          <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 8 }}>Income Stability Report</div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: B.teal, letterSpacing: "0.04em", marginBottom: mobile ? 16 : 32 }}>STRUCTURAL ASSESSMENT &middot; CONFIDENTIAL</div>
 
           {/* Name + date */}
-          <div style={{ fontSize: mobile ? 17 : 20, fontWeight: 500, color: B.navy, marginBottom: 4, letterSpacing: "-0.01em" }}>{record.assessment_title}</div>
-          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.32)", marginBottom: mobile ? 20 : 32 }}>{formalDate}</div>
+          <div style={{ fontSize: mobile ? 17 : 22, fontWeight: 500, color: B.navy, marginBottom: 4, letterSpacing: "-0.01em" }}>{record.assessment_title}</div>
+          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.32)", marginBottom: mobile ? 24 : 32, letterSpacing: "0.02em" }}>{formalDate}</div>
 
           {/* Score — elegant light weight */}
-          <div style={{ marginBottom: 10 }}>
-            <span style={{ ...T.score, fontSize: mobile ? 60 : 72, color: B.navy }}>{record.final_score}</span>
-            <span style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: "rgba(14,26,43,0.25)", marginLeft: 2 }}>/100</span>
+          <div style={{ marginBottom: 8 }}>
+            <span style={{ fontSize: mobile ? 56 : 64, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{record.final_score}</span>
+            <span style={{ fontSize: mobile ? 17 : 20, fontWeight: 300, color: "rgba(14,26,43,0.25)", marginLeft: 2 }}>/100</span>
           </div>
 
           {/* Band — minimal */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
             <div style={{ width: 6, height: 6, borderRadius: 1, backgroundColor: bandColor }} />
             <div style={{ fontSize: 13, fontWeight: 500, color: bandColor, letterSpacing: "0.01em" }}>{record.stability_band}</div>
           </div>
@@ -1066,8 +1074,8 @@ export default function ReviewPage() {
             const code = btoa(JSON.stringify(payload));
             return (
               <div style={{ maxWidth: mobile ? "90%" : 400 }}>
-                <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 6 }}>RUNPAYWAY&#8482; DASHBOARD ACCESS</div>
-                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
+                <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
                   <div style={{ fontFamily: "monospace", fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
@@ -1075,7 +1083,7 @@ export default function ReviewPage() {
             );
           })()}
 
-          <div style={{ fontSize: 9, color: "rgba(14,26,43,0.22)", marginTop: 28, letterSpacing: "0.06em" }}>Model RP-2.0 &middot; 4 Pages &middot; Confidential</div>
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.22)", marginTop: 32, letterSpacing: "0.06em" }}>Model RP-2.0 &middot; Confidential</div>
         </div>
     </>,
 
@@ -1084,26 +1092,26 @@ export default function ReviewPage() {
         <ReportHeader />
 
         {/* ── SCORE HEADER — enterprise compact ── */}
-        <div style={{ textAlign: "center", marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8, letterSpacing: "0.14em", fontSize: 9 }}>RUNPAYWAY&#8482; INCOME STABILITY SCORE&#8482;</div>
-          <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em", margin: "0 0 2px" }}>{record.assessment_title || "Assessment"}</h1>
-          <div style={{ fontSize: 11, color: B.taupe, marginBottom: 14 }}>{issuedDate} &middot; Model RP-2.0</div>
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>RUNPAYWAY&#8482; INCOME STABILITY SCORE&#8482;</div>
+          <h1 style={{ fontSize: 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em", margin: "0 0 4px" }}>{record.assessment_title || "Assessment"}</h1>
+          <div style={{ fontSize: 11, color: B.taupe, marginBottom: 16 }}>{issuedDate} &middot; Model RP-2.0</div>
 
-          <div style={{ marginBottom: 6 }}>
-            <span style={{ fontSize: 52, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{animatedScore}</span>
-            <span style={{ fontSize: 18, fontWeight: 400, color: B.taupe }}>/100</span>
+          <div style={{ marginBottom: 8 }}>
+            <span style={{ ...T.score, color: B.navy }}>{animatedScore}</span>
+            <span style={{ fontSize: 17, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 4 }}>{distanceToNext} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 8 }}>{distanceToNext} points to {nextBandName} Stability</div>}
         </div>
 
         {/* ── KEY TAKEAWAY ── */}
-        <div style={{ background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderLeft: `3px solid ${B.purple}`, borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 20 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 10, letterSpacing: "0.12em" }}>KEY TAKEAWAY</div>
-          <p style={{ ...T.sectionTitle, color: B.navy, margin: "0 0 10px", fontSize: 17 }}>
+        <div style={{ background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderLeft: `3px solid ${B.purple}`, borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 24 }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8, letterSpacing: "0.12em" }}>KEY TAKEAWAY</div>
+          <p style={{ ...T.sectionTitle, color: B.navy, margin: "0 0 12px" }}>
             {tier === "high" ? "Your income is strong and well-protected."
               : tier === "established" ? "Your income is stable but at risk."
               : tier === "developing" ? "Your income is building, but not secure yet."
@@ -1121,12 +1129,12 @@ export default function ReviewPage() {
         </div>
 
         {/* ── IN PLAIN ENGLISH — GOOD NEWS / BAD NEWS ── */}
-        <div style={{ ...cardStyle, marginBottom: 14 }}>
+        <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IN PLAIN ENGLISH</div>
 
           {/* The Good News */}
           <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 6 }}>The Good News:</div>
+            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>The Good News:</div>
             <p style={{ ...T.body, color: B.navy, margin: "0 0 6px", lineHeight: 1.65 }}>
               {tier === "high"
                 ? `Most of your income continues even during disruptions. Only ${record.active_income_level}% requires your daily active effort, and you have ${continuityDisplay} of runway if you stopped working entirely.`
@@ -1154,7 +1162,7 @@ export default function ReviewPage() {
 
           {/* The Bad News */}
           <div>
-            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 6 }}>The Bad News:</div>
+            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>The Bad News:</div>
             <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
               {tier === "high"
                 ? `Even with strong stability, ${dominantConstraintPlain[dominantConstraint] || "specific structural gaps remain"}. Addressing this would push your score even higher and protect against the few scenarios that could still affect you.`
@@ -1172,7 +1180,7 @@ export default function ReviewPage() {
     <>
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>What To Do Next</h1>
-        <p style={{ ...T.small, color: B.muted, marginBottom: 20, lineHeight: 1.6 }}>
+        <p style={{ ...T.small, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
           Based on your score of {score}/100, these are your highest-impact structural changes. Your Command Center has the full action plan, scripts, and simulator.
         </p>
 
@@ -1213,9 +1221,9 @@ export default function ReviewPage() {
                   const example = concrete?.example || "";
                   return (
                     <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "18px 22px", borderLeft: `3px solid ${stepColors[idx]}` }}>
-                      <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 6, letterSpacing: "0.12em" }}>{stepLabels[idx]}: {goal.length > 50 ? goal.substring(0, 50) + "..." : goal}</div>
+                      <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 8, letterSpacing: "0.12em" }}>{stepLabels[idx]}: {goal.length > 50 ? goal.substring(0, 50) + "..." : goal}</div>
                       <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{goal}</div>
-                      <div style={{ marginBottom: 6 }}>
+                      <div style={{ marginBottom: 8 }}>
                         <span style={{ ...T.small, color: B.muted, fontWeight: 600 }}>Action: </span>
                         <span style={{ ...T.small, color: B.navy, lineHeight: 1.6 }}>{action}</span>
                       </div>
@@ -1239,7 +1247,7 @@ export default function ReviewPage() {
         {/* ── COMBINED IMPACT — brief ── */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
           <div style={{ background: `linear-gradient(135deg, rgba(31,109,122,0.06) 0%, rgba(75,63,174,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "16px 20px", marginBottom: 24 }}>
-            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 6 }}>Combined Impact</div>
+            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>Combined Impact</div>
             <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
               Together, these changes would raise your score to approximately <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift} points).{v2Lift.combined_top_two.band_shift ? ` This would move you to ${v2Lift.combined_top_two.projected_band}.` : ""}
             </p>
@@ -1254,7 +1262,7 @@ export default function ReviewPage() {
           style={{
             textAlign: "center", padding: mobile ? "32px 20px" : "40px 32px", borderRadius: 10,
             background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`,
-            cursor: "pointer", marginBottom: 20,
+            cursor: "pointer", marginBottom: 24,
           }}
         >
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: "rgba(31,109,122,0.80)", marginBottom: 12 }}>YOUR NEXT STEP</div>
