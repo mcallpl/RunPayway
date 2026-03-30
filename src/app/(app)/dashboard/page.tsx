@@ -44,6 +44,16 @@ function fmtIndustry(s: string): string { return s.replace(/_/g, " ").replace(/\
 */
 
 /* ================================================================== */
+/*  PHASE NAV CONFIG                                                   */
+/* ================================================================== */
+const PHASE_NAV = [
+  { id: "phase-diagnosis", label: "Diagnosis", color: B.purple },
+  { id: "phase-plan", label: "Plan", color: B.navy },
+  { id: "phase-test", label: "Test", color: B.teal },
+  { id: "phase-progress", label: "Progress", color: B.taupe },
+] as const;
+
+/* ================================================================== */
 /*  SCORE RING                                                         */
 /* ================================================================== */
 function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: number; stroke?: number }) {
@@ -73,15 +83,81 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 /*  PHASE SEPARATOR — wrapper with branded edge mark + tinted bg       */
 /* ================================================================== */
-function PhaseSep({ label, color, tint, children }: { label: string; color: string; tint?: string; children?: React.ReactNode }) {
+function PhaseSep({ label, color, tint, children, id }: { label: string; color: string; tint?: string; children?: React.ReactNode; id?: string }) {
   return (
-    <div className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
+    <div id={id} className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "48px 0 24px" }}>
         <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
         <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
       </div>
       {children}
+    </div>
+  );
+}
+
+/* ================================================================== */
+/*  STICKY PHASE NAV                                                   */
+/* ================================================================== */
+function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolean }) {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <div style={{
+      position: "fixed",
+      right: 16,
+      top: "50%",
+      transform: "translateY(-50%)",
+      zIndex: 100,
+      display: "flex",
+      flexDirection: "column",
+      gap: mobile ? 16 : 12,
+      alignItems: "flex-end",
+    }}>
+      {PHASE_NAV.map(p => {
+        const isActive = activePhase === p.id;
+        return (
+          <button
+            key={p.id}
+            onClick={() => scrollTo(p.id)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              background: isActive ? B.surface : "rgba(254,254,254,0.85)",
+              border: `1px solid ${isActive ? p.color + "40" : B.stone}`,
+              borderRadius: 20,
+              padding: mobile ? "6px" : "6px 12px 6px 8px",
+              cursor: "pointer",
+              transition: "all 200ms",
+              boxShadow: isActive ? `0 2px 8px ${p.color}18` : "0 1px 4px rgba(0,0,0,0.06)",
+            }}
+            aria-label={p.label}
+          >
+            <div style={{
+              width: mobile ? 10 : 8,
+              height: mobile ? 10 : 8,
+              borderRadius: "50%",
+              backgroundColor: isActive ? p.color : p.color + "40",
+              flexShrink: 0,
+              transition: "background-color 200ms",
+            }} />
+            {!mobile && (
+              <span style={{
+                fontSize: 11,
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? p.color : B.taupe,
+                letterSpacing: "0.04em",
+                whiteSpace: "nowrap" as const,
+                transition: "color 200ms",
+              }}>{p.label}</span>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -170,6 +246,31 @@ export default function DashboardPage() {
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const shareRef = useRef<HTMLAnchorElement>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [activePhase, setActivePhase] = useState("phase-diagnosis");
+  const [whatIfOpen, setWhatIfOpen] = useState(false);
+
+  /* ── IntersectionObserver for phase nav ── */
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const ids = PHASE_NAV.map(p => p.id);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0) {
+            setActivePhase(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+    );
+    const timeout = setTimeout(() => {
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      }
+    }, 100);
+    return () => { clearTimeout(timeout); observer.disconnect(); };
+  }, []);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
@@ -284,8 +385,9 @@ export default function DashboardPage() {
   const qResult = simulateScore(qInputs, qScore);
   const qLift = qCount > 0 ? qResult.overall_score - dScore : 0;
 
-  /* ── Scenario ── */
-  const aPO = SIMULATOR_PRESETS.find(p => p.id === activePreset);
+  /* ── Scenario — Change 5: auto-select best preset ── */
+  const effectivePreset = activePreset ?? (topMoves[0]?.id || null);
+  const aPO = SIMULATOR_PRESETS.find(p => p.id === effectivePreset);
   const sInputs = aPO ? aPO.modify(base) : base;
   const sResult = aPO ? simulateScore(sInputs, qScore) : baseRes;
   const sDelta = aPO ? sResult.overall_score - dScore : 0;
@@ -300,15 +402,8 @@ export default function DashboardPage() {
   const nextB = dScore < 30 ? "Developing" : dScore < 50 ? "Established" : dScore < 75 ? "High" : "Maximum";
   const gap = nextT - dScore;
 
-  /* ── Reassessment ── */
-  const rChecks = [
-    { label: "Signed a new retainer or recurring agreement", key: "retainer" },
-    { label: "Added a new independent income source", key: "source" },
-    { label: "Reduced your largest client below 40%", key: "concentration" },
-    { label: "Created a passive income stream", key: "passive" },
-  ];
-  const toggleChk = (k: string) => { setCheckedItems(prev => { const u = prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k]; localStorage.setItem("rp_reassess_checks", JSON.stringify(u)); return u; }); };
-  const returnMsg = checkedItems.length >= 2 ? "You have made enough structural changes to warrant a reassessment." : topMoves[0] ? `Come back after you ${topMoves[0].label.toLowerCase()}. Worth +${topMoves[0].lift} points.` : "Come back after making a structural change.";
+  /* ── Reassessment — merged with progress check (Change 4) ── */
+  const returnMsg = qCount >= 2 ? "You have made enough structural changes to warrant a reassessment." : topMoves[0] ? `Come back after you ${topMoves[0].label.toLowerCase()}. Worth +${topMoves[0].lift} points.` : "Come back after making a structural change.";
 
   const copyScript = (txt: string, id: string) => { navigator.clipboard.writeText(txt).then(() => { setCopiedScript(id); setTimeout(() => setCopiedScript(null), 2000); }); };
 
@@ -340,6 +435,9 @@ export default function DashboardPage() {
         <SuiteHeader current="dashboard" />
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
+        {/* Change 1: Sticky phase nav */}
+        <PhaseNav activePhase={activePhase} mobile={mobile} />
+
         <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px", overflow: "hidden" }}>
 
           {/* Personalized header */}
@@ -347,35 +445,6 @@ export default function DashboardPage() {
             <div style={{ marginBottom: 8 }}>
               <span style={{ fontSize: 15, color: B.muted }}>{custName}&rsquo;s Command Center</span>
               {indLabel && <span style={{ fontSize: 13, color: B.taupe }}> &middot; {indLabel}</span>}
-            </div>
-          )}
-
-          {/* ── DEMO CONTROLS ── */}
-          {isDemo && (
-            <div style={{ padding: mobile ? "28px 20px" : "32px 32px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.purple}15`, marginBottom: 32 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>EXPLORE THE COMMAND CENTER</div>
-              <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, lineHeight: 1.3, marginBottom: 8 }}>This is a preview with sample data.</div>
-              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 24px", lineHeight: 1.6 }}>
-                Select a stability band to see how the Command Center works for different income structures. Have your report? Paste your access code to load your real data.
-              </p>
-              <div style={{ fontSize: 13, fontWeight: 600, color: B.taupe, marginBottom: 8 }}>Select a sample profile:</div>
-              <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 8, marginBottom: 24 }}>
-                {SAMPLE_PROFILES.map((p, i) => (
-                  <button key={p.id} onClick={() => { setDemoProfile(i); setActivePreset(null); setSavedScenarios([]); setQuickToggles({}); }}
-                    style={{ padding: "12px 16px", borderRadius: 10, fontSize: 15, fontWeight: demoProfile === i ? 600 : 400, color: demoProfile === i ? "#FFF" : B.navy, backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent", border: `2px solid ${demoProfile === i ? "transparent" : B.stone}`, cursor: "pointer", transition: "all 200ms", minHeight: 48 }}
-                  >{p.label}</button>
-                ))}
-              </div>
-              <div style={{ padding: "24px 24px", borderRadius: 12, backgroundColor: `${B.purple}04`, border: `1px solid ${B.purple}10` }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Have your report?</div>
-                <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px" }}>Paste the access code from your report cover page to load your personal data.</p>
-                <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
-                  <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste your access code here" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-                    style={{ padding: "13px 16px", fontSize: 15, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 8, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 48 }} />
-                  <button onClick={handleCodeSubmit} style={{ padding: "13px 28px", fontSize: 15, fontWeight: 600, color: B.white, backgroundColor: B.purple, border: "none", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 48 }}>Load My Data</button>
-                </div>
-                {codeError && <div style={{ fontSize: 13, color: B.red, marginTop: 8 }}>{codeError}</div>}
-              </div>
             </div>
           )}
 
@@ -400,7 +469,7 @@ export default function DashboardPage() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  ORIENT — "Where am I?"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)">
+          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis">
 
           {/* 1. SCORE + BENCHMARKING */}
           <section style={{ marginBottom: 24 }}>
@@ -478,12 +547,35 @@ export default function DashboardPage() {
             ))}
           </section>
 
+          {/* Change 3: Demo card moves AFTER score + PressureMap */}
+          {isDemo && (
+            <div style={{ padding: mobile ? "16px 16px" : "16px 24px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.purple}15`, marginTop: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, whiteSpace: "nowrap" as const }}>SAMPLE DATA</div>
+                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" as const }}>
+                  {SAMPLE_PROFILES.map((p, i) => (
+                    <button key={p.id} onClick={() => { setDemoProfile(i); setActivePreset(null); setSavedScenarios([]); setQuickToggles({}); }}
+                      style={{ padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: demoProfile === i ? 600 : 400, color: demoProfile === i ? "#FFF" : B.navy, backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent", border: `1.5px solid ${demoProfile === i ? "transparent" : B.stone}`, cursor: "pointer", transition: "all 200ms", minHeight: 32, lineHeight: 1 }}
+                    >{p.label}</button>
+                  ))}
+                </div>
+                <div style={{ height: 24, width: 1, backgroundColor: B.stone, flexShrink: 0 }} />
+                <div style={{ display: "flex", gap: 6, flex: 1, minWidth: 200 }}>
+                  <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste access code" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
+                    style={{ padding: "8px 12px", fontSize: 13, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 8, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 36 }} />
+                  <button onClick={handleCodeSubmit} style={{ padding: "8px 16px", fontSize: 13, fontWeight: 600, color: B.white, backgroundColor: B.purple, border: "none", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 36 }}>Load</button>
+                </div>
+              </div>
+              {codeError && <div style={{ fontSize: 13, color: B.red, marginTop: 6 }}>{codeError}</div>}
+            </div>
+          )}
+
           </PhaseSep>
 
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DECIDE — "What should I do?"                           */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)">
+          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan">
 
           {/* 3. #1 PRIORITY */}
           {topMoves.length > 0 && (() => {
@@ -564,84 +656,109 @@ export default function DashboardPage() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  ACT — "Let me test it"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)">
+          <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test">
 
+          {/* Change 2: Collapsible What-If Explorer */}
           <section>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>WHAT-IF EXPLORER</div>
-            <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px" }}>Test a change. Save up to 3 paths to compare.</p>
-            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 8, marginBottom: 16 }} className="d-3col">
-              {SIMULATOR_PRESETS.map(pr => {
-                const res = simulateScore(pr.modify(base), qScore); const lift = res.overall_score - dScore;
-                const isA = activePreset === pr.id; const neg = lift < 0;
-                return (
-                  <button key={pr.id} onClick={() => setActivePreset(isA ? null : pr.id)}
-                    style={{ padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? (neg ? B.red : B.purple) + "40" : B.stone}`, backgroundColor: isA ? (neg ? `${B.red}05` : `${B.purple}06`) : B.surface, minHeight: 48 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                      <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                      <span style={{ fontSize: 17, fontWeight: 700, color: lift >= 0 ? B.teal : B.red }}>{lift > 0 ? "+" : ""}{lift}</span>
-                    </div>
-                    <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.45 }}>{pr.description}</p>
-                  </button>
-                );
-              })}
-            </div>
+            <button
+              onClick={() => setWhatIfOpen(!whatIfOpen)}
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: mobile ? "20px 20px" : "22px 28px",
+                border: `1px solid ${B.stone}`,
+                borderRadius: whatIfOpen ? "12px 12px 0 0" : 12,
+                backgroundColor: B.surface,
+                cursor: "pointer",
+                transition: "border-radius 200ms",
+              }}
+            >
+              <div style={{ textAlign: "left" as const }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
+                <div style={{ fontSize: 15, color: B.muted }}>Test your options — what would happen if you changed something?</div>
+              </div>
+              <span style={{ fontSize: 17, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
+            </button>
 
-            {activePreset && aPO && (
-              <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap" as const }}>
-                  <div>
-                    <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{aPO.label}</div>
-                    <div style={{ fontSize: 22, fontWeight: 300, color: sDelta >= 0 ? B.teal : B.red }}>{dScore} → {sResult.overall_score} ({sDelta > 0 ? "+" : ""}{sDelta})</div>
-                    {sResult.band !== dBand && <div style={{ fontSize: 15, fontWeight: 600, color: B.purple, marginTop: 4 }}>→ {sResult.band}</div>}
-                  </div>
-                  {savedScenarios.length < 3 && sDelta !== 0 && (
-                    <button onClick={() => setSavedScenarios(prev => [...prev, { name: aPO.label, score: sResult.overall_score, band: sResult.band, lift: sDelta }])}
-                      style={{ fontSize: 13, fontWeight: 600, color: B.teal, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}18`, borderRadius: 8, padding: "11px 20px", cursor: "pointer", minHeight: 44 }}>
-                      Save Path ({3 - savedScenarios.length} left)
-                    </button>
-                  )}
+            {whatIfOpen && (
+              <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 12px 12px", backgroundColor: B.surface, padding: mobile ? "20px 16px" : "24px 28px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)", gap: 8, marginBottom: 16 }} className="d-3col">
+                  {SIMULATOR_PRESETS.map(pr => {
+                    const res = simulateScore(pr.modify(base), qScore); const lift = res.overall_score - dScore;
+                    const isA = effectivePreset === pr.id; const neg = lift < 0;
+                    return (
+                      <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
+                        style={{ padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? (neg ? B.red : B.purple) + "40" : B.stone}`, backgroundColor: isA ? (neg ? `${B.red}05` : `${B.purple}06`) : "transparent", minHeight: 48 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                          <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                          <span style={{ fontSize: 17, fontWeight: 700, color: lift >= 0 ? B.teal : B.red }}>{lift > 0 ? "+" : ""}{lift}</span>
+                        </div>
+                        <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.45 }}>{pr.description}</p>
+                      </button>
+                    );
+                  })}
                 </div>
-                {sTL.length > 0 && (
-                  <div style={{ marginTop: 24 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>PROJECTED TRAJECTORY</div>
-                    <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
-                      <div style={{ flex: 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>NOW</div><div style={{ fontSize: 22, fontWeight: 300, color: B.navy }}>{dScore}</div></div>
-                      {sTL.map(pt => (
-                        <div key={pt.month} style={{ flex: 1, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
-                          <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>{pt.label.toUpperCase()}</div>
-                          <div style={{ fontSize: 22, fontWeight: 300, color: pt.delta >= 0 ? B.teal : B.red }}>{pt.score}</div>
-                          <div style={{ fontSize: 13, color: B.muted, marginTop: 4 }}>{pt.narrative.split(".")[0]}.</div>
+
+                {effectivePreset && aPO && (
+                  <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "transparent", marginBottom: 16 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, flexWrap: "wrap" as const }}>
+                      <div>
+                        <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 8 }}>{aPO.label}</div>
+                        <div style={{ fontSize: 22, fontWeight: 300, color: sDelta >= 0 ? B.teal : B.red }}>{dScore} → {sResult.overall_score} ({sDelta > 0 ? "+" : ""}{sDelta})</div>
+                        {sResult.band !== dBand && <div style={{ fontSize: 15, fontWeight: 600, color: B.purple, marginTop: 4 }}>→ {sResult.band}</div>}
+                      </div>
+                      {savedScenarios.length < 3 && sDelta !== 0 && (
+                        <button onClick={() => setSavedScenarios(prev => [...prev, { name: aPO.label, score: sResult.overall_score, band: sResult.band, lift: sDelta }])}
+                          style={{ fontSize: 13, fontWeight: 600, color: B.teal, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}18`, borderRadius: 8, padding: "11px 20px", cursor: "pointer", minHeight: 44 }}>
+                          Save Path ({3 - savedScenarios.length} left)
+                        </button>
+                      )}
+                    </div>
+                    {sTL.length > 0 && (
+                      <div style={{ marginTop: 24 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>PROJECTED TRAJECTORY</div>
+                        <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
+                          <div style={{ flex: 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}><div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>NOW</div><div style={{ fontSize: 22, fontWeight: 300, color: B.navy }}>{dScore}</div></div>
+                          {sTL.map(pt => (
+                            <div key={pt.month} style={{ flex: 1, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
+                              <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>{pt.label.toUpperCase()}</div>
+                              <div style={{ fontSize: 22, fontWeight: 300, color: pt.delta >= 0 ? B.teal : B.red }}>{pt.score}</div>
+                              <div style={{ fontSize: 13, color: B.muted, marginTop: 4 }}>{pt.narrative.split(".")[0]}.</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {savedScenarios.length > 0 && (
+                  <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "transparent" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple }}>COMPARE PATHS</div>
+                      <button onClick={() => setSavedScenarios([])} style={{ fontSize: 13, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", minHeight: 32 }}>Clear</button>
+                    </div>
+                    <div style={{ display: "flex", gap: 12 }} className="d-compare">
+                      <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
+                        <div style={{ fontSize: 32, fontWeight: 300, color: B.navy }}>{dScore}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: bc(dScore), marginTop: 4 }}>{dBand}</div>
+                      </div>
+                      {savedScenarios.map((s, i) => (
+                        <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
+                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>×</button>
+                          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
+                          <div style={{ fontSize: 32, fontWeight: 300, color: B.teal }}>{s.score}</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: bc(s.score), marginTop: 4 }}>{s.band}</div>
+                          <div style={{ fontSize: 15, fontWeight: 600, color: B.teal, marginTop: 8 }}>+{s.lift}</div>
+                          <div style={{ fontSize: 13, color: B.muted, marginTop: 4 }}>{s.name}</div>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
-              </div>
-            )}
-
-            {savedScenarios.length > 0 && (
-              <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple }}>COMPARE PATHS</div>
-                  <button onClick={() => setSavedScenarios([])} style={{ fontSize: 13, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", minHeight: 32 }}>Clear</button>
-                </div>
-                <div style={{ display: "flex", gap: 12 }} className="d-compare">
-                  <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
-                    <div style={{ fontSize: 32, fontWeight: 300, color: B.navy }}>{dScore}</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: bc(dScore), marginTop: 4 }}>{dBand}</div>
-                  </div>
-                  {savedScenarios.map((s, i) => (
-                    <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
-                      <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>×</button>
-                      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
-                      <div style={{ fontSize: 32, fontWeight: 300, color: B.teal }}>{s.score}</div>
-                      <div style={{ fontSize: 13, fontWeight: 600, color: bc(s.score), marginTop: 4 }}>{s.band}</div>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: B.teal, marginTop: 8 }}>+{s.lift}</div>
-                      <div style={{ fontSize: 13, color: B.muted, marginTop: 4 }}>{s.name}</div>
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
           </section>
@@ -651,11 +768,11 @@ export default function DashboardPage() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  MONITOR — "Am I progressing?"                          */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)">
+          <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress">
 
-          {/* PROGRESS CHECK */}
+          {/* Change 4: Merged TRACK YOUR PROGRESS section */}
           <section style={{ marginBottom: 16, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>PROGRESS CHECK</div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>TRACK YOUR PROGRESS</div>
             <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Has anything changed?</div>
             <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px" }}>Toggle what you have done. Score updates instantly.</p>
 
@@ -689,29 +806,18 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
+
+            {/* Readiness indicator + return message */}
+            <div style={{ marginTop: 16, padding: "16px 20px", borderRadius: 10, backgroundColor: qCount >= 2 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${qCount >= 2 ? `${B.teal}12` : B.stone}` }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
+                <span style={{ fontSize: 15, fontWeight: 600, color: qCount >= 2 ? B.teal : B.muted }}>{qCount}/4 changes made{qCount >= 2 ? " — you may be ready to reassess" : ""}</span>
+              </div>
+              {qCount < 2 && <p style={{ fontSize: 13, color: B.taupe, margin: "8px 0 0", lineHeight: 1.55, fontStyle: "italic" }}>{returnMsg}</p>}
+            </div>
           </section>
 
-          {/* Reassessment + stress + timing */}
+          {/* Stress + timing cards (separate) */}
           <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-            <div style={{ flex: 1, padding: mobile ? "24px 20px" : "28px 28px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>REASSESSMENT READINESS</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-                {rChecks.map(ch => (
-                  <div key={ch.key} onClick={() => toggleChk(ch.key)} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 10, cursor: "pointer", border: `1px solid ${checkedItems.includes(ch.key) ? `${B.teal}25` : B.stone}`, transition: "all 150ms", minHeight: 48 }}>
-                    <div style={{ width: 22, height: 22, borderRadius: 6, border: `2px solid ${checkedItems.includes(ch.key) ? B.teal : B.faint}`, backgroundColor: checkedItems.includes(ch.key) ? B.teal : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      {checkedItems.includes(ch.key) && <span style={{ color: "#FFF", fontSize: 13, fontWeight: 700 }}>&#10003;</span>}
-                    </div>
-                    <span style={{ fontSize: 15, color: checkedItems.includes(ch.key) ? B.navy : B.muted }}>{ch.label}</span>
-                  </div>
-                ))}
-              </div>
-              {checkedItems.length >= 2 ? (
-                <div style={{ padding: "16px 16px", borderRadius: 10, backgroundColor: `${B.teal}05`, border: `1px solid ${B.teal}12` }}><span style={{ fontSize: 15, fontWeight: 600, color: B.teal }}>You may be ready to reassess.</span></div>
-              ) : (
-                <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55, fontStyle: "italic" }}>{returnMsg}</p>
-              )}
-            </div>
-
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
               {assessments.length >= 2 && (() => { const diff = assessments[0].final_score - assessments[1].final_score; return (
                 <div style={{ padding: "20px 24px", border: `1px solid ${diff > 0 ? `${B.teal}18` : B.stone}`, borderRadius: 12, backgroundColor: B.surface, display: "flex", alignItems: "center", gap: 16 }}>
@@ -730,7 +836,9 @@ export default function DashboardPage() {
                   </div>
                 ))}
               </div>
+            </div>
 
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? B.red : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
                 <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.55 }}>
