@@ -61,14 +61,15 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 }
 
 /* ================================================================== */
-/*  PHASE SEPARATOR                                                    */
+/*  PHASE SEPARATOR — branded left edge mark                           */
 /* ================================================================== */
 function PhaseSep({ label, color }: { label: string; color: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 14, margin: "40px 0 20px" }}>
-      <div style={{ height: 1, flex: 1, backgroundColor: B.stone }} />
-      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
-      <div style={{ height: 1, flex: 1, backgroundColor: B.stone }} />
+    <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "44px 0 22px" }}>
+      {/* Left corner edge mark */}
+      <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
+      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
+      <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
     </div>
   );
 }
