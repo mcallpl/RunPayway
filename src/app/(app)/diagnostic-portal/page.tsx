@@ -368,7 +368,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
+        background: "#F7F5F0",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         textAlign: "center",
@@ -383,21 +383,21 @@ export default function InitializationPage() {
           minHeight: "80vh", justifyContent: "center", position: "relative",
         }}>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 28 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.35)", marginBottom: 28 }}>
               Prepared for {form.assessment_title}
             </div>
 
-            <h1 style={{ fontSize: 28, fontWeight: 500, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 500, color: "#0E1A2B", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
               Your assessment is ready.
             </h1>
 
-            <div style={{ width: 32, height: 1, backgroundColor: "rgba(244,241,234,0.12)", marginBottom: 20 }} />
+            <div style={{ width: 32, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: 20 }} />
 
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
+            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.45)", lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
               A short structural diagnostic about how your income works. No financial data required.
             </p>
 
-            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", marginBottom: 40 }}>
+            <p style={{ fontSize: 13, color: "rgba(14,26,43,0.20)", marginBottom: 40 }}>
               Takes about 90 seconds
             </p>
 
@@ -409,10 +409,10 @@ export default function InitializationPage() {
               }}
               style={{
                 height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-                background: "#F4F1EA",
-                color: B.navy, fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+                background: "#0E1A2B",
+                color: "#F4F1EA", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
                 border: "none", cursor: "pointer",
-                boxShadow: "0 8px 28px rgba(0,0,0,0.20)",
+                boxShadow: "0 8px 28px rgba(14,26,43,0.15)",
                 transition: "transform 200ms ease, box-shadow 200ms ease",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.25)"; }}
@@ -424,7 +424,7 @@ export default function InitializationPage() {
 
             <div style={{ marginTop: 28, display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
               {["No bank connection", "No credit pull", "Private by default"].map((item) => (
-                <span key={item} style={{ fontSize: 12, color: "rgba(244,241,234,0.20)", letterSpacing: "0.02em" }}>{item}</span>
+                <span key={item} style={{ fontSize: 12, color: "rgba(14,26,43,0.15)", letterSpacing: "0.02em" }}>{item}</span>
               ))}
             </div>
           </div>
@@ -452,7 +452,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "linear-gradient(170deg, #0E1A2B 0%, #151D30 40%, #1a1f3a 70%, #0E1A2B 100%)",
+        background: "#F7F5F0",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}>
@@ -486,13 +486,13 @@ export default function InitializationPage() {
 
           {/* Title */}
           <h1 style={{
-            fontSize: 36, fontWeight: 300, color: "#F4F1EA", textAlign: "center",
+            fontSize: 36, fontWeight: 300, color: "#0E1A2B", textAlign: "center",
             lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: 12,
           }}>
             Your Assessment Begins Here
           </h1>
           <p style={{
-            fontSize: 15, color: "rgba(244,241,234,0.45)", textAlign: "center",
+            fontSize: 15, color: "rgba(14,26,43,0.45)", textAlign: "center",
             lineHeight: 1.6, marginBottom: 48, maxWidth: 400, margin: "0 auto 48px",
           }}>
             Enter the name that will appear on your report. This is a confidential, one-time assessment of your income stability.
@@ -511,7 +511,7 @@ export default function InitializationPage() {
               style={{
                 width: "100%", height: 56, padding: "0 20px",
                 borderRadius: 12, border: "1px solid rgba(75,63,174,0.30)",
-                background: "rgba(255,255,255,0.04)", color: "#F4F1EA",
+                background: "rgba(14,26,43,0.03)", color: "#0E1A2B",
                 fontSize: 17, fontWeight: 400, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
                 transition: "border-color 200ms ease, box-shadow 200ms ease",
@@ -542,7 +542,7 @@ export default function InitializationPage() {
               style={{
                 width: "100%", height: 52, padding: "0 20px",
                 borderRadius: 12, border: "1px solid rgba(255,255,255,0.10)",
-                background: "rgba(255,255,255,0.03)", color: "#F4F1EA",
+                background: "rgba(14,26,43,0.03)", color: "#0E1A2B",
                 fontSize: 15, fontWeight: 400, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
                 transition: "border-color 200ms ease",
@@ -578,14 +578,14 @@ export default function InitializationPage() {
             display: "flex", justifyContent: "center", gap: 24, marginTop: 40,
           }}>
             {["Confidential", "Under 2 minutes", "No financial data required"].map((t) => (
-              <span key={t} style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ fontSize: 11, color: "rgba(14,26,43,0.20)", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
 
         {/* CSS animations */}
         <style>{`
-          input::placeholder { color: rgba(244,241,234,0.25); }
+          input::placeholder { color: rgba(14,26,43,0.20); }
           input:focus { border-color: rgba(75,63,174,0.60) !important; box-shadow: 0 0 24px rgba(75,63,174,0.12) !important; }
         `}</style>
       </div>
@@ -643,15 +643,15 @@ export default function InitializationPage() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(244,241,234,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(14,26,43,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
             Income Stability Diagnostic
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 11, color: "rgba(244,241,234,0.35)" }}>
+          <span style={{ fontSize: 11, color: "rgba(14,26,43,0.35)" }}>
             Assessing: {form.assessment_title || "—"}
           </span>
-          <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)" }}>Model RP-2.0</span>
+          <span style={{ fontSize: 11, color: "rgba(14,26,43,0.20)" }}>Model RP-2.0</span>
         </div>
       </div>
 

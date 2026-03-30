@@ -12,7 +12,7 @@ const B = {
   teal: "#1F6D7A",
   cream: "#F4F1EA",
   light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+  gradient: "#F7F5F0",
 };
 
 const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
@@ -144,7 +144,7 @@ function CheckoutSuccessContent() {
       `}</style>
 
       {/* Radial glow */}
-      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div
         style={{
@@ -170,7 +170,7 @@ function CheckoutSuccessContent() {
         </div>
 
         {/* Headline */}
-        <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.cream, marginBottom: 36 }}>
+        <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.navy, marginBottom: 36 }}>
           {isMonitoring
             ? "Your Stability Monitoring is active."
             : hasExistingRecord
@@ -197,12 +197,12 @@ function CheckoutSuccessContent() {
               <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: i === 0 ? "rgba(31,109,122,0.20)" : "rgba(244,241,234,0.06)", border: `1px solid ${i === 0 ? "rgba(31,109,122,0.30)" : "rgba(244,241,234,0.10)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {i === 0
                   ? <span style={{ fontSize: 12, color: B.teal }}>&#10003;</span>
-                  : <span style={{ fontSize: 12, fontWeight: 700, color: B.cream }}>{step.num}</span>
+                  : <span style={{ fontSize: 12, fontWeight: 700, color: B.navy }}>{step.num}</span>
                 }
               </div>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.cream, marginBottom: 2 }}>{step.title}</div>
-                <div style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", lineHeight: 1.5 }}>{step.desc}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{step.title}</div>
+                <div style={{ fontSize: 13, color: "rgba(14,26,43,0.45)", lineHeight: 1.5 }}>{step.desc}</div>
               </div>
             </div>
           ))}
@@ -246,7 +246,7 @@ function CheckoutSuccessContent() {
                   height: 44,
                   borderRadius: 10,
                   background: "transparent",
-                  color: "rgba(244,241,234,0.55)",
+                  color: "rgba(14,26,43,0.50)",
                   fontSize: 14,
                   fontWeight: 500,
                   textDecoration: "none",
@@ -254,7 +254,7 @@ function CheckoutSuccessContent() {
                   transition: "color 200ms ease, border-color 200ms ease",
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.25)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
               >
                 Retake Assessment
               </Link>
@@ -295,7 +295,7 @@ function CheckoutSuccessContent() {
 
         <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
           {["Under 2 minutes", "No bank connection", "Model RP-2.0"].map((badge) => (
-            <span key={badge} style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{badge}</span>
+            <span key={badge} style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", letterSpacing: "0.02em" }}>{badge}</span>
           ))}
         </div>
       </div>

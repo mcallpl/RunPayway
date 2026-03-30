@@ -695,32 +695,32 @@ export default function DiagnosticPage() {
     const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
 
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#0E1A2B", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}22 0%, transparent 60%)`, pointerEvents: "none" }} />
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
         <div style={{ textAlign: "center", maxWidth: 480, padding: "0 24px", position: "relative", zIndex: 1 }}>
 
           {/* Score number — counts up */}
           <div style={{ marginBottom: 8 }}>
-            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: "#F4F1EA", letterSpacing: "-0.05em", lineHeight: 1, fontFamily: "'Inter', system-ui, sans-serif" }}>0</span>
-            <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(244,241,234,0.25)", marginLeft: 4 }}>/100</span>
+            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: "#0E1A2B", letterSpacing: "-0.05em", lineHeight: 1, fontFamily: "'Inter', system-ui, sans-serif" }}>0</span>
+            <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(14,26,43,0.20)", marginLeft: 4 }}>/100</span>
           </div>
 
           {/* Band name — fades in */}
           <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 24 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 20px", borderRadius: 24, border: `1px solid ${revealColor}44`, backgroundColor: `${revealColor}15` }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 20px", borderRadius: 24, border: `1px solid ${revealColor}30`, backgroundColor: `${revealColor}08` }}>
               <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: revealColor }} />
               <span style={{ fontSize: 17, fontWeight: 600, color: revealColor }}>{revealBand}</span>
             </div>
           </div>
 
-          {/* Peer ranking — fades in */}
+          {/* Gap + message — fades in */}
           <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 32 }}>
             {nextBand && (
-              <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", margin: "0 0 8px", lineHeight: 1.5 }}>
+              <p style={{ fontSize: 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
                 {gap} points from {nextBand} Stability
               </p>
             )}
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.35)", margin: 0 }}>
+            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.35)", margin: 0 }}>
               Your full diagnosis and action plan are ready.
             </p>
           </div>
@@ -729,16 +729,16 @@ export default function DiagnosticPage() {
           <div style={{ opacity: revealPhase >= 3 ? 1 : 0, transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease" }}>
             <button
               onClick={() => router.push("/dashboard")}
-              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)", color: "#F4F1EA", fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", transition: "background-color 200ms" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.18)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.10)"; }}
+              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: "#0E1A2B", border: "none", color: "#F4F1EA", fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", transition: "background-color 200ms", boxShadow: "0 4px 20px rgba(14,26,43,0.15)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#1a2540"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#0E1A2B"; }}
             >
               Enter Your Command Center →
             </button>
           </div>
 
           {/* Model watermark */}
-          <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(244,241,234,0.12)", letterSpacing: "0.10em" }}>
+          <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em" }}>
             RUNPAYWAY&#8482; MODEL RP-2.0
           </div>
         </div>
@@ -751,8 +751,8 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)", overflowY: "auto" }}>
-      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", overflowY: "auto" }}>
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div
         style={{
           display: "flex",
@@ -765,17 +765,17 @@ export default function DiagnosticPage() {
       >
         <div style={{ textAlign: "center", maxWidth: 420, padding: "0 24px" }}>
           {/* Spinner */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 28px", animation: "rp-spin 0.8s linear infinite" }} />
+          <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(14,26,43,0.08)", borderTopColor: "#4B3FAE", margin: "0 auto 28px", animation: "rp-spin 0.8s linear infinite" }} />
 
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.35)", marginBottom: 16 }}>
             GENERATING YOUR ASSESSMENT
           </div>
 
-          <h2 style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 600, color: "#0E1A2B", letterSpacing: "-0.02em", marginBottom: 8 }}>
             Income Stability Score&#8482;
           </h2>
           {assessmentTitle && (
-            <p style={{ fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.60)", marginBottom: 32 }}>
+            <p style={{ fontSize: 15, fontWeight: 500, color: "rgba(14,26,43,0.50)", marginBottom: 32 }}>
               Preparing report for {assessmentTitle}
             </p>
           )}
@@ -790,7 +790,7 @@ export default function DiagnosticPage() {
                   alignItems: "center",
                   gap: 14,
                   padding: "12px 0",
-                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(244,241,234,0.06)" : "none",
+                  borderBottom: i < PROCESSING_STEPS.length - 1 ? "1px solid rgba(14,26,43,0.05)" : "none",
                   opacity: i <= loadingStep ? 1 : 0.3,
                   transition: "opacity 400ms ease",
                 }}
@@ -803,8 +803,8 @@ export default function DiagnosticPage() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    background: i < loadingStep ? "rgba(31,109,122,0.30)" : i === loadingStep ? "rgba(75,63,174,0.30)" : "rgba(244,241,234,0.06)",
-                    border: `1px solid ${i < loadingStep ? "rgba(31,109,122,0.40)" : i === loadingStep ? "rgba(75,63,174,0.40)" : "rgba(244,241,234,0.08)"}`,
+                    background: i < loadingStep ? "rgba(31,109,122,0.15)" : i === loadingStep ? "rgba(75,63,174,0.12)" : "rgba(14,26,43,0.04)",
+                    border: `1px solid ${i < loadingStep ? "rgba(31,109,122,0.25)" : i === loadingStep ? "rgba(75,63,174,0.25)" : "rgba(14,26,43,0.06)"}`,
                     transition: "background 400ms ease, border-color 400ms ease",
                     flexShrink: 0,
                   }}
@@ -814,10 +814,10 @@ export default function DiagnosticPage() {
                       <path d="M1 4L3.5 6.5L9 1" stroke="#1F6D7A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   ) : i === loadingStep ? (
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#F4F1EA", animation: "rp-pulse 1s ease-in-out infinite" }} />
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4B3FAE", animation: "rp-pulse 1s ease-in-out infinite" }} />
                   ) : null}
                 </div>
-                <span style={{ fontSize: 13, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? "#F4F1EA" : "rgba(244,241,234,0.30)" }}>
+                <span style={{ fontSize: 14, fontWeight: i <= loadingStep ? 500 : 400, color: i <= loadingStep ? "#0E1A2B" : "rgba(14,26,43,0.25)" }}>
                   {step}
                 </span>
               </div>
@@ -825,7 +825,7 @@ export default function DiagnosticPage() {
           </div>
 
           {/* Progress bar */}
-          <div style={{ height: 2, borderRadius: 2, background: "rgba(244,241,234,0.08)", overflow: "hidden" }}>
+          <div style={{ height: 2, borderRadius: 2, background: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
             <div
               style={{
                 height: "100%",
@@ -839,10 +839,10 @@ export default function DiagnosticPage() {
           {/* Rotating branded quotes */}
           <div style={{ marginTop: 40, maxWidth: 380, margin: "40px auto 0", textAlign: "center", minHeight: 80 }}>
             <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 400ms ease" }}>
-              <p style={{ fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.65)", lineHeight: 1.65, margin: "0 0 8px", fontStyle: "italic" }}>
+              <p style={{ fontSize: 15, fontWeight: 400, color: "rgba(14,26,43,0.50)", lineHeight: 1.65, margin: "0 0 8px", fontStyle: "italic" }}>
                 &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
               </p>
-              <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", color: "rgba(31,109,122,0.70)" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", color: "rgba(75,63,174,0.50)" }}>
                 {LOADING_QUOTES[quoteIdx]?.attr}
               </span>
             </div>
