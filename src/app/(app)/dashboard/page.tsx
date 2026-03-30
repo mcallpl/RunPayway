@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import Link from "next/link";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -749,8 +750,10 @@ export default function DashboardPage() {
           </PhaseSep>
 
           {/* FOOTER */}
-          <div style={{ paddingTop: 24, borderTop: `1px solid ${B.stone}`, textAlign: "center" }}>
-            <p style={{ fontSize: 11, color: B.taupe, margin: 0 }}>RunPayway&#8482; &mdash; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+          <div style={{ paddingTop: 32, textAlign: "center" }}>
+            <Link href="/pricing" style={{ fontSize: 15, color: B.muted, textDecoration: "none", lineHeight: 1.6 }}>
+              Your score is a snapshot. <span style={{ color: B.purple, fontWeight: 600 }}>The annual plan tracks how it moves.</span>
+            </Link>
           </div>
         </div>
       </div>
