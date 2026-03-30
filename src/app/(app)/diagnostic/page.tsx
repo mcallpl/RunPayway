@@ -212,6 +212,10 @@ export default function DiagnosticPage() {
   const [quoteFade, setQuoteFade] = useState(true);
   const [showOverlay, setShowOverlay] = useState(false);
   const [reviewExiting, setReviewExiting] = useState(false);
+  const [showReveal, setShowReveal] = useState(false);
+  const [revealScore, setRevealScore] = useState(0);
+  const [revealBand, setRevealBand] = useState("");
+  const [revealPhase, setRevealPhase] = useState(0); // 0=counting, 1=band, 2=peer, 3=cta
 
   // Lock user in — prevent back button and tab close
   useEffect(() => {
@@ -288,6 +292,28 @@ export default function DiagnosticPage() {
     const timer = setInterval(() => setElapsed((s) => s + 1), 1000);
     return () => clearInterval(timer);
   }, [showLoading]);
+
+  // Score reveal animation — count up then cascade phases
+  useEffect(() => {
+    if (!showReveal || revealScore === 0) return;
+    let count = 0;
+    const target = revealScore;
+    const duration = 2000;
+    const stepTime = Math.max(16, Math.floor(duration / target));
+    const counter = setInterval(() => {
+      count += 1;
+      if (count >= target) { count = target; clearInterval(counter); }
+      setRevealPhase(0);
+      // Use DOM to update the counter (avoid re-render per tick)
+      const el = document.getElementById("reveal-score-num");
+      if (el) el.textContent = String(count);
+    }, stepTime);
+    // Phase cascade
+    const t1 = setTimeout(() => setRevealPhase(1), duration + 400); // band
+    const t2 = setTimeout(() => setRevealPhase(2), duration + 1200); // peer
+    const t3 = setTimeout(() => setRevealPhase(3), duration + 2200); // CTA
+    return () => { clearInterval(counter); clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [showReveal, revealScore]);
 
   // Quote rotation
   useEffect(() => {
@@ -643,7 +669,15 @@ export default function DiagnosticPage() {
       setTimeout(async () => {
         setLoadingStep(PROCESSING_STEPS.length);
         await new Promise(resolve => setTimeout(resolve, 800));
-        router.push(planKey === "free" ? "/free-score" : "/dashboard");
+        if (planKey === "free") { router.push("/free-score"); return; }
+        // Score reveal for paid customers
+        try {
+          const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
+          setRevealScore(rec.final_score || 0);
+          setRevealBand(rec.stability_band || "");
+        } catch { /* */ }
+        setShowLoading(false);
+        setShowReveal(true);
       }, 5000);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
@@ -651,6 +685,66 @@ export default function DiagnosticPage() {
       setSubmitting(false);
     }
   };
+
+  /* ================================================================ */
+  /*  Score Reveal — the "aha" moment                                  */
+  /* ================================================================ */
+  if (showReveal) {
+    const revealColor = revealScore >= 75 ? "#1F6D7A" : revealScore >= 50 ? "#2B5EA7" : revealScore >= 30 ? "#92640A" : "#9B2C2C";
+    const nextBand = revealScore < 30 ? "Developing" : revealScore < 50 ? "Established" : revealScore < 75 ? "High" : null;
+    const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
+
+    return (
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#0E1A2B", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}22 0%, transparent 60%)`, pointerEvents: "none" }} />
+        <div style={{ textAlign: "center", maxWidth: 480, padding: "0 24px", position: "relative", zIndex: 1 }}>
+
+          {/* Score number — counts up */}
+          <div style={{ marginBottom: 8 }}>
+            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: "#F4F1EA", letterSpacing: "-0.05em", lineHeight: 1, fontFamily: "'Inter', system-ui, sans-serif" }}>0</span>
+            <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(244,241,234,0.25)", marginLeft: 4 }}>/100</span>
+          </div>
+
+          {/* Band name — fades in */}
+          <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 24 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 20px", borderRadius: 24, border: `1px solid ${revealColor}44`, backgroundColor: `${revealColor}15` }}>
+              <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: revealColor }} />
+              <span style={{ fontSize: 17, fontWeight: 600, color: revealColor }}>{revealBand}</span>
+            </div>
+          </div>
+
+          {/* Peer ranking — fades in */}
+          <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 32 }}>
+            {nextBand && (
+              <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", margin: "0 0 8px", lineHeight: 1.5 }}>
+                {gap} points from {nextBand} Stability
+              </p>
+            )}
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.35)", margin: 0 }}>
+              Your full diagnosis and action plan are ready.
+            </p>
+          </div>
+
+          {/* CTA — fades in */}
+          <div style={{ opacity: revealPhase >= 3 ? 1 : 0, transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease" }}>
+            <button
+              onClick={() => router.push("/dashboard")}
+              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.18)", color: "#F4F1EA", fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", transition: "background-color 200ms" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.18)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(255,255,255,0.10)"; }}
+            >
+              Enter Your Command Center →
+            </button>
+          </div>
+
+          {/* Model watermark */}
+          <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(244,241,234,0.12)", letterSpacing: "0.10em" }}>
+            RUNPAYWAY&#8482; MODEL RP-2.0
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   /* ================================================================ */
   /*  Processing screen                                               */
