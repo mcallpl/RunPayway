@@ -1240,22 +1240,40 @@ export default function ReviewPage() {
 
         <SectionDivider />
 
-        {/* ── COMMAND CENTER CTA — minimal, print-friendly ── */}
-        <div
-          onClick={() => router.push("/dashboard")}
-          style={{
-            textAlign: "center", padding: "20px 24px", borderRadius: 8,
-            border: `1px solid ${B.purple}20`, cursor: "pointer", marginBottom: 16,
-          }}
-        >
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>YOUR NEXT STEP</div>
-          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Open Your Command Center</div>
-          <p style={{ fontSize: 12, color: B.muted, margin: "0 0 12px", lineHeight: 1.5 }}>
-            Your roadmap, scripts, simulator, and progress tracker are ready at runpayway.com/dashboard
+        {/* ── COMMAND CENTER — diagnosis-to-action bridge ── */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>THIS REPORT IS YOUR DIAGNOSIS</div>
+          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.65 }}>
+            It shows where your income is structurally vulnerable and identifies the highest-impact changes. But a diagnosis alone does not change your score.
           </p>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 24px", borderRadius: 8, border: `1px solid ${B.navy}`, color: B.navy, fontSize: 14, fontWeight: 600 }}>
-            Go to Command Center &rarr;
+          <p style={{ ...T.small, color: B.navy, margin: "0 0 12px", lineHeight: 1.55, fontWeight: 500 }}>
+            Your Command Center is where the work happens:
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
+            {[
+              { bold: "PressureMap\u2122", text: " \u2014 AI-powered analysis of your income zones with peer benchmarks" },
+              { bold: "12-week roadmap", text: " with the exact sequence of actions" },
+              { bold: "Ready-to-use scripts", text: " tailored to your industry" },
+              { bold: "Real-time simulator", text: " to test changes before you commit" },
+              { bold: "Progress tracking", text: " that updates your estimated score as you act" },
+            ].map(item => (
+              <div key={item.bold} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0, marginTop: 7 }} />
+                <span style={{ ...T.small, color: B.navy, lineHeight: 1.5 }}><span style={{ fontWeight: 600 }}>{item.bold}</span>{item.text}</span>
+              </div>
+            ))}
           </div>
+          <div onClick={() => router.push("/dashboard")} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 8, border: `1px solid ${B.navy}`, color: B.navy, fontSize: 14, fontWeight: 600, cursor: "pointer", marginBottom: 12 }}>
+            Open Command Center &rarr;
+          </div>
+          <p style={{ ...T.small, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
+            Open at <span style={{ fontWeight: 600, color: B.navy }}>runpayway.com/dashboard</span> using the access code on your cover page.
+          </p>
+        </div>
+        <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}10` }}>
+          <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
+            The professionals who improve their scores are the ones who open their Command Center within 48 hours of reading this report.
+          </p>
         </div>
 
         {/* ── METHODOLOGY ── */}
