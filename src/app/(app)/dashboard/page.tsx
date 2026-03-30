@@ -35,6 +35,44 @@ const INTER = "'Inter', system-ui, -apple-system, sans-serif";
 function bc(s: number): string { return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited; }
 function fmtIndustry(s: string): string { return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()); }
 
+/* Map raw dropdown values → lookup keys */
+const SECTOR_MAP: Record<string, string> = {
+  "Real Estate": "real_estate",
+  "Finance / Banking": "finance_banking",
+  "Insurance": "insurance",
+  "Technology": "technology",
+  "Healthcare": "healthcare",
+  "Legal Services": "legal_services",
+  "Consulting / Professional Services": "consulting_professional_services",
+  "Sales / Brokerage": "sales_brokerage",
+  "Media / Entertainment": "creative_media",
+  "Construction / Trades": "construction_trades",
+  "Retail / E-Commerce": "retail_ecommerce",
+  "Hospitality / Food Service": "hospitality",
+  "Transportation / Logistics": "transportation",
+  "Manufacturing": "manufacturing",
+  "Education": "education_training",
+  "Nonprofit / Public Sector": "nonprofit",
+  "Agriculture": "agriculture",
+  "Energy / Utilities": "energy",
+  "Other": "default",
+  // Also match already-normalized keys
+  "real_estate": "real_estate",
+  "finance_banking": "finance_banking",
+  "insurance": "insurance",
+  "technology": "technology",
+  "healthcare": "healthcare",
+  "legal_services": "legal_services",
+  "consulting_professional_services": "consulting_professional_services",
+  "consulting": "consulting",
+  "sales_brokerage": "sales_brokerage",
+  "creative_media": "creative_media",
+  "construction_trades": "construction_trades",
+  "education_training": "education_training",
+  "fitness_wellness": "fitness_wellness",
+};
+function normSector(raw: string): string { return SECTOR_MAP[raw] || SECTOR_MAP[raw.toLowerCase()] || "default"; }
+
 /*  TYPE SCALE — 6 levels only
     Display: handled by ScoreRing (44px)
     H1: 22px  — section features, welcome headline
@@ -180,6 +218,13 @@ const IND: Record<string, { general: string; redAvg: number; greenAvg: number }>
   education_training: { general: "In education, trainers with course licensing or subscriptions score 35% higher than per-session.", redAvg: 55, greenAvg: 12 },
   fitness_wellness: { general: "In fitness, coaches with membership models average 30 points higher than session-based billing.", redAvg: 62, greenAvg: 8 },
   construction_trades: { general: "In trades, contractors with maintenance agreements score 28 points higher than bid-only.", redAvg: 68, greenAvg: 6 },
+  retail_ecommerce: { general: "In retail, businesses with subscription or membership models score 32% higher than transaction-only.", redAvg: 60, greenAvg: 8 },
+  hospitality: { general: "In hospitality, operators with recurring catering or event contracts score 30 points higher than walk-in dependent.", redAvg: 65, greenAvg: 6 },
+  transportation: { general: "In transportation, operators with contract routes or retainer clients score 28 points higher than spot-market dependent.", redAvg: 62, greenAvg: 8 },
+  manufacturing: { general: "In manufacturing, firms with long-term supply agreements score 35 points higher than order-by-order operations.", redAvg: 55, greenAvg: 14 },
+  nonprofit: { general: "In nonprofit, organizations with recurring donor programs score 40% higher than grant-cycle dependent.", redAvg: 60, greenAvg: 10 },
+  agriculture: { general: "In agriculture, operations with forward contracts or subscription CSAs score 30 points higher than market-price dependent.", redAvg: 65, greenAvg: 6 },
+  energy: { general: "In energy, providers with long-term service contracts score 32 points higher than project-based operations.", redAvg: 55, greenAvg: 12 },
   default: { general: "Across all sectors, professionals with at least one recurring income source score 35% higher.", redAvg: 58, greenAvg: 12 },
 };
 
@@ -194,8 +239,10 @@ function constraintNarrative(c: string, i: CanonicalInput): string {
     low_persistence: `Only ${i.income_persistence_pct}% of your income repeats automatically. The rest must be re-earned from scratch each month.`,
     low_source_diversity: `You have ${i.source_diversity_count} income source${i.source_diversity_count === 1 ? "" : "s"}. A single client decision has outsized power over your stability.`,
     high_variability: `Your income variability is ${i.income_variability_level}. Month-to-month swings make it harder to plan, save, and invest.`,
+    weak_durability: `Your income quality score indicates structural fragility. The contracts and agreements backing your income may not withstand market pressure.`,
+    shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
   };
-  return n[c] || "Your primary structural constraint is limiting your score.";
+  return n[c] || `Your primary structural factor — ${c.replace(/_/g, " ")} — is the biggest lever for improving your score.`;
 }
 
 /* ================================================================== */
@@ -353,13 +400,14 @@ function DashboardContent() {
   const baseRes = simulateScore(base, qScore);
   const dScore = score > 0 ? score : baseRes.overall_score;
   const dBand = band || baseRes.band;
-  const indData = IND[sector] || IND.default;
-  const scripts = sector ? getScriptsForSector(sector) : [];
+  const sectorKey = normSector(sector);
+  const indData = IND[sectorKey] || IND.default;
+  const scripts = sector ? getScriptsForSector(sectorKey) || getScriptsForSector(sector) : [];
 
   /* ── PressureMap ── */
   const rootCon = con?.root_constraint || "weak_forward_visibility";
   const secCon = con?.secondary_constraint || "";
-  const conPreset: Record<string, string> = { high_concentration: "add_client", weak_forward_visibility: "lock_forward", high_labor_dependence: "build_passive", low_persistence: "convert_retainer", low_source_diversity: "add_client", high_variability: "convert_retainer" };
+  const conPreset: Record<string, string> = { high_concentration: "add_client", weak_forward_visibility: "lock_forward", high_labor_dependence: "build_passive", low_persistence: "convert_retainer", low_source_diversity: "add_client", high_variability: "convert_retainer", weak_durability: "convert_retainer", shallow_continuity: "build_passive" };
   const liftOf = (pid: string) => { const p = SIMULATOR_PRESETS.find(x => x.id === pid); if (!p) return { s: dScore, l: 0 }; const res = simulateScore(p.modify(base), qScore); return { s: res.overall_score, l: Math.max(0, res.overall_score - dScore) }; };
   const redP = conPreset[rootCon] || "convert_retainer";
   const redR = liftOf(redP);
