@@ -52,7 +52,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
         {/* Right: Links */}
         <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
           <Link href="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none", borderBottom: `2px solid ${C.purple}`, paddingBottom: 2 }}>
-            Dashboard
+            Command Center
           </Link>
           <button
             onClick={() => { const e = new KeyboardEvent("keydown", { key: "k", metaKey: true }); window.dispatchEvent(e); }}
