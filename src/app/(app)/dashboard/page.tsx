@@ -469,9 +469,48 @@ function DashboardContent() {
 
   const scriptFor = (pid: string) => { if (!scripts.length) return null; if (pid === "convert_retainer") return scripts.find(s => s.id.includes("retainer")) || scripts[0]; if (pid === "add_client") return scripts.find(s => s.id.includes("diversi") || s.id.includes("referral")) || scripts[1]; if (pid === "build_passive") return scripts[2] || scripts[0]; return scripts[0]; };
 
-  /* ── Roadmap ── */
-  const phases = [{ weeks: "Week 1–2" }, { weeks: "Week 3–4" }, { weeks: "Week 5–8" }, { weeks: "Week 9–12" }];
-  const roadmap = topMoves.slice(0, 4).map((m, i) => ({ ...phases[i], action: m.label, pid: m.id, lift: m.lift, desc: m.description }));
+  /* ── Roadmap — enriched with success criteria, zone connection, effort, cumulative progress ── */
+  const phases = [{ weeks: "Week 1–2", effortLabel: "Quick win" }, { weeks: "Week 3–4", effortLabel: "Active effort" }, { weeks: "Week 5–8", effortLabel: "Structural shift" }, { weeks: "Week 9–12", effortLabel: "Compound & maintain" }];
+
+  const zoneForPreset: Record<string, string> = {
+    add_client: "Reduces active income exposure (red zone)",
+    convert_retainer: "Builds recurring income (amber → green zone)",
+    build_passive: "Grows protected income (green zone)",
+    lock_forward: "Improves forward visibility",
+  };
+
+  const industryAction: Record<string, Record<string, string>> = {
+    convert_retainer: { creative_media: "Convert your biggest production client to a monthly content retainer.", consulting_professional_services: "Offer your top client a monthly advisory retainer instead of project-based billing.", real_estate: "Propose a property management retainer to your highest-volume client.", technology: "Convert your largest project client to a monthly support and development retainer.", healthcare: "Transition your most active patient referral source to a membership arrangement.", default: "Convert your biggest client from project-based to a recurring monthly agreement." },
+    add_client: { creative_media: "Pitch a second production house or brand for recurring content work.", consulting_professional_services: "Open a conversation with one prospect in an adjacent vertical.", real_estate: "Build a referral relationship with one new mortgage broker or attorney.", technology: "Identify one adjacent SaaS client or agency that could become a steady source.", default: "Add one new client or revenue source that could reach 15%+ of income within 90 days." },
+    build_passive: { creative_media: "License existing content, create a template pack, or launch a paid resource library.", consulting_professional_services: "Package your frameworks into a course, book, or licensed methodology.", real_estate: "Create a property investment guide or neighborhood report subscription.", technology: "Build a micro-SaaS tool, plugin, or template marketplace product.", default: "Create one income stream that produces revenue whether you work that day or not." },
+    lock_forward: { creative_media: "Get signed commitments for next quarter's production calendar.", consulting_professional_services: "Secure prepaid quarterly retainer commitments from 2+ clients.", real_estate: "Pre-sign listing agreements or management contracts for the next quarter.", technology: "Lock in quarterly support contracts or prepaid development sprints.", default: "Secure next quarter's revenue with signed commitments, prepaid packages, or retainers." },
+  };
+
+  const getIndustryAction = (pid: string): string => {
+    const actions = industryAction[pid];
+    if (!actions) return "";
+    return actions[sectorKey] || actions.default || "";
+  };
+
+  let cumulativeScore = dScore;
+  const roadmap = topMoves.slice(0, 4).map((m, i) => {
+    const projected = cumulativeScore + m.lift;
+    const step = {
+      ...phases[i],
+      action: m.label,
+      pid: m.id,
+      lift: m.lift,
+      desc: getIndustryAction(m.id) || m.description,
+      zone: zoneForPreset[m.id] || "",
+      target: `Target: Score moves from ${cumulativeScore} to ${projected} by end of ${phases[i].weeks}.`,
+      cumulativeFrom: cumulativeScore,
+      cumulativeTo: projected,
+    };
+    cumulativeScore = projected;
+    return step;
+  });
+  const totalLift = cumulativeScore - dScore;
+
   const toggleStep = useCallback((idx: number) => { setCompletedSteps(prev => { const n = prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]; localStorage.setItem("rp_roadmap_steps", JSON.stringify(n)); return n; }); }, []);
 
   /* ── Quick progress ── */
@@ -750,13 +789,29 @@ function DashboardContent() {
             );
           })()}
 
-          {/* 4. 12-WEEK ROADMAP */}
+          {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
             <section>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe }}>YOUR 12-WEEK ROADMAP</div>
                 {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>{completedSteps.length}/{roadmap.length} completed</span>}
               </div>
+
+              {/* Cumulative progress bar */}
+              <div style={{ padding: "12px 20px", border: `1px solid ${B.stone}`, borderRadius: 10, backgroundColor: B.surface, marginBottom: 16 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                  <span style={{ fontSize: 13, color: B.taupe }}>Full plan impact</span>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: B.teal }}>{dScore} → {dScore + totalLift} (+{totalLift})</span>
+                </div>
+                <div style={{ height: 6, borderRadius: 3, backgroundColor: B.stone, overflow: "hidden" }}>
+                  <div style={{ height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
+                  <span style={{ fontSize: 11, color: B.taupe }}>Current: {dScore}</span>
+                  <span style={{ fontSize: 11, color: B.teal }}>Projected: {dScore + totalLift}</span>
+                </div>
+              </div>
+
               <div style={{ border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden" }}>
                 {roadmap.map((step, i) => {
                   const sc = scriptFor(step.pid); const isExp = expandedScript === `rm-${i}`; const done = completedSteps.includes(i);
@@ -770,12 +825,19 @@ function DashboardContent() {
                           <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe, lineHeight: 1.2 }}>{step.weeks}</div>
                         </div>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: 17, fontWeight: 600, color: done ? B.muted : B.navy, marginBottom: 4, textDecoration: done ? "line-through" : "none" }}>{step.action}</div>
-                          <p style={{ fontSize: 15, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{step.desc}</p>
-                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 600, color: B.teal }}>+{step.lift} pts</span>
-                            {sc && <button onClick={() => setExpandedScript(isExp ? null : `rm-${i}`)} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "6px 16px", cursor: "pointer", minHeight: 32 }}>{isExp ? "Hide script ▲" : "Script ▼"}</button>}
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+                            <div style={{ fontSize: 17, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none" }}>{step.action}</div>
+                            <span style={{ fontSize: 17, fontWeight: 300, color: B.teal, flexShrink: 0, marginLeft: 12 }}>+{step.lift}</span>
                           </div>
+                          <p style={{ fontSize: 15, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{step.desc}</p>
+                          {/* Zone connection + effort */}
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 8 }}>
+                            {step.zone && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.purple}08`, color: B.purple }}>{step.zone}</span>}
+                            <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: B.stone, color: B.taupe }}>{step.effortLabel}</span>
+                          </div>
+                          {/* Success criteria */}
+                          <p style={{ fontSize: 13, color: B.teal, margin: "0 0 8px", fontWeight: 500 }}>{step.target}</p>
+                          {sc && <button onClick={() => setExpandedScript(isExp ? null : `rm-${i}`)} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "6px 16px", cursor: "pointer", minHeight: 32 }}>{isExp ? "Hide script ▲" : "Script ▼"}</button>}
                         </div>
                       </div>
                       {isExp && sc && (
