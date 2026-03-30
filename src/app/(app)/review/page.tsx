@@ -1306,140 +1306,10 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <PageFooter section="RunPayway&#8482; Stability Plan" page={2} />
-    </>,
-
-    // Page 3: Stress Test & Value
-    <>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Stress Testing + Real-World Impact</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 6 }}>What happens when things go wrong — and how to prepare.</p>
-        <p style={{ ...T.small, color: B.muted, marginBottom: 20, lineHeight: 1.6 }}>
-          These are the specific disruptions your income is most exposed to — and what you can do about each one.
-        </p>
-
-        {/* ── STRESS TEST SCENARIOS ── */}
-        {v2Scenarios && v2Scenarios.length > 0 && (() => {
-          const scenarioPlain: Record<string, string> = {
-            active_labor_interrupted: "Stopping Work for a While",
-            platform_dependency_shock: "A Major Income Source Changes Terms",
-            forward_commitments_delayed: "Payment Delays or Income Gaps",
-            client_concentration_loss: "Losing a Client or Project",
-            market_contraction: "Market Downturn Reduces Demand",
-            regulatory_disruption: "Regulatory Changes Affect Your Income",
-            revenue_model_disruption: "Your Income Model Stops Working",
-            high_volatility_month: "A Slow Month with No Backup",
-            seasonal_revenue_gap: "Seasonal Slowdown Hits",
-            key_client_loss: "Losing a Key Client or Contract",
-            pricing_pressure: "Pricing Pressure from the Market",
-            recurring_stream_degrades: "Recurring Income Weakens",
-            referral_pipeline_dries: "New Business Dries Up",
-            contract_non_renewal: "A Major Contract Not Renewed",
-            scope_reduction: "Client Cuts Your Scope",
-          };
-
-          const scenarioSolutions: Record<string, string> = {
-            active_labor_interrupted: "Build recurring revenue to make sure money comes in, even if you are not actively working.",
-            platform_dependency_shock: "Diversify your income sources so no single platform or client controls your earnings.",
-            forward_commitments_delayed: "Develop passive income that does not rely on immediate payments or new client acquisition.",
-            client_concentration_loss: "Secure long-term retainers from more clients to reduce dependency on any single one.",
-            market_contraction: "Build income streams that are less sensitive to market cycles, like subscriptions or recurring contracts.",
-            regulatory_disruption: "Diversify your income model so regulatory changes in one area do not affect all your earnings.",
-            revenue_model_disruption: "Develop alternative income channels so you are not dependent on a single model.",
-            high_volatility_month: "Build a financial buffer through recurring revenue and passive income streams.",
-            seasonal_revenue_gap: "Smooth out seasonal income by securing annual contracts or building counter-cyclical revenue.",
-            key_client_loss: "Reduce client concentration by adding new revenue sources and retainer agreements.",
-            pricing_pressure: "Add value-based pricing and recurring models that are less vulnerable to price competition.",
-            recurring_stream_degrades: "Diversify your recurring revenue across multiple streams and client types.",
-            referral_pipeline_dries: "Build direct client acquisition channels alongside referral-based business.",
-            contract_non_renewal: "Maintain a pipeline of potential clients and build recurring income alongside contract work.",
-            scope_reduction: "Negotiate multi-year agreements and diversify across more clients.",
-          };
-
-          const sorted = [...v2Scenarios].sort((a, b) => b.score_drop - a.score_drop);
-          const top = sorted.slice(0, 3);
-          const liftScenarios = v2Lift?.lift_scenarios?.filter(s => s.lift > 0)?.sort((a, b) => b.lift - a.lift) ?? [];
-
-          return (
-            <div style={{ marginBottom: 20 }}>
-              {top.map((s, idx) => {
-                const title = scenarioPlain[s.scenario_id] || cleanScenarioTitle(s.label);
-                const solution = scenarioSolutions[s.scenario_id] || "Take steps to diversify and protect your income structure.";
-                const matchedLift = liftScenarios[idx];
-                const borderColor = idx === 0 ? B.bandLimited : idx === 1 ? B.bandDeveloping : B.navy;
-                return (
-                  <div key={s.scenario_id} style={{ ...cardStyle, padding: "18px 22px", marginBottom: 12, borderLeft: `3px solid ${borderColor}` }}>
-                    <div style={{ ...T.overline, color: borderColor, marginBottom: 6, letterSpacing: "0.1em" }}>SCENARIO {idx + 1}: {title.toUpperCase()}</div>
-                    <div style={{ marginBottom: 8 }}>
-                      <span style={{ ...T.small, color: B.bandLimited, fontWeight: 600 }}>Risk: </span>
-                      <span style={{ ...T.small, color: B.navy, lineHeight: 1.6 }}>
-                        If this happens, your income will drop by {s.score_drop} points ({s.original_score} to {s.scenario_score}).
-                        {s.band_shift ? ` This would drop you from ${s.original_band} to ${s.scenario_band}.` : ""}
-                      </span>
-                    </div>
-                    <div style={{ marginBottom: 8 }}>
-                      <span style={{ ...T.small, color: B.teal, fontWeight: 600 }}>Solution: </span>
-                      <span style={{ ...T.small, color: B.navy, lineHeight: 1.6 }}>{solution}</span>
-                    </div>
-                    {matchedLift && (
-                      <div>
-                        <span style={{ ...T.small, color: B.purple, fontWeight: 600 }}>Impact: </span>
-                        <span style={{ ...T.small, color: B.navy }}>This will increase your score by +{matchedLift.lift} points.</span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })()}
-
         <SectionDivider />
 
-        {/* ── HOW MUCH CAN YOUR INCOME ABSORB ── */}
-        {v2Fragility && (
-          <div style={{ ...cardStyle, marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>HOW MUCH CAN YOUR INCOME ABSORB?</div>
-            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16, marginBottom: 12 }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ ...T.sectionLabel, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
-                  {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
-                </div>
-                <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-                  {v2Explainability?.fragility_explanation || ({
-                    brittle: "A single disruption could cause your score to collapse. There is no structural buffer.",
-                    thin: "You can absorb a minor hit, but two disruptions close together would create serious pressure.",
-                    uneven: "Some parts of your income are protected, others are fully exposed.",
-                    supported: "Your income can absorb most common disruptions without dropping to a lower band.",
-                    resilient: "Your income can absorb a major hit and keep going.",
-                  })[v2Fragility.fragility_class] || ""}
-                </p>
-              </div>
-              <div style={{ flex: mobile ? undefined : 1 }}>
-                <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Primary Vulnerability</div>
-                <p style={{ ...T.small, color: B.navy, margin: "0 0 8px" }}>
-                  {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Structural gaps that limit resilience."}
-                </p>
-                <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Your Next Steps</div>
-                <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-                  {v2Lift?.lift_scenarios?.[0] ? cleanConstraintText(v2Lift.lift_scenarios[0].change_description || v2Lift.lift_scenarios[0].label) : "Start shifting income to more predictable, recurring sources."}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <PageFooter section="Stress Testing" page={3} />
-    </>,
-
-    // Page 4: Real-World Impact & Next Steps
-    <>
-        <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 8 }}>Real-World Impact &amp; Next Steps</h1>
-        <p style={{ fontSize: 16, color: B.muted, maxWidth: 540, marginBottom: 20 }}>What your score means in practice — and what to do now.</p>
-
-        {/* ── REAL-WORLD EXAMPLES ── */}
-        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 20 }}>
+        {/* ── RESILIENCE SNAPSHOT ── */}
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 14, marginBottom: 16 }}>
           <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandLimited}` }}>
             <Overline>IF YOUR BIGGEST SOURCE GOES AWAY</Overline>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
@@ -1448,60 +1318,48 @@ export default function ReviewPage() {
               <span style={{ ...T.cardHero, color: B.bandLimited }}>{Math.max(0, record.risk_scenario_score)}</span>
             </div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              Without long-term contracts, losing your top source could drop your score by {record.risk_scenario_drop} points. With retainers and recurring income, your score stays strong and steady.
+              A drop of {record.risk_scenario_drop} points. {record.risk_scenario_drop > 15 ? "This is a critical vulnerability." : "Manageable, but worth addressing."}
             </p>
           </div>
           <div style={{ flex: 1, ...cardStyle, borderLeft: `3px solid ${B.bandDeveloping}` }}>
             <Overline>IF YOU STOP WORKING ENTIRELY</Overline>
             <div style={{ ...T.cardHero, color: B.navy, marginBottom: 6 }}>{continuityDisplay}</div>
             <p style={{ ...T.small, color: B.muted, margin: 0 }}>
-              Stopping work for any reason could create immediate pressure. By creating backup revenue and shifting to predictable income, your score remains stable.
+              {Number(String(continuityDisplay).replace(/[^0-9.]/g, "")) < 2 ? "Your income has almost no runway without active work." : "You have some buffer, but building passive income extends this significantly."}
             </p>
           </div>
         </div>
 
-        <SectionDivider />
-
-        {/* ── WHY THIS REPORT DELIVERS VALUE ── */}
-        <div style={{ background: `linear-gradient(135deg, rgba(14,26,43,0.03) 0%, rgba(75,63,174,0.03) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 20 }}>
-          <div style={{ ...T.sectionTitle, color: B.navy, marginBottom: 10, fontSize: 16 }}>Why This Report Delivers Real Value</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.7 }}>
-            This is not just a snapshot of your current income. This report provides you with actionable steps, personalized recommendations, and the tools you need to future-proof your income.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {[
-              "Commit to the steps in this report today.",
-              "Track your progress using your RunPayway\u2122 Command Center.",
-              `Reassess in ${tier === "limited" ? "2" : tier === "high" ? "6" : "3"} months to see how much your score has improved.`,
-            ].map((text) => (
-              <div key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-                <span style={{ ...T.small, color: B.navy }}>{text}</span>
+        {/* ── FRAGILITY ── */}
+        {v2Fragility && (
+          <div style={{ ...cardStyle, marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.taupe, marginBottom: 8 }}>INCOME RESILIENCE</div>
+            <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16 }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ ...T.sectionLabel, color: v2Fragility.fragility_class === "brittle" || v2Fragility.fragility_class === "thin" ? B.bandLimited : v2Fragility.fragility_class === "resilient" || v2Fragility.fragility_class === "supported" ? B.teal : B.navy, marginBottom: 6 }}>
+                  {fragilityClassLabel[v2Fragility.fragility_class] || ((v2Fragility.fragility_class || "").charAt(0).toUpperCase() + (v2Fragility.fragility_class || "").slice(1))}
+                </div>
+                <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                  {v2Explainability?.fragility_explanation || ({
+                    brittle: "A single disruption could cause your score to collapse.",
+                    thin: "You can absorb a minor hit, but not two in a row.",
+                    uneven: "Some parts of your income are protected, others are fully exposed.",
+                    supported: "Your income can absorb most common disruptions.",
+                    resilient: "Your income can absorb a major hit and keep going.",
+                  })[v2Fragility.fragility_class] || ""}
+                </p>
               </div>
-            ))}
+              <div style={{ flex: mobile ? undefined : 1 }}>
+                <div style={{ ...T.meta, color: B.taupe, fontWeight: 600, marginBottom: 4 }}>Primary Vulnerability</div>
+                <p style={{ ...T.small, color: B.navy, margin: 0 }}>
+                  {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Structural gaps that limit resilience."}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* ── SHARE VIA EMAIL ── */}
-        <div style={{ ...cardStyle, marginBottom: 20, textAlign: "center" }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>SHARE YOUR ACHIEVEMENT</div>
-          <p style={{ ...T.small, color: B.navy, margin: "0 0 12px" }}>
-            You scored in the {record.stability_band} band. Share your achievement.
-          </p>
-          <button
-            onClick={() => {
-              const subject = encodeURIComponent("My Income Stability Assessment");
-              const bodyText = encodeURIComponent(`I just completed my RunPayway Income Stability assessment and scored in the ${record.stability_band} band.\n\nFind out where you stand: https://peoplestar.com/RunPayway`);
-              window.location.href = `mailto:?subject=${subject}&body=${bodyText}`;
-            }}
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 6, backgroundColor: B.navy, color: "#FFFFFF", fontSize: 13, fontWeight: 600, border: "none", cursor: "pointer" }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Share via Email
-          </button>
-        </div>
-
-        {/* ── RETAKE TIMING ── */}
+        {/* ── WHEN TO RETAKE ── */}
         <div style={{ ...cardStyle, marginBottom: 14 }}>
           <Overline>WHEN TO RETAKE THIS ASSESSMENT</Overline>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
@@ -1521,16 +1379,15 @@ export default function ReviewPage() {
           )}
         </div>
 
-        {/* ── METHODOLOGY FOOTER ── */}
+        {/* ── METHODOLOGY ── */}
         <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${B.stone}` }}>
           <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
             This is a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. This is a present-state structural assessment, not financial advice.
           </p>
         </div>
 
-        <PageFooter section="Real-World Impact &amp; Next Steps" page={4} />
+        <PageFooter section="RunPayway&#8482; Stability Plan" page={2} />
     </>,
-
 
   ];
 
