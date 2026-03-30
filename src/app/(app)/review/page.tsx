@@ -270,7 +270,10 @@ function ReportHeader() {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 16, borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
       <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
-      <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ width: 4, height: 4, borderRadius: 1, backgroundColor: "rgba(14,26,43,0.15)" }} />
+        <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
+      </div>
     </div>
   );
 }
@@ -1020,70 +1023,64 @@ export default function ReviewPage() {
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
   const pageContents: ReactNode[] = [
-    // Page 0: Cover — premium institutional
+    // Page 0: Cover — premium institutional with score ring
     <>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : "auto", textAlign: "center", padding: mobile ? "0 12px" : "56px 0 36px" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", minHeight: mobile ? 420 : "auto", textAlign: "center", padding: mobile ? "0 12px" : "48px 0 32px" }}>
 
-          {/* Logo — understated */}
-          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.8, marginBottom: mobile ? 24 : 40 }} />
+          {/* Logo */}
+          <Image src={logoBlue} alt="RunPayway&#8482;" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.8, marginBottom: mobile ? 24 : 36 }} />
 
-          {/* Thin rule */}
-          <div style={{ width: mobile ? 100 : 120, height: 1, backgroundColor: "rgba(14,26,43,0.10)", marginBottom: mobile ? 28 : 44 }} />
+          <div style={{ width: mobile ? 100 : 120, height: 1, backgroundColor: "rgba(14,26,43,0.10)", marginBottom: mobile ? 24 : 32 }} />
 
-          {/* Title block */}
           <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 8 }}>Income Stability Report</div>
-          <div style={{ fontSize: 14, fontWeight: 500, color: B.teal, letterSpacing: "0.04em", marginBottom: mobile ? 16 : 32 }}>STRUCTURAL ASSESSMENT &middot; CONFIDENTIAL</div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: B.teal, letterSpacing: "0.06em", marginBottom: mobile ? 16 : 24 }}>STRUCTURAL ASSESSMENT &middot; CONFIDENTIAL</div>
 
-          {/* Name + date */}
-          <div style={{ fontSize: mobile ? 17 : 22, fontWeight: 500, color: B.navy, marginBottom: 4, letterSpacing: "-0.01em" }}>{record.assessment_title}</div>
-          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.32)", marginBottom: mobile ? 24 : 32, letterSpacing: "0.02em" }}>{formalDate}</div>
+          <div style={{ fontSize: mobile ? 17 : 22, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{record.assessment_title}</div>
+          <div style={{ fontSize: 12, color: "rgba(14,26,43,0.32)", marginBottom: mobile ? 20 : 28, letterSpacing: "0.02em" }}>{formalDate}</div>
 
-          {/* Score — elegant light weight */}
-          <div style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: mobile ? 56 : 64, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{record.final_score}</span>
-            <span style={{ fontSize: mobile ? 17 : 20, fontWeight: 300, color: "rgba(14,26,43,0.25)", marginLeft: 2 }}>/100</span>
+          {/* Score ring — visual anchor */}
+          <div style={{ position: "relative", width: mobile ? 140 : 170, height: mobile ? 140 : 170, marginBottom: 16 }}>
+            <svg width={mobile ? 140 : 170} height={mobile ? 140 : 170} style={{ transform: "rotate(-90deg)" }}>
+              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={mobile ? 8 : 10} />
+              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke={bandColor} strokeWidth={mobile ? 8 : 10}
+                strokeDasharray={2 * Math.PI * (mobile ? 58 : 70)} strokeDashoffset={2 * Math.PI * (mobile ? 58 : 70) - (record.final_score / 100) * 2 * Math.PI * (mobile ? 58 : 70)}
+                strokeLinecap="round" />
+            </svg>
+            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{record.final_score}</span>
+              <span style={{ fontSize: 12, fontWeight: 300, color: "rgba(14,26,43,0.25)" }}>/100</span>
+            </div>
           </div>
 
-          {/* Band — minimal */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <div style={{ width: 6, height: 6, borderRadius: 1, backgroundColor: bandColor }} />
-            <div style={{ fontSize: 13, fontWeight: 500, color: bandColor, letterSpacing: "0.01em" }}>{record.stability_band}</div>
+            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
+            <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
 
-          {nextBandName && (
-            <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 28, letterSpacing: "0.01em" }}>{distanceToNext} points to {nextBandName} Stability</div>
-          )}
-          {tier === "high" && (
-            <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 28 }}>Highest stability band achieved</div>
-          )}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}>{distanceToNext} points to {nextBandName} Stability</div>}
+          {tier === "high" && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}>Highest stability band achieved</div>}
 
-          {/* Thin rule */}
-          <div style={{ width: mobile ? 60 : 80, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: mobile ? 20 : 28 }} />
+          <div style={{ width: mobile ? 60 : 80, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: mobile ? 16 : 24 }} />
 
-          {/* Access code — subtle */}
+          {/* Access code */}
           {(() => {
             const v2Cover = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
             const niCover = v2Cover?.normalized_inputs as Record<string, number | string> | undefined;
             if (!niCover) return null;
-            const payload = {
-              p: niCover.income_persistence_pct, c: niCover.largest_source_pct, s: niCover.source_diversity_count,
-              f: niCover.forward_secured_pct, v: niCover.income_variability_level, l: niCover.labor_dependence_pct,
-              q: (v2Cover?.quality as Record<string, number>)?.quality_score ?? 5,
-              n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
-            };
+            const payload = { p: niCover.income_persistence_pct, c: niCover.largest_source_pct, s: niCover.source_diversity_count, f: niCover.forward_secured_pct, v: niCover.income_variability_level, l: niCover.labor_dependence_pct, q: (v2Cover?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" };
             const code = btoa(JSON.stringify(payload));
             return (
-              <div style={{ maxWidth: mobile ? "90%" : 400 }}>
+              <div style={{ maxWidth: mobile ? "90%" : 380 }}>
                 <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
-                <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "10px 16px", textAlign: "left" }}>
+                <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "8px 14px", textAlign: "left" }}>
                   <div style={{ fontFamily: "monospace", fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
               </div>
             );
           })()}
 
-          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.22)", marginTop: 32, letterSpacing: "0.06em" }}>Model RP-2.0 &middot; Confidential</div>
+          <div style={{ fontSize: 11, color: "rgba(14,26,43,0.18)", marginTop: 24, letterSpacing: "0.06em" }}>Model RP-2.0 &middot; Confidential</div>
         </div>
     </>,
 
@@ -1109,67 +1106,62 @@ export default function ReviewPage() {
         </div>
 
         {/* ── KEY TAKEAWAY ── */}
-        <div style={{ background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderLeft: `3px solid ${B.purple}`, borderRadius: 6, padding: mobile ? "18px 16px" : "24px 28px", marginBottom: 24 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8, letterSpacing: "0.12em" }}>KEY TAKEAWAY</div>
-          <p style={{ ...T.sectionTitle, color: B.navy, margin: "0 0 12px" }}>
+        <div style={{ background: `linear-gradient(135deg, rgba(75,63,174,0.04) 0%, rgba(31,109,122,0.04) 100%)`, border: "1px solid rgba(14,26,43,0.08)", borderLeft: `3px solid ${B.purple}`, borderRadius: 6, padding: mobile ? "18px 16px" : "22px 28px", marginBottom: 24 }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>KEY TAKEAWAY</div>
+          <p style={{ ...T.sectionTitle, color: B.navy, margin: "0 0 8px" }}>
             {tier === "high" ? "Your income is strong and well-protected."
-              : tier === "established" ? "Your income is stable but at risk."
-              : tier === "developing" ? "Your income is building, but not secure yet."
-              : "Your income is structurally vulnerable right now."}
+              : tier === "established" ? "Your income is stable but exposed."
+              : tier === "developing" ? "Your income is building, but not secure."
+              : "Your income is structurally vulnerable."}
           </p>
           <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.7 }}>
             {tier === "high"
-              ? "You have built meaningful structural resilience, and most common disruptions would not threaten your financial security. This report confirms what is working and shows you how to maintain and extend your position. By continuing to optimize, you can lock in long-term financial peace of mind."
+              ? "Most disruptions would not threaten your financial security. This report confirms what is working and where to focus next."
               : tier === "established"
-              ? "You currently have a moderate level of income stability, but there are key vulnerabilities that could disrupt your financial security. This report gives you actionable steps to improve your stability and future-proof your income. By taking action, you can increase predictability, reduce risk, and build a solid foundation for financial peace of mind."
+              ? "You have meaningful structure, but key vulnerabilities remain. This report identifies the gaps and shows you how to close them."
               : tier === "developing"
-              ? "You have a foundation to build on, but important gaps remain that leave you exposed to disruptions. This report identifies exactly where the risks are and gives you a clear, actionable path to strengthen your position. With focused changes, you can significantly improve your financial security."
-              : "Most of your earnings depend on active effort, and a single disruption could create serious financial pressure. This report identifies exactly where the risks are and gives you a clear path to build real protection. By taking the steps outlined here, you can transform your income into a more predictable, resilient structure."}
+              ? "You have a foundation, but important gaps leave you exposed. This report shows exactly where the risks are and how to fix them."
+              : "A single disruption could create serious financial pressure. This report gives you a clear path to build real protection."}
           </p>
         </div>
 
-        {/* ── IN PLAIN ENGLISH — GOOD NEWS / BAD NEWS ── */}
+        {/* ── INCOME STRUCTURE — visual bar ── */}
+        <div style={{ ...cardStyle, marginBottom: 16, padding: mobile ? "18px 16px" : "20px 28px" }}>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>YOUR INCOME STRUCTURE</div>
+          <div style={{ display: "flex", height: 32, borderRadius: 6, overflow: "hidden", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
+            {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: "rgba(197,48,48,0.15)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.active_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandLimited }}>{record.active_income_level}%</span>}</div>}
+            {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: "rgba(183,121,31,0.12)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.semi_persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandDeveloping }}>{record.semi_persistent_income_level}%</span>}</div>}
+            {record.persistent_income_level > 0 && <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: "rgba(31,109,122,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>{record.persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>{record.persistent_income_level}%</span>}</div>}
+          </div>
+          <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandLimited }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandLimited }}>{record.active_income_level}%</strong> stops when you stop</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandDeveloping }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandDeveloping }}>{record.semi_persistent_income_level}%</strong> recurring</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.teal }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.teal }}>{record.persistent_income_level}%</strong> protected</span></div>
+          </div>
+        </div>
+
+        {/* ── IN PLAIN ENGLISH — tight, 2 sentences each ── */}
         <div style={{ ...cardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IN PLAIN ENGLISH</div>
-
-          {/* The Good News */}
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>The Good News:</div>
-            <p style={{ ...T.body, color: B.navy, margin: "0 0 6px", lineHeight: 1.65 }}>
-              {tier === "high"
-                ? `Most of your income continues even during disruptions. Only ${record.active_income_level}% requires your daily active effort, and you have ${continuityDisplay} of runway if you stopped working entirely.`
-                : tier === "established"
-                ? `You have some predictable income, but ${record.active_income_level}% of your income is tied to active contracts or projects. When these end, so does your money.`
-                : tier === "developing"
-                ? `You are earning income and have some early structure in place, but ${record.active_income_level}% of it is still tied to active work. When that work ends, so does your money.`
-                : `You are earning income, but ${record.active_income_level}% of it requires your active effort every day. If you stop working, your income stops almost immediately.`}
-            </p>
-            <p style={{ ...T.small, color: B.muted, margin: "0 0 4px", lineHeight: 1.5 }}>
-              <span style={{ fontWeight: 600 }}>What That Means:</span>{" "}
-              {tier === "high"
-                ? "Your income can absorb a lost client, a slow month, or an unexpected break without creating financial crisis."
-                : tier === "established"
-                ? "If you lose a client or a project, your income could drop quickly — but you have enough structure to absorb small setbacks."
-                : "If you lose a client or a project ends, your income could drop quickly with limited buffer to fall back on."}
-            </p>
-            <p style={{ ...T.small, color: B.teal, margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
-              <span style={{ fontWeight: 600 }}>The Opportunity:</span>{" "}
-              {tier === "high"
-                ? "You have the foundation to lock in long-term financial resilience with a few targeted optimizations."
-                : "You have the power to make changes that will secure a more stable income."}
-            </p>
-          </div>
-
-          {/* The Bad News */}
-          <div>
-            <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>The Bad News:</div>
-            <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
-              {tier === "high"
-                ? `Even with strong stability, ${dominantConstraintPlain[dominantConstraint] || "specific structural gaps remain"}. Addressing this would push your score even higher and protect against the few scenarios that could still affect you.`
-                : tier === "established"
-                ? `Without enough predictable income sources like retainers or subscriptions, you are still exposed to uncertain income and could be caught off-guard if clients stop paying or projects end. Your biggest vulnerability: ${dominantConstraintPlain[dominantConstraint] || "structural gaps that limit your score"}.`
-                : `Your income structure has significant gaps. ${dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Key structural weaknesses are limiting your financial security."} Without changes, you are exposed to disruptions that could create real financial pressure.`}
-            </p>
+          <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16 }}>
+            <div style={{ flex: 1, padding: "16px 20px", borderRadius: 8, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.08)" }}>
+              <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>The Strength</div>
+              <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
+                {tier === "high"
+                  ? `Only ${record.active_income_level}% of your income requires daily effort. You have ${continuityDisplay} of runway if you stopped working entirely.`
+                  : tier === "established"
+                  ? `You have meaningful recurring income. ${100 - record.active_income_level}% of your earnings have some structural protection.`
+                  : `You are earning income and building structure. ${record.semi_persistent_income_level + record.persistent_income_level}% has some repeating foundation.`}
+              </p>
+            </div>
+            <div style={{ flex: 1, padding: "16px 20px", borderRadius: 8, backgroundColor: "rgba(197,48,48,0.03)", border: "1px solid rgba(197,48,48,0.06)" }}>
+              <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>The Risk</div>
+              <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
+                {tier === "high"
+                  ? `${dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Specific structural gaps remain."} Addressing this pushes your score even higher.`
+                  : `${record.active_income_level}% of income stops when you stop. ${dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Key structural gaps remain."}`}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1205,36 +1197,27 @@ export default function ReviewPage() {
             extend_continuity: { goal: "Extend how long income would last if you stopped working", action: "Build at least one income stream that would keep producing for 3+ months independently.", example: "Choose a side project or digital product you can create quickly and launch." },
           };
 
-          const stepLabels = ["Step 1", "Step 2", "Step 3"];
           const stepColors = [B.purple, B.teal, B.navy];
           const steps = viable.slice(0, 3);
 
           return (
             <div style={{ marginBottom: 24 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {steps.map((scenario, idx) => {
                   const concrete = liftConcrete[scenario.scenario_id];
                   const aiAction = idx === 0 ? aiPlan?.primary_action : idx === 1 ? aiPlan?.supporting_action : null;
-                  const aiHow = idx === 0 ? aiPlan?.primary_how : idx === 1 ? aiPlan?.supporting_how : null;
                   const goal = aiAction || concrete?.goal || scenario.label;
-                  const action = aiHow || concrete?.action || scenario.change_description || "";
-                  const example = concrete?.example || "";
+                  const action = concrete?.action || scenario.change_description || "";
                   return (
-                    <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "18px 22px", borderLeft: `3px solid ${stepColors[idx]}` }}>
-                      <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 8, letterSpacing: "0.12em" }}>{stepLabels[idx]}: {goal.length > 50 ? goal.substring(0, 50) + "..." : goal}</div>
-                      <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 8 }}>{goal}</div>
-                      <div style={{ marginBottom: 8 }}>
-                        <span style={{ ...T.small, color: B.muted, fontWeight: 600 }}>Action: </span>
-                        <span style={{ ...T.small, color: B.navy, lineHeight: 1.6 }}>{action}</span>
+                    <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "16px 22px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 4 }}>STEP {idx + 1}</div>
+                        <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{goal}</div>
+                        <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.55 }}>{action.length > 120 ? action.substring(0, 120) + "..." : action}</p>
                       </div>
-                      {example && (
-                        <div style={{ marginBottom: 8 }}>
-                          <span style={{ ...T.small, color: B.muted, fontWeight: 600 }}>Example: </span>
-                          <span style={{ ...T.small, color: B.navy, lineHeight: 1.6 }}>{example}</span>
-                        </div>
-                      )}
-                      <div style={{ ...T.small, color: B.teal, fontWeight: 600, marginTop: 4 }}>
-                        Impact: This will increase your score by +{scenario.lift} points{scenario.band_shift ? `, moving you to ${scenario.projected_band}` : ""}, improving your stability and reducing income fluctuation.
+                      <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
+                        <div style={{ fontSize: 24, fontWeight: 300, color: stepColors[idx], lineHeight: 1 }}>+{scenario.lift}</div>
+                        <div style={{ fontSize: 11, color: B.muted }}>points</div>
                       </div>
                     </div>
                   );
