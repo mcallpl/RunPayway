@@ -753,7 +753,7 @@ function PressureNarrative() {
 
 
 /* ================================================================== */
-/* PRODUCT MOCKUP — full-bleed showcase, phone dominates               */
+/* PRODUCT MOCKUP — text left, phone right flush (SafePath layout)     */
 /* ================================================================== */
 function ProductMockup() {
   const m = useMobile();
@@ -771,81 +771,42 @@ function ProductMockup() {
     <section ref={ref} aria-label="Product preview" style={{
       background: C.sandAlt,
       paddingTop: m ? sp(6) : sp(8),
-      paddingBottom: 0,
+      paddingBottom: m ? sp(6) : sp(8),
       paddingLeft: px(m), paddingRight: px(m),
-      overflow: "hidden",
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible) }}>
-        {/* Full-width showcase card */}
         <div style={{
           display: m ? "block" : "flex",
-          alignItems: "stretch",
           borderRadius: 24,
           overflow: "hidden",
-          background: "linear-gradient(160deg, #F0EDE8 0%, #E8E5E0 50%, #DDD9D3 100%)",
-          boxShadow: "0 4px 24px rgba(14,26,43,0.06), 0 16px 64px rgba(14,26,43,0.05)",
-          border: `1px solid ${C.border}`,
           position: "relative",
         }}>
-          {/* Left — phone image, flush to bottom edge */}
+          {/* LEFT — text panel with light bg */}
           <div style={{
-            flex: m ? undefined : "0 0 58%",
-            position: "relative",
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-            minHeight: m ? 420 : 600,
-          }}>
-            {/* Phone — flush to bottom, overflows top */}
-            <div style={{
-              position: "absolute",
-              bottom: 0,
-              left: "50%",
-              width: m ? 380 : 700,
-              transform: visible
-                ? `translateX(-50%) scale(1)`
-                : `translateX(-50%) translateY(40px) scale(0.94)`,
-              zIndex: 2,
-              filter: "drop-shadow(0 24px 48px rgba(14,26,43,0.18)) drop-shadow(0 12px 24px rgba(14,26,43,0.10))",
-              transition: "transform 900ms cubic-bezier(0.22, 1, 0.36, 1)",
-            }}>
-              <Image
-                src={iphoneHand}
-                alt="RunPayway Command Center on mobile"
-                style={{ width: "100%", height: "auto", display: "block" }}
-                priority
-              />
-            </div>
-
-          </div>
-
-          {/* Right — product info (tighter padding) */}
-          <div style={{
-            flex: m ? undefined : "0 0 42%",
-            padding: m ? `${sp(5)}px ${sp(3)}px ${sp(4)}px` : `${sp(6)}px ${sp(4)}px ${sp(6)}px ${sp(2)}px`,
+            flex: m ? undefined : "0 0 36%",
+            padding: m ? `${sp(5)}px ${sp(3)}px` : `${sp(6)}px ${sp(5)}px`,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            backgroundColor: "#F0EDE8",
           }}>
-            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
-              Command Center
-            </div>
             <h2 style={{
-              ...h2(m), color: C.navy,
-              fontSize: m ? 24 : 30,
+              fontFamily: SERIF, fontWeight: 400,
+              fontSize: m ? 26 : 32, lineHeight: 1.15,
+              color: C.navy,
               marginBottom: sp(3),
             }}>
-              Your complete structural diagnostic — in one place.
+              RunPayway&#174;
             </h2>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5), marginBottom: sp(4) }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: sp(2), marginBottom: sp(4) }}>
               {features.map(f => (
                 <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5) }}>
                   <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0, marginTop: 2 }}>
                     <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.12)" />
                     <path d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                   </svg>
-                  <span style={{ ...body(m), color: C.muted }}>{f}</span>
+                  <span style={{ fontSize: 15, color: C.navy, lineHeight: 1.55 }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -860,6 +821,32 @@ function ProductMockup() {
             >
               Explore the Sample Report &#8594;
             </Link>
+          </div>
+
+          {/* RIGHT — phone image, flush to right & bottom edges */}
+          <div style={{
+            flex: m ? undefined : 1,
+            position: "relative",
+            backgroundColor: "#E8E5E0",
+            minHeight: m ? 400 : 480,
+            overflow: "hidden",
+          }}>
+            <div style={{
+              position: "absolute",
+              bottom: 0,
+              right: m ? "50%" : 0,
+              transform: m ? "translateX(50%)" : "none",
+              width: m ? 360 : 520,
+              zIndex: 1,
+              filter: "drop-shadow(-12px -8px 32px rgba(14,26,43,0.12))",
+            }}>
+              <Image
+                src={iphoneHand}
+                alt="RunPayway Command Center on mobile"
+                style={{ width: "100%", height: "auto", display: "block" }}
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>
