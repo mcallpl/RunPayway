@@ -648,207 +648,398 @@ function HeroVideo() {
 
 
 /* ================================================================== */
-/* HOW IT WORKS — today's vertical timeline version                    */
+/* HOW IT WORKS — 5-layer institutional system explanation             */
 /* ================================================================== */
 function HowItWorksSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const { ref: ref2, visible: v2 } = useInView();
+  const { ref: ref3, visible: v3 } = useInView();
+  const { ref: ref4, visible: v4 } = useInView();
+  const { ref: ref5, visible: v5 } = useInView();
 
-  const steps = [
-    { num: "01", title: "Answer structural questions", desc: "About how your income is built — sources, concentration, visibility, and continuity.", trust: "No bank connection", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" /></svg> },
-    { num: "02", title: "Receive your score instantly", desc: "A score out of 100, your stability band, and the primary constraint holding your income down.", trust: "No credit pull", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke={C.purple} strokeWidth="1.5" /><path d="M12 7v5l3 3" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" /></svg> },
-    { num: "03", title: "Unlock the full diagnostic", desc: "PressureMap, Command Center, industry-specific scripts, and a 12-week roadmap — yours to keep.", trust: "Private by default", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 15V9m0 0l-3 3m3-3l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg> },
+  const dimensions = [
+    { dim: "Recurrence", tests: "Income that renews without re-selling", matters: "Reduces dependency on constant effort" },
+    { dim: "Concentration", tests: "Reliance on your top source", matters: "Identifies single-point failure risk" },
+    { dim: "Source Count", tests: "Number of meaningful income streams", matters: "Measures diversification strength" },
+    { dim: "Forward Visibility", tests: "Income already secured ahead of time", matters: "Determines short-term stability" },
+    { dim: "Consistency", tests: "Monthly income fluctuation", matters: "Measures predictability" },
+    { dim: "Labor Independence", tests: "Income that continues without active work", matters: "Defines structural resilience" },
   ];
 
-  const accents = [C.teal, C.purple, C.navy];
+  const divider = <div style={{ height: 1, backgroundColor: C.border, maxWidth: 120, margin: m ? `${sp(10)}px auto` : `${sp(15)}px auto` }} />;
 
   return (
-    <section ref={ref} aria-label="How it works" style={{
-      background: C.sand,
-      paddingTop: m ? sp(8) : sp(10),
-      paddingBottom: m ? sp(8) : sp(10),
+    <>
+    {/* ── LAYER 1: OPENING ── */}
+    <section ref={ref} aria-label="How It Works" style={{
+      background: C.white,
+      paddingTop: m ? sp(12) : sp(15),
+      paddingBottom: 0,
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, ...fadeIn(visible) }}>
+          <div style={{
+            ...T.label, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(3) : sp(4),
+          }}>
             How It Works
           </div>
-          <h2 style={{ ...h2(m), color: C.navy }}>
-            90 seconds. No financial data. Just structure.
+          <h2 style={{
+            fontSize: m ? 34 : 52, fontWeight: 600, lineHeight: 1.06,
+            color: C.navy, letterSpacing: "-0.03em",
+            marginBottom: m ? sp(4) : sp(5),
+          }}>
+            Measured in structure.<br />Not in dollars.
           </h2>
+          <p style={{
+            ...bodyLg(m), color: C.muted, maxWidth: 560,
+            marginBottom: m ? sp(3) : sp(4),
+          }}>
+            RunPayway evaluates how your income is built — not how much you make.
+            No accounts. No credit pulls. No financial data.
+          </p>
+          <p style={{
+            ...T.meta, color: C.light,
+          }}>
+            Model RP-2.0 &bull; Deterministic System &bull; Same inputs &#8594; same result
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {divider}
+
+    {/* ── LAYER 2: THE JOURNEY — 4 STAGES ── */}
+    <section ref={ref2} aria-label="The Journey" style={{
+      background: C.white,
+      paddingTop: 0, paddingBottom: 0,
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+
+        {/* Stage 01 */}
+        <div style={{ marginBottom: m ? sp(10) : sp(12), ...fadeIn(v2) }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(2) }}>
+            <span style={{ fontFamily: SERIF, fontSize: m ? 28 : 36, color: C.teal, lineHeight: 1 }}>01</span>
+            <div style={{ height: 1, flex: 1, maxWidth: 80, backgroundColor: C.border }} />
+          </div>
+          <h3 style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, marginBottom: sp(2), letterSpacing: "-0.02em" }}>
+            Structural Profile
+          </h3>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginBottom: sp(3) }}>
+            You provide context about how your income operates — not what you earn.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(1.5), maxWidth: 520, marginBottom: sp(3) }}>
+            {["Classification (individual, business, team)", "Operating structure (employee, owner, contractor)", "Income model (salary, commission, subscription, hybrid)", "Industry environment"].map(item => (
+              <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <div style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
+                <span style={{ ...T.meta, color: C.muted }}>{item}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600 }}>No dollar inputs. No account access.</p>
         </div>
 
-        {/* Timeline */}
-        <div style={{ position: "relative" }}>
-          {/* Vertical connector line */}
-          {!m && (
-            <div style={{
-              position: "absolute", left: 28, top: 48, bottom: 48,
-              width: 1, background: `linear-gradient(180deg, ${C.teal}, ${C.purple}, ${C.navy})`,
-              opacity: visible ? 0.2 : 0,
-              transition: "opacity 800ms ease 400ms",
-            }} />
-          )}
+        {/* Stage 02 */}
+        <div style={{ marginBottom: m ? sp(10) : sp(12), ...fadeIn(v2, 200) }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(2) }}>
+            <span style={{ fontFamily: SERIF, fontSize: m ? 28 : 36, color: C.teal, lineHeight: 1 }}>02</span>
+            <div style={{ height: 1, flex: 1, maxWidth: 80, backgroundColor: C.border }} />
+          </div>
+          <h3 style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, marginBottom: sp(2), letterSpacing: "-0.02em" }}>
+            Structural Assessment
+          </h3>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginBottom: sp(4) }}>
+            Six fixed questions evaluate the architecture of your income.
+          </p>
 
-          {steps.map((s, i) => (
-            <div key={s.num} style={{
-              display: "flex",
-              gap: m ? sp(2.5) : sp(4),
-              alignItems: "flex-start",
-              marginBottom: i < 2 ? (m ? sp(5) : sp(6)) : 0,
-              ...fadeIn(visible, 150 + i * 150),
-            }}>
-              {/* Step number circle */}
-              <div style={{
-                width: 56, height: 56, borderRadius: 16,
-                backgroundColor: `${accents[i]}08`,
-                border: `1px solid ${accents[i]}18`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                flexShrink: 0,
-                position: "relative",
-                zIndex: 1,
-              }}>
-                <span style={{ fontFamily: SERIF, fontSize: 22, color: accents[i], lineHeight: 1 }}>{s.num}</span>
-              </div>
-
-              {/* Step content */}
-              <div style={{ flex: 1, paddingTop: 4 }}>
-                <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
-                <p style={{ ...body(m), color: C.muted, margin: `0 0 ${sp(1.5)}px` }}>{s.desc}</p>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: `4px 12px`, borderRadius: 20, backgroundColor: `${accents[i]}08`, border: `1px solid ${accents[i]}12` }}>
-                  <span style={{ color: accents[i], fontSize: 14 }}>&#x2713;</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: accents[i], letterSpacing: "0.02em" }}>{s.trust}</span>
-                </div>
-              </div>
+          {/* Dimension table */}
+          <div style={{ maxWidth: 720, border: `1px solid ${C.border}`, borderRadius: 12, overflow: "hidden" }}>
+            {/* Header */}
+            <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "140px 1fr 1fr", padding: `${sp(1.5)}px ${sp(3)}px`, backgroundColor: C.sandBg, borderBottom: `1px solid ${C.border}` }}>
+              {!m && <>
+                <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>Dimension</span>
+                <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>What It Tests</span>
+                <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>Why It Matters</span>
+              </>}
+              {m && <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>6 Structural Dimensions</span>}
             </div>
-          ))}
+            {/* Rows */}
+            {dimensions.map((d, i) => (
+              <div key={d.dim} style={{
+                display: "grid", gridTemplateColumns: m ? "1fr" : "140px 1fr 1fr",
+                padding: m ? `${sp(2)}px ${sp(3)}px` : `${sp(1.5)}px ${sp(3)}px`,
+                borderBottom: i < dimensions.length - 1 ? `1px solid ${C.border}` : "none",
+                gap: m ? sp(0.5) : 0,
+              }}>
+                <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>{d.dim}</span>
+                <span style={{ ...T.meta, color: C.muted }}>{d.tests}</span>
+                <span style={{ ...T.meta, color: C.light }}>{d.matters}</span>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600, marginTop: sp(3) }}>No financial data. Only structural patterns.</p>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 600) }}>
-          <Link href="/how-it-works" style={{
-            display: "inline-flex", alignItems: "center", gap: sp(1),
-            ...T.cta, color: C.teal, textDecoration: "none",
-            transition: "opacity 200ms ease",
-          }}
-            onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+        {/* Stage 03 */}
+        <div style={{ marginBottom: m ? sp(10) : sp(12), ...fadeIn(v2, 400) }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(2) }}>
+            <span style={{ fontFamily: SERIF, fontSize: m ? 28 : 36, color: C.teal, lineHeight: 1 }}>03</span>
+            <div style={{ height: 1, flex: 1, maxWidth: 80, backgroundColor: C.border }} />
+          </div>
+          <h3 style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, marginBottom: sp(2), letterSpacing: "-0.02em" }}>
+            Score Generation
+          </h3>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginBottom: sp(4) }}>
+            The model produces a single standardized output.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(2), maxWidth: 560 }}>
+            {[
+              { label: "Score", value: "0 \u2013 100" },
+              { label: "Stability Band", value: "4 fixed tiers" },
+              { label: "Primary Constraint", value: "Largest structural weakness" },
+              { label: "Distance to Next Tier", value: "Points remaining" },
+              { label: "Highest-Leverage Move", value: "Single best improvement" },
+            ].map(item => (
+              <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: `${sp(1)}px 0`, borderBottom: `1px solid ${C.border}` }}>
+                <span style={{ ...T.meta, fontWeight: 600, color: C.navy }}>{item.label}</span>
+                <span style={{ ...T.meta, color: C.muted }}>{item.value}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Bands */}
+          <div style={{ marginTop: sp(4), display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr 1fr", gap: sp(1.5), maxWidth: 720 }}>
+            {[
+              { band: "Limited", range: "0 \u2013 29", desc: "Structurally fragile" },
+              { band: "Developing", range: "30 \u2013 49", desc: "Partially stable, exposed" },
+              { band: "Established", range: "50 \u2013 74", desc: "Absorbs most disruptions" },
+              { band: "High", range: "75 \u2013 100", desc: "Structurally resilient" },
+            ].map(b => (
+              <div key={b.band} style={{ padding: `${sp(2)}px ${sp(2.5)}px`, borderRadius: 8, border: `1px solid ${C.border}` }}>
+                <div style={{ ...T.meta, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{b.band}</div>
+                <div style={{ fontSize: 12, color: C.teal, fontWeight: 600, marginBottom: 4 }}>{b.range}</div>
+                <div style={{ fontSize: 13, color: C.muted }}>{b.desc}</div>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600, marginTop: sp(3) }}>No interpretation variance. No subjectivity.</p>
+        </div>
+
+        {/* Stage 04 */}
+        <div style={{ ...fadeIn(v2, 600) }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: sp(2), marginBottom: sp(2) }}>
+            <span style={{ fontFamily: SERIF, fontSize: m ? 28 : 36, color: C.teal, lineHeight: 1 }}>04</span>
+            <div style={{ height: 1, flex: 1, maxWidth: 80, backgroundColor: C.border }} />
+          </div>
+          <h3 style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, marginBottom: sp(2), letterSpacing: "-0.02em" }}>
+            Full Diagnostic System
+          </h3>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginBottom: sp(4) }}>
+            The full diagnostic converts your score into a structured action system.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(2), maxWidth: 720 }}>
+            {[
+              { label: "PressureMap\u2122", desc: "Where income breaks under stress" },
+              { label: "Risk Scenarios", desc: "Ranked by structural damage" },
+              { label: "Action Priorities", desc: "Ranked by score impact" },
+              { label: "Industry Scripts", desc: "Ready-to-use conversation guides" },
+              { label: "12-Week Roadmap", desc: "Week-by-week execution plan" },
+              { label: "Command Center", desc: "Live structural simulator" },
+            ].map(item => (
+              <div key={item.label} style={{ padding: `${sp(2)}px ${sp(2.5)}px`, borderRadius: 8, border: `1px solid ${C.border}` }}>
+                <div style={{ ...T.meta, fontWeight: 600, color: C.navy, marginBottom: 4 }}>{item.label}</div>
+                <div style={{ fontSize: 13, color: C.muted }}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600, marginTop: sp(3) }}>From measurement &#8594; to structural control.</p>
+        </div>
+      </div>
+    </section>
+
+    {divider}
+
+    {/* ── LAYER 3: HOW THE MODEL WORKS ── */}
+    <section ref={ref3} aria-label="How the Model Works" style={{
+      background: C.white,
+      paddingTop: 0, paddingBottom: 0,
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, ...fadeIn(v3) }}>
+          <div style={{
+            ...T.label, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+            color: C.teal, marginBottom: m ? sp(2) : sp(3),
+          }}>
+            Under the Hood
+          </div>
+          <h2 style={{
+            fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.1,
+            color: C.navy, letterSpacing: "-0.02em",
+            marginBottom: m ? sp(4) : sp(5),
+          }}>
+            How the Model Works
+          </h2>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginBottom: sp(5) }}>
+            The system evaluates income using two fixed scoring blocks.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 720, marginBottom: sp(5), ...fadeIn(v3, 200) }}>
+          {/* Structure Block */}
+          <div style={{ padding: sp(4), borderRadius: 12, border: `1px solid ${C.border}` }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: sp(1) }}>STRUCTURE BLOCK</div>
+            <div style={{ fontSize: 28, fontWeight: 600, color: C.teal, marginBottom: sp(2) }}>60%</div>
+            <p style={{ ...T.meta, color: C.muted, marginBottom: sp(2) }}>Measures how income is built:</p>
+            {["Recurrence", "Diversification", "Visibility", "Concentration balance"].map(item => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <div style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: C.teal }} />
+                <span style={{ ...T.meta, color: C.navy }}>{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Stability Block */}
+          <div style={{ padding: sp(4), borderRadius: 12, border: `1px solid ${C.border}` }}>
+            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: sp(1) }}>STABILITY BLOCK</div>
+            <div style={{ fontSize: 28, fontWeight: 600, color: C.teal, marginBottom: sp(2) }}>40%</div>
+            <p style={{ ...T.meta, color: C.muted, marginBottom: sp(2) }}>Measures how income behaves:</p>
+            {["Labor dependence", "Earnings consistency", "Continuity under disruption"].map(item => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <div style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: C.teal }} />
+                <span style={{ ...T.meta, color: C.navy }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Cross-factor */}
+        <div style={{ maxWidth: 720, padding: sp(4), borderRadius: 12, border: `1px solid ${C.border}`, ...fadeIn(v3, 400) }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: sp(2) }}>CROSS-FACTOR LOGIC</div>
+          <p style={{ ...body(m), color: C.muted, marginBottom: sp(3), maxWidth: 520 }}>
+            Some structures weaken each other. Some strengthen each other.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(2) }}>
+            <div style={{ padding: `${sp(2)}px ${sp(2.5)}px`, borderRadius: 8, backgroundColor: C.sandBg }}>
+              <div style={{ ...T.meta, fontWeight: 600, color: "#7A1F2B", marginBottom: 4 }}>Structural Penalty</div>
+              <p style={{ fontSize: 13, color: C.muted, margin: 0 }}>High concentration + low visibility &#8594; score reduction</p>
+            </div>
+            <div style={{ padding: `${sp(2)}px ${sp(2.5)}px`, borderRadius: 8, backgroundColor: C.sandBg }}>
+              <div style={{ ...T.meta, fontWeight: 600, color: C.teal, marginBottom: 4 }}>Structural Boost</div>
+              <p style={{ fontSize: 13, color: C.muted, margin: 0 }}>Strong recurrence + low labor dependence &#8594; score increase</p>
+            </div>
+          </div>
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600, marginTop: sp(3) }}>Rules are fixed. Interactions are predefined. No machine learning.</p>
+        </div>
+      </div>
+    </section>
+
+    {divider}
+
+    {/* ── LAYER 4: WHAT THIS SYSTEM DOES AND DOES NOT DO ── */}
+    <section ref={ref4} aria-label="System Boundaries" style={{
+      background: C.white,
+      paddingTop: 0, paddingBottom: 0,
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ maxWidth: 720, ...fadeIn(v4) }}>
+          <h2 style={{
+            fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.1,
+            color: C.navy, letterSpacing: "-0.02em",
+            marginBottom: m ? sp(5) : sp(6),
+          }}>
+            What This System Does — and Does Not Do
+          </h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(4) }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: sp(2) }}>DOES</div>
+              {[
+                "Measures structure, not income level",
+                "Produces consistent, repeatable outputs",
+                "Identifies structural weaknesses precisely",
+                "Quantifies improvement path",
+              ].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: sp(1.5) }}>
+                  <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#x2713;</span>
+                  <span style={{ ...body(m), color: C.navy, margin: 0 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.light, marginBottom: sp(2) }}>DOES NOT</div>
+              {[
+                "Access bank accounts",
+                "Pull credit data",
+                "Use AI to change scoring",
+                "Predict future income",
+                "Change results based on industry or bias",
+              ].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: sp(1.5) }}>
+                  <span style={{ color: C.light, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&mdash;</span>
+                  <span style={{ ...body(m), color: C.muted, margin: 0 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p style={{ ...T.meta, color: C.light, fontWeight: 600, marginTop: sp(4) }}>This is a classification system. Not a prediction engine.</p>
+        </div>
+      </div>
+    </section>
+
+    {divider}
+
+    {/* ── LAYER 5: CLOSING CTA ── */}
+    <section ref={ref5} aria-label="Get Your Score" style={{
+      background: C.white,
+      paddingTop: 0,
+      paddingBottom: m ? sp(12) : sp(15),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", ...fadeIn(v5) }}>
+        <div style={{ maxWidth: 560 }}>
+          <h2 style={{
+            fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.1,
+            color: C.navy, letterSpacing: "-0.02em",
+            marginBottom: sp(2),
+          }}>
+            Understand your structure in under 2 minutes.
+          </h2>
+          <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(5) }}>
+            Most people know their income. Few understand how stable it actually is.
+          </p>
+          <Link
+            href="/diagnostic-portal"
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: sp(7), paddingLeft: sp(5), paddingRight: sp(5),
+              borderRadius: sp(1.25),
+              backgroundColor: C.navy, color: "#FFFFFF",
+              ...T.cta, letterSpacing: "-0.01em",
+              textDecoration: "none",
+              boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
+              transition: "transform 180ms ease, box-shadow 180ms ease",
+            }}
+            onMouseEnter={(e) => { if (canHover()) { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.20)"; } }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.15)"; }}
           >
-            See the full methodology &#8594;
+            Get Your Income Stability Score &#8594;
           </Link>
         </div>
       </div>
     </section>
+    </>
   );
 }
 
-
-/* ================================================================== */
-/* WHAT THIS SCORE MEASURES — yesterday's 4 dimension cards            */
-/* ================================================================== */
-function WhatItMeasures() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-
-  const dims = [
-    { num: "01", label: "Recurring Income", accent: C.teal, metric: "0%", metricLabel: "recurring",
-      title: "Recurring income proportion",
-      desc: "What percentage of your income renews automatically through retainers, subscriptions, or standing contracts." },
-    { num: "02", label: "Concentration", accent: C.purple, metric: "55%", metricLabel: "one client",
-      title: "Income concentration",
-      desc: "How much of your income depends on a single source. Higher concentration increases structural risk." },
-    { num: "03", label: "Visibility", accent: "#D4940A", metric: "<30", metricLabel: "days booked",
-      title: "Forward income visibility",
-      desc: "How far into the future your income is already committed — booked, contracted, or otherwise secured." },
-    { num: "04", label: "Continuity", accent: "#DC4A4A", metric: "100%", metricLabel: "labor",
-      title: "Income continuity without active labor",
-      desc: "How long income continues if you stop working. Measures dependence on daily effort." },
-  ];
-
-  return (
-    <section ref={ref} aria-label="What this score measures" style={{
-      background: C.white,
-      paddingTop: m ? sp(10) : sp(16),
-      paddingBottom: m ? sp(10) : sp(16),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        {/* Heading */}
-        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
-          <div style={{
-            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
-            color: C.teal, marginBottom: m ? sp(2) : sp(3),
-          }}>
-            Four Dimensions of Stability
-          </div>
-          <h2 style={{
-            fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08,
-            color: C.navy, letterSpacing: "-0.03em",
-            maxWidth: 700, marginBottom: m ? sp(3) : sp(4),
-          }}>
-            What this score measures.
-          </h2>
-          <p style={{
-            ...bodyLg(m), color: C.muted, maxWidth: 520,
-          }}>
-            Structural questions are used to evaluate four structural dimensions of income stability.
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(3) : sp(4) }}>
-          {dims.map((d, i) => {
-            const hovered = hoverIdx === i;
-            return (
-              <div key={d.label}
-                onMouseEnter={() => canHover() && setHoverIdx(i)}
-                onMouseLeave={() => setHoverIdx(null)}
-                style={{
-                  background: C.purple, borderRadius: sp(1.5),
-                  padding: m ? sp(4) : sp(5), position: "relative", overflow: "hidden",
-                  transform: hovered ? "translateY(-4px)" : "translateY(0)",
-                  boxShadow: hovered
-                    ? "0 20px 60px rgba(75,63,174,0.25), 0 8px 24px rgba(14,26,43,0.10)"
-                    : "0 2px 4px rgba(75,63,174,0.06), 0 12px 40px rgba(75,63,174,0.10)",
-                  transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease",
-                  ...fadeIn(visible, 150 + i * 100),
-                }}>
-                {/* Number */}
-                <div style={{
-                  fontSize: m ? 44 : 56, fontWeight: 600, color: "rgba(255,255,255,0.15)",
-                  letterSpacing: "-0.03em", lineHeight: 1,
-                  marginBottom: sp(3),
-                }}>{d.num}</div>
-
-                {/* Metric — top-right */}
-                <div style={{
-                  position: "absolute", top: m ? sp(4) : sp(5), right: m ? sp(4) : sp(5),
-                  textAlign: "right",
-                }}>
-                  <div style={{ fontSize: m ? 28 : 36, fontWeight: 600, color: "rgba(255,255,255,0.90)", letterSpacing: "-0.02em", lineHeight: 1 }}>{d.metric}</div>
-                  <div style={{ ...T.meta, color: "rgba(255,255,255,0.40)", textTransform: "uppercase" as const, marginTop: 4 }}>{d.metricLabel}</div>
-                </div>
-
-                {/* Title */}
-                <h3 style={{
-                  fontSize: m ? 20 : 24, fontWeight: 600, color: "#FFFFFF",
-                  lineHeight: 1.2, letterSpacing: "-0.02em",
-                  marginBottom: sp(2),
-                }}>{d.title}</h3>
-
-                {/* Description */}
-                <p style={{
-                  fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6,
-                  color: "rgba(255,255,255,0.55)", margin: 0,
-                }}>{d.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
+/* WhatItMeasures removed — dimensions now integrated into Layer 2, Stage 02 */
 
 
 /* ================================================================== */
@@ -1590,7 +1781,6 @@ export default function LandingPage() {
       <HeroAccent />
       <HeroVideo />
       <HowItWorksSection />
-      <WhatItMeasures />
       <ProductMockup />
       <PressureNarrative />
       <WhatYouGet />
