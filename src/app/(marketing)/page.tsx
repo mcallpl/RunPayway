@@ -243,8 +243,8 @@ function HeroSection() {
             </p>
 
             <div style={fadeIn(visible, 300)}>
-              <Link
-                href="/pricing"
+              <a
+                href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"}
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
                   height: sp(6.5), width: m ? "100%" : "auto",
@@ -258,12 +258,16 @@ function HeroSection() {
                 onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.9"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
               >
-                Assess Your Income Structure &#8594;
-              </Link>
+                Get Your Full Diagnostic — $69 &#8594;
+              </a>
 
-              <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5) }}>
-                6 questions &bull; 90 seconds &bull; No financial data required
-              </p>
+              <div style={{ marginTop: sp(2), display: "flex", alignItems: m ? "center" : "flex-start", gap: sp(2), flexDirection: m ? "column" : "row" }}>
+                <Link href="/pricing" style={{ ...T.meta, color: "rgba(244,241,234,0.50)", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                  Or start with a free score
+                </Link>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.25)" }}>&bull;</span>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.38)" }}>6 questions &bull; 90 seconds</span>
+              </div>
               <button onClick={() => openVideoModal?.()} style={{ marginTop: sp(2), background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, padding: 0 }}>
                 <div style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="rgba(244,241,234,0.60)"><polygon points="2,0 10,5 2,10" /></svg>
@@ -932,7 +936,7 @@ function FinalCta() {
         <p style={{ ...bodyLg(m), color: C.navy, marginBottom: sp(3), lineHeight: 1.6 }}>
           Every month you don&rsquo;t address your structural weakness, you&rsquo;re operating on the same fragile foundation. The assessment takes 90 seconds. The insight lasts permanently.
         </p>
-        <Link href="/pricing" style={{
+        <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           height: sp(6.5), padding: `0 ${sp(5)}px`, borderRadius: 10,
           backgroundColor: C.navy,
@@ -942,11 +946,14 @@ function FinalCta() {
           onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.9"; }}
           onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
         >
-          Assess Your Income Structure &#8594;
-        </Link>
-        <p style={{ ...T.meta, color: C.light, marginTop: sp(2.5) }}>
+          Get Your Full Diagnostic — $69 &#8594;
+        </a>
+        <p style={{ ...T.meta, color: C.light, marginTop: sp(2) }}>
           6 questions. 90 seconds. No financial data required.
         </p>
+        <Link href="/pricing" style={{ ...T.meta, color: C.light, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(1), display: "inline-block" }}>
+          Or start with a free score
+        </Link>
       </div>
     </section>
   );
@@ -1012,12 +1019,11 @@ export default function LandingPage() {
       <HeroVideo />
       <WhoSection />
       <HowItWorksSection />
-      <ScenarioSection />
+      <PricingSection />
       <WhatYouGet />
       <TransformationSection />
       <AuthorityQuote />
       <TrustStrip />
-      <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <FinalCta />
       <DisclaimerSection />
