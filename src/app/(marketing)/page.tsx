@@ -662,7 +662,7 @@ function HowItWorksSection() {
     stageTitle: { fontSize: m ? 26 : 34, fontWeight: 600 as const, color: C.navy, lineHeight: 1.15, marginBottom: sp(2.5), letterSpacing: "-0.02em" },
     prose: { fontSize: m ? 17 : 19, fontWeight: 400 as const, lineHeight: 1.7, color: C.muted, margin: 0 as const },
     anchor: { fontSize: m ? 15 : 16, fontWeight: 600 as const, color: C.navy, marginTop: sp(3) },
-    rule: { height: 1, backgroundColor: C.border, margin: `${m ? sp(10) : sp(12)}px 0` },
+    rule: { height: 0, margin: `${m ? sp(10) : sp(12)}px 0` },
   };
 
   return (
