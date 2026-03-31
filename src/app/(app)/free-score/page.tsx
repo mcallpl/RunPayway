@@ -14,7 +14,7 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  bg: "#F7F5F0",
+  bg: "#F8F6F6",
   surface: "#FEFEFE",
   stone: "rgba(14,26,43,0.06)",
   taupe: "rgba(14,26,43,0.36)",
@@ -88,16 +88,16 @@ export default function FreeScorePage() {
   const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
   const rootConstraint = (v2?.constraints as { root_constraint: string })?.root_constraint || "weak_forward_visibility";
   const constraintPlain: Record<string, string> = {
-    high_concentration: "Too much of your income depends on a single source.",
-    weak_forward_visibility: "Not enough of your income is committed forward.",
-    high_labor_dependence: "Too much of your income stops when you stop working.",
-    low_persistence: "Not enough of your income repeats automatically.",
-    low_source_diversity: "Your income comes from too few sources.",
-    high_variability: "Your income swings too much month to month.",
+    high_concentration: "Too much of your income flows through one source. If that source pauses, your entire structure feels it.",
+    weak_forward_visibility: "Most of your income isn't locked in ahead of time. You're earning month-to-month without structural visibility.",
+    high_labor_dependence: "Your income stops when you stop working. There's no structural layer that continues without you.",
+    low_persistence: "Very little of your income repeats on its own. Each month, you're rebuilding from close to zero.",
+    low_source_diversity: "Your income comes from too few places. One relationship changing could shift everything.",
+    high_variability: "Your income swings too much month to month. The unpredictability itself is a structural weakness.",
   };
   const insightText = constraintPlain[rootConstraint] || "Your income structure has room to improve.";
 
-  const humanMessage = tier === "high" ? "Exceptional structure." : tier === "established" ? "Strong foundation." : tier === "developing" ? "Room to build." : "A clear starting point.";
+  const humanMessage = tier === "high" ? "Your income is structurally sound." : tier === "established" ? "Solid foundation — but there are gaps." : tier === "developing" ? "You're building, but not protected yet." : "Your income structure needs attention.";
 
   // Best move preview
   const bestMove = (() => {
@@ -188,41 +188,33 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>YOUR PRIMARY CONSTRAINT</div>
           <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6, fontWeight: 500 }}>{insightText}</p>
           <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
-            The full report explains why this is your bottleneck, how it interacts with your other structural factors, and gives you a step-by-step plan to address it.
+            This is the single biggest factor holding your score down. The full report breaks down why, how it connects to your other structural factors, and what to do about it.
           </p>
         </div>
 
-        {/* ── BEST MOVE PREVIEW ── */}
+        {/* ── BEST MOVE PREVIEW — teaser only, no exact numbers ── */}
         {bestMove && (
           <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.teal}`, marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>WHAT ONE CHANGE COULD DO</div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
-              <div>
-                <p style={{ fontSize: 15, color: B.navy, margin: "0 0 4px", lineHeight: 1.5 }}>
-                  {bestMove.label}
-                </p>
-                <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>
-                  {score} → {bestMove.newScore}
-                </p>
-              </div>
-              <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
-                <div style={{ fontSize: 24, fontWeight: 300, color: B.teal, lineHeight: 1 }}>+{bestMove.lift}</div>
-                <div style={{ fontSize: 11, color: B.taupe }}>points</div>
-              </div>
-            </div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>YOUR HIGHEST-IMPACT MOVE</div>
+            <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6, fontWeight: 500 }}>
+              We identified a single structural change that could meaningfully raise your score.
+            </p>
+            <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
+              The full report reveals exactly what it is, why it matters for your industry, and how to act on it — with two additional moves ranked by impact.
+            </p>
           </div>
         )}
 
-        {/* ── WHAT THE FULL REPORT INCLUDES — clean list ── */}
+        {/* ── WHAT THE FULL REPORT TELLS YOU ── */}
         <div style={{ padding: mobile ? "24px 20px" : "28px 28px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>INCLUDED IN THE FULL REPORT</div>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>WHAT THE FULL REPORT TELLS YOU</div>
           {[
-            "Income structure breakdown with composition analysis",
-            "Constraint hierarchy — what is limiting your score and why",
-            "3-step action plan with projected score impact",
-            "Ready-to-use scripts for client conversations",
-            "12-week roadmap in your Command Center",
-            "What-if simulator with scenario comparison",
+            "Where your income is structurally exposed — and why",
+            "The 3 highest-impact moves to raise your score, ranked",
+            "How your structure compares to others in your industry",
+            "What happens to your score if your top source disappears",
+            "A 12-week action roadmap built for your specific situation",
+            "Scripts you can use in real conversations with clients",
           ].map((item) => (
             <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0, marginTop: 7 }} />
@@ -231,27 +223,25 @@ export default function FreeScorePage() {
           ))}
         </div>
 
-        {/* ── CTA — clean, confident ── */}
+        {/* ── CTA — clean, confident, guarantee inside ── */}
         <div style={{ padding: mobile ? "28px 24px" : "32px 36px", borderRadius: 16, backgroundColor: B.navy, textAlign: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 12 }}>FULL DIAGNOSTIC REPORT</div>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 16 }}>
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 6 }}>
             <span style={{ fontSize: mobile ? 36 : 44, fontWeight: 300, color: "#F4F1EA" }}>$69</span>
             <span style={{ fontSize: 14, color: "rgba(244,241,234,0.40)" }}>one-time</span>
           </div>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", margin: "0 0 20px", lineHeight: 1.5 }}>
+            Built from the answers you already gave. Instant delivery. No retake.
+          </p>
           <a href={STRIPE_FULL_REPORT}
-            style={{ display: "block", width: "100%", maxWidth: 360, margin: "0 auto 16px", height: 52, borderRadius: 10, backgroundColor: B.purple, color: "#FFFFFF", fontSize: 15, fontWeight: 600, textDecoration: "none", lineHeight: "52px", textAlign: "center" }}>
+            style={{ display: "block", width: "100%", maxWidth: 360, margin: "0 auto 20px", height: 52, borderRadius: 10, backgroundColor: B.purple, color: "#FFFFFF", fontSize: 15, fontWeight: 600, textDecoration: "none", lineHeight: "52px", textAlign: "center" }}>
             Get Your Full Report →
           </a>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", margin: 0, lineHeight: 1.5 }}>
-            Built from the answers you already gave. Instant delivery. No retake required.
-          </p>
-        </div>
-
-        {/* ── Guarantee ── */}
-        <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55 }}>
-            If the report does not reveal at least one insight you did not already know, full refund. No questions.
-          </p>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 16, maxWidth: 360, margin: "0 auto" }}>
+            <p style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", margin: 0, lineHeight: 1.55 }}>
+              If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know — full refund, no questions.
+            </p>
+          </div>
         </div>
 
         </>}
