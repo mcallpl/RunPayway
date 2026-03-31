@@ -794,14 +794,14 @@ function ProductMockup() {
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "center",
-            minHeight: m ? 380 : 520,
+            minHeight: m ? 420 : 600,
           }}>
             {/* Phone — flush to bottom, overflows top */}
             <div style={{
               position: "absolute",
               bottom: 0,
               left: "50%",
-              width: m ? 320 : 480,
+              width: m ? 380 : 700,
               transform: visible
                 ? `translateX(-50%) scale(1)`
                 : `translateX(-50%) translateY(40px) scale(0.94)`,
@@ -817,47 +817,6 @@ function ProductMockup() {
               />
             </div>
 
-            {/* Floating card — Root Constraint (larger, tighter to phone) */}
-            <div style={{
-              position: "absolute",
-              left: m ? 0 : 16,
-              top: m ? 30 : 40,
-              width: m ? 200 : 250,
-              padding: m ? "14px 16px" : "18px 22px",
-              backgroundColor: "#FFFFFF",
-              borderRadius: 14,
-              borderLeft: "3px solid #C53030",
-              boxShadow: "0 8px 32px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
-              transform: visible ? "rotate(-3deg) translateY(0)" : "rotate(-3deg) translateY(24px)",
-              opacity: visible ? 1 : 0,
-              transition: "opacity 500ms ease 400ms, transform 500ms ease 400ms",
-              zIndex: 3,
-            }}>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: "#C53030", marginBottom: 6, textTransform: "uppercase" as const }}>Root Constraint</div>
-              <div style={{ fontSize: 14, fontWeight: 400, color: C.navy, lineHeight: 1.5 }}>Your largest source represents 55% of income.</div>
-              <div style={{ fontSize: 12, color: "#C53030", fontWeight: 600, marginTop: 6 }}>Score drops 38 &#8594; 21 if lost</div>
-            </div>
-
-            {/* Floating card — #1 Priority (larger, tighter to phone) */}
-            <div style={{
-              position: "absolute",
-              right: m ? 0 : -10,
-              bottom: m ? 100 : 180,
-              width: m ? 200 : 250,
-              padding: m ? "14px 16px" : "18px 22px",
-              backgroundColor: "#FFFFFF",
-              borderRadius: 14,
-              borderLeft: "3px solid #4B3FAE",
-              boxShadow: "0 8px 32px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
-              transform: visible ? "rotate(2deg) translateY(0)" : "rotate(2deg) translateY(24px)",
-              opacity: visible ? 1 : 0,
-              transition: "opacity 500ms ease 600ms, transform 500ms ease 600ms",
-              zIndex: 3,
-            }}>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: "#4B3FAE", marginBottom: 6, textTransform: "uppercase" as const }}>Your #1 Priority</div>
-              <div style={{ fontSize: 14, fontWeight: 400, color: C.navy, lineHeight: 1.5 }}>Convert one client to a monthly retainer</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#1F6D7A", marginTop: 6 }}>+12 pts</div>
-            </div>
           </div>
 
           {/* Right — product info (tighter padding) */}
