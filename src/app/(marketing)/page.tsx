@@ -780,33 +780,33 @@ function ProductMockup() {
         <div style={{
           display: m ? "block" : "flex",
           alignItems: "stretch",
-          borderRadius: "24px 24px 0 0",
-          overflow: "visible",
+          borderRadius: 24,
+          overflow: "hidden",
           background: "linear-gradient(160deg, #F0EDE8 0%, #E8E5E0 50%, #DDD9D3 100%)",
-          boxShadow: "0 -4px 24px rgba(14,26,43,0.04), 0 -16px 64px rgba(14,26,43,0.03)",
+          boxShadow: "0 4px 24px rgba(14,26,43,0.06), 0 16px 64px rgba(14,26,43,0.05)",
           border: `1px solid ${C.border}`,
-          borderBottom: "none",
           position: "relative",
-          minHeight: m ? undefined : 560,
         }}>
-          {/* Left — phone image, massive, bleeds below card */}
+          {/* Left — phone image, flush to bottom edge */}
           <div style={{
             flex: m ? undefined : "0 0 58%",
             position: "relative",
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "center",
-            overflow: "visible",
+            minHeight: m ? 380 : 520,
           }}>
-            {/* Phone — huge, overflows card top and bottom */}
+            {/* Phone — flush to bottom, overflows top */}
             <div style={{
-              position: "relative",
+              position: "absolute",
+              bottom: 0,
+              left: "50%",
               width: m ? 320 : 480,
-              marginTop: m ? sp(2) : -80,
-              marginBottom: 0,
+              transform: visible
+                ? `translateX(-50%) scale(1)`
+                : `translateX(-50%) translateY(40px) scale(0.94)`,
               zIndex: 2,
               filter: "drop-shadow(0 24px 48px rgba(14,26,43,0.18)) drop-shadow(0 12px 24px rgba(14,26,43,0.10))",
-              transform: visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.94)",
               transition: "transform 900ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}>
               <Image
