@@ -500,7 +500,7 @@ function HeroSection() {
               color: C.sand, letterSpacing: "-0.03em",
               marginBottom: m ? sp(3) : sp(5),
             }}>
-              Measure how stable<br />your income structure<br />actually is.
+              We measure how your<br />income holds together.
             </h1>
 
             <p style={{
@@ -510,7 +510,7 @@ function HeroSection() {
               marginBottom: m ? sp(5) : sp(6),
               maxWidth: m ? undefined : 500,
             }}>
-              A fixed structural assessment based on how your income is built — not how much you make.
+              Not how much you make &#8212; how well it&#8217;s built to last.
             </p>
 
             <div style={fadeIn(visible, 380)}>
