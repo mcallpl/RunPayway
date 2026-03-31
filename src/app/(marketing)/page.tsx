@@ -100,7 +100,6 @@ const T = {
 };
 
 const maxW = 1200;
-const readW = 740;
 const padX = { desktop: 40, mobile: 20 };
 const sectionGap = { desktop: sp(10), mobile: sp(8) };
 
@@ -239,40 +238,27 @@ function StickyNav() {
 
 
 /* ================================================================== */
-/* HERO                                                                */
+/* HERO — phone mockup + social proof                                  */
 /* ================================================================== */
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const animatedScore = useAnimatedCounter(72, visible, 1500);
-  const [showLabel, setShowLabel] = useState(false);
-
-  useEffect(() => {
-    if (!visible) return;
-    const t = setTimeout(() => setShowLabel(true), 1600);
-    return () => clearTimeout(t);
-  }, [visible]);
-
-  const ringSize = m ? 180 : 240;
-  const radius = 70;
-  const strokeWidth = 5;
-  const circumference = 2 * Math.PI * radius;
-  const targetOffset = (1 - 72 / 100) * circumference;
+  const animatedCount = useAnimatedCounter(2400, visible, 2000);
 
   return (
     <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
         paddingTop: m ? sp(14) : sp(18),
-        paddingBottom: m ? sp(10) : sp(14),
+        paddingBottom: m ? sp(6) : sp(10),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
           display: m ? "block" : "flex",
-          alignItems: "center", justifyContent: "space-between", gap: sp(8),
+          alignItems: "center", justifyContent: "space-between", gap: sp(6),
         }}>
           {/* Left text */}
-          <div style={{ maxWidth: 620, textAlign: m ? "center" : "left" }}>
+          <div style={{ maxWidth: 560, textAlign: m ? "center" : "left" }}>
             <div style={{
               ...fadeIn(visible),
               ...T.label, color: C.teal, marginBottom: m ? sp(2.5) : sp(3),
@@ -294,10 +280,19 @@ function HeroSection() {
               ...fadeIn(visible, 200),
               fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.55,
               color: "rgba(244,241,234,0.50)",
-              marginBottom: m ? sp(4) : sp(5),
-              maxWidth: m ? undefined : 480,
+              marginBottom: sp(2),
+              maxWidth: m ? undefined : 460,
             }}>
               The Income Stability Score reveals the structural weaknesses in your income — before a disruption makes them obvious.
+            </p>
+
+            <p style={{
+              ...fadeIn(visible, 250),
+              fontSize: 14, color: "rgba(244,241,234,0.35)", lineHeight: 1.55,
+              marginBottom: m ? sp(4) : sp(5),
+              maxWidth: m ? undefined : 460,
+            }}>
+              Built for consultants, contractors, freelancers, and anyone whose income depends on structure — not a payroll system.
             </p>
 
             <div style={fadeIn(visible, 300)}>
@@ -305,16 +300,17 @@ function HeroSection() {
                 href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"}
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  height: sp(6.5), width: m ? "100%" : "auto",
+                  height: sp(7), width: m ? "100%" : "auto",
                   paddingLeft: sp(4), paddingRight: sp(4),
-                  borderRadius: 10,
+                  borderRadius: 12,
                   backgroundColor: C.sand,
                   color: C.navy, ...T.cta,
                   textDecoration: "none",
-                  transition: "opacity 200ms ease",
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+                  transition: "transform 200ms ease, box-shadow 200ms ease",
                 }}
-                onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.9"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+                onMouseEnter={(e) => { if (canHover()) { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.20)"; } }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.15)"; }}
               >
                 Get Your Full Diagnostic — $69 &#8594;
               </a>
@@ -335,50 +331,50 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right score ring */}
+          {/* Right — phone mockup */}
           <div style={{
             flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
             marginTop: m ? sp(6) : 0,
             ...fadeIn(visible, 300),
+            position: "relative",
           }}>
-            <div style={{ position: "relative", width: ringSize, height: ringSize }}>
-              <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth} />
-                <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
-                  strokeLinecap="round" strokeDasharray={circumference}
-                  strokeDashoffset={visible ? targetOffset : circumference}
-                  style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
-                />
-                <defs>
-                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ ...score(m), color: "#F7F5F0", letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
-                  {animatedScore}
-                </span>
-              </div>
-            </div>
-
             <div style={{
-              textAlign: "center", marginTop: sp(2),
-              opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
-              transition: "opacity 400ms ease-out, transform 400ms ease-out",
+              width: m ? 280 : 380,
+              filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.30)) drop-shadow(0 8px 20px rgba(0,0,0,0.15))",
+              transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.96)",
+              transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}>
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: sp(1),
-                padding: `${sp(0.5)}px ${sp(1.5)}px`, borderRadius: 10,
-                backgroundColor: "rgba(31,109,122,0.15)", border: "1px solid rgba(31,109,122,0.25)",
-                marginBottom: sp(1),
-              }}>
-                <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: C.teal }} />
-                <span style={{ ...T.label, color: C.teal }}>Established</span>
-              </div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>8 points to High Stability</div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)" }}>Fragility: Resilient</div>
+              <Image
+                src={iphoneHand}
+                alt="RunPayway Command Center on mobile"
+                style={{ width: "100%", height: "auto", display: "block" }}
+                priority
+              />
             </div>
+          </div>
+        </div>
+
+        {/* Social proof bar */}
+        <div style={{
+          marginTop: m ? sp(6) : sp(8),
+          display: "flex", alignItems: "center", justifyContent: m ? "center" : "flex-start",
+          gap: m ? sp(2) : sp(4), flexWrap: "wrap",
+          ...fadeIn(visible, 500),
+        }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: `6px 16px`, borderRadius: 20,
+            backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
+          }}>
+            <span style={{ fontFamily: SERIF, fontSize: 18, color: "#F4F1EA", fontVariantNumeric: "tabular-nums" }}>
+              {animatedCount.toLocaleString()}+
+            </span>
+            <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>income structures scored</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: sp(2) }}>
+            {["Deterministic scoring", "Model RP-2.0", "Private by default"].map(t => (
+              <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.25)" }}>{t}</span>
+            ))}
           </div>
         </div>
       </div>
@@ -437,31 +433,7 @@ function HeroVideo() {
 }
 
 
-/* ================================================================== */
-/* WHO THIS IS FOR — right after hero                                  */
-/* ================================================================== */
-function WhoSection() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} aria-label="Who this is for" style={{
-      background: C.sandAlt,
-      paddingTop: secY(m), paddingBottom: secY(m),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: readW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
-        <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Who This Is For</div>
-        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(3), fontSize: m ? 24 : 32 }}>
-          If you re-earn your income every month, this is the standard it should be measured against.
-        </h2>
-        <p style={{ ...body(m), color: C.muted, maxWidth: 560, margin: "0 auto 0" }}>
-          Consultants. Contractors. Freelancers. Agency owners. Solo practitioners. Anyone whose income depends on structure, not a payroll system.
-        </p>
-      </div>
-    </section>
-  );
-}
+/* WhoSection removed — content folded into hero subtext and social proof bar */
 
 
 /* ================================================================== */
@@ -647,19 +619,21 @@ function PressureNarrative() {
             }}>
               {/* Stat callout */}
               <div style={{
-                flex: "0 0 180px",
-                display: "flex", flexDirection: "column",
+                flex: m ? "none" : "0 0 180px",
+                display: "flex", flexDirection: m ? "row" : "column",
                 alignItems: "center", justifyContent: "center",
-                padding: m ? sp(3) : sp(4),
+                gap: m ? 12 : 0,
+                padding: m ? `${sp(2.5)}px ${sp(3)}px` : sp(4),
                 backgroundColor: `${s.accent}10`,
-                borderRight: i % 2 === 0 ? `1px solid rgba(255,255,255,0.04)` : "none",
-                borderLeft: i % 2 === 1 ? `1px solid rgba(255,255,255,0.04)` : "none",
+                borderBottom: m ? `1px solid rgba(255,255,255,0.04)` : "none",
+                borderRight: !m && i % 2 === 0 ? `1px solid rgba(255,255,255,0.04)` : "none",
+                borderLeft: !m && i % 2 === 1 ? `1px solid rgba(255,255,255,0.04)` : "none",
               }}>
                 <span style={{
-                  fontFamily: SERIF, fontSize: m ? 32 : 40, color: s.accent,
+                  fontFamily: SERIF, fontSize: m ? 28 : 40, color: s.accent,
                   lineHeight: 1, letterSpacing: "-0.02em",
                 }}>{s.stat}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: 8, textTransform: "uppercase" as const, textAlign: "center" }}>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: m ? 0 : 8, textTransform: "uppercase" as const, textAlign: "center" }}>
                   {s.statLabel}
                 </span>
               </div>
@@ -1034,19 +1008,19 @@ function PricingSection() {
 
   return (
     <section ref={ref} aria-label="Pricing" style={{
-      background: C.sand, paddingTop: secY(m), paddingBottom: secY(m),
+      background: `linear-gradient(180deg, ${C.sandAlt} 0%, ${C.sand} 100%)`,
+      paddingTop: m ? sp(10) : sp(14), paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: sp(3), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2) }}>Know your structure before it breaks</h2>
-          <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(2) }}>
-            Built for people whose income does not arrive on autopilot.
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>One Assessment, Permanent Insight</div>
+          <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2), fontSize: m ? 24 : 32 }}>
+            The cost of not knowing is higher than $69.
+          </h2>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 500, margin: "0 auto" }}>
+            One lost client. One missed renewal. One gap you didn&rsquo;t see coming. The diagnostic pays for itself the first time you avoid a structural surprise.
           </p>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: sp(1), padding: `${sp(0.5)}px ${sp(2)}px`, borderRadius: 20, border: `1px solid ${C.border}`, marginBottom: sp(4) }}>
-            <div style={{ width: 4, height: 4, borderRadius: 999, backgroundColor: C.teal }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: C.light, letterSpacing: "0.06em" }}>Scored by Model RP-2.0</span>
-          </div>
         </div>
 
 
@@ -1306,7 +1280,6 @@ export default function LandingPage() {
       <HeroSection />
       <HeroAccent />
       <HeroVideo />
-      <WhoSection />
       <ProductMockup />
       <HowItWorksSection />
       <PressureNarrative />
