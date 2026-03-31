@@ -853,90 +853,24 @@ function ProductMockup() {
   const m = useMobile();
   const { ref, visible } = useInView();
 
-  const features = [
-    "Score, stability band, and root constraint — instantly",
-    "PressureMap\u2122 with AI-powered zone analysis",
-    "What-if simulator to test structural changes",
-    "Industry-specific scripts you can send today",
-    "12-week roadmap with success criteria",
-  ];
-
   return (
     <section ref={ref} aria-label="Product preview" style={{
-      background: "#F8F6F6",
-      paddingTop: m ? sp(10) : sp(14),
+      background: C.sand,
+      paddingTop: m ? sp(6) : sp(8),
       paddingBottom: 0,
       overflow: "visible",
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", ...fadeIn(visible), paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{
-          display: m ? "block" : "flex",
-          position: "relative",
+          display: "flex", justifyContent: "center",
         }}>
-          {/* LEFT — text panel */}
-          <div style={{
-            flex: m ? undefined : "0 0 40%",
-            padding: m ? `${sp(5)}px 0` : `${sp(6)}px 0 ${sp(6)}px`,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}>
-            <h2 style={{
-              fontFamily: SERIF, fontWeight: 400,
-              fontSize: m ? 28 : 36, lineHeight: 1.15,
-              color: C.navy,
-              marginBottom: sp(3),
-            }}>
-              RunPayway&#174;
-            </h2>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: sp(2), marginBottom: sp(4) }}>
-              {features.map(f => (
-                <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5) }}>
-                  <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0, marginTop: 2 }}>
-                    <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.12)" />
-                    <path d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                  </svg>
-                  <span style={{ fontSize: 16, color: C.navy, lineHeight: 1.55 }}>{f}</span>
-                </div>
-              ))}
-            </div>
-
-            <Link href="/sample-report" style={{
-              display: "inline-flex", alignItems: "center", gap: sp(1),
-              ...T.cta, color: C.teal, textDecoration: "none",
-              transition: "opacity 200ms",
-            }}
-              onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-            >
-              Explore the Sample Report &#8594;
-            </Link>
-          </div>
-
-          {/* RIGHT — phone image, pops above section */}
-          <div style={{
-            flex: m ? undefined : 1,
-            position: "relative",
-            minHeight: m ? 380 : 480,
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: m ? "center" : "flex-end",
-          }}>
-            <div style={{
-              width: m ? "100%" : "105%",
-              maxWidth: m ? 420 : 660,
-              marginTop: m ? 0 : -60,
-            }}>
-              <Image
-                src={iphoneHand}
-                alt="RunPayway Command Center on mobile"
-                style={{
-                  width: "100%", height: "auto", display: "block",
-                }}
-                priority
-              />
-            </div>
+          <div style={{ maxWidth: m ? 360 : 520 }}>
+            <Image
+              src={iphoneHand}
+              alt="RunPayway Command Center on mobile"
+              style={{ width: "100%", height: "auto", display: "block" }}
+              priority
+            />
           </div>
         </div>
       </div>
@@ -1064,66 +998,6 @@ function PressureNarrative() {
           ))}
         </div>
 
-        {/* Authority stat — woven inline */}
-        <div style={{
-          textAlign: "center", marginTop: m ? sp(8) : sp(10),
-          ...fadeIn(visible, 700),
-        }}>
-          <div style={{
-            display: "inline-flex", flexDirection: "column", alignItems: "center",
-            padding: `${sp(4)}px ${sp(5)}px`,
-            borderRadius: 18,
-            backgroundColor: "rgba(255,255,255,0.02)",
-            border: "1px solid rgba(255,255,255,0.06)",
-          }}>
-            <p style={{
-              fontFamily: SERIF, fontSize: m ? 18 : 22, color: "#F4F1EA",
-              lineHeight: 1.4, fontStyle: "italic", margin: `0 0 ${sp(1.5)}px`,
-              maxWidth: 480,
-            }}>
-              &ldquo;The median small business holds just 27 days of cash buffer.&rdquo;
-            </p>
-            <span style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", fontWeight: 400 }}>
-              &mdash; JPMorgan Chase Institute
-            </span>
-          </div>
-        </div>
-
-        {/* Transformation — compact before/after */}
-        <div style={{
-          display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr",
-          gap: sp(3), marginTop: m ? sp(8) : sp(10),
-          maxWidth: 720, margin: `${m ? sp(8) : sp(10)}px auto 0`,
-          ...fadeIn(visible, 800),
-        }}>
-          <div style={{ padding: m ? sp(3) : sp(4), borderRadius: 16, backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ ...T.label, color: "rgba(244,241,234,0.25)", marginBottom: sp(2.5) }}>Without the Score</div>
-            {[
-              "You guess which clients matter most",
-              "You react to disruptions after they hit",
-              "You track revenue but not structure",
-            ].map(t => (
-              <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
-                <span style={{ color: "rgba(244,241,234,0.20)", fontSize: 14, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
-                <span style={{ ...body(m), color: "rgba(244,241,234,0.40)" }}>{t}</span>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ padding: m ? sp(3) : sp(4), borderRadius: 16, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.12)" }}>
-            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2.5) }}>With the Score</div>
-            {[
-              "You know exactly which weakness to fix first",
-              "You have scripts to send to clients today",
-              "You can simulate changes before committing",
-            ].map(t => (
-              <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
-                <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
-                <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{t}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -1132,125 +1006,6 @@ function PressureNarrative() {
 
 
 
-/* ================================================================== */
-/* WHAT YOU GET — today's 3 feature cards version                      */
-/* ================================================================== */
-function WhatYouGet() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  const features = [
-    {
-      title: "PressureMap\u2122",
-      desc: "See exactly where pressure concentrates. AI-powered zone analysis with peer benchmarks across your sector.",
-      accent: C.teal,
-      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke={C.teal} strokeWidth="1.5" /><path d="M9 18l4-6 3 3 4-6" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
-    },
-    {
-      title: "Command Center",
-      desc: "A living diagnostic tool: what-if simulator, industry scripts, 12-week roadmap, and progress tracking.",
-      accent: C.purple,
-      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="3" stroke={C.purple} strokeWidth="1.5" /><path d="M10 14l3 3 5-6" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
-    },
-    {
-      title: "Industry-calibrated",
-      desc: "Benchmarked across 19 sectors. Your score, constraints, and action plan are tuned to how your industry works.",
-      accent: C.navy,
-      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke={C.navy} strokeWidth="1.5" /><path d="M14 8v6l4 2" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" /></svg>,
-    },
-  ];
-
-  return (
-    <section ref={ref} aria-label="What you get" style={{
-      background: C.white,
-      paddingTop: m ? sp(8) : sp(10),
-      paddingBottom: m ? sp(8) : sp(10),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
-            What You Get
-          </div>
-          <h2 style={{
-            ...h2(m), color: C.navy, maxWidth: 600, margin: "0 auto",
-          }}>
-            Three tools that turn uncertainty into a plan.
-          </h2>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(3) : sp(4) }}>
-          {features.map((f, i) => (
-            <div key={f.title} style={{
-              ...cardStyle,
-              padding: m ? sp(3.5) : sp(5),
-              display: "flex", flexDirection: "column",
-              transition: "transform 300ms ease, box-shadow 300ms ease",
-              ...fadeIn(visible, 100 + i * 100),
-            }}
-              onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.08), 0 16px 64px rgba(14,26,43,0.06)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = cardStyle.boxShadow; }}
-            >
-              <div style={{
-                width: 52, height: 52, borderRadius: 14,
-                backgroundColor: `${f.accent}08`,
-                border: `1px solid ${f.accent}12`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                marginBottom: sp(3),
-              }}>
-                {f.icon}
-              </div>
-
-              <h3 style={{
-                ...h3(m), color: C.navy, fontSize: m ? 18 : 20,
-                marginBottom: sp(1.5),
-              }}>{f.title}</h3>
-
-              <p style={{
-                ...body(m), color: C.muted, margin: 0,
-              }}>{f.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Trust anchors */}
-        <div style={{
-          display: "flex", flexWrap: "wrap", justifyContent: "center",
-          gap: m ? sp(2) : sp(4),
-          marginTop: m ? sp(6) : sp(8),
-          ...fadeIn(visible, 400),
-        }}>
-          {[
-            { label: "Methodology published", href: "/methodology" },
-            { label: "Model RP-2.0" },
-            { label: "Deterministic scoring" },
-            { label: "Private by default" },
-          ].map(item => (
-            item.href ? (
-              <Link key={item.label} href={item.href} style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                fontSize: 14, color: C.teal, textDecoration: "none",
-                padding: `6px 14px`, borderRadius: 20,
-                backgroundColor: "rgba(31,109,122,0.05)", border: "1px solid rgba(31,109,122,0.10)",
-              }}>
-                <span style={{ fontSize: 14 }}>&#x2713;</span> {item.label}
-              </Link>
-            ) : (
-              <span key={item.label} style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                fontSize: 14, color: C.light,
-                padding: `6px 14px`, borderRadius: 20,
-                backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid ${C.border}`,
-              }}>
-                <span style={{ fontSize: 11, color: C.teal }}>&#x2713;</span> {item.label}
-              </span>
-            )
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 
@@ -1587,7 +1342,6 @@ export default function LandingPage() {
       <HowItWorksSection />
       <ProductMockup />
       <PressureNarrative />
-      <WhatYouGet />
       <ProofSection />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
