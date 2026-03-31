@@ -826,19 +826,19 @@ function ProductMockup() {
             </Link>
           </div>
 
-          {/* RIGHT — phone image pops out top, with meaningful feature cards */}
+          {/* RIGHT — phone image pops out top */}
           <div style={{
             flex: m ? undefined : 1,
             position: "relative",
-            minHeight: m ? 380 : 460,
+            minHeight: m ? 400 : 500,
           }}>
-            {/* Phone */}
             <div style={{
               position: "absolute",
               bottom: 0,
-              right: m ? "50%" : 40,
+              right: m ? "50%" : 0,
               transform: m ? "translateX(50%)" : "none",
-              width: m ? 340 : 480,
+              width: m ? "100%" : "110%",
+              maxWidth: m ? 400 : 700,
               zIndex: 2,
             }}>
               <Image
@@ -846,54 +846,10 @@ function ProductMockup() {
                 alt="RunPayway Command Center on mobile"
                 style={{
                   width: "100%", height: "auto", display: "block",
-                  filter: "drop-shadow(0 12px 40px rgba(14,26,43,0.15))",
                 }}
                 priority
               />
             </div>
-
-            {/* Floating card — What-If Simulator preview */}
-            {!m && <div style={{
-              position: "absolute",
-              top: 24, right: 20,
-              width: 200,
-              padding: "14px 16px",
-              backgroundColor: "#FFFFFF",
-              borderRadius: 12,
-              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
-              zIndex: 3,
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: "opacity 500ms ease 400ms, transform 500ms ease 400ms",
-            }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: C.purple, marginBottom: 8, textTransform: "uppercase" as const }}>What-If Simulator</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 4 }}>
-                <span style={{ fontFamily: SERIF, fontSize: 22, color: C.navy }}>+14</span>
-                <span style={{ fontSize: 11, color: C.muted }}>pts if you add a retainer</span>
-              </div>
-              <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(75,63,174,0.08)", overflow: "hidden" }}>
-                <div style={{ width: "65%", height: "100%", borderRadius: 2, backgroundColor: C.purple }} />
-              </div>
-            </div>}
-
-            {/* Floating card — Industry Benchmark */}
-            {!m && <div style={{
-              position: "absolute",
-              bottom: 80, right: -10,
-              width: 190,
-              padding: "14px 16px",
-              backgroundColor: "#FFFFFF",
-              borderRadius: 12,
-              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
-              zIndex: 3,
-              opacity: visible ? 1 : 0,
-              transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: "opacity 500ms ease 600ms, transform 500ms ease 600ms",
-            }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: C.teal, marginBottom: 8, textTransform: "uppercase" as const }}>Your Industry</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 4 }}>Top 38% of Consultants</div>
-              <div style={{ fontSize: 11, color: C.teal, fontWeight: 600 }}>+8 above cluster average</div>
-            </div>}
           </div>
         </div>
       </div>
