@@ -1226,7 +1226,6 @@ export default function LandingPage() {
       <HowItWorksSection />
       <PricingSection />
       <WhatYouGet />
-      <ProductMockup />
       <TransformationSection />
       <AuthorityQuote />
       <TrustStrip />
