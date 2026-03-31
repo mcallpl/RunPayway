@@ -16,7 +16,7 @@ const B = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F6F3",
+  sand: "#F8F6F6",
   sandDk: "#EDECEA",
   muted: "#6B7280",
   light: "#9CA3AF",
@@ -738,7 +738,7 @@ export default function DiagnosticPage() {
     const bandMessage = BAND_MESSAGES[revealBand] || "";
 
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <style>{`
           @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         `}</style>
@@ -814,7 +814,7 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F5F0", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <style>{`
           @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }
         `}</style>
@@ -856,7 +856,7 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReview) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F7F6F3", overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
       {showOverlay && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
@@ -992,7 +992,7 @@ export default function DiagnosticPage() {
   return (
     <div ref={scrollRef} style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: "#F7F6F3",
+      background: "#F8F6F6",
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
     }}>

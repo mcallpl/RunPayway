@@ -18,7 +18,7 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   white: "#FFFFFF",
-  bg: "#F7F5F0",
+  bg: "#F8F6F6",
   surface: "#FEFEFE",
   stone: "rgba(14,26,43,0.06)",
   taupe: "rgba(14,26,43,0.36)",
