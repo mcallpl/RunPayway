@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
@@ -662,24 +661,10 @@ function DashboardContent() {
             </div>
           </section>
 
-          {/* ── VIEW REPORT — prominent, easy to find ── */}
+          {/* ── SHARE ACTIONS ── */}
           {!isDemo && (
             <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
-              <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.purple}30`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>View Your Report</div>
-                    <div style={{ fontSize: 12, color: B.taupe }}>Full diagnostic with key findings</div>
-                  </div>
-                </div>
-                <span style={{ fontSize: 17, color: B.purple }}>→</span>
-              </Link>
-              <button onClick={handleShare} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
+              <button onClick={handleShare} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.teal}30`; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -694,7 +679,7 @@ function DashboardContent() {
                 const subject = encodeURIComponent("My Income Stability Assessment");
                 const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
                 window.location.href = `mailto:?subject=${subject}&body=${body}`;
-              }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
+              }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.navy}20`; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.navy}06`, display: "flex", alignItems: "center", justifyContent: "center" }}>
