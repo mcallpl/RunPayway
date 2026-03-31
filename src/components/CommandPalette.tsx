@@ -14,8 +14,9 @@ const B = {
 
 const COMMANDS = [
   { id: "dashboard", label: "Command Center", desc: "Your income stability command center", href: "/dashboard", shortcut: "1" },
-  { id: "pricing", label: "Pricing", desc: "Get a new assessment", href: "/pricing", shortcut: "2" },
-  { id: "home", label: "RunPayway Home", desc: "Main website", href: "/", shortcut: "3" },
+  { id: "report", label: "View Report", desc: "Your full assessment report", href: "/review", shortcut: "2" },
+  { id: "pricing", label: "Pricing", desc: "Get a new assessment", href: "/pricing", shortcut: "3" },
+  { id: "home", label: "RunPayway Home", desc: "Main website", href: "/", shortcut: "4" },
 ];
 
 export default function CommandPalette() {
