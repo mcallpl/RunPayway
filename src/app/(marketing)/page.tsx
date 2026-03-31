@@ -261,7 +261,7 @@ const INDUSTRIES = [
   { name: "Manufacturing", problem: "Bulk order dependency and supply chain disruptions create concentration risk most operators underestimate. RunPayway scores how many clients, contracts, and revenue lines actually hold your income together.", cta: "Map your order concentration" },
   { name: "Nonprofit / Public Sector", problem: "Grant-dependent funding and fiscal year budget resets mean your income timeline is set by someone else. RunPayway measures the structural durability of your role — how much of your income persists without active renewal.", cta: "Measure your funding stability" },
   // Always last — catch-all
-  { name: "Other", problem: "If you earn outside a traditional W-2 — freelancing, gig work, mixed sources, or anything non-standard — your income has a structure most people never measure. RunPayway scores it across the same six dimensions used for every industry, so you see exactly where you stand.", cta: "Get your free score" },
+  { name: "Other", problem: "If you earn outside a traditional W-2 — freelancing, gig work, mixed sources, or anything non-standard — your income has a structure most people never measure. RunPayway scores it across the same six dimensions used for every industry, so you see exactly where you stand.", cta: "See report pricing" },
 ];
 
 function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
@@ -290,19 +290,20 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
           <button
             onClick={() => setOpen(!open)}
             style={{
-              display: "flex", alignItems: "center", gap: 10,
-              background: "none", border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: 10, padding: `${sp(1.25)}px ${sp(2.5)}px`,
-              cursor: "pointer", transition: "border-color 200ms ease, background 200ms ease",
-              backgroundColor: open ? "rgba(255,255,255,0.06)" : "transparent",
+              display: "flex", alignItems: "center", gap: 12,
+              background: open ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              borderRadius: 12, padding: `${sp(1.5)}px ${sp(3)}px`,
+              cursor: "pointer", transition: "border-color 200ms ease, background 200ms ease, box-shadow 200ms ease",
+              boxShadow: open ? "0 4px 20px rgba(0,0,0,0.20)" : "0 2px 12px rgba(0,0,0,0.10)",
             }}
-            onMouseEnter={e => { if (canHover()) e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; }}
-            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.backgroundColor = "transparent"; } }}
+            onMouseEnter={e => { if (canHover()) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.30)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.20)"; } }}
+            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)"; } }}
           >
-            <span style={{ fontFamily: SERIF, fontSize: 20, color: "#F4F1EA" }}>19</span>
-            <span style={{ fontSize: 14, color: "rgba(244,241,234,0.50)" }}>industries benchmarked</span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>
-              <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(244,241,234,0.50)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <span style={{ fontFamily: SERIF, fontSize: 24, fontWeight: 700, color: "#F4F1EA" }}>19</span>
+            <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(244,241,234,0.70)", letterSpacing: "0.01em" }}>industries benchmarked</span>
+            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 2, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>
+              <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(244,241,234,0.70)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
