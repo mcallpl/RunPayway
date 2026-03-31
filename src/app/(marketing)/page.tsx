@@ -68,6 +68,8 @@ function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
 /* DESIGN TOKENS                                                       */
 /* ================================================================== */
 
+const SERIF = "'DM Serif Display', Georgia, serif";
+
 const C = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
@@ -84,15 +86,15 @@ const C = {
 const sp = (n: number) => n * 8;
 
 const T = {
-  h1:    { desktop: { fontSize: 44, fontWeight: 600, lineHeight: 1.08 }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.12 } },
-  h2:    { desktop: { fontSize: 24, fontWeight: 600, lineHeight: 1.2 }, mobile: { fontSize: 20, fontWeight: 600, lineHeight: 1.2 } },
+  h1:    { desktop: { fontSize: 44, fontWeight: 400, lineHeight: 1.08, fontFamily: SERIF }, mobile: { fontSize: 28, fontWeight: 400, lineHeight: 1.12, fontFamily: SERIF } },
+  h2:    { desktop: { fontSize: 28, fontWeight: 400, lineHeight: 1.2, fontFamily: SERIF }, mobile: { fontSize: 22, fontWeight: 400, lineHeight: 1.2, fontFamily: SERIF } },
   h3:    { desktop: { fontSize: 17, fontWeight: 600, lineHeight: 1.3 }, mobile: { fontSize: 16, fontWeight: 600, lineHeight: 1.3 } },
   bodyLg:{ desktop: { fontSize: 17, fontWeight: 400, lineHeight: 1.55 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.55 } },
   body:  { desktop: { fontSize: 15, fontWeight: 400, lineHeight: 1.65 }, mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
-  label: { fontSize: 11, fontWeight: 700, lineHeight: 1.4, letterSpacing: "0.10em", textTransform: "uppercase" as const },
+  label: { fontSize: 11, fontWeight: 600, lineHeight: 1.4, letterSpacing: "0.10em", textTransform: "uppercase" as const },
   meta:  { fontSize: 13, fontWeight: 400, lineHeight: 1.5 },
-  score: { desktop: { fontSize: 56, fontWeight: 500, lineHeight: 1 }, mobile: { fontSize: 42, fontWeight: 500, lineHeight: 1 } },
-  price: { desktop: { fontSize: 40, fontWeight: 500, lineHeight: 1 }, mobile: { fontSize: 34, fontWeight: 500, lineHeight: 1 } },
+  score: { desktop: { fontSize: 56, fontWeight: 400, lineHeight: 1, fontFamily: SERIF }, mobile: { fontSize: 42, fontWeight: 400, lineHeight: 1, fontFamily: SERIF } },
+  price: { desktop: { fontSize: 40, fontWeight: 400, lineHeight: 1, fontFamily: SERIF }, mobile: { fontSize: 34, fontWeight: 400, lineHeight: 1, fontFamily: SERIF } },
   nav:   { fontSize: 15, fontWeight: 400 },
   cta:   { fontSize: 15, fontWeight: 600 },
 };
@@ -112,9 +114,10 @@ const px = (m: boolean) => m ? padX.mobile : padX.desktop;
 const secY = (m: boolean) => m ? sectionGap.mobile : sectionGap.desktop;
 
 const cardStyle = {
-  borderRadius: 14,
+  borderRadius: 18,
   border: `1px solid ${C.border}`,
   backgroundColor: C.sandAlt,
+  boxShadow: "0 2px 12px rgba(14,26,43,0.04), 0 8px 32px rgba(14,26,43,0.03)",
 };
 
 const fadeIn = (visible: boolean, delay = 0) => ({
@@ -279,8 +282,9 @@ function HeroSection() {
 
             <h1 style={{
               ...fadeIn(visible, 100),
-              fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.1,
-              color: "#F7F5F0", letterSpacing: "-0.02em",
+              fontSize: m ? 30 : 48, fontWeight: 400, lineHeight: 1.1,
+              fontFamily: SERIF,
+              color: "#F7F5F0", letterSpacing: "-0.01em",
               marginBottom: m ? sp(3) : sp(4),
             }}>
               Income looks strongest<br />right before pressure arrives.
@@ -448,7 +452,7 @@ function WhoSection() {
     }}>
       <div style={{ maxWidth: readW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
         <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Who This Is For</div>
-        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(3) }}>
+        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(3), fontSize: m ? 24 : 32 }}>
           If you re-earn your income every month, this is the standard it should be measured against.
         </h2>
         <p style={{ ...body(m), color: C.muted, maxWidth: 560, margin: "0 auto 0" }}>
@@ -673,9 +677,12 @@ function WhatYouGet() {
               ...fadeIn(visible, 100),
             }}>
               <div style={{
-                width: 6, height: 6, borderRadius: 999, backgroundColor: f.accent,
+                width: 36, height: 36, borderRadius: 10, backgroundColor: `${f.accent}10`,
+                display: "flex", alignItems: "center", justifyContent: "center",
                 marginBottom: sp(2),
-              }} />
+              }}>
+                <div style={{ width: 8, height: 8, borderRadius: 999, backgroundColor: f.accent }} />
+              </div>
 
               <h3 style={{
                 ...h3(m), color: C.navy,
@@ -696,141 +703,158 @@ function WhatYouGet() {
 
 
 /* ================================================================== */
-/* PRODUCT MOCKUP — phone with embedded UI + floating cards            */
+/* PRODUCT MOCKUP — SafePath-style large showcase card                 */
 /* ================================================================== */
 function ProductMockup() {
   const m = useMobile();
   const { ref, visible } = useInView();
 
+  const features = [
+    "Score, stability band, and root constraint — instantly",
+    "PressureMap\u2122 with AI-powered zone analysis",
+    "What-if simulator to test structural changes",
+    "Industry-specific scripts you can send today",
+    "12-week roadmap with success criteria",
+  ];
+
   return (
     <section ref={ref} aria-label="Product preview" style={{
       background: C.sand,
-      paddingTop: m ? sp(4) : sp(6),
-      paddingBottom: m ? sp(8) : sp(10),
+      paddingTop: m ? sp(6) : sp(10),
+      paddingBottom: m ? sp(8) : sp(12),
       paddingLeft: px(m), paddingRight: px(m),
-      overflow: "hidden",
+      overflow: "visible",
     }}>
-      <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", ...fadeIn(visible) }}>
-        {/* Container for phone + floating elements */}
-        <div style={{ position: "relative", display: "flex", justifyContent: "center", minHeight: m ? 360 : 480 }}>
-
-          {/* Left floating card — Root Constraint */}
+      <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible) }}>
+        {/* Large showcase card */}
+        <div style={{
+          display: m ? "block" : "flex",
+          alignItems: "stretch",
+          borderRadius: 24,
+          overflow: "visible",
+          background: "linear-gradient(135deg, #F7F5F0 0%, #EDECEA 100%)",
+          boxShadow: "0 4px 24px rgba(14,26,43,0.06), 0 16px 64px rgba(14,26,43,0.05)",
+          border: `1px solid ${C.border}`,
+          position: "relative",
+          minHeight: m ? undefined : 520,
+        }}>
+          {/* Left — phone image breaking out of the card */}
           <div style={{
-            position: "absolute",
-            left: m ? -20 : 0,
-            top: m ? 40 : 60,
-            width: m ? 200 : 260,
-            padding: m ? "14px 16px" : "18px 22px",
-            backgroundColor: "#FEFEFE",
-            borderRadius: 14,
-            border: "1px solid rgba(14,26,43,0.06)",
-            borderLeft: "3px solid #C53030",
-            transform: "rotate(-6deg)",
-            zIndex: 1,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease 200ms, transform 600ms ease 200ms",
+            flex: m ? undefined : "0 0 55%",
+            position: "relative",
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "center",
+            paddingTop: m ? sp(4) : 0,
+            overflow: "visible",
           }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "#C53030", marginBottom: 6, textTransform: "uppercase" as const }}>ROOT CONSTRAINT</div>
-            <div style={{ fontSize: m ? 12 : 13, fontWeight: 500, color: C.navy, lineHeight: 1.45 }}>Your largest source represents 55% of income.</div>
-            <div style={{ fontSize: 11, color: "#C53030", fontWeight: 500, marginTop: 6 }}>Score drops 38 → 21 if lost</div>
-          </div>
-
-          {/* Right floating card — #1 Priority */}
-          <div style={{
-            position: "absolute",
-            right: m ? -20 : 0,
-            top: m ? 220 : 280,
-            width: m ? 200 : 260,
-            padding: m ? "14px 16px" : "18px 22px",
-            backgroundColor: "#FEFEFE",
-            borderRadius: 14,
-            border: "1px solid rgba(14,26,43,0.06)",
-            borderLeft: "3px solid #4B3FAE",
-            transform: "rotate(4deg)",
-            zIndex: 1,
-            opacity: visible ? 1 : 0,
-            transition: "opacity 600ms ease 400ms, transform 600ms ease 400ms",
-          }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "#4B3FAE", marginBottom: 6, textTransform: "uppercase" as const }}>YOUR #1 PRIORITY</div>
-            <div style={{ fontSize: m ? 12 : 13, fontWeight: 500, color: C.navy, lineHeight: 1.45 }}>Convert one client to a monthly retainer</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "#1F6D7A", marginTop: 6 }}>+12 pts</div>
-          </div>
-
-          {/* Phone image container */}
-          <div style={{ position: "relative", zIndex: 2, width: m ? 220 : 300 }}>
-            {/* Mini Command Center UI — behind phone, clipped to screen area */}
+            {/* Phone image — large, breaking out of card top */}
             <div style={{
-              position: "absolute",
-              top: m ? 18 : 24,
-              left: m ? 18 : 26,
-              right: m ? 18 : 26,
-              bottom: m ? 22 : 30,
-              borderRadius: m ? 20 : 28,
-              overflow: "hidden",
-              backgroundColor: "#F7F5F0",
-              zIndex: 1,
+              position: "relative",
+              width: m ? 280 : 400,
+              marginTop: m ? 0 : -60,
+              marginBottom: m ? -40 : -20,
+              zIndex: 2,
+              filter: "drop-shadow(0 20px 40px rgba(14,26,43,0.15)) drop-shadow(0 8px 16px rgba(14,26,43,0.08))",
+              transform: visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.95)",
+              transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1), filter 800ms ease",
             }}>
-              {/* Mini score ring + content */}
-              <div style={{ padding: m ? "16px 12px" : "24px 18px", textAlign: "center" }}>
-                <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(14,26,43,0.35)", marginBottom: 8, textTransform: "uppercase" as const }}>COMMAND CENTER</div>
-
-                {/* Score ring */}
-                <div style={{ position: "relative", width: m ? 70 : 90, height: m ? 70 : 90, margin: "0 auto 8px" }}>
-                  <svg width={m ? 70 : 90} height={m ? 70 : 90} style={{ transform: "rotate(-90deg)" }}>
-                    <circle cx={m ? 35 : 45} cy={m ? 35 : 45} r={m ? 28 : 36} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={m ? 4 : 5} />
-                    <circle cx={m ? 35 : 45} cy={m ? 35 : 45} r={m ? 28 : 36} fill="none" stroke="#2B5EA7" strokeWidth={m ? 4 : 5}
-                      strokeDasharray={2 * Math.PI * (m ? 28 : 36)} strokeDashoffset={2 * Math.PI * (m ? 28 : 36) * (1 - 0.51)}
-                      strokeLinecap="round" />
-                  </svg>
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: m ? 18 : 24, fontWeight: 300, color: C.navy, lineHeight: 1 }}>51</span>
-                    <span style={{ fontSize: m ? 6 : 7, fontWeight: 600, color: "#2B5EA7", marginTop: 2 }}>Established</span>
-                  </div>
-                </div>
-
-                {/* Mini benchmarking */}
-                <div style={{ padding: "6px 8px", borderRadius: 6, backgroundColor: "rgba(75,63,174,0.05)", border: "1px solid rgba(75,63,174,0.08)", marginBottom: 8 }}>
-                  <div style={{ fontSize: m ? 7 : 8, fontWeight: 600, color: C.navy }}>Top 62% of Consultants</div>
-                  <div style={{ fontSize: m ? 6 : 7, color: "#1F6D7A", fontWeight: 600 }}>+8 above cluster avg</div>
-                </div>
-
-                {/* Mini income bar */}
-                <div style={{ display: "flex", height: m ? 10 : 14, borderRadius: 4, overflow: "hidden", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 6 }}>
-                  <div style={{ width: "38%", backgroundColor: "rgba(197,48,48,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 6, fontWeight: 600, color: "#9B2C2C" }}>38%</span></div>
-                  <div style={{ width: "17%", backgroundColor: "rgba(183,121,31,0.12)", borderLeft: "1px solid #FEFEFE" }} />
-                  <div style={{ width: "45%", backgroundColor: "rgba(31,109,122,0.12)", display: "flex", alignItems: "center", justifyContent: "center", borderLeft: "1px solid #FEFEFE" }}><span style={{ fontSize: 6, fontWeight: 600, color: "#1F6D7A" }}>45%</span></div>
-                </div>
-
-                {/* Mini PressureMap label */}
-                <div style={{ fontSize: m ? 6 : 7, fontWeight: 700, letterSpacing: "0.08em", color: "#4B3FAE", textTransform: "uppercase" as const, marginBottom: 4 }}>PRESSUREMAP&#8482;</div>
-
-                {/* Mini zone cards */}
-                {[
-                  { label: "INCOME THAT STOPS", pct: "38%", color: "#C53030" },
-                  { label: "RECURRING", pct: "17%", color: "#B7791F" },
-                  { label: "PROTECTED", pct: "45%", color: "#1F6D7A" },
-                ].map(z => (
-                  <div key={z.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "3px 6px", borderLeft: `2px solid ${z.color}`, borderRadius: 3, marginBottom: 3, backgroundColor: "#FEFEFE", border: "1px solid rgba(14,26,43,0.04)" }}>
-                    <span style={{ fontSize: m ? 5 : 6, fontWeight: 600, letterSpacing: "0.04em", color: z.color }}>{z.label}</span>
-                    <span style={{ fontSize: m ? 7 : 8, fontWeight: 300, color: z.color }}>{z.pct}</span>
-                  </div>
-                ))}
-              </div>
+              <Image
+                src={iphoneHand}
+                alt="RunPayway Command Center on mobile"
+                style={{ width: "100%", height: "auto", display: "block" }}
+                priority
+              />
             </div>
 
-            {/* Phone image — on top */}
-            <Image
-              src={iphoneHand}
-              alt="RunPayway Command Center on mobile"
-              style={{ width: "100%", height: "auto", position: "relative", zIndex: 2, display: "block" }}
-            />
+            {/* Floating card — Root Constraint */}
+            <div style={{
+              position: "absolute",
+              left: m ? 10 : 20,
+              top: m ? 60 : 80,
+              width: m ? 180 : 220,
+              padding: m ? "12px 14px" : "16px 20px",
+              backgroundColor: "#FEFEFE",
+              borderRadius: 14,
+              border: "1px solid rgba(14,26,43,0.06)",
+              borderLeft: "3px solid #C53030",
+              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
+              transform: visible ? "rotate(-4deg) translateY(0)" : "rotate(-4deg) translateY(20px)",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 600ms ease 300ms, transform 600ms ease 300ms",
+              zIndex: 3,
+            }}>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.10em", color: "#C53030", marginBottom: 5, textTransform: "uppercase" as const }}>ROOT CONSTRAINT</div>
+              <div style={{ fontSize: m ? 11 : 12, fontWeight: 400, color: C.navy, lineHeight: 1.45 }}>Your largest source represents 55% of income.</div>
+              <div style={{ fontSize: 11, color: "#C53030", fontWeight: 600, marginTop: 5 }}>Score drops 38 &#8594; 21 if lost</div>
+            </div>
+
+            {/* Floating card — #1 Priority */}
+            <div style={{
+              position: "absolute",
+              right: m ? 10 : -20,
+              bottom: m ? 80 : 140,
+              width: m ? 180 : 220,
+              padding: m ? "12px 14px" : "16px 20px",
+              backgroundColor: "#FEFEFE",
+              borderRadius: 14,
+              border: "1px solid rgba(14,26,43,0.06)",
+              borderLeft: "3px solid #4B3FAE",
+              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
+              transform: visible ? "rotate(3deg) translateY(0)" : "rotate(3deg) translateY(20px)",
+              opacity: visible ? 1 : 0,
+              transition: "opacity 600ms ease 500ms, transform 600ms ease 500ms",
+              zIndex: 3,
+            }}>
+              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.10em", color: "#4B3FAE", marginBottom: 5, textTransform: "uppercase" as const }}>YOUR #1 PRIORITY</div>
+              <div style={{ fontSize: m ? 11 : 12, fontWeight: 400, color: C.navy, lineHeight: 1.45 }}>Convert one client to a monthly retainer</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#1F6D7A", marginTop: 5 }}>+12 pts</div>
+            </div>
+          </div>
+
+          {/* Right — product info */}
+          <div style={{
+            flex: m ? undefined : "0 0 45%",
+            padding: m ? `${sp(6)}px ${sp(3)}px ${sp(4)}px` : `${sp(7)}px ${sp(5)}px ${sp(7)}px ${sp(3)}px`,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}>
+            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
+              Command Center
+            </div>
+            <h2 style={{
+              ...h2(m), color: C.navy,
+              fontSize: m ? 24 : 32,
+              marginBottom: sp(3),
+            }}>
+              Your complete structural diagnostic — in one place.
+            </h2>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5), marginBottom: sp(4) }}>
+              {features.map(f => (
+                <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5) }}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0, marginTop: 2 }}>
+                    <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.10)" />
+                    <path d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  </svg>
+                  <span style={{ ...body(m), color: C.muted }}>{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link href="/sample-report" style={{
+              display: "inline-flex", alignItems: "center", gap: sp(1),
+              ...T.cta, color: C.teal, textDecoration: "none",
+              transition: "opacity 200ms",
+            }}
+              onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+            >
+              Explore the Sample Report &#8594;
+            </Link>
           </div>
         </div>
-
-        {/* Caption */}
-        <p style={{ textAlign: "center", ...T.meta, color: C.light, marginTop: sp(3) }}>
-          Your Command Center. PressureMap&#8482;. Scripts. Simulator. All in one place.
-        </p>
       </div>
     </section>
   );
@@ -1223,12 +1247,13 @@ export default function LandingPage() {
       <HeroAccent />
       <HeroVideo />
       <WhoSection />
+      <ProductMockup />
       <HowItWorksSection />
-      <PricingSection />
       <WhatYouGet />
       <TransformationSection />
       <AuthorityQuote />
       <TrustStrip />
+      <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <FinalCta />
       <DisclaimerSection />

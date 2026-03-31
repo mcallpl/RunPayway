@@ -27,7 +27,7 @@ const B = {
   bandHigh: "#1F6D7A",
 };
 
-const INTER = "'Inter', system-ui, -apple-system, sans-serif";
+const INTER = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif";
 function bc(s: number): string { return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited; }
 
 const STRIPE_FULL_REPORT = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
