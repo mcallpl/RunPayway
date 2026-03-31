@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../public/runpayway-logo-white.png";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
-import iphoneHand from "../../../public/iphone-hand.png";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -600,11 +599,6 @@ function HeroSection() {
   );
 }
 
-/* Gradient accent line — transition from hero dark to warm page */
-function HeroAccent() {
-  return <div style={{ height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 50%, rgba(31,109,122,0) 100%)" }} />;
-}
-
 /* ================================================================== */
 /* HERO VIDEO — today's modal approach                                 */
 /* ================================================================== */
@@ -857,30 +851,6 @@ function HowItWorksSection() {
           </p>
         </div>
 
-        {/* CTA */}
-        <div style={{ textAlign: "center" as const, ...fadeIn(v3, 400) }}>
-          <h3 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: C.navy, lineHeight: 1.08, marginBottom: sp(3), letterSpacing: "-0.03em" }}>
-            Understand your structure<br />in under two minutes.
-          </h3>
-          <p style={{ fontSize: m ? 18 : 20, fontWeight: 400, lineHeight: 1.6, color: C.muted, maxWidth: 460, margin: `0 auto ${sp(6)}px` }}>
-            Most people know their income.<br />Few understand how stable it actually is.
-          </p>
-          <Link
-            href="/diagnostic-portal"
-            style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: sp(8), paddingLeft: sp(6), paddingRight: sp(6),
-              borderRadius: 10, backgroundColor: C.navy, color: "#FFFFFF",
-              fontSize: 17, fontWeight: 600, textDecoration: "none",
-              transition: "transform 200ms ease, box-shadow 200ms ease",
-              boxShadow: "0 4px 16px rgba(14,26,43,0.12)",
-            }}
-            onMouseEnter={(e) => { if (canHover()) { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.18)"; } }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.12)"; }}
-          >
-            Get Your Income Stability Score
-          </Link>
-        </div>
       </div>
     </section>
     </>
@@ -888,162 +858,6 @@ function HowItWorksSection() {
 }
 
 
-/* ================================================================== */
-/* PRODUCT MOCKUP — today's version (text left, phone right)           */
-/* ================================================================== */
-function ProductMockup() {
-  const m = useMobile();
-  const { ref, visible } = useInView();
-
-  return (
-    <section ref={ref} aria-label="Product preview" style={{
-      background: C.sand,
-      paddingTop: m ? sp(6) : sp(8),
-      paddingBottom: 0,
-      overflow: "visible",
-    }}>
-      <div style={{ maxWidth: 720, margin: "0 auto", ...fadeIn(visible), paddingLeft: px(m), paddingRight: px(m) }}>
-        <div style={{
-          display: "flex", justifyContent: "center",
-        }}>
-          <div style={{ maxWidth: m ? 360 : 520 }}>
-            <Image
-              src={iphoneHand}
-              alt="RunPayway Command Center on mobile"
-              style={{ width: "100%", height: "auto", display: "block" }}
-              priority
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* PRESSURE NARRATIVE — today's version (scenarios + JPMorgan + B/A)   */
-/* ================================================================== */
-function PressureNarrative() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  const scenarios = [
-    {
-      label: "Concentration",
-      title: "Your biggest client leaves.",
-      desc: "The Score isolates how much of your stability depends on a single source. If one departure drops your score by 30 points, that concentration is the structural risk — not the client relationship.",
-      stat: "\u221230 pts",
-      statLabel: "potential impact",
-      accent: "#C53030",
-    },
-    {
-      label: "Continuity",
-      title: "You can\u2019t work for 90 days.",
-      desc: "Continuity measures what happens to your income when labor stops. The Score reveals whether your structure survives a gap — or collapses with it.",
-      stat: "27 days",
-      statLabel: "median cash buffer",
-      accent: "#B7791F",
-    },
-    {
-      label: "Visibility",
-      title: "A contract doesn\u2019t renew.",
-      desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the Score shows how much of your forward certainty disappears with it.",
-      stat: "0 days",
-      statLabel: "advance warning",
-      accent: C.teal,
-    },
-  ];
-
-  return (
-    <section ref={ref} aria-label="Pressure narrative" style={{
-      background: C.navy,
-      paddingTop: m ? sp(8) : sp(10),
-      paddingBottom: m ? sp(8) : sp(10),
-      paddingLeft: px(m), paddingRight: px(m),
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      {/* Subtle radial glow */}
-      <div style={{
-        position: "absolute", top: "-30%", right: "-10%",
-        width: 600, height: 600, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 70%)",
-        pointerEvents: "none",
-      }} />
-
-      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Opening — emotional hook */}
-        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2.5) }}>
-            The Pressure You Already Feel
-          </div>
-          <h2 style={{
-            ...h2(m), color: "#F4F1EA",
-            fontSize: m ? 30 : 40,
-            maxWidth: 640, margin: "0 auto",
-            marginBottom: sp(3),
-          }}>
-            You already know something is fragile. The Score tells you exactly where.
-          </h2>
-          <p style={{ ...body(m), color: "rgba(244,241,234,0.45)", maxWidth: 500, margin: "0 auto" }}>
-            These aren&rsquo;t hypotheticals. They&rsquo;re the three structural failures that collapse independent income.
-          </p>
-        </div>
-
-        {/* Scenario cards — staggered */}
-        <div style={{ display: "flex", flexDirection: "column", gap: m ? sp(4) : sp(5) }}>
-          {scenarios.map((s, i) => (
-            <div key={s.label} style={{
-              display: m ? "block" : "flex",
-              alignItems: "stretch",
-              gap: 0,
-              borderRadius: 18,
-              overflow: "hidden",
-              backgroundColor: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              flexDirection: i % 2 === 1 ? "row-reverse" : "row",
-              ...fadeIn(visible, 200 + i * 150),
-            }}>
-              {/* Stat callout */}
-              <div style={{
-                flex: m ? "none" : "0 0 180px",
-                display: "flex", flexDirection: m ? "row" : "column",
-                alignItems: "center", justifyContent: "center",
-                gap: m ? 12 : 0,
-                padding: m ? `${sp(2.5)}px ${sp(3)}px` : sp(4),
-                backgroundColor: `${s.accent}10`,
-                borderBottom: m ? `1px solid rgba(255,255,255,0.04)` : "none",
-                borderRight: !m && i % 2 === 0 ? `1px solid rgba(255,255,255,0.04)` : "none",
-                borderLeft: !m && i % 2 === 1 ? `1px solid rgba(255,255,255,0.04)` : "none",
-              }}>
-                <span style={{
-                  fontFamily: SERIF, fontSize: m ? 28 : 40, color: s.accent,
-                  lineHeight: 1, letterSpacing: "-0.02em",
-                }}>{s.stat}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: m ? 0 : 8, textTransform: "uppercase" as const, textAlign: "center" }}>
-                  {s.statLabel}
-                </span>
-              </div>
-
-              {/* Content */}
-              <div style={{ flex: 1, padding: m ? sp(3) : `${sp(4)}px ${sp(5)}px` }}>
-                <div style={{ ...T.label, color: s.accent, marginBottom: sp(1.5) }}>{s.label}</div>
-                <h3 style={{ fontFamily: SERIF, fontSize: m ? 20 : 24, fontWeight: 400, color: "#F4F1EA", marginBottom: sp(2), lineHeight: 1.2 }}>
-                  {s.title}
-                </h3>
-                <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", margin: 0 }}>
-                  {s.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-}
 
 
 
@@ -1060,9 +874,9 @@ function ProofSection() {
   const m = useMobile();
 
   const testimonials = [
-    { quote: "The score made it obvious that too much of my income came from one source. The report gave me a clearer next step than my own planning notes had.", name: "Sarah M.", role: "Real Estate Agent", score: 28 },
-    { quote: "The value was not the number alone. It was seeing which structural weakness mattered most and what a single change would do to the score.", name: "James R.", role: "Software Contractor", score: 44 },
-    { quote: "The report helped me separate revenue from stability. I had been treating them like the same thing.", name: "Priya K.", role: "Management Consultant", score: 61 },
+    { quote: "The score made it obvious that too much of my income came from one source. The report gave me a clearer next step than my own planning notes had.", name: "Sarah M.", role: "Real Estate Agent" },
+    { quote: "The value was not the number alone. It was seeing which structural weakness mattered most and what a single change would do to the score.", name: "James R.", role: "Software Contractor" },
+    { quote: "The report helped me separate revenue from stability. I had been treating them like the same thing.", name: "Priya K.", role: "Management Consultant" },
   ];
 
   return (
@@ -1088,7 +902,7 @@ function ProofSection() {
               </p>
               <div style={{ borderTop: "1px solid rgba(244,241,234,0.06)", paddingTop: sp(2) }}>
                 <div style={{ ...T.label, fontWeight: 600, color: C.sand, marginBottom: 2 }}>{t.name}</div>
-                <div style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>{t.role} &middot; Score: {t.score}</div>
+                <div style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>{t.role}</div>
               </div>
             </div>
           ))}
@@ -1116,12 +930,11 @@ function PricingSection() {
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>One Assessment, Permanent Insight</div>
           <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2) }}>
-            The cost of not knowing is higher than $69.
+            Two ways in.
           </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 500, margin: "0 auto" }}>
-            One lost client. One missed renewal. One gap you didn&rsquo;t see coming. The diagnostic pays for itself the first time you avoid a structural surprise.
+          <p style={{ ...body(m), color: C.muted, maxWidth: 460, margin: "0 auto" }}>
+            Start with your free score. Upgrade to the full diagnostic when you&#8217;re ready.
           </p>
         </div>
 
@@ -1190,14 +1003,8 @@ function PricingSection() {
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.9"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >Get Your Full Diagnostic — $69</a>
-            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(1.5), marginBottom: 0 }}>30-day satisfaction guarantee</p>
+            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(1.5), marginBottom: 0 }}>30-day money-back guarantee</p>
           </div>
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: sp(5), ...fadeIn(visible, 250) }}>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 560, margin: "0 auto" }}>
-            If the report does not deliver meaningful new insight into your income structure, request a full refund within 30 days.
-          </p>
         </div>
       </div>
     </section>
@@ -1213,7 +1020,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   const m = useMobile();
 
   const faqs = [
-    { q: "What is the Income Stability Score?", a: "A standardized measure of how stable your income structure is under disruption. It evaluates four dimensions — recurring income, concentration, visibility, and continuity — and returns a score out of 100 with a stability band." },
+    { q: "What is the Income Stability Score?", a: "A standardized measure of how stable your income structure is under disruption. It evaluates six structural dimensions and returns a score out of 100 with a stability band." },
     { q: "Who is this built for?", a: "Independent professionals, freelancers, consultants, contractors, and small business owners — anyone whose income does not arrive automatically every two weeks." },
     { q: "What does the full diagnostic include?", a: "A 3-page diagnostic report with income composition analysis, PressureMap with AI-powered zone analysis, Command Center with what-if simulator, industry-specific scripts, a 12-week roadmap, and peer benchmarking." },
     { q: "How is this different from revenue tracking?", a: "Revenue measures how much you earn. This measures how stable that income is. You can have strong revenue and fragile structure. The Score reveals the difference." },
@@ -1257,11 +1064,6 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           <div style={{ borderTop: `1px solid ${C.border}` }} />
         </div>
 
-        <div style={{ textAlign: "center", marginTop: sp(5), ...fadeIn(visible, 200) }}>
-          <Link href="/pricing" style={{ ...T.cta, color: C.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
-            Get My Free Score &#8594;
-          </Link>
-        </div>
       </div>
     </section>
   );
