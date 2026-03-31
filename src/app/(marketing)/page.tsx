@@ -74,8 +74,8 @@ const C = {
   navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  sand: "#F7F5F0",
-  sandAlt: "#FEFEFE",
+  sand: "#F8F6F6",
+  sandAlt: "#FFFFFF",
   white: "#FFFFFF",
   muted: "rgba(14,26,43,0.55)",
   light: "rgba(14,26,43,0.38)",
@@ -115,7 +115,7 @@ const secY = (m: boolean) => m ? sectionGap.mobile : sectionGap.desktop;
 const cardStyle = {
   borderRadius: 18,
   border: `1px solid ${C.border}`,
-  backgroundColor: C.sandAlt,
+  backgroundColor: "#FFFFFF",
   boxShadow: "0 2px 12px rgba(14,26,43,0.04), 0 8px 32px rgba(14,26,43,0.03)",
 };
 
@@ -769,29 +769,23 @@ function ProductMockup() {
 
   return (
     <section ref={ref} aria-label="Product preview" style={{
-      background: "#FFFFFF",
+      background: "#F8F6F6",
       paddingTop: m ? sp(10) : sp(14),
-      paddingBottom: m ? sp(6) : sp(8),
-      paddingLeft: px(m), paddingRight: px(m),
+      paddingBottom: 0,
       overflow: "visible",
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible), paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{
           display: m ? "block" : "flex",
-          borderRadius: 20,
-          overflow: "visible",
           position: "relative",
-          backgroundColor: "#F2F0ED",
         }}>
           {/* LEFT — text panel */}
           <div style={{
-            flex: m ? undefined : "0 0 38%",
-            padding: m ? `${sp(5)}px ${sp(3)}px` : `${sp(6)}px ${sp(5)}px`,
+            flex: m ? undefined : "0 0 40%",
+            padding: m ? `${sp(5)}px 0` : `${sp(6)}px 0 ${sp(6)}px`,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            position: "relative",
-            zIndex: 2,
           }}>
             <h2 style={{
               fontFamily: SERIF, fontWeight: 400,
@@ -826,20 +820,19 @@ function ProductMockup() {
             </Link>
           </div>
 
-          {/* RIGHT — phone image pops out top */}
+          {/* RIGHT — phone image, pops above section */}
           <div style={{
             flex: m ? undefined : 1,
             position: "relative",
-            minHeight: m ? 400 : 500,
+            minHeight: m ? 380 : 480,
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: m ? "center" : "flex-end",
           }}>
             <div style={{
-              position: "absolute",
-              bottom: 0,
-              right: m ? "50%" : 0,
-              transform: m ? "translateX(50%)" : "none",
-              width: m ? "100%" : "110%",
-              maxWidth: m ? 400 : 700,
-              zIndex: 2,
+              width: m ? "100%" : "105%",
+              maxWidth: m ? 420 : 660,
+              marginTop: m ? 0 : -60,
             }}>
               <Image
                 src={iphoneHand}
@@ -1157,7 +1150,7 @@ function FinalCta() {
 
   return (
     <section ref={ref} aria-label="Final CTA" style={{
-      background: `linear-gradient(180deg, ${C.sand} 0%, #EDECEA 100%)`,
+      background: "#F8F6F6",
       paddingTop: m ? sp(8) : sp(10),
       paddingBottom: m ? sp(8) : sp(10),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
