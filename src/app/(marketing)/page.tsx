@@ -82,17 +82,17 @@ const C = {
 const sp = (n: number) => n * 8;
 
 const T = {
-  h1:    { desktop: { fontSize: 44, fontWeight: 500, lineHeight: 1.1 }, mobile: { fontSize: 28, fontWeight: 500, lineHeight: 1.15 } },
-  h2:    { desktop: { fontSize: 22, fontWeight: 500, lineHeight: 1.25 }, mobile: { fontSize: 20, fontWeight: 500, lineHeight: 1.25 } },
-  h3:    { desktop: { fontSize: 17, fontWeight: 500, lineHeight: 1.35 }, mobile: { fontSize: 16, fontWeight: 500, lineHeight: 1.35 } },
+  h1:    { desktop: { fontSize: 44, fontWeight: 600, lineHeight: 1.08 }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.12 } },
+  h2:    { desktop: { fontSize: 24, fontWeight: 600, lineHeight: 1.2 }, mobile: { fontSize: 20, fontWeight: 600, lineHeight: 1.2 } },
+  h3:    { desktop: { fontSize: 17, fontWeight: 600, lineHeight: 1.3 }, mobile: { fontSize: 16, fontWeight: 600, lineHeight: 1.3 } },
   bodyLg:{ desktop: { fontSize: 17, fontWeight: 400, lineHeight: 1.55 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.55 } },
   body:  { desktop: { fontSize: 15, fontWeight: 400, lineHeight: 1.65 }, mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
-  label: { fontSize: 11, fontWeight: 600, lineHeight: 1.4, letterSpacing: "0.08em", textTransform: "uppercase" as const },
-  meta:  { fontSize: 13, fontWeight: 400, lineHeight: 1.4 },
+  label: { fontSize: 11, fontWeight: 700, lineHeight: 1.4, letterSpacing: "0.10em", textTransform: "uppercase" as const },
+  meta:  { fontSize: 13, fontWeight: 400, lineHeight: 1.5 },
   score: { desktop: { fontSize: 56, fontWeight: 500, lineHeight: 1 }, mobile: { fontSize: 42, fontWeight: 500, lineHeight: 1 } },
   price: { desktop: { fontSize: 40, fontWeight: 500, lineHeight: 1 }, mobile: { fontSize: 34, fontWeight: 500, lineHeight: 1 } },
   nav:   { fontSize: 15, fontWeight: 400 },
-  cta:   { fontSize: 15, fontWeight: 500 },
+  cta:   { fontSize: 15, fontWeight: 600 },
 };
 
 const maxW = 1200;
@@ -372,6 +372,33 @@ function HeroVideo() {
 
 
 /* ================================================================== */
+/* WHO THIS IS FOR — right after hero                                  */
+/* ================================================================== */
+function WhoSection() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+
+  return (
+    <section ref={ref} aria-label="Who this is for" style={{
+      background: C.sandAlt,
+      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: readW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
+        <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Who This Is For</div>
+        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(3) }}>
+          If you re-earn your income every month, this is the standard it should be measured against.
+        </h2>
+        <p style={{ ...body(m), color: C.muted, maxWidth: 560, margin: "0 auto 0" }}>
+          Consultants. Contractors. Freelancers. Agency owners. Solo practitioners. Anyone whose income depends on structure, not a payroll system.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* HOW IT WORKS                                                        */
 /* ================================================================== */
 function HowItWorksSection() {
@@ -607,6 +634,68 @@ function WhatYouGet() {
 
 
 /* ================================================================== */
+/* BEFORE / AFTER TRANSFORMATION                                       */
+/* ================================================================== */
+function TransformationSection() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+
+  return (
+    <section ref={ref} aria-label="Transformation" style={{
+      background: C.sandAlt,
+      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>The Difference</div>
+          <h2 style={{ ...h2(m), color: C.navy }}>What changes after your assessment</h2>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 800, margin: "0 auto", ...fadeIn(visible, 100) }}>
+          {/* Before */}
+          <div style={{ ...cardStyle, padding: m ? sp(3.5) : sp(4), borderLeft: `3px solid rgba(14,26,43,0.15)` }}>
+            <div style={{ ...T.label, color: C.light, marginBottom: sp(2) }}>BEFORE</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: sp(2) }}>
+              {[
+                "You guess which clients matter most",
+                "You react to disruptions after they hit",
+                "You track revenue but not structure",
+                "You know something feels fragile but not why",
+              ].map(t => (
+                <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
+                  <span style={{ color: C.light, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
+                  <span style={{ ...body(m), color: C.muted }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* After */}
+          <div style={{ ...cardStyle, padding: m ? sp(3.5) : sp(4), borderLeft: `3px solid ${C.teal}` }}>
+            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>AFTER</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: sp(2) }}>
+              {[
+                "You know exactly which structural weakness to fix first",
+                "You have scripts to send to clients today",
+                "You can simulate changes before committing",
+                "You have a 12-week plan with measurable targets",
+              ].map(t => (
+                <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
+                  <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
+                  <span style={{ ...body(m), color: C.navy }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* AUTHORITY QUOTE (replaces testimonials)                             */
 /* ================================================================== */
 function AuthorityQuote() {
@@ -683,14 +772,6 @@ function PricingSection() {
           </p>
         </div>
 
-        <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible, 100) }}>
-          <div style={{ ...T.label, color: C.light, marginBottom: sp(1) }}>
-            Used by professionals in
-          </div>
-          <p style={{ ...T.meta, color: C.muted, lineHeight: 1.8, maxWidth: 640, margin: "0 auto" }}>
-            Real estate &bull; Consulting &bull; Software contracting &bull; Insurance &bull; Mortgage &bull; Creative services &bull; Solo legal &bull; Financial advisory
-          </p>
-        </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 720, margin: "0 auto", ...fadeIn(visible, 150) }}>
           {/* Free */}
@@ -847,7 +928,10 @@ function FinalCta() {
       background: C.sand, paddingTop: secY(m), paddingBottom: secY(m),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
-      <div style={{ maxWidth: 540, margin: "0 auto", ...fadeIn(visible) }}>
+      <div style={{ maxWidth: 560, margin: "0 auto", ...fadeIn(visible) }}>
+        <p style={{ ...bodyLg(m), color: C.navy, marginBottom: sp(3), lineHeight: 1.6 }}>
+          Every month you don&rsquo;t address your structural weakness, you&rsquo;re operating on the same fragile foundation. The assessment takes 90 seconds. The insight lasts permanently.
+        </p>
         <Link href="/pricing" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           height: sp(6.5), padding: `0 ${sp(5)}px`, borderRadius: 10,
@@ -926,9 +1010,11 @@ export default function LandingPage() {
       <StickyNav />
       <HeroSection />
       <HeroVideo />
+      <WhoSection />
       <HowItWorksSection />
       <ScenarioSection />
       <WhatYouGet />
+      <TransformationSection />
       <AuthorityQuote />
       <TrustStrip />
       <PricingSection />
