@@ -86,22 +86,20 @@ const C = {
 const sp = (n: number) => n * 8;
 
 const T = {
-  h1:    { desktop: { fontSize: 52, fontWeight: 600, lineHeight: 1.08 }, mobile: { fontSize: 30, fontWeight: 600, lineHeight: 1.1 } },
-  h2:    { desktop: { fontSize: 32, fontWeight: 600, lineHeight: 1.15 }, mobile: { fontSize: 26, fontWeight: 600, lineHeight: 1.15 } },
-  h3:    { desktop: { fontSize: 20, fontWeight: 600, lineHeight: 1.3 },  mobile: { fontSize: 18, fontWeight: 600, lineHeight: 1.3 } },
-  bodyLg:{ desktop: { fontSize: 20, fontWeight: 400, lineHeight: 1.45 }, mobile: { fontSize: 18, fontWeight: 400, lineHeight: 1.5 } },
-  body:  { desktop: { fontSize: 16, fontWeight: 400, lineHeight: 1.65 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
+  h1:    { desktop: { fontSize: 56, fontWeight: 600, lineHeight: 1.06 }, mobile: { fontSize: 34, fontWeight: 600, lineHeight: 1.1 } },
+  h2:    { desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.1 }, mobile: { fontSize: 30, fontWeight: 600, lineHeight: 1.15 } },
+  h3:    { desktop: { fontSize: 22, fontWeight: 600, lineHeight: 1.3 },  mobile: { fontSize: 20, fontWeight: 600, lineHeight: 1.3 } },
+  bodyLg:{ desktop: { fontSize: 20, fontWeight: 400, lineHeight: 1.5 }, mobile: { fontSize: 18, fontWeight: 400, lineHeight: 1.5 } },
+  body:  { desktop: { fontSize: 17, fontWeight: 400, lineHeight: 1.65 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
   label: { fontSize: 14, fontWeight: 500, lineHeight: 1.45 },
-  meta:  { fontSize: 13, fontWeight: 500, lineHeight: 1.4 },
+  meta:  { fontSize: 14, fontWeight: 500, lineHeight: 1.4 },
   score: { desktop: { fontSize: 64, fontWeight: 600, lineHeight: 1 }, mobile: { fontSize: 48, fontWeight: 600, lineHeight: 1 } },
   price: { desktop: { fontSize: 48, fontWeight: 600, lineHeight: 1 }, mobile: { fontSize: 40, fontWeight: 600, lineHeight: 1 } },
   nav:   { fontSize: 15, fontWeight: 500 },
-  cta:   { fontSize: 15, fontWeight: 600 },
+  cta:   { fontSize: 16, fontWeight: 600 },
 };
 
 const maxW = 1200;
-const readW = 740;
-const heroW = 660;
 const padX = { desktop: 40, mobile: 20 };
 const sectionGap = { desktop: sp(12), mobile: sp(9) };
 
@@ -189,7 +187,7 @@ function StickyNav() {
         {m && (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Link href="/pricing" style={{
-              ...T.cta, fontSize: 13, color: ctaColor, textDecoration: "none",
+              ...T.cta, fontSize: 14, color: ctaColor, textDecoration: "none",
               padding: `6px ${sp(2)}px`, borderRadius: 8,
               backgroundColor: ctaBg, transition: "background-color 300ms, color 300ms",
             }}>Score</Link>
@@ -280,7 +278,7 @@ function HeroSection() {
 
             <h1 style={{
               ...fadeIn(visible, 120),
-              fontSize: m ? 38 : 64, fontWeight: 600, lineHeight: 1.04,
+              fontSize: m ? 40 : 68, fontWeight: 600, lineHeight: 1.04,
               color: C.sand, letterSpacing: "-0.03em",
               marginBottom: m ? sp(3) : sp(5),
             }}>
@@ -289,7 +287,7 @@ function HeroSection() {
 
             <p style={{
               ...fadeIn(visible, 250),
-              fontSize: m ? 18 : 20, fontWeight: 400, lineHeight: 1.5,
+              fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5,
               color: "rgba(244,241,234,0.50)",
               marginBottom: m ? sp(5) : sp(6),
               maxWidth: m ? undefined : 500,
@@ -299,7 +297,7 @@ function HeroSection() {
 
             <div style={fadeIn(visible, 380)}>
               <Link
-                href="/pricing"
+                href="/diagnostic-portal"
                 className="cta-tick inline-flex items-center justify-center"
                 style={{
                   height: sp(7), width: m ? "100%" : "auto",
@@ -392,7 +390,7 @@ function HeroSection() {
           ].map(s => (
             <div key={s.label} style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
               <span style={{ fontFamily: SERIF, fontSize: 20, color: "#F4F1EA" }}>{s.val}</span>
-              <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{s.label}</span>
+              <span style={{ fontSize: 14, color: "rgba(244,241,234,0.30)" }}>{s.label}</span>
             </div>
           ))}
         </div>
@@ -518,8 +516,8 @@ function HowItWorksSection() {
                 <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
                 <p style={{ ...body(m), color: C.muted, margin: `0 0 ${sp(1.5)}px` }}>{s.desc}</p>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: `4px 12px`, borderRadius: 20, backgroundColor: `${accents[i]}08`, border: `1px solid ${accents[i]}12` }}>
-                  <span style={{ color: accents[i], fontSize: 11 }}>&#x2713;</span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: accents[i], letterSpacing: "0.02em" }}>{s.trust}</span>
+                  <span style={{ color: accents[i], fontSize: 14 }}>&#x2713;</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: accents[i], letterSpacing: "0.02em" }}>{s.trust}</span>
                 </div>
               </div>
             </div>
@@ -584,7 +582,7 @@ function WhatItMeasures() {
             Four Dimensions of Stability
           </div>
           <h2 style={{
-            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
+            fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08,
             color: C.navy, letterSpacing: "-0.03em",
             maxWidth: 700, marginBottom: m ? sp(3) : sp(4),
           }}>
@@ -689,7 +687,7 @@ function ProductMockup() {
           }}>
             <h2 style={{
               fontFamily: SERIF, fontWeight: 400,
-              fontSize: m ? 26 : 32, lineHeight: 1.15,
+              fontSize: m ? 28 : 36, lineHeight: 1.15,
               color: C.navy,
               marginBottom: sp(3),
             }}>
@@ -703,7 +701,7 @@ function ProductMockup() {
                     <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.12)" />
                     <path d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                   </svg>
-                  <span style={{ fontSize: 15, color: C.navy, lineHeight: 1.55 }}>{f}</span>
+                  <span style={{ fontSize: 16, color: C.navy, lineHeight: 1.55 }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -810,7 +808,7 @@ function PressureNarrative() {
           </div>
           <h2 style={{
             ...h2(m), color: "#F4F1EA",
-            fontSize: m ? 26 : 36,
+            fontSize: m ? 30 : 40,
             maxWidth: 640, margin: "0 auto",
             marginBottom: sp(3),
           }}>
@@ -889,7 +887,7 @@ function PressureNarrative() {
             }}>
               &ldquo;The median small business holds just 27 days of cash buffer.&rdquo;
             </p>
-            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 400 }}>
+            <span style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", fontWeight: 400 }}>
               &mdash; JPMorgan Chase Institute
             </span>
           </div>
@@ -910,7 +908,7 @@ function PressureNarrative() {
               "You track revenue but not structure",
             ].map(t => (
               <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
-                <span style={{ color: "rgba(244,241,234,0.20)", fontSize: 13, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
+                <span style={{ color: "rgba(244,241,234,0.20)", fontSize: 14, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
                 <span style={{ ...body(m), color: "rgba(244,241,234,0.40)" }}>{t}</span>
               </div>
             ))}
@@ -924,7 +922,7 @@ function PressureNarrative() {
               "You can simulate changes before committing",
             ].map(t => (
               <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
-                <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
+                <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
                 <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{t}</span>
               </div>
             ))}
@@ -936,90 +934,6 @@ function PressureNarrative() {
 }
 
 
-/* ================================================================== */
-/* HOW THE SCORE WORKS (Authority) — yesterday's version               */
-/* ================================================================== */
-function AuthorityBlock() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  const items = [
-    { label: "Fixed structural inputs", desc: "Derived from your submitted income structure — not financial accounts" },
-    { label: "Deterministic scoring", desc: "Same answers always produce the same score" },
-    { label: "Measures stability, not wealth", desc: "Focuses on how income holds up under disruption" },
-    { label: "No financial access required", desc: "No bank connection, no credit pull" },
-    { label: "Methodology published", desc: "Scoring logic, dimensions, and interpretation are transparent" },
-  ];
-
-  return (
-    <section ref={ref} aria-label="How the score works" style={{
-      background: C.sandBg,
-      paddingTop: m ? sp(10) : sp(16),
-      paddingBottom: m ? sp(10) : sp(16),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        {/* Heading */}
-        <div style={{ marginBottom: m ? sp(8) : sp(12), ...fadeIn(visible) }}>
-          <div style={{
-            ...T.meta, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const,
-            color: C.teal, marginBottom: m ? sp(2) : sp(3),
-          }}>
-            How The Score Works
-          </div>
-          <h2 style={{
-            fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.08,
-            color: C.navy, letterSpacing: "-0.03em",
-            maxWidth: 600,
-          }}>
-            A fixed model.<br />Not an opinion.
-          </h2>
-        </div>
-
-        {/* Items */}
-        <div style={{ maxWidth: readW, ...fadeIn(visible, 150) }}>
-          {items.map((item, i) => (
-            <div key={item.label} style={{
-              display: "flex", gap: sp(2.5), alignItems: "flex-start",
-              padding: `${sp(3)}px 0`,
-              borderTop: `1px solid ${C.border}`,
-            }}>
-              <span style={{ color: C.teal, fontSize: 16, lineHeight: "28px", flexShrink: 0, fontWeight: 600 }}>&#x2713;</span>
-              <div>
-                <div style={{
-                  fontSize: m ? 17 : 20, fontWeight: 600, color: C.navy,
-                  letterSpacing: "-0.01em", marginBottom: sp(0.75),
-                }}>{item.label}</div>
-                <div style={{ ...bodyLg(m), color: C.muted }}>{item.desc}</div>
-              </div>
-            </div>
-          ))}
-          <div style={{ borderTop: `1px solid ${C.border}` }} />
-        </div>
-
-        {/* Model badge */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: sp(4), marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 300) }}>
-          <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Model Version: RP-2.0</span>
-          <span style={{ ...T.label, color: C.light, fontWeight: 500 }}>Assessment Type: Structural Income Stability Diagnostic</span>
-        </div>
-
-        {/* Large methodology link */}
-        <div style={{ marginTop: m ? sp(8) : sp(10), ...fadeIn(visible, 400) }}>
-          <Link href="/methodology" style={{
-            display: "inline-flex", alignItems: "center", gap: sp(1.5),
-            textDecoration: "none", transition: "opacity 200ms ease",
-          }}
-            onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-          >
-            <span style={{ color: C.teal, fontSize: m ? 32 : 44, lineHeight: 1, fontWeight: 600 }}>&#x203A;</span>
-            <span style={{ fontSize: m ? 28 : 40, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em" }}>View full methodology</span>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================== */
@@ -1119,16 +1033,16 @@ function WhatYouGet() {
             item.href ? (
               <Link key={item.label} href={item.href} style={{
                 display: "inline-flex", alignItems: "center", gap: 6,
-                fontSize: 13, color: C.teal, textDecoration: "none",
+                fontSize: 14, color: C.teal, textDecoration: "none",
                 padding: `6px 14px`, borderRadius: 20,
                 backgroundColor: "rgba(31,109,122,0.05)", border: "1px solid rgba(31,109,122,0.10)",
               }}>
-                <span style={{ fontSize: 11 }}>&#x2713;</span> {item.label}
+                <span style={{ fontSize: 14 }}>&#x2713;</span> {item.label}
               </Link>
             ) : (
               <span key={item.label} style={{
                 display: "inline-flex", alignItems: "center", gap: 6,
-                fontSize: 13, color: C.light,
+                fontSize: 14, color: C.light,
                 padding: `6px 14px`, borderRadius: 20,
                 backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid ${C.border}`,
               }}>
@@ -1143,37 +1057,6 @@ function WhatYouGet() {
 }
 
 
-/* ================================================================== */
-/* WHY THIS MATTERS — yesterday's version                              */
-/* ================================================================== */
-function WhyNowSection() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} aria-label="Why this matters" style={{
-      background: C.white, paddingTop: secY(m), paddingBottom: secY(m),
-      paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
-    }}>
-      <div style={{ maxWidth: readW, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2.5) }}>Income looks strongest right before pressure arrives.</h2>
-        <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(2) }}>
-          Most income problems are not visible in revenue alone.<br />
-          They surface when one source changes, one month slips, or one contract ends.
-        </p>
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(4) }}>
-          This score is designed to reveal structural weakness before it becomes financial pain.
-        </p>
-        <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: sp(3) }}>
-          <p style={{ ...T.label, color: C.light, fontStyle: "italic", margin: 0 }}>
-            The median small business holds just 27 days of cash buffer.
-            <span style={{ ...T.meta, fontStyle: "normal", marginLeft: sp(1) }}>&mdash; JPMorgan Chase Institute</span>
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================== */
@@ -1223,24 +1106,6 @@ function ProofSection() {
 }
 
 
-/* ================================================================== */
-/* TRUST STRIP — yesterday's version                                   */
-/* ================================================================== */
-function TrustStrip() {
-  const m = useMobile();
-  return (
-    <section aria-label="Trust" style={{
-      background: C.sandBg, paddingTop: m ? sp(4) : sp(5), paddingBottom: m ? sp(4) : sp(5),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: m ? `${sp(1)}px ${sp(2.5)}px` : `${sp(1)}px ${sp(4.5)}px`, maxWidth: maxW, margin: "0 auto" }}>
-        {["Methodology published", "Model version controlled", "Deterministic scoring", "Private by default"].map((item) => (
-          <span key={item} style={{ ...T.label, color: C.muted, fontWeight: 500 }}>{item}</span>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================== */
@@ -1280,7 +1145,7 @@ function PricingSection() {
             <div style={{ marginBottom: sp(3) }}>
               {["Score out of 100", "Stability band", "Primary structural constraint", "One recommended direction"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1), marginBottom: sp(0.75) }}>
-                  <span style={{ color: C.teal, fontSize: 13, flexShrink: 0 }}>&#x2713;</span>
+                  <span style={{ color: C.teal, fontSize: 14, flexShrink: 0 }}>&#x2713;</span>
                   <span style={{ ...body(m), color: C.muted }}>{item}</span>
                 </div>
               ))}
@@ -1317,7 +1182,7 @@ function PricingSection() {
                 "Peer benchmarking across your sector",
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(0.75) }}>
-                  <span style={{ color: C.purple, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
+                  <span style={{ color: C.purple, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
                   <span style={{ ...body(m), color: C.muted }}>{item}</span>
                 </div>
               ))}
@@ -1454,9 +1319,9 @@ function FinalCta() {
           <Link href="/diagnostic-portal" style={{ ...T.meta, color: C.muted, textDecoration: "underline", textUnderlineOffset: 3 }}>
             Or start free
           </Link>
-          <span style={{ color: C.light, fontSize: 11 }}>&bull;</span>
+          <span style={{ color: C.light, fontSize: 14 }}>&bull;</span>
           <span style={{ ...T.meta, color: C.light }}>90 seconds</span>
-          <span style={{ color: C.light, fontSize: 11 }}>&bull;</span>
+          <span style={{ color: C.light, fontSize: 14 }}>&bull;</span>
           <span style={{ ...T.meta, color: C.light }}>30-day guarantee</span>
         </div>
       </div>
@@ -1527,11 +1392,8 @@ export default function LandingPage() {
       <WhatItMeasures />
       <ProductMockup />
       <PressureNarrative />
-      <AuthorityBlock />
       <WhatYouGet />
-      <WhyNowSection />
       <ProofSection />
-      <TrustStrip />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <FinalCta />
