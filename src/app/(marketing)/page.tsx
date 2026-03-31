@@ -1337,7 +1337,6 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
       <HeroSection />
-      <HeroAccent />
       <HeroVideo />
       <HowItWorksSection />
       <ProductMockup />
