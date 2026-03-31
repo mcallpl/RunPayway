@@ -769,26 +769,29 @@ function ProductMockup() {
 
   return (
     <section ref={ref} aria-label="Product preview" style={{
-      background: C.sandAlt,
-      paddingTop: m ? sp(6) : sp(8),
+      background: "#FFFFFF",
+      paddingTop: m ? sp(10) : sp(14),
       paddingBottom: m ? sp(6) : sp(8),
       paddingLeft: px(m), paddingRight: px(m),
+      overflow: "visible",
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible) }}>
         <div style={{
           display: m ? "block" : "flex",
-          borderRadius: 24,
-          overflow: "hidden",
+          borderRadius: 20,
+          overflow: "visible",
           position: "relative",
+          backgroundColor: "#F2F0ED",
         }}>
-          {/* LEFT — text panel with light bg */}
+          {/* LEFT — text panel */}
           <div style={{
-            flex: m ? undefined : "0 0 36%",
+            flex: m ? undefined : "0 0 38%",
             padding: m ? `${sp(5)}px ${sp(3)}px` : `${sp(6)}px ${sp(5)}px`,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            backgroundColor: "#F0EDE8",
+            position: "relative",
+            zIndex: 2,
           }}>
             <h2 style={{
               fontFamily: SERIF, fontWeight: 400,
@@ -823,27 +826,27 @@ function ProductMockup() {
             </Link>
           </div>
 
-          {/* RIGHT — phone image, flush to right & bottom edges */}
+          {/* RIGHT — phone image, pops out top, flush bottom & right */}
           <div style={{
             flex: m ? undefined : 1,
             position: "relative",
-            backgroundColor: "#E8E5E0",
-            minHeight: m ? 400 : 480,
-            overflow: "hidden",
+            minHeight: m ? 380 : 460,
           }}>
             <div style={{
               position: "absolute",
               bottom: 0,
-              right: m ? "50%" : 0,
+              right: m ? "50%" : 40,
               transform: m ? "translateX(50%)" : "none",
-              width: m ? 360 : 520,
+              width: m ? 340 : 480,
               zIndex: 1,
-              filter: "drop-shadow(-12px -8px 32px rgba(14,26,43,0.12))",
             }}>
               <Image
                 src={iphoneHand}
                 alt="RunPayway Command Center on mobile"
-                style={{ width: "100%", height: "auto", display: "block" }}
+                style={{
+                  width: "100%", height: "auto", display: "block",
+                  filter: "drop-shadow(0 12px 40px rgba(14,26,43,0.15))",
+                }}
                 priority
               />
             </div>
