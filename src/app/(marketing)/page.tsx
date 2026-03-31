@@ -658,11 +658,11 @@ function HowItWorksSection() {
   const S = {
     section: { background: C.white, paddingLeft: px(m), paddingRight: px(m) } as const,
     inner: { maxWidth: 880, margin: "0 auto" } as const,
-    stageNum: { fontSize: 13, fontWeight: 600 as const, letterSpacing: "0.06em", color: C.light, marginBottom: sp(1) },
-    stageTitle: { fontSize: m ? 20 : 24, fontWeight: 600 as const, color: C.navy, lineHeight: 1.25, marginBottom: sp(1.5) },
-    prose: { fontSize: m ? 16 : 17, fontWeight: 400 as const, lineHeight: 1.65, color: C.muted, margin: 0 as const },
-    anchor: { fontSize: 14, fontWeight: 500 as const, color: C.light, marginTop: sp(2) },
-    rule: { height: 1, backgroundColor: C.border, margin: `${m ? sp(8) : sp(10)}px 0` },
+    stageNum: { fontSize: m ? 14 : 15, fontWeight: 700 as const, letterSpacing: "0.08em", color: C.light, marginBottom: sp(1.5), textTransform: "uppercase" as const },
+    stageTitle: { fontSize: m ? 26 : 34, fontWeight: 600 as const, color: C.navy, lineHeight: 1.15, marginBottom: sp(2.5), letterSpacing: "-0.02em" },
+    prose: { fontSize: m ? 17 : 19, fontWeight: 400 as const, lineHeight: 1.7, color: C.muted, margin: 0 as const },
+    anchor: { fontSize: m ? 15 : 16, fontWeight: 600 as const, color: C.navy, marginTop: sp(3) },
+    rule: { height: 1, backgroundColor: C.border, margin: `${m ? sp(10) : sp(12)}px 0` },
   };
 
   return (
@@ -671,14 +671,14 @@ function HowItWorksSection() {
     <section ref={ref} aria-label="How It Works" style={{ ...S.section, paddingTop: m ? sp(12) : sp(15), paddingBottom: 0 }}>
       <div style={S.inner}>
         <div style={{ ...fadeIn(visible), marginBottom: m ? sp(8) : sp(10) }}>
-          <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.10em", color: C.navy, marginBottom: sp(4), textTransform: "uppercase" as const }}>How It Works</p>
-          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, color: C.navy, letterSpacing: "-0.03em", marginBottom: sp(4) }}>
-            Measured in structure. Not in dollars.
+          <p style={{ fontSize: m ? 14 : 15, fontWeight: 700, letterSpacing: "0.10em", color: C.navy, marginBottom: sp(5), textTransform: "uppercase" as const }}>How It Works</p>
+          <h2 style={{ fontSize: m ? 40 : 64, fontWeight: 600, lineHeight: 1.04, color: C.navy, letterSpacing: "-0.03em", marginBottom: sp(5) }}>
+            Measured in structure.<br />Not in dollars.
           </h2>
-          <p style={{ ...S.prose, maxWidth: 600, marginBottom: sp(3) }}>
+          <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.6, color: C.muted, maxWidth: 620, marginBottom: sp(4) }}>
             RunPayway evaluates how your income is built — not how much you make. No accounts. No credit pulls. No financial data.
           </p>
-          <p style={{ fontSize: 13, color: C.light }}>Model RP-2.0 &middot; Deterministic &middot; Same inputs produce the same result.</p>
+          <p style={{ fontSize: m ? 14 : 15, fontWeight: 500, color: C.light, letterSpacing: "0.02em" }}>Model RP-2.0 &middot; Deterministic &middot; Same inputs produce the same result.</p>
         </div>
       </div>
     </section>
@@ -709,12 +709,12 @@ function HowItWorksSection() {
           </p>
 
           {/* Table — no rounded corners, no colored backgrounds, plain data */}
-          <table style={{ width: "100%", maxWidth: 720, borderCollapse: "collapse" as const, fontSize: 14 }}>
+          <table style={{ width: "100%", maxWidth: 780, borderCollapse: "collapse" as const }}>
             <thead>
               <tr style={{ borderBottom: `2px solid ${C.navy}` }}>
-                <th style={{ textAlign: "left" as const, padding: `${sp(1)}px 0`, fontWeight: 600, color: C.navy, width: m ? "40%" : "28%" }}>Dimension</th>
-                <th style={{ textAlign: "left" as const, padding: `${sp(1)}px 0`, fontWeight: 600, color: C.navy }}>What It Tests</th>
-                {!m && <th style={{ textAlign: "left" as const, padding: `${sp(1)}px 0`, fontWeight: 600, color: C.navy }}>Why It Matters</th>}
+                <th style={{ textAlign: "left" as const, padding: `${sp(2)}px ${sp(1)}px ${sp(2)}px 0`, fontSize: m ? 14 : 16, fontWeight: 700, color: C.navy, width: m ? "40%" : "26%" }}>Dimension</th>
+                <th style={{ textAlign: "left" as const, padding: `${sp(2)}px ${sp(1)}px`, fontSize: m ? 14 : 16, fontWeight: 700, color: C.navy }}>What It Tests</th>
+                {!m && <th style={{ textAlign: "left" as const, padding: `${sp(2)}px 0 ${sp(2)}px ${sp(1)}px`, fontSize: 16, fontWeight: 700, color: C.navy }}>Why It Matters</th>}
               </tr>
             </thead>
             <tbody>
@@ -725,11 +725,11 @@ function HowItWorksSection() {
                 ["Forward Visibility", "Income already secured ahead", "Determines short-term stability"],
                 ["Consistency", "Monthly income fluctuation", "Measures predictability"],
                 ["Labor Independence", "Income that continues without active work", "Defines structural resilience"],
-              ].map(([dim, tests, matters], i) => (
+              ].map(([dim, tests, matters]) => (
                 <tr key={dim} style={{ borderBottom: `1px solid ${C.border}` }}>
-                  <td style={{ padding: `${sp(1.5)}px 0`, fontWeight: 500, color: C.navy }}>{dim}</td>
-                  <td style={{ padding: `${sp(1.5)}px 0`, color: C.muted }}>{tests}</td>
-                  {!m && <td style={{ padding: `${sp(1.5)}px 0`, color: C.light }}>{matters}</td>}
+                  <td style={{ padding: `${sp(2)}px ${sp(1)}px ${sp(2)}px 0`, fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy }}>{dim}</td>
+                  <td style={{ padding: `${sp(2)}px ${sp(1)}px`, fontSize: m ? 15 : 16, color: C.muted }}>{tests}</td>
+                  {!m && <td style={{ padding: `${sp(2)}px 0 ${sp(2)}px ${sp(1)}px`, fontSize: 16, color: C.light }}>{matters}</td>}
                 </tr>
               ))}
             </tbody>
@@ -747,19 +747,19 @@ function HowItWorksSection() {
             The model produces a standardized output: a score from 0 to 100, a stability band, the primary structural constraint, distance to the next tier, and the single highest-leverage improvement.
           </p>
 
-          {/* Bands — inline text, not cards */}
-          <div style={{ maxWidth: 600 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: sp(1.5) }}>Classification bands</p>
+          {/* Bands */}
+          <div style={{ maxWidth: 700 }}>
+            <p style={{ fontSize: m ? 16 : 18, fontWeight: 700, color: C.navy, marginBottom: sp(2) }}>Classification Bands</p>
             {[
               ["Limited", "0\u201329", "Structurally fragile. Income depends almost entirely on active effort."],
               ["Developing", "30\u201349", "Partially stable. Handles small disruptions, exposed to large ones."],
               ["Established", "50\u201374", "Absorbs most common disruptions without structural damage."],
               ["High", "75\u2013100", "Structurally resilient. Survives lost clients, slow quarters, work pauses."],
             ].map(([band, range, desc]) => (
-              <div key={band} style={{ display: "flex", gap: m ? 8 : 16, padding: `${sp(1)}px 0`, borderBottom: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: C.navy, minWidth: m ? 80 : 100 }}>{band}</span>
-                <span style={{ fontSize: 14, fontWeight: 500, color: C.navy, minWidth: 48 }}>{range}</span>
-                <span style={{ fontSize: 14, color: C.muted }}>{desc}</span>
+              <div key={band} style={{ display: "flex", gap: m ? 12 : 20, padding: `${sp(2)}px 0`, borderBottom: `1px solid ${C.border}`, alignItems: "baseline" }}>
+                <span style={{ fontSize: m ? 16 : 18, fontWeight: 700, color: C.navy, minWidth: m ? 90 : 110 }}>{band}</span>
+                <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, minWidth: m ? 48 : 56 }}>{range}</span>
+                <span style={{ fontSize: m ? 15 : 16, color: C.muted, lineHeight: 1.5 }}>{desc}</span>
               </div>
             ))}
           </div>
@@ -782,11 +782,14 @@ function HowItWorksSection() {
 
         {/* HOW THE MODEL WORKS */}
         <div style={{ marginBottom: m ? sp(8) : sp(10), ...fadeIn(v2, 400) }}>
-          <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.10em", color: C.navy, marginBottom: sp(4), textTransform: "uppercase" as const }}>How the Model Works</p>
-          <p style={{ ...S.prose, maxWidth: 600, marginBottom: sp(4) }}>
-            The system evaluates income using two fixed scoring blocks. The Structure block (60% weight) measures how income is built: recurrence, diversification, visibility, and concentration balance. The Stability block (40% weight) measures how income behaves: labor dependence, earnings consistency, and continuity under disruption.
+          <p style={{ fontSize: m ? 14 : 15, fontWeight: 700, letterSpacing: "0.10em", color: C.navy, marginBottom: sp(3), textTransform: "uppercase" as const }}>How the Model Works</p>
+          <h3 style={{ fontSize: m ? 26 : 36, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.02em", marginBottom: sp(4) }}>
+            Two scoring blocks. Fixed rules. No exceptions.
+          </h3>
+          <p style={{ ...S.prose, maxWidth: 640, marginBottom: sp(4) }}>
+            The Structure block (60% weight) measures how income is built: recurrence, diversification, visibility, and concentration balance. The Stability block (40% weight) measures how income behaves: labor dependence, earnings consistency, and continuity under disruption.
           </p>
-          <p style={{ ...S.prose, maxWidth: 600, marginBottom: sp(3) }}>
+          <p style={{ ...S.prose, maxWidth: 640, marginBottom: sp(3) }}>
             Cross-factor interaction rules capture how structural factors compound. High concentration combined with low visibility produces a scoring penalty. Strong recurrence combined with low labor dependence produces a scoring boost. These rules are fixed and predefined. No machine learning. No subjective adjustment.
           </p>
         </div>
@@ -795,30 +798,30 @@ function HowItWorksSection() {
 
         {/* DOES / DOES NOT */}
         <div style={{ marginBottom: m ? sp(8) : sp(10), ...fadeIn(v2, 500) }}>
-          <h3 style={{ ...S.stageTitle, fontSize: m ? 20 : 24 }}>What this system does — and does not do</h3>
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(4) : sp(8), marginTop: sp(4), maxWidth: 640 }}>
+          <h3 style={{ fontSize: m ? 26 : 34, fontWeight: 600, color: C.navy, lineHeight: 1.15, letterSpacing: "-0.02em", marginBottom: sp(5) }}>What this system does — and does not do.</h3>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(5) : sp(10), maxWidth: 700 }}>
             <div>
               {["Measures structure, not income level", "Produces consistent, repeatable outputs", "Identifies structural weaknesses precisely", "Quantifies the improvement path"].map(item => (
-                <p key={item} style={{ fontSize: 15, color: C.navy, margin: `0 0 ${sp(1.5)}px`, lineHeight: 1.5 }}>{item}</p>
+                <p key={item} style={{ fontSize: m ? 16 : 17, fontWeight: 500, color: C.navy, margin: `0 0 ${sp(2)}px`, lineHeight: 1.55 }}>{item}</p>
               ))}
             </div>
             <div>
               {["Does not access bank accounts", "Does not pull credit data", "Does not use AI to alter scoring", "Does not predict future income", "Does not change results by industry or bias"].map(item => (
-                <p key={item} style={{ fontSize: 15, color: C.light, margin: `0 0 ${sp(1.5)}px`, lineHeight: 1.5 }}>{item}</p>
+                <p key={item} style={{ fontSize: m ? 16 : 17, color: C.light, margin: `0 0 ${sp(2)}px`, lineHeight: 1.55 }}>{item}</p>
               ))}
             </div>
           </div>
-          <p style={S.anchor}>This is a classification system. Not a prediction engine.</p>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, marginTop: sp(5) }}>This is a classification system. Not a prediction engine.</p>
         </div>
 
         <div style={S.rule} />
 
         {/* CLOSING CTA */}
         <div style={{ paddingBottom: m ? sp(12) : sp(15), ...fadeIn(v2, 600) }}>
-          <h3 style={{ fontSize: m ? 24 : 32, fontWeight: 600, color: C.navy, lineHeight: 1.15, marginBottom: sp(2), letterSpacing: "-0.02em" }}>
+          <h3 style={{ fontSize: m ? 32 : 44, fontWeight: 600, color: C.navy, lineHeight: 1.1, marginBottom: sp(3), letterSpacing: "-0.03em" }}>
             Understand your structure in under two minutes.
           </h3>
-          <p style={{ ...S.prose, maxWidth: 480, marginBottom: sp(5) }}>
+          <p style={{ fontSize: m ? 18 : 20, fontWeight: 400, lineHeight: 1.6, color: C.muted, maxWidth: 500, marginBottom: sp(6) }}>
             Most people know their income. Few understand how stable it actually is.
           </p>
           <Link
