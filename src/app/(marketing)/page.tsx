@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../public/runpayway-logo-white.png";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
+import iphoneHand from "../../../public/iphone-hand.png";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -700,7 +701,6 @@ function WhatYouGet() {
 function ProductMockup() {
   const m = useMobile();
   const { ref, visible } = useInView();
-  const basePath = typeof window !== "undefined" && window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
 
   return (
     <section ref={ref} aria-label="Product preview" style={{
@@ -819,8 +819,8 @@ function ProductMockup() {
             </div>
 
             {/* Phone image — on top */}
-            <img
-              src={`${basePath}/iphone-hand.png`}
+            <Image
+              src={iphoneHand}
               alt="RunPayway Command Center on mobile"
               style={{ width: "100%", height: "auto", position: "relative", zIndex: 2, display: "block" }}
             />
