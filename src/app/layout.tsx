@@ -8,9 +8,20 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "RunPayway™ Income Stability Assessment",
+  title: "RunPayway™ — Income Stability Score",
   description:
-    "Income Stability Score™ Structural Income Classification — Model RP-2.0 | Version 2.0",
+    "Measure how stable your income structure actually is. Six questions. 90 seconds. Scored by Model RP-2.0. Built for consultants, contractors, freelancers, and business owners.",
+  openGraph: {
+    title: "RunPayway™ — Income Stability Score",
+    description: "The structural assessment that reveals income weakness before disruption makes it obvious.",
+    siteName: "RunPayway",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RunPayway™ — Income Stability Score",
+    description: "Measure how stable your income structure actually is. Scored by Model RP-2.0.",
+  },
 };
 
 export default function RootLayout({
