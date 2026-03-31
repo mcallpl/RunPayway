@@ -465,87 +465,93 @@ function WhoSection() {
 
 
 /* ================================================================== */
-/* HOW IT WORKS                                                        */
+/* HOW IT WORKS — vertical timeline with visual connectors             */
 /* ================================================================== */
 function HowItWorksSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
   const steps = [
-    { num: "01", title: "Answer six structural questions", desc: "About how your income is built — sources, concentration, visibility, and continuity.", trust: "No bank connection" },
-    { num: "02", title: "Receive your score instantly", desc: "Your score out of 100, your stability band, and the primary constraint holding it down.", trust: "No credit pull" },
-    { num: "03", title: "Unlock the full diagnostic", desc: "PressureMap, Command Center, industry-specific scripts, and a 12-week roadmap.", trust: "Private by default" },
+    { num: "01", title: "Answer six structural questions", desc: "About how your income is built — sources, concentration, visibility, and continuity.", trust: "No bank connection", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" /></svg> },
+    { num: "02", title: "Receive your score instantly", desc: "A score out of 100, your stability band, and the primary constraint holding your income down.", trust: "No credit pull", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke={C.purple} strokeWidth="1.5" /><path d="M12 7v5l3 3" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" /></svg> },
+    { num: "03", title: "Unlock the full diagnostic", desc: "PressureMap, Command Center, industry-specific scripts, and a 12-week roadmap — yours to keep.", trust: "Private by default", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 15V9m0 0l-3 3m3-3l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg> },
   ];
+
+  const accents = [C.teal, C.purple, C.navy];
 
   return (
     <section ref={ref} aria-label="How it works" style={{
       background: C.sand,
-      paddingTop: secY(m),
-      paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(14),
+      paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
           <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
             How It Works
           </div>
-          <h2 style={{
-            ...h2(m), color: C.navy, letterSpacing: "-0.01em",
-            maxWidth: 500,
-          }}>
-            Three steps. No financial data required.
+          <h2 style={{ ...h2(m), color: C.navy, fontSize: m ? 24 : 32 }}>
+            90 seconds. No financial data. Just structure.
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(3) : sp(3) }}>
-          {steps.map((s) => (
+        {/* Timeline */}
+        <div style={{ position: "relative" }}>
+          {/* Vertical connector line */}
+          {!m && (
+            <div style={{
+              position: "absolute", left: 28, top: 48, bottom: 48,
+              width: 1, background: `linear-gradient(180deg, ${C.teal}, ${C.purple}, ${C.navy})`,
+              opacity: visible ? 0.2 : 0,
+              transition: "opacity 800ms ease 400ms",
+            }} />
+          )}
+
+          {steps.map((s, i) => (
             <div key={s.num} style={{
-              ...cardStyle,
-              padding: m ? sp(3.5) : sp(4),
-              display: "flex", flexDirection: "column",
-              ...fadeIn(visible, 100),
+              display: "flex",
+              gap: m ? sp(2.5) : sp(4),
+              alignItems: "flex-start",
+              marginBottom: i < 2 ? (m ? sp(5) : sp(6)) : 0,
+              ...fadeIn(visible, 150 + i * 150),
             }}>
+              {/* Step number circle */}
               <div style={{
-                fontSize: 13, fontWeight: 500, color: C.teal,
-                letterSpacing: "0.06em", lineHeight: 1,
-                marginBottom: sp(2),
-              }}>{s.num}</div>
-
-              <h3 style={{
-                ...h3(m), color: C.navy,
-                letterSpacing: "-0.01em",
-                marginBottom: sp(1.5),
-              }}>{s.title}</h3>
-
-              <p style={{
-                ...body(m), color: C.muted, margin: 0, flex: 1,
-              }}>{s.desc}</p>
-
-              <div style={{
-                marginTop: sp(3),
-                paddingTop: sp(2),
-                borderTop: `1px solid ${C.border}`,
-                display: "flex", alignItems: "center", gap: sp(1),
+                width: 56, height: 56, borderRadius: 16,
+                backgroundColor: `${accents[i]}08`,
+                border: `1px solid ${accents[i]}18`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+                position: "relative",
+                zIndex: 1,
               }}>
-                <span style={{ color: C.teal, fontSize: 13 }}>&#x2713;</span>
-                <span style={{ ...T.meta, color: C.light }}>{s.trust}</span>
+                <span style={{ fontFamily: SERIF, fontSize: 22, color: accents[i], lineHeight: 1 }}>{s.num}</span>
+              </div>
+
+              {/* Step content */}
+              <div style={{ flex: 1, paddingTop: 4 }}>
+                <h3 style={{ ...h3(m), color: C.navy, marginBottom: sp(1) }}>{s.title}</h3>
+                <p style={{ ...body(m), color: C.muted, margin: `0 0 ${sp(1.5)}px` }}>{s.desc}</p>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: `4px 12px`, borderRadius: 20, backgroundColor: `${accents[i]}08`, border: `1px solid ${accents[i]}12` }}>
+                  <span style={{ color: accents[i], fontSize: 11 }}>&#x2713;</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: accents[i], letterSpacing: "0.02em" }}>{s.trust}</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* How It Works link */}
-        <div style={{ marginTop: m ? sp(5) : sp(6), ...fadeIn(visible, 200) }}>
+        <div style={{ textAlign: "center", marginTop: m ? sp(6) : sp(8), ...fadeIn(visible, 600) }}>
           <Link href="/how-it-works" style={{
             display: "inline-flex", alignItems: "center", gap: sp(1),
-            textDecoration: "none",
+            ...T.cta, color: C.teal, textDecoration: "none",
             transition: "opacity 200ms ease",
           }}
             onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.opacity = "0.7"; }}
             onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
           >
-            <span style={{ color: C.teal, fontSize: 15, lineHeight: 1, fontWeight: 500 }}>&#x203A;</span>
-            <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>How It Works</span>
+            See the full methodology &#8594;
           </Link>
         </div>
       </div>
@@ -555,146 +561,182 @@ function HowItWorksSection() {
 
 
 /* ================================================================== */
-/* WHAT HAPPENS WHEN SOMETHING CHANGES (replaces Four Dimensions)      */
+/* PRESSURE NARRATIVE — emotional section (dark bg, alternating)       */
+/* Merges: Scenarios + What You Get + Transformation + Authority       */
 /* ================================================================== */
-function ScenarioSection() {
+function PressureNarrative() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
   const scenarios = [
     {
-      title: "Your biggest client leaves",
+      label: "Concentration",
+      title: "Your biggest client leaves.",
       desc: "The Score isolates how much of your stability depends on a single source. If one departure drops your score by 30 points, that concentration is the structural risk — not the client relationship.",
+      stat: "\u221230 pts",
+      statLabel: "potential impact",
+      accent: "#C53030",
     },
     {
-      title: "You can\u2019t work for 90 days",
+      label: "Continuity",
+      title: "You can\u2019t work for 90 days.",
       desc: "Continuity measures what happens to your income when labor stops. The Score reveals whether your structure survives a gap — or collapses with it.",
+      stat: "27 days",
+      statLabel: "median cash buffer",
+      accent: "#B7791F",
     },
     {
-      title: "A contract doesn\u2019t renew",
+      label: "Visibility",
+      title: "A contract doesn\u2019t renew.",
       desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the Score shows how much of your forward certainty disappears with it.",
-    },
-  ];
-
-  return (
-    <section ref={ref} aria-label="Scenarios" style={{
-      background: C.sandAlt,
-      paddingTop: secY(m),
-      paddingBottom: secY(m),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
-            Real-World Pressure
-          </div>
-          <h2 style={{
-            ...h2(m), color: C.navy, letterSpacing: "-0.01em",
-            maxWidth: 500,
-          }}>
-            What happens when something changes?
-          </h2>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(3) : sp(3) }}>
-          {scenarios.map((s) => (
-            <div key={s.title} style={{
-              ...cardStyle,
-              backgroundColor: C.sand,
-              padding: m ? sp(3.5) : sp(4),
-              display: "flex", flexDirection: "column",
-              ...fadeIn(visible, 100),
-            }}>
-              <h3 style={{
-                ...h3(m), color: C.navy,
-                letterSpacing: "-0.01em",
-                marginBottom: sp(2),
-              }}>{s.title}</h3>
-
-              <p style={{
-                ...body(m), color: C.muted, margin: 0,
-              }}>{s.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* WHAT YOU GET                                                        */
-/* ================================================================== */
-function WhatYouGet() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  const features = [
-    {
-      title: "PressureMap\u2122",
-      desc: "AI-powered income zone analysis with peer benchmarks across your sector. See exactly where pressure concentrates in your income structure.",
+      stat: "0 days",
+      statLabel: "advance warning",
       accent: C.teal,
     },
-    {
-      title: "Command Center",
-      desc: "A living diagnostic tool: 12-week roadmap with success criteria, industry-specific scripts, what-if simulator, and progress tracking.",
-      accent: C.purple,
-    },
-    {
-      title: "Industry-tailored analysis",
-      desc: "Benchmarked across 19 sectors. Your score, constraints, and action plan are calibrated to how your specific industry works.",
-      accent: C.navy,
-    },
   ];
 
   return (
-    <section ref={ref} aria-label="What you get" style={{
-      background: C.sand,
-      paddingTop: secY(m),
-      paddingBottom: secY(m),
+    <section ref={ref} aria-label="Pressure narrative" style={{
+      background: C.navy,
+      paddingTop: m ? sp(10) : sp(14),
+      paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m),
+      position: "relative",
+      overflow: "hidden",
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
-            What You Get
+      {/* Subtle radial glow */}
+      <div style={{
+        position: "absolute", top: "-30%", right: "-10%",
+        width: 600, height: 600, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        {/* Opening — emotional hook */}
+        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2.5) }}>
+            The Pressure You Already Feel
           </div>
           <h2 style={{
-            ...h2(m), color: C.navy, letterSpacing: "-0.01em",
-            maxWidth: 600,
+            ...h2(m), color: "#F4F1EA",
+            fontSize: m ? 26 : 36,
+            maxWidth: 640, margin: "0 auto",
+            marginBottom: sp(3),
           }}>
-            A complete structural diagnostic generated from your submitted inputs.
+            You already know something is fragile. The Score tells you exactly where.
           </h2>
+          <p style={{ ...body(m), color: "rgba(244,241,234,0.45)", maxWidth: 500, margin: "0 auto" }}>
+            These aren&rsquo;t hypotheticals. They&rsquo;re the three structural failures that collapse independent income.
+          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(3) : sp(3) }}>
-          {features.map((f) => (
-            <div key={f.title} style={{
-              ...cardStyle,
-              padding: m ? sp(3.5) : sp(4),
-              display: "flex", flexDirection: "column",
-              ...fadeIn(visible, 100),
+        {/* Scenario cards — staggered */}
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? sp(4) : sp(5) }}>
+          {scenarios.map((s, i) => (
+            <div key={s.label} style={{
+              display: m ? "block" : "flex",
+              alignItems: "stretch",
+              gap: 0,
+              borderRadius: 18,
+              overflow: "hidden",
+              backgroundColor: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              flexDirection: i % 2 === 1 ? "row-reverse" : "row",
+              ...fadeIn(visible, 200 + i * 150),
             }}>
+              {/* Stat callout */}
               <div style={{
-                width: 36, height: 36, borderRadius: 10, backgroundColor: `${f.accent}10`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                marginBottom: sp(2),
+                flex: "0 0 180px",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "center",
+                padding: m ? sp(3) : sp(4),
+                backgroundColor: `${s.accent}10`,
+                borderRight: i % 2 === 0 ? `1px solid rgba(255,255,255,0.04)` : "none",
+                borderLeft: i % 2 === 1 ? `1px solid rgba(255,255,255,0.04)` : "none",
               }}>
-                <div style={{ width: 8, height: 8, borderRadius: 999, backgroundColor: f.accent }} />
+                <span style={{
+                  fontFamily: SERIF, fontSize: m ? 32 : 40, color: s.accent,
+                  lineHeight: 1, letterSpacing: "-0.02em",
+                }}>{s.stat}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: 8, textTransform: "uppercase" as const, textAlign: "center" }}>
+                  {s.statLabel}
+                </span>
               </div>
 
-              <h3 style={{
-                ...h3(m), color: C.navy,
-                letterSpacing: "-0.01em",
-                marginBottom: sp(1.5),
-              }}>{f.title}</h3>
-
-              <p style={{
-                ...body(m), color: C.muted, margin: 0,
-              }}>{f.desc}</p>
+              {/* Content */}
+              <div style={{ flex: 1, padding: m ? sp(3) : `${sp(4)}px ${sp(5)}px` }}>
+                <div style={{ ...T.label, color: s.accent, marginBottom: sp(1.5) }}>{s.label}</div>
+                <h3 style={{ fontFamily: SERIF, fontSize: m ? 20 : 24, fontWeight: 400, color: "#F4F1EA", marginBottom: sp(2), lineHeight: 1.2 }}>
+                  {s.title}
+                </h3>
+                <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", margin: 0 }}>
+                  {s.desc}
+                </p>
+              </div>
             </div>
           ))}
+        </div>
+
+        {/* Authority stat — woven inline */}
+        <div style={{
+          textAlign: "center", marginTop: m ? sp(8) : sp(10),
+          ...fadeIn(visible, 700),
+        }}>
+          <div style={{
+            display: "inline-flex", flexDirection: "column", alignItems: "center",
+            padding: `${sp(4)}px ${sp(5)}px`,
+            borderRadius: 18,
+            backgroundColor: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            <p style={{
+              fontFamily: SERIF, fontSize: m ? 18 : 22, color: "#F4F1EA",
+              lineHeight: 1.4, fontStyle: "italic", margin: `0 0 ${sp(1.5)}px`,
+              maxWidth: 480,
+            }}>
+              &ldquo;The median small business holds just 27 days of cash buffer.&rdquo;
+            </p>
+            <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", fontWeight: 400 }}>
+              &mdash; JPMorgan Chase Institute
+            </span>
+          </div>
+        </div>
+
+        {/* Transformation — compact before/after */}
+        <div style={{
+          display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr",
+          gap: sp(3), marginTop: m ? sp(8) : sp(10),
+          maxWidth: 720, margin: `${m ? sp(8) : sp(10)}px auto 0`,
+          ...fadeIn(visible, 800),
+        }}>
+          <div style={{ padding: m ? sp(3) : sp(4), borderRadius: 16, backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ ...T.label, color: "rgba(244,241,234,0.25)", marginBottom: sp(2.5) }}>Without the Score</div>
+            {[
+              "You guess which clients matter most",
+              "You react to disruptions after they hit",
+              "You track revenue but not structure",
+            ].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
+                <span style={{ color: "rgba(244,241,234,0.20)", fontSize: 13, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
+                <span style={{ ...body(m), color: "rgba(244,241,234,0.40)" }}>{t}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ padding: m ? sp(3) : sp(4), borderRadius: 16, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.12)" }}>
+            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2.5) }}>With the Score</div>
+            {[
+              "You know exactly which weakness to fix first",
+              "You have scripts to send to clients today",
+              "You can simulate changes before committing",
+            ].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(1.5) }}>
+                <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
+                <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{t}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -862,118 +904,121 @@ function ProductMockup() {
 
 
 /* ================================================================== */
-/* BEFORE / AFTER TRANSFORMATION                                       */
+/* WHAT YOU GET — visual feature cards with depth                       */
 /* ================================================================== */
-function TransformationSection() {
+function WhatYouGet() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
+  const features = [
+    {
+      title: "PressureMap\u2122",
+      desc: "See exactly where pressure concentrates. AI-powered zone analysis with peer benchmarks across your sector.",
+      accent: C.teal,
+      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="3" width="22" height="22" rx="4" stroke={C.teal} strokeWidth="1.5" /><path d="M9 18l4-6 3 3 4-6" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
+    },
+    {
+      title: "Command Center",
+      desc: "A living diagnostic tool: what-if simulator, industry scripts, 12-week roadmap, and progress tracking.",
+      accent: C.purple,
+      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="3" stroke={C.purple} strokeWidth="1.5" /><path d="M10 14l3 3 5-6" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>,
+    },
+    {
+      title: "Industry-calibrated",
+      desc: "Benchmarked across 19 sectors. Your score, constraints, and action plan are tuned to how your industry works.",
+      accent: C.navy,
+      icon: <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke={C.navy} strokeWidth="1.5" /><path d="M14 8v6l4 2" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" /></svg>,
+    },
+  ];
+
   return (
-    <section ref={ref} aria-label="Transformation" style={{
+    <section ref={ref} aria-label="What you get" style={{
       background: C.sandAlt,
-      paddingTop: secY(m), paddingBottom: secY(m),
+      paddingTop: m ? sp(10) : sp(14),
+      paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>The Difference</div>
-          <h2 style={{ ...h2(m), color: C.navy }}>What changes after your assessment</h2>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
+            What You Get
+          </div>
+          <h2 style={{
+            ...h2(m), color: C.navy,
+            fontSize: m ? 24 : 32, maxWidth: 600, margin: "0 auto",
+          }}>
+            Three tools that turn uncertainty into a plan.
+          </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 800, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          {/* Before */}
-          <div style={{ ...cardStyle, padding: m ? sp(3.5) : sp(4), borderLeft: `3px solid rgba(14,26,43,0.15)` }}>
-            <div style={{ ...T.label, color: C.light, marginBottom: sp(2) }}>BEFORE</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: sp(2) }}>
-              {[
-                "You guess which clients matter most",
-                "You react to disruptions after they hit",
-                "You track revenue but not structure",
-                "You know something feels fragile but not why",
-              ].map(t => (
-                <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
-                  <span style={{ color: C.light, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
-                  <span style={{ ...body(m), color: C.muted }}>{t}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? sp(3) : sp(4) }}>
+          {features.map((f, i) => (
+            <div key={f.title} style={{
+              ...cardStyle,
+              padding: m ? sp(3.5) : sp(5),
+              display: "flex", flexDirection: "column",
+              transition: "transform 300ms ease, box-shadow 300ms ease",
+              ...fadeIn(visible, 100 + i * 100),
+            }}
+              onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(14,26,43,0.08), 0 16px 64px rgba(14,26,43,0.06)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = cardStyle.boxShadow; }}
+            >
+              <div style={{
+                width: 52, height: 52, borderRadius: 14,
+                backgroundColor: `${f.accent}08`,
+                border: `1px solid ${f.accent}12`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                marginBottom: sp(3),
+              }}>
+                {f.icon}
+              </div>
 
-          {/* After */}
-          <div style={{ ...cardStyle, padding: m ? sp(3.5) : sp(4), borderLeft: `3px solid ${C.teal}` }}>
-            <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>AFTER</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: sp(2) }}>
-              {[
-                "You know exactly which structural weakness to fix first",
-                "You have scripts to send to clients today",
-                "You can simulate changes before committing",
-                "You have a 12-week plan with measurable targets",
-              ].map(t => (
-                <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: sp(1) }}>
-                  <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
-                  <span style={{ ...body(m), color: C.navy }}>{t}</span>
-                </div>
-              ))}
+              <h3 style={{
+                ...h3(m), color: C.navy, fontSize: m ? 18 : 20,
+                marginBottom: sp(1.5),
+              }}>{f.title}</h3>
+
+              <p style={{
+                ...body(m), color: C.muted, margin: 0,
+              }}>{f.desc}</p>
             </div>
-          </div>
+          ))}
         </div>
-      </div>
-    </section>
-  );
-}
 
-
-/* ================================================================== */
-/* AUTHORITY QUOTE (replaces testimonials)                             */
-/* ================================================================== */
-function AuthorityQuote() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} aria-label="Authority" style={{
-      background: C.sandAlt,
-      paddingTop: secY(m), paddingBottom: secY(m),
-      paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
-    }}>
-      <div style={{ maxWidth: readW, margin: "0 auto", ...fadeIn(visible) }}>
-        <p style={{
-          ...bodyLg(m), color: C.navy, fontStyle: "italic",
-          marginBottom: sp(1.5),
+        {/* Trust anchors — woven in, not isolated */}
+        <div style={{
+          display: "flex", flexWrap: "wrap", justifyContent: "center",
+          gap: m ? sp(2) : sp(4),
+          marginTop: m ? sp(6) : sp(8),
+          ...fadeIn(visible, 400),
         }}>
-          &ldquo;The median small business holds just 27 days of cash buffer.&rdquo;
-        </p>
-        <p style={{ ...T.meta, color: C.light, marginBottom: sp(4) }}>
-          &mdash; JPMorgan Chase Institute
-        </p>
-        <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: sp(3) }}>
-          <p style={{ ...body(m), color: C.muted, margin: 0 }}>
-            RunPayway reveals the structural reasons why — and what to do about it.
-          </p>
+          {[
+            { label: "Methodology published", href: "/methodology" },
+            { label: "Model RP-2.0" },
+            { label: "Deterministic scoring" },
+            { label: "Private by default" },
+          ].map(item => (
+            item.href ? (
+              <Link key={item.label} href={item.href} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                fontSize: 13, color: C.teal, textDecoration: "none",
+                padding: `6px 14px`, borderRadius: 20,
+                backgroundColor: "rgba(31,109,122,0.05)", border: "1px solid rgba(31,109,122,0.10)",
+              }}>
+                <span style={{ fontSize: 11 }}>&#x2713;</span> {item.label}
+              </Link>
+            ) : (
+              <span key={item.label} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                fontSize: 13, color: C.light,
+                padding: `6px 14px`, borderRadius: 20,
+                backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid ${C.border}`,
+              }}>
+                <span style={{ fontSize: 11, color: C.teal }}>&#x2713;</span> {item.label}
+              </span>
+            )
+          ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* TRUST STRIP                                                         */
-/* ================================================================== */
-function TrustStrip() {
-  const m = useMobile();
-  return (
-    <section aria-label="Trust" style={{
-      background: C.sand, paddingTop: m ? sp(3) : sp(4), paddingBottom: m ? sp(3) : sp(4),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: m ? `${sp(1)}px ${sp(2)}px` : `${sp(1)}px ${sp(4)}px`, maxWidth: maxW, margin: "0 auto" }}>
-        {["Methodology published", "Model RP-2.0", "Deterministic scoring", "Private by default"].map((item) => (
-          <span key={item} style={{ ...T.meta, color: C.light }}>{item}</span>
-        ))}
-        <Link href="/methodology" style={{ ...T.meta, color: C.teal, textDecoration: "underline", textUnderlineOffset: 3 }}>
-          View methodology
-        </Link>
       </div>
     </section>
   );
@@ -1149,7 +1194,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
 
 /* ================================================================== */
-/* FINAL CTA                                                           */
+/* FINAL CTA — emotional close                                         */
 /* ================================================================== */
 function FinalCta() {
   const { ref, visible } = useInView();
@@ -1157,31 +1202,46 @@ function FinalCta() {
 
   return (
     <section ref={ref} aria-label="Final CTA" style={{
-      background: C.sand, paddingTop: secY(m), paddingBottom: secY(m),
+      background: `linear-gradient(180deg, ${C.sand} 0%, #EDECEA 100%)`,
+      paddingTop: m ? sp(10) : sp(14),
+      paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
-      <div style={{ maxWidth: 560, margin: "0 auto", ...fadeIn(visible) }}>
-        <p style={{ ...bodyLg(m), color: C.navy, marginBottom: sp(3), lineHeight: 1.6 }}>
-          Every month you don&rsquo;t address your structural weakness, you&rsquo;re operating on the same fragile foundation. The assessment takes 90 seconds. The insight lasts permanently.
+      <div style={{ maxWidth: 600, margin: "0 auto", ...fadeIn(visible) }}>
+        <h2 style={{
+          fontFamily: SERIF, fontSize: m ? 26 : 34, fontWeight: 400,
+          color: C.navy, lineHeight: 1.2,
+          marginBottom: sp(3),
+        }}>
+          The structure won&rsquo;t fix itself.
+        </h2>
+        <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(5), lineHeight: 1.65, maxWidth: 480, margin: `0 auto ${sp(5)}px` }}>
+          Every month on the same fragile foundation is a month closer to the disruption that reveals it. The assessment takes 90 seconds. The insight is permanent.
         </p>
+
         <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
-          height: sp(6.5), padding: `0 ${sp(5)}px`, borderRadius: 10,
+          height: sp(7), padding: `0 ${sp(5)}px`, borderRadius: 12,
           backgroundColor: C.navy,
-          color: "#F7F5F0", ...T.cta, textDecoration: "none",
-          transition: "opacity 200ms ease",
+          color: "#F7F5F0", ...T.cta, fontSize: 16, textDecoration: "none",
+          boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
+          transition: "transform 200ms ease, box-shadow 200ms ease",
         }}
-          onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.9"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.20)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.15)"; }}
         >
           Get Your Full Diagnostic — $69 &#8594;
         </a>
-        <p style={{ ...T.meta, color: C.light, marginTop: sp(2) }}>
-          6 questions. 90 seconds. No financial data required.
-        </p>
-        <Link href="/diagnostic-portal" style={{ ...T.meta, color: C.light, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(1), display: "inline-block" }}>
-          Or start free
-        </Link>
+
+        <div style={{ marginTop: sp(3), display: "flex", alignItems: "center", justifyContent: "center", gap: sp(2), flexWrap: "wrap" }}>
+          <Link href="/diagnostic-portal" style={{ ...T.meta, color: C.muted, textDecoration: "underline", textUnderlineOffset: 3 }}>
+            Or start free
+          </Link>
+          <span style={{ color: C.light, fontSize: 11 }}>&bull;</span>
+          <span style={{ ...T.meta, color: C.light }}>6 questions &bull; 90 seconds</span>
+          <span style={{ color: C.light, fontSize: 11 }}>&bull;</span>
+          <span style={{ ...T.meta, color: C.light }}>30-day guarantee</span>
+        </div>
       </div>
     </section>
   );
@@ -1249,10 +1309,8 @@ export default function LandingPage() {
       <WhoSection />
       <ProductMockup />
       <HowItWorksSection />
+      <PressureNarrative />
       <WhatYouGet />
-      <TransformationSection />
-      <AuthorityQuote />
-      <TrustStrip />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
       <FinalCta />
