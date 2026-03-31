@@ -1278,45 +1278,35 @@ function FinalCta() {
   return (
     <section ref={ref} aria-label="Final CTA" style={{
       background: "#F8F6F6",
-      paddingTop: m ? sp(8) : sp(10),
-      paddingBottom: m ? sp(8) : sp(10),
+      paddingTop: m ? sp(10) : sp(14),
+      paddingBottom: m ? sp(10) : sp(14),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
       <div style={{ maxWidth: 600, margin: "0 auto", ...fadeIn(visible) }}>
         <h2 style={{
-          fontFamily: SERIF, fontSize: m ? 26 : 34, fontWeight: 400,
-          color: C.navy, lineHeight: 1.2,
+          fontSize: m ? 32 : 48, fontWeight: 600,
+          color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em",
           marginBottom: sp(3),
         }}>
-          The structure won&rsquo;t fix itself.
+          See where your income stands.
         </h2>
-        <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(5), lineHeight: 1.65, maxWidth: 480, margin: `0 auto ${sp(5)}px` }}>
-          Every month on the same fragile foundation is a month closer to the disruption that reveals it. The assessment takes 90 seconds. The insight is permanent.
+        <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, color: C.muted, lineHeight: 1.6, marginBottom: sp(6) }}>
+          Under two minutes. No accounts. No credit pull.
         </p>
 
-        <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
+        <Link href="/diagnostic-portal" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
-          height: sp(7), padding: `0 ${sp(5)}px`, borderRadius: 12,
+          height: sp(8), padding: `0 ${sp(6)}px`, borderRadius: 10,
           backgroundColor: C.navy,
-          color: "#F7F5F0", ...T.cta, fontSize: 16, textDecoration: "none",
-          boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
+          color: "#FFFFFF", fontSize: 17, fontWeight: 600, textDecoration: "none",
+          boxShadow: "0 4px 16px rgba(14,26,43,0.12)",
           transition: "transform 200ms ease, box-shadow 200ms ease",
         }}
-          onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.20)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.15)"; }}
+          onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.18)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.12)"; }}
         >
-          Get Your Full Diagnostic — $69 &#8594;
-        </a>
-
-        <div style={{ marginTop: sp(3), display: "flex", alignItems: "center", justifyContent: "center", gap: sp(2), flexWrap: "wrap" }}>
-          <Link href="/diagnostic-portal" style={{ ...T.meta, color: C.muted, textDecoration: "underline", textUnderlineOffset: 3 }}>
-            Or start free
-          </Link>
-          <span style={{ color: C.light, fontSize: 14 }}>&bull;</span>
-          <span style={{ ...T.meta, color: C.light }}>90 seconds</span>
-          <span style={{ color: C.light, fontSize: 14 }}>&bull;</span>
-          <span style={{ ...T.meta, color: C.light }}>30-day guarantee</span>
-        </div>
+          Get Your Free Score
+        </Link>
       </div>
     </section>
   );
