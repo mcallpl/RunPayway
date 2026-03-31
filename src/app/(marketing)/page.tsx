@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../public/runpayway-logo-white.png";
+import logoBlue from "../../../public/runpayway-logo-blue.png";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
