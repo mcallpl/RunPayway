@@ -18,7 +18,7 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   white: "#FFFFFF",
-  bg: "#F1EEE7",
+  bg: "#FFFFFF",
   surface: "#FEFEFE",
   stone: "rgba(14,26,43,0.06)",
   taupe: "rgba(14,26,43,0.36)",
@@ -576,18 +576,7 @@ function DashboardContent() {
         <SuiteHeader current="dashboard" />
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
-        {/* Access Code Entry — standalone at top */}
-        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "16px 16px 0" : "24px 32px 0" }}>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, flexShrink: 0 }}>PASTE ACCESS CODE</div>
-            <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste code from your report" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-              style={{ padding: "8px 14px", fontSize: 13, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 8, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 36, backgroundColor: B.white }} />
-            <button onClick={handleCodeSubmit} style={{ padding: "8px 20px", fontSize: 13, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 36 }}>Load</button>
-          </div>
-          {codeError && <div style={{ fontSize: 12, color: B.red, marginTop: 4 }}>{codeError}</div>}
-        </div>
-
-        {/* Change 1: Sticky phase nav */}
+{/* Change 1: Sticky phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
         <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px", overflow: "hidden" }}>
@@ -770,9 +759,13 @@ function DashboardContent() {
                 </div>
                 <div style={{ height: 24, width: 1, backgroundColor: B.stone, flexShrink: 0 }} />
                 <div style={{ display: "flex", gap: 6, flex: 1, minWidth: 200 }}>
-                  <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste access code" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-                    style={{ padding: "8px 12px", fontSize: 13, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 8, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 36 }} />
-                  <button onClick={handleCodeSubmit} style={{ padding: "8px 16px", fontSize: 13, fontWeight: 600, color: B.white, backgroundColor: B.purple, border: "none", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 36 }}>Load</button>
+                  <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste your access code here" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
+                    style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}30`; }} />
+                  <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 44, transition: "background 150ms" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#142338"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}>Load</button>
                 </div>
               </div>
               {codeError && <div style={{ fontSize: 13, color: B.red, marginTop: 6 }}>{codeError}</div>}
