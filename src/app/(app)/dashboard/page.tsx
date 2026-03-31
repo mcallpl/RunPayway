@@ -675,6 +675,21 @@ function DashboardContent() {
                   <div style={{ fontSize: 12, color: B.taupe }}>Download as image</div>
                 </div>
               </button>
+              <button onClick={() => {
+                const subject = encodeURIComponent("My Income Stability Assessment");
+                const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
+                window.location.href = `mailto:?subject=${subject}&body=${body}`;
+              }} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.navy}20`; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.navy}06`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div style={{ textAlign: "left" as const }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>Share with Advisor</div>
+                  <div style={{ fontSize: 12, color: B.taupe }}>Email your score + findings</div>
+                </div>
+              </button>
             </div>
           )}
 
@@ -1122,9 +1137,7 @@ function DashboardContent() {
 
           {/* FOOTER */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <Link href="/pricing" style={{ fontSize: 15, color: B.muted, textDecoration: "none", lineHeight: 1.6 }}>
-              Your score is a snapshot. <span style={{ color: B.purple, fontWeight: 600 }}>The annual plan tracks how it moves.</span>
-            </Link>
+            <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
           </div>
         </div>
       </div>

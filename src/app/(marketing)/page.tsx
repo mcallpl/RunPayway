@@ -222,9 +222,9 @@ function StickyNav() {
         }}>
           Get Your Full Diagnostic — $69
         </a>
-        <Link href="/pricing" onClick={() => setMobileOpen(false)}
+        <Link href="/diagnostic-portal" onClick={() => setMobileOpen(false)}
           style={{ display: "block", textAlign: "center", ...T.meta, color: C.muted, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(2) }}>
-          Or start with a free score
+          Or start free
         </Link>
       </div>
     )}
@@ -314,8 +314,8 @@ function HeroSection() {
               </a>
 
               <div style={{ marginTop: sp(2), display: "flex", alignItems: m ? "center" : "flex-start", gap: sp(2), flexDirection: m ? "column" : "row" }}>
-                <Link href="/pricing" style={{ ...T.meta, color: "rgba(244,241,234,0.50)", textDecoration: "underline", textUnderlineOffset: 3 }}>
-                  Or start with a free score
+                <Link href="/diagnostic-portal" style={{ ...T.meta, color: "rgba(244,241,234,0.50)", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                  Or start free
                 </Link>
                 <span style={{ ...T.meta, color: "rgba(244,241,234,0.25)" }}>&bull;</span>
                 <span style={{ ...T.meta, color: "rgba(244,241,234,0.38)" }}>6 questions &bull; 90 seconds</span>
@@ -380,6 +380,10 @@ function HeroSection() {
   );
 }
 
+/* Gradient accent line — transition from hero dark to warm page */
+function HeroAccent() {
+  return <div style={{ height: 3, background: "linear-gradient(90deg, #4B3FAE 0%, #1F6D7A 50%, rgba(31,109,122,0) 100%)" }} />;
+}
 
 /* ================================================================== */
 /* HERO VIDEO                                                          */
@@ -823,9 +827,13 @@ function PricingSection() {
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: sp(3), ...fadeIn(visible) }}>
           <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2) }}>Know your structure before it breaks</h2>
-          <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(4) }}>
+          <p style={{ ...bodyLg(m), color: C.muted, marginBottom: sp(2) }}>
             Built for people whose income does not arrive on autopilot.
           </p>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: sp(1), padding: `${sp(0.5)}px ${sp(2)}px`, borderRadius: 20, border: `1px solid ${C.border}`, marginBottom: sp(4) }}>
+            <div style={{ width: 4, height: 4, borderRadius: 999, backgroundColor: C.teal }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: C.light, letterSpacing: "0.06em" }}>Scored by Model RP-2.0</span>
+          </div>
         </div>
 
 
@@ -847,7 +855,7 @@ function PricingSection() {
                 </div>
               ))}
             </div>
-            <Link href="/pricing" style={{
+            <Link href="/diagnostic-portal" style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               width: "100%", height: sp(6.5), borderRadius: 10,
               backgroundColor: C.sandAlt, color: C.navy, ...T.cta,
@@ -856,7 +864,7 @@ function PricingSection() {
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = C.sand; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.sandAlt; }}
-            >Assess Your Income Structure</Link>
+            >Start Free Assessment</Link>
           </div>
 
           {/* Paid */}
@@ -962,8 +970,8 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
         </div>
 
         <div style={{ textAlign: "center", marginTop: sp(5), ...fadeIn(visible, 200) }}>
-          <Link href="/pricing" style={{ ...T.cta, color: C.navy, textDecoration: "underline", textUnderlineOffset: 4 }}>
-            Assess Your Income Structure &#8594;
+          <Link href="/diagnostic-portal" style={{ ...T.cta, color: C.navy, textDecoration: "underline", textUnderlineOffset: 4 }}>
+            Start Free Assessment &#8594;
           </Link>
         </div>
       </div>
@@ -1003,8 +1011,8 @@ function FinalCta() {
         <p style={{ ...T.meta, color: C.light, marginTop: sp(2) }}>
           6 questions. 90 seconds. No financial data required.
         </p>
-        <Link href="/pricing" style={{ ...T.meta, color: C.light, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(1), display: "inline-block" }}>
-          Or start with a free score
+        <Link href="/diagnostic-portal" style={{ ...T.meta, color: C.light, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(1), display: "inline-block" }}>
+          Or start free
         </Link>
       </div>
     </section>
@@ -1068,6 +1076,7 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <StickyNav />
       <HeroSection />
+      <HeroAccent />
       <HeroVideo />
       <WhoSection />
       <HowItWorksSection />

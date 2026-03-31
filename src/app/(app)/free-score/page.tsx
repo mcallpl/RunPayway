@@ -40,6 +40,8 @@ export default function FreeScorePage() {
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [mobile, setMobile] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
   const scoreAnimated = useRef(false);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
@@ -127,8 +129,29 @@ export default function FreeScorePage() {
           <Image src={logoBlue} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.8 }} />
         </div>
 
+        {/* ── EMAIL GATE — capture before revealing score ── */}
+        {!emailSubmitted && (
+          <div style={{ padding: mobile ? "32px 24px" : "40px 40px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textAlign: "center", marginBottom: 32 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>YOUR SCORE IS READY</div>
+            <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Enter your email to see your results</div>
+            <p style={{ fontSize: 15, color: B.muted, margin: "0 0 24px" }}>We will send a copy of your score to this address. No spam.</p>
+            <div style={{ display: "flex", gap: 8, maxWidth: 400, margin: "0 auto", flexDirection: mobile ? "column" : "row" }}>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
+                onKeyDown={(e) => { if (e.key === "Enter" && email.includes("@")) setEmailSubmitted(true); }}
+                style={{ flex: 1, padding: "13px 16px", fontSize: 15, border: `1px solid ${B.stone}`, borderRadius: 10, outline: "none", boxSizing: "border-box" as const, minHeight: 48 }} />
+              <button onClick={() => { if (email.includes("@")) setEmailSubmitted(true); }}
+                style={{ padding: "13px 24px", fontSize: 15, fontWeight: 600, color: "#F4F1EA", backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: email.includes("@") ? "pointer" : "not-allowed", opacity: email.includes("@") ? 1 : 0.5, minHeight: 48 }}>
+                Reveal Score
+              </button>
+            </div>
+            <button onClick={() => setEmailSubmitted(true)} style={{ marginTop: 16, background: "none", border: "none", cursor: "pointer", fontSize: 13, color: B.taupe, textDecoration: "underline", textUnderlineOffset: 3 }}>
+              Skip for now
+            </button>
+          </div>
+        )}
+
         {/* ── SCORE CARD — matches report cover ── */}
-        <div style={{ padding: mobile ? "32px 24px" : "40px 40px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textAlign: "center", marginBottom: 32 }}>
+        {emailSubmitted && <><div style={{ padding: mobile ? "32px 24px" : "40px 40px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textAlign: "center", marginBottom: 32 }}>
 
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>INCOME STABILITY SCORE&#8482;</div>
 
@@ -230,6 +253,8 @@ export default function FreeScorePage() {
             If the report does not reveal at least one insight you did not already know, full refund. No questions.
           </p>
         </div>
+
+        </>}
 
         {/* ── Footer ── */}
         <div style={{ textAlign: "center", paddingTop: 16, borderTop: `1px solid ${B.stone}` }}>
