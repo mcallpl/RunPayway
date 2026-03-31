@@ -234,12 +234,225 @@ function StickyNav() {
 
 
 /* ================================================================== */
+/* INDUSTRY DROPDOWN — 19 industries with modal cards                  */
+/* ================================================================== */
+
+const INDUSTRIES = [
+  { name: "Real Estate", problem: "Miss two closings and half your quarter vanishes. RunPayway scores how your commission structure, seasonal cycles, and deal pipeline actually hold up under pressure — so you can see exactly where your income is exposed before a slow month proves it for you.", cta: "See how agents score" },
+  { name: "Finance / Banking", problem: "Bonuses and deferred payouts inflate your W-2 but mask real fragility. RunPayway measures the structural stability underneath — how concentrated, how recurring, how resilient your income actually is when markets shift or comp plans change.", cta: "Measure your true stability" },
+  { name: "Insurance", problem: "Renewals feel safe until a carrier pulls a product or clawbacks hit. RunPayway quantifies the split between your new-business risk and renewal floor — the gap most agents never see until it costs them.", cta: "Quantify your renewal risk" },
+  { name: "Technology", problem: "RSU cliffs, contractor gaps, and startup equity gambles make tech income surprisingly fragile. RunPayway scores the structural resilience behind your comp — so one vesting pause or layoff doesn't blindside your finances.", cta: "Score your income structure" },
+  { name: "Healthcare", problem: "Practice ownership, shifting reimbursement rates, and patient volume swings create income volatility that salary alone won't reveal. RunPayway maps the structural risk across your revenue mix — including side practices and locum work.", cta: "Assess your practice stability" },
+  { name: "Legal Services", problem: "Contingency fees take years. Partnership draws fluctuate. Billable hours mask the real gap between what you earn and when it arrives. RunPayway scores the structural timing and concentration risk most attorneys never quantify.", cta: "Evaluate your fee structure" },
+  { name: "Consulting / Professional Services", problem: "Three clients paying six figures, then a two-month gap. RunPayway measures your client concentration, contract visibility, and income continuity — the structural factors that determine whether feast-or-famine is your norm or your past.", cta: "Map your client concentration" },
+  { name: "Sales / Brokerage", problem: "Commission resets your income to zero every quarter. RunPayway scores how your pipeline structure, deal size concentration, and comp model actually perform under stress — not just in a good quarter.", cta: "Stress-test your pipeline" },
+  { name: "Media / Entertainment", problem: "Royalties, irregular bookings, and algorithm changes make earnings wildly unpredictable. RunPayway measures whether your income structure has any real floor — or if it's entirely dependent on the next gig landing.", cta: "Measure your income durability" },
+  { name: "Construction / Trades", problem: "Weather delays, seasonal shutdowns, and milestone-based payments create swings invisible on an annual P&L. RunPayway scores the structural gaps subcontractors and independents carry — month by month, not just year over year.", cta: "Score your payment structure" },
+  { name: "Retail / E-Commerce", problem: "When Q4 is 40% of your year, your average monthly income is a fiction. RunPayway measures the seasonal concentration, platform dependency, and cash flow structure that determine whether your business survives a slow stretch.", cta: "See your seasonal exposure" },
+  { name: "Hospitality / Food Service", problem: "Tip-dependent income and seasonal tourism mean your take-home has almost no floor. RunPayway scores the structural resilience of your earnings — so you know exactly where you stand before a slow month proves it.", cta: "Assess your income floor" },
+  { name: "Transportation / Logistics", problem: "Per-load pricing, fuel swings, and route availability make every week a negotiation. RunPayway measures the structural risk owner-operators carry — the volatility that per-mile rates never reveal.", cta: "Evaluate your rate stability" },
+  { name: "Manufacturing", problem: "Bulk order dependency and supply chain disruptions create concentration risk most operators underestimate. RunPayway scores how many clients, contracts, and revenue lines actually hold your income together.", cta: "Map your order concentration" },
+  { name: "Education", problem: "Adjunct roles, grant cycles, and summer gaps make academic income quietly unstable. RunPayway scores the structural guarantee behind your position — contract visibility, funding dependency, and income continuity year over year.", cta: "Score your contract stability" },
+  { name: "Nonprofit / Public Sector", problem: "Grant-dependent funding and fiscal year budget resets mean your income timeline is set by someone else. RunPayway measures the structural durability of your role — how much of your income persists without active renewal.", cta: "Measure your funding stability" },
+  { name: "Agriculture", problem: "Crop cycles, commodity swings, and weather risk make your income structurally seasonal in ways no other industry matches. RunPayway scores the resilience of your revenue structure — so one bad harvest doesn't define your year.", cta: "Assess your seasonal structure" },
+  { name: "Energy / Utilities", problem: "Project-based contracts and commodity pricing create boom-bust cycles. RunPayway measures the structural gaps between projects — the exposure field workers and consultants carry that hourly rates never show.", cta: "Evaluate your project gaps" },
+  { name: "Other", problem: "If you earn outside a traditional W-2 — freelancing, gig work, mixed sources, or anything non-standard — your income has a structure most people never measure. RunPayway scores it across the same six dimensions used for every industry, so you see exactly where you stand.", cta: "Get your free score" },
+];
+
+function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<typeof INDUSTRIES[0] | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  return (
+    <>
+      <div style={{
+        marginTop: m ? sp(5) : sp(6),
+        paddingTop: m ? sp(4) : sp(5),
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        ...fadeIn(visible, 500),
+      }}>
+        <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
+          <button
+            onClick={() => setOpen(!open)}
+            style={{
+              display: "flex", alignItems: "center", gap: 10,
+              background: "none", border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 10, padding: `${sp(1.25)}px ${sp(2.5)}px`,
+              cursor: "pointer", transition: "border-color 200ms ease, background 200ms ease",
+              backgroundColor: open ? "rgba(255,255,255,0.06)" : "transparent",
+            }}
+            onMouseEnter={e => { if (canHover()) e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; }}
+            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.backgroundColor = "transparent"; } }}
+          >
+            <span style={{ fontFamily: SERIF, fontSize: 20, color: "#F4F1EA" }}>19</span>
+            <span style={{ fontSize: 14, color: "rgba(244,241,234,0.50)" }}>industries benchmarked</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 4, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>
+              <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(244,241,234,0.50)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+
+          {open && (
+            <div style={{
+              position: "absolute", top: "calc(100% + 8px)", left: 0,
+              minWidth: m ? 280 : 320, maxHeight: 400, overflowY: "auto",
+              backgroundColor: "rgba(14,20,36,0.96)", backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14,
+              padding: `${sp(1)}px 0`, zIndex: 100,
+              boxShadow: "0 16px 48px rgba(0,0,0,0.40)",
+              animation: "dropIn 200ms ease-out",
+            }}>
+              {INDUSTRIES.map(ind => (
+                <button
+                  key={ind.name}
+                  onClick={() => { setSelected(ind); setOpen(false); }}
+                  style={{
+                    display: "block", width: "100%", textAlign: "left",
+                    padding: `${sp(1.25)}px ${sp(2.5)}px`,
+                    background: "none", border: "none", cursor: "pointer",
+                    fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.75)",
+                    transition: "background 150ms ease, color 150ms ease",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "#F4F1EA"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.75)"; }}
+                >
+                  {ind.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Industry card modal */}
+      {selected && (
+        <div
+          onClick={() => setSelected(null)}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: m ? 20 : 40,
+            animation: "fadeInOverlay 250ms ease-out",
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              position: "relative",
+              maxWidth: 520, width: "100%",
+              backgroundColor: "#FFFFFF", borderRadius: 20,
+              padding: m ? `${sp(5)}px ${sp(3)}px ${sp(4)}px` : `${sp(6)}px ${sp(5)}px ${sp(5)}px`,
+              boxShadow: "0 24px 64px rgba(0,0,0,0.25), 0 0 0 1px rgba(14,26,43,0.06)",
+              animation: "cardIn 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
+            <button
+              onClick={() => setSelected(null)}
+              style={{
+                position: "absolute", top: 16, right: 16,
+                width: 32, height: 32, borderRadius: 8,
+                border: `1px solid ${C.border}`, backgroundColor: "transparent",
+                color: C.muted, cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
+            </button>
+
+            <div style={{
+              ...T.label, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
+              color: C.teal, marginBottom: sp(1.5),
+            }}>
+              {selected.name}
+            </div>
+
+            <h3 style={{
+              fontSize: m ? 22 : 26, fontWeight: 600, lineHeight: 1.2,
+              color: C.navy, letterSpacing: "-0.02em", marginBottom: sp(3),
+            }}>
+              Your income has a structure. Here&#8217;s what&#8217;s at risk.
+            </h3>
+
+            <p style={{
+              ...body(m), color: C.muted, marginBottom: sp(4),
+              lineHeight: 1.7,
+            }}>
+              {selected.problem}
+            </p>
+
+            <p style={{
+              fontSize: 14, fontWeight: 500, lineHeight: 1.6,
+              color: "rgba(14,26,43,0.45)", marginBottom: sp(5),
+              fontStyle: "italic",
+            }}>
+              Income structures shift. Many professionals run their report annually to track how their stability evolves over time.
+            </p>
+
+            <div style={{
+              borderTop: `1px solid ${C.border}`,
+              paddingTop: sp(3),
+              display: "flex", flexDirection: "column", gap: sp(2),
+            }}>
+              <Link
+                href="/pricing"
+                onClick={() => setSelected(null)}
+                style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  height: sp(6), paddingLeft: sp(4), paddingRight: sp(4),
+                  borderRadius: sp(1.25),
+                  backgroundColor: C.navy, color: "#FFFFFF",
+                  ...T.cta, textDecoration: "none",
+                  transition: "transform 180ms ease, box-shadow 180ms ease",
+                  boxShadow: "0 4px 16px rgba(14,26,43,0.20)",
+                }}
+                onMouseEnter={e => { if (canHover()) { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.25)"; } }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(14,26,43,0.20)"; }}
+              >
+                {selected.cta}
+              </Link>
+
+              <Link
+                href="/diagnostic-portal"
+                onClick={() => setSelected(null)}
+                style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  height: sp(6), paddingLeft: sp(4), paddingRight: sp(4),
+                  borderRadius: sp(1.25),
+                  backgroundColor: "transparent", color: C.navy,
+                  border: `1px solid ${C.border}`,
+                  ...T.cta, textDecoration: "none",
+                  transition: "border-color 180ms ease",
+                }}
+                onMouseEnter={e => { if (canHover()) e.currentTarget.style.borderColor = "rgba(14,26,43,0.25)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; }}
+              >
+                Get my free score first
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ================================================================== */
 /* HERO — yesterday's copy/interaction + today's social proof bar      */
 /* ================================================================== */
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const animatedScore = useAnimatedCounter(48, visible, 1500);
+  const animatedScore = useAnimatedCounter(72, visible, 1500);
   const [showLabel, setShowLabel] = useState(false);
 
   useEffect(() => {
@@ -248,11 +461,11 @@ function HeroSection() {
     return () => clearTimeout(t);
   }, [visible]);
 
-  const ringSize = m ? 200 : 260;
+  const ringSize = m ? 230 : 299;
   const radius = 70;
   const strokeWidth = 6;
   const circumference = 2 * Math.PI * radius;
-  const targetOffset = (1 - 48 / 100) * circumference;
+  const targetOffset = (1 - 72 / 100) * circumference;
 
   return (
     <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
@@ -359,41 +572,23 @@ function HeroSection() {
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: sp(1),
                 padding: `${sp(0.75)}px ${sp(2)}px`, borderRadius: 100,
-                backgroundColor: "rgba(146,100,10,0.15)", border: "1px solid rgba(146,100,10,0.25)",
+                backgroundColor: "rgba(31,109,122,0.15)", border: "1px solid rgba(31,109,122,0.25)",
                 marginBottom: sp(1),
               }}>
-                <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: "#92640A" }} />
-                <span style={{ ...T.label, fontWeight: 600, color: "#92640A" }}>Developing Stability</span>
+                <span style={{ width: 6, height: 6, borderRadius: 999, backgroundColor: C.teal }} />
+                <span style={{ ...T.label, fontWeight: 600, color: C.teal }}>Established Stability</span>
               </div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)", marginBottom: sp(2) }}>12 points to Established</div>
+              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)", marginBottom: sp(2) }}>3 points to High Stability</div>
               <div style={{ display: "flex", flexDirection: "column", gap: sp(0.75), textAlign: "left" }}>
                 <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Primary constraint: Income concentration</span>
-                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Stress test: Largest source removed &#8594; projected 21</span>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.42)" }}>Stress test: Largest source removed &#8594; projected 44</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Social proof bar — from today */}
-        <div style={{
-          marginTop: m ? sp(5) : sp(6),
-          paddingTop: m ? sp(4) : sp(5),
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          display: "flex", alignItems: "center", justifyContent: m ? "center" : "flex-start",
-          gap: m ? sp(3) : sp(5), flexWrap: "wrap",
-          ...fadeIn(visible, 500),
-        }}>
-          {[
-            { val: "19", label: "industries benchmarked" },
-            { val: "4", label: "structural dimensions" },
-            { val: "90s", label: "to complete" },
-          ].map(s => (
-            <div key={s.label} style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <span style={{ fontFamily: SERIF, fontSize: 20, color: "#F4F1EA" }}>{s.val}</span>
-              <span style={{ fontSize: 14, color: "rgba(244,241,234,0.30)" }}>{s.label}</span>
-            </div>
-          ))}
-        </div>
+        {/* Industry dropdown bar */}
+        <IndustryDropdown m={m} visible={visible} />
       </div>
     </section>
   );

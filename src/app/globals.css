@@ -647,6 +647,25 @@ a:focus-visible,
 /* ============================================
    KEYFRAME ANIMATIONS — landing page
    ============================================ */
+/* Industry dropdown & card animations */
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Industry dropdown scrollbar */
+.industry-dropdown::-webkit-scrollbar { width: 4px; }
+.industry-dropdown::-webkit-scrollbar-track { background: transparent; }
+.industry-dropdown::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
 @keyframes ringGlow {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 0.8; }
