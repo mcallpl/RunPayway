@@ -128,55 +128,107 @@ const fadeIn = (visible: boolean, delay = 0) => ({
 function StickyNav() {
   const m = useMobile();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const stripeUrl = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
+
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
+    const fn = () => setScrolled(window.scrollY > 400);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  // Past hero = warm nav. In hero = dark transparent nav.
+  const warm = scrolled;
+  const navBg = warm ? "rgba(247,245,240,0.97)" : "rgba(14,26,43,0.4)";
+  const navBorder = warm ? "1px solid rgba(14,26,43,0.06)" : "1px solid transparent";
+  const linkColor = warm ? "rgba(14,26,43,0.55)" : "rgba(244,241,234,0.55)";
+  const linkHover = warm ? C.navy : "#F4F1EA";
+  const ctaBg = warm ? C.navy : C.sand;
+  const ctaColor = warm ? "#F7F5F0" : C.navy;
+
   return (
+    <>
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      backdropFilter: "blur(16px)",
-      backgroundColor: scrolled ? "rgba(14,26,43,0.88)" : "rgba(14,26,43,0.4)",
-      borderBottom: scrolled ? "1px solid rgba(244,241,234,0.08)" : "1px solid transparent",
-      transition: "background-color 200ms, border-color 200ms",
-      height: m ? 56 : 72, display: "flex", alignItems: "center",
+      backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+      backgroundColor: navBg,
+      borderBottom: navBorder,
+      transition: "background-color 300ms, border-color 300ms",
+      height: m ? 56 : 64, display: "flex", alignItems: "center",
       padding: `0 ${px(m)}px`,
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
-          <Image src={logoWhite} alt="RunPayway" width={120} height={14} style={{ height: "auto" }} />
+          <Image src={warm ? logoBlue : logoWhite} alt="RunPayway" width={120} height={14} style={{ height: "auto", transition: "opacity 200ms" }} />
         </Link>
         {!m && (
-          <div style={{ display: "flex", alignItems: "center", gap: sp(3.5) }}>
+          <div style={{ display: "flex", alignItems: "center", gap: sp(3) }}>
             {[
               { label: "Command Center", href: "/dashboard" },
               { label: "Sample Report", href: "/sample-report" },
               { label: "Pricing", href: "/pricing" },
             ].map(link => (
-              <Link key={link.href} href={link.href} style={{ ...T.nav, color: "rgba(244,241,234,0.55)", textDecoration: "none", transition: "color 200ms" }}
-                onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.color = "#F4F1EA"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+              <Link key={link.href} href={link.href} style={{ ...T.nav, color: linkColor, textDecoration: "none", transition: "color 200ms" }}
+                onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.color = linkHover; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = linkColor; }}
               >{link.label}</Link>
             ))}
-            <Link href="/pricing" style={{
-              ...T.cta, color: C.navy, textDecoration: "none",
+            <a href={stripeUrl} style={{
+              ...T.cta, color: ctaColor, textDecoration: "none",
               padding: `${sp(1)}px ${sp(2.5)}px`, borderRadius: 8,
-              backgroundColor: C.sand,
-            }}>Assess Your Income Structure</Link>
+              backgroundColor: ctaBg, transition: "background-color 300ms, color 300ms",
+            }}>Get Diagnostic — $69</a>
           </div>
         )}
         {m && (
-          <Link href="/pricing" style={{
-            ...T.cta, color: C.navy, textDecoration: "none",
-            padding: `${sp(0.75)}px ${sp(2)}px`, borderRadius: 8,
-            backgroundColor: C.sand,
-            display: "inline-flex", alignItems: "center",
-          }}>Assess Now</Link>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <a href={stripeUrl} style={{
+              ...T.cta, fontSize: 13, color: ctaColor, textDecoration: "none",
+              padding: `6px ${sp(2)}px`, borderRadius: 8,
+              backgroundColor: ctaBg, transition: "background-color 300ms, color 300ms",
+            }}>$69</a>
+            <button onClick={() => setMobileOpen(!mobileOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke={warm ? C.navy : "#F4F1EA"} strokeWidth="1.5" strokeLinecap="round" style={{ transition: "stroke 300ms" }}>
+                {mobileOpen ? <><line x1="4" y1="4" x2="16" y2="16" /><line x1="16" y1="4" x2="4" y2="16" /></> : <><line x1="3" y1="6" x2="17" y2="6" /><line x1="3" y1="10" x2="17" y2="10" /><line x1="3" y1="14" x2="17" y2="14" /></>}
+              </svg>
+            </button>
+          </div>
         )}
       </div>
     </nav>
+
+    {/* Mobile menu overlay */}
+    {m && mobileOpen && (
+      <div style={{ position: "fixed", top: 56, left: 0, right: 0, bottom: 0, zIndex: 99, backgroundColor: "rgba(247,245,240,0.98)", backdropFilter: "blur(12px)", padding: `${sp(4)}px ${px(m)}px` }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
+          {[
+            { label: "Command Center", href: "/dashboard" },
+            { label: "Sample Report", href: "/sample-report" },
+            { label: "Pricing", href: "/pricing" },
+            { label: "How It Works", href: "/how-it-works" },
+            { label: "Methodology", href: "/methodology" },
+          ].map(link => (
+            <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
+              style={{ fontSize: 17, fontWeight: 500, color: C.navy, textDecoration: "none", padding: `${sp(2)}px 0`, borderBottom: `1px solid ${C.border}` }}>
+              {link.label}
+            </Link>
+          ))}
+        </div>
+        <a href={stripeUrl} style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          width: "100%", height: sp(6.5), borderRadius: 10,
+          backgroundColor: C.navy, color: "#F7F5F0", ...T.cta,
+          textDecoration: "none", marginTop: sp(4),
+        }}>
+          Get Your Full Diagnostic — $69
+        </a>
+        <Link href="/pricing" onClick={() => setMobileOpen(false)}
+          style={{ display: "block", textAlign: "center", ...T.meta, color: C.muted, textDecoration: "underline", textUnderlineOffset: 3, marginTop: sp(2) }}>
+          Or start with a free score
+        </Link>
+      </div>
+    )}
+    </>
   );
 }
 
