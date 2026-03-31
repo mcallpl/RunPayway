@@ -101,7 +101,7 @@ const T = {
 
 const maxW = 1200;
 const padX = { desktop: 40, mobile: 20 };
-const sectionGap = { desktop: sp(10), mobile: sp(8) };
+const sectionGap = { desktop: sp(8), mobile: sp(6) };
 
 const h2 = (m: boolean) => m ? T.h2.mobile : T.h2.desktop;
 const h3 = (m: boolean) => m ? T.h3.mobile : T.h3.desktop;
@@ -238,24 +238,37 @@ function StickyNav() {
 
 
 /* ================================================================== */
-/* HERO — phone mockup + social proof                                  */
+/* HERO — score ring + social proof                                    */
 /* ================================================================== */
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const animatedCount = useAnimatedCounter(2400, visible, 2000);
+  const animatedScore = useAnimatedCounter(72, visible, 1500);
+  const [showLabel, setShowLabel] = useState(false);
+
+  useEffect(() => {
+    if (!visible) return;
+    const t = setTimeout(() => setShowLabel(true), 1600);
+    return () => clearTimeout(t);
+  }, [visible]);
+
+  const ringSize = m ? 180 : 240;
+  const radius = 70;
+  const strokeWidth = 5;
+  const circumference = 2 * Math.PI * radius;
+  const targetOffset = (1 - 72 / 100) * circumference;
 
   return (
     <section ref={ref} aria-label="Hero" style={{ background: C.heroGradient }}>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
         paddingTop: m ? sp(14) : sp(18),
-        paddingBottom: m ? sp(6) : sp(10),
+        paddingBottom: m ? sp(8) : sp(12),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
           display: m ? "block" : "flex",
-          alignItems: "center", justifyContent: "space-between", gap: sp(6),
+          alignItems: "center", justifyContent: "space-between", gap: sp(8),
         }}>
           {/* Left text */}
           <div style={{ maxWidth: 560, textAlign: m ? "center" : "left" }}>
@@ -289,7 +302,7 @@ function HeroSection() {
             <p style={{
               ...fadeIn(visible, 250),
               fontSize: 14, color: "rgba(244,241,234,0.35)", lineHeight: 1.55,
-              marginBottom: m ? sp(4) : sp(5),
+              marginBottom: m ? sp(4) : sp(4),
               maxWidth: m ? undefined : 460,
             }}>
               Built for consultants, contractors, freelancers, and anyone whose income depends on structure — not a payroll system.
@@ -331,51 +344,72 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — phone mockup */}
+          {/* Right — score ring */}
           <div style={{
             flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
             marginTop: m ? sp(6) : 0,
             ...fadeIn(visible, 300),
-            position: "relative",
           }}>
+            <div style={{ position: "relative", width: ringSize, height: ringSize }}>
+              <svg width={ringSize} height={ringSize} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="80" cy="80" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeWidth} />
+                <circle cx="80" cy="80" r={radius} fill="none" stroke="url(#scoreGrad)" strokeWidth={strokeWidth}
+                  strokeLinecap="round" strokeDasharray={circumference}
+                  strokeDashoffset={visible ? targetOffset : circumference}
+                  style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
+                />
+                <defs>
+                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor={C.teal} /><stop offset="50%" stopColor={C.purple} /><stop offset="100%" stopColor="#7B6FE0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ ...score(m), color: "#F7F5F0", letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
+                  {animatedScore}
+                </span>
+              </div>
+            </div>
+
             <div style={{
-              width: m ? 280 : 380,
-              filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.30)) drop-shadow(0 8px 20px rgba(0,0,0,0.15))",
-              transform: visible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.96)",
-              transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+              textAlign: "center", marginTop: sp(2),
+              opacity: showLabel ? 1 : 0, transform: showLabel ? "translateY(0)" : "translateY(6px)",
+              transition: "opacity 400ms ease-out, transform 400ms ease-out",
             }}>
-              <Image
-                src={iphoneHand}
-                alt="RunPayway Command Center on mobile"
-                style={{ width: "100%", height: "auto", display: "block" }}
-                priority
-              />
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: sp(1),
+                padding: `${sp(0.5)}px ${sp(1.5)}px`, borderRadius: 10,
+                backgroundColor: "rgba(31,109,122,0.15)", border: "1px solid rgba(31,109,122,0.25)",
+                marginBottom: sp(1),
+              }}>
+                <span style={{ width: 5, height: 5, borderRadius: 999, backgroundColor: C.teal }} />
+                <span style={{ ...T.label, color: C.teal }}>Established</span>
+              </div>
+              <div style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginBottom: sp(1) }}>8 points to High Stability</div>
+              <div style={{ ...T.meta, color: "rgba(244,241,234,0.35)" }}>Fragility: Resilient</div>
             </div>
           </div>
         </div>
 
         {/* Social proof bar */}
         <div style={{
-          marginTop: m ? sp(6) : sp(8),
+          marginTop: m ? sp(5) : sp(6),
+          paddingTop: m ? sp(4) : sp(5),
+          borderTop: "1px solid rgba(255,255,255,0.06)",
           display: "flex", alignItems: "center", justifyContent: m ? "center" : "flex-start",
-          gap: m ? sp(2) : sp(4), flexWrap: "wrap",
+          gap: m ? sp(3) : sp(5), flexWrap: "wrap",
           ...fadeIn(visible, 500),
         }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: `6px 16px`, borderRadius: 20,
-            backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)",
-          }}>
-            <span style={{ fontFamily: SERIF, fontSize: 18, color: "#F4F1EA", fontVariantNumeric: "tabular-nums" }}>
-              {animatedCount.toLocaleString()}+
-            </span>
-            <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>income structures scored</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: sp(2) }}>
-            {["Deterministic scoring", "Model RP-2.0", "Private by default"].map(t => (
-              <span key={t} style={{ fontSize: 12, color: "rgba(244,241,234,0.25)" }}>{t}</span>
-            ))}
-          </div>
+          {[
+            { val: "19", label: "industries benchmarked" },
+            { val: "4", label: "structural dimensions" },
+            { val: "90s", label: "to complete" },
+          ].map(s => (
+            <div key={s.label} style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+              <span style={{ fontFamily: SERIF, fontSize: 20, color: "#F4F1EA" }}>{s.val}</span>
+              <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{s.label}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -454,12 +488,12 @@ function HowItWorksSection() {
   return (
     <section ref={ref} aria-label="How it works" style={{
       background: C.sand,
-      paddingTop: m ? sp(10) : sp(14),
-      paddingBottom: m ? sp(10) : sp(14),
+      paddingTop: m ? sp(8) : sp(10),
+      paddingBottom: m ? sp(8) : sp(10),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
           <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
             How It Works
           </div>
@@ -570,8 +604,8 @@ function PressureNarrative() {
   return (
     <section ref={ref} aria-label="Pressure narrative" style={{
       background: C.navy,
-      paddingTop: m ? sp(10) : sp(14),
-      paddingBottom: m ? sp(10) : sp(14),
+      paddingTop: m ? sp(8) : sp(10),
+      paddingBottom: m ? sp(8) : sp(10),
       paddingLeft: px(m), paddingRight: px(m),
       position: "relative",
       overflow: "hidden",
@@ -586,7 +620,7 @@ function PressureNarrative() {
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
         {/* Opening — emotional hook */}
-        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
           <div style={{ ...T.label, color: C.teal, marginBottom: sp(2.5) }}>
             The Pressure You Already Feel
           </div>
@@ -719,7 +753,7 @@ function PressureNarrative() {
 
 
 /* ================================================================== */
-/* PRODUCT MOCKUP — SafePath-style large showcase card                 */
+/* PRODUCT MOCKUP — full-bleed showcase, phone dominates               */
 /* ================================================================== */
 function ProductMockup() {
   const m = useMobile();
@@ -735,45 +769,45 @@ function ProductMockup() {
 
   return (
     <section ref={ref} aria-label="Product preview" style={{
-      background: C.sand,
-      paddingTop: m ? sp(6) : sp(10),
-      paddingBottom: m ? sp(8) : sp(12),
+      background: C.sandAlt,
+      paddingTop: m ? sp(6) : sp(8),
+      paddingBottom: 0,
       paddingLeft: px(m), paddingRight: px(m),
-      overflow: "visible",
+      overflow: "hidden",
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", ...fadeIn(visible) }}>
-        {/* Large showcase card */}
+        {/* Full-width showcase card */}
         <div style={{
           display: m ? "block" : "flex",
           alignItems: "stretch",
-          borderRadius: 24,
+          borderRadius: "24px 24px 0 0",
           overflow: "visible",
-          background: "linear-gradient(135deg, #F7F5F0 0%, #EDECEA 100%)",
-          boxShadow: "0 4px 24px rgba(14,26,43,0.06), 0 16px 64px rgba(14,26,43,0.05)",
+          background: "linear-gradient(160deg, #F0EDE8 0%, #E8E5E0 50%, #DDD9D3 100%)",
+          boxShadow: "0 -4px 24px rgba(14,26,43,0.04), 0 -16px 64px rgba(14,26,43,0.03)",
           border: `1px solid ${C.border}`,
+          borderBottom: "none",
           position: "relative",
-          minHeight: m ? undefined : 520,
+          minHeight: m ? undefined : 560,
         }}>
-          {/* Left — phone image breaking out of the card */}
+          {/* Left — phone image, massive, bleeds below card */}
           <div style={{
-            flex: m ? undefined : "0 0 55%",
+            flex: m ? undefined : "0 0 58%",
             position: "relative",
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "center",
-            paddingTop: m ? sp(4) : 0,
             overflow: "visible",
           }}>
-            {/* Phone image — large, breaking out of card top */}
+            {/* Phone — huge, overflows card top and bottom */}
             <div style={{
               position: "relative",
-              width: m ? 280 : 400,
-              marginTop: m ? 0 : -60,
-              marginBottom: m ? -40 : -20,
+              width: m ? 320 : 480,
+              marginTop: m ? sp(2) : -80,
+              marginBottom: 0,
               zIndex: 2,
-              filter: "drop-shadow(0 20px 40px rgba(14,26,43,0.15)) drop-shadow(0 8px 16px rgba(14,26,43,0.08))",
-              transform: visible ? "translateY(0) scale(1)" : "translateY(30px) scale(0.95)",
-              transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1), filter 800ms ease",
+              filter: "drop-shadow(0 24px 48px rgba(14,26,43,0.18)) drop-shadow(0 12px 24px rgba(14,26,43,0.10))",
+              transform: visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.94)",
+              transition: "transform 900ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}>
               <Image
                 src={iphoneHand}
@@ -783,55 +817,53 @@ function ProductMockup() {
               />
             </div>
 
-            {/* Floating card — Root Constraint */}
+            {/* Floating card — Root Constraint (larger, tighter to phone) */}
             <div style={{
               position: "absolute",
-              left: m ? 10 : 20,
-              top: m ? 60 : 80,
-              width: m ? 180 : 220,
-              padding: m ? "12px 14px" : "16px 20px",
-              backgroundColor: "#FEFEFE",
+              left: m ? 0 : 16,
+              top: m ? 30 : 40,
+              width: m ? 200 : 250,
+              padding: m ? "14px 16px" : "18px 22px",
+              backgroundColor: "#FFFFFF",
               borderRadius: 14,
-              border: "1px solid rgba(14,26,43,0.06)",
               borderLeft: "3px solid #C53030",
-              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
-              transform: visible ? "rotate(-4deg) translateY(0)" : "rotate(-4deg) translateY(20px)",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
+              transform: visible ? "rotate(-3deg) translateY(0)" : "rotate(-3deg) translateY(24px)",
               opacity: visible ? 1 : 0,
-              transition: "opacity 600ms ease 300ms, transform 600ms ease 300ms",
+              transition: "opacity 500ms ease 400ms, transform 500ms ease 400ms",
               zIndex: 3,
             }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.10em", color: "#C53030", marginBottom: 5, textTransform: "uppercase" as const }}>ROOT CONSTRAINT</div>
-              <div style={{ fontSize: m ? 11 : 12, fontWeight: 400, color: C.navy, lineHeight: 1.45 }}>Your largest source represents 55% of income.</div>
-              <div style={{ fontSize: 11, color: "#C53030", fontWeight: 600, marginTop: 5 }}>Score drops 38 &#8594; 21 if lost</div>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: "#C53030", marginBottom: 6, textTransform: "uppercase" as const }}>Root Constraint</div>
+              <div style={{ fontSize: 14, fontWeight: 400, color: C.navy, lineHeight: 1.5 }}>Your largest source represents 55% of income.</div>
+              <div style={{ fontSize: 12, color: "#C53030", fontWeight: 600, marginTop: 6 }}>Score drops 38 &#8594; 21 if lost</div>
             </div>
 
-            {/* Floating card — #1 Priority */}
+            {/* Floating card — #1 Priority (larger, tighter to phone) */}
             <div style={{
               position: "absolute",
-              right: m ? 10 : -20,
-              bottom: m ? 80 : 140,
-              width: m ? 180 : 220,
-              padding: m ? "12px 14px" : "16px 20px",
-              backgroundColor: "#FEFEFE",
+              right: m ? 0 : -10,
+              bottom: m ? 100 : 180,
+              width: m ? 200 : 250,
+              padding: m ? "14px 16px" : "18px 22px",
+              backgroundColor: "#FFFFFF",
               borderRadius: 14,
-              border: "1px solid rgba(14,26,43,0.06)",
               borderLeft: "3px solid #4B3FAE",
-              boxShadow: "0 4px 20px rgba(14,26,43,0.08)",
-              transform: visible ? "rotate(3deg) translateY(0)" : "rotate(3deg) translateY(20px)",
+              boxShadow: "0 8px 32px rgba(14,26,43,0.12), 0 2px 8px rgba(14,26,43,0.06)",
+              transform: visible ? "rotate(2deg) translateY(0)" : "rotate(2deg) translateY(24px)",
               opacity: visible ? 1 : 0,
-              transition: "opacity 600ms ease 500ms, transform 600ms ease 500ms",
+              transition: "opacity 500ms ease 600ms, transform 500ms ease 600ms",
               zIndex: 3,
             }}>
-              <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.10em", color: "#4B3FAE", marginBottom: 5, textTransform: "uppercase" as const }}>YOUR #1 PRIORITY</div>
-              <div style={{ fontSize: m ? 11 : 12, fontWeight: 400, color: C.navy, lineHeight: 1.45 }}>Convert one client to a monthly retainer</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: "#1F6D7A", marginTop: 5 }}>+12 pts</div>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: "#4B3FAE", marginBottom: 6, textTransform: "uppercase" as const }}>Your #1 Priority</div>
+              <div style={{ fontSize: 14, fontWeight: 400, color: C.navy, lineHeight: 1.5 }}>Convert one client to a monthly retainer</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#1F6D7A", marginTop: 6 }}>+12 pts</div>
             </div>
           </div>
 
-          {/* Right — product info */}
+          {/* Right — product info (tighter padding) */}
           <div style={{
-            flex: m ? undefined : "0 0 45%",
-            padding: m ? `${sp(6)}px ${sp(3)}px ${sp(4)}px` : `${sp(7)}px ${sp(5)}px ${sp(7)}px ${sp(3)}px`,
+            flex: m ? undefined : "0 0 42%",
+            padding: m ? `${sp(5)}px ${sp(3)}px ${sp(4)}px` : `${sp(6)}px ${sp(4)}px ${sp(6)}px ${sp(2)}px`,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -841,7 +873,7 @@ function ProductMockup() {
             </div>
             <h2 style={{
               ...h2(m), color: C.navy,
-              fontSize: m ? 24 : 32,
+              fontSize: m ? 24 : 30,
               marginBottom: sp(3),
             }}>
               Your complete structural diagnostic — in one place.
@@ -851,7 +883,7 @@ function ProductMockup() {
               {features.map(f => (
                 <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5) }}>
                   <svg width="18" height="18" viewBox="0 0 18 18" style={{ flexShrink: 0, marginTop: 2 }}>
-                    <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.10)" />
+                    <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.12)" />
                     <path d="M5.5 9.2L7.8 11.5L12.5 6.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                   </svg>
                   <span style={{ ...body(m), color: C.muted }}>{f}</span>
@@ -908,12 +940,12 @@ function WhatYouGet() {
   return (
     <section ref={ref} aria-label="What you get" style={{
       background: C.sandAlt,
-      paddingTop: m ? sp(10) : sp(14),
-      paddingBottom: m ? sp(10) : sp(14),
+      paddingTop: m ? sp(8) : sp(10),
+      paddingBottom: m ? sp(8) : sp(10),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
           <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
             What You Get
           </div>
@@ -1177,8 +1209,8 @@ function FinalCta() {
   return (
     <section ref={ref} aria-label="Final CTA" style={{
       background: `linear-gradient(180deg, ${C.sand} 0%, #EDECEA 100%)`,
-      paddingTop: m ? sp(10) : sp(14),
-      paddingBottom: m ? sp(10) : sp(14),
+      paddingTop: m ? sp(8) : sp(10),
+      paddingBottom: m ? sp(8) : sp(10),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
       <div style={{ maxWidth: 600, margin: "0 auto", ...fadeIn(visible) }}>
