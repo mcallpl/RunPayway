@@ -1381,8 +1381,6 @@ export default function LandingPage() {
       <HeroSection />
       <HeroVideo />
       <HowItWorksSection />
-      <ProductMockup />
-      <PressureNarrative />
       <ProofSection />
       <PricingSection />
       <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />

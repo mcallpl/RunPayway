@@ -85,6 +85,133 @@ function Hero() {
 /* ================================================================== */
 /* 2. PRICING CARDS — Three tiers                                      */
 /* ================================================================== */
+/* ================================================================== */
+/* PRESSURE NARRATIVE — urgency before pricing                         */
+/* ================================================================== */
+function PressureNarrative() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+
+  const scenarios = [
+    {
+      label: "Concentration",
+      title: "Your biggest client leaves.",
+      desc: "The Score isolates how much of your stability depends on a single source. If one departure drops your score by 30 points, that concentration is the structural risk \u2014 not the client relationship.",
+      stat: "\u221230 pts",
+      statLabel: "potential impact",
+      accent: "#C53030",
+    },
+    {
+      label: "Continuity",
+      title: "You can\u2019t work for 90 days.",
+      desc: "Continuity measures what happens to your income when labor stops. The Score reveals whether your structure survives a gap \u2014 or collapses with it.",
+      stat: "27 days",
+      statLabel: "median cash buffer",
+      accent: "#B7791F",
+    },
+    {
+      label: "Visibility",
+      title: "A contract doesn\u2019t renew.",
+      desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the Score shows how much of your forward certainty disappears with it.",
+      stat: "0 days",
+      statLabel: "advance warning",
+      accent: B.teal,
+    },
+  ];
+
+  const fadeIn = (v: boolean, delay = 0) => ({
+    opacity: v ? 1 : 0,
+    transform: v ? "translateY(0)" : "translateY(16px)",
+    transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+  });
+
+  return (
+    <section ref={ref} aria-label="Pressure narrative" style={{
+      background: B.navy,
+      paddingTop: m ? 64 : 80,
+      paddingBottom: m ? 64 : 80,
+      paddingLeft: m ? 24 : 56, paddingRight: m ? 24 : 56,
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      <div style={{
+        position: "absolute", top: "-30%", right: "-10%",
+        width: 600, height: 600, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(75,63,174,0.08) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 48 : 56, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: B.teal, marginBottom: 20 }}>
+            The Pressure You Already Feel
+          </div>
+          <h2 style={{
+            fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.1,
+            color: "#F4F1EA",
+            maxWidth: 640, margin: "0 auto",
+            marginBottom: 24,
+          }}>
+            You already know something is fragile. The Score tells you exactly where.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.45)", maxWidth: 500, margin: "0 auto" }}>
+            These aren&rsquo;t hypotheticals. They&rsquo;re the three structural failures that collapse independent income.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? 32 : 40 }}>
+          {scenarios.map((s, i) => (
+            <div key={s.label} style={{
+              display: m ? "block" : "flex",
+              alignItems: "stretch",
+              gap: 0,
+              borderRadius: 18,
+              overflow: "hidden",
+              backgroundColor: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              flexDirection: i % 2 === 1 ? "row-reverse" : "row",
+              ...fadeIn(visible, 200 + i * 150),
+            }}>
+              <div style={{
+                flex: m ? "none" : "0 0 180px",
+                display: "flex", flexDirection: m ? "row" : "column",
+                alignItems: "center", justifyContent: "center",
+                gap: m ? 12 : 0,
+                padding: m ? "20px 24px" : 32,
+                backgroundColor: `${s.accent}10`,
+                borderBottom: m ? "1px solid rgba(255,255,255,0.04)" : "none",
+                borderRight: !m && i % 2 === 0 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                borderLeft: !m && i % 2 === 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+              }}>
+                <span style={{
+                  fontFamily: DF, fontSize: m ? 28 : 40, color: s.accent,
+                  lineHeight: 1, letterSpacing: "-0.02em",
+                }}>{s.stat}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: m ? 0 : 8, textTransform: "uppercase" as const, textAlign: "center" }}>
+                  {s.statLabel}
+                </span>
+              </div>
+
+              <div style={{ flex: 1, padding: m ? 24 : "32px 40px" }}>
+                <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: s.accent, marginBottom: 12 }}>{s.label}</div>
+                <h3 style={{ fontFamily: DF, fontSize: m ? 20 : 24, fontWeight: 400, color: "#F4F1EA", marginBottom: 16, lineHeight: 1.2 }}>
+                  {s.title}
+                </h3>
+                <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.50)", margin: 0 }}>
+                  {s.desc}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/* 2. PRICING CARDS                                                     */
+/* ================================================================== */
 function PricingCards() {
   const { ref, visible } = useInView();
   const m = useMobile();
@@ -468,6 +595,7 @@ export default function PricingPage() {
   return (
     <div>
       <Hero />
+      <PressureNarrative />
       <PricingCards />
       <ReportCovers />
       <Trust />
