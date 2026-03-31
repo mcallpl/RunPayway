@@ -18,7 +18,7 @@ const B = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   white: "#FFFFFF",
-  bg: "#F8F6F6",
+  bg: "#F1EEE7",
   surface: "#FEFEFE",
   stone: "rgba(14,26,43,0.06)",
   taupe: "rgba(14,26,43,0.36)",
@@ -576,6 +576,17 @@ function DashboardContent() {
         <SuiteHeader current="dashboard" />
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
+        {/* Access Code Entry — standalone at top */}
+        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "16px 16px 0" : "24px 32px 0" }}>
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, flexShrink: 0 }}>PASTE ACCESS CODE</div>
+            <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste code from your report" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
+              style={{ padding: "8px 14px", fontSize: 13, fontFamily: "monospace", border: `1px solid ${B.stone}`, borderRadius: 8, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 36, backgroundColor: B.white }} />
+            <button onClick={handleCodeSubmit} style={{ padding: "8px 20px", fontSize: 13, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 8, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 36 }}>Load</button>
+          </div>
+          {codeError && <div style={{ fontSize: 12, color: B.red, marginTop: 4 }}>{codeError}</div>}
+        </div>
+
         {/* Change 1: Sticky phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
@@ -627,15 +638,15 @@ function DashboardContent() {
                       </div>
                     </div>
                   )}
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const }} className="d-metrics">
+                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 8, overflow: "hidden" }} className="d-metrics">
                     {[
                       { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
-                      { label: "Top source risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber },
+                      { label: "Top Source Risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber },
-                    ].map(m => (
-                      <div key={m.label} style={{ flex: 1, minWidth: 100, padding: "11px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, display: "flex", justifyContent: "space-between", alignItems: "center", minHeight: 44 }}>
-                        <span style={{ fontSize: 13, color: B.taupe }}>{m.label}</span>
-                        <span style={{ fontSize: 17, fontWeight: 300, color: m.color }}>{m.value}</span>
+                    ].map((m, i, arr) => (
+                      <div key={m.label} style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>{m.label.toUpperCase()}</div>
+                        <div style={{ fontSize: 18, fontWeight: 600, color: m.color }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
@@ -706,8 +717,8 @@ function DashboardContent() {
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: `${B.red}03`, marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 8 }}>ROOT CONSTRAINT</div>
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `3px solid #7A1F2B`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#7A1F2B", marginBottom: 8 }}>ROOT CONSTRAINT</div>
               <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
               <p style={{ fontSize: 13, color: B.red, margin: "0 0 4px", fontWeight: 500 }}>
                 Consequence: If your top source leaves, your score drops from {dScore} to {dScore - stLCDrop}{dScore - stLCDrop < 30 && dScore >= 30 ? " — crossing into Limited Stability." : "."}
@@ -716,30 +727,31 @@ function DashboardContent() {
             </div>
 
             <div style={{ padding: mobile ? "20px 16px" : "22px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 12 }}>
-              <div style={{ display: "flex", height: 40, borderRadius: 8, overflow: "hidden", border: `1px solid ${B.stone}`, marginBottom: 12 }}>
-                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}18`, display: "flex", alignItems: "center", justifyContent: "center", borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }}>{z.pct >= 12 && <span style={{ fontSize: 15, fontWeight: 600, color: z.color }}>{z.pct}%</span>}</div> : null)}
+              {/* Labels above bar */}
+              <div style={{ display: "flex", marginBottom: 6 }}>
+                {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
               </div>
-              <p style={{ fontSize: 13, color: B.taupe, margin: 0, fontStyle: "italic" }}>{indData.general}</p>
+              <div style={{ display: "flex", height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 12 }}>
+                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
+              </div>
+              <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>{indData.general}</p>
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "16px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${z.color}`, borderRadius: 12, backgroundColor: z.sev === "critical" ? `${z.color}04` : B.surface, marginBottom: 8 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div key={z.id} style={{ padding: mobile ? "16px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${z.color}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
-                    <span style={{ fontSize: 22, fontWeight: 300, color: z.color }}>{z.pct}%</span>
-                    {/* Severity indicator */}
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>&mdash;</span>
+                    <span style={{ fontSize: 20, fontWeight: 600, color: z.color }}>{z.pct}%</span>
                     <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: z.sev === "critical" ? `${B.red}10` : z.sev === "elevated" ? `${B.amber}08` : `${B.teal}08`, color: z.sev === "critical" ? B.red : z.sev === "elevated" ? B.amber : B.teal }}>
                       {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
                     </span>
                   </div>
-                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>+{z.lift} pts</span>}
+                  {z.lift > 0 && <span style={{ fontSize: 15, fontWeight: 600, color: B.teal }}>+{z.lift} pts</span>}
                 </div>
-                <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6 }}>{z.txt}</p>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
-                  {z.peer && <span style={{ fontSize: 13, color: B.taupe, fontStyle: "italic" }}>{z.peer}</span>}
-                  {z.action && <span style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>↓ {z.action}</span>}
-                </div>
+                <p style={{ fontSize: 14, color: B.navy, margin: "0 0 6px", lineHeight: 1.55 }}>{z.txt}</p>
+                {z.action && <div style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{z.action}</div>}
               </div>
             ))}
           </section>
@@ -781,7 +793,7 @@ function DashboardContent() {
               <section style={{ marginBottom: 24 }}>
                 <div style={{ border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.purple}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden" }}>
                   <div style={{ padding: mobile ? "24px 20px" : "28px 32px" }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>YOUR #1 PRIORITY</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>PRIMARY STRUCTURAL LEVER</div>
                     <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, lineHeight: 1.3, marginBottom: 8 }}>{mv.label}</div>
                     <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px", lineHeight: 1.6 }}>{mv.description}</p>
                     <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
