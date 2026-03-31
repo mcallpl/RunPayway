@@ -264,6 +264,12 @@ function HeroSection() {
               <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5) }}>
                 6 questions &bull; 90 seconds &bull; No financial data required
               </p>
+              <button onClick={() => openVideoModal?.()} style={{ marginTop: sp(2), background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, padding: 0 }}>
+                <div style={{ width: 28, height: 28, borderRadius: "50%", border: "1px solid rgba(244,241,234,0.25)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="rgba(244,241,234,0.60)"><polygon points="2,0 10,5 2,10" /></svg>
+                </div>
+                <span style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", fontWeight: 500 }}>Watch the film</span>
+              </button>
             </div>
           </div>
 
@@ -322,50 +328,46 @@ function HeroSection() {
 /* ================================================================== */
 /* HERO VIDEO                                                          */
 /* ================================================================== */
-function HeroVideo() {
+function VideoModal() {
   const m = useMobile();
+  const [open, setOpen] = useState(false);
   const [videoSrc, setVideoSrc] = useState("");
-  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     const base = window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
     setVideoSrc(`${base}/rp-video.mp4`);
   }, []);
 
-  const handleClose = () => {
-    setDismissed(true);
-  };
-
-  if (dismissed) return null;
+  if (!open) return null;
 
   return (
-    <section aria-label="Brand video" style={{
-      backgroundColor: "#000", lineHeight: 0, position: "relative", overflow: "hidden",
-    }}>
-      <button type="button" onClick={handleClose} aria-label="Close video" style={{
-        position: "absolute", top: m ? 12 : 20, right: m ? 12 : 24, zIndex: 10,
-        width: 40, height: 40, borderRadius: 10,
-        border: "1px solid rgba(255,255,255,0.15)", backgroundColor: "rgba(0,0,0,0.50)",
-        backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-        color: "rgba(255,255,255,0.70)", cursor: "pointer",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        transition: "background-color 200ms ease", padding: 0,
-      }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.70)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.50)"; }}
-      >
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
-          <line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" />
-        </svg>
-      </button>
-
-      {videoSrc && (
-        <video autoPlay muted loop playsInline preload="auto" style={{ width: "100%", height: "auto", display: "block" }}>
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      )}
-    </section>
+    <div style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "rgba(0,0,0,0.90)", display: "flex", alignItems: "center", justifyContent: "center", padding: m ? 16 : 40 }}
+      onClick={() => setOpen(false)}>
+      <div style={{ position: "relative", maxWidth: 960, width: "100%" }} onClick={e => e.stopPropagation()}>
+        <button onClick={() => setOpen(false)} style={{ position: "absolute", top: -44, right: 0, width: 36, height: 36, borderRadius: 8, border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)", color: "rgba(255,255,255,0.70)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
+        </button>
+        {videoSrc && (
+          <video autoPlay playsInline preload="auto" controls style={{ width: "100%", borderRadius: 12, display: "block" }}>
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        )}
+      </div>
+    </div>
   );
+}
+
+/* Video trigger — exported so hero can call it */
+let openVideoModal: (() => void) | null = null;
+function VideoTrigger() {
+  const [open, setOpen] = useState(false);
+  openVideoModal = () => setOpen(true);
+  return open ? <VideoModal /> : null;
+}
+
+/* Kept for backward compat — now renders the trigger */
+function HeroVideo() {
+  return <VideoTrigger />;
 }
 
 
