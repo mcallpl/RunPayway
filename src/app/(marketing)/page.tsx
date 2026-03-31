@@ -656,7 +656,7 @@ function HowItWorksSection() {
   const { ref: ref2, visible: v2 } = useInView();
 
   const S = {
-    section: { background: C.white, paddingLeft: px(m), paddingRight: px(m) } as const,
+    section: { background: C.sandBg, paddingLeft: px(m), paddingRight: px(m) } as const,
     inner: { maxWidth: 880, margin: "0 auto" } as const,
     stageNum: { fontSize: m ? 14 : 15, fontWeight: 700 as const, letterSpacing: "0.08em", color: C.light, marginBottom: sp(1.5), textTransform: "uppercase" as const },
     stageTitle: { fontSize: m ? 26 : 34, fontWeight: 600 as const, color: C.navy, lineHeight: 1.15, marginBottom: sp(2.5), letterSpacing: "-0.02em" },
