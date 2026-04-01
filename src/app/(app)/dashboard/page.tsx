@@ -287,7 +287,9 @@ function generateScoreImage(score: number, bandLabel: string, name: string, colo
 /* ================================================================== */
 function DashboardContent() {
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
-  const [hydrated, setHydrated] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+  const hydrated = dataLoaded && minTimeElapsed;
   const [assessments, setAssessments] = useState<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc?: string }[]>([]);
   const [mobile, setMobile] = useState(false);
   const [demoProfile, setDemoProfile] = useState(1);
@@ -361,8 +363,13 @@ function DashboardContent() {
     const hasData = !!stored && stored !== "null";
     if (!hasVisited && hasData) { setShowWelcome(true); }
     localStorage.setItem("rp_cc_visited", "1");
-    setHydrated(true);
+    setDataLoaded(true);
   }, [searchParams]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setMinTimeElapsed(true), 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleCodeSubmit = () => {
     setCodeError(null); const trimmed = accessCode.trim();
