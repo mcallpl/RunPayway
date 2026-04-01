@@ -45,7 +45,7 @@ export default function DashboardLoading() {
           marginBottom: 8,
           lineHeight: 1.4,
         }}>
-          Loading your diagnostic
+          Loading Command Center
         </div>
 
         <div style={{

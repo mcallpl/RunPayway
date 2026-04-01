@@ -585,7 +585,7 @@ function DashboardContent() {
               <div style={{ width: 64, height: 64, borderRadius: "50%", border: "3px solid #EAEAEA", borderTopColor: "#1F6D7A", animation: "cc-spin 1s linear infinite" }} />
             </div>
             <div style={{ fontSize: 18, fontWeight: 500, color: "#0E1A2B", marginBottom: 8, lineHeight: 1.4 }}>
-              Loading your diagnostic
+              Loading Command Center
             </div>
             <div style={{ fontSize: 14, fontWeight: 400, color: "rgba(14,26,43,0.45)", lineHeight: 1.5 }}>
               Preparing structural analysis &bull; Model RP-2.0
