@@ -960,88 +960,110 @@ function ScoreDetermination() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const dimStyle = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" };
+  const dimName = { fontSize: 16, fontWeight: 500, color: C.navy };
+
   return (
     <section ref={ref} aria-label="How the Score Is Determined" style={{
-      backgroundColor: C.sand,
+      backgroundColor: C.white,
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5), ...fadeIn(visible) }}>
-          How the Score Is Determined
-        </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(6), maxWidth: textMax, ...fadeIn(visible, 100) }}>
-          The scoring model has two components — how income is built, and how it behaves under pressure. Each input is mapped to a defined value across six structural dimensions.
-        </p>
+        {/* Header */}
+        <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3) }}>
+            How the Score Is Determined
+          </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
+            The model evaluates how income is built and how it behaves under pressure.
+          </p>
+        </div>
 
-        {/* Structure / Stability cards */}
-        <div style={{ display: m ? "block" : "flex", gap: sp(3.5), marginBottom: sp(6), ...fadeIn(visible, 200) }}>
-          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(3) : 0, flex: "3 1 0" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
-              <span style={{ ...T.label, color: C.muted }}>Structure</span>
-              <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>60%</span>
+        {/* ── 60/40 Framework ── */}
+        <div style={{ display: m ? "block" : "flex", gap: sp(5), marginBottom: sp(6), ...fadeIn(visible, 150) }}>
+
+          {/* Structure — 60% */}
+          <div style={{ flex: 1, marginBottom: m ? sp(5) : 0 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
+              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Structure</span>
+              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>60%</span>
             </div>
-            <p style={{ ...bodySm(m), color: C.muted, marginBottom: sp(3) }}>Measures how income is built.</p>
-            {["Recurrence", "Diversification", "Visibility", "Concentration balance"].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...bodySm(m), color: C.navy }}>{item}</span>
+            <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income is built.</p>
+            {[
+              { n: "Recurrence", d: "income that continues without re-selling" },
+              { n: "Diversification", d: "distribution across multiple sources" },
+              { n: "Visibility", d: "income secured ahead of time" },
+              { n: "Concentration balance", d: "reliance on any single source" },
+            ].map(item => (
+              <div key={item.n} style={{ marginBottom: sp(2) }}>
+                <span style={dimName}>{item.n}</span>
+                <span style={dimStyle}> — {item.d}</span>
               </div>
             ))}
           </div>
 
-          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, flex: "2 1 0" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
-              <span style={{ ...T.label, color: C.muted }}>Stability</span>
-              <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>40%</span>
+          {/* Stability — 40% */}
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
+              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Stability</span>
+              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>40%</span>
             </div>
-            <p style={{ ...bodySm(m), color: C.muted, marginBottom: sp(3) }}>Measures how income behaves.</p>
-            {["Labor dependence", "Earnings consistency", "Continuity under disruption"].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...bodySm(m), color: C.navy }}>{item}</span>
+            <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income behaves under pressure.</p>
+            {[
+              { n: "Labor dependence", d: "reliance on active work" },
+              { n: "Earnings consistency", d: "variability over time" },
+              { n: "Continuity under disruption", d: "resilience when income changes" },
+            ].map(item => (
+              <div key={item.n} style={{ marginBottom: sp(2) }}>
+                <span style={dimName}>{item.n}</span>
+                <span style={dimStyle}> — {item.d}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Cross-Factor Rules */}
-        <div style={{ marginBottom: sp(6), maxWidth: textMax, ...fadeIn(visible, 300) }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Cross-Factor Rules</p>
-          <p style={{ ...body(m), color: C.muted, marginBottom: sp(2) }}>
+        {/* ── Cross-Factor Rules ── */}
+        <div style={{ maxWidth: textMax, marginBottom: sp(7), ...fadeIn(visible, 300) }}>
+          <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
+            Cross-Factor Rules
+          </p>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(2.5) }}>
             Cross-factor rules account for how weaknesses compound.
           </p>
-          <p style={{ ...bodySm(m), color: C.muted, marginBottom: sp(1) }}>
+          <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: "#2C3A4B", marginBottom: sp(1) }}>
             High concentration combined with low forward visibility increases structural risk.
           </p>
-          <p style={{ ...bodySm(m), color: C.muted }}>
+          <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: "#2C3A4B" }}>
             Strong recurrence combined with low labor dependence increases structural stability.
           </p>
         </div>
 
-        {/* Distance signal */}
-        <div style={{
-          display: "flex", alignItems: m ? "flex-start" : "center",
-          flexDirection: m ? "column" : "row",
-          gap: m ? sp(1) : sp(3),
-          padding: m ? sp(4) : sp(5),
-          borderRadius: 12, border: `1px solid ${C.softBorder}`, backgroundColor: C.white,
-          marginBottom: sp(6),
-          ...fadeIn(visible, 400),
-        }}>
-          <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>72</span>
-          <span style={{ fontSize: 18, fontWeight: 500, color: C.navy }}>Established Stability</span>
-          <span style={{ ...T.meta, color: C.muted }}>3 points to High Stability</span>
+        {/* ── Standardized Output ── */}
+        <div style={{ maxWidth: textMax, marginBottom: sp(6), paddingTop: sp(6), borderTop: `1px solid ${C.softBorder}`, ...fadeIn(visible, 400) }}>
+          <div style={{ display: m ? "block" : "flex", alignItems: "baseline", gap: sp(2.5), marginBottom: sp(2) }}>
+            <span style={{ fontSize: 40, fontWeight: 600, color: C.purple, lineHeight: 1 }}>72</span>
+            <span style={{ fontSize: 18, fontWeight: 500, color: C.navy }}>Established Stability</span>
+          </div>
+          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted, marginBottom: sp(3) }}>
+            3 points to High Stability
+          </p>
+          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted, marginBottom: sp(1) }}>
+            Primary constraint: Income concentration
+          </p>
+          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted }}>
+            Stress scenario: Largest source removed &rarr; projected 44
+          </p>
         </div>
 
-        {/* Closing anchor */}
+        {/* ── Closing ── */}
         <p style={{
-          ...body(m), fontWeight: 500, color: C.navy,
-          textAlign: "center",
+          fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy,
+          maxWidth: textMax,
           ...fadeIn(visible, 450),
         }}>
-          The model does not change. Only the inputs change.
+          The model does not change.<br />Only the inputs change.
         </p>
       </div>
     </section>
