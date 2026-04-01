@@ -569,8 +569,8 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.navy }}>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
-        paddingTop: heroTopPad(m),
-        paddingBottom: secPad(m),
+        paddingTop: m ? sp(18) : sp(24),
+        paddingBottom: m ? sp(12) : sp(16),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
@@ -578,11 +578,11 @@ function HeroSection() {
           alignItems: "center", justifyContent: "space-between", gap: sp(8),
         }}>
           {/* Left — text */}
-          <div style={{ maxWidth: 600, textAlign: m ? "center" : "left" }}>
+          <div style={{ maxWidth: 520, textAlign: m ? "center" : "left" }}>
             <div style={{
               ...fadeIn(visible),
               ...T.label,
-              color: C.teal, marginBottom: m ? sp(3) : sp(4),
+              color: C.teal, marginBottom: sp(2),
             }}>
               Income Stability Score&#8482;
             </div>
@@ -591,7 +591,7 @@ function HeroSection() {
               ...fadeIn(visible, 120),
               ...h1(m),
               color: C.sand,
-              marginBottom: m ? sp(4) : sp(4),
+              marginBottom: m ? sp(4) : sp(5),
             }}>
               Know how stable your income is before something tests it.
             </h1>
@@ -599,9 +599,9 @@ function HeroSection() {
             <p style={{
               ...fadeIn(visible, 250),
               ...body(m),
-              color: "rgba(244,241,234,0.50)",
+              color: "rgba(244,241,234,0.55)",
               marginBottom: sp(4),
-              maxWidth: m ? undefined : heroTextMax,
+              maxWidth: m ? undefined : 480,
             }}>
               RunPayway&#8482; measures the structure of your income — not the size of it — and shows how resilient that structure is when conditions change.
             </p>
@@ -609,9 +609,9 @@ function HeroSection() {
             {/* Trust strip */}
             <p style={{
               ...fadeIn(visible, 320),
-              ...T.meta,
-              color: "rgba(244,241,234,0.30)",
-              marginBottom: m ? sp(4) : sp(5),
+              ...T.meta, letterSpacing: "0.02em",
+              color: "rgba(244,241,234,0.40)",
+              marginBottom: m ? sp(5) : sp(6),
             }}>
               Deterministic Model RP-2.0 &bull; Fixed scoring rules &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
             </p>
@@ -621,21 +621,21 @@ function HeroSection() {
                 href="/diagnostic-portal"
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  height: 56, width: m ? "100%" : "auto",
-                  padding: "0 40px",
-                  borderRadius: 8,
+                  height: 64, width: m ? "100%" : "auto",
+                  padding: "0 52px",
+                  borderRadius: 10,
                   backgroundColor: C.white, color: C.navy,
-                  fontSize: 16, fontWeight: 600,
+                  fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em",
                   textDecoration: "none",
                   transition: "background-color 200ms ease",
                 }}
                 onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
               >
-                Get My Free Score
+                Get My Income Stability Score
               </Link>
 
-              <p style={{ ...micro(), color: "rgba(244,241,234,0.30)", marginTop: sp(2) }}>
+              <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5), letterSpacing: "0.02em" }}>
                 Under 2 minutes &bull; Instant result &bull; Private by default
               </p>
             </div>
@@ -649,22 +649,56 @@ function HeroSection() {
           }}>
             <div style={{
               ...cardStyle,
-              padding: sp(6),
-              maxWidth: 340,
+              padding: m ? sp(5) : 56,
+              maxWidth: 360,
               margin: m ? "0 auto" : undefined,
             }}>
               {/* Specimen label */}
               <div style={{
-                fontSize: 11, fontWeight: 600, letterSpacing: "0.10em", textTransform: "uppercase" as const,
-                color: C.light, marginBottom: sp(3),
+                fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+                color: C.light, marginBottom: sp(4),
               }}>
-                Assessment Specimen
+                Issued Result Preview
               </div>
 
-              {/* Score ring + number */}
-              <div style={{ display: "flex", alignItems: "center", gap: sp(3), marginBottom: sp(3) }}>
-                <div style={{ position: "relative", width: 80, height: 80, flexShrink: 0 }}>
-                  <svg width={80} height={80} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }} aria-hidden="true">
+              {/* Score */}
+              <div style={{ marginBottom: sp(4) }}>
+                <div style={{ fontSize: 56, fontWeight: 600, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums", marginBottom: sp(1.5) }} aria-label={`Score: ${animatedScore}`}>
+                  {animatedScore}
+                </div>
+                <div style={{
+                  fontSize: 18, fontWeight: 500, color: C.navy,
+                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
+                }}>
+                  Established Stability
+                </div>
+                <div style={{
+                  ...T.meta, color: C.muted, marginTop: sp(0.75),
+                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
+                }}>
+                  3 points to High Stability
+                </div>
+              </div>
+
+              <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: sp(3) }} />
+
+              <div style={{
+                ...T.meta, color: C.muted, marginBottom: sp(2),
+                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms",
+              }}>
+                Primary constraint: Income concentration
+              </div>
+              <div style={{
+                ...T.meta, color: C.muted,
+                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 300ms",
+              }}>
+                Stress test: Largest source removed &rarr; projected 44
+              </div>
+
+              {/* Score ring — subtle, decorative */}
+              <div style={{ marginTop: sp(4), display: "flex", justifyContent: "center" }}>
+                <div style={{ position: "relative", width: 64, height: 64 }}>
+                  <svg width={64} height={64} viewBox="0 0 160 160" style={{ transform: "rotate(-90deg)" }} aria-hidden="true">
                     <circle cx="80" cy="80" r={radius} fill="none" stroke={C.softBorder} strokeWidth={strokeWidth} />
                     <circle cx="80" cy="80" r={radius} fill="none" stroke={C.teal} strokeWidth={strokeWidth}
                       strokeLinecap="round" strokeDasharray={circumference}
@@ -672,62 +706,29 @@ function HeroSection() {
                       style={{ transition: "stroke-dashoffset 2s cubic-bezier(0.22, 1, 0.36, 1)" }}
                     />
                   </svg>
-                  <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 24, fontWeight: 600, color: C.purple, fontVariantNumeric: "tabular-nums" }} aria-label={`Score: ${animatedScore}`}>
-                      {animatedScore}
-                    </span>
-                  </div>
                 </div>
-                <div>
-                  <div style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>{animatedScore}</div>
-                </div>
-              </div>
-
-              <div style={{
-                fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: sp(0.5),
-                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
-              }}>
-                Established Stability
-              </div>
-              <div style={{
-                ...micro(), color: C.muted, marginBottom: sp(3),
-                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
-              }}>
-                3 points to High Stability
-              </div>
-
-              <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: sp(2.5) }} />
-
-              <div style={{
-                ...micro(), color: C.muted, marginBottom: sp(1.5),
-                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms",
-              }}>
-                Primary constraint: Income concentration
-              </div>
-              <div style={{
-                ...micro(), color: C.muted,
-                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 300ms",
-              }}>
-                Stress test: Largest source removed &rarr; projected 44
               </div>
             </div>
           </div>
         </div>
 
         {/* Industry dropdown bar */}
-        <IndustryDropdown m={m} visible={visible} />
+        <div style={{ marginTop: m ? sp(8) : sp(10) }}>
+          <IndustryDropdown m={m} visible={visible} />
+        </div>
 
-        {/* Positioning line below hero */}
-        <p style={{
-          ...fadeIn(visible, 600),
-          ...micro(),
-          color: "rgba(244,241,234,0.30)",
-          marginTop: m ? sp(5) : sp(6),
-          maxWidth: 600,
-          textAlign: m ? "center" : "left",
-        }}>
-          Most financial tools measure outcomes. RunPayway&#8482; measures structure — before outcomes change.
-        </p>
+        {/* Positioning statement */}
+        <div style={{ marginTop: m ? sp(6) : sp(8), borderTop: "1px solid rgba(244,241,234,0.08)", paddingTop: m ? sp(5) : sp(6) }}>
+          <p style={{
+            ...fadeIn(visible, 600),
+            fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6,
+            color: "rgba(244,241,234,0.45)",
+            maxWidth: 560,
+            textAlign: m ? "center" : "left",
+          }}>
+            Most financial tools measure outcomes. RunPayway&#8482; measures structure — before outcomes change.
+          </p>
+        </div>
       </div>
     </header>
   );
