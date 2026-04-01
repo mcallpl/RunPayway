@@ -655,7 +655,7 @@ function HowItWorksSection() {
   return (
     <>
     {/* ── OPENING ── */}
-    <section ref={ref} aria-label="How It Works" style={{ background: "linear-gradient(180deg, #F8F6F6 0%, #FFFFFF 100%)", paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(10) : sp(16), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} aria-label="How It Works" style={{ background: "linear-gradient(180deg, #F8F6F6 0%, #FFFFFF 100%)", paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(6) : sp(8), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", ...fadeIn(visible) }}>
         <div style={{ display: m ? "block" : "flex", justifyContent: "space-between", alignItems: "flex-end", gap: sp(8) }}>
           <div style={{ flex: 1, maxWidth: 640 }}>
