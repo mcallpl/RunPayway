@@ -216,11 +216,9 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
         marginTop: m ? sp(5) : sp(6),
         paddingTop: m ? sp(4) : sp(5),
         borderTop: "1px solid rgba(255,255,255,0.06)",
+        position: "relative", zIndex: 10,
         ...fadeIn(visible, 500),
       }}>
-        <p style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>
-          Explore industry-specific risk patterns
-        </p>
         <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
           <button
             onClick={() => setOpen(!open)}
