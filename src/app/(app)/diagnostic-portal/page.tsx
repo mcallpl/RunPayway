@@ -259,23 +259,11 @@ export default function InitializationPage() {
 
   useEffect(() => {
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (form.assessment_title || form.industry_sector) {
-        e.preventDefault();
-      }
+      if (step >= 3) { e.preventDefault(); }
     };
-    const onPopState = () => {
-      if (form.assessment_title || form.industry_sector) {
-        window.history.pushState(null, "", window.location.href);
-      }
-    };
-    window.history.pushState(null, "", window.location.href);
     window.addEventListener("beforeunload", onBeforeUnload);
-    window.addEventListener("popstate", onPopState);
-    return () => {
-      window.removeEventListener("beforeunload", onBeforeUnload);
-      window.removeEventListener("popstate", onPopState);
-    };
-  }, [form.assessment_title, form.industry_sector]);
+    return () => { window.removeEventListener("beforeunload", onBeforeUnload); };
+  }, [step]);
 
   useEffect(() => {
     const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
