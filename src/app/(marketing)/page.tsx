@@ -227,8 +227,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
             onMouseEnter={e => { if (canHover()) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.30)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; } }}
             onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; } }}
           >
-            <span style={{ fontSize: 24, fontWeight: 700, color: C.teal }}>19</span>
-            <span style={{ fontSize: 18, fontWeight: 600, color: "rgba(244,241,234,0.70)", letterSpacing: "0.01em" }}>industries benchmarked</span>
+            <span style={{ fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.55)" }}>Explore industry-specific risk patterns</span>
             <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 2, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} aria-hidden="true">
               <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(244,241,234,0.70)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -838,7 +837,7 @@ function HowItWorksSection() {
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 1</p>
           <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Operating Context</h3>
           <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
-            You provide context about how your income operates. The model uses four structural inputs:
+            You provide operating context about how your income is structured.
           </p>
           <div style={{ marginBottom: sp(3) }}>
             {["Employment classification", "Operating structure", "Income model", "Industry"].map((item, i) => (
@@ -849,7 +848,7 @@ function HowItWorksSection() {
             ))}
           </div>
           <p style={{ ...body(m), color: C.muted }}>
-            These inputs define the operating environment. The model adjusts its evaluation based on the structural reality of how you earn.
+            This context does not change the scoring rules. It ensures the result is interpreted within the correct operating environment.
           </p>
         </div>
 
@@ -993,11 +992,142 @@ function ModelFramework() {
         </div>
 
         <p style={{ ...body(m), color: C.muted, marginBottom: sp(3), ...fadeIn(visible, 300) }}>
-          Cross-factor interaction rules capture how weaknesses compound. High concentration + low visibility = penalty. Strong recurrence + low labor dependence = boost. Rules are fixed.
+          Cross-factor rules account for how weaknesses compound. High concentration combined with low forward visibility increases structural risk. Strong recurrence combined with low labor dependence increases structural stability. Rules are fixed.
         </p>
 
         <p style={{ ...body(m), fontWeight: 500, color: C.navy, ...fadeIn(visible, 350) }}>
           The scoring rules are fixed. The model does not change. Only the inputs change.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 4B — HOW THE SCORE IS DETERMINED                            */
+/* ================================================================== */
+function ScoreDetermination() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const dimensions = ["Recurrence", "Concentration", "Source count", "Forward visibility", "Consistency", "Labor independence"];
+
+  return (
+    <section ref={ref} aria-label="How the Score Is Determined" style={{
+      backgroundColor: C.white,
+      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4), ...fadeIn(visible) }}>
+          How the Score Is Determined
+        </h2>
+
+        <p style={{ ...body(m), color: C.muted, marginBottom: m ? sp(5) : sp(6), maxWidth: 720, ...fadeIn(visible, 100) }}>
+          RunPayway&#8482; uses a fixed, rule-based scoring model. The same inputs always produce the same result.
+        </p>
+
+        {/* Two-column layout */}
+        <div style={{ display: m ? "block" : "flex", gap: sp(3), marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible, 200) }}>
+          {/* LEFT — What Is Measured */}
+          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(3) : 0, flex: 1 }}>
+            <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(3) }}>What Is Measured</h3>
+            <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+              Six structural dimensions are evaluated:
+            </p>
+            <div style={{ marginBottom: sp(3) }}>
+              {dimensions.map((dim) => (
+                <div key={dim} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <span style={{ ...body(m), color: C.navy }}>{dim}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{ ...micro(), color: C.muted }}>
+              Each dimension reflects a different part of how income holds together.
+            </p>
+          </div>
+
+          {/* RIGHT — How It Is Scored */}
+          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), flex: 1 }}>
+            <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(3) }}>How It Is Scored</h3>
+            <p style={{ ...body(m), color: C.muted, marginBottom: sp(2) }}>
+              Each input is mapped to a defined value.
+            </p>
+            <p style={{ ...body(m), color: C.muted, marginBottom: sp(4) }}>
+              The model applies fixed rules across two components:
+            </p>
+
+            {/* Mini blocks */}
+            <div style={{ marginBottom: sp(2), padding: sp(3), borderRadius: 8, border: `1px solid ${C.softBorder}` }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: sp(1.5), marginBottom: sp(0.5) }}>
+                <span style={{ ...body(m), fontWeight: 500, color: C.navy }}>Structure</span>
+                <span style={{ fontSize: 18, fontWeight: 600, color: C.purple }}>(60%)</span>
+              </div>
+              <p style={{ ...micro(), color: C.muted, margin: 0 }}>How income is built</p>
+            </div>
+            <div style={{ padding: sp(3), borderRadius: 8, border: `1px solid ${C.softBorder}` }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: sp(1.5), marginBottom: sp(0.5) }}>
+                <span style={{ ...body(m), fontWeight: 500, color: C.navy }}>Stability</span>
+                <span style={{ fontSize: 18, fontWeight: 600, color: C.purple }}>(40%)</span>
+              </div>
+              <p style={{ ...micro(), color: C.muted, margin: 0 }}>How income behaves under pressure</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Cross-Factor Rules */}
+        <div style={{ marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible, 300) }}>
+          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Cross-Factor Rules</p>
+          <p style={{ ...body(m), color: C.muted, marginBottom: sp(2) }}>
+            Cross-factor rules account for how weaknesses compound.
+          </p>
+          <p style={{ ...body(m), color: C.muted, marginBottom: sp(1) }}>Example:</p>
+          <p style={{ ...body(m), color: C.muted, marginBottom: sp(1) }}>
+            High concentration combined with low forward visibility increases structural risk.
+          </p>
+          <p style={{ ...body(m), color: C.muted }}>
+            Strong recurrence combined with low labor dependence increases structural stability.
+          </p>
+        </div>
+
+        {/* Standardized Output */}
+        <div style={{ marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible, 400) }}>
+          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Standardized Output</p>
+          <div style={{ marginBottom: sp(3) }}>
+            {["Score (0\u2013100)", "Stability band", "Primary structural constraint", "Distance to the next tier"].map((item) => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ ...body(m), color: C.navy }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Distance signal */}
+        <div style={{
+          display: "flex", alignItems: m ? "flex-start" : "center",
+          flexDirection: m ? "column" : "row",
+          gap: m ? sp(1) : sp(3),
+          padding: m ? sp(4) : sp(5),
+          borderRadius: 12, border: `1px solid ${C.softBorder}`,
+          marginBottom: m ? sp(5) : sp(6),
+          ...fadeIn(visible, 450),
+        }}>
+          <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>72</span>
+          <span style={{ fontSize: 18, fontWeight: 500, color: C.navy }}>Established Stability</span>
+          <span style={{ ...micro(), color: C.muted }}>3 points to High Stability</span>
+        </div>
+
+        {/* Closing line */}
+        <p style={{
+          ...body(m), fontSize: 18, fontWeight: 500, color: C.navy,
+          textAlign: "center", marginTop: m ? sp(4) : sp(6),
+          ...fadeIn(visible, 500),
+        }}>
+          The model does not change. Only the inputs change.
         </p>
       </div>
     </section>
@@ -1228,11 +1358,11 @@ function PricingSection() {
             <div style={{ marginBottom: sp(5), flex: 1 }}>
               {[
                 "Full structural diagnosis with income composition breakdown",
-                "PressureMap\u2122 showing exactly where your income is exposed",
-                "Scripts you can send to clients this week",
-                "12-week roadmap built for your specific structure",
-                "Simulator to test changes before you commit",
-                "See how you compare to others in your industry",
+                "PressureMap\u2122 showing where your income is most exposed",
+                "Ranked risk scenarios by impact",
+                "Structural action priorities",
+                "12-week execution roadmap",
+                "Command Center simulator",
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(2) }}>
                   <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 3 }} aria-hidden="true">&#x2713;</span>
@@ -1620,6 +1750,7 @@ export default function LandingPage() {
         <ConsistencySignal />
         <HowItWorksSection />
         <ModelFramework />
+        <ScoreDetermination />
         <SameIncomeDifferentStability />
         <ProofSection />
         <DecisionCalming />
