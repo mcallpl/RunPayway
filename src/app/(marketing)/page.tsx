@@ -362,7 +362,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
               </Link>
 
               <Link
-                href="/diagnostic-portal"
+                href="/pricing"
                 onClick={() => setSelected(null)}
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -486,7 +486,7 @@ function StickyNav() {
                 onMouseLeave={(e) => { e.currentTarget.style.color = linkColor; }}
               >{link.label}</Link>
             ))}
-            <Link href="/diagnostic-portal" style={{
+            <Link href="/pricing" style={{
               backgroundColor: C.white, color: C.navy,
               padding: "8px 20px", borderRadius: 8,
               fontSize: 14, fontWeight: 600,
@@ -497,7 +497,7 @@ function StickyNav() {
         )}
         {m && (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <Link href="/diagnostic-portal" style={{
+            <Link href="/pricing" style={{
               backgroundColor: C.white, color: C.navy,
               padding: "8px 16px", borderRadius: 8,
               fontSize: 14, fontWeight: 600,
@@ -525,7 +525,7 @@ function StickyNav() {
             </Link>
           ))}
         </div>
-        <Link href="/diagnostic-portal" style={{
+        <Link href="/pricing" style={{
           display: "flex", alignItems: "center", justifyContent: "center",
           width: "100%", height: 56, borderRadius: 8,
           backgroundColor: C.white, color: C.navy,
@@ -685,7 +685,7 @@ function HeroSection() {
           {/* CTA */}
           <div style={{ ...fadeIn(visible, 380), textAlign: m ? "center" : "left" }}>
             <Link
-              href="/diagnostic-portal"
+              href="/pricing"
               style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
                 height: 60, width: m ? "100%" : "auto",
@@ -1305,7 +1305,7 @@ function PricingSection() {
               {checkItem("Your highest-impact improvement")}
             </div>
 
-            <Link href="/diagnostic-portal" style={{
+            <Link href="/pricing" style={{
               ...ctaButton, width: "100%", padding: "14px 0",
               height: "auto", fontSize: 16,
             }}
@@ -1507,7 +1507,7 @@ function FinalCta() {
         </p>
 
         <div style={{ textAlign: "center" }}>
-          <Link href="/diagnostic-portal" style={{
+          <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: 60, padding: "0 48px", borderRadius: 10,
             backgroundColor: C.navy, color: C.white,
