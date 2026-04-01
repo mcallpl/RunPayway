@@ -768,13 +768,17 @@ function HowItWorksSection() {
           </div>
 
           {/* 04 — Full Diagnostic */}
-          <div style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: m ? sp(4) : sp(5), border: `1px solid ${C.border}` }}>
-            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, color: "rgba(14,26,43,0.04)", lineHeight: 1, display: "block", marginBottom: sp(3) }}>04</span>
-            <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: C.navy, lineHeight: 1.2, marginBottom: sp(2) }}>Full Diagnostic</h3>
-            <p style={{ fontSize: m ? 18 : 19, color: C.muted, lineHeight: 1.65, marginBottom: sp(3) }}>
+          <div style={{
+            backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5),
+            borderTop: `3px solid ${C.teal}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.10), 0 16px 48px rgba(14,26,43,0.18)",
+          }}>
+            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>04</span>
+            <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Full Diagnostic</h3>
+            <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: sp(3) }}>
               Your score becomes a structured action system.
             </p>
-            <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: sp(2) }}>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: sp(2) }}>
               {[
                 "PressureMap\u2122 analysis",
                 "Risk scenarios ranked by damage",
@@ -783,8 +787,9 @@ function HowItWorksSection() {
                 "12-week execution roadmap",
                 "Command Center simulator",
               ].map(item => (
-                <div key={item} style={{ padding: `${sp(0.75)}px 0` }}>
-                  <span style={{ fontSize: 17, fontWeight: 500, color: C.navy }}>{item}</span>
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), padding: `${sp(1)}px 0` }}>
+                  <span style={{ color: C.teal, fontSize: 16, flexShrink: 0 }}>&#x2713;</span>
+                  <span style={{ fontSize: 17, fontWeight: 500, color: "#F4F1EA" }}>{item}</span>
                 </div>
               ))}
             </div>
