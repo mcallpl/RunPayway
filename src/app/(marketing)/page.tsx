@@ -683,7 +683,7 @@ function HowItWorksSection() {
     </section>
 
     {/* ── STAGES ── */}
-    <section ref={ref2} aria-label="System Process" style={{ background: bg, paddingTop: 0, paddingBottom: m ? sp(10) : sp(15), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref2} aria-label="System Process" style={{ background: bg, paddingTop: m ? sp(6) : sp(8), paddingBottom: m ? sp(10) : sp(15), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
         {/* Stage grid — 01 and 02 side by side */}
