@@ -1081,6 +1081,24 @@ function ScoreDetermination() {
         }}>
           The model does not change.<br />Only the inputs change.
         </p>
+
+        {/* CTA — Methodology page */}
+        <div style={{ marginTop: sp(6), ...fadeIn(visible, 500) }}>
+          <Link
+            href="/methodology"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: sp(1),
+              textDecoration: "none",
+              fontSize: 16, fontWeight: 700, color: C.navy,
+              transition: "opacity 200ms ease",
+            }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          >
+            <span style={{ color: C.teal, fontSize: 20, fontWeight: 700, lineHeight: 1 }}>&rsaquo;</span>
+            Methodology
+          </Link>
+        </div>
       </div>
     </section>
   );
