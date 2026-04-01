@@ -813,132 +813,139 @@ function HowItWorksSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
-  const { ref: ref2, visible: v2 } = useInView();
-  const { ref: ref3, visible: v3 } = useInView();
-  const { ref: ref4, visible: v4 } = useInView();
-  const { ref: ref5, visible: v5 } = useInView();
+
+  const stepLabel = { fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light };
+  const stepTitle = { ...h3Style(m), color: C.navy };
+  const stepBody = { fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy };
+  const stepList = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" };
+  const stepClose = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted };
+  const stepGap = m ? sp(8) : sp(10);
 
   return (
     <section id="how-it-works" ref={ref} aria-label="How It Works" style={{
-      backgroundColor: C.white,
+      backgroundColor: C.sand,
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        {/* Title */}
-        <div style={{ marginBottom: sp(6), ...fadeIn(visible) }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
+
+        {/* Header */}
+        <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
+          <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
             How It Works
           </p>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
-            A structured measurement system. Not an estimate. Not a guess.
+          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3.5) }}>
+            A structured measurement system.<br />Not an estimate. Not a guess.
           </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: textMax }}>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
             Four inputs. Six scored dimensions. One standardized result.
           </p>
         </div>
 
-        {/* Step 1 — Operating Context */}
-        <div ref={ref2} style={{
-          ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(8) : sp(10),
-          ...fadeIn(v2),
-        }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 1</p>
-          <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Operating Context</h3>
-          <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
-            You provide operating context about how your income is structured.
+        {/* ── Step 1 ── */}
+        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 100) }}>
+          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 1</p>
+          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Operating Context</h3>
+          <p style={{ ...stepBody, marginBottom: sp(3), maxWidth: textMax }}>
+            You define how your income is structured.
           </p>
           <div style={{ marginBottom: sp(3) }}>
             {["Employment classification", "Operating structure", "Income model", "Industry"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...bodySm(m), color: C.navy }}>{item}</span>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ ...stepList }}>{item}</span>
               </div>
             ))}
           </div>
-          <p style={{ ...body(m), color: C.muted }}>
-            This context does not change the scoring rules. It ensures the result is interpreted within the correct operating environment.
+          <p style={{ ...stepClose, maxWidth: textMax }}>
+            This context does not change the scoring rules.<br />It ensures the result is interpreted within the correct operating environment.
           </p>
         </div>
 
-        {/* Step 2 — 6 Scored Dimensions */}
-        <div ref={ref3} style={{ marginBottom: m ? sp(8) : sp(10), ...fadeIn(v3) }}>
-          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: sp(3) }}>
-            <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 2</p>
-            <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Structural Assessment — 6 Scored Dimensions</h3>
-            <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(3) }}>
-              {[
-                { dim: "Recurrence", sub: "Income that renews without re-selling" },
-                { dim: "Concentration", sub: "Reliance on your single largest source" },
-                { dim: "Source Count", sub: "Number of meaningful income streams" },
-                { dim: "Forward Visibility", sub: "Income already secured ahead of time" },
-                { dim: "Consistency", sub: "Monthly income fluctuation level" },
-                { dim: "Labor Independence", sub: "Income that continues without active work" },
-              ].map((d) => (
-                <div key={d.dim} style={{ padding: sp(3), borderRadius: 8, border: `1px solid ${C.softBorder}` }}>
-                  <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: sp(0.5) }}>{d.dim}</div>
-                  <div style={{ ...bodySm(m), color: C.muted }}>{d.sub}</div>
-                </div>
-              ))}
-            </div>
+        {/* Divider */}
+        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
+
+        {/* ── Step 2 ── */}
+        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 200) }}>
+          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 2</p>
+          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Structural Assessment</h3>
+          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
+            Six structural dimensions are evaluated:
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(2) : sp(2.5), maxWidth: 780, marginBottom: sp(4) }}>
+            {[
+              { dim: "Recurrence", sub: "income that continues without re-selling" },
+              { dim: "Concentration", sub: "reliance on a single source" },
+              { dim: "Source count", sub: "number of independent income streams" },
+              { dim: "Forward visibility", sub: "income secured ahead of time" },
+              { dim: "Consistency", sub: "variation in earnings over time" },
+              { dim: "Labor independence", sub: "income that continues without active work" },
+            ].map((d) => (
+              <div key={d.dim} style={{ paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
+                <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{d.dim}</span>
+                <span style={{ fontSize: 16, fontWeight: 400, color: "#2C3A4B" }}> — {d.sub}</span>
+              </div>
+            ))}
           </div>
-          <p style={{ ...T.meta, color: C.muted, textAlign: "center" }}>
-            No interpretation. No subjective adjustment.
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, maxWidth: textMax }}>
+            Each dimension is scored using fixed definitions.<br />No interpretation. No subjective adjustment.
           </p>
         </div>
 
-        {/* Step 3 — Score Generation */}
-        <div ref={ref4} style={{
-          ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(8) : sp(10),
-          ...fadeIn(v4),
-        }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 3</p>
-          <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Score Generation</h3>
-          <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
-            One standardized output with four components:
+        {/* Divider */}
+        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
+
+        {/* ── Step 3 ── */}
+        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 300) }}>
+          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 3</p>
+          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Score Generation</h3>
+          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
+            The model produces one standardized output:
           </p>
-          <div style={{ borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(2), marginBottom: sp(3) }}>
+          <div style={{ maxWidth: 400 }}>
             {[
               ["Limited", "0\u201329"],
               ["Developing", "30\u201349"],
               ["Established", "50\u201374"],
               ["High", "75\u2013100"],
             ].map(([band, range]) => (
-              <div key={band} style={{ display: "flex", justifyContent: "space-between", padding: `${sp(1)}px 0` }}>
-                <span style={{ ...body(m), fontWeight: 500, color: C.navy }}>{band}</span>
-                <span style={{ ...body(m), color: C.muted, fontVariantNumeric: "tabular-nums" }}>{range}</span>
+              <div key={band} style={{ display: "flex", justifyContent: "space-between", paddingTop: sp(1.5), paddingBottom: sp(1.5), borderBottom: `1px solid ${C.softBorder}` }}>
+                <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{band}</span>
+                <span style={{ fontSize: 16, fontWeight: 400, color: C.muted, fontVariantNumeric: "tabular-nums" }}>{range}</span>
               </div>
             ))}
           </div>
-          <p style={{ ...T.meta, color: C.muted }}>Deterministic. Version-locked.</p>
+          <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginTop: sp(4) }}>
+            Deterministic. Version-locked.
+          </p>
         </div>
 
-        {/* Step 4 — Full Diagnostic */}
-        <div ref={ref5} style={{
-          ...cardStyle, padding: m ? sp(4) : 44,
-          ...fadeIn(v5),
-        }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 4</p>
-          <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Full Diagnostic</h3>
-          <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
-            Your score becomes a structured diagnostic with clear action priorities.
+        {/* Divider */}
+        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
+
+        {/* ── Step 4 ── */}
+        <div style={{ ...fadeIn(visible, 400) }}>
+          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 4</p>
+          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Diagnostic Output</h3>
+          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
+            Your score becomes a structured diagnostic:
           </p>
-          <div style={{ borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(2) }}>
+          <div style={{ maxWidth: textMax }}>
             {[
-              "PressureMap\u2122 analysis",
+              "Primary structural constraint",
               "Ranked risk scenarios by impact",
               "Structural action priorities",
-              "Industry-specific examples",
+              "Income composition breakdown",
               "12-week execution roadmap",
-              "Command Center simulator",
+              "Command Center simulation",
             ].map(item => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), padding: `${sp(1)}px 0` }}>
-                <span style={{ color: C.teal, fontSize: 14, flexShrink: 0 }} aria-hidden="true">&#x2713;</span>
-                <span style={{ ...body(m), color: C.navy }}>{item}</span>
+              <div key={item} style={{ paddingTop: sp(1.5), paddingBottom: sp(1.5), borderBottom: `1px solid ${C.softBorder}` }}>
+                <span style={{ ...stepList }}>{item}</span>
               </div>
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );
