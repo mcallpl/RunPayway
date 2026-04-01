@@ -1213,34 +1213,36 @@ function DecisionCalming() {
 
   return (
     <section aria-label="Before You Decide" style={{
-      backgroundColor: C.white,
-      paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
+      backgroundColor: C.sand,
+      paddingTop: m ? sp(14) : sp(19), paddingBottom: m ? sp(14) : sp(19),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
-          Before You Decide
-        </h2>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ maxWidth: 660 }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(4) }}>
+            Before You Decide
+          </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          You do not need to buy anything right now.
-        </p>
+          <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5) }}>
+            You do not need to buy anything right now.
+          </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          The free score tells you where you stand. If that is enough, you are done. There is no pressure to go further.
-        </p>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
+            The free score tells you where you stand. If that is enough, you are done. There is no pressure to go further.
+          </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          The full diagnostic exists for people who want to understand why they scored the way they did — and what to do about it. It is a one-time purchase. No subscription. No upsell.
-        </p>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
+            The full diagnostic exists for people who want to understand why they scored the way they did — and what to do about it. It is a one-time purchase. No subscription. No upsell.
+          </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          If you are not sure, start with the free score. You can always come back.
-        </p>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: 0 }}>
+            If you are not sure, start with the free score. You can always come back.
+          </p>
 
-        <p style={{ ...body(m), color: C.muted }}>
-          We built this to be useful, not urgent.
-        </p>
+          <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginTop: sp(5) }}>
+            We built this to be useful, not urgent.
+          </p>
+        </div>
       </div>
     </section>
   );
