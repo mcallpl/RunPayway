@@ -1390,14 +1390,14 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   const fadeIn = useFadeIn();
 
   const faqs = [
-    { q: "What is the Income Stability Score?", a: "A single number from 0 to 100 that measures how well your income structure holds up under disruption. It evaluates six dimensions of your income and classifies you into a stability band. Same answers always produce the same score." },
-    { q: "Who is this for?", a: "Anyone whose income doesn\u2019t arrive automatically every two weeks. Freelancers, consultants, contractors, agents, business owners \u2014 anyone who earns outside a traditional W-2." },
-    { q: "What do I get with the full diagnostic?", a: "A structural diagnosis that shows exactly where your income is exposed, the three highest-impact changes you can make, scripts to use in real conversations, a 12-week roadmap, and a simulator to test changes before you commit." },
-    { q: "How is this different from tracking my revenue?", a: "Revenue tells you how much came in. This tells you how reliably it keeps coming in. Two people earning the same amount can have completely different stability. The Score reveals the difference." },
-    { q: "What is the PressureMap?", a: "A structural map of where your income breaks under pressure \u2014 which zones are exposed, how you compare to peers in your industry, and which weakness to address first." },
-    { q: "What is the Command Center?", a: "Your operational dashboard after purchase. It includes a simulator to test structural changes, industry-specific scripts, a week-by-week roadmap, and progress tracking." },
-    { q: "How long does this take?", a: "Under two minutes. You answer six structural questions and see your score instantly. No financial data required. No documents to upload." },
-    { q: "Is my information private?", a: "Completely. We never access bank accounts, pull credit, or connect to external financial data. Your information stays with you." },
+    { q: "How will the Income Stability Score impact my financial future?", a: "The Income Stability Score\u2122 is a personalized diagnostic that tells you the true stability of your income, so you can understand how to protect yourself from risk." },
+    { q: "Who is the Income Stability Score designed for?", a: "The score is built for freelancers, contractors, small business owners, or anyone with an income that fluctuates. Whether you are starting or scaling, this score helps you plan for the future." },
+    { q: "What exactly do I get with the full diagnostic?", a: "The diagnostic is your personal roadmap to understanding your income structure, and gives you step-by-step actions for minimizing risk and maximizing stability." },
+    { q: "How is the Income Stability Score different from just tracking my revenue?", a: "Tracking revenue tells you how much you make. The score shows you how resilient your income structure is, and whether your income can withstand potential disruptions." },
+    { q: "What is the PressureMap\u2122 and how does it help me?", a: "PressureMap\u2122 visualizes where your income is most vulnerable, showing exactly where your structure could break under stress. It is a tool to focus your improvements on the highest-impact areas." },
+    { q: "What is the Command Center and how do I use it?", a: "The Command Center puts your score and recommendations into action. It is a dashboard where you can track your progress, simulate changes, and see real-time adjustments to your financial structure." },
+    { q: "How long does it take to get my results?", a: "The initial score is delivered instantly in under 2 minutes. The full diagnostic report can take up to 48 hours to process and deliver, ensuring precision." },
+    { q: "Is my information private?", a: "Absolutely. All your data is securely stored and private by default. We are 100% committed to protecting your personal information." },
   ];
 
   return (
@@ -1407,11 +1407,18 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
-          Frequently asked questions
-        </h2>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: m ? sp(4) : sp(5), ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2.5) }}>
+            Frequently Asked Questions
+          </h2>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", maxWidth: 560, margin: "0 auto" }}>
+            Most people don&#8217;t have all the answers right now. We&#8217;re here to give you clarity on your next step.
+          </p>
+        </div>
 
-        <div style={fadeIn(visible, 100)}>
+        {/* Accordion */}
+        <div style={{ ...fadeIn(visible, 100), marginBottom: sp(6) }}>
           {faqs.map((faq, i) => {
             const isOpen = openFaq === i;
             const panelId = `faq-panel-${i}`;
@@ -1420,16 +1427,24 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
               <div key={i} style={{ borderTop: `1px solid ${C.softBorder}` }}>
                 <h3 style={{ margin: 0 }}>
                   <button id={btnId} onClick={() => setOpenFaq(isOpen ? null : i)} aria-expanded={isOpen} aria-controls={panelId}
-                    style={{ width: "100%", padding: `${sp(3)}px ${sp(1)}px`, minHeight: 48, display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
-                    <span style={{ ...h3Style(m), color: C.navy, paddingRight: sp(2) }}>{faq.q}</span>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }} aria-hidden="true">
+                    style={{
+                      width: "100%", padding: `${sp(3)}px 0`, minHeight: 48,
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                      transition: "color 200ms ease",
+                    }}>
+                    <span style={{ fontSize: m ? 18 : 20, fontWeight: 500, color: C.navy, paddingRight: sp(2), lineHeight: 1.4 }}>{faq.q}</span>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 300ms ease", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }} aria-hidden="true">
                       <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
-                      {!isOpen && <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />}
+                      <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </button>
                 </h3>
-                <div id={panelId} role="region" aria-labelledby={btnId} style={{ maxHeight: isOpen ? 500 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
-                  <p style={{ ...body(m), color: C.muted, margin: 0, padding: `0 ${sp(1)}px ${sp(3)}px` }}>{faq.a}</p>
+                <div id={panelId} role="region" aria-labelledby={btnId} style={{
+                  maxHeight: isOpen ? 500 : 0, overflow: "hidden",
+                  transition: "max-height 300ms ease",
+                }}>
+                  <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", margin: 0, padding: `0 0 ${sp(3)}px` }}>{faq.a}</p>
                 </div>
               </div>
             );
@@ -1437,11 +1452,18 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           <div style={{ borderTop: `1px solid ${C.softBorder}` }} />
         </div>
 
-        <div style={{ textAlign: "center", marginTop: sp(5) }}>
-          <p style={{ ...micro(), color: C.light }}>
-            Still have questions?{" "}
-            <Link href="/contact" style={{ color: C.muted, textDecoration: "underline", textUnderlineOffset: 3 }}>Get in touch</Link>
+        {/* Bottom CTA */}
+        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(3) }}>
+            Still have questions? Get in touch for personalized guidance.
           </p>
+          <Link href="/contact" style={{
+            ...ctaButton,
+            padding: "16px 40px", height: "auto",
+          }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+          >Contact Us</Link>
         </div>
       </div>
     </section>
@@ -1745,8 +1767,8 @@ export default function LandingPage() {
         <SameIncomeDifferentStability />
         <ProofSection />
         <DecisionCalming />
-        <PricingSection />
         <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+        <PricingSection />
         <FinalCta />
       </main>
       <DisclaimerSection />
