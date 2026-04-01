@@ -744,38 +744,39 @@ function PositioningBlock() {
   return (
     <section ref={ref} aria-label="Positioning" style={{
       backgroundColor: C.sand,
+      borderTop: "1px solid rgba(14,26,43,0.08)",
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: textMax, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
-          Most people know what they earned. Very few know how stable it is.
+      <div style={{ maxWidth: 700, margin: "0 auto", ...fadeIn(visible) }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3.5) }}>
+          Most people know what they earned.<br />Very few know how stable it is.
         </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          Income stability is not about amount. It is about structure — and whether that structure holds when something changes.
+        <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy, marginBottom: sp(3) }}>
+          Income stability is not about amount.<br />It is about structure — and whether that structure holds when something changes.
         </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(4) }}>
-          RunPayway&#8482; measures the structural factors that determine how stable your income really is:
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(3.5) }}>
+          RunPayway&#8482; measures the structural factors that determine how your income actually behaves under pressure:
         </p>
 
-        <div style={{ marginBottom: sp(4) }}>
+        <div style={{ marginBottom: sp(4.5) }}>
           {[
-            "Dependence on single sources",
-            "Income already secured ahead of time",
+            "Dependence on a single source",
+            "Income secured ahead of time",
             "Income that continues without active work",
-            "How earnings behave under disruption",
+            "How earnings change under disruption",
           ].map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ ...body(m), color: C.navy }}>{item}</span>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
 
-        <p style={{ ...body(m), fontWeight: 500, color: C.navy, marginTop: sp(4) }}>
-          This is not a forecast. It is a structural measurement.
+        <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy, marginTop: sp(5) }}>
+          This is not a forecast.<br />It is a structural measurement.
         </p>
       </div>
     </section>
