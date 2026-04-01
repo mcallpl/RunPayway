@@ -510,7 +510,7 @@ function HeroSection() {
               marginBottom: m ? sp(5) : sp(6),
               maxWidth: m ? undefined : 500,
             }}>
-              Not how much you make &#8212; how well it&#8217;s built to last.
+              Not how much you make &#8212; how well it holds up when something breaks.
             </p>
 
             <div style={fadeIn(visible, 380)}>
@@ -931,10 +931,10 @@ function PricingSection() {
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
           <h2 style={{ ...h2(m), color: C.navy, marginBottom: sp(2) }}>
-            Two ways in.
+            Start free. Go deeper when you&#8217;re ready.
           </h2>
           <p style={{ ...body(m), color: C.muted, maxWidth: 460, margin: "0 auto" }}>
-            Start with your free score. Upgrade to the full diagnostic when you&#8217;re ready.
+            Your score is instant and free. The full diagnostic is there when you need it.
           </p>
         </div>
 
@@ -1064,6 +1064,12 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           <div style={{ borderTop: `1px solid ${C.border}` }} />
         </div>
 
+        <div style={{ textAlign: "center", marginTop: sp(5) }}>
+          <p style={{ ...T.meta, color: C.light }}>
+            Still have questions?{" "}
+            <Link href="/contact" style={{ color: C.muted, textDecoration: "underline", textUnderlineOffset: 3 }}>Get in touch</Link>
+          </p>
+        </div>
       </div>
     </section>
   );
