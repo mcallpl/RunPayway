@@ -705,7 +705,7 @@ function HowItWorksSection() {
             <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>02</span>
             <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Structural Assessment</h3>
             <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
-              Six fixed questions evaluate the architecture of your income across the dimensions below.
+              Six fixed inputs evaluate the architecture of your income across the dimensions below.
             </p>
           </div>
         </div>
