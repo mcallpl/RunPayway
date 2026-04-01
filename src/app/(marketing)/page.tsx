@@ -1257,88 +1257,126 @@ function PricingSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const checkItem = (text: string) => (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: 16 }}>
+      <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 4 }} aria-hidden="true">&#x2713;</span>
+      <span style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy }}>{text}</span>
+    </div>
+  );
+
   return (
     <section ref={ref} aria-label="Pricing" style={{
       backgroundColor: C.sand,
-      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingTop: m ? sp(14) : sp(20), paddingBottom: m ? sp(14) : sp(20),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3) }}>
-            Start with the score. Go deeper only if you need the diagnosis.
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: sp(8), ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(3) }}>
+            Start with the score.<br />Go deeper only if you need the diagnosis.
           </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 600, margin: "0 auto" }}>
-            Your score is instant and free. The full diagnostic is available when you want the reasoning behind it.
+          <p style={{ fontSize: m ? 16 : 20, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", maxWidth: 620, margin: "0 auto" }}>
+            Your score is instant and free. The full diagnostic is available when you want to understand the reasoning behind it.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3.5), maxWidth: 840, margin: "0 auto", ...fadeIn(visible, 150) }}>
-          {/* Free */}
+        {/* Columns */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(5), maxWidth: 900, margin: "0 auto", ...fadeIn(visible, 150) }}>
+
+          {/* ── Free ── */}
           <div style={{
-            ...cardStyle, padding: m ? sp(4) : 44,
+            backgroundColor: "#F8F7F3", borderRadius: 12, padding: m ? sp(4) : 40,
+            border: "1px solid rgba(14,26,43,0.06)",
             display: "flex", flexDirection: "column" as const,
+            marginBottom: m ? sp(3) : 0,
           }}>
-            <div style={{ ...T.label, color: C.teal, marginBottom: sp(3) }}>
+            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
               Income Stability Score&#8482;
+            </p>
+            <div style={{ marginBottom: sp(3) }}>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$0</span>
             </div>
-            <div style={{ fontSize: 40, fontWeight: 600, color: C.purple, marginBottom: sp(1) }}>$0</div>
-            <p style={{ ...micro(), color: C.muted, marginBottom: sp(4) }}>Always free. No credit card.</p>
-            <div style={{ marginBottom: sp(5), flex: 1 }}>
-              {["Your score out of 100", "Your stability classification", "The #1 weakness holding you back", "Your single highest-impact move"].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-                  <span style={{ color: C.teal, fontSize: 14, flexShrink: 0 }} aria-hidden="true">&#x2713;</span>
-                  <span style={{ ...bodySm(m), color: C.muted }}>{item}</span>
-                </div>
-              ))}
+            <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>Always free. No credit card.</p>
+
+            <div style={{ marginBottom: sp(4), flex: 1 }}>
+              {checkItem("Your score out of 100")}
+              {checkItem("Your stability classification")}
+              {checkItem("Your primary structural constraint")}
+              {checkItem("Your highest-impact improvement")}
             </div>
+
             <Link href="/diagnostic-portal" style={{
-              ...ctaButton,
-              width: "100%",
+              ...ctaButton, width: "100%", padding: "14px 0",
+              height: "auto", fontSize: 16,
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
             >Start Free Assessment</Link>
           </div>
 
-          {/* Paid */}
+          {/* ── Paid ── */}
           <div style={{
-            ...cardStyle, padding: m ? sp(4) : 44,
+            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
+            border: "1px solid rgba(14,26,43,0.12)",
+            boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
             display: "flex", flexDirection: "column" as const,
-            borderTop: `3px solid ${C.teal}`,
           }}>
-            <div style={{ ...T.label, color: C.teal, marginBottom: sp(3) }}>
+            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
               RunPayway&#8482; Diagnostic Report
+            </p>
+            <div style={{ marginBottom: sp(1) }}>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$69</span>
             </div>
-            <div style={{ fontSize: 40, fontWeight: 600, color: C.purple, marginBottom: sp(1) }}>$69</div>
-            <p style={{ ...micro(), color: C.muted, marginBottom: sp(4) }}>One-time. Includes everything.</p>
-            <div style={{ marginBottom: sp(5), flex: 1 }}>
-              {[
-                "Full structural diagnosis with income composition breakdown",
-                "PressureMap\u2122 showing where your income is most exposed",
-                "Ranked risk scenarios by impact",
-                "Structural action priorities",
-                "12-week execution roadmap",
-                "Command Center simulator",
-              ].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(2) }}>
-                  <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 3 }} aria-hidden="true">&#x2713;</span>
-                  <span style={{ ...bodySm(m), color: C.muted }}>{item}</span>
-                </div>
-              ))}
+            <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>One-time. No subscription.</p>
+
+            {/* Primary driver */}
+            <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3) }}>
+              See exactly why your income structure scores the way it does — and what would break it.
+            </p>
+
+            {/* Report outputs */}
+            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.light, marginBottom: sp(1.5) }}>
+              Diagnostic Report
+            </p>
+            <div style={{ marginBottom: sp(3) }}>
+              {checkItem("Your primary structural constraint")}
+              {checkItem("Where your income is most exposed")}
+              {checkItem("What happens if your largest source drops")}
+              {checkItem("The fastest way to improve your score")}
+              {checkItem("A clear, step-by-step path forward")}
             </div>
+
+            {/* Command Center */}
+            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.light, marginBottom: sp(1.5) }}>
+              Command Center
+            </p>
+            <div style={{ marginBottom: sp(4), flex: 1 }}>
+              {checkItem("PressureMap\u2122 structural analysis")}
+              {checkItem("What-if simulator for testing changes")}
+              {checkItem("12-week execution roadmap")}
+              {checkItem("Industry-specific benchmarks")}
+            </div>
+
             <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
-              ...ctaButton,
-              width: "100%",
+              ...ctaButton, width: "100%", padding: "16px 0",
+              height: "auto", fontSize: 16,
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
-            >Get Full Diagnostic — $69</a>
-            <p style={{ ...micro(), color: C.muted, textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>
-              One-time analysis &bull; No subscription &bull; Private by default
+            >Get Full Diagnostic</a>
+
+            <p style={{ fontSize: 14, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>
+              Private by default. One-time analysis.
             </p>
           </div>
         </div>
+
+        {/* Trust line */}
+        <p style={{ fontSize: 15, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(6) }}>
+          One-time analysis. No subscription. Private by default.
+        </p>
       </div>
     </section>
   );
