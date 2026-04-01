@@ -140,14 +140,14 @@ function StickyNav() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  // Past hero = warm nav. In hero = dark transparent nav.
+  // Fixed navy nav — no color transition.
   const warm = scrolled;
-  const navBg = warm ? C.navy : "rgba(14,26,43,0.4)";
-  const navBorder = warm ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent";
-  const linkColor = warm ? "rgba(244,241,234,0.55)" : "rgba(244,241,234,0.55)";
-  const linkHover = warm ? "#F4F1EA" : "#F4F1EA";
-  const ctaBg = warm ? C.purple : C.sand;
-  const ctaColor = warm ? "#FFFFFF" : C.navy;
+  const navBg = C.navy;
+  const navBorder = "1px solid rgba(255,255,255,0.06)";
+  const linkColor = "rgba(244,241,234,0.55)";
+  const linkHover = "#F4F1EA";
+  const ctaBg = C.purple;
+  const ctaColor = "#FFFFFF";
 
   return (
     <>
@@ -177,21 +177,21 @@ function StickyNav() {
               >{link.label}</Link>
             ))}
             <Link href="/pricing" style={{
-              ...T.cta, color: ctaColor, textDecoration: "none",
-              padding: `${sp(1)}px ${sp(2.5)}px`, borderRadius: 8,
-              backgroundColor: ctaBg, transition: "background-color 300ms, color 300ms",
+              ...T.cta, fontSize: 17, color: ctaColor, textDecoration: "none",
+              padding: `7px 18px`, borderRadius: 8,
+              backgroundColor: ctaBg,
             }}>Get My Free Score</Link>
           </div>
         )}
         {m && (
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Link href="/pricing" style={{
-              ...T.cta, fontSize: 17, color: ctaColor, textDecoration: "none",
-              padding: `6px ${sp(2)}px`, borderRadius: 8,
-              backgroundColor: ctaBg, transition: "background-color 300ms, color 300ms",
+              ...T.cta, fontSize: 15, color: ctaColor, textDecoration: "none",
+              padding: `5px 14px`, borderRadius: 8,
+              backgroundColor: ctaBg,
             }}>Score</Link>
             <button onClick={() => setMobileOpen(!mobileOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke={warm ? C.navy : "#F4F1EA"} strokeWidth="1.5" strokeLinecap="round" style={{ transition: "stroke 300ms" }}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#F4F1EA" strokeWidth="1.5" strokeLinecap="round">
                 {mobileOpen ? <><line x1="4" y1="4" x2="16" y2="16" /><line x1="16" y1="4" x2="4" y2="16" /></> : <><line x1="3" y1="6" x2="17" y2="6" /><line x1="3" y1="10" x2="17" y2="10" /><line x1="3" y1="14" x2="17" y2="14" /></>}
               </svg>
             </button>
