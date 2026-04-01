@@ -1485,31 +1485,46 @@ function FinalCta() {
       paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
-      <div style={{ maxWidth: textMax, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
-          See How Stable Your Income Really Is
+      <div style={{ maxWidth: 660, margin: "0 auto", ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(4) }}>
+          Take Your Time. Understand What You&#8217;re Really Getting.
         </h2>
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
-          Most people do not discover the weakness in their income structure until something changes. You can see it now — while there is still time to respond.
+
+        <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5), textAlign: "left" }}>
+          You don&#8217;t have to make a decision today.
         </p>
 
-        <p style={{ ...T.meta, color: C.light, marginBottom: sp(4) }}>
-          Private by default &bull; No bank connection &bull; No credit pull
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), textAlign: "left" }}>
+          The free score tells you exactly where your income stands — instantly. If that&#8217;s enough, you&#8217;re all set. There&#8217;s no rush.
         </p>
 
-        <Link href="/diagnostic-portal" style={{
-          ...ctaButton,
-          transition: "background-color 200ms ease",
-        }}
-          onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
-        >
-          Get Your Free Score
-        </Link>
-
-        <p style={{ ...micro(), color: C.muted, marginTop: sp(2) }}>
-          Under 2 minutes &bull; Instant result &bull; No credit pull
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(5), textAlign: "left" }}>
+          The full diagnostic is available when you&#8217;re ready to understand the reasoning behind your score. It&#8217;s a one-time purchase — no subscription, no upselling. You can come back any time to unlock deeper insights.
         </p>
+
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(4), textAlign: "center" }}>
+          Still unsure? Start with the free score and take the first step toward financial clarity.
+        </p>
+
+        <div style={{ textAlign: "center" }}>
+          <Link href="/diagnostic-portal" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 60, padding: "0 48px", borderRadius: 10,
+            backgroundColor: C.navy, color: C.white,
+            fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em",
+            textDecoration: "none",
+            transition: "background-color 200ms ease",
+          }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+          >
+            Start Free Assessment
+          </Link>
+
+          <p style={{ ...T.meta, color: C.muted, marginTop: sp(2.5) }}>
+            Under 2 minutes &bull; Instant result &bull; Private by default
+          </p>
+        </div>
       </div>
     </section>
   );
