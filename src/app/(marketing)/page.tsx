@@ -310,7 +310,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
             <div style={{
               position: "absolute", top: "calc(100% + 8px)", left: 0,
               minWidth: m ? 280 : 320, maxHeight: 400, overflowY: "auto",
-              backgroundColor: "rgba(14,20,36,0.96)", backdropFilter: "blur(20px)",
+              backgroundColor: "#0E1424",
               border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14,
               padding: `${sp(1)}px 0`, zIndex: 100,
               boxShadow: "0 16px 48px rgba(0,0,0,0.40)",
