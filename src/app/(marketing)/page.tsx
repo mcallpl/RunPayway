@@ -89,25 +89,34 @@ const C = {
 
 const sp = (n: number) => n * 8;
 
-/* Typography — Inter */
+/* Typography — Inter (locked system) */
 const T = {
-  h1:    { desktop: { fontSize: 64, fontWeight: 600, lineHeight: 1.1 }, mobile: { fontSize: 40, fontWeight: 600, lineHeight: 1.1 } },
-  h2:    { desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.2 }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.2 } },
-  h3:    { desktop: { fontSize: 24, fontWeight: 500, lineHeight: 1.4 }, mobile: { fontSize: 20, fontWeight: 500, lineHeight: 1.4 } },
+  h1:    { desktop: { fontSize: 60, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em" }, mobile: { fontSize: 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em" } },
+  h2:    { desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.18, letterSpacing: "-0.02em" }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em" } },
+  h3:    { desktop: { fontSize: 24, fontWeight: 500, lineHeight: 1.28 }, mobile: { fontSize: 20, fontWeight: 500, lineHeight: 1.3 } },
   body:  { desktop: { fontSize: 18, fontWeight: 400, lineHeight: 1.6 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
-  micro: { desktop: { fontSize: 13, fontWeight: 400, lineHeight: 1.5 }, mobile: { fontSize: 13, fontWeight: 400, lineHeight: 1.5 } },
-  label: { fontSize: 13, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const },
+  bodySm:{ desktop: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 }, mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
+  meta:  { fontSize: 14, fontWeight: 400, lineHeight: 1.45 },
+  micro: { fontSize: 13, fontWeight: 400, lineHeight: 1.45 },
+  label: { fontSize: 14, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const },
 };
 
-const maxW = 1100;
+const maxW = 1080;
 const padX = { desktop: 40, mobile: 20 };
 
 const h1 = (m: boolean) => m ? T.h1.mobile : T.h1.desktop;
 const h2Style = (m: boolean) => m ? T.h2.mobile : T.h2.desktop;
 const h3Style = (m: boolean) => m ? T.h3.mobile : T.h3.desktop;
 const body = (m: boolean) => m ? T.body.mobile : T.body.desktop;
-const micro = () => T.micro.desktop;
+const bodySm = (m: boolean) => m ? T.bodySm.mobile : T.bodySm.desktop;
+const micro = () => T.micro;
 const px = (m: boolean) => m ? padX.mobile : padX.desktop;
+
+/* Spacing constants */
+const secPad = (m: boolean) => m ? sp(12) : sp(17.5); /* 96/140px */
+const heroTopPad = (m: boolean) => m ? sp(16) : sp(20); /* 128/160px */
+const textMax = 720;
+const heroTextMax = 600;
 
 const cardStyle = {
   borderRadius: 12,
@@ -209,7 +218,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
         borderTop: "1px solid rgba(255,255,255,0.06)",
         ...fadeIn(visible, 500),
       }}>
-        <p style={{ ...micro(), color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>
+        <p style={{ ...T.meta, color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>
           Explore industry-specific risk patterns
         </p>
         <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
@@ -560,8 +569,8 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.navy }}>
       <div style={{
         maxWidth: maxW, margin: "0 auto",
-        paddingTop: m ? sp(16) : 200,
-        paddingBottom: m ? sp(12) : 160,
+        paddingTop: heroTopPad(m),
+        paddingBottom: secPad(m),
         paddingLeft: px(m), paddingRight: px(m),
       }}>
         <div style={{
@@ -591,8 +600,8 @@ function HeroSection() {
               ...fadeIn(visible, 250),
               ...body(m),
               color: "rgba(244,241,234,0.50)",
-              marginBottom: m ? sp(4) : sp(5),
-              maxWidth: m ? undefined : 560,
+              marginBottom: sp(4),
+              maxWidth: m ? undefined : heroTextMax,
             }}>
               RunPayway&#8482; measures the structure of your income — not the size of it — and shows how resilient that structure is when conditions change.
             </p>
@@ -600,7 +609,7 @@ function HeroSection() {
             {/* Trust strip */}
             <p style={{
               ...fadeIn(visible, 320),
-              ...micro(),
+              ...T.meta,
               color: "rgba(244,241,234,0.30)",
               marginBottom: m ? sp(4) : sp(5),
             }}>
@@ -736,15 +745,15 @@ function PositioningBlock() {
   return (
     <section ref={ref} aria-label="Positioning" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 720, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4) }}>
+      <div style={{ maxWidth: textMax, margin: "0 auto", ...fadeIn(visible) }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
           Most people know what they earned. Very few know how stable it is.
         </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.5) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           Income stability is not about amount. It is about structure — and whether that structure holds when something changes.
         </p>
 
@@ -812,26 +821,26 @@ function HowItWorksSection() {
   return (
     <section id="how-it-works" ref={ref} aria-label="How It Works" style={{
       backgroundColor: C.white,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         {/* Title */}
-        <div style={{ marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
+        <div style={{ marginBottom: sp(6), ...fadeIn(visible) }}>
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
             How It Works
           </p>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
             A structured measurement system. Not an estimate. Not a guess.
           </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 720 }}>
+          <p style={{ ...body(m), color: C.muted, maxWidth: textMax }}>
             RunPayway&#8482; evaluates your income using a fixed model with defined inputs, scoring rules, and output logic.
           </p>
         </div>
 
         {/* Step 1 — Operating Context */}
         <div ref={ref2} style={{
-          ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(8) : sp(10),
+          ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(8) : sp(10),
           ...fadeIn(v2),
         }}>
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 1</p>
@@ -843,7 +852,7 @@ function HowItWorksSection() {
             {["Employment classification", "Operating structure", "Income model", "Industry"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...body(m), color: C.navy }}>{item}</span>
+                <span style={{ ...bodySm(m), color: C.navy }}>{item}</span>
               </div>
             ))}
           </div>
@@ -854,7 +863,7 @@ function HowItWorksSection() {
 
         {/* Step 2 — 6 Scored Dimensions */}
         <div ref={ref3} style={{ marginBottom: m ? sp(8) : sp(10), ...fadeIn(v3) }}>
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: sp(3) }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: sp(3) }}>
             <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 2</p>
             <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(4) }}>Structural Assessment — 6 Scored Dimensions</h3>
             <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: sp(3) }}>
@@ -868,7 +877,7 @@ function HowItWorksSection() {
               ].map((d) => (
                 <div key={d.dim} style={{ padding: sp(3), borderRadius: 8, border: `1px solid ${C.softBorder}` }}>
                   <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: sp(0.5) }}>{d.dim}</div>
-                  <div style={{ ...micro(), color: C.muted }}>{d.sub}</div>
+                  <div style={{ ...bodySm(m), color: C.muted }}>{d.sub}</div>
                 </div>
               ))}
             </div>
@@ -880,7 +889,7 @@ function HowItWorksSection() {
 
         {/* Step 3 — Score Generation */}
         <div ref={ref4} style={{
-          ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(8) : sp(10),
+          ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(8) : sp(10),
           ...fadeIn(v4),
         }}>
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 3</p>
@@ -906,7 +915,7 @@ function HowItWorksSection() {
 
         {/* Step 4 — Full Diagnostic */}
         <div ref={ref5} style={{
-          ...cardStyle, padding: m ? sp(4) : sp(6),
+          ...cardStyle, padding: m ? sp(4) : 44,
           ...fadeIn(v5),
         }}>
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Step 4</p>
@@ -947,21 +956,21 @@ function ModelFramework() {
   return (
     <section ref={ref} aria-label="Model Framework" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4), ...fadeIn(visible) }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5), ...fadeIn(visible) }}>
           How the Model Is Built
         </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(5), maxWidth: 720, ...fadeIn(visible, 100) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(6), maxWidth: textMax, ...fadeIn(visible, 100) }}>
           RunPayway&#8482; uses a fixed scoring framework with two components: how income is built, and how it behaves under pressure.
         </p>
 
-        <div style={{ display: m ? "block" : "flex", gap: sp(3), marginBottom: sp(5), ...fadeIn(visible, 200) }}>
+        <div style={{ display: m ? "block" : "flex", gap: sp(3.5), marginBottom: sp(5), ...fadeIn(visible, 200) }}>
           {/* Structure — 60% */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(3) : 0, flex: "3 1 0" }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(3) : 0, flex: "3 1 0" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
               <span style={{ ...T.label, color: C.muted }}>Structure</span>
               <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>60%</span>
@@ -976,7 +985,7 @@ function ModelFramework() {
           </div>
 
           {/* Stability — 40% */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), flex: "2 1 0" }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, flex: "2 1 0" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
               <span style={{ ...T.label, color: C.muted }}>Stability</span>
               <span style={{ fontSize: 40, fontWeight: 600, color: C.purple }}>40%</span>
@@ -1017,22 +1026,22 @@ function ScoreDetermination() {
   return (
     <section ref={ref} aria-label="How the Score Is Determined" style={{
       backgroundColor: C.white,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4), ...fadeIn(visible) }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5), ...fadeIn(visible) }}>
           How the Score Is Determined
         </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: m ? sp(5) : sp(6), maxWidth: 720, ...fadeIn(visible, 100) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(6), maxWidth: textMax, ...fadeIn(visible, 100) }}>
           RunPayway&#8482; uses a fixed, rule-based scoring model. The same inputs always produce the same result.
         </p>
 
         {/* Two-column layout */}
-        <div style={{ display: m ? "block" : "flex", gap: sp(3), marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible, 200) }}>
+        <div style={{ display: m ? "block" : "flex", gap: sp(3.5), marginBottom: sp(6), ...fadeIn(visible, 200) }}>
           {/* LEFT — What Is Measured */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(3) : 0, flex: 1 }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(3) : 0, flex: 1 }}>
             <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(3) }}>What Is Measured</h3>
             <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
               Six structural dimensions are evaluated:
@@ -1051,7 +1060,7 @@ function ScoreDetermination() {
           </div>
 
           {/* RIGHT — How It Is Scored */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), flex: 1 }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, flex: 1 }}>
             <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: sp(3) }}>How It Is Scored</h3>
             <p style={{ ...body(m), color: C.muted, marginBottom: sp(2) }}>
               Each input is mapped to a defined value.
@@ -1146,7 +1155,7 @@ function SameIncomeDifferentStability() {
   return (
     <section ref={ref} aria-label="Same Income Different Stability" style={{
       backgroundColor: C.white,
-      paddingTop: m ? sp(14) : 180, paddingBottom: m ? sp(14) : 180,
+      paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -1157,9 +1166,9 @@ function SameIncomeDifferentStability() {
           Two professionals can earn the same amount and still carry very different structural risk.
         </p>
 
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(4), marginTop: sp(6), ...fadeIn(visible, 200) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3.5), marginTop: sp(6), ...fadeIn(visible, 200) }}>
           {/* Person A */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(3) : 0 }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(3) : 0 }}>
             <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Person A</p>
             <div style={{ marginBottom: sp(3) }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: C.purple }}>$150,000</span>
@@ -1176,7 +1185,7 @@ function SameIncomeDifferentStability() {
           </div>
 
           {/* Person B */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : sp(6) }}>
+          <div style={{ ...cardStyle, padding: m ? sp(4) : 44 }}>
             <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Person B</p>
             <div style={{ marginBottom: sp(3) }}>
               <span style={{ fontSize: 28, fontWeight: 600, color: C.purple }}>$150,000</span>
@@ -1219,7 +1228,7 @@ function ProofSection() {
   return (
     <section ref={ref} aria-label="Social Proof" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -1227,7 +1236,7 @@ function ProofSection() {
           <h2 style={{ ...h2Style(m), color: C.navy }}>What people discovered after seeing their structure</h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(4) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(3.5) }}>
           {testimonials.map((t, i) => (
             <div key={t.name} style={{
               paddingBottom: sp(4),
@@ -1262,24 +1271,24 @@ function DecisionCalming() {
       paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(5) }}>
+      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
           Before You Decide
         </h2>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           You do not need to buy anything right now.
         </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           The free score tells you where you stand. If that is enough, you are done. There is no pressure to go further.
         </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           The full diagnostic exists for people who want to understand why they scored the way they did — and what to do about it. It is a one-time purchase. No subscription. No upsell.
         </p>
 
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           If you are not sure, start with the free score. You can always come back.
         </p>
 
@@ -1303,7 +1312,7 @@ function PricingSection() {
   return (
     <section ref={ref} aria-label="Pricing" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -1316,10 +1325,10 @@ function PricingSection() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(4), maxWidth: 840, margin: "0 auto", ...fadeIn(visible, 150) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3.5), maxWidth: 840, margin: "0 auto", ...fadeIn(visible, 150) }}>
           {/* Free */}
           <div style={{
-            ...cardStyle, padding: m ? sp(4) : sp(6),
+            ...cardStyle, padding: m ? sp(4) : 44,
             display: "flex", flexDirection: "column" as const,
           }}>
             <div style={{ ...T.label, color: C.teal, marginBottom: sp(3) }}>
@@ -1331,7 +1340,7 @@ function PricingSection() {
               {["Your score out of 100", "Your stability classification", "The #1 weakness holding you back", "Your single highest-impact move"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
                   <span style={{ color: C.teal, fontSize: 14, flexShrink: 0 }} aria-hidden="true">&#x2713;</span>
-                  <span style={{ ...body(m), color: C.muted }}>{item}</span>
+                  <span style={{ ...bodySm(m), color: C.muted }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -1346,7 +1355,7 @@ function PricingSection() {
 
           {/* Paid */}
           <div style={{
-            ...cardStyle, padding: m ? sp(4) : sp(6),
+            ...cardStyle, padding: m ? sp(4) : 44,
             display: "flex", flexDirection: "column" as const,
             borderTop: `3px solid ${C.teal}`,
           }}>
@@ -1366,7 +1375,7 @@ function PricingSection() {
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(2) }}>
                   <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 3 }} aria-hidden="true">&#x2713;</span>
-                  <span style={{ ...body(m), color: C.muted }}>{item}</span>
+                  <span style={{ ...bodySm(m), color: C.muted }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -1410,7 +1419,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   return (
     <section ref={ref} aria-label="Frequently Asked Questions" style={{
       backgroundColor: C.white,
-      paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
@@ -1467,18 +1476,18 @@ function FinalCta() {
   return (
     <section ref={ref} aria-label="Final Call to Action" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(14) : 180, paddingBottom: m ? sp(12) : sp(20),
+      paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
-      <div style={{ maxWidth: 600, margin: "0 auto", ...fadeIn(visible) }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(4) }}>
+      <div style={{ maxWidth: textMax, margin: "0 auto", ...fadeIn(visible) }}>
+        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(3.5) }}>
           See How Stable Your Income Really Is
         </h2>
-        <p style={{ ...body(m), color: C.muted, marginBottom: sp(3) }}>
+        <p style={{ ...body(m), color: C.muted, marginBottom: sp(2.25) }}>
           Most people do not discover the weakness in their income structure until something changes. You can see it now — while there is still time to respond.
         </p>
 
-        <p style={{ ...micro(), color: C.light, marginBottom: sp(5) }}>
+        <p style={{ ...T.meta, color: C.light, marginBottom: sp(4) }}>
           Private by default &bull; No bank connection &bull; No credit pull
         </p>
 
@@ -1528,12 +1537,12 @@ function Footer() {
   const [email, setEmail] = useState("");
 
   const colHeadStyle: React.CSSProperties = {
-    fontSize: 13, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase",
+    ...T.label,
     color: C.white, marginBottom: sp(2),
   };
 
   const linkStyle: React.CSSProperties = {
-    fontSize: 14, color: "rgba(244,241,234,0.55)", textDecoration: "none",
+    fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.55)", textDecoration: "none",
     display: "block", marginBottom: sp(1.5), transition: "color 200ms",
     lineHeight: 1.5,
   };
@@ -1666,7 +1675,7 @@ function Footer() {
         </p>
 
         {/* Legal */}
-        <p style={{ fontSize: 12, color: "rgba(244,241,234,0.20)", textAlign: "center", lineHeight: 1.6, maxWidth: 700, margin: "0 auto" }}>
+        <p style={{ ...T.micro, fontSize: 13, color: "rgba(244,241,234,0.20)", textAlign: "center", lineHeight: 1.6, maxWidth: 700, margin: "0 auto" }}>
           &copy; 2026 RunPayway&#8482;. All rights reserved. RunPayway&#8482; is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-2.0.
         </p>
       </div>
