@@ -655,9 +655,9 @@ function HowItWorksSection() {
   return (
     <>
     {/* ── OPENING ── */}
-    <section ref={ref} aria-label="How It Works" style={{ background: "linear-gradient(180deg, #F8F6F6 0%, #FFFFFF 100%)", paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(6) : sp(8), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ display: m ? "block" : "flex", justifyContent: "space-between", alignItems: "flex-end", gap: sp(8) }}>
+    <section ref={ref} aria-label="How It Works" style={{ background: bg, paddingTop: m ? sp(12) : sp(18), paddingBottom: m ? sp(10) : sp(15), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div ref={ref2} style={{ display: m ? "block" : "flex", justifyContent: "space-between", alignItems: "flex-end", gap: sp(8), marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
           <div style={{ flex: 1, maxWidth: 640 }}>
             <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.14em", color: C.teal, marginBottom: sp(4), textTransform: "uppercase" as const }}>How It Works</p>
             <h2 style={{ fontSize: m ? 50 : 86, fontWeight: 600, lineHeight: 1.0, color: C.navy, letterSpacing: "-0.04em", marginBottom: m ? sp(4) : 0 }}>
@@ -679,15 +679,9 @@ function HowItWorksSection() {
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-    {/* ── STAGES ── */}
-    <section ref={ref2} aria-label="System Process" style={{ background: bg, paddingTop: m ? sp(6) : sp(8), paddingBottom: m ? sp(10) : sp(15), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
         {/* Stage grid — 01 and 02 side by side */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3), marginBottom: m ? sp(3) : sp(3), ...fadeIn(v2) }}>
 
           {/* 01 — Structural Profile */}
           <div style={{
