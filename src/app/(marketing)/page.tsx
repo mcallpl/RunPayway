@@ -715,7 +715,7 @@ function HowItWorksSection() {
           backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2, 100),
           boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
         }}>
-          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: "#FFFFFF", marginBottom: sp(4), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
+          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(244,241,234,0.40)", marginBottom: sp(4), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 0 }}>
             {[
               { dim: "Recurrence", sub: "Income that renews without re-selling" },
