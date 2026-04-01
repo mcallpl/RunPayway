@@ -945,29 +945,32 @@ function PricingSection() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 720, margin: "0 auto", ...fadeIn(visible, 150) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: sp(3), maxWidth: 780, margin: "0 auto", ...fadeIn(visible, 150) }}>
           {/* Free */}
           <div style={{
-            ...cardStyle,
-            padding: m ? sp(3.5) : sp(4),
+            backgroundColor: "#FFFFFF", borderRadius: 16, padding: m ? sp(4) : sp(5),
+            border: `1px solid ${C.border}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.04), 0 8px 24px rgba(14,26,43,0.06)",
+            display: "flex", flexDirection: "column" as const,
           }}>
             <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
               Income Stability Score&#8482;
             </div>
-            <div style={{ ...price(m), color: C.navy, marginBottom: sp(2) }}>$0</div>
-            <div style={{ marginBottom: sp(3) }}>
+            <div style={{ ...price(m), color: C.navy, marginBottom: sp(1) }}>$0</div>
+            <p style={{ fontSize: 16, color: C.light, marginBottom: sp(3) }}>Always free. No credit card.</p>
+            <div style={{ marginBottom: sp(4), flex: 1 }}>
               {["Your score out of 100", "Your stability classification", "The #1 weakness holding you back", "Your single highest-impact move"].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1), marginBottom: sp(0.75) }}>
-                  <span style={{ color: C.teal, fontSize: 17, flexShrink: 0 }}>&#x2713;</span>
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(1.25) }}>
+                  <span style={{ color: C.teal, fontSize: 16, flexShrink: 0 }}>&#x2713;</span>
                   <span style={{ ...body(m), color: C.muted }}>{item}</span>
                 </div>
               ))}
             </div>
             <Link href="/diagnostic-portal" style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              width: "100%", height: sp(6.5), borderRadius: 10,
+              width: "100%", height: sp(7), borderRadius: 12,
               backgroundColor: C.white, color: C.navy, ...T.cta,
-              textDecoration: "none", border: `1px solid ${C.border}`,
+              textDecoration: "none", border: `1.5px solid ${C.navy}`,
               transition: "background-color 200ms ease",
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = C.sand; }}
@@ -977,15 +980,17 @@ function PricingSection() {
 
           {/* Paid */}
           <div style={{
-            ...cardStyle,
-            border: `1px solid rgba(75,63,174,0.12)`,
-            padding: m ? sp(3.5) : sp(4),
+            backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5),
+            borderTop: `3px solid ${C.purple}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.10), 0 16px 48px rgba(14,26,43,0.18)",
+            display: "flex", flexDirection: "column" as const,
           }}>
             <div style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>
               RunPayway&#8482; Diagnostic Report
             </div>
-            <div style={{ ...price(m), color: C.navy, marginBottom: sp(2) }}>$69</div>
-            <div style={{ marginBottom: sp(3) }}>
+            <div style={{ ...price(m), color: "#F4F1EA", marginBottom: sp(1) }}>$69</div>
+            <p style={{ fontSize: 16, color: "rgba(244,241,234,0.40)", marginBottom: sp(3) }}>One-time. Includes everything.</p>
+            <div style={{ marginBottom: sp(4), flex: 1 }}>
               {[
                 "Full structural diagnosis with income composition breakdown",
                 "PressureMap\u2122 showing exactly where your income is exposed",
@@ -994,23 +999,24 @@ function PricingSection() {
                 "Simulator to test changes before you commit",
                 "See how you compare to others in your industry",
               ].map((item) => (
-                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(0.75) }}>
-                  <span style={{ color: C.purple, fontSize: 17, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
-                  <span style={{ ...body(m), color: C.muted }}>{item}</span>
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(1.25) }}>
+                  <span style={{ color: C.purple, fontSize: 16, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
+                  <span style={{ ...body(m), color: "rgba(244,241,234,0.65)" }}>{item}</span>
                 </div>
               ))}
             </div>
             <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              width: "100%", height: sp(6.5), borderRadius: 10,
-              backgroundColor: C.navy, color: "#F7F5F0", ...T.cta,
+              width: "100%", height: sp(7), borderRadius: 12,
+              backgroundColor: C.purple, color: "#FFFFFF", ...T.cta, fontSize: 18,
               textDecoration: "none",
+              boxShadow: "0 4px 16px rgba(75,63,174,0.35)",
               transition: "opacity 200ms ease",
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.9"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >Get Your Full Diagnostic — $69</a>
-            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: sp(1.5), marginBottom: 0 }}>30-day money-back guarantee</p>
+            <p style={{ ...T.meta, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>30-day money-back guarantee</p>
           </div>
         </div>
       </div>
