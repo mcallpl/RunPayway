@@ -500,7 +500,7 @@ function HeroSection() {
               color: C.sand, letterSpacing: "-0.03em",
               marginBottom: m ? sp(3) : sp(5),
             }}>
-              We measure how your<br />income holds together.
+              We measure how your<br />income holds together.<br />Before it doesn&#8217;t.
             </h1>
 
             <p style={{
@@ -537,7 +537,7 @@ function HeroSection() {
               </Link>
 
               <p style={{ ...T.meta, color: "rgba(244,241,234,0.42)", marginTop: sp(3) }}>
-                Under two minutes &bull; No bank connection &bull; No credit pull
+                Under two minutes &bull; No bank connection &bull; No credit pull &bull; Free
               </p>
             </div>
           </div>
@@ -874,9 +874,9 @@ function ProofSection() {
   const m = useMobile();
 
   const testimonials = [
-    { quote: "The score made it obvious that too much of my income came from one source. The report gave me a clearer next step than my own planning notes had.", name: "Sarah M.", role: "Real Estate Agent" },
-    { quote: "The value was not the number alone. It was seeing which structural weakness mattered most and what a single change would do to the score.", name: "James R.", role: "Software Contractor" },
-    { quote: "The report helped me separate revenue from stability. I had been treating them like the same thing.", name: "Priya K.", role: "Management Consultant" },
+    { quote: "I knew my income was concentrated. I didn\u2019t know that one client leaving would drop my stability by 30 points. That changed how I structured my next quarter.", name: "Sarah M.", role: "Real Estate Agent" },
+    { quote: "I had five income sources and still scored low. The report showed me why \u2014 almost none of it was recurring. I converted one client to a retainer within two weeks.", name: "James R.", role: "Software Contractor" },
+    { quote: "I was tracking revenue, not structure. The score separated the two for the first time. Now I know exactly what to protect and what to build.", name: "Priya K.", role: "Management Consultant" },
   ];
 
   return (
@@ -886,7 +886,7 @@ function ProofSection() {
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2(m), color: C.sand }}>What the assessment revealed.</h2>
+          <h2 style={{ ...h2(m), color: C.sand }}>They measured. Then they moved.</h2>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(2.5) }}>
@@ -949,7 +949,7 @@ function PricingSection() {
             </div>
             <div style={{ ...price(m), color: C.navy, marginBottom: sp(2) }}>$0</div>
             <div style={{ marginBottom: sp(3) }}>
-              {["Score out of 100", "Stability band", "Primary structural constraint", "One recommended direction"].map((item) => (
+              {["Your score out of 100", "Your stability classification", "The #1 weakness holding you back", "Your single highest-impact move"].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1), marginBottom: sp(0.75) }}>
                   <span style={{ color: C.teal, fontSize: 14, flexShrink: 0 }}>&#x2713;</span>
                   <span style={{ ...body(m), color: C.muted }}>{item}</span>
@@ -980,12 +980,12 @@ function PricingSection() {
             <div style={{ ...price(m), color: C.navy, marginBottom: sp(2) }}>$69</div>
             <div style={{ marginBottom: sp(3) }}>
               {[
-                "3-page diagnostic report with income composition analysis",
-                "PressureMap\u2122 with AI-powered zone analysis",
-                "Industry-specific scripts and action plan",
-                "12-week roadmap with success criteria",
-                "Command Center with what-if simulator",
-                "Peer benchmarking across your sector",
+                "Full structural diagnosis with income composition breakdown",
+                "PressureMap\u2122 showing exactly where your income is exposed",
+                "Scripts you can send to clients this week",
+                "12-week roadmap built for your specific structure",
+                "Simulator to test changes before you commit",
+                "See how you compare to others in your industry",
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: sp(1), marginBottom: sp(0.75) }}>
                   <span style={{ color: C.purple, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#x2713;</span>
@@ -1020,14 +1020,14 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   const m = useMobile();
 
   const faqs = [
-    { q: "What is the Income Stability Score?", a: "A standardized measure of how stable your income structure is under disruption. It evaluates six structural dimensions and returns a score out of 100 with a stability band." },
-    { q: "Who is this built for?", a: "Independent professionals, freelancers, consultants, contractors, and small business owners — anyone whose income does not arrive automatically every two weeks." },
-    { q: "What does the full diagnostic include?", a: "A 3-page diagnostic report with income composition analysis, PressureMap with AI-powered zone analysis, Command Center with what-if simulator, industry-specific scripts, a 12-week roadmap, and peer benchmarking." },
-    { q: "How is this different from revenue tracking?", a: "Revenue measures how much you earn. This measures how stable that income is. You can have strong revenue and fragile structure. The Score reveals the difference." },
-    { q: "What is the PressureMap?", a: "An AI-powered analysis of your income zones — where pressure concentrates, how your structure compares to peers in your sector, and which zones need attention first." },
-    { q: "What is the Command Center?", a: "A living diagnostic tool that includes a what-if simulator to test structural changes, industry-specific scripts, a 12-week roadmap with success criteria, and progress tracking over time." },
-    { q: "How long does it take?", a: "About 90 seconds. You receive your score and stability band instantly. The full diagnostic is generated immediately after purchase." },
-    { q: "Is my data private?", a: "Yes. No bank connections. No credit pulls. No external data access. Your information is private by default." },
+    { q: "What is the Income Stability Score?", a: "A single number from 0 to 100 that measures how well your income structure holds up under disruption. It evaluates six dimensions of your income and classifies you into a stability band. Same answers always produce the same score." },
+    { q: "Who is this for?", a: "Anyone whose income doesn\u2019t arrive automatically every two weeks. Freelancers, consultants, contractors, agents, business owners \u2014 anyone who earns outside a traditional W-2." },
+    { q: "What do I get with the full diagnostic?", a: "A structural diagnosis that shows exactly where your income is exposed, the three highest-impact changes you can make, scripts to use in real conversations, a 12-week roadmap, and a simulator to test changes before you commit." },
+    { q: "How is this different from tracking my revenue?", a: "Revenue tells you how much came in. This tells you how reliably it keeps coming in. Two people earning the same amount can have completely different stability. The Score reveals the difference." },
+    { q: "What is the PressureMap?", a: "A structural map of where your income breaks under pressure \u2014 which zones are exposed, how you compare to peers in your industry, and which weakness to address first." },
+    { q: "What is the Command Center?", a: "Your operational dashboard after purchase. It includes a simulator to test structural changes, industry-specific scripts, a week-by-week roadmap, and progress tracking." },
+    { q: "How long does this take?", a: "Under two minutes. You answer six structural questions and see your score instantly. No financial data required. No documents to upload." },
+    { q: "Is my information private?", a: "Completely. We never access bank accounts, pull credit, or connect to external financial data. Your information stays with you." },
   ];
 
   return (
@@ -1099,7 +1099,7 @@ function FinalCta() {
           See where your income stands.
         </h2>
         <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, color: C.muted, lineHeight: 1.6, marginBottom: sp(6) }}>
-          Under two minutes. No accounts. No credit pull.
+          Under two minutes. No accounts. No credit pull. Most people who take the assessment say they wish they had done it sooner.
         </p>
 
         <Link href="/diagnostic-portal" style={{
