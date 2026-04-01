@@ -1079,58 +1079,77 @@ function SameIncomeDifferentStability() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const listItem = (text: string) => (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: 18 }}>
+      <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+      <span style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy }}>{text}</span>
+    </div>
+  );
+
   return (
     <section ref={ref} aria-label="Same Income Different Stability" style={{
-      backgroundColor: C.white,
-      paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
+      backgroundColor: C.sand,
+      paddingTop: m ? sp(14) : sp(19), paddingBottom: m ? sp(14) : sp(19),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2), textAlign: "center", ...fadeIn(visible) }}>
-          Same Income. Different Stability.
-        </h2>
-        <p style={{ ...body(m), color: C.muted, textAlign: "center", marginBottom: m ? sp(5) : sp(6), maxWidth: 640, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          Two professionals can earn the same amount and still carry very different structural risk.
-        </p>
 
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3.5), marginTop: sp(6), ...fadeIn(visible, 200) }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: sp(7), ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(2.5) }}>
+            Same Income. Different Stability.
+          </h2>
+          <p style={{ fontSize: 20, fontWeight: 400, lineHeight: 1.5, color: "#2C3A4B" }}>
+            Same income does not mean equal stability.
+          </p>
+        </div>
+
+        {/* Panels */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(4), ...fadeIn(visible, 200) }}>
+
           {/* Person A */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : 44, marginBottom: m ? sp(3) : 0 }}>
-            <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Person A</p>
-            <div style={{ marginBottom: sp(3) }}>
-              <span style={{ fontSize: 28, fontWeight: 600, color: C.purple }}>$150,000</span>
-              <span style={{ fontSize: 16, fontWeight: 400, color: C.muted }}> / year</span>
+          <div style={{
+            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
+            border: "1px solid rgba(14,26,43,0.08)",
+            marginBottom: m ? sp(3) : 0,
+          }}>
+            <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
+              Person A
+            </p>
+            <div style={{ marginBottom: sp(3.5) }}>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$150,000</span>
+              <span style={{ fontSize: 18, fontWeight: 400, color: "#6A7280", marginLeft: sp(1) }}>/ year</span>
             </div>
-            <div style={{ borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(2.5) }}>
-              {["1 major client (80% of income)", "No forward contracts", "Fully active income — stops when work stops"].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(2) }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "rgba(14,26,43,0.25)", flexShrink: 0, marginTop: 8 }} />
-                  <span style={{ ...body(m), color: C.muted }}>{item}</span>
-                </div>
-              ))}
-            </div>
+            {listItem("1 major client (80% of income)")}
+            {listItem("No forward contracts")}
+            {listItem("Income stops when work stops")}
           </div>
 
           {/* Person B */}
-          <div style={{ ...cardStyle, padding: m ? sp(4) : 44 }}>
-            <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Person B</p>
-            <div style={{ marginBottom: sp(3) }}>
-              <span style={{ fontSize: 28, fontWeight: 600, color: C.purple }}>$150,000</span>
-              <span style={{ fontSize: 16, fontWeight: 400, color: C.muted }}> / year</span>
+          <div style={{
+            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
+            border: "1px solid rgba(14,26,43,0.08)",
+          }}>
+            <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
+              Person B
+            </p>
+            <div style={{ marginBottom: sp(3.5) }}>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$150,000</span>
+              <span style={{ fontSize: 18, fontWeight: 400, color: "#6A7280", marginLeft: sp(1) }}>/ year</span>
             </div>
-            <div style={{ borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(2.5) }}>
-              {["5 clients, none over 30%", "40% recurring retainers", "3 months of income secured ahead of time"].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: sp(2) }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
-                  <span style={{ ...body(m), color: C.navy }}>{item}</span>
-                </div>
-              ))}
-            </div>
+            {listItem("5 clients, none over 30%")}
+            {listItem("40% recurring retainers")}
+            {listItem("3 months of income secured ahead of time")}
           </div>
         </div>
 
-        <p style={{ fontSize: 24, fontWeight: 600, color: C.navy, textAlign: "center", marginTop: m ? sp(5) : sp(8), ...fadeIn(visible, 350) }}>
-          Same income. Different stability.
+        {/* Closing */}
+        <p style={{
+          fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: C.navy,
+          textAlign: "center", marginTop: sp(7),
+          ...fadeIn(visible, 350),
+        }}>
+          Structure determines stability.
         </p>
       </div>
     </section>
