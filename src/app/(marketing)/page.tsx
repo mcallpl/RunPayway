@@ -944,6 +944,26 @@ function HowItWorksSection() {
           </div>
         </div>
 
+        {/* CTA — full How It Works page */}
+        <div style={{ marginTop: sp(6), textAlign: "center" as const }}>
+          <Link
+            href="/how-it-works"
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 52, padding: "14px 36px",
+              borderRadius: 10,
+              backgroundColor: C.navy, color: C.white,
+              fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em",
+              textDecoration: "none",
+              transition: "background-color 200ms ease",
+            }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#1A2A3A"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+          >
+            How It Works
+          </Link>
+        </div>
+
       </div>
     </section>
   );
