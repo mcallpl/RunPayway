@@ -745,14 +745,18 @@ function HowItWorksSection() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3), ...fadeIn(v2, 200) }}>
 
           {/* 03 — Score Generation */}
-          <div style={{ backgroundColor: "#FFFFFF", borderRadius: 16, padding: m ? sp(4) : sp(5), border: `1px solid ${C.border}`, marginBottom: m ? sp(3) : 0 }}>
-            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, color: "rgba(14,26,43,0.04)", lineHeight: 1, display: "block", marginBottom: sp(3) }}>03</span>
-            <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: C.navy, lineHeight: 1.2, marginBottom: sp(2) }}>Score Generation</h3>
-            <p style={{ fontSize: m ? 18 : 19, color: C.muted, lineHeight: 1.65, marginBottom: sp(3) }}>
+          <div style={{
+            backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0,
+            borderTop: `3px solid ${C.teal}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+          }}>
+            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>03</span>
+            <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Score Generation</h3>
+            <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: sp(3) }}>
               A single standardized output: score (0&#8211;100), stability band, primary constraint, distance to next tier, and the highest-leverage improvement.
             </p>
             {/* Bands inline */}
-            <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: sp(2) }}>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: sp(2) }}>
               {[
                 ["Limited", "0\u201329"],
                 ["Developing", "30\u201349"],
@@ -760,8 +764,8 @@ function HowItWorksSection() {
                 ["High", "75\u2013100"],
               ].map(([band, range]) => (
                 <div key={band} style={{ display: "flex", justifyContent: "space-between", padding: `${sp(0.75)}px 0` }}>
-                  <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>{band}</span>
-                  <span style={{ fontSize: 17, color: C.light, fontVariantNumeric: "tabular-nums" }}>{range}</span>
+                  <span style={{ fontSize: 17, fontWeight: 600, color: "#F4F1EA" }}>{band}</span>
+                  <span style={{ fontSize: 17, color: "rgba(244,241,234,0.40)", fontVariantNumeric: "tabular-nums" }}>{range}</span>
                 </div>
               ))}
             </div>
