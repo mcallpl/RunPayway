@@ -655,7 +655,7 @@ function HowItWorksSection() {
   return (
     <>
     {/* ── OPENING ── */}
-    <section ref={ref} aria-label="How It Works" style={{ background: bg, paddingTop: m ? sp(12) : sp(18), paddingBottom: m ? sp(10) : sp(15), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} aria-label="How It Works" style={{ background: "linear-gradient(180deg, #F8F6F6 0%, #FFFFFF 100%)", paddingTop: m ? sp(12) : sp(20), paddingBottom: m ? sp(10) : sp(16), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", ...fadeIn(visible) }}>
         <div style={{ display: m ? "block" : "flex", justifyContent: "space-between", alignItems: "flex-end", gap: sp(8) }}>
           <div style={{ flex: 1, maxWidth: 640 }}>
@@ -668,7 +668,15 @@ function HowItWorksSection() {
             <p style={{ fontSize: m ? 22 : 24, fontWeight: 400, lineHeight: 1.65, color: C.muted, marginBottom: sp(3) }}>
               RunPayway evaluates how your income is built — not how much you make. No accounts. No credit pulls. No financial data.
             </p>
-            <p style={{ fontSize: 17, fontWeight: 500, color: C.light }}>Model RP-2.0 &middot; Deterministic &middot; Same inputs &#8594; same result</p>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: sp(1),
+              padding: `${sp(1)}px ${sp(2)}px`,
+              backgroundColor: "rgba(14,26,43,0.04)", borderRadius: 8,
+              border: "1px solid rgba(14,26,43,0.06)",
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ fontSize: 16, fontWeight: 500, color: C.light, letterSpacing: "0.01em" }}>Model RP-2.0 &middot; Deterministic &middot; Same inputs &#8594; same result</span>
+            </div>
           </div>
         </div>
       </div>
