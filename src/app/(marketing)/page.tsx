@@ -243,7 +243,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
           {open && (
             <div role="listbox" style={{
               position: "absolute", top: "calc(100% + 8px)", left: 0,
-              minWidth: m ? 280 : 320, maxHeight: 400, overflowY: "auto",
+              minWidth: m ? "calc(100vw - 40px)" : 320, maxHeight: 400, overflowY: "auto",
               backgroundColor: "#0E1424",
               border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14,
               padding: `${sp(1)}px 0`, zIndex: 100,
@@ -499,7 +499,7 @@ function StickyNav() {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Link href="/diagnostic-portal" style={{
               backgroundColor: C.white, color: C.navy,
-              padding: "5px 14px", borderRadius: 8,
+              padding: "8px 16px", borderRadius: 8,
               fontSize: 14, fontWeight: 600,
               textDecoration: "none",
               minHeight: 44, display: "inline-flex", alignItems: "center",
@@ -517,7 +517,7 @@ function StickyNav() {
     {/* Mobile menu overlay */}
     {m && mobileOpen && (
       <div style={{ position: "fixed", top: 56, left: 0, right: 0, bottom: 0, zIndex: 99, backgroundColor: C.navy, padding: `${sp(4)}px ${px(m)}px` }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: sp(1.5) }}>
           {[...navLinks, ...moreLinks].map(link => (
             <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
               style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.75)", textDecoration: "none", padding: `${sp(2)}px 0`, borderBottom: "1px solid rgba(255,255,255,0.06)", minHeight: 44, display: "flex", alignItems: "center" }}>
@@ -615,7 +615,7 @@ function HeroSection() {
               <div style={{
                 ...cardStyle,
                 padding: m ? sp(5) : 52,
-                maxWidth: 340,
+                maxWidth: m ? "100%" : 340,
                 margin: m ? "0 auto" : undefined,
               }}>
                 <div style={{
@@ -626,7 +626,7 @@ function HeroSection() {
                 </div>
 
                 <div style={{ marginBottom: sp(3.5) }}>
-                  <div style={{ fontSize: 52, fontWeight: 600, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums", marginBottom: sp(1.5) }} aria-label={`Score: ${animatedScore}`}>
+                  <div style={{ fontSize: m ? 44 : 52, fontWeight: 600, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums", marginBottom: sp(1.5) }} aria-label={`Score: ${animatedScore}`}>
                     {animatedScore}
                   </div>
                   <div style={{
@@ -1087,7 +1087,7 @@ function SameIncomeDifferentStability() {
   return (
     <section ref={ref} aria-label="Same Income Different Stability" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(14) : sp(19), paddingBottom: m ? sp(14) : sp(19),
+      paddingTop: m ? sp(10) : sp(19), paddingBottom: m ? sp(10) : sp(19),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -1097,7 +1097,7 @@ function SameIncomeDifferentStability() {
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(2.5) }}>
             Same Income. Different Stability.
           </h2>
-          <p style={{ fontSize: 20, fontWeight: 400, lineHeight: 1.5, color: "#2C3A4B" }}>
+          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.5, color: "#2C3A4B" }}>
             Same income does not mean equal stability.
           </p>
         </div>
@@ -1191,7 +1191,7 @@ function ProofSection() {
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div>
-                <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 2 }}>{t.name}</div>
+                <div style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, marginBottom: 2 }}>{t.name}</div>
                 <div style={{ ...micro(), color: C.muted }}>{t.role}</div>
               </div>
             </div>
@@ -1212,7 +1212,7 @@ function DecisionCalming() {
   return (
     <section aria-label="Before You Decide" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(14) : sp(19), paddingBottom: m ? sp(14) : sp(19),
+      paddingTop: m ? sp(10) : sp(19), paddingBottom: m ? sp(10) : sp(19),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
@@ -1221,23 +1221,23 @@ function DecisionCalming() {
             Before You Decide
           </h2>
 
-          <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5) }}>
+          <p style={{ fontSize: m ? 18 : 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5) }}>
             You do not need to buy anything right now.
           </p>
 
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
             The free score tells you where you stand. If that is enough, you are done. There is no pressure to go further.
           </p>
 
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5) }}>
             The full diagnostic exists for people who want to understand why they scored the way they did — and what to do about it. It is a one-time purchase. No subscription. No upsell.
           </p>
 
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: 0 }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: 0 }}>
             If you are not sure, start with the free score. You can always come back.
           </p>
 
-          <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginTop: sp(5) }}>
+          <p style={{ fontSize: m ? 18 : 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginTop: sp(5) }}>
             We built this to be useful. Not urgent.
           </p>
         </div>
@@ -1444,7 +1444,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
                   maxHeight: isOpen ? 500 : 0, overflow: "hidden",
                   transition: "max-height 300ms ease",
                 }}>
-                  <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", margin: 0, padding: `0 0 ${sp(3)}px` }}>{faq.a}</p>
+                  <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", margin: 0, padding: `0 0 ${sp(3)}px` }}>{faq.a}</p>
                 </div>
               </div>
             );
@@ -1482,7 +1482,7 @@ function FinalCta() {
   return (
     <section ref={ref} aria-label="Final Call to Action" style={{
       backgroundColor: C.sand,
-      paddingTop: m ? sp(14) : sp(22), paddingBottom: m ? sp(14) : sp(22),
+      paddingTop: m ? sp(10) : sp(22), paddingBottom: m ? sp(10) : sp(22),
       paddingLeft: px(m), paddingRight: px(m), textAlign: "center",
     }}>
       <div style={{ maxWidth: 660, margin: "0 auto", ...fadeIn(visible) }}>
@@ -1490,19 +1490,19 @@ function FinalCta() {
           Take Your Time. Understand What You&#8217;re Really Getting.
         </h2>
 
-        <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5), textAlign: "left" }}>
+        <p style={{ fontSize: m ? 18 : 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5), textAlign: "left" }}>
           Your income has a structure. Now you can see it.
         </p>
 
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), textAlign: "left" }}>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), textAlign: "left" }}>
           The free score takes under two minutes and shows you exactly where your income stands. No preparation required.
         </p>
 
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(5), textAlign: "left" }}>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(5), textAlign: "left" }}>
           When you are ready for the full picture — why you scored the way you did, where the structure is exposed, and what to change — the diagnostic is there.
         </p>
 
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(4), textAlign: "center" }}>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(4), textAlign: "center" }}>
           Start with the score. Go deeper only if you need to.
         </p>
 
