@@ -666,7 +666,7 @@ function HowItWorksSection() {
           </div>
           <div style={{ maxWidth: 400, paddingBottom: m ? 0 : sp(1) }}>
             <p style={{ fontSize: m ? 22 : 24, fontWeight: 400, lineHeight: 1.65, color: C.muted, marginBottom: sp(3) }}>
-              RunPayway evaluates how your income is built — not how much you make. No accounts. No credit pulls. No financial data.
+              Four inputs. Six dimensions. One score that tells you exactly where your income is exposed — and what to fix first.
             </p>
             <div style={{
               display: "inline-flex", alignItems: "center", gap: sp(1),
@@ -690,27 +690,38 @@ function HowItWorksSection() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(3), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2) }}>
 
           {/* 01 — Structural Profile */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0 }}>
-            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, color: "rgba(255,255,255,0.06)", lineHeight: 1, display: "block", marginBottom: sp(3) }}>01</span>
+          <div style={{
+            backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0,
+            borderTop: `3px solid ${C.teal}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+          }}>
+            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>01</span>
             <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Structural Profile</h3>
             <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
-              You provide context about how your income operates — classification, operating structure, income model, and industry. No dollar inputs. No account access.
+              You provide context about how your income operates — classification, operating structure, income model, and industry.
             </p>
           </div>
 
           {/* 02 — Structural Assessment */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5) }}>
-            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, color: "rgba(255,255,255,0.06)", lineHeight: 1, display: "block", marginBottom: sp(3) }}>02</span>
+          <div style={{
+            backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5),
+            borderTop: `3px solid ${C.purple}`,
+            boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+          }}>
+            <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>02</span>
             <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Structural Assessment</h3>
             <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
-              Six fixed questions evaluate the architecture of your income — recurrence, concentration, source count, forward visibility, consistency, and labor independence.
+              Six fixed questions evaluate the architecture of your income across the dimensions below.
             </p>
           </div>
         </div>
 
         {/* 6 Dimensions — full-width data table on dark */}
-        <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(3) : sp(5), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2, 100) }}>
-          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(244,241,234,0.30)", marginBottom: sp(3), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
+        <div style={{
+          backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2, 100),
+          boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+        }}>
+          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: "rgba(244,241,234,0.30)", marginBottom: sp(4), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 0 }}>
             {[
               { dim: "Recurrence", sub: "Income that renews without re-selling" },
@@ -721,16 +732,19 @@ function HowItWorksSection() {
               { dim: "Labor Independence", sub: "Income that continues without active work" },
             ].map((d, i) => (
               <div key={d.dim} style={{
-                padding: m ? `${sp(2)}px 0` : sp(3),
+                padding: m ? `${sp(2.5)}px 0` : sp(3),
                 borderBottom: m ? `1px solid rgba(255,255,255,0.06)` : (i < 3 ? `1px solid rgba(255,255,255,0.06)` : "none"),
                 borderRight: !m && (i % 3 !== 2) ? `1px solid rgba(255,255,255,0.06)` : "none",
               }}>
-                <div style={{ fontSize: m ? 19 : 22, fontWeight: 600, color: "#F4F1EA", marginBottom: 4 }}>{d.dim}</div>
-                <div style={{ fontSize: 17, color: "rgba(244,241,234,0.40)", lineHeight: 1.45 }}>{d.sub}</div>
+                <div style={{ fontSize: m ? 19 : 22, fontWeight: 600, color: C.teal, marginBottom: 6 }}>{d.dim}</div>
+                <div style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.45 }}>{d.sub}</div>
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 17, fontWeight: 600, color: "rgba(244,241,234,0.30)", marginTop: sp(3) }}>No financial data. Only structural patterns.</p>
+          <div style={{ display: "flex", alignItems: "center", gap: sp(1), marginTop: sp(4) }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+            <span style={{ fontSize: 16, fontWeight: 600, color: "rgba(244,241,234,0.30)" }}>No financial data. Only structural patterns.</span>
+          </div>
         </div>
 
         {/* Stage grid — 03 and 04 side by side */}
