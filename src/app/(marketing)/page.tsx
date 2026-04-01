@@ -142,12 +142,12 @@ function StickyNav() {
 
   // Past hero = warm nav. In hero = dark transparent nav.
   const warm = scrolled;
-  const navBg = warm ? "rgba(247,245,240,0.97)" : "rgba(14,26,43,0.4)";
-  const navBorder = warm ? "1px solid rgba(14,26,43,0.06)" : "1px solid transparent";
-  const linkColor = warm ? "rgba(14,26,43,0.55)" : "rgba(244,241,234,0.55)";
-  const linkHover = warm ? C.navy : "#F4F1EA";
-  const ctaBg = warm ? C.navy : C.sand;
-  const ctaColor = warm ? "#F7F5F0" : C.navy;
+  const navBg = warm ? C.navy : "rgba(14,26,43,0.4)";
+  const navBorder = warm ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent";
+  const linkColor = warm ? "rgba(244,241,234,0.55)" : "rgba(244,241,234,0.55)";
+  const linkHover = warm ? "#F4F1EA" : "#F4F1EA";
+  const ctaBg = warm ? C.purple : C.sand;
+  const ctaColor = warm ? "#FFFFFF" : C.navy;
 
   return (
     <>
@@ -162,7 +162,7 @@ function StickyNav() {
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
-          <Image src={warm ? logoBlue : logoWhite} alt="RunPayway" width={120} height={14} style={{ height: "auto", transition: "opacity 200ms" }} />
+          <Image src={logoWhite} alt="RunPayway" width={120} height={14} style={{ height: "auto", transition: "opacity 200ms" }} />
         </Link>
         {!m && (
           <div style={{ display: "flex", alignItems: "center", gap: sp(3) }}>
@@ -202,7 +202,7 @@ function StickyNav() {
 
     {/* Mobile menu overlay */}
     {m && mobileOpen && (
-      <div style={{ position: "fixed", top: 56, left: 0, right: 0, bottom: 0, zIndex: 99, backgroundColor: "rgba(247,245,240,0.98)", backdropFilter: "blur(12px)", padding: `${sp(4)}px ${px(m)}px` }}>
+      <div style={{ position: "fixed", top: 56, left: 0, right: 0, bottom: 0, zIndex: 99, backgroundColor: C.navy, padding: `${sp(4)}px ${px(m)}px` }}>
         <div style={{ display: "flex", flexDirection: "column", gap: sp(1) }}>
           {[
             { label: "Command Center", href: "/dashboard" },
@@ -212,7 +212,7 @@ function StickyNav() {
             { label: "Methodology", href: "/methodology" },
           ].map(link => (
             <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
-              style={{ fontSize: 17, fontWeight: 500, color: C.navy, textDecoration: "none", padding: `${sp(2)}px 0`, borderBottom: `1px solid ${C.border}` }}>
+              style={{ fontSize: 17, fontWeight: 500, color: "rgba(244,241,234,0.75)", textDecoration: "none", padding: `${sp(2)}px 0`, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
               {link.label}
             </Link>
           ))}
