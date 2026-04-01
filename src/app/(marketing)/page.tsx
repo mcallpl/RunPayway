@@ -1164,9 +1164,9 @@ function ProofSection() {
   const fadeIn = useFadeIn();
 
   const testimonials = [
-    { quote: "I knew my income was concentrated. I didn\u2019t know that one client leaving would drop my stability by 30 points. That changed how I structured my next quarter.", name: "Sarah M.", role: "Real Estate Agent" },
-    { quote: "I had five income sources and still scored low. The report showed me why \u2014 almost none of it was recurring. I converted one client to a retainer within two weeks.", name: "James R.", role: "Software Contractor" },
-    { quote: "I was tracking revenue, not structure. The score separated the two for the first time. Now I know exactly what to protect and what to build.", name: "Priya K.", role: "Management Consultant" },
+    { quote: "I knew my income was concentrated. I did not realize one client leaving would change the structure that much. That changed how I approached the next quarter.", name: "Sarah M.", role: "Real Estate Agent" },
+    { quote: "I had multiple income sources and still scored lower than I expected. The report showed me that almost none of it was recurring.", name: "James R.", role: "Software Contractor" },
+    { quote: "I was tracking revenue, not structure. The score separated the two for the first time and made the weakness clear.", name: "Priya K.", role: "Management Consultant" },
   ];
 
   return (
@@ -1177,7 +1177,7 @@ function ProofSection() {
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy }}>What people discovered after seeing their structure</h2>
+          <h2 style={{ ...h2Style(m), color: C.navy }}>What people found when they measured their structure</h2>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(3.5) }}>
@@ -1238,7 +1238,7 @@ function DecisionCalming() {
           </p>
 
           <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginTop: sp(5) }}>
-            We built this to be useful, not urgent.
+            We built this to be useful. Not urgent.
           </p>
         </div>
       </div>
@@ -1373,7 +1373,7 @@ function PricingSection() {
 
         {/* Trust line */}
         <p style={{ fontSize: 15, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(6) }}>
-          One-time analysis. No subscription. Private by default.
+          No account required. No preparation needed.
         </p>
       </div>
     </section>
@@ -1390,14 +1390,14 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
   const fadeIn = useFadeIn();
 
   const faqs = [
-    { q: "How will the Income Stability Score impact my financial future?", a: "The Income Stability Score\u2122 is a personalized diagnostic that tells you the true stability of your income, so you can understand how to protect yourself from risk." },
-    { q: "Who is the Income Stability Score designed for?", a: "The score is built for freelancers, contractors, small business owners, or anyone with an income that fluctuates. Whether you are starting or scaling, this score helps you plan for the future." },
-    { q: "What exactly do I get with the full diagnostic?", a: "The diagnostic is your personal roadmap to understanding your income structure, and gives you step-by-step actions for minimizing risk and maximizing stability." },
-    { q: "How is the Income Stability Score different from just tracking my revenue?", a: "Tracking revenue tells you how much you make. The score shows you how resilient your income structure is, and whether your income can withstand potential disruptions." },
-    { q: "What is the PressureMap\u2122 and how does it help me?", a: "PressureMap\u2122 visualizes where your income is most vulnerable, showing exactly where your structure could break under stress. It is a tool to focus your improvements on the highest-impact areas." },
-    { q: "What is the Command Center and how do I use it?", a: "The Command Center puts your score and recommendations into action. It is a dashboard where you can track your progress, simulate changes, and see real-time adjustments to your financial structure." },
-    { q: "How long does it take to get my results?", a: "The initial score is delivered instantly in under 2 minutes. The full diagnostic report can take up to 48 hours to process and deliver, ensuring precision." },
-    { q: "Is my information private?", a: "Absolutely. All your data is securely stored and private by default. We are 100% committed to protecting your personal information." },
+    { q: "How will the Income Stability Score impact my financial future?", a: "The Income Stability Score\u2122 measures how your income is structured and how that structure holds up under change. It gives you a clear, standardized view of where you stand \u2014 so you can make informed decisions about what to protect or adjust." },
+    { q: "Who is the Income Stability Score designed for?", a: "Anyone whose income does not arrive in a fixed paycheck. Freelancers, contractors, consultants, business owners, agents, and professionals with variable or blended income structures." },
+    { q: "What exactly do I get with the full diagnostic?", a: "A structured analysis of why you scored the way you did, where your income is most exposed, and what specific changes would improve your stability. It includes ranked risk scenarios, action priorities, and a 12-week execution roadmap." },
+    { q: "How is the Income Stability Score different from just tracking my revenue?", a: "Revenue tells you how much came in. The score tells you how reliably it keeps coming in \u2014 and what would happen if something changed. Two people earning the same amount can have very different structural stability." },
+    { q: "What is the PressureMap\u2122 and how does it help me?", a: "PressureMap\u2122 identifies the parts of your income structure most likely to weaken first under disruption. It shows where pressure concentrates so you can focus improvements on the areas that matter most." },
+    { q: "What is the Command Center and how do I use it?", a: "The Command Center is where your diagnostic becomes actionable. It includes a what-if simulator to test structural changes, a 12-week roadmap, and industry-specific benchmarks \u2014 all based on your score." },
+    { q: "How long does it take to get my results?", a: "The free score is delivered instantly \u2014 under two minutes. The full diagnostic report is available immediately after purchase." },
+    { q: "Is my information private?", a: "Yes. There is no bank connection, no credit pull, and no external data access. Your result is based entirely on the information you provide. Private by default." },
   ];
 
   return (
@@ -1491,19 +1491,19 @@ function FinalCta() {
         </h2>
 
         <p style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3.5), textAlign: "left" }}>
-          You don&#8217;t have to make a decision today.
+          Your income has a structure. Now you can see it.
         </p>
 
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), textAlign: "left" }}>
-          The free score tells you exactly where your income stands — instantly. If that&#8217;s enough, you&#8217;re all set. There&#8217;s no rush.
+          The free score takes under two minutes and shows you exactly where your income stands. No preparation required.
         </p>
 
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(5), textAlign: "left" }}>
-          The full diagnostic is available when you&#8217;re ready to understand the reasoning behind your score. It&#8217;s a one-time purchase — no subscription, no upselling. You can come back any time to unlock deeper insights.
+          When you are ready for the full picture — why you scored the way you did, where the structure is exposed, and what to change — the diagnostic is there.
         </p>
 
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(4), textAlign: "center" }}>
-          Still unsure? Start with the free score and take the first step toward financial clarity.
+          Start with the score. Go deeper only if you need to.
         </p>
 
         <div style={{ textAlign: "center" }}>
