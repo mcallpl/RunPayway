@@ -1525,6 +1525,11 @@ function FinalCta() {
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>
+
+        {/* Disclaimer */}
+        <p style={{ ...T.micro, color: C.light, textAlign: "center", maxWidth: 640, margin: `${sp(8)}px auto 0`, lineHeight: 1.6 }}>
+          The Income Stability Score&#8482; is a structural income assessment based on information provided by the user. It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
+        </p>
       </div>
     </section>
   );
