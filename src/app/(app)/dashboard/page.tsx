@@ -287,6 +287,7 @@ function generateScoreImage(score: number, bandLabel: string, name: string, colo
 /* ================================================================== */
 function DashboardContent() {
   const [record, setRecord] = useState<Record<string, unknown> | null>(null);
+  const [hydrated, setHydrated] = useState(false);
   const [assessments, setAssessments] = useState<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc?: string }[]>([]);
   const [mobile, setMobile] = useState(false);
   const [demoProfile, setDemoProfile] = useState(1);
@@ -360,6 +361,7 @@ function DashboardContent() {
     const hasData = !!stored && stored !== "null";
     if (!hasVisited && hasData) { setShowWelcome(true); }
     localStorage.setItem("rp_cc_visited", "1");
+    setHydrated(true);
   }, [searchParams]);
 
   const handleCodeSubmit = () => {
@@ -558,6 +560,44 @@ function DashboardContent() {
   /* ================================================================ */
   /*  RENDER                                                           */
   /* ================================================================ */
+
+  /* Loading state — shows enterprise card while hydrating */
+  if (!hydrated) {
+    return (
+      <>
+        <title>Command Center | RunPayway</title>
+        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 80, fontFamily: INTER }}>
+          <div style={{
+            backgroundColor: "#FFFFFF", borderRadius: 12,
+            border: "1px solid #EAEAEA", padding: 56, textAlign: "center",
+          }}>
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.38)", marginBottom: 32 }}>
+              Command Center
+            </div>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
+              <div style={{ width: 64, height: 64, borderRadius: "50%", border: "3px solid #EAEAEA", borderTopColor: "#1F6D7A", animation: "cc-spin 1s linear infinite" }} />
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 500, color: "#0E1A2B", marginBottom: 8, lineHeight: 1.4 }}>
+              Loading your diagnostic
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 400, color: "rgba(14,26,43,0.45)", lineHeight: 1.5 }}>
+              Preparing structural analysis &bull; Model RP-2.0
+            </div>
+            <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ height: 12, borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)", width: "100%" }} />
+              <div style={{ height: 12, borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)", width: "85%" }} />
+              <div style={{ height: 12, borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)", width: "70%" }} />
+            </div>
+          </div>
+          <p style={{ fontSize: 13, fontWeight: 400, color: "rgba(14,26,43,0.35)", textAlign: "center", marginTop: 24, lineHeight: 1.5 }}>
+            Private by default &bull; No external data access &bull; Version-locked scoring
+          </p>
+          <style>{`@keyframes cc-spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <title>Command Center | RunPayway</title>
