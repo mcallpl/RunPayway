@@ -134,25 +134,25 @@ const ctaButton = {
 /* ================================================================== */
 
 const INDUSTRIES = [
-  { name: "Real Estate", problem: "Miss two closings and half your quarter vanishes. RunPayway scores how your commission structure, seasonal cycles, and deal pipeline actually hold up under pressure — so you can see exactly where your income is exposed before a slow month proves it for you.", cta: "See how agents score" },
-  { name: "Consulting / Professional Services", problem: "Three clients paying six figures, then a two-month gap. RunPayway measures your client concentration, contract visibility, and income continuity — the structural factors that determine whether feast-or-famine is your norm or your past.", cta: "Map your client concentration" },
-  { name: "Sales / Brokerage", problem: "Commission resets your income to zero every quarter. RunPayway scores how your pipeline structure, deal size concentration, and comp model actually perform under stress — not just in a good quarter.", cta: "Stress-test your pipeline" },
-  { name: "Construction / Trades", problem: "Weather delays, seasonal shutdowns, and milestone-based payments create swings invisible on an annual P&L. RunPayway scores the structural gaps subcontractors and independents carry — month by month, not just year over year.", cta: "Score your payment structure" },
-  { name: "Media / Entertainment", problem: "Royalties, irregular bookings, and algorithm changes make earnings wildly unpredictable. RunPayway measures whether your income structure has any real floor — or if it's entirely dependent on the next gig landing.", cta: "Measure your income durability" },
-  { name: "Legal Services", problem: "Contingency fees take years. Partnership draws fluctuate. Billable hours mask the real gap between what you earn and when it arrives. RunPayway scores the structural timing and concentration risk most attorneys never quantify.", cta: "Evaluate your fee structure" },
-  { name: "Healthcare", problem: "Practice ownership, shifting reimbursement rates, and patient volume swings create income volatility that salary alone won't reveal. RunPayway maps the structural risk across your revenue mix — including side practices and locum work.", cta: "Assess your practice stability" },
-  { name: "Insurance", problem: "Renewals feel safe until a carrier pulls a product or clawbacks hit. RunPayway quantifies the split between your new-business risk and renewal floor — the gap most agents never see until it costs them.", cta: "Quantify your renewal risk" },
-  { name: "Retail / E-Commerce", problem: "When Q4 is 40% of your year, your average monthly income is a fiction. RunPayway measures the seasonal concentration, platform dependency, and cash flow structure that determine whether your business survives a slow stretch.", cta: "See your seasonal exposure" },
-  { name: "Hospitality / Food Service", problem: "Tip-dependent income and seasonal tourism mean your take-home has almost no floor. RunPayway scores the structural resilience of your earnings — so you know exactly where you stand before a slow month proves it.", cta: "Assess your income floor" },
-  { name: "Education", problem: "Adjunct roles, grant cycles, and summer gaps make academic income quietly unstable. RunPayway scores the structural guarantee behind your position — contract visibility, funding dependency, and income continuity year over year.", cta: "Score your contract stability" },
-  { name: "Transportation / Logistics", problem: "Per-load pricing, fuel swings, and route availability make every week a negotiation. RunPayway measures the structural risk owner-operators carry — the volatility that per-mile rates never reveal.", cta: "Evaluate your rate stability" },
-  { name: "Agriculture", problem: "Crop cycles, commodity swings, and weather risk make your income structurally seasonal in ways no other industry matches. RunPayway scores the resilience of your revenue structure — so one bad harvest doesn't define your year.", cta: "Assess your seasonal structure" },
-  { name: "Technology", problem: "RSU cliffs, contractor gaps, and startup equity gambles make tech income surprisingly fragile. RunPayway scores the structural resilience behind your comp — so one vesting pause or layoff doesn't blindside your finances.", cta: "Score your income structure" },
-  { name: "Energy / Utilities", problem: "Project-based contracts and commodity pricing create boom-bust cycles. RunPayway measures the structural gaps between projects — the exposure field workers and consultants carry that hourly rates never show.", cta: "Evaluate your project gaps" },
-  { name: "Finance / Banking", problem: "Bonuses and deferred payouts inflate your W-2 but mask real fragility. RunPayway measures the structural stability underneath — how concentrated, how recurring, how resilient your income actually is when markets shift or comp plans change.", cta: "Measure your true stability" },
-  { name: "Manufacturing", problem: "Bulk order dependency and supply chain disruptions create concentration risk most operators underestimate. RunPayway scores how many clients, contracts, and revenue lines actually hold your income together.", cta: "Map your order concentration" },
-  { name: "Nonprofit / Public Sector", problem: "Grant-dependent funding and fiscal year budget resets mean your income timeline is set by someone else. RunPayway measures the structural durability of your role — how much of your income persists without active renewal.", cta: "Measure your funding stability" },
-  { name: "Other", problem: "If you earn outside a traditional W-2 — freelancing, gig work, mixed sources, or anything non-standard — your income has a structure most people never measure. RunPayway scores it across the same six dimensions used for every industry, so you see exactly where you stand.", cta: "See report pricing" },
+  { name: "Real Estate", headline: "Your income is earned in lumps. Your risk is carried in between.", problem: "A strong year can still rest on a narrow set of closings, a few delayed deals, and a pipeline that looks fuller than it is.\n\nWhen listings stall, buyers hesitate, or one transaction falls apart, earnings do not fade evenly. They drop in gaps.\n\nRunPayway\u2122 evaluates deal concentration, pipeline continuity, and how much of your structure depends on timing going right.", normalization: "This is a common weakness in transaction-based income.", cta: "Stress-test my income structure" },
+  { name: "Consulting / Professional Services", headline: "Your revenue may look diversified. Your continuity may not be.", problem: "Many firms and solo operators serve multiple clients, but most earnings still depend on active delivery, retained attention, and continued utilization.\n\nWhen a client leaves or workload softens, revenue rarely has a built-in floor. It resets around available work.\n\nRunPayway\u2122 evaluates client concentration, dependence on active labor, and how much of your structure continues when delivery slows.", normalization: "Many professional practices are productive without being structurally stable.", cta: "Measure my income stability" },
+  { name: "Sales / Brokerage", headline: "Your compensation moves in cycles. Your exposure sits between them.", problem: "A healthy quarter can hide how much depends on timing, a few large wins, or a pipeline that has not converted yet.\n\nWhen deal flow slips or closings move out, earnings do not taper. They compress.\n\nRunPayway\u2122 evaluates pipeline dependence, concentration by opportunity size, and how vulnerable your structure is to timing shifts.", normalization: "This pattern is common in commission-driven income.", cta: "Stress-test my income structure" },
+  { name: "Construction / Trades", headline: "Your revenue depends on work staying in motion.", problem: "Project-based income often looks solid while jobs are active, even when the next phase of work is not fully secured.\n\nWhen a start date moves, a bid is lost, or collections slow, the gap shows up immediately.\n\nRunPayway\u2122 evaluates project continuity, timing exposure, and how much of your structure depends on the next job arriving on schedule.", normalization: "Many trade businesses feel busy before they feel stable.", cta: "Measure my income stability" },
+  { name: "Media / Entertainment", headline: "Your earnings are often tied to opportunities, not continuity.", problem: "Projects, bookings, contracts, and appearances can create strong periods of income without creating a stable underlying structure.\n\nWhen one project ends or the next opportunity is delayed, there is usually no built-in carry.\n\nRunPayway\u2122 evaluates how much of your structure depends on episodic work and how much continues between engagements.", normalization: "High visibility and high stability are not the same thing.", cta: "Run my structural assessment" },
+  { name: "Legal Services", headline: "Your income may be active, concentrated, and slower to reveal its risk.", problem: "A practice can look healthy while a small number of matters, clients, or billable patterns are carrying most of the load.\n\nWhen case flow softens or a major matter concludes, the weakness is often felt after the fact.\n\nRunPayway\u2122 evaluates client concentration, forward visibility, and how dependent earnings are on ongoing active work.", normalization: "Many legal practices have momentum without much structural cushion.", cta: "Measure my income stability" },
+  { name: "Healthcare", headline: "Your earnings may be steady, but the structure can still be narrow.", problem: "Many healthcare professionals rely on one employer, one system, or one reimbursement environment, even when pay appears consistent.\n\nWhen compensation models shift, hours change, or the primary source is disrupted, flexibility can be limited.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how resilient your structure is when a stable system changes.", normalization: "Consistent pay is not the same as structural protection.", cta: "Measure my income stability" },
+  { name: "Insurance", headline: "Your structure may look balanced while one side quietly carries the risk.", problem: "New production creates immediate earnings. Renewals create continuity. The mix between them determines whether the structure is compounding or constantly restarting.\n\nWhen new business slows, future weakness begins early. When retention slips, recurring income erodes underneath you.\n\nRunPayway\u2122 evaluates the balance between production and persistence, and how exposed your structure is if either side weakens.", normalization: "This is a common fault line in hybrid commission models.", cta: "Stress-test my income structure" },
+  { name: "Retail / E-Commerce", headline: "Sales can stay active while stability weakens underneath them.", problem: "Revenue may depend on traffic, conversion, platform conditions, repeat demand, and margin discipline all holding at once.\n\nWhen demand softens or costs rise, the structure can tighten quickly even before revenue fully shows the damage.\n\nRunPayway\u2122 evaluates demand sensitivity, revenue continuity, and how exposed your structure is to external shifts you do not control.", normalization: "Many operators mistake movement for stability.", cta: "Run my structural assessment" },
+  { name: "Hospitality / Food Service", headline: "Your structure depends on volume showing up on time.", problem: "Revenue is often tied to traffic, seasonality, labor efficiency, and thin margins that leave little room for interruption.\n\nWhen customer flow drops or costs move against you, the pressure is immediate. The structure has very little space to absorb it.\n\nRunPayway\u2122 evaluates volume sensitivity, timing exposure, and how stable the business remains when demand is uneven.", normalization: "This is common in service businesses with narrow operating margin.", cta: "Measure my income stability" },
+  { name: "Education", headline: "Your income may be predictable, but still structurally limited.", problem: "Many education roles are tied to one institution, one pay model, and one fixed system with limited ability to expand or replace earnings quickly.\n\nWhen funding, staffing, or contract conditions change, the structure may offer little flexibility in response.\n\nRunPayway\u2122 evaluates concentration, continuity, and how adaptable your earnings structure is under change.", normalization: "Predictability and resilience are not identical.", cta: "Measure my income stability" },
+  { name: "Transportation / Logistics", headline: "Your earnings depend on flow staying uninterrupted.", problem: "Routes, contracts, shipment volume, and operational consistency often determine whether revenue holds or slips.\n\nWhen demand weakens, a contract changes, or volume drops, earnings can fall with little structural buffer.\n\nRunPayway\u2122 evaluates demand dependence, timing continuity, and how much of your structure relies on uninterrupted movement.", normalization: "Many operators discover the risk only when volume breaks.", cta: "Stress-test my income structure" },
+  { name: "Agriculture", headline: "Your structure is seasonal, variable, and exposed to forces outside your control.", problem: "Strong periods of production can mask how much depends on timing, yield, pricing, and conditions that do not move in your favor on command.\n\nWhen one cycle underperforms, the effect is not minor. It can reset the economics of the entire period.\n\nRunPayway\u2122 evaluates seasonal concentration, continuity across cycles, and how exposed your structure is when one variable moves against you.", normalization: "This is structural risk, not just seasonal uncertainty.", cta: "Run my structural assessment" },
+  { name: "Technology", headline: "High earnings can hide a narrow structure.", problem: "Many professionals in technology rely heavily on one employer, one equity story, one bonus framework, or one compensation system.\n\nWhen that source changes, a large share of earnings can shift all at once.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how much of your structure depends on one system continuing to perform.", normalization: "High compensation does not automatically create high stability.", cta: "Measure my income stability" },
+  { name: "Energy / Utilities", headline: "Your income may look stable because the system around it looks stable.", problem: "But many roles in this sector depend on regulatory conditions, capital cycles, infrastructure decisions, or market structures outside individual control.\n\nWhen those conditions shift, the structure changes first and the impact follows.\n\nRunPayway\u2122 evaluates external dependency, concentration, and how resilient your earnings structure is under system-level change.", normalization: "Stability in this sector is often conditional, not absolute.", cta: "Measure my income stability" },
+  { name: "Finance / Banking", headline: "A stable base can hide a variable structure.", problem: "Many compensation packages combine salary with bonus, production, deal flow, or performance-linked earnings that do not behave the same under pressure.\n\nWhen targets move, markets soften, or activity slows, a meaningful portion of pay can weaken faster than expected.\n\nRunPayway\u2122 evaluates fixed versus performance-dependent earnings and how much of your structure relies on continued output.", normalization: "Many compensation structures appear safer than they are.", cta: "Stress-test my income structure" },
+  { name: "Manufacturing", headline: "Your structure depends on output, demand, and timing staying aligned.", problem: "Revenue can look dependable while production schedules, supply conditions, and customer demand are carrying more of the risk than the numbers suggest.\n\nWhen output slows or demand shifts, earnings weaken while operating burden often stays behind.\n\nRunPayway\u2122 evaluates production dependence, demand sensitivity, and how exposed your structure is when alignment breaks.", normalization: "Many operations are efficient without being resilient.", cta: "Run my structural assessment" },
+  { name: "Nonprofit / Public Sector", headline: "Your income may be stable, but the structure is often constrained.", problem: "Funding cycles, budget decisions, grant allocations, and institutional limits can create predictable pay with limited control or flexibility.\n\nWhen funding priorities shift, the structure may have very little room to adapt quickly.\n\nRunPayway\u2122 evaluates concentration, institutional dependence, and how resilient your earnings structure is under budget or funding change.", normalization: "Stable does not always mean protected.", cta: "Measure my income stability" },
+  { name: "Other", headline: "Your structure may not fit a standard category. That does not reduce the risk.", problem: "Mixed earnings, irregular timing, and multiple income types can create a structure that looks diversified while hiding weak points underneath.\n\nWhen one source slips or timing breaks, the interaction between sources can create pressure faster than expected.\n\nRunPayway\u2122 evaluates how your specific mix behaves under stress and where the structure is most exposed.", normalization: "Non-standard income often carries risk that is harder to see, not less real.", cta: "Run my structural assessment" },
 ];
 
 function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
@@ -274,26 +274,32 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
             </div>
 
             <h3 style={{
-              fontSize: m ? 22 : 24, fontWeight: 600, lineHeight: 1.3,
+              fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.4,
               color: C.navy, marginBottom: sp(3),
             }}>
-              Your income has a structure. Here&#8217;s what&#8217;s at risk.
+              {selected.headline}
             </h3>
 
-            <p style={{
-              ...body(m), color: C.muted, marginBottom: sp(4),
-              lineHeight: 1.6,
-            }}>
-              {selected.problem}
-            </p>
+            <div style={{ marginBottom: sp(4) }}>
+              {selected.problem.split("\n\n").map((para, i) => (
+                <p key={i} style={{
+                  fontSize: 16, fontWeight: 400, color: C.muted,
+                  lineHeight: 1.6, marginBottom: sp(2),
+                }}>
+                  {para}
+                </p>
+              ))}
+            </div>
 
-            <p style={{
-              fontSize: 13, fontWeight: 400, lineHeight: 1.5,
-              color: "rgba(14,26,43,0.45)", marginBottom: sp(5),
-              fontStyle: "italic",
-            }}>
-              Income structures shift. Many professionals run their report annually to track how their stability evolves over time.
-            </p>
+            {selected.normalization && (
+              <p style={{
+                fontSize: 13, fontWeight: 400, lineHeight: 1.5,
+                color: "rgba(14,26,43,0.45)", marginBottom: sp(5),
+                fontStyle: "italic",
+              }}>
+                {selected.normalization}
+              </p>
+            )}
 
             <div style={{
               borderTop: `1px solid ${C.border}`,
@@ -535,7 +541,7 @@ function HeroSection() {
               marginBottom: m ? sp(4) : sp(5),
               maxWidth: m ? undefined : 500,
             }}>
-              RunPayway measures how your income is built — not how much you make — and shows how well it holds up under real-world disruption.
+              RunPayway&#8482; measures how your income is built — not how much you make — and shows how well it holds up under real-world disruption.
             </p>
 
             {/* Trust strip */}
@@ -669,7 +675,7 @@ function PositioningBlock() {
         </p>
 
         <p style={{ ...body(m), color: C.muted, marginBottom: sp(4) }}>
-          RunPayway measures the structural properties of your income:
+          RunPayway&#8482; measures the structural properties of your income:
         </p>
 
         <div style={{ marginBottom: sp(4) }}>
@@ -721,7 +727,7 @@ function HowItWorksSection() {
             A structured measurement system. Not an estimate. Not a guess.
           </h2>
           <p style={{ ...body(m), color: C.muted, maxWidth: 700 }}>
-            RunPayway evaluates your income using a fixed model with defined inputs, scoring rules, and output logic.
+            RunPayway&#8482; evaluates your income using a fixed model with defined inputs, scoring rules, and output logic.
           </p>
         </div>
 
