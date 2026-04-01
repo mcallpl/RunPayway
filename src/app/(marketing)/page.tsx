@@ -1777,7 +1777,6 @@ export default function LandingPage() {
         <PricingSection />
         <FinalCta />
       </main>
-      <Footer />
     </div>
   );
 }
