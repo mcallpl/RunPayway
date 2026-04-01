@@ -1534,22 +1534,6 @@ function FinalCta() {
 /* ================================================================== */
 /* DISCLAIMER                                                          */
 /* ================================================================== */
-function DisclaimerSection() {
-  const m = useMobile();
-  return (
-    <section aria-label="Disclaimer" style={{
-      backgroundColor: C.sand, paddingTop: sp(5), paddingBottom: sp(5),
-      paddingLeft: px(m), paddingRight: px(m), borderTop: `1px solid ${C.softBorder}`,
-    }}>
-      <p style={{ ...micro(), color: C.light, textAlign: "center", maxWidth: 640, margin: "0 auto" }}>
-        The Income Stability Score&#8482; is a structural income assessment based on information provided by the user.
-        It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
-      </p>
-    </section>
-  );
-}
-
-
 /* ================================================================== */
 /* FOOTER                                                              */
 /* ================================================================== */
@@ -1559,18 +1543,19 @@ function Footer() {
 
   const colHeadStyle: React.CSSProperties = {
     ...T.label,
-    color: C.white, marginBottom: sp(2),
+    color: C.navy, marginBottom: sp(2),
   };
 
   const linkStyle: React.CSSProperties = {
-    fontSize: 15, fontWeight: 400, color: "rgba(244,241,234,0.55)", textDecoration: "none",
+    fontSize: 15, fontWeight: 400, color: C.muted, textDecoration: "none",
     display: "block", marginBottom: sp(1.5), transition: "color 200ms",
     lineHeight: 1.5,
   };
 
   return (
     <footer style={{
-      backgroundColor: C.navy,
+      backgroundColor: C.white,
+      borderTop: `1px solid ${C.softBorder}`,
       paddingTop: m ? sp(8) : sp(10), paddingBottom: sp(6),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
@@ -1593,8 +1578,8 @@ function Footer() {
               { label: "Pricing", href: "/pricing" },
             ].map(l => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={e => { e.currentTarget.style.color = C.sand; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.navy; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.muted; }}
               >{l.label}</Link>
             ))}
           </div>
@@ -1607,8 +1592,8 @@ function Footer() {
               { label: "Contact", href: "/contact" },
             ].map(l => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={e => { e.currentTarget.style.color = C.sand; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.navy; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.muted; }}
               >{l.label}</Link>
             ))}
           </div>
@@ -1625,8 +1610,8 @@ function Footer() {
               { label: "Model Version Policy", href: "/model-version" },
             ].map(l => (
               <Link key={l.href} href={l.href} style={linkStyle}
-                onMouseEnter={e => { e.currentTarget.style.color = C.sand; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.navy; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.muted; }}
               >{l.label}</Link>
             ))}
           </div>
@@ -1646,9 +1631,9 @@ function Footer() {
                 aria-label="Work email for enterprise waitlist"
                 style={{
                   flex: 1, padding: "8px 12px", borderRadius: 6,
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  backgroundColor: "rgba(255,255,255,0.05)",
-                  color: C.sand, fontSize: 14,
+                  border: `1px solid ${C.softBorder}`,
+                  backgroundColor: C.sand,
+                  color: C.navy, fontSize: 14,
                   outline: "none", minHeight: 44,
                 }}
               />
@@ -1656,9 +1641,9 @@ function Footer() {
                 onClick={() => { if (email) { setEmail(""); } }}
                 style={{
                   padding: "8px 16px", borderRadius: 6,
-                  backgroundColor: "rgba(255,255,255,0.10)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: C.sand, fontSize: 13, fontWeight: 600,
+                  backgroundColor: C.navy,
+                  border: "none",
+                  color: C.white, fontSize: 13, fontWeight: 600,
                   cursor: "pointer", whiteSpace: "nowrap", minHeight: 44,
                 }}
               >
@@ -1676,27 +1661,33 @@ function Footer() {
               { label: "Instagram", href: "https://instagram.com" },
             ].map(l => (
               <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={linkStyle}
-                onMouseEnter={e => { e.currentTarget.style.color = C.sand; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = C.navy; }}
+                onMouseLeave={e => { e.currentTarget.style.color = C.muted; }}
               >{l.label}</a>
             ))}
           </div>
         </div>
 
-        {/* Language line */}
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: sp(4), marginBottom: sp(3) }}>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", textAlign: "center", marginBottom: sp(2) }}>
+        {/* Disclaimer */}
+        <div style={{ borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(4), marginBottom: sp(3) }}>
+          <p style={{ ...T.micro, color: C.light, textAlign: "center", maxWidth: 640, margin: "0 auto", marginBottom: sp(3) }}>
+            The Income Stability Score&#8482; is a structural income assessment based on information provided by the user.
+            It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
+          </p>
+
+          {/* Language line */}
+          <p style={{ fontSize: 13, color: C.light, textAlign: "center", marginBottom: sp(2) }}>
             Available in: English &bull; Espa&ntilde;ol (Q3 2026) &bull; Portugu&ecirc;s (Q4 2026) &bull; &#2361;&#2367;&#2344;&#2381;&#2342;&#2368; (Q4 2026)
           </p>
         </div>
 
         {/* Authority line */}
-        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", textAlign: "center", marginBottom: sp(2) }}>
+        <p style={{ fontSize: 13, color: C.light, textAlign: "center", marginBottom: sp(2) }}>
           A structural income measurement system.
         </p>
 
         {/* Legal */}
-        <p style={{ ...T.micro, fontSize: 13, color: "rgba(244,241,234,0.20)", textAlign: "center", lineHeight: 1.6, maxWidth: 700, margin: "0 auto" }}>
+        <p style={{ ...T.micro, color: C.light, textAlign: "center", lineHeight: 1.6, maxWidth: 700, margin: "0 auto" }}>
           &copy; 2026 RunPayway&#8482;. All rights reserved. RunPayway&#8482; is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-2.0.
         </p>
       </div>
@@ -1786,7 +1777,6 @@ export default function LandingPage() {
         <PricingSection />
         <FinalCta />
       </main>
-      <DisclaimerSection />
       <Footer />
     </div>
   );
