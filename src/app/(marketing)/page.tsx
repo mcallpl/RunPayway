@@ -807,7 +807,7 @@ function HowItWorksSection() {
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
 
         {/* Model — side by side: 60/40 split as visual blocks */}
-        <div style={{ marginBottom: m ? sp(10) : sp(15), ...fadeIn(v3) }}>
+        <div style={{ ...fadeIn(v3) }}>
           <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.14em", color: C.teal, marginBottom: sp(4), textTransform: "uppercase" as const }}>How the Model Works</p>
           <h3 style={{ fontSize: m ? 36 : 53, fontWeight: 600, color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: m ? sp(5) : sp(6) }}>
             Two scoring blocks.<br />Fixed rules. No exceptions.
@@ -815,64 +815,46 @@ function HowItWorksSection() {
 
           <div style={{ display: m ? "block" : "flex", gap: sp(3), marginBottom: sp(5) }}>
             {/* Structure */}
-            <div style={{ flex: 6, backgroundColor: C.navy, borderRadius: 14, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0 }}>
+            <div style={{
+              flex: 6, backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0,
+              borderTop: `3px solid ${C.teal}`,
+              boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+            }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
                 <span style={{ fontSize: 17, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", textTransform: "uppercase" as const }}>Structure</span>
-                <span style={{ fontSize: m ? 43 : 58, fontWeight: 700, color: "rgba(244,241,234,0.12)" }}>60%</span>
+                <span style={{ fontSize: m ? 43 : 58, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>60%</span>
               </div>
               <p style={{ fontSize: 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: sp(3) }}>Measures how income is built.</p>
               {["Recurrence", "Diversification", "Visibility", "Concentration balance"].map(item => (
-                <p key={item} style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA", margin: `0 0 ${sp(1)}px` }}>{item}</p>
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), margin: `0 0 ${sp(1.5)}px` }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <span style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA" }}>{item}</span>
+                </div>
               ))}
             </div>
             {/* Stability */}
-            <div style={{ flex: 4, backgroundColor: C.sandBg, borderRadius: 14, padding: m ? sp(4) : sp(5), border: `1px solid ${C.border}` }}>
+            <div style={{
+              flex: 4, backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(5),
+              borderTop: `3px solid ${C.purple}`,
+              boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
+            }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(3) }}>
-                <span style={{ fontSize: 17, fontWeight: 700, letterSpacing: "0.10em", color: C.light, textTransform: "uppercase" as const }}>Stability</span>
-                <span style={{ fontSize: m ? 43 : 58, fontWeight: 700, color: "rgba(14,26,43,0.06)" }}>40%</span>
+                <span style={{ fontSize: 17, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", textTransform: "uppercase" as const }}>Stability</span>
+                <span style={{ fontSize: m ? 43 : 58, fontWeight: 700, background: `linear-gradient(135deg, ${C.purple}, ${C.teal})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>40%</span>
               </div>
-              <p style={{ fontSize: 18, color: C.muted, lineHeight: 1.6, marginBottom: sp(3) }}>Measures how income behaves.</p>
+              <p style={{ fontSize: 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: sp(3) }}>Measures how income behaves.</p>
               {["Labor dependence", "Earnings consistency", "Continuity under disruption"].map(item => (
-                <p key={item} style={{ fontSize: 18, fontWeight: 500, color: C.navy, margin: `0 0 ${sp(1)}px` }}>{item}</p>
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: sp(1.5), margin: `0 0 ${sp(1.5)}px` }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0 }} />
+                  <span style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA" }}>{item}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Cross-factor — single line */}
-          <p style={{ fontSize: m ? 19 : 22, color: C.muted, lineHeight: 1.65, maxWidth: 700 }}>
-            Cross-factor interaction rules capture how weaknesses compound. High concentration + low visibility = penalty. Strong recurrence + low labor dependence = boost. Rules are fixed. No machine learning.
-          </p>
-        </div>
-
-        {/* Does / Does Not — two columns with strong visual weight */}
-        <div style={{ marginBottom: m ? sp(10) : sp(15), ...fadeIn(v3, 200) }}>
-          <div style={{ display: m ? "block" : "flex", gap: sp(3) }}>
-            <div style={{ flex: 1, backgroundColor: C.sandBg, borderRadius: 14, padding: m ? sp(4) : sp(5), marginBottom: m ? sp(3) : 0 }}>
-              <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: sp(3), textTransform: "uppercase" as const }}>This system does</p>
-              {[
-                "Measure structure, not income level",
-                "Produce consistent, repeatable outputs",
-                "Identify structural weaknesses precisely",
-                "Quantify the improvement path",
-              ].map(item => (
-                <p key={item} style={{ fontSize: m ? 19 : 22, fontWeight: 500, color: C.navy, margin: `0 0 ${sp(2)}px`, lineHeight: 1.45 }}>{item}</p>
-              ))}
-            </div>
-            <div style={{ flex: 1, backgroundColor: C.sandBg, borderRadius: 14, padding: m ? sp(4) : sp(5) }}>
-              <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: C.light, marginBottom: sp(3), textTransform: "uppercase" as const }}>This system does not</p>
-              {[
-                "Access bank accounts",
-                "Pull credit data",
-                "Use AI to alter scoring",
-                "Predict future income",
-                "Change results by industry or bias",
-              ].map(item => (
-                <p key={item} style={{ fontSize: m ? 19 : 22, color: C.light, margin: `0 0 ${sp(2)}px`, lineHeight: 1.45 }}>{item}</p>
-              ))}
-            </div>
-          </div>
-          <p style={{ fontSize: m ? 22 : 26, fontWeight: 600, color: C.navy, marginTop: m ? sp(5) : sp(6), textAlign: "center" as const }}>
-            This is a classification system. Not a prediction engine.
+          {/* Cross-factor */}
+          <p style={{ fontSize: m ? 18 : 20, color: C.muted, lineHeight: 1.65, maxWidth: 700 }}>
+            Cross-factor interaction rules capture how weaknesses compound. High concentration + low visibility = penalty. Strong recurrence + low labor dependence = boost. Rules are fixed.
           </p>
         </div>
 
