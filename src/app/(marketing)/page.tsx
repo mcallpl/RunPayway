@@ -564,13 +564,13 @@ function HeroSection() {
   const targetOffset = (1 - 72 / 100) * circumference;
 
   return (
-    <header ref={ref}>
-      {/* ── TOP ZONE — Light ── */}
-      <div style={{ backgroundColor: C.sand }}>
+    <header ref={ref} style={{ backgroundColor: C.navy }}>
+      {/* ── TOP ZONE ── */}
+      <div>
         <div style={{
           maxWidth: maxW, margin: "0 auto",
           paddingTop: m ? sp(16) : sp(20),
-          paddingBottom: m ? sp(8) : sp(12),
+          paddingBottom: m ? sp(8) : sp(10),
           paddingLeft: px(m), paddingRight: px(m),
         }}>
           <div style={{
@@ -590,7 +590,7 @@ function HeroSection() {
               <h1 style={{
                 ...fadeIn(visible, 120),
                 fontSize: m ? 36 : 50, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em",
-                color: C.navy,
+                color: "#F4F1EA",
                 marginBottom: m ? sp(3) : sp(4),
               }}>
                 Know how stable your income is before something tests it.
@@ -599,7 +599,7 @@ function HeroSection() {
               <p style={{
                 ...fadeIn(visible, 250),
                 fontSize: m ? 16 : 22, fontWeight: 400, lineHeight: 1.6,
-                color: "#2C3A4B",
+                color: "rgba(244,241,234,0.55)",
                 maxWidth: m ? undefined : 480,
               }}>
                 RunPayway&#8482; measures the structure of your income — not the size of it — and shows how resilient that structure is when conditions change.
@@ -663,8 +663,8 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* ── BOTTOM ZONE — Dark ── */}
-      <div style={{ backgroundColor: C.navy }}>
+      {/* ── BOTTOM ZONE ── */}
+      <div>
         <div style={{
           maxWidth: maxW, margin: "0 auto",
           paddingTop: m ? sp(6) : sp(8),
