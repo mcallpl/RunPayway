@@ -705,18 +705,17 @@ function HowItWorksSection() {
             <span style={{ fontSize: m ? 67 : 86, fontWeight: 700, background: `linear-gradient(135deg, ${C.teal}, ${C.purple})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1, display: "block", marginBottom: sp(3) }}>02</span>
             <h3 style={{ fontSize: m ? 26 : 31, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.2, marginBottom: sp(2) }}>Structural Assessment</h3>
             <p style={{ fontSize: m ? 18 : 19, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, margin: 0 }}>
-              Six fixed inputs evaluate the architecture of your income across the dimensions below.
+              A structural assessment evaluates the architecture of your income across the dimensions below.
             </p>
           </div>
         </div>
 
-        {/* 6 Dimensions — full-width data table */}
+        {/* 6 Dimensions — full-width data table on dark */}
         <div style={{
-          backgroundColor: "#FFFFFF", borderRadius: 16, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2, 100),
-          border: `1px solid ${C.border}`,
-          boxShadow: "0 2px 4px rgba(14,26,43,0.04), 0 12px 40px rgba(14,26,43,0.06)",
+          backgroundColor: C.navy, borderRadius: 16, padding: m ? sp(4) : sp(6), marginBottom: m ? sp(4) : sp(3), ...fadeIn(v2, 100),
+          boxShadow: "0 2px 4px rgba(14,26,43,0.08), 0 12px 40px rgba(14,26,43,0.12)",
         }}>
-          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: C.light, marginBottom: sp(4), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
+          <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.12em", color: "#FFFFFF", marginBottom: sp(4), textTransform: "uppercase" as const }}>6 Structural Dimensions</p>
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 0 }}>
             {[
               { dim: "Recurrence", sub: "Income that renews without re-selling" },
@@ -728,17 +727,17 @@ function HowItWorksSection() {
             ].map((d, i) => (
               <div key={d.dim} style={{
                 padding: m ? `${sp(2.5)}px 0` : sp(3),
-                borderBottom: m ? `1px solid ${C.border}` : (i < 3 ? `1px solid ${C.border}` : "none"),
-                borderRight: !m && (i % 3 !== 2) ? `1px solid ${C.border}` : "none",
+                borderBottom: m ? `1px solid rgba(255,255,255,0.06)` : (i < 3 ? `1px solid rgba(255,255,255,0.06)` : "none"),
+                borderRight: !m && (i % 3 !== 2) ? `1px solid rgba(255,255,255,0.06)` : "none",
               }}>
                 <div style={{ fontSize: m ? 19 : 22, fontWeight: 600, color: C.teal, marginBottom: 6 }}>{d.dim}</div>
-                <div style={{ fontSize: 17, color: C.muted, lineHeight: 1.45 }}>{d.sub}</div>
+                <div style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.45 }}>{d.sub}</div>
               </div>
             ))}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: sp(1), marginTop: sp(4) }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-            <span style={{ fontSize: 16, fontWeight: 600, color: C.light }}>No financial data. Only structural patterns.</span>
+            <span style={{ fontSize: 16, fontWeight: 600, color: "rgba(244,241,234,0.30)" }}>No financial data. Only structural patterns.</span>
           </div>
         </div>
 
