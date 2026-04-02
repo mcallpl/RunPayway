@@ -115,7 +115,7 @@ const inputBase: React.CSSProperties = {
   padding: "0 16px",
   borderRadius: 10,
   border: "1px solid rgba(14,26,43,0.12)",
-  background: "#FFFFFF",
+  background: C.white,
   fontSize: 14,
   fontFamily: sans,
   color: C.navy,
@@ -149,7 +149,7 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
         padding: "14px 16px",
         borderRadius: 10,
         border: `1px solid ${selected ? C.purple : "rgba(14,26,43,0.10)"}`,
-        background: selected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+        background: selected ? "rgba(75,63,174,0.04)" : C.white,
         cursor: "pointer",
         textAlign: "left",
         transition: "border-color 160ms ease, background 160ms ease",
@@ -164,8 +164,8 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
         {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: C.purple }} />}
       </div>
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{label}</div>
-        <div style={{ fontSize: 12, color: C.light }}>{desc}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, fontFamily: sans, color: C.navy }}>{label}</div>
+        <div style={{ fontSize: 12, fontFamily: sans, color: C.light }}>{desc}</div>
       </div>
     </button>
   );
@@ -191,7 +191,8 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
             <span style={{
               fontSize: 11,
               fontWeight: isActive ? 600 : 400,
-              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              fontFamily: sans,
+              color: isActive ? C.purple : isCompleted ? C.teal : C.light,
               letterSpacing: "0.01em",
             }}>
               {isCompleted ? "✓" : s.num} {s.label}
@@ -377,7 +378,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "#F7F5F0",
+        background: C.sand,
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         textAlign: "center",
@@ -433,7 +434,7 @@ export default function InitializationPage() {
 
             <div style={{ marginTop: 28, display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
               {["No bank connection", "No credit pull", "Private by default"].map((item) => (
-                <span key={item} style={{ fontSize: 12, color: "rgba(14,26,43,0.15)", letterSpacing: "0.02em" }}>{item}</span>
+                <span key={item} style={{ fontSize: 12, fontFamily: sans, color: C.light, letterSpacing: "0.02em" }}>{item}</span>
               ))}
             </div>
           </div>
@@ -461,7 +462,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: "#F7F5F0",
+        background: C.sand,
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}>
@@ -496,7 +497,7 @@ export default function InitializationPage() {
               border: "1px solid rgba(14,26,43,0.08)",
               background: "rgba(14,26,43,0.03)",
             }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, letterSpacing: "0.10em", textTransform: "uppercase" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, fontFamily: sans, color: C.purple, letterSpacing: "0.10em", textTransform: "uppercase" }}>
                 Income Stability Score&#8482; &middot; Model RP-2.0
               </span>
             </div>
@@ -504,13 +505,13 @@ export default function InitializationPage() {
 
           {/* Title */}
           <h1 style={{
-            fontSize: 36, fontWeight: 300, color: "#0E1A2B", textAlign: "center",
+            fontSize: 36, fontWeight: 300, fontFamily: sans, color: C.navy, textAlign: "center",
             lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: 12,
           }}>
             Your Assessment Begins Here
           </h1>
           <p style={{
-            fontSize: 15, color: "rgba(14,26,43,0.45)", textAlign: "center",
+            fontSize: 15, fontFamily: sans, color: C.muted, textAlign: "center",
             lineHeight: 1.6, marginBottom: 48, maxWidth: 400, margin: "0 auto 48px",
           }}>
             Enter the name that will appear on your report. This is a confidential, one-time assessment of your income stability.
@@ -529,8 +530,8 @@ export default function InitializationPage() {
               style={{
                 width: "100%", height: 56, padding: "0 20px",
                 borderRadius: 10, border: "1px solid rgba(14,26,43,0.12)",
-                background: "#FEFEFE", color: "#0E1A2B",
-                fontSize: 17, fontWeight: 400, letterSpacing: "-0.01em",
+                background: C.white, color: C.navy,
+                fontSize: 17, fontWeight: 400, fontFamily: sans, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
                 transition: "border-color 200ms ease",
                 textAlign: "center",
@@ -551,8 +552,8 @@ export default function InitializationPage() {
               style={{
                 width: "100%", height: 52, padding: "0 20px",
                 borderRadius: 10, border: "1px solid rgba(14,26,43,0.08)",
-                background: "#FEFEFE", color: "#0E1A2B",
-                fontSize: 15, fontWeight: 400, letterSpacing: "-0.01em",
+                background: C.white, color: C.navy,
+                fontSize: 15, fontWeight: 400, fontFamily: sans, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
                 transition: "border-color 200ms ease",
                 textAlign: "center",
@@ -568,9 +569,9 @@ export default function InitializationPage() {
             onClick={() => goToStep(1)}
             style={{
               width: "100%", height: 52, borderRadius: 10, border: "none",
-              background: canContinueStep0 ? "#0E1A2B" : "rgba(14,26,43,0.06)",
-              color: canContinueStep0 ? "#F4F1EA" : "rgba(14,26,43,0.25)",
-              fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+              background: canContinueStep0 ? C.navy : "rgba(14,26,43,0.06)",
+              color: canContinueStep0 ? C.sandText : C.light,
+              fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
               cursor: canContinueStep0 ? "pointer" : "not-allowed",
               transition: "all 200ms ease",
             }}
@@ -584,7 +585,7 @@ export default function InitializationPage() {
             display: "flex", justifyContent: "center", gap: 24, marginTop: 40,
           }}>
             {["Confidential", "Under 2 minutes", "No financial data required"].map((t) => (
-              <span key={t} style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ fontSize: 11, fontFamily: sans, color: C.light, letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -650,21 +651,21 @@ export default function InitializationPage() {
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+          <span style={{ fontSize: 11, fontWeight: 700, fontFamily: sans, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
             Income Stability Diagnostic
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 11, color: C.sandLight }}>
+          <span style={{ fontSize: 11, fontFamily: sans, color: C.sandLight }}>
             Assessing: {form.assessment_title || "—"}
           </span>
-          <span style={{ fontSize: 11, color: C.sandLight }}>Model RP-2.0</span>
+          <span style={{ fontSize: 11, fontFamily: sans, color: C.sandLight }}>Model RP-2.0</span>
         </div>
       </div>
 
       {/* Progress indicator — clinical-style segmented bar */}
       <div style={{
-        background: "#FFFFFF", borderBottom: "1px solid rgba(14,26,43,0.06)",
+        background: C.white, borderBottom: "1px solid rgba(14,26,43,0.06)",
         padding: "12px 24px",
       }}>
         <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
@@ -679,7 +680,7 @@ export default function InitializationPage() {
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: 11, fontWeight: 700, fontFamily: mono,
                   background: isComplete ? C.teal : isActive ? C.purple : "rgba(14,26,43,0.06)",
-                  color: isComplete || isActive ? "#FFFFFF" : C.light,
+                  color: isComplete || isActive ? C.white : C.light,
                   transition: "all 300ms ease",
                 }}>
                   {isComplete ? "\u2713" : i + 1}
@@ -800,8 +801,8 @@ export default function InitializationPage() {
           <button
             onClick={() => goToStep(step - 1)}
             style={{
-              height: 52, borderRadius: 12, background: "#FFFFFF", color: C.navy,
-              fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+              height: 52, borderRadius: 12, background: C.white, color: C.navy,
+              fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
               border: "1px solid rgba(14,26,43,0.12)", cursor: "pointer", padding: "0 24px",
               transition: "background 180ms ease",
             }}
@@ -816,8 +817,8 @@ export default function InitializationPage() {
               style={{
                 flex: 1, height: 52, borderRadius: 12,
                 background: canContinueStep1 ? C.purple : "rgba(14,26,43,0.12)",
-                color: canContinueStep1 ? "#FFFFFF" : C.light,
-                fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
+                color: canContinueStep1 ? C.white : C.light,
+                fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
                 cursor: canContinueStep1 ? "pointer" : "not-allowed",
                 boxShadow: canContinueStep1 ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
                 transition: "background 180ms ease, transform 180ms ease",
@@ -836,8 +837,8 @@ export default function InitializationPage() {
                 background: isValid
                   ? "linear-gradient(135deg, #4B3FAE 0%, #1F6D7A 100%)"
                   : "rgba(14,26,43,0.12)",
-                color: isValid ? "#FFFFFF" : C.light,
-                fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
+                color: isValid ? C.white : C.light,
+                fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
                 cursor: isValid ? "pointer" : "not-allowed",
                 boxShadow: isValid ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
                 transition: "all 300ms ease",
@@ -851,7 +852,7 @@ export default function InitializationPage() {
 
         {/* Confidentiality notice */}
         <p style={{
-          fontSize: 11, color: C.light, textAlign: "center", marginTop: 24, lineHeight: 1.5,
+          fontSize: 11, fontFamily: sans, color: C.light, textAlign: "center", marginTop: 24, lineHeight: 1.5,
         }}>
           All information is confidential and used only to generate your assessment. No financial data is collected.
         </p>
