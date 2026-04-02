@@ -62,7 +62,7 @@ function Hero() {
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
             {["Deterministic", "Fixed rules", "Versioned", "Reproducible"].map(t => (
-              <span key={t} style={{ ...T.micro, fontWeight: 500, fontFamily: sans, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ ...T.micro, fontWeight: 500, fontFamily: sans, color: C.sandLight, letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -114,7 +114,7 @@ function Dimensions() {
     { title: "Reliance on One Source", desc: "How much depends on your single largest client, channel, or source of work.", range: "90%+ from one source (critical) to under 30% (diversified)", color: C.purple },
     { title: "Number of Income Sources", desc: "How many independent, meaningful sources support the income structure.", range: "1 source (total dependency) to 8+ (well-diversified)", color: C.teal },
     { title: "Income Secured Ahead of Time", desc: "How much upcoming income is already committed before the month begins.", range: "Less than 1 month (no visibility) to 12+ months (strong protection)", color: C.purple },
-    { title: "Month-to-Month Stability", desc: "How consistent the income is from one month to the next.", range: "75%+ fluctuation (volatile) to under 10% (highly predictable)", color: "#D97706" },
+    { title: "Month-to-Month Stability", desc: "How consistent the income is from one month to the next.", range: "75%+ fluctuation (volatile) to under 10% (highly predictable)", color: C.amber },
     { title: "Income That Continues Without Daily Work", desc: "How much income would keep coming in if active work stopped.", range: "0% continues (fully labor-dependent) to 76%+ (structurally independent)", color: C.navy },
   ];
 
@@ -134,7 +134,7 @@ function Dimensions() {
         {dims.map((dim, i) => {
           const isOpen = openIdx === i;
           return (
-            <div key={dim.title} style={{ borderBottom: `1px solid rgba(14,26,43,0.12)`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)", transition: `opacity 500ms ease-out ${80 + i * 50}ms, transform 500ms ease-out ${80 + i * 50}ms` }}>
+            <div key={dim.title} style={{ borderBottom: `1px solid ${C.border}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)", transition: `opacity 500ms ease-out ${80 + i * 50}ms, transform 500ms ease-out ${80 + i * 50}ms` }}>
               <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: m ? "20px 0" : "24px 0", border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                   <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
@@ -429,7 +429,7 @@ function Cta() {
           <Link href="/pricing" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, fontFamily: sans, boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
             Start Your Assessment
           </Link>
-          <div style={{ marginTop: 20, ...T.meta, fontFamily: sans, color: "rgba(250,249,247,0.35)" }}>
+          <div style={{ marginTop: 20, ...T.meta, fontFamily: sans, color: C.sandLight }}>
             Free to start &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>

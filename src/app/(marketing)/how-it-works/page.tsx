@@ -382,7 +382,7 @@ function Bands() {
           {bands.map((b, i) => (
             <div key={b.label} style={{
               padding: m ? "20px 18px" : "24px 24px", borderRadius: 14,
-              backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)",
+              backgroundColor: C.sandBorder, border: `1px solid ${C.sandBorder}`,
               position: "relative", overflow: "hidden",
               opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
               transition: `opacity 500ms ease-out ${300 + i * 100}ms, transform 500ms ease-out ${300 + i * 100}ms`,
@@ -393,7 +393,7 @@ function Bands() {
                 <span style={{ fontFamily: mono, fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
                 <span style={{ fontSize: 15, fontWeight: 600, color: C.sandText }}>{b.label} Stability</span>
               </div>
-              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{b.consequence}</p>
+              <p style={{ fontSize: 14, color: C.sandMuted, lineHeight: 1.55, margin: 0 }}>{b.consequence}</p>
             </div>
           ))}
         </div>
@@ -447,7 +447,7 @@ function TwoLayers() {
               {["Scenario selection", "Action priority ordering", "Language precision", "Category framing"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                  <span style={{ ...T.meta, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+                  <span style={{ ...T.meta, color: C.sandMuted }}>{item}</span>
                 </div>
               ))}
             </div>
