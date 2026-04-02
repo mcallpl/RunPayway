@@ -89,25 +89,25 @@ function PressureNarrative() {
     {
       label: "Concentration",
       title: "Your biggest client leaves.",
-      desc: "The Score isolates how much of your stability depends on a single source. If one departure drops your score by 30 points, that concentration is the structural risk \u2014 not the client relationship.",
-      stat: "\u221230 pts",
-      statLabel: "potential impact",
+      desc: "The score isolates how much of your stability depends on a single source. If one departure changes the structure, that concentration is the risk — not the client relationship.",
+      stat: "\u221228 pts",
+      statLabel: "projected drop",
       accent: "#C53030",
     },
     {
       label: "Continuity",
       title: "You can\u2019t work for 90 days.",
-      desc: "Continuity measures what happens to your income when labor stops. The Score reveals whether your structure survives a gap \u2014 or collapses with it.",
-      stat: "27 days",
-      statLabel: "median cash buffer",
+      desc: "Continuity measures what happens to your income when labor stops. The score reveals whether your structure survives a gap — or resets with it.",
+      stat: "1.8 mo",
+      statLabel: "continuity window",
       accent: "#B7791F",
     },
     {
       label: "Visibility",
       title: "A contract doesn\u2019t renew.",
-      desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the Score shows how much of your forward certainty disappears with it.",
-      stat: "0 days",
-      statLabel: "advance warning",
+      desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the score shows how much of your forward certainty disappears with it.",
+      stat: "4%",
+      statLabel: "secured ahead",
       accent: C.teal,
     },
   ];
@@ -131,17 +131,17 @@ function PressureNarrative() {
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
           <div style={{ ...T.meta, fontWeight: 500, color: C.teal, marginBottom: 20 }}>
-            The Pressure You Already Feel
+            What the score measures
           </div>
           <h2 style={{
             ...h2Style(m), color: C.sandText,
             maxWidth: 640, margin: "0 auto",
             marginBottom: sp(3),
           }}>
-            You already know something is fragile. The Score tells you exactly where.
+            Three structural dimensions. Each one can change everything.
           </h2>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 500, margin: "0 auto" }}>
-            These aren&rsquo;t hypotheticals. They&rsquo;re the three structural failures that collapse independent income.
+            These are real structural risks that the scoring model evaluates. The numbers below reflect a score of <span style={{ fontFamily: mono }}>72</span>.
           </p>
         </div>
 
@@ -297,7 +297,7 @@ function PricingCards() {
             <div style={{ flex: 1, marginBottom: sp(3), position: "relative" }}>
               {[
                 { text: "Everything in Free, plus:", bold: true },
-                { text: "4-page diagnostic interpreted from your structural inputs" },
+                { text: "3-page diagnostic interpreted from your structural inputs" },
                 { text: "PressureMap\u2122 structural intelligence specific to your profile" },
                 { text: "Structural action plan with projected score impact" },
                 { text: "Risk scenarios ranked by damage to your structure" },
@@ -371,7 +371,7 @@ function PricingCards() {
                 { text: "Everything in the Diagnostic Report, plus:", bold: true },
                 { text: "3 full assessments within 12 months" },
                 { text: "Take each assessment on your own schedule" },
-                { text: "Full 4-page report generated every time" },
+                { text: "Full 3-page report generated every time" },
                 { text: "Monitoring Portal with email sign-in" },
                 { text: "Save $58 vs. buying three reports separately" },
               ].map((f, i) => (
@@ -514,8 +514,8 @@ function Faq() {
 
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, a consequence sentence showing what your structure can absorb, and the single biggest structural factor limiting your score. No payment required." },
-    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 4-page structural diagnostic with PressureMap intelligence, ranked risk scenarios, projected actions, tradeoff analysis, a 30-day roadmap, and lifetime access to the RunPayway\u2122 Stability Simulator." },
-    { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a complete 4-page diagnostic report. You sign in with your email anytime to take your next assessment or review your history. It\u2019s $149/year \u2014 saving $58 compared to purchasing three reports individually." },
+    { q: "What does the RunPayway\u2122 Diagnostic Report include?", a: "A 3-page structural diagnostic with PressureMap intelligence, ranked risk scenarios, projected actions, tradeoff analysis, a 30-day roadmap, and lifetime access to the RunPayway\u2122 Stability Simulator." },
+    { q: "What does RunPayway\u2122 Stability Monitoring include?", a: "Three full assessments within 12 months. Each generates a complete 3-page diagnostic report. You sign in with your email anytime to take your next assessment or review your history. It\u2019s $149/year \u2014 saving $58 compared to purchasing three reports individually." },
     { q: "How is the score calculated?", a: "The scoring model evaluates fixed structural dimensions \u2014 recurrence, concentration, forward visibility, variability, labor dependence, and income quality \u2014 using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
     { q: "Is my information confidential?", a: "Yes. We never collect bank credentials, credit data, or financial account access. Your data is encrypted, never sold, and you can request deletion at any time." },
@@ -591,8 +591,8 @@ export default function PricingPage() {
     <div>
       <Hero />
       <PressureNarrative />
-      <PricingCards />
       <ReportCovers />
+      <PricingCards />
       <Trust />
       <Faq />
       <Cta />
