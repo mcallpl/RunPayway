@@ -97,7 +97,7 @@ function Hero() {
             About RunPayway&#8482;
           </h1>
           <p
-            style={{ ...body(m), color: "rgba(244,241,234,0.70)", maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
+            style={{ ...body(m), color: C.sandMuted, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
             RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. Fixed rules. No opinions. Just the math.
           </p>
@@ -214,7 +214,7 @@ function WhatModelMeasures() {
             >
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: C.teal, marginBottom: 16 }} />
               <h3 style={{ ...h3Style(m), fontWeight: 600, color: C.white, lineHeight: 1.12, marginBottom: 10 }}>{d.title}</h3>
-              <p style={{ ...T.meta, color: "rgba(255,255,255,0.70)", lineHeight: 1.65, margin: 0 }}>{d.desc}</p>
+              <p style={{ ...T.meta, color: C.sandMuted, lineHeight: 1.65, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
         </div>
@@ -358,7 +358,7 @@ function Verification() {
             {["SHA-256 Hash", "Model Version Stamp", "Immutable Timestamp", "QR Verification"].map((badge) => (
               <div key={badge} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${C.sandBorder}` }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal }} />
-                <span style={{ ...T.micro, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
+                <span style={{ ...T.micro, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.02em" }}>{badge}</span>
               </div>
             ))}
           </div>
@@ -513,7 +513,7 @@ function CtaSection() {
           <p
             style={{
               ...bodySm(m),
-              color: "rgba(244,241,234,0.60)",
+              color: C.sandMuted,
               marginBottom: 12,
               maxWidth: 440,
               marginLeft: "auto",
@@ -525,7 +525,7 @@ function CtaSection() {
           <p
             style={{
               ...T.meta,
-              color: "rgba(244,241,234,0.40)",
+              color: C.sandLight,
               lineHeight: 1.65,
               marginBottom: 28,
               maxWidth: 440,
