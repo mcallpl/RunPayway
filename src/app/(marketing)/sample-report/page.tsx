@@ -4,7 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
-import { C, mono, sans, canHover } from "@/lib/design-tokens";
+import {
+  C, T, mono, sans, sp, maxW, secPad, px,
+  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
+  canHover,
+} from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -32,13 +36,15 @@ function useMobile(bp = 768) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Tokens                                                             */
+/*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const gradient = C.navy;
-const SY = { desktop: 120, mobile: 72 };
-const PAD = { desktop: 56, mobile: 24 };
-const MAX = 1100;
+const fadeIn = (v: boolean, delay = 0) => ({
+  opacity: v ? 1 : 0,
+  transform: v ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+});
+
 
 /* ================================================================== */
 /* 1. HERO                                                             */
@@ -48,15 +54,18 @@ function Hero() {
   const m = useMobile();
 
   return (
-    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 28 }}>Sample Report</div>
-          <h1 style={{ fontSize: m ? 36 : 56, fontFamily: sans, fontWeight: 600, color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
-            See what the report looks like<br />before you buy.
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+            <span style={{ ...T.label, color: C.teal }}>Sample Report</span>
+            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
+          </div>
+          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
+            See exactly what the{!m && <br />} diagnostic report contains.
           </h1>
-          <p style={{ fontSize: m ? 16 : 20, color: C.sandMuted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
-            Three pages of structural diagnosis. An interactive simulator. Every number is yours.
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 500, margin: "0 auto" }}>
+            Three pages. Every section generated from your structural inputs. Here is the report for a score of <span style={{ fontFamily: mono, color: C.sandText }}>72</span>.
           </p>
         </div>
       </div>
@@ -64,300 +73,321 @@ function Hero() {
   );
 }
 
+
 /* ================================================================== */
-/* 2. REPORT PAGES PREVIEW                                             */
+/* 2. REPORT PAGES — Exact match to actual report structure            */
 /* ================================================================== */
-function ReportPreview() {
+function ReportPages() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
   const pages = [
     {
-      num: "01", title: "Score & Structural Diagnosis", color: C.purple,
+      num: "01", title: "Cover & Score", color: C.purple,
       screen: (
-        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 42, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</div>
-            <div style={{ fontSize: 13, fontFamily: mono, color: C.sandLight, marginTop: 2 }}>/100</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)" }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
-            </div>
-            <div style={{ fontSize: 11, fontFamily: mono, color: C.sandLight, marginTop: 6 }}>3 points to High Stability</div>
+        <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
+          <div style={{ fontSize: 9, fontFamily: mono, letterSpacing: "0.10em", color: C.sandLight, marginBottom: 10 }}>INCOME STABILITY REPORT</div>
+          <div style={{ fontSize: 10, letterSpacing: "0.08em", color: C.teal, marginBottom: 12 }}>STRUCTURAL ASSESSMENT &middot; CONFIDENTIAL</div>
+          <div style={{ fontFamily: mono, fontSize: 42, fontWeight: 300, color: C.sandText, lineHeight: 1, marginBottom: 2 }}>72</div>
+          <div style={{ fontFamily: mono, fontSize: 11, color: C.sandLight, marginBottom: 10 }}>/ 100</div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 6 }}>
+            <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
+            <span style={{ fontSize: 11, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
           </div>
-          <div style={{ padding: "10px 12px", borderRadius: 6, borderLeft: `2px solid ${C.sandText}`, backgroundColor: "rgba(244,241,234,0.04)", marginBottom: 8 }}>
-            <div style={{ fontSize: 12, color: C.sandMuted, lineHeight: 1.5 }}>Your project-based income has limited forward visibility. Only 33% is secured ahead of time.</div>
-          </div>
-          <div style={{ padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 3, textTransform: "uppercase" as const }}>In Plain English</div>
-            <div style={{ fontSize: 11, color: C.sandLight, lineHeight: 1.4 }}>Interpreted using your industry and structure.</div>
-          </div>
+          <div style={{ fontFamily: mono, fontSize: 10, color: C.teal, marginTop: 4 }}>3 points to High Stability</div>
+          <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "10px auto", width: "60%" }} />
+          <div style={{ fontSize: 9, color: C.sandLight }}>Model RP-2.0 &middot; Confidential</div>
         </div>
       ),
-      desc: "Your score, plain-English interpretation generated from your structural inputs, biggest constraint, projected impact of fixing it, and distance to the next stability band.",
+      desc: "Your Income Stability Score, stability band, distance to the next band, and a confidential access code for the Command Center.",
     },
     {
-      num: "02", title: "PressureMap & Income Structure", color: C.teal,
+      num: "02", title: "Key Findings", color: C.teal,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, marginBottom: 6, textTransform: "uppercase" as const }}>PressureMap&#8482;</div>
-          <div style={{ fontSize: 11, color: C.sandLight, marginBottom: 10 }}>Independent Contractor - Contract-Based - Manufacturing</div>
-          {[
-            { label: "What is most likely to disrupt stability", color: C.bandLimited },
-            { label: "What is working in your favor", color: C.teal },
-            { label: "Highest-leverage move right now", color: C.purple },
-          ].map(s => (
-            <div key={s.label} style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: s.color, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>{s.label}</div>
-              <div style={{ height: 6, backgroundColor: "rgba(244,241,234,0.04)", borderRadius: 3, marginTop: 3 }} />
-            </div>
-          ))}
-          <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "10px 0" }} />
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 6, textTransform: "uppercase" as const }}>How your income breaks down</div>
-          <div style={{ display: "flex", gap: 1, height: 6, borderRadius: 3, overflow: "hidden", marginBottom: 6 }}>
-            <div style={{ flex: 63, backgroundColor: C.navy }} />
-            <div style={{ flex: 17, backgroundColor: C.sandLight }} />
-            <div style={{ flex: 20, backgroundColor: C.teal }} />
+          {/* Key takeaway */}
+          <div style={{ padding: "8px 10px", borderRadius: 6, borderLeft: `2px solid ${C.purple}`, backgroundColor: "rgba(75,63,174,0.04)", marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.purple, marginBottom: 2, textTransform: "uppercase" as const }}>Key Takeaway</div>
+            <div style={{ fontSize: 11, color: C.sandMuted, lineHeight: 1.4 }}>Solid foundation — but income concentration is limiting the score. One client carries too much weight.</div>
           </div>
-          <div style={{ display: "flex", gap: 4 }}>
-            <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
-              <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.sandText }}>72 to 44</div>
-              <div style={{ fontSize: 9, color: C.sandLight }}>If biggest source leaves</div>
+
+          {/* Income structure bar */}
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 4, textTransform: "uppercase" as const }}>Income Structure</div>
+            <div style={{ display: "flex", gap: 1, height: 5, borderRadius: 3, overflow: "hidden" }}>
+              <div style={{ flex: 55, backgroundColor: C.bandLimited }} />
+              <div style={{ flex: 20, backgroundColor: C.amber }} />
+              <div style={{ flex: 25, backgroundColor: C.teal }} />
             </div>
-            <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
-              <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.sandText }}>1.8 mo</div>
-              <div style={{ fontSize: 9, color: C.sandLight }}>If you stop working</div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
+              <span style={{ fontSize: 9, color: C.sandLight }}>Active <span style={{ fontFamily: mono }}>55%</span></span>
+              <span style={{ fontSize: 9, color: C.sandLight }}>Semi-persistent <span style={{ fontFamily: mono }}>20%</span></span>
+              <span style={{ fontSize: 9, color: C.sandLight }}>Persistent <span style={{ fontFamily: mono }}>25%</span></span>
+            </div>
+          </div>
+
+          {/* In Plain English */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+            <div style={{ padding: "6px 8px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.04)" }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: C.teal, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginBottom: 2 }}>The Strength</div>
+              <div style={{ fontSize: 10, color: C.sandMuted, lineHeight: 1.3 }}>Low variability. Earnings are consistent month to month.</div>
+            </div>
+            <div style={{ padding: "6px 8px", borderRadius: 4, backgroundColor: "rgba(155,44,44,0.03)" }}>
+              <div style={{ fontSize: 9, fontWeight: 700, color: C.bandLimited, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginBottom: 2 }}>The Risk</div>
+              <div style={{ fontSize: 10, color: C.sandMuted, lineHeight: 1.3 }}>High concentration. One source carries most of the weight.</div>
             </div>
           </div>
         </div>
       ),
-      desc: "PressureMap structural intelligence specific to your industry, income breakdown, biggest source loss impact, continuity window, strongest and weakest structural factors.",
+      desc: "Plain-English interpretation, key takeaway, income structure breakdown (active / semi-persistent / persistent), structural strengths and risks — all generated from your inputs.",
     },
     {
-      num: "03", title: "Fragility & Pressure Test", color: C.bandLimited,
+      num: "03", title: "What To Do Next", color: C.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 8, textTransform: "uppercase" as const }}>Ranked by damage</div>
+          {/* Action steps */}
           {[
-            { rank: "#1", title: "Your largest client stops paying", score: "72 to 44", color: C.bandLimited },
-            { rank: "#2", title: "You cannot work for 90 days", score: "72 to 52", color: C.bandEstablished },
-            { rank: "#3", title: "New work arrives later than expected", score: "72 to 61", color: C.bandEstablished },
-          ].map((s, i) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderLeft: `2px solid ${s.color}`, paddingLeft: 10, marginBottom: 4 }}>
-              <span style={{ fontSize: 12, fontWeight: 500, color: C.sandMuted }}>{s.title}</span>
-              <span style={{ fontSize: 12, fontWeight: 600, fontFamily: mono, color: C.sandLight, flexShrink: 0, marginLeft: 8 }}>{s.score}</span>
-            </div>
-          ))}
-          <div style={{ marginTop: 8, padding: "8px 10px", borderRadius: 6, backgroundColor: "rgba(244,241,234,0.03)" }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: C.sandLight, letterSpacing: "0.04em", textTransform: "uppercase" as const, marginBottom: 3 }}>How much can your income absorb?</div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: C.bandDeveloping }}>Moderate resilience</div>
-          </div>
-        </div>
-      ),
-      desc: "Ranked disruption scenarios with exact score drops, highest-leverage action plan, 30-day execution roadmap, and retake timing.",
-    },
-  ];
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
-      <div style={{ maxWidth: MAX, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Inside The Report</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
-            Three pages. Every section written for you.
-          </h2>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: m ? 32 : 48 }}>
-          {pages.map((page, i) => {
-            const isRight = !m && i % 2 === 1;
-            return (
-              <div key={page.num} style={{
-                display: m ? "flex" : "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: m ? 20 : 40,
-                flexDirection: "column",
-                alignItems: m ? "stretch" : "center",
-                opacity: visible ? 1 : 0,
-                transform: visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 600ms ease-out ${150 + i * 100}ms, transform 600ms ease-out ${150 + i * 100}ms`,
-              }}>
-                {/* Screen preview */}
-                <div style={{ order: m ? 0 : isRight ? 1 : 0 }}>
-                  <div style={{ backgroundColor: C.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${C.border}` }}>
-                    <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <Image src={logoWhite} alt="RunPayway" width={80} height={10} style={{ height: "auto", opacity: 0.6 }} />
-                      <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.sandLight }}>Page {page.num}</span>
-                    </div>
-                    {page.screen}
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", order: m ? 1 : isRight ? 0 : 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: C.sand, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, fontFamily: mono, color: page.color, position: "relative", overflow: "hidden" }}>
-                      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: page.color, opacity: 0.6 }} />
-                      {page.num}
-                    </div>
-                    <h3 style={{ fontSize: m ? 22 : 26, fontWeight: 600, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", margin: 0 }}>{page.title}</h3>
-                  </div>
-                  <p style={{ fontSize: m ? 15 : 17, color: C.muted, lineHeight: 1.65, margin: 0 }}>{page.desc}</p>
-                </div>
+            { step: "1", action: "Reduce concentration below 50%", lift: "+5", color: C.purple },
+            { step: "2", action: "Secure 3 months forward visibility", lift: "+4", color: C.teal },
+            { step: "3", action: "Add one recurring revenue stream", lift: "+3", color: C.navy },
+          ].map((a, i) => (
+            <div key={a.step} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 0", borderBottom: i < 2 ? `1px solid ${C.sandBorder}` : "none" }}>
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                <span style={{ fontFamily: mono, fontSize: 10, fontWeight: 700, color: a.color, minWidth: 12 }}>{a.step}</span>
+                <span style={{ fontSize: 12, fontWeight: 500, color: C.sandMuted }}>{a.action}</span>
               </div>
-            );
-          })}
+              <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: C.teal }}>{a.lift}</span>
+            </div>
+          ))}
+
+          {/* Combined impact */}
+          <div style={{ marginTop: 8, padding: "6px 10px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontSize: 10, color: C.sandLight }}>Combined projected score</span>
+            <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.teal }}>72 &rarr; 82</span>
+          </div>
+
+          {/* Command Center CTA */}
+          <div style={{ marginTop: 8, padding: "6px 10px", borderRadius: 4, border: `1px solid ${C.sandBorder}`, textAlign: "center" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, textTransform: "uppercase" as const, marginBottom: 2 }}>Command Center</div>
+            <div style={{ fontSize: 10, color: C.sandMuted }}>PressureMap&#8482; &middot; Simulator &middot; 12-week roadmap</div>
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================== */
-/* 3. SIMULATOR PREVIEW                                                */
-/* ================================================================== */
-function SimulatorPreview() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const [activeTab, setActiveTab] = useState<number | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleEnter = (i: number) => { if (timerRef.current) clearTimeout(timerRef.current); setActiveTab(i); };
-  const handleLeave = () => { if (timerRef.current) clearTimeout(timerRef.current); timerRef.current = setTimeout(() => setActiveTab(null), 6000); };
-
-  const tabs = [
-    { label: "Adjust any dimension", desc: "Drag sliders to test changes" },
-    { label: "Real-time score updates", desc: "Watch the projected score shift" },
-    { label: "See what matters most", desc: "Which change has the biggest impact" },
+      ),
+      desc: "Highest-leverage actions ranked by projected score impact, combined improvement projection, 30-day execution roadmap, and Command Center access with PressureMap\u2122 and lifetime simulator.",
+    },
   ];
 
-  const screenDefault = (
-    <>
-      <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
-        {[{ l: "CURRENT", v: "72", c: C.sandText }, { l: "SIMULATED", v: "82", c: C.teal }, { l: "IMPACT", v: "+10", c: C.teal }].map(col => (
-          <div key={col.l} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: m ? "10px 6px" : "12px 10px", textAlign: "center" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.sandLight, marginBottom: 3 }}>{col.l}</div>
-            <div style={{ fontSize: m ? 22 : 28, fontWeight: 300, fontFamily: mono, color: col.c, lineHeight: 1 }}>{col.v}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{ display: "flex", height: 4, borderRadius: 2, overflow: "hidden", marginBottom: 14, position: "relative" }}>
-        <div style={{ flex: 30, backgroundColor: "rgba(220,74,74,0.25)" }} /><div style={{ flex: 20, backgroundColor: "rgba(212,148,10,0.25)" }} /><div style={{ flex: 25, backgroundColor: "rgba(59,130,246,0.6)" }} /><div style={{ flex: 25, backgroundColor: "rgba(26,122,109,0.25)" }} />
-        <div style={{ position: "absolute", top: "50%", left: "55%", transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${C.teal}`, boxShadow: `0 0 6px rgba(31,109,122,0.4)` }} />
-      </div>
-    </>
-  );
-
-  const screenSliders = (
-    <div>
-      {["Recurring Revenue", "Source Concentration", "Forward Visibility", "Earnings Consistency", "Labor Independence"].map((dim, i) => (
-        <div key={dim} style={{ marginBottom: i < 4 ? 12 : 0 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: C.sandLight }}>{dim}</span>
-            <span style={{ fontSize: 13, fontFamily: mono, color: C.sandLight }}>{[15, 55, 25, 50, 10][i]}%</span>
-          </div>
-          <div style={{ height: 4, backgroundColor: C.sandBorder, borderRadius: 2, position: "relative" }}>
-            <div style={{ height: 4, backgroundColor: C.teal, borderRadius: 2, width: `${[15, 55, 25, 50, 10][i]}%`, opacity: 0.7 }} />
-            <div style={{ position: "absolute", top: "50%", left: `${[15, 55, 25, 50, 10][i]}%`, transform: "translate(-50%, -50%)", width: 9, height: 9, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${C.teal}` }} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
-  const screenImpact = (
-    <div>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10, textTransform: "uppercase" as const }}>Highest Impact</div>
-      {[{ a: "Add recurring revenue", l: "+8" }, { a: "Reduce concentration", l: "+5" }, { a: "Extend visibility", l: "+4" }].map((item, i) => (
-        <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? `1px solid ${C.sandBorder}` : "none" }}>
-          <span style={{ fontSize: 14, fontWeight: 500, color: C.sandMuted }}>{item.a}</span>
-          <span style={{ fontSize: 18, fontWeight: 700, fontFamily: mono, color: C.teal }}>{item.l}</span>
-        </div>
-      ))}
-      <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.12)" }}>
-        <div style={{ fontSize: 13, fontFamily: mono, color: C.sandMuted }}>All three: 48 &#8594; 65 (+17)</div>
-      </div>
-    </div>
-  );
-
-  const screens = [screenSliders, screenDefault, screenImpact];
-  const current = activeTab !== null ? screens[activeTab] : screenDefault;
-
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
-      <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Simulator</div>
-          <h2 style={{ fontSize: m ? 28 : 40, fontFamily: sans, fontWeight: 600, color: C.sandText, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 8 }}>
-            Model scenarios against your actual data.
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
+        </div>
+        <div style={{ marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The report.
           </h2>
-          <p style={{ fontSize: m ? 15 : 16, color: C.sandLight, lineHeight: 1.5, margin: "0 auto" }}>
-            Included with your report. Lifetime access.
+          <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
+            Three pages generated from your structural inputs. Every section is personalized to your operating context.
           </p>
         </div>
 
-        <div style={{ backgroundColor: "rgba(244,241,234,0.03)", borderRadius: 16, border: `1px solid ${C.sandBorder}`, padding: m ? "20px 16px" : "24px 20px", marginBottom: 12, boxShadow: "0 12px 48px rgba(0,0,0,0.25)", minHeight: m ? 180 : 200, borderColor: activeTab !== null ? "rgba(31,109,122,0.25)" : C.sandBorder, transition: "opacity 600ms ease-out 200ms, transform 600ms ease-out 200ms, border-color 300ms ease", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)" }}>
-          <div key={activeTab ?? "d"}>{current}</div>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 8 }}>
-          {tabs.map((tab, i) => {
-            const active = activeTab === i;
-            return (
-              <div key={tab.label} onMouseEnter={() => handleEnter(i)} onMouseLeave={handleLeave} onClick={() => handleEnter(i)} style={{
-                padding: "14px 16px", borderRadius: 10, cursor: "pointer",
-                backgroundColor: active ? "rgba(31,109,122,0.12)" : "rgba(244,241,234,0.03)",
-                border: `1px solid ${active ? "rgba(31,109,122,0.30)" : C.sandBorder}`,
-                transition: "all 200ms ease",
-              }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: active ? C.teal : C.sandText, marginBottom: 2, transition: "color 200ms" }}>{tab.label}</div>
-                <div style={{ fontSize: 13, color: active ? "rgba(31,109,122,0.60)" : C.sandLight, lineHeight: 1.4, transition: "color 200ms" }}>{tab.desc}</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? 48 : 64 }}>
+          {pages.map((page, i) => (
+            <div key={page.num} style={{
+              display: m ? "flex" : "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: m ? 20 : 48,
+              flexDirection: "column",
+              alignItems: m ? "stretch" : "center",
+              ...fadeIn(visible, 100 + i * 120),
+            }}>
+              {/* Screen preview */}
+              <div style={{ order: m ? 0 : i % 2 === 1 ? 1 : 0 }}>
+                <div style={{ backgroundColor: C.navy, borderRadius: 14, overflow: "hidden", boxShadow: "0 6px 24px rgba(14,26,43,0.10)", border: `1px solid ${C.border}` }}>
+                  <div style={{ padding: "6px 12px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Image src={logoWhite} alt="RunPayway" width={80} height={10} style={{ height: "auto", opacity: 0.5 }} />
+                    <span style={{ fontSize: 11, fontFamily: mono, color: C.sandLight }}>Page {page.num}</span>
+                  </div>
+                  {page.screen}
+                </div>
               </div>
-            );
-          })}
+
+              {/* Description */}
+              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", order: m ? 1 : i % 2 === 1 ? 0 : 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                  <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: page.color }}>{page.num}</span>
+                  <h3 style={{ ...h3Style(m), color: C.navy, margin: 0 }}>{page.title}</h3>
+                </div>
+                <p style={{ ...body(m), color: C.muted, margin: 0 }}>{page.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
+
 /* ================================================================== */
-/* 4. WHAT'S INCLUDED                                                  */
+/* 3. COMMAND CENTER — Simulator + PressureMap                         */
+/* ================================================================== */
+function CommandCenter() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.sandLight, fontFamily: mono }}>02</span>
+        </div>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The Command Center.
+          </h2>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto" }}>
+            Included with your diagnostic. Lifetime access. Every tool operates on your actual structural data.
+          </p>
+        </div>
+
+        {/* Simulator preview */}
+        <div style={{ backgroundColor: "rgba(244,241,234,0.03)", borderRadius: 14, border: `1px solid ${C.sandBorder}`, padding: m ? "20px 16px" : "24px 20px", marginBottom: 16, ...fadeIn(visible, 150) }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <div style={{ ...T.label, fontSize: 11, color: C.teal }}>Stability Simulator</div>
+            <div style={{ fontSize: 10, fontFamily: mono, color: C.sandLight }}>Lifetime Access</div>
+          </div>
+
+          <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
+            {[
+              { l: "CURRENT", v: "72", c: C.sandText },
+              { l: "SIMULATED", v: "82", c: C.teal },
+              { l: "IMPACT", v: "+10", c: C.teal },
+            ].map(col => (
+              <div key={col.l} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: m ? "10px 6px" : "12px 10px", textAlign: "center" }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: C.sandLight, marginBottom: 3 }}>{col.l}</div>
+                <div style={{ fontSize: m ? 22 : 28, fontWeight: 300, fontFamily: mono, color: col.c, lineHeight: 1 }}>{col.v}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Dimension sliders */}
+          {[
+            { name: "Recurring Revenue", val: 45 },
+            { name: "Concentration", val: 40 },
+            { name: "Forward Visibility", val: 33 },
+          ].map((dim) => (
+            <div key={dim.name} style={{ marginBottom: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                <span style={{ fontSize: 12, color: C.sandLight }}>{dim.name}</span>
+                <span style={{ fontSize: 11, fontFamily: mono, color: C.sandLight }}>{dim.val}%</span>
+              </div>
+              <div style={{ height: 4, backgroundColor: C.sandBorder, borderRadius: 2, position: "relative" }}>
+                <div style={{ height: 4, backgroundColor: C.teal, borderRadius: 2, width: `${dim.val}%`, opacity: 0.7 }} />
+                <div style={{ position: "absolute", top: "50%", left: `${dim.val}%`, transform: "translate(-50%, -50%)", width: 8, height: 8, borderRadius: "50%", backgroundColor: "#fff", border: `2px solid ${C.teal}` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tool list */}
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 8, ...fadeIn(visible, 250) }}>
+          {[
+            { name: "PressureMap\u2122", desc: "Structural intelligence specific to your industry and profile" },
+            { name: "What-If Simulator", desc: "Test any structural change and see the projected score impact" },
+            { name: "12-Week Roadmap", desc: "Execution plan based on your highest-leverage actions" },
+            { name: "Industry Benchmarks", desc: "Your score relative to peers in your sector" },
+          ].map((tool) => (
+            <div key={tool.name} style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(244,241,234,0.03)", border: `1px solid ${C.sandBorder}` }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText, marginBottom: 3 }}>{tool.name}</div>
+              <div style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.4 }}>{tool.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* 4. WHAT'S INCLUDED — Comprehensive feature list                     */
 /* ================================================================== */
 function WhatsIncluded() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
-  const items = [
-    { cat: "Diagnosis", features: ["Plain-English interpretation generated from your structural inputs", "PressureMap\u2122 structural intelligence", "Income composition breakdown", "Biggest source loss impact", "Strongest and weakest structural factors"] },
-    { cat: "Risks", features: ["Ranked disruption scenarios with exact drops", "Structural absorbency assessment", "Behavioral pattern to watch", "Band shift warnings"] },
-    { cat: "Action", features: ["Structural action plan interpreted from your inputs", "Structural tradeoff analysis", "30-day execution roadmap", "Retake timing with triggers"] },
-    { cat: "Tools", features: ["RunPayway\u2122 Stability Simulator (lifetime)", "Report delivered to your email", "Cloud-stored record (never lost)", "Deterministic scoring — same answers, same score"] },
+  const groups = [
+    {
+      cat: "Diagnostic Report",
+      features: [
+        "Income Stability Score (0\u2013100) with band classification",
+        "Primary structural constraint identified",
+        "Plain-English interpretation generated from your inputs",
+        "Income composition breakdown (active / semi-persistent / persistent)",
+        "PressureMap\u2122 structural intelligence for your industry",
+      ],
+    },
+    {
+      cat: "Risk Analysis",
+      features: [
+        "Ranked disruption scenarios with exact score drops",
+        "Largest source removal impact (72 \u2192 44)",
+        "90-day work interruption projection",
+        "Fragility class assessment",
+        "Cross-factor interaction effects",
+      ],
+    },
+    {
+      cat: "Action Plan",
+      features: [
+        "Actions ranked by projected score impact",
+        "Combined improvement projection (72 \u2192 82)",
+        "Structural tradeoff analysis per action",
+        "30-day execution roadmap",
+        "Reassessment triggers",
+      ],
+    },
+    {
+      cat: "Command Center",
+      features: [
+        "Stability Simulator with lifetime access",
+        "PressureMap\u2122 zone analysis",
+        "12-week execution roadmap",
+        "Industry-specific benchmarks",
+        "Report delivered to your email",
+      ],
+    },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Everything Included</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
-            One report. Nothing withheld.
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            Everything included.
           </h2>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 480 }}>
+            One purchase. No subscription. No upsell.
+          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 20 : 24 }}>
-          {items.map((group, gi) => (
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 16 : 20 }}>
+          {groups.map((group, gi) => (
             <div key={group.cat} style={{
-              padding: m ? "24px 20px" : "28px 24px", borderRadius: 14,
-              backgroundColor: C.sand, border: `1px solid ${C.border}`,
-              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)",
-              transition: `opacity 500ms ease-out ${100 + gi * 80}ms, transform 500ms ease-out ${100 + gi * 80}ms`,
+              padding: m ? "24px 20px" : "28px 24px", borderRadius: 12,
+              backgroundColor: C.sand, border: `1px solid ${C.softBorder}`,
+              ...fadeIn(visible, 100 + gi * 80),
             }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, textTransform: "uppercase" as const, marginBottom: 16 }}>{group.cat}</div>
+              <div style={{ ...T.label, fontSize: 11, color: C.teal, marginBottom: 16 }}>{group.cat}</div>
               {group.features.map((f) => (
-                <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                  <svg width="16" height="16" viewBox="0 0 16 16" style={{ flexShrink: 0, marginTop: 2 }}><circle cx="8" cy="8" r="7" fill="none" stroke={C.teal} strokeWidth="1.5" /><path d="M5 8l2 2 4-4" stroke={C.teal} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  <span style={{ fontSize: 15, color: C.navy, lineHeight: 1.45 }}>{f}</span>
+                <div key={f} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 14, color: C.navy, lineHeight: 1.5 }}>{f}</span>
                 </div>
               ))}
             </div>
@@ -368,40 +398,33 @@ function WhatsIncluded() {
   );
 }
 
+
 /* ================================================================== */
 /* 5. CTA                                                              */
 /* ================================================================== */
 function Cta() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const [hovered, setHovered] = useState(false);
 
   return (
-    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, color: C.sandText, fontFamily: sans, fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
-            Ready to see yours?
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
+            Your income has a structure.{!m && <br />} Now you can measure it.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: C.sandMuted, lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
-            Your free score shows where you stand. The full report shows what to do about it.
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
+            The free score shows where you stand. The full diagnostic shows what to do about it.
           </p>
-          <Link
-            href="/pricing"
-            onMouseEnter={() => canHover() && setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-              backgroundColor: C.sandText, color: C.navy, fontSize: 16, fontWeight: 600,
-              textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
-              transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease",
-            }}
-          >
+          <Link href="/pricing" style={{
+            ...ctaButtonLight,
+            height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+            backgroundColor: C.white, color: C.navy,
+          }}>
             Start Your Assessment
           </Link>
-          <div style={{ marginTop: 20, fontSize: 14, color: C.sandLight }}>
-            Free to start &#183; Under 2 minutes &#183; $69 for the full report
+          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
+            Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report
           </div>
         </div>
       </div>
@@ -409,15 +432,16 @@ function Cta() {
   );
 }
 
+
 /* ================================================================== */
-/* MAIN EXPORT                                                         */
+/* EXPORT                                                              */
 /* ================================================================== */
 export default function SampleReportPage() {
   return (
-    <div style={{ fontFamily: sans }}>
+    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       <Hero />
-      <ReportPreview />
-      <SimulatorPreview />
+      <ReportPages />
+      <CommandCenter />
       <WhatsIncluded />
       <Cta />
     </div>
