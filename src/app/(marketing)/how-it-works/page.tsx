@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
-import { C, T, mono, sp, maxW, padX, secPad, px, h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButton, ctaButtonLight, navStyle, canHover } from "@/lib/design-tokens";
+import { C, T, mono, sans, sp, secPad, px, h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButton, ctaButtonLight, navStyle, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -86,7 +86,7 @@ function Journey() {
           <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Structural Assessment</div>
           <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: C.sandText, marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
           {["Less than 1 month", "1\u20132 months", "3\u20135 months", "6\u201311 months", "12 or more months"].map((opt, i) => (
-            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(31,109,122,0.15)" : "rgba(244,241,234,0.04)", border: i === 2 ? `1px solid ${C.teal}` : "1px solid rgba(244,241,234,0.06)", fontSize: 14, color: i === 2 ? C.teal : "rgba(244,241,234,0.50)", fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
+            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(31,109,122,0.15)" : `${C.sandBorder}`, border: i === 2 ? `1px solid ${C.teal}` : `1px solid ${C.sandBorder}`, fontSize: 14, color: i === 2 ? C.teal : C.sandMuted, fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
           ))}
         </div>
       ),
@@ -100,13 +100,13 @@ function Journey() {
           <div style={{ ...T.label, color: C.sandLight, marginBottom: 16 }}>Calculating</div>
           {["Evaluating structural factors", "Applying cross-factor interactions", "Computing stability classification", "Generating structural diagnosis"].map((step, i) => (
             <div key={step} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
-              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? C.teal : "rgba(244,241,234,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? C.teal : C.sandBorder, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {i < 3 && <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="#F4F1EA" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>}
               </div>
-              <span style={{ fontSize: 14, color: i < 3 ? "rgba(244,241,234,0.60)" : "rgba(244,241,234,0.25)", fontWeight: i === 3 ? 500 : 400 }}>{step}</span>
+              <span style={{ fontSize: 14, color: i < 3 ? C.sandMuted : C.sandLight, fontWeight: i === 3 ? 500 : 400 }}>{step}</span>
             </div>
           ))}
-          <div style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.06)", marginTop: 8 }}>
+          <div style={{ height: 3, borderRadius: 2, backgroundColor: C.sandBorder, marginTop: 8 }}>
             <div style={{ height: 3, borderRadius: 2, backgroundColor: C.teal, width: "75%" }} />
           </div>
         </div>
@@ -119,12 +119,12 @@ function Journey() {
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
           <div style={{ fontFamily: mono, fontSize: 48, fontWeight: 600, color: C.sandText, lineHeight: 1, marginBottom: 4 }}>48</div>
-          <div style={{ fontFamily: mono, fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
+          <div style={{ fontFamily: mono, fontSize: 14, color: C.sandLight, marginBottom: 12 }}>out of 100</div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 12 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.bandDeveloping }} />
             <span style={{ fontSize: 13, fontWeight: 600, color: C.bandDeveloping }}>Developing Stability</span>
           </div>
-          <div style={{ fontFamily: mono, fontSize: 13, color: "rgba(244,241,234,0.40)", lineHeight: 1.5 }}>12 points to Established</div>
+          <div style={{ fontFamily: mono, fontSize: 13, color: C.sandLight, lineHeight: 1.5 }}>12 points to Established</div>
         </div>
       ),
     },
@@ -140,9 +140,9 @@ function Journey() {
             { num: "03", title: "Disruption Analysis", color: C.bandLimited },
             { num: "04", title: "Best Next Move", color: C.purple },
           ].map((p, i) => (
-            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 3 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
+            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 3 ? `1px solid ${C.sandBorder}` : "none" }}>
               <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
-              <span style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.60)" }}>{p.title}</span>
+              <span style={{ fontSize: 14, fontWeight: 500, color: C.sandMuted }}>{p.title}</span>
             </div>
           ))}
         </div>

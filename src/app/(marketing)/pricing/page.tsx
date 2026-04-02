@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
-  C, T, mono, sp, maxW, padX, textMax,
+  C, T, mono, sans, sp, maxW, padX, textMax,
   secPad, px,
   h1, h2Style, h3Style, body, bodySm,
   cardStyle, ctaButton, ctaButtonLight, navStyle,
@@ -65,12 +65,12 @@ function Hero() {
           <h1 style={{ ...h1(m), color: C.sandText, marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
             Know your number.<br />Then change it.
           </h1>
-          <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
+          <p style={{ fontSize: m ? 16 : 20, color: C.sandMuted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
             Your free score instantly. The full diagnostic for <span style={{ fontFamily: mono }}>$69</span> — or track your progress over 12 months for <span style={{ fontFamily: mono }}>$149</span>.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
             {["No bank connection", "Full refund guarantee", "Instant results"].map(t => (
-              <span key={t} style={{ ...T.micro, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>{t}</span>
+              <span key={t} style={{ ...T.micro, fontWeight: 500, color: C.sandLight }}>{t}</span>
             ))}
           </div>
         </div>
@@ -184,7 +184,7 @@ function PressureNarrative() {
                 <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: sp(2) }}>
                   {s.title}
                 </h3>
-                <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", margin: 0 }}>
+                <p style={{ ...body(m), color: C.sandMuted, margin: 0 }}>
                   {s.desc}
                 </p>
               </div>
@@ -358,7 +358,7 @@ function PricingCards() {
               <div style={{ ...T.label, fontSize: 13, color: C.sandLight, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
                 <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>$149</span>
-                <span style={{ ...T.meta, color: "rgba(244,241,234,0.45)" }}>/year</span>
+                <span style={{ ...T.meta, color: C.sandLight }}>/year</span>
               </div>
               <div style={{ ...T.meta, color: C.sandLight, marginTop: 4 }}>
                 <span style={{ fontFamily: mono }}>3</span> assessments &middot; save <span style={{ fontFamily: mono }}>$58</span> vs. buying separately
@@ -489,14 +489,14 @@ function Trust() {
               transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
             }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.sandText, marginBottom: 6 }}>{b.title}</div>
-              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)" }}>{b.desc}</div>
+              <div style={{ ...T.meta, color: C.sandLight }}>{b.desc}</div>
             </div>
           ))}
         </div>
 
         <div style={{ textAlign: "center", marginTop: sp(4), opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms" }}>
           <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 12, border: `1px solid ${C.sandBorder}` }}>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", margin: 0, fontWeight: 500 }}>
+            <p style={{ fontSize: 15, color: C.sandMuted, margin: 0, fontWeight: 500 }}>
               Deterministic &#183; Fixed rules &#183; Versioned &#183; Model RP-2.0
             </p>
           </div>
@@ -577,7 +577,7 @@ function Cta() {
             <span className="tick tick-navy" />
             Get My Free Score
           </Link>
-          <div style={{ marginTop: 20, ...T.meta, color: "rgba(250,249,247,0.35)" }}>
+          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
             Free to start &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>

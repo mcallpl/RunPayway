@@ -548,7 +548,7 @@ function CtaSection() {
           >
             Get My Free Score
           </Link>
-          <div style={{ marginTop: 16, ...T.meta, color: "rgba(244,241,234,0.40)" }}>
+          <div style={{ marginTop: 16, ...T.meta, color: C.sandLight }}>
             Free to start &#183; No bank connection &#183; No credit pull
           </div>
         </div>

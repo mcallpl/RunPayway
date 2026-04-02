@@ -332,7 +332,11 @@ function TwoLayers() {
             <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 12 }}>Layer 1 — Core Score</div>
             <h3 style={{ ...h3Style(m), fontFamily: sans, color: C.navy, marginBottom: 12 }}>The number.</h3>
             <p style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.muted, marginBottom: 16 }}>Generated from fixed structural questions only. No contextual input can alter it.</p>
-            {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
+            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ ...T.meta, fontFamily: sans, color: C.navy }}>Score (<span style={{ fontFamily: mono }}>0&#8211;100</span>)</span>
+            </div>
+            {["Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
               <div key={item} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
                 <span style={{ ...T.meta, fontFamily: sans, color: C.navy }}>{item}</span>
@@ -346,7 +350,7 @@ function TwoLayers() {
             {["Scenario selection", "Action priority ordering", "Language precision", "Category framing"].map(item => (
               <div key={item} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...T.meta, fontFamily: sans, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+                <span style={{ ...T.meta, fontFamily: sans, color: C.sandMuted }}>{item}</span>
               </div>
             ))}
           </div>
