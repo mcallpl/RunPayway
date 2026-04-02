@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import type { Translations } from "@/lib/i18n/types";
-import { C, sans, canHover } from "@/lib/design-tokens";
+import { C, mono, sans, maxW, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -386,56 +386,29 @@ export default function FaqPage() {
       {/* ============================================================ */}
       <section
         style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
+          backgroundColor: C.navy,
+          paddingTop: mobile ? 120 : 180,
+          paddingBottom: mobile ? 80 : 120,
+          paddingLeft: mobile ? 24 : 40,
+          paddingRight: mobile ? 24 : 40,
         }}
       >
-        {/* Grain overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
         <div
           ref={heroAnim.ref}
-          className="mx-auto"
           style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
+            maxWidth: maxW,
+            margin: "0 auto",
             textAlign: "center",
             opacity: heroAnim.visible ? 1 : 0,
             transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
           }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: `1px solid ${C.sandBorder}`,
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+            <span style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal }}>
               {t.faqPage.heroTag}
             </span>
+            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
 
           <h1
@@ -443,7 +416,7 @@ export default function FaqPage() {
               fontSize: mobile ? 32 : 48,
               fontWeight: 600,
               fontFamily: sans,
-              color: C.white,
+              color: C.sandText,
               letterSpacing: "-0.03em",
               lineHeight: 1.12,
               marginBottom: 20,
