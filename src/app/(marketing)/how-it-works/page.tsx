@@ -69,8 +69,8 @@ function Hero() {
       <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: 680, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>How It Works</div>
-          <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
-            A structured assessment.<br />Not a guess.
+          <h1 style={{ fontSize: m ? 32 : 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, wordBreak: "break-word" as const }}>
+            A structured assessment.{!m && <br />} Not a guess.
           </h1>
           <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16, maxWidth: 520 }}>
             RunPayway scores how your income is built using fixed structural dimensions. The same answers always produce the same score. Here is exactly how the process works.
@@ -172,7 +172,7 @@ function Journey() {
       <div style={{ maxWidth: MAX, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Process</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Four steps. Every one transparent.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
@@ -300,7 +300,7 @@ function Dimensions() {
       <div style={{ maxWidth: MAX, margin: "0 auto" }}>
         <div style={{ maxWidth: 600, marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Model</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 16 }}>
+          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 16 }}>
             What each dimension measures.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65 }}>
@@ -326,9 +326,9 @@ function Dimensions() {
                     textAlign: "left", gap: 16,
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
                     <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <div style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>{dim.title}</div>
                       <div style={{ fontSize: m ? 14 : 15, color: B.muted, lineHeight: 1.5, marginTop: 2 }}>{dim.desc}</div>
                     </div>
@@ -379,7 +379,7 @@ function Bands() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             What your score means.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
@@ -405,8 +405,8 @@ function Bands() {
               transition: `opacity 500ms ease-out ${300 + i * 100}ms, transform 500ms ease-out ${300 + i * 100}ms`,
             }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: b.color }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: b.color }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" as const }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: b.color, flexShrink: 0 }} />
                 <span style={{ fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
                 <span style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA" }}>{b.label} Stability</span>
               </div>
@@ -431,7 +431,7 @@ function TwoLayers() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Architecture</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Two layers. One boundary.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
@@ -488,7 +488,7 @@ function Cta() {
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+          <h2 style={{ fontSize: m ? 28 : 48, color: "#F4F1EA", fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
             See where your income stands.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
@@ -522,7 +522,7 @@ function Cta() {
 /* ================================================================== */
 export default function HowItWorksPage() {
   return (
-    <div>
+    <div style={{ overflowX: "hidden" }}>
       <Hero />
       <Journey />
       <Dimensions />
