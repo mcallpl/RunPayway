@@ -298,7 +298,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.05)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
-        <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)" }}>Page {page} of 2</span>
+        <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)", fontFamily: mono }}>Page {page} of 2</span>
         <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)" }}>support@runpayway.com</span>
       </div>
     </div>
@@ -1079,7 +1079,7 @@ export default function ReviewPage() {
                 <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "8px 14px", textAlign: "left" }}>
-                  <div style={{ fontFamily: "monospace", fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+                  <div style={{ fontFamily: mono, fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
               </div>
             );
@@ -1101,13 +1101,13 @@ export default function ReviewPage() {
 
           <div style={{ marginBottom: 8 }}>
             <span style={{ ...T.score, color: B.navy, fontFamily: mono }}>{animatedScore}</span>
-            <span style={{ fontSize: 17, fontWeight: 400, color: B.taupe }}>/100</span>
+            <span style={{ fontSize: 17, fontWeight: 400, color: B.taupe, fontFamily: mono }}>/100</span>
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 8 }}>{distanceToNext} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 8 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName} Stability</div>}
         </div>
 
         {/* ── KEY TAKEAWAY ── */}
@@ -1134,14 +1134,14 @@ export default function ReviewPage() {
         <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "18px 16px" : "20px 28px" }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>YOUR INCOME STRUCTURE</div>
           <div style={{ display: "flex", height: 32, borderRadius: 6, overflow: "hidden", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
-            {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: "rgba(197,48,48,0.15)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.active_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandLimited }}>{record.active_income_level}%</span>}</div>}
-            {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: "rgba(183,121,31,0.12)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.semi_persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandDeveloping }}>{record.semi_persistent_income_level}%</span>}</div>}
-            {record.persistent_income_level > 0 && <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: "rgba(31,109,122,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>{record.persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>{record.persistent_income_level}%</span>}</div>}
+            {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: "rgba(197,48,48,0.15)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.active_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandLimited, fontFamily: mono }}>{record.active_income_level}%</span>}</div>}
+            {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: "rgba(183,121,31,0.12)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.semi_persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandDeveloping, fontFamily: mono }}>{record.semi_persistent_income_level}%</span>}</div>}
+            {record.persistent_income_level > 0 && <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: "rgba(31,109,122,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>{record.persistent_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, fontFamily: mono }}>{record.persistent_income_level}%</span>}</div>}
           </div>
           <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandLimited }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandLimited }}>{record.active_income_level}%</strong> stops when you stop</span></div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandDeveloping }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandDeveloping }}>{record.semi_persistent_income_level}%</strong> recurring</span></div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.teal }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.teal }}>{record.persistent_income_level}%</strong> protected</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandLimited }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandLimited, fontFamily: mono }}>{record.active_income_level}%</strong> stops when you stop</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.bandDeveloping }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.bandDeveloping, fontFamily: mono }}>{record.semi_persistent_income_level}%</strong> recurring</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: B.teal }} /><span style={{ ...T.small, color: B.navy }}><strong style={{ color: B.teal, fontFamily: mono }}>{record.persistent_income_level}%</strong> protected</span></div>
           </div>
         </div>
 
@@ -1178,7 +1178,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>What To Do Next</h1>
         <p style={{ ...T.small, color: B.muted, marginBottom: 16, lineHeight: 1.5 }}>
-          Based on your score of {score}/100, these are your highest-impact changes. Full action plan and scripts in your Command Center.
+          Based on your score of <span style={{ fontFamily: mono }}>{score}/100</span>, these are your highest-impact changes. Full action plan and scripts in your Command Center.
         </p>
 
         {/* ── 3 ACTION STEPS ── */}
@@ -1221,7 +1221,7 @@ export default function ReviewPage() {
                         <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.45 }}>{action.length > 100 ? action.substring(0, 100) + "..." : action}</p>
                       </div>
                       <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
-                        <div style={{ fontSize: 22, fontWeight: 300, color: stepColors[idx], lineHeight: 1 }}>+{scenario.lift}</div>
+                        <div style={{ fontSize: 22, fontWeight: 300, color: stepColors[idx], lineHeight: 1, fontFamily: mono }}>+{scenario.lift}</div>
                         <div style={{ fontSize: 11, color: B.muted }}>pts</div>
                       </div>
                     </div>
@@ -1237,7 +1237,7 @@ export default function ReviewPage() {
           <div style={{ border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "12px 18px", marginBottom: 16 }}>
             <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Combined Impact</div>
             <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-              Together, these changes would raise your score to <span style={{ fontWeight: 700, color: B.teal }}>{v2Lift.combined_top_two.projected_score}</span> (+{v2Lift.combined_top_two.lift}).{v2Lift.combined_top_two.band_shift ? ` Moves to ${v2Lift.combined_top_two.projected_band}.` : ""}
+              Together, these changes would raise your score to <span style={{ fontWeight: 700, color: B.teal, fontFamily: mono }}>{v2Lift.combined_top_two.projected_score}</span> <span style={{ fontFamily: mono }}>(+{v2Lift.combined_top_two.lift})</span>.{v2Lift.combined_top_two.band_shift ? ` Moves to ${v2Lift.combined_top_two.projected_band}.` : ""}
             </p>
           </div>
         )}
