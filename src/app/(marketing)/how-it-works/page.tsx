@@ -193,10 +193,10 @@ function Journey() {
                       </>
                     )}
                     {isRight && (
-                      <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
+                      <div style={{ backgroundColor: C.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${borderMd}` }}>
                         <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
-                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, opacity: 0.6 }} />
                         </div>
                         {step.screen}
                       </div>
@@ -207,7 +207,7 @@ function Journey() {
                 {/* Center dot */}
                 {!m && (
                   <div style={{ display: "flex", justifyContent: "center", paddingTop: 4 }}>
-                    <div style={{ width: 14, height: 14, borderRadius: "50%", backgroundColor: "#FFFFFF", border: `3px solid ${B.teal}`, boxShadow: `0 0 0 4px ${B.bone}, 0 0 8px rgba(26,122,109,0.20)`, position: "relative", zIndex: 2 }} />
+                    <div style={{ width: 14, height: 14, borderRadius: "50%", backgroundColor: C.white, border: `3px solid ${C.teal}`, boxShadow: `0 0 0 4px ${bone}, 0 0 8px rgba(31,109,122,0.20)`, position: "relative", zIndex: 2 }} />
                   </div>
                 )}
 
@@ -223,10 +223,10 @@ function Journey() {
                       </>
                     )}
                     {!isRight && (
-                      <div style={{ backgroundColor: B.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${B.borderMd}` }}>
+                      <div style={{ backgroundColor: C.navy, borderRadius: 16, overflow: "hidden", boxShadow: "0 8px 32px rgba(14,26,43,0.12)", border: `1px solid ${borderMd}` }}>
                         <div style={{ padding: "8px 14px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
-                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                          <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, opacity: 0.6 }} />
                         </div>
                         {step.screen}
                       </div>
@@ -238,17 +238,17 @@ function Journey() {
                 {m && (
                   <>
                     <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16 }}>
-                      <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(26,122,109,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{step.num}</div>
-                      <h3 style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: 0, letterSpacing: "-0.02em" }}>{step.title}</h3>
+                      <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(31,109,122,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: mono, fontSize: 14, fontWeight: 700, color: C.teal, flexShrink: 0 }}>{step.num}</div>
+                      <h3 style={{ ...h3Style(m), color: C.navy, margin: 0 }}>{step.title}</h3>
                     </div>
-                    <div style={{ backgroundColor: B.navy, borderRadius: 14, overflow: "hidden", boxShadow: "0 6px 24px rgba(14,26,43,0.10)", marginBottom: 16 }}>
+                    <div style={{ backgroundColor: C.navy, borderRadius: 14, overflow: "hidden", boxShadow: "0 6px 24px rgba(14,26,43,0.10)", marginBottom: 16 }}>
                       <div style={{ padding: "6px 12px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <Image src={logoWhite} alt="RunPayway" width={90} height={11} style={{ height: "auto", opacity: 0.7 }} />
-                        <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, opacity: 0.6 }} />
+                        <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, opacity: 0.6 }} />
                       </div>
                       {step.screen}
                     </div>
-                    <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, marginBottom: 6 }}>{step.body}</p>
+                    <p style={{ ...bodySm(m), color: C.muted, marginBottom: 6 }}>{step.body}</p>
                     <p style={{ ...T.meta, color: C.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                   </>
                 )}
@@ -270,23 +270,23 @@ function Dimensions() {
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   const dims = [
-    { title: "Recurring Income", desc: "How much income continues from existing agreements without new acquisition.", low: "0% recurring \u2014 you rebuild from scratch every month.", high: "60%+ recurring \u2014 most income renews automatically.", color: B.teal },
-    { title: "Source Concentration", desc: "How much depends on your single largest client or source.", low: "90%+ from one source \u2014 a single loss collapses the structure.", high: "Under 30% from any single source \u2014 no single point of failure.", color: B.purple },
-    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", low: "1 source \u2014 total dependency on a single relationship.", high: "5+ sources each contributing 10%+ \u2014 well-diversified.", color: B.teal },
-    { title: "Forward Visibility", desc: "How far ahead income is already committed or contracted.", low: "Less than 1 month \u2014 no income secured beyond what you earn today.", high: "12+ months committed \u2014 strong forward protection.", color: B.purple },
+    { title: "Recurring Income", desc: "How much income continues from existing agreements without new acquisition.", low: "0% recurring \u2014 you rebuild from scratch every month.", high: "60%+ recurring \u2014 most income renews automatically.", color: C.teal },
+    { title: "Source Concentration", desc: "How much depends on your single largest client or source.", low: "90%+ from one source \u2014 a single loss collapses the structure.", high: "Under 30% from any single source \u2014 no single point of failure.", color: C.purple },
+    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", low: "1 source \u2014 total dependency on a single relationship.", high: "5+ sources each contributing 10%+ \u2014 well-diversified.", color: C.teal },
+    { title: "Forward Visibility", desc: "How far ahead income is already committed or contracted.", low: "Less than 1 month \u2014 no income secured beyond what you earn today.", high: "12+ months committed \u2014 strong forward protection.", color: C.purple },
     { title: "Earnings Consistency", desc: "How stable income is from month to month.", low: "Fluctuates 75%+ \u2014 income is unpredictable and hard to plan around.", high: "Fluctuates less than 10% \u2014 highly predictable month to month.", color: "#D97706" },
-    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort.", low: "0% continues \u2014 if you stop working, income stops immediately.", high: "76%+ continues \u2014 income persists through extended absence.", color: B.navy },
+    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort.", low: "0% continues \u2014 if you stop working, income stops immediately.", high: "76%+ continues \u2014 income persists through extended absence.", color: C.navy },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#FFFFFF", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: MAX, margin: "0 auto" }}>
         <div style={{ maxWidth: 600, marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Model</div>
-          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 16 }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 16 }}>The Model</div>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.025em", marginBottom: 16 }}>
             What each dimension measures.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65 }}>
+          <p style={{ ...body(m), color: C.muted }}>
             Each dimension is scored independently. The model then applies cross-factor interaction rules to capture how weaknesses compound.
           </p>
         </div>
@@ -296,7 +296,7 @@ function Dimensions() {
             const isOpen = expandedIdx === i;
             return (
               <div key={dim.title} style={{
-                borderBottom: `1px solid ${B.border}`,
+                borderBottom: `1px solid ${C.border}`,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(10px)",
                 transition: `opacity 500ms ease-out ${80 + i * 60}ms, transform 500ms ease-out ${80 + i * 60}ms`,
@@ -312,21 +312,21 @@ function Dimensions() {
                   <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
                     <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: B.navy, letterSpacing: "-0.01em" }}>{dim.title}</div>
-                      <div style={{ fontSize: m ? 14 : 15, color: B.muted, lineHeight: 1.5, marginTop: 2 }}>{dim.desc}</div>
+                      <div style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: C.navy, letterSpacing: "-0.01em" }}>{dim.title}</div>
+                      <div style={{ ...bodySm(m), color: C.muted, marginTop: 2 }}>{dim.desc}</div>
                     </div>
                   </div>
-                  <span style={{ fontSize: 18, color: B.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
+                  <span style={{ fontSize: 18, color: C.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
                 </button>
                 {isOpen && (
                   <div style={{ paddingLeft: m ? 24 : 24, paddingBottom: 24, display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
                     <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(155,44,44,0.04)", border: "1px solid rgba(155,44,44,0.10)" }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.bandLimited, textTransform: "uppercase" as const, marginBottom: 6 }}>Low Score</div>
-                      <div style={{ fontSize: 14, color: B.muted, lineHeight: 1.5 }}>{dim.low}</div>
+                      <div style={{ ...T.label, fontSize: 13, letterSpacing: "0.06em", color: C.bandLimited, marginBottom: 6 }}>Low Score</div>
+                      <div style={{ ...T.meta, color: C.muted }}>{dim.low}</div>
                     </div>
-                    <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(26,122,109,0.04)", border: "1px solid rgba(26,122,109,0.10)" }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: B.bandHigh, textTransform: "uppercase" as const, marginBottom: 6 }}>High Score</div>
-                      <div style={{ fontSize: 14, color: B.muted, lineHeight: 1.5 }}>{dim.high}</div>
+                    <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.10)" }}>
+                      <div style={{ ...T.label, fontSize: 13, letterSpacing: "0.06em", color: C.bandHigh, marginBottom: 6 }}>High Score</div>
+                      <div style={{ ...T.meta, color: C.muted }}>{dim.high}</div>
                     </div>
                   </div>
                 )}
@@ -335,7 +335,7 @@ function Dimensions() {
           })}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, fontSize: 14, color: B.light, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 500ms" }}>
+        <div style={{ textAlign: "center", marginTop: 32, ...T.meta, color: C.light, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 500ms" }}>
           All dimensions are fixed and versioned under Model RP-2.0. The same answers always produce the same result.
         </div>
       </div>
@@ -351,21 +351,21 @@ function Bands() {
   const m = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited", color: B.bandLimited, consequence: "Your income depends almost entirely on active work. A major disruption puts immediate pressure on the structure." },
-    { range: "30\u201349", label: "Developing", color: B.bandDeveloping, consequence: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly." },
-    { range: "50\u201374", label: "Established", color: B.bandEstablished, consequence: "Your income can absorb most common disruptions without dropping below a stable threshold." },
-    { range: "75\u2013100", label: "High", color: B.bandHigh, consequence: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
+    { range: "0\u201329", label: "Limited", color: C.bandLimited, consequence: "Your income depends almost entirely on active work. A major disruption puts immediate pressure on the structure." },
+    { range: "30\u201349", label: "Developing", color: C.bandDeveloping, consequence: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly." },
+    { range: "50\u201374", label: "Established", color: C.bandEstablished, consequence: "Your income can absorb most common disruptions without dropping below a stable threshold." },
+    { range: "75\u2013100", label: "High", color: C.bandHigh, consequence: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Classification</div>
-          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 16 }}>Classification</div>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.025em", marginBottom: 12 }}>
             What your score means.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto" }}>
             Each band defines what your income structure can absorb.
           </p>
         </div>
@@ -390,8 +390,8 @@ function Bands() {
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: b.color }} />
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" as const }}>
                 <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: b.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
-                <span style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA" }}>{b.label} Stability</span>
+                <span style={{ fontFamily: mono, fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: C.sandText }}>{b.label} Stability</span>
               </div>
               <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, margin: 0 }}>{b.consequence}</p>
             </div>
@@ -410,29 +410,29 @@ function TwoLayers() {
   const m = useMobile();
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>Architecture</div>
-          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 16 }}>Architecture</div>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Two layers. One boundary.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 520, margin: "0 auto" }}>
             The score and the report are built separately. The boundary between them is fixed and auditable.
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 16 : 20 }}>
           {/* Layer 1 */}
-          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: "#FFFFFF", border: `1px solid ${B.borderMd}`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Layer 1 — Core Score</div>
-            <h3 style={{ fontSize: m ? 20 : 22, fontWeight: 600, color: B.navy, marginBottom: 12, letterSpacing: "-0.02em" }}>The number.</h3>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, marginBottom: 16 }}>Generated from fixed structural questions only. Same answers, same score. No contextual input can alter it.</p>
+          <div style={{ ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, border: `1px solid ${borderMd}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
+            <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Layer 1 — Core Score</div>
+            <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 12 }}>The number.</h3>
+            <p style={{ ...bodySm(m), color: C.muted, marginBottom: 16 }}>Generated from fixed structural questions only. Same answers, same score. No contextual input can alter it.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-                  <span style={{ fontSize: 14, color: B.navy }}>{item}</span>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <span style={{ ...T.meta, color: C.navy }}>{item}</span>
                 </div>
               ))}
             </div>

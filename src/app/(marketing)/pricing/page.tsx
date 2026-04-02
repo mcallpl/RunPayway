@@ -2,12 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import {
+  C, T, mono, sp, maxW, padX, textMax,
+  secPad, px,
+  h1, h2Style, h3Style, body, bodySm,
+  cardStyle, ctaButton, ctaButtonLight, navStyle,
+  canHover,
+} from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
 /* ------------------------------------------------------------------ */
-const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -30,27 +35,20 @@ function useMobile(bp = 768) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Tokens                                                             */
+/*  Constants                                                          */
 /* ------------------------------------------------------------------ */
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1A7A6D",
-  sand: "#F5F2EC",
-  bone: "#FAF9F6",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
-  border: "rgba(14,26,43,0.08)",
-  borderMd: "rgba(14,26,43,0.12)",
-  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
-};
-
-const SY = { desktop: 120, mobile: 72 };
-const PAD = { desktop: 56, mobile: 24 };
-const MAX = 1100;
-const DF = "'DM Serif Display', Georgia, serif";
 const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 const STRIPE_ANNUAL = "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
+const gradient = `linear-gradient(145deg, ${C.navy} 0%, #161430 35%, #3D2F9C 65%, ${C.teal} 100%)`;
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+const fadeIn = (v: boolean, delay = 0) => ({
+  opacity: v ? 1 : 0,
+  transform: v ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+});
 
 /* ================================================================== */
 /* 1. HERO                                                              */
@@ -59,21 +57,20 @@ function Hero() {
   const { ref, visible } = useInView();
   const m = useMobile();
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
+    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
       <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>Pricing</div>
-          <h1 style={{ fontSize: m ? 36 : 56, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 28 }}>Pricing</div>
+          <h1 style={{ ...h1(m), color: C.sandText, marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
             Know your number.<br />Then change it.
           </h1>
           <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
-            Your free score instantly. The full diagnostic for $69 — or track your progress over 12 months for $149.
+            Your free score instantly. The full diagnostic for <span style={{ fontFamily: mono }}>$69</span> — or track your progress over 12 months for <span style={{ fontFamily: mono }}>$149</span>.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
             {["No bank connection", "Full refund guarantee", "Instant results"].map(t => (
-              <span key={t} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>{t}</span>
+              <span key={t} style={{ ...T.micro, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -82,9 +79,6 @@ function Hero() {
   );
 }
 
-/* ================================================================== */
-/* 2. PRICING CARDS — Three tiers                                      */
-/* ================================================================== */
 /* ================================================================== */
 /* PRESSURE NARRATIVE — urgency before pricing                         */
 /* ================================================================== */
@@ -115,22 +109,16 @@ function PressureNarrative() {
       desc: "Visibility tracks how far ahead your income is committed. When a contract ends without a replacement, the Score shows how much of your forward certainty disappears with it.",
       stat: "0 days",
       statLabel: "advance warning",
-      accent: B.teal,
+      accent: C.teal,
     },
   ];
 
-  const fadeIn = (v: boolean, delay = 0) => ({
-    opacity: v ? 1 : 0,
-    transform: v ? "translateY(0)" : "translateY(16px)",
-    transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
-  });
-
   return (
     <section ref={ref} aria-label="Pressure narrative" style={{
-      background: B.navy,
-      paddingTop: m ? 64 : 80,
-      paddingBottom: m ? 64 : 80,
-      paddingLeft: m ? 24 : 56, paddingRight: m ? 24 : 56,
+      background: C.navy,
+      paddingTop: m ? sp(8) : sp(10),
+      paddingBottom: m ? sp(8) : sp(10),
+      paddingLeft: px(m), paddingRight: px(m),
       position: "relative",
       overflow: "hidden",
     }}>
@@ -142,24 +130,23 @@ function PressureNarrative() {
       }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 48 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: B.teal, marginBottom: 20 }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(7), ...fadeIn(visible) }}>
+          <div style={{ ...T.meta, fontWeight: 500, color: C.teal, marginBottom: 20 }}>
             The Pressure You Already Feel
           </div>
           <h2 style={{
-            fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.1,
-            color: "#F4F1EA",
+            ...h2Style(m), color: C.sandText,
             maxWidth: 640, margin: "0 auto",
-            marginBottom: 24,
+            marginBottom: sp(3),
           }}>
             You already know something is fragile. The Score tells you exactly where.
           </h2>
-          <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.45)", maxWidth: 500, margin: "0 auto" }}>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 500, margin: "0 auto" }}>
             These aren&rsquo;t hypotheticals. They&rsquo;re the three structural failures that collapse independent income.
           </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: m ? 32 : 40 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? sp(4) : sp(5) }}>
           {scenarios.map((s, i) => (
             <div key={s.label} style={{
               display: m ? "block" : "flex",
@@ -184,20 +171,20 @@ function PressureNarrative() {
                 borderLeft: !m && i % 2 === 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
               }}>
                 <span style={{
-                  fontFamily: DF, fontSize: m ? 28 : 40, color: s.accent,
+                  fontFamily: mono, fontSize: m ? 28 : 40, color: s.accent,
                   lineHeight: 1, letterSpacing: "-0.02em",
                 }}>{s.stat}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "rgba(244,241,234,0.35)", marginTop: m ? 0 : 8, textTransform: "uppercase" as const, textAlign: "center" }}>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: C.sandLight, marginTop: m ? 0 : 8, textTransform: "uppercase" as const, textAlign: "center" }}>
                   {s.statLabel}
                 </span>
               </div>
 
-              <div style={{ flex: 1, padding: m ? 24 : "32px 40px" }}>
-                <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: s.accent, marginBottom: 12 }}>{s.label}</div>
-                <h3 style={{ fontFamily: DF, fontSize: m ? 20 : 24, fontWeight: 400, color: "#F4F1EA", marginBottom: 16, lineHeight: 1.2 }}>
+              <div style={{ flex: 1, padding: m ? sp(3) : `${sp(4)}px ${sp(5)}px` }}>
+                <div style={{ ...T.meta, fontWeight: 500, color: s.accent, marginBottom: 12 }}>{s.label}</div>
+                <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: sp(2) }}>
                   {s.title}
                 </h3>
-                <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.50)", margin: 0 }}>
+                <p style={{ ...body(m), color: "rgba(244,241,234,0.50)", margin: 0 }}>
                   {s.desc}
                 </p>
               </div>
@@ -220,13 +207,13 @@ function PricingCards() {
   const [annualHover, setAnnualHover] = useState(false);
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop, position: "relative" }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative" }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 120, background: "linear-gradient(180deg, rgba(14,26,43,0.03) 0%, transparent 100%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: 1060, margin: "0 auto", position: "relative" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out" }}>
-          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.6 }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", position: "relative" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(4) : sp(6), opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out" }}>
+          <p style={{ ...body(m), color: C.muted }}>
             Your free score shows the problem. The report shows exactly what to fix — interpreted using your industry, structure, and income model.
-            <span style={{ color: B.teal, fontWeight: 600 }}> Under 2 minutes.</span>
+            <span style={{ color: C.teal, fontWeight: 600 }}> Under 2 minutes.</span>
           </p>
         </div>
 
@@ -236,9 +223,10 @@ function PricingCards() {
             onMouseEnter={() => canHover() && setFreeHover(true)}
             onMouseLeave={() => setFreeHover(false)}
             style={{
-              background: "#FFFFFF", borderRadius: 16, border: `1px solid ${B.border}`,
-              padding: m ? "32px 24px" : "36px 28px",
-              boxShadow: freeHover ? "0 12px 32px rgba(14,26,43,0.08)" : "0 4px 16px rgba(14,26,43,0.04)",
+              ...cardStyle,
+              borderRadius: 16,
+              padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
+              boxShadow: freeHover ? "0 12px 32px rgba(14,26,43,0.08)" : cardStyle.boxShadow,
               transform: freeHover ? "translateY(-4px)" : "translateY(0)",
               transition: "box-shadow 260ms ease, transform 260ms ease",
               opacity: visible ? 1 : 0, ...(visible ? {} : { transform: "translateY(28px)" }),
@@ -246,30 +234,33 @@ function PricingCards() {
               display: "flex", flexDirection: "column" as const,
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>Income Stability Score&#8482;</div>
+            <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: sp(2.5) }}>Income Stability Score&#8482;</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$0</span>
-              <span style={{ fontSize: 14, color: B.muted }}>always free</span>
+              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
+              <span style={{ ...T.meta, color: C.muted }}>always free</span>
             </div>
-            <div style={{ height: 1, background: B.border, margin: "24px 0" }} />
-            <div style={{ flex: 1, marginBottom: 28 }}>
+            <div style={{ height: 1, background: C.border, margin: `${sp(3)}px 0` }} />
+            <div style={{ flex: 1, marginBottom: sp(3.5) }}>
               {["Your score out of 100", "Your stability band", "Points to the next band", "Top limiting factor", "Preview: what one change could do"].map(f => (
                 <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: B.muted, lineHeight: 1.55 }}>{f}</span>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ ...bodySm(m), fontSize: 15, color: C.muted }}>{f}</span>
                 </div>
               ))}
             </div>
             <Link className="cta-tick" href="/begin" style={{
-              display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
-              background: freeHover ? B.navy : "#FFFFFF", color: freeHover ? "#FFFFFF" : B.navy,
-              fontSize: 16, fontWeight: 600, textDecoration: "none", border: `1px solid ${B.navy}`,
+              ...ctaButton,
+              width: "100%",
+              height: 52, borderRadius: 10,
+              padding: 0,
+              background: freeHover ? C.navy : C.white, color: freeHover ? C.white : C.navy,
+              border: `1px solid ${C.navy}`,
               transition: "background 200ms ease, color 200ms ease",
             }}>
               <span className="tick tick-navy" />
               Get My Free Score
             </Link>
-            <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>Takes about 90 seconds</p>
+            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>Takes about <span style={{ fontFamily: mono }}>90</span> seconds</p>
           </div>
 
           {/* DIAGNOSTIC REPORT — $69 */}
@@ -277,9 +268,10 @@ function PricingCards() {
             onMouseEnter={() => canHover() && setFullHover(true)}
             onMouseLeave={() => setFullHover(false)}
             style={{
-              background: "#FFFFFF", borderRadius: 16, position: "relative", overflow: "hidden",
-              padding: m ? "32px 24px" : "36px 28px",
-              border: `2px solid ${B.purple}`,
+              ...cardStyle,
+              borderRadius: 16, position: "relative", overflow: "hidden",
+              padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
+              border: `2px solid ${C.purple}`,
               boxShadow: fullHover ? "0 20px 48px rgba(75,63,174,0.18)" : "0 8px 28px rgba(75,63,174,0.12)",
               transform: fullHover ? "translateY(-4px)" : "translateY(0)",
               transition: "box-shadow 260ms ease, transform 260ms ease",
@@ -288,22 +280,22 @@ function PricingCards() {
               display: "flex", flexDirection: "column" as const,
             }}
           >
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.purple}, ${B.teal})` }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
 
             <div style={{ position: "relative" }}>
               <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.10)", marginBottom: 16 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.purple }}>Most Popular</span>
+                <span style={{ ...T.label, fontSize: 13, color: C.purple }}>Most Popular</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.muted, marginBottom: 16 }}>RunPayway\u2122 Diagnostic Report</div>
+              <div style={{ ...T.label, fontSize: 13, color: C.muted, marginBottom: 16 }}>RunPayway&#8482; Diagnostic Report</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 48, fontWeight: 600, color: B.navy, lineHeight: 1 }}>$69</span>
-                <span style={{ fontSize: 14, color: B.muted }}>one-time</span>
+                <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
+                <span style={{ ...T.meta, color: C.muted }}>one-time</span>
               </div>
             </div>
 
-            <div style={{ height: 1, background: B.border, margin: "24px 0", position: "relative" }} />
+            <div style={{ height: 1, background: C.border, margin: `${sp(3)}px 0`, position: "relative" }} />
 
-            <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
+            <div style={{ flex: 1, marginBottom: sp(3), position: "relative" }}>
               {[
                 { text: "Everything in Free, plus:", bold: true },
                 { text: "4-page diagnostic interpreted from your structural inputs" },
@@ -316,24 +308,27 @@ function PricingCards() {
                 { text: "Lifetime access to RunPayway\u2122 Stability Simulator" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? B.navy : B.muted, lineHeight: 1.55, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : C.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? C.navy : C.muted, lineHeight: 1.55, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
                 </div>
               ))}
             </div>
 
             <a className="cta-tick" href={STRIPE} style={{
-              display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
-              background: B.gradient, color: "#FFFFFF",
-              fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
+              ...ctaButton,
+              width: "100%",
+              height: 52, borderRadius: 10,
+              padding: 0,
+              background: gradient, color: C.white,
+              letterSpacing: "-0.01em",
               boxShadow: fullHover ? "0 12px 32px rgba(75,63,174,0.35)" : "0 8px 24px rgba(75,63,174,0.25)",
               transition: "box-shadow 260ms ease, transform 200ms ease",
               transform: fullHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
               <span className="tick tick-white" />
-              Get Diagnostic Report — $69
+              Get Diagnostic Report — <span style={{ fontFamily: mono }}>$69</span>
             </a>
-            <p style={{ fontSize: 14, color: B.light, textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
+            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
               If it doesn&#8217;t reveal something new, full refund. No questions.
             </p>
           </div>
@@ -343,8 +338,8 @@ function PricingCards() {
             onMouseEnter={() => canHover() && setAnnualHover(true)}
             onMouseLeave={() => setAnnualHover(false)}
             style={{
-              background: B.navy, borderRadius: 16, position: "relative", overflow: "hidden",
-              padding: m ? "32px 24px" : "36px 28px",
+              background: C.navy, borderRadius: 16, position: "relative", overflow: "hidden",
+              padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
               boxShadow: annualHover ? "0 24px 56px rgba(14,26,43,0.30)" : "0 12px 40px rgba(14,26,43,0.20)",
               transform: annualHover ? "translateY(-4px)" : "translateY(0)",
               transition: "box-shadow 260ms ease, transform 260ms ease",
@@ -353,26 +348,26 @@ function PricingCards() {
               display: "flex", flexDirection: "column" as const,
             }}
           >
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
-            <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+            <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 300, height: 300, borderRadius: "50%", background: `radial-gradient(circle, rgba(31,109,122,0.12) 0%, transparent 70%)`, pointerEvents: "none" }} />
 
             <div style={{ position: "relative" }}>
-              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(26,122,109,0.15)", marginBottom: 16 }}>
-                <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal }}>Best Value</span>
+              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(31,109,122,0.15)", marginBottom: 16 }}>
+                <span style={{ ...T.label, fontSize: 13, color: C.teal }}>Best Value</span>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.40)", marginBottom: 16 }}>RunPayway\u2122 Stability Monitoring</div>
+              <div style={{ ...T.label, fontSize: 13, color: C.sandLight, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1 }}>$149</span>
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>/year</span>
+                <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>$149</span>
+                <span style={{ ...T.meta, color: "rgba(244,241,234,0.45)" }}>/year</span>
               </div>
-              <div style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", marginTop: 4 }}>
-                3 assessments &middot; save $58 vs. buying separately
+              <div style={{ ...T.meta, color: C.sandLight, marginTop: 4 }}>
+                <span style={{ fontFamily: mono }}>3</span> assessments &middot; save <span style={{ fontFamily: mono }}>$58</span> vs. buying separately
               </div>
             </div>
 
-            <div style={{ height: 1, background: "rgba(244,241,234,0.08)", margin: "24px 0", position: "relative" }} />
+            <div style={{ height: 1, background: C.sandBorder, margin: `${sp(3)}px 0`, position: "relative" }} />
 
-            <div style={{ flex: 1, marginBottom: 24, position: "relative" }}>
+            <div style={{ flex: 1, marginBottom: sp(3), position: "relative" }}>
               {[
                 { text: "Everything in the Diagnostic Report, plus:", bold: true },
                 { text: "3 full assessments within 12 months" },
@@ -382,24 +377,27 @@ function PricingCards() {
                 { text: "Save $58 vs. buying three reports separately" },
               ].map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : B.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? "#F4F1EA" : "rgba(244,241,234,0.55)", lineHeight: 1.55, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : C.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? C.sandText : C.sandMuted, lineHeight: 1.55, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
                 </div>
               ))}
             </div>
 
             <a className="cta-tick" href={STRIPE_ANNUAL} style={{
-              display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10,
-              background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy,
-              fontSize: 16, fontWeight: 600, textDecoration: "none", letterSpacing: "-0.01em",
+              ...ctaButton,
+              width: "100%",
+              height: 52, borderRadius: 10,
+              padding: 0,
+              background: `linear-gradient(135deg, ${C.sandText} 0%, #E8E5DD 100%)`, color: C.navy,
+              letterSpacing: "-0.01em",
               boxShadow: annualHover ? "0 12px 32px rgba(0,0,0,0.30)" : "0 8px 24px rgba(0,0,0,0.20)",
               transition: "box-shadow 260ms ease, transform 200ms ease",
               transform: annualHover ? "translateY(-2px)" : "translateY(0)", position: "relative",
             }}>
               <span className="tick tick-navy" />
-              Start Stability Monitoring — $149
+              Start Stability Monitoring — <span style={{ fontFamily: mono }}>$149</span>
             </a>
-            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
+            <p style={{ ...T.meta, color: C.sandLight, textAlign: "center", marginTop: 12, marginBottom: 0, position: "relative" }}>
               Includes login access to your Monitoring Portal.
             </p>
           </div>
@@ -417,18 +415,18 @@ function ReportCovers() {
   const m = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score & Structural Diagnosis", desc: "Score, plain-English interpretation, biggest constraint, distance to next band, PressureMap intelligence.", color: B.purple },
-    { num: "02", title: "PressureMap & Income Structure", desc: "What pressures your structure, income breakdown, strongest and weakest factors, what\u2019s working and holding you back.", color: B.teal },
-    { num: "03", title: "Fragility & Pressure Test", desc: "Ranked disruption scenarios with exact score drops, absorbency summary, pattern to watch.", color: B.purple },
-    { num: "04", title: "Your Highest-Leverage Action Plan", desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.", color: B.teal },
+    { num: "01", title: "Your Score & Structural Diagnosis", desc: "Score, plain-English interpretation, biggest constraint, distance to next band, PressureMap intelligence.", color: C.purple },
+    { num: "02", title: "PressureMap & Income Structure", desc: "What pressures your structure, income breakdown, strongest and weakest factors, what\u2019s working and holding you back.", color: C.teal },
+    { num: "03", title: "Fragility & Pressure Test", desc: "Ranked disruption scenarios with exact score drops, absorbency summary, pattern to watch.", color: C.purple },
+    { num: "04", title: "Your Highest-Leverage Action Plan", desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.", color: C.teal },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
-      <div style={{ maxWidth: 640, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Report</div>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(4.5) : sp(6), opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+          <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>The Report</div>
+          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
             Five pages. Nothing withheld.
           </h2>
         </div>
@@ -436,23 +434,23 @@ function ReportCovers() {
         {pages.map((p, i) => (
           <div key={p.num} style={{
             display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0",
-            borderBottom: i < 4 ? `1px solid ${B.borderMd}` : "none",
+            borderBottom: i < 4 ? `1px solid ${C.softBorder}` : "none",
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
             transition: `opacity 500ms ease-out ${80 + i * 60}ms, transform 500ms ease-out ${80 + i * 60}ms`,
           }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FFFFFF", border: `1px solid ${B.borderMd}`, fontSize: 13, fontWeight: 700, color: p.color, position: "relative", overflow: "hidden" }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: C.white, border: `1px solid ${C.softBorder}`, fontSize: 13, fontFamily: mono, fontWeight: 700, color: p.color, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: p.color, opacity: 0.6 }} />
               {p.num}
             </div>
             <div>
-              <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 4 }}>{p.title}</div>
-              <p style={{ fontSize: m ? 14 : 15, color: B.muted, lineHeight: 1.55, margin: 0 }}>{p.desc}</p>
+              <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, letterSpacing: m ? undefined : "-0.01em", marginBottom: 4 }}>{p.title}</div>
+              <p style={{ ...bodySm(m), fontSize: m ? 14 : 15, color: C.muted, margin: 0 }}>{p.desc}</p>
             </div>
           </div>
         ))}
 
-        <div style={{ textAlign: "center", marginTop: 32, opacity: visible ? 1 : 0, transition: "opacity 500ms ease-out 400ms" }}>
-          <Link href="/sample-report" style={{ fontSize: 16, fontWeight: 600, color: B.purple, textDecoration: "none" }}>
+        <div style={{ textAlign: "center", marginTop: sp(4), opacity: visible ? 1 : 0, transition: "opacity 500ms ease-out 400ms" }}>
+          <Link href="/sample-report" style={{ fontSize: 16, fontWeight: 600, color: C.purple, textDecoration: "none" }}>
             View sample report &rarr;
           </Link>
         </div>
@@ -469,10 +467,10 @@ function Trust() {
   const m = useMobile();
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.navy, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontFamily: DF, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(7), opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText }}>
             Built on trust. Not on hype.
           </h2>
         </div>
@@ -486,18 +484,18 @@ function Trust() {
           ].map((b, i) => (
             <div key={b.title} style={{
               padding: m ? "20px 16px" : "24px 20px", borderRadius: 14, textAlign: "center",
-              backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)",
+              backgroundColor: "rgba(244,241,234,0.04)", border: `1px solid ${C.sandBorder}`,
               opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
               transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
             }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#F4F1EA", marginBottom: 6 }}>{b.title}</div>
-              <div style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", lineHeight: 1.45 }}>{b.desc}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: C.sandText, marginBottom: 6 }}>{b.title}</div>
+              <div style={{ ...T.meta, color: "rgba(244,241,234,0.45)" }}>{b.desc}</div>
             </div>
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: 32, opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms" }}>
-          <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 12, border: "1px solid rgba(244,241,234,0.10)" }}>
+        <div style={{ textAlign: "center", marginTop: sp(4), opacity: visible ? 1 : 0, transition: "opacity 600ms ease-out 400ms" }}>
+          <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 12, border: `1px solid ${C.sandBorder}` }}>
             <p style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", margin: 0, fontWeight: 500 }}>
               Deterministic &#183; Fixed rules &#183; Versioned &#183; Model RP-2.0
             </p>
@@ -528,10 +526,10 @@ function Faq() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, fontFamily: DF, fontWeight: 400, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(7), opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+          <h2 style={{ ...h2Style(m), color: C.navy }}>
             Frequently asked questions
           </h2>
         </div>
@@ -539,14 +537,14 @@ function Faq() {
         {faqs.map((faq, i) => {
           const isOpen = openIdx === i;
           return (
-            <div key={i} style={{ borderBottom: `1px solid ${B.borderMd}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)", transition: `opacity 500ms ease-out ${60 + i * 40}ms, transform 500ms ease-out ${60 + i * 40}ms` }}>
+            <div key={i} style={{ borderBottom: `1px solid ${C.softBorder}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)", transition: `opacity 500ms ease-out ${60 + i * 40}ms, transform 500ms ease-out ${60 + i * 40}ms` }}>
               <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "18px 0" : "22px 0", border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
-                <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: B.navy }}>{faq.q}</span>
-                <span style={{ fontSize: 18, color: B.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
+                <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, letterSpacing: m ? undefined : "-0.01em" }}>{faq.q}</span>
+                <span style={{ fontSize: 18, color: C.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
               </button>
               {isOpen && (
                 <div style={{ paddingBottom: 20 }}>
-                  <p style={{ fontSize: m ? 15 : 16, color: B.muted, lineHeight: 1.65, margin: 0 }}>{faq.a}</p>
+                  <p style={{ ...body(m), fontSize: m ? 15 : 16, color: C.muted, margin: 0 }}>{faq.a}</p>
                 </div>
               )}
             </div>
@@ -565,21 +563,21 @@ function Cta() {
   const m = useMobile();
   const [hovered, setHovered] = useState(false);
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
+    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: secPad(m), paddingBottom: secPad(m) }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, color: "#F4F1EA", fontFamily: DF, fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+          <h2 style={{ ...h2Style(m), fontSize: m ? 32 : 48, color: C.sandText, marginBottom: 20 }}>
             See where your income stands.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
-          <Link className="cta-tick" href="/begin" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
+          <Link className="cta-tick" href="/begin" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, backgroundColor: C.sandText, color: C.navy, boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
             <span className="tick tick-navy" />
             Get My Free Score
           </Link>
-          <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
+          <div style={{ marginTop: 20, ...T.meta, color: "rgba(250,249,247,0.35)" }}>
             Free to start &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>
