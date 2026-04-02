@@ -829,7 +829,7 @@ function WhyThisDidntExist() {
           ...fadeIn(visible, 500),
         }}>
           <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, fontStyle: "italic" }}>
-            Most independent professionals earning over $100K have never measured the structural stability of their income. The number is not the problem. The structure underneath it is.
+            Most independent professionals earning over $100K have never quantified how resilient their income actually is. The number is not the problem. The foundation underneath it is.
           </p>
         </div>
       </div>
@@ -1095,7 +1095,7 @@ function ScoreDetermination() {
             How the Score Is Determined
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
-            The model evaluates how income is built and how it behaves under pressure.
+            The model evaluates how your income is composed and how it holds up under pressure.
           </p>
         </div>
 
@@ -1386,7 +1386,7 @@ function ProofSection() {
 
   return (
     <section ref={ref} aria-label="Results" style={{
-      backgroundColor: C.sand,
+      backgroundColor: C.white,
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
@@ -1394,7 +1394,7 @@ function ProofSection() {
         <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2) }}>What changed after they measured</h2>
           <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
-            The score reveals the weakness. The action changes the structure.
+            The score reveals the weakness. The action changes the outcome.
           </p>
         </div>
 
@@ -1553,7 +1553,7 @@ function PricingSection() {
               Income Stability Score&#8482;
             </p>
             <div style={{ marginBottom: sp(3) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$0</span>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$0</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>Always free. No credit card.</p>
 
@@ -1584,7 +1584,7 @@ function PricingSection() {
               RunPayway&#8482; Diagnostic Report
             </p>
             <div style={{ marginBottom: sp(1) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$69</span>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$69</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>One-time. No subscription.</p>
 
