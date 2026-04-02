@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
+import { C, sans, mono } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -24,15 +25,7 @@ function useMobile(breakpoint = 768) {
 /*  Design tokens                                                      */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  cream: "#F4F1EA",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-};
-
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+const GRADIENT = "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -66,12 +59,11 @@ export default function BeginPage() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       <div
         style={{
           position: "fixed",
           inset: 0,
-          background: B.gradient,
+          background: GRADIENT,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -104,7 +96,7 @@ export default function BeginPage() {
           />
 
           {/* Overline */}
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 20 }}>
+          <div style={{ fontSize: 13, fontFamily: sans, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
             Income Stability Score&#8482;
           </div>
 
@@ -112,11 +104,11 @@ export default function BeginPage() {
           <h1
             style={{
               fontSize: mobile ? 28 : 36,
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
+              fontFamily: sans,
+              fontWeight: 600,
               letterSpacing: "-0.02em",
               lineHeight: 1.15,
-              color: B.cream,
+              color: C.sandText,
               marginBottom: 40,
             }}
           >
@@ -133,8 +125,8 @@ export default function BeginPage() {
                   gap: 16,
                   alignItems: "flex-start",
                   padding: "20px 0",
-                  borderTop: i === 0 ? "1px solid rgba(244,241,234,0.08)" : "none",
-                  borderBottom: "1px solid rgba(244,241,234,0.08)",
+                  borderTop: i === 0 ? `1px solid ${C.sandBorder}` : "none",
+                  borderBottom: `1px solid ${C.sandBorder}`,
                   opacity: visible ? 1 : 0,
                   transform: visible ? "translateY(0)" : "translateY(12px)",
                   transition: `opacity 0.5s ease-out ${300 + i * 150}ms, transform 0.5s ease-out ${300 + i * 150}ms`,
@@ -146,18 +138,18 @@ export default function BeginPage() {
                     height: 32,
                     borderRadius: "50%",
                     backgroundColor: "rgba(244,241,234,0.06)",
-                    border: "1px solid rgba(244,241,234,0.10)",
+                    border: `1px solid rgba(244,241,234,0.10)`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     flexShrink: 0,
                   }}
                 >
-                  <span style={{ fontSize: 13, fontWeight: 700, color: B.cream }}>{step.num}</span>
+                  <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 700, color: C.sandText }}>{step.num}</span>
                 </div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 600, color: B.cream, marginBottom: 4 }}>{step.title}</div>
-                  <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.65 }}>{step.desc}</div>
+                  <div style={{ fontSize: 16, fontFamily: sans, fontWeight: 600, color: C.sandText, marginBottom: 4 }}>{step.title}</div>
+                  <div style={{ fontSize: 14, fontFamily: sans, color: C.sandMuted, lineHeight: 1.65 }}>{step.desc}</div>
                 </div>
               </div>
             ))}
@@ -175,8 +167,9 @@ export default function BeginPage() {
               height: mobile ? 52 : 56,
               borderRadius: 12,
               background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-              color: B.navy,
+              color: C.navy,
               fontSize: 16,
+              fontFamily: sans,
               fontWeight: 600,
               textDecoration: "none",
               letterSpacing: "-0.01em",
@@ -192,7 +185,7 @@ export default function BeginPage() {
           {/* Trust line */}
           <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: mobile ? 12 : 20 }}>
             {["No bank connection", "No credit pull", "Private by default"].map((badge) => (
-              <span key={badge} style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>
+              <span key={badge} style={{ fontSize: 13, fontFamily: sans, color: C.sandLight, letterSpacing: "0.02em" }}>
                 {badge}
               </span>
             ))}
