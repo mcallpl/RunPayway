@@ -1938,7 +1938,17 @@ function Footer() {
                 }}
               />
               <button
-                onClick={() => { if (email) { setEmail(""); } }}
+                onClick={async () => {
+                  if (!email || !email.includes("@")) return;
+                  try {
+                    await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ name: "Enterprise Waitlist", email: email.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }),
+                    });
+                  } catch { /* silent */ }
+                  setEmail("");
+                }}
                 style={{
                   padding: "8px 16px", borderRadius: 6,
                   backgroundColor: C.navy,

@@ -116,11 +116,11 @@ function getFaqCategories(t: Translations): FaqCategory[] { return [
   {
     title: t.faqPage.cat7Title,
     items: [
-      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A1P3}</a></p></>) },
-      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A2P3}</a></p></>) },
+      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A1P3}</Link></p></>) },
+      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A2P3}</Link></p></>) },
       { q: t.faqPage.cat7Q3, a: (<><p>{t.faqPage.cat7A3P1}</p><p>{t.faqPage.cat7A3P2}</p></>) },
       { q: t.faqPage.cat7Q4, a: (<><p>{t.faqPage.cat7A4P1}</p><p>{t.faqPage.cat7A4P2}</p></>) },
-      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A5P3}</a></p></>) },
+      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A5P3}</Link></p></>) },
     ],
   },
   {
