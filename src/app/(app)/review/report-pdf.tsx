@@ -1,5 +1,5 @@
 /* ================================================================== */
-/*  report-pdf.tsx — Fixed 5-page print document (Cover + 4 pages)    */
+/*  report-pdf.tsx — Fixed 4-page print document                      */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
 /*  RunPayway(TM) Command Center · Income Stability Report · RP-2.0  */
 /* ================================================================== */
@@ -697,7 +697,7 @@ export async function generateReportPDF(data: ReportPDFData): Promise<Blob> {
 
   // HARD VERIFICATION
   const n = doc.getNumberOfPages();
-  if (n !== 5) throw new Error(`FATAL: PDF has ${n} pages, expected exactly 5`);
+  if (n !== 4) throw new Error(`FATAL: PDF has ${n} pages, expected exactly 4`);
 
   return doc.output("blob");
 }
