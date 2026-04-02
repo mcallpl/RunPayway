@@ -37,7 +37,7 @@ function useMobile(bp = 768) {
 
 const gradient = C.navy;
 const borderMd = "rgba(14,26,43,0.12)";
-const bone = "#F7F6F3";
+const bone = C.sand;
 const MAX = 1200;
 
 /* ================================================================== */
@@ -77,32 +77,53 @@ function Journey() {
 
   const steps = [
     {
-      num: "01", title: "You answer structural questions",
-      body: "Each question examines a different part of your income \u2014 how much repeats, how concentrated it is, how far ahead it\u2019s secured, how consistent it is month to month, and how much continues without your daily effort.",
-      detail: "No dollar amounts. No account access. Just structural patterns.",
+      num: "01", title: "You answer six structural questions",
+      body: "Six questions. Each one measures a different dimension of your income: how much repeats, how concentrated it is, how many sources you have, how far ahead it\u2019s secured, how consistent it is month to month, and how much continues if you stop working.",
+      detail: "No dollar amounts. No bank connection. No document upload.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Structural Assessment</div>
-          <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: C.sandText, marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
-          {["Less than 1 month", "1\u20132 months", "3\u20135 months", "6\u201311 months", "12 or more months"].map((opt, i) => (
-            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(31,109,122,0.15)" : `${C.sandBorder}`, border: i === 2 ? `1px solid ${C.teal}` : `1px solid ${C.sandBorder}`, fontSize: 14, color: i === 2 ? C.teal : C.sandMuted, fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div style={{ ...T.label, color: C.teal }}>Question 4 of 6</div>
+            <div style={{ fontSize: 11, fontFamily: mono, color: C.sandLight }}>Forward Revenue Visibility</div>
+          </div>
+          <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.sandText, marginBottom: 6, lineHeight: 1.35 }}>How many months of future income are currently secured under signed or enforceable agreements?</div>
+          <div style={{ fontSize: 11, color: C.sandLight, marginBottom: 14 }}>Only include income that is already contractually committed.</div>
+          {[
+            { letter: "A", text: "Less than 1 month" },
+            { letter: "B", text: "1\u20132 months" },
+            { letter: "C", text: "3\u20135 months", selected: true },
+            { letter: "D", text: "6\u201311 months" },
+            { letter: "E", text: "12 or more months" },
+          ].map((opt) => (
+            <div key={opt.letter} style={{ display: "flex", gap: 10, alignItems: "center", padding: "9px 12px", marginBottom: 5, borderRadius: 8, backgroundColor: opt.selected ? "rgba(31,109,122,0.15)" : C.sandBorder, border: opt.selected ? `1px solid ${C.teal}` : `1px solid ${C.sandBorder}` }}>
+              <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: opt.selected ? C.teal : C.sandLight, minWidth: 14 }}>{opt.letter}</span>
+              <span style={{ fontSize: 14, color: opt.selected ? C.teal : C.sandMuted, fontWeight: opt.selected ? 600 : 400 }}>{opt.text}</span>
+            </div>
           ))}
         </div>
       ),
     },
     {
       num: "02", title: "The model scores your structure",
-      body: "Model RP-2.0 evaluates your answers across fixed structural dimensions. It applies cross-factor interaction rules \u2014 capturing how weaknesses compound \u2014 and produces a single 0\u2013100 score.",
-      detail: "Fixed rules. Deterministic. No machine learning.",
+      body: "Model RP-2.0 evaluates your answers across six fixed dimensions. It computes factor scores, applies cross-factor interaction rules that capture how weaknesses compound, and produces a single score from 0 to 100.",
+      detail: "Deterministic. Version-locked. Same inputs always produce the same score.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ ...T.label, color: C.sandLight, marginBottom: 16 }}>Calculating</div>
-          {["Evaluating structural factors", "Applying cross-factor interactions", "Computing stability classification", "Generating structural diagnosis"].map((step, i) => (
-            <div key={step} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
-              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? C.teal : C.sandBorder, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                {i < 3 && <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="#F4F1EA" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>}
+          <div style={{ ...T.label, color: C.sandLight, marginBottom: 16 }}>Model RP-2.0</div>
+          {[
+            { label: "Computing factor scores", sub: "Persistence, Concentration, Diversity, Visibility, Consistency, Labor Independence", done: true },
+            { label: "Applying cross-factor interactions", sub: "8 penalty rules, 2 bonus rules", done: true },
+            { label: "Computing stability classification", sub: "Structure (60%) + Stability (40%)", done: true },
+            { label: "Generating structural diagnosis", sub: "Constraints, fragility, sensitivity", done: false },
+          ].map((step, i) => (
+            <div key={step.label} style={{ marginBottom: 12 }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <div style={{ width: 18, height: 18, borderRadius: "50%", backgroundColor: step.done ? C.teal : C.sandBorder, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {step.done && <svg width="9" height="9" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="#F4F1EA" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>}
+                </div>
+                <span style={{ fontSize: 13, color: step.done ? C.sandMuted : C.sandLight, fontWeight: 500 }}>{step.label}</span>
               </div>
-              <span style={{ fontSize: 14, color: i < 3 ? C.sandMuted : C.sandLight, fontWeight: i === 3 ? 500 : 400 }}>{step}</span>
+              <div style={{ fontSize: 11, color: C.sandLight, marginLeft: 28, marginTop: 2 }}>{step.sub}</div>
             </div>
           ))}
           <div style={{ height: 3, borderRadius: 2, backgroundColor: C.sandBorder, marginTop: 8 }}>
@@ -113,35 +134,40 @@ function Journey() {
     },
     {
       num: "03", title: "You see your score instantly",
-      body: "Your Income Stability Score\u2122, your stability band, a consequence sentence explaining what the structure can absorb, how far you are from the next band, and the single biggest structural factor limiting your score.",
+      body: "Your Income Stability Score\u2122 out of 100, your stability band, how far you are from the next band, your primary structural constraint, and a preview of what one change could do.",
       detail: "Free. Instant. No payment required.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
           <div style={{ fontFamily: mono, fontSize: 48, fontWeight: 600, color: C.sandText, lineHeight: 1, marginBottom: 4 }}>72</div>
           <div style={{ fontFamily: mono, fontSize: 14, color: C.sandLight, marginBottom: 12 }}>out of 100</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.15)", marginBottom: 12 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.15)", marginBottom: 8 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
             <span style={{ fontSize: 13, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
           </div>
-          <div style={{ fontFamily: mono, fontSize: 13, color: C.sandLight, lineHeight: 1.5 }}>3 points to High Stability</div>
+          <div style={{ fontFamily: mono, fontSize: 12, color: C.sandLight, marginBottom: 12 }}>3 points to High Stability</div>
+          <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "8px 0" }} />
+          <div style={{ fontSize: 12, color: C.sandMuted, marginBottom: 4 }}>Primary constraint: Income concentration</div>
+          <div style={{ fontSize: 12, color: C.sandLight }}>Stress test: Largest source removed &rarr; projected <span style={{ fontFamily: mono }}>44</span></div>
         </div>
       ),
     },
     {
       num: "04", title: "You unlock the full diagnostic",
-      body: "The $69 report uses your score plus additional context \u2014 your operating structure, income model, and industry \u2014 to produce a 4-page structural diagnosis with PressureMap intelligence, risk scenarios, projected actions, tradeoff analysis, and a lifetime simulator.",
+      body: "The $69 report uses your score plus your operating structure, income model, and industry to produce a 3-page structural diagnosis with PressureMap\u2122 intelligence, ranked risk scenarios, projected actions, and Command Center access with a lifetime simulator.",
       detail: "Same score. Deeper interpretation. Practical action plan.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {[
-            { num: "01", title: "Your Score", color: C.purple },
-            { num: "02", title: "Income Structure", color: C.teal },
-            { num: "03", title: "Disruption Analysis", color: C.bandLimited },
-            { num: "04", title: "Best Next Move", color: C.purple },
+            { num: "01", title: "Cover & Score", desc: "Score, band, primary constraint", color: C.purple },
+            { num: "02", title: "Key Findings", desc: "PressureMap, income structure, plain English", color: C.teal },
+            { num: "03", title: "What To Do Next", desc: "Actions, roadmap, Command Center", color: C.purple },
           ].map((p, i) => (
-            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 3 ? `1px solid ${C.sandBorder}` : "none" }}>
-              <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
-              <span style={{ fontSize: 14, fontWeight: 500, color: C.sandMuted }}>{p.title}</span>
+            <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 0", borderBottom: i < 2 ? `1px solid ${C.sandBorder}` : "none" }}>
+              <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 700, color: p.color, minWidth: 20, marginTop: 2 }}>{p.num}</span>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText, marginBottom: 2 }}>{p.title}</div>
+                <div style={{ fontSize: 12, color: C.sandLight }}>{p.desc}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -269,12 +295,12 @@ function Dimensions() {
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
   const dims = [
-    { title: "Recurring Income", desc: "How much income continues from existing agreements without new acquisition.", low: "0% recurring \u2014 you rebuild from scratch every month.", high: "60%+ recurring \u2014 most income renews automatically.", color: C.teal },
-    { title: "Source Concentration", desc: "How much depends on your single largest client or source.", low: "90%+ from one source \u2014 a single loss collapses the structure.", high: "Under 30% from any single source \u2014 no single point of failure.", color: C.purple },
-    { title: "Source Diversity", desc: "How many meaningful, independent income sources support the structure.", low: "1 source \u2014 total dependency on a single relationship.", high: "5+ sources each contributing 10%+ \u2014 well-diversified.", color: C.teal },
-    { title: "Forward Visibility", desc: "How far ahead income is already committed or contracted.", low: "Less than 1 month \u2014 no income secured beyond what you earn today.", high: "12+ months committed \u2014 strong forward protection.", color: C.purple },
-    { title: "Earnings Consistency", desc: "How stable income is from month to month.", low: "Fluctuates 75%+ \u2014 income is unpredictable and hard to plan around.", high: "Fluctuates less than 10% \u2014 highly predictable month to month.", color: "#D97706" },
-    { title: "Labor Independence", desc: "What percentage of income continues without your daily effort.", low: "0% continues \u2014 if you stop working, income stops immediately.", high: "76%+ continues \u2014 income persists through extended absence.", color: C.navy },
+    { title: "Recurring Revenue Base", desc: "What percentage of your income renews automatically through an existing agreement or subscription.", low: "Answer A (0\u201310%) \u2014 almost no income repeats. You rebuild from scratch every month.", high: "Answer E (86\u2013100%) \u2014 nearly all income renews automatically without re-selling.", color: C.teal },
+    { title: "Income Concentration", desc: "How much of your total income depended on any single source over the previous 12 months.", low: "Answer A (90\u2013100% from one source) \u2014 a single departure collapses the structure.", high: "Answer E (under 30% from any source) \u2014 no single point of failure.", color: C.purple },
+    { title: "Income Source Count", desc: "How many separate income sources each contributed at least 10% of your total income.", low: "Answer A (1 source) \u2014 total dependency on a single relationship.", high: "Answer E (8 or more) \u2014 income is distributed across many independent sources.", color: C.teal },
+    { title: "Forward Revenue Visibility", desc: "How many months of future income are currently secured under signed or enforceable agreements.", low: "Answer A (less than 1 month) \u2014 no income is committed beyond what you earn today.", high: "Answer E (12 or more months) \u2014 strong forward commitment and structural protection.", color: C.purple },
+    { title: "Earnings Consistency", desc: "How consistent your monthly income was over the previous 12 months.", low: "Answer A (fluctuated more than 75%) \u2014 income is volatile and hard to plan around.", high: "Answer E (fluctuated less than 10%) \u2014 highly predictable month to month.", color: C.amber },
+    { title: "Income Without Active Work", desc: "If you stopped working for 90 consecutive days, what percentage of your income would continue automatically.", low: "Answer A (0%) \u2014 income stops the moment you stop working.", high: "Answer E (76\u2013100%) \u2014 income persists through extended absence.", color: C.navy },
   ];
 
   return (
@@ -350,10 +376,10 @@ function Bands() {
   const m = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited", color: C.bandLimited, consequence: "Your income depends almost entirely on active work. A major disruption puts immediate pressure on the structure." },
-    { range: "30\u201349", label: "Developing", color: C.bandDeveloping, consequence: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly." },
-    { range: "50\u201374", label: "Established", color: C.bandEstablished, consequence: "Your income can absorb most common disruptions without dropping below a stable threshold." },
-    { range: "75\u2013100", label: "High", color: C.bandHigh, consequence: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
+    { range: "0\u201329", label: "Limited", color: C.bandLimited, consequence: "Income structure needs attention. High vulnerability to disruption. A single source change or work interruption could shift the entire structure." },
+    { range: "30\u201349", label: "Developing", color: C.bandDeveloping, consequence: "Building toward stability, but not structurally protected yet. A major source loss would put pressure on the structure within weeks." },
+    { range: "50\u201374", label: "Established", color: C.bandEstablished, consequence: "Solid structural foundation with identifiable gaps. Income can absorb most common disruptions without dropping below a stable threshold." },
+    { range: "75\u2013100", label: "High", color: C.bandHigh, consequence: "Income is structurally sound and resilient under pressure. Can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
   ];
 
   return (
