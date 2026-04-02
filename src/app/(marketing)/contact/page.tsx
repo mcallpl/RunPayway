@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
-import { C, sans, canHover } from "@/lib/design-tokens";
+import { C, T, mono, sans, maxW, sp, secPad, px, h1, h2Style, body, cardStyle, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -126,89 +126,38 @@ export default function ContactPage() {
       {/* ============================================================ */}
       <section
         style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
+          backgroundColor: C.navy,
+          paddingTop: mobile ? 120 : 180,
+          paddingBottom: mobile ? 80 : 120,
+          paddingLeft: px(mobile),
+          paddingRight: px(mobile),
         }}
       >
-        {/* Grain overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
         <div
           ref={heroAnim.ref}
-          className="mx-auto"
           style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
+            maxWidth: maxW,
+            margin: "0 auto",
             textAlign: "center",
             opacity: heroAnim.visible ? 1 : 0,
             transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
             transition: "opacity 700ms ease, transform 700ms ease",
           }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: `1px solid ${C.sandBorder}`,
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {t.contact.heroTag}
-            </span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+            <span style={{ ...T.label, color: C.teal }}>{t.contact.heroTag}</span>
+            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
 
-          <h1
-            style={{
-              fontSize: mobile ? 32 : 48,
-              fontWeight: 600,
-              fontFamily: sans,
-              color: C.white,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.12,
-              marginBottom: 24,
-            }}
-          >
+          <h1 style={{ ...h1(mobile), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
             {t.contact.heroTitle}
           </h1>
 
-          <p
-            style={{
-              fontSize: mobile ? 16 : 18,
-              color: C.sandMuted,
-              lineHeight: 1.65,
-              maxWidth: 600,
-              margin: "0 auto 16px",
-            }}
-          >
+          <p style={{ ...body(mobile), color: C.sandMuted, maxWidth: 560, margin: "0 auto 16px" }}>
             {t.contact.heroDesc}
           </p>
 
-          <p style={{ fontSize: mobile ? 14 : 16, color: C.sandLight, lineHeight: 1.65, maxWidth: 480, margin: "0 auto 8px" }}>
-            {t.contact.heroNote}
-          </p>
-
-          <p style={{ fontSize: 14, color: C.sandLight }}>
+          <p style={{ ...T.meta, color: C.sandLight }}>
             {t.contact.heroResponse}
           </p>
         </div>
@@ -306,7 +255,7 @@ export default function ContactPage() {
                 <option value="" disabled>{t.contact.subjectPlaceholder}</option>
                 <option value="general">{t.contact.subjectGeneral}</option>
                 <option value="assessment">{t.contact.subjectAssessment}</option>
-                <option value="verification">{t.contact.subjectVerification}</option>
+                <option value="command_center">Command Center</option>
                 <option value="technical">{t.contact.subjectTechnical}</option>
                 <option value="partnership">{t.contact.subjectPartnership}</option>
                 <option value="other">{t.contact.subjectOther}</option>
@@ -440,7 +389,7 @@ export default function ContactPage() {
                 {[
                   { href: "/faq", label: t.nav.faq },
                   { href: "/methodology", label: t.nav.methodology },
-                  { href: "/verify", label: t.nav.verifyAScore },
+                  { href: "/dashboard", label: "Command Center" },
                 ].map((link) => (
                   <Link
                     key={link.label}
@@ -500,54 +449,15 @@ export default function ContactPage() {
       {/* ============================================================ */}
       <section
         style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
+          backgroundColor: C.navy,
           paddingTop: mobile ? 56 : 72,
           paddingBottom: mobile ? 56 : 72,
+          paddingLeft: px(mobile),
+          paddingRight: px(mobile),
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        {[180, 320, 480].map((size, i) => (
-          <div
-            key={size}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: size,
-              height: size,
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        <div
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 600,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            textAlign: "center",
-          }}
-        >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, fontFamily: sans, color: C.white, letterSpacing: "-0.02em", marginBottom: 8 }}>
+        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, fontFamily: sans, color: C.sandText, letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
           <div style={{ fontSize: mobile ? 16 : 18, color: C.sandMuted, lineHeight: 1.65, marginBottom: 24 }}>
