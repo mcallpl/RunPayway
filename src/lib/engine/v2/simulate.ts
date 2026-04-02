@@ -224,6 +224,89 @@ export const SIMULATOR_PRESETS: SimulatorPreset[] = [
   },
 ];
 
+// ─── INDUSTRY-SPECIFIC PRESETS ───────────────────────────
+// Maps each of the 19 industry sectors to the most relevant
+// preset IDs. Used by the simulator UI to surface contextual
+// scenarios based on the user's industry.
+
+export const INDUSTRY_PRESET_MAP: Record<string, SimulatorPreset[]> = {
+  real_estate: [
+    { id: "listing_falls_through", label: "Your top listing falls through", description: "A high-value deal you were counting on collapses — the commission disappears and pipeline momentum stalls", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.4)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    { id: "seasonal_slowdown", label: "Market enters seasonal slowdown", description: "Transaction volume drops for 2–3 months — fewer closings, longer timelines, reduced income flow", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.6)), forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.5)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  consulting_professional_services: [
+    { id: "retainer_cancels", label: "Your biggest retainer cancels", description: "Your largest recurring client ends the engagement — monthly income drops and forward visibility resets", modify: (b) => ({ ...b, largest_source_pct: Math.min(100, Math.round(b.largest_source_pct * 1.3)), income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.6)), forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.5)) }) },
+    { id: "project_gap", label: "3-month gap between projects", description: "Current engagement ends and the next one hasn't started — income pauses while overhead continues", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, b.forward_secured_pct - 25), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  sales_brokerage: [
+    { id: "deal_pipeline_stalls", label: "Your deal pipeline stalls", description: "Multiple expected closings push to next quarter — commission income compresses", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.3)), income_variability_level: "extreme" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  construction_trades: [
+    { id: "job_start_delayed", label: "Next job start date moves out 6 weeks", description: "Permits, weather, or client delays push the start — crew sits idle, income gaps open", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, b.forward_secured_pct - 20), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  media_entertainment: [
+    { id: "booking_drought", label: "No new bookings for 60 days", description: "The pipeline goes quiet — no projects, no appearances, no incoming work", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.2)), income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.5)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  legal_services: [
+    { id: "major_matter_concludes", label: "Your largest matter concludes", description: "A major case or engagement that was driving revenue completes — billing drops and replacement pipeline is thin", modify: (b) => ({ ...b, largest_source_pct: Math.min(100, Math.round(b.largest_source_pct * 1.4)), forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.5)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  healthcare: [
+    { id: "compensation_model_shifts", label: "Your compensation model changes", description: "The institution restructures pay, shifts hours, or modifies reimbursement rates — stable income becomes variable", modify: (b) => ({ ...b, income_variability_level: "high" as CanonicalInput["income_variability_level"], income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.7)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  insurance: [
+    { id: "renewal_book_erodes", label: "Renewal retention drops 20%", description: "Clients don't renew — the recurring income base that supports your production erodes underneath you", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.7)), forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.7)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  retail_ecommerce: [
+    { id: "demand_softens", label: "Sales volume drops 30%", description: "Demand weakens, conversion drops, or a platform algorithm change reduces traffic — revenue compresses while costs stay", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.65)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  hospitality_food_service: [
+    { id: "traffic_drops", label: "Customer traffic drops 25%", description: "Foot traffic or reservations decline — thin margins get thinner and labor costs stay fixed", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.6)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  education: [
+    { id: "contract_not_renewed", label: "Your position contract isn't renewed", description: "Funding shifts or institutional restructuring means your role doesn't continue — limited flexibility to replace", modify: (b) => ({ ...b, forward_secured_pct: 0, largest_source_pct: 100, income_variability_level: "extreme" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  transportation_logistics: [
+    { id: "route_contract_lost", label: "Your primary route or contract is lost", description: "The carrier, shipper, or client pulls the contract — volume drops and replacement takes time", modify: (b) => ({ ...b, largest_source_pct: Math.min(100, Math.round(b.largest_source_pct * 1.5)), forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.3)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  agriculture: [
+    { id: "cycle_underperforms", label: "This season's yield underperforms", description: "Weather, pricing, or timing works against you — one cycle's economics reset the full period", modify: (b) => ({ ...b, income_variability_level: "extreme" as CanonicalInput["income_variability_level"], forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.3)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  technology: [
+    { id: "employer_restructures", label: "Your employer restructures compensation", description: "Base stays but bonus structure, RSU vesting, or performance targets change — variable portion shifts", modify: (b) => ({ ...b, income_variability_level: "high" as CanonicalInput["income_variability_level"], income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.7)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  energy_utilities: [
+    { id: "regulatory_shift", label: "Regulatory conditions change", description: "Capital cycles, market structures, or policy shifts alter the economics of your role or business", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.5)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  finance_banking: [
+    { id: "bonus_cut", label: "Performance-linked compensation drops 40%", description: "Markets soften, targets move, or activity slows — the variable portion of your pay weakens", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.6)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  manufacturing: [
+    { id: "demand_shift", label: "Customer demand drops and output slows", description: "Orders decrease or a key customer pulls back — production slows while operating costs remain", modify: (b) => ({ ...b, income_persistence_pct: Math.max(0, Math.round(b.income_persistence_pct * 0.6)), largest_source_pct: Math.min(100, Math.round(b.largest_source_pct * 1.3)) }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  nonprofit_public_sector: [
+    { id: "funding_cut", label: "Funding priorities shift and budget is cut", description: "Grant allocation, budget decisions, or institutional limits reduce your position's resources", modify: (b) => ({ ...b, forward_secured_pct: Math.max(0, Math.round(b.forward_secured_pct * 0.4)), income_variability_level: "high" as CanonicalInput["income_variability_level"] }) },
+    ...SIMULATOR_PRESETS,
+  ],
+  other: SIMULATOR_PRESETS,
+};
+
 // ─── INCOME TIMELINE — FORWARD PROJECTION ───────────────
 // Projects score forward at 3, 6, and 12 months based on
 // compounding structural changes. Structural improvements

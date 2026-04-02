@@ -82,7 +82,34 @@ export function computeConfidence(
     }
   }
 
-  return { confidence_score: score, confidence_level, deductions };
+  // Quality transparency — tell the user what's missing
+  const missing_quality_dimensions = identifyMissingQuality(ext);
+
+  return { confidence_score: score, confidence_level, deductions, missing_quality_dimensions };
+}
+
+function identifyMissingQuality(ext: ExtendedInputs | null): string[] {
+  const missing: string[] = [];
+  if (!ext) {
+    missing.push("Contract duration — how long your agreements typically last");
+    missing.push("Cancellation risk — how easily clients can end engagements");
+    missing.push("Platform dependency — how much income depends on a single platform");
+    missing.push("Recurring concentration — whether recurring revenue is spread or concentrated");
+    return missing;
+  }
+  if (ext.recurring_contract_term_months_avg === undefined) {
+    missing.push("Contract duration — how long your agreements typically last");
+  }
+  if (ext.cancellation_risk_level === undefined) {
+    missing.push("Cancellation risk — how easily clients can end engagements");
+  }
+  if (ext.platform_dependency_level === undefined) {
+    missing.push("Platform dependency — how much income depends on a single platform");
+  }
+  if (ext.customer_concentration_within_recurring_level === undefined) {
+    missing.push("Recurring concentration — whether recurring revenue is spread or concentrated");
+  }
+  return missing;
 }
 
 function detectContradictions(

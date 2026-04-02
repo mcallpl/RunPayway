@@ -97,6 +97,11 @@ export default function FreeScorePage() {
   };
   const insightText = constraintPlain[rootConstraint] || "Your income structure has room to improve.";
 
+  // Peer benchmark percentile (from v2 benchmarks)
+  const benchmarks = v2?.benchmarks as { peer_percentile?: number; cluster_label?: string } | undefined;
+  const peerPercentile = benchmarks?.peer_percentile ?? null;
+  const peerCluster = benchmarks?.cluster_label ?? (record.industry_sector as string || "").replace(/_/g, " ");
+
   const humanMessage = tier === "high" ? "Your income is structurally sound." : tier === "established" ? "Solid foundation — but there are gaps." : tier === "developing" ? "You're building, but not protected yet." : "Your income structure needs attention.";
 
   // Best move preview
@@ -181,6 +186,14 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 15, color: B.taupe, marginBottom: 8 }}>{humanMessage}</div>
 
           {nextBandName && <div style={{ fontSize: 13, color: B.teal, fontWeight: 600 }}>{gap} points to {nextBandName} Stability</div>}
+
+          {peerPercentile !== null && (
+            <div style={{ fontSize: 13, color: B.muted, marginTop: 10, paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
+              {peerPercentile >= 50
+                ? `You're in the ${Math.round(peerPercentile)}th percentile for ${peerCluster}.`
+                : `${Math.round(100 - peerPercentile)}% of ${peerCluster} professionals score higher.`}
+            </div>
+          )}
         </div>
 
         {/* ── ROOT CONSTRAINT — matches report key takeaway ── */}

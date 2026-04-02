@@ -331,6 +331,7 @@ export interface ConfidenceResult {
   confidence_score: number;
   confidence_level: ConfidenceLevel;
   deductions: ConfidenceDeduction[];
+  missing_quality_dimensions: string[];
 }
 
 export interface ConfidenceDeduction {

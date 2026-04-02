@@ -38,6 +38,7 @@ import { generateExplainability } from "./engines/15-explainability";
 import { prioritizeActions } from "./engines/16-action-prioritization";
 import { computeReassessmentTriggers } from "./engines/17-reassessment-triggers";
 import { computeBenchmarks } from "./engines/18-benchmarking";
+import { computeComparison } from "./engines/19-comparative-reassessment";
 import { computeIntegrity, getModelManifest } from "./engines/20-integrity-manifest";
 import { REASON_CODES } from "./reason-codes";
 import { executeOutcomeLayer } from "./outcome/index";
@@ -252,8 +253,9 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
   reason_codes.push(REASON_CODES["RSA-001"]);
 
   // ── 20. Comparative Reassessment ──────────────────────
-  // (handled externally when prior assessment is provided)
-  const comparison = null;
+  const comparison = opts.priorAssessment
+    ? computeComparison(scores, normalized, opts.priorAssessment)
+    : null;
 
   // ── 21. Integrity ─────────────────────────────────────
   const assessmentId = randomUUID();
