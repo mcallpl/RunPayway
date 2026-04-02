@@ -85,6 +85,7 @@ const C = {
   light: "rgba(14,26,43,0.38)",
   border: "rgba(14,26,43,0.08)",
   softBorder: "#EAEAEA",
+  amber: "#C49A6C",
 };
 
 const sp = (n: number) => n * 8;
@@ -95,7 +96,7 @@ const T = {
   h1:    { desktop: { fontSize: 60, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em" }, mobile: { fontSize: 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em" } },
   h2:    { desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.18, letterSpacing: "-0.02em" }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em" } },
   h3:    { desktop: { fontSize: 24, fontWeight: 500, lineHeight: 1.28 }, mobile: { fontSize: 20, fontWeight: 500, lineHeight: 1.3 } },
-  body:  { desktop: { fontSize: 18, fontWeight: 400, lineHeight: 1.6 }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
+  body:  { desktop: { fontSize: 18, fontWeight: 400, lineHeight: 1.65, letterSpacing: "-0.01em" }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
   bodySm:{ desktop: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 }, mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
   meta:  { fontSize: 14, fontWeight: 400, lineHeight: 1.45 },
   micro: { fontSize: 13, fontWeight: 400, lineHeight: 1.45 },
@@ -226,18 +227,18 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
             aria-expanded={open}
             style={{
               display: "flex", alignItems: "center", gap: 12,
-              background: open ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.18)",
+              background: open ? "rgba(196,154,108,0.12)" : "rgba(196,154,108,0.06)",
+              border: `1px solid rgba(196,154,108,${open ? "0.35" : "0.25"})`,
               borderRadius: 12, padding: `${sp(1.5)}px ${sp(3)}px`,
               cursor: "pointer", transition: "border-color 200ms ease, background 200ms ease",
               minHeight: 44,
             }}
-            onMouseEnter={e => { if (canHover()) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.30)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; } }}
-            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)"; e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; } }}
+            onMouseEnter={e => { if (canHover()) { e.currentTarget.style.borderColor = "rgba(196,154,108,0.45)"; e.currentTarget.style.backgroundColor = "rgba(196,154,108,0.12)"; } }}
+            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(196,154,108,0.25)"; e.currentTarget.style.backgroundColor = "rgba(196,154,108,0.06)"; } }}
           >
-            <span style={{ fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.55)" }}>Explore industry-specific risk patterns</span>
+            <span style={{ fontSize: 15, fontWeight: 500, color: C.amber }}>Explore industry-specific risk patterns</span>
             <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 2, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} aria-hidden="true">
-              <path d="M3 4.5L6 7.5L9 4.5" stroke="rgba(244,241,234,0.70)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M3 4.5L6 7.5L9 4.5" stroke={C.amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
 
@@ -464,7 +465,9 @@ function StickyNav() {
     <>
     <nav aria-label="Primary" style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      backgroundColor: C.navy,
+      backgroundColor: "rgba(14,26,43,0.92)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
       borderBottom: "1px solid rgba(255,255,255,0.06)",
       height: m ? 56 : 64, display: "flex", alignItems: "center",
       padding: `0 ${px(m)}px`,
@@ -617,7 +620,7 @@ function HeroSection() {
 
               <h1 style={{
                 ...fadeIn(visible, 120),
-                fontSize: m ? 36 : 50, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em",
+                fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em",
                 color: "#F4F1EA",
                 marginBottom: m ? sp(3) : sp(4),
               }}>
