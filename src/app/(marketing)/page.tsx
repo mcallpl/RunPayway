@@ -1001,10 +1001,10 @@ function HowItWorksSection() {
           </p>
           <div style={{ maxWidth: 400 }}>
             {[
-              ["Limited", "0\u201329"],
-              ["Developing", "30\u201349"],
-              ["Established", "50\u201374"],
-              ["High", "75\u2013100"],
+              ["Limited Stability", "0\u201329"],
+              ["Developing Stability", "30\u201349"],
+              ["Established Stability", "50\u201374"],
+              ["High Stability", "75\u2013100"],
             ].map(([band, range]) => (
               <div key={band} style={{ display: "flex", justifyContent: "space-between", paddingTop: sp(1.5), paddingBottom: sp(1.5), borderBottom: `1px solid ${C.softBorder}` }}>
                 <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{band}</span>
