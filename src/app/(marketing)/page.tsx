@@ -564,8 +564,6 @@ function HeroSection() {
   const [showLabel, setShowLabel] = useState(false);
   const [industryIdx, setIndustryIdx] = useState(0);
   const [industryFade, setIndustryFade] = useState(true);
-  const [concentration, setConcentration] = useState(50);
-
   useEffect(() => {
     if (!visible) return;
     const t = setTimeout(() => setShowLabel(true), 1600);
@@ -582,12 +580,6 @@ function HeroSection() {
     }, 3500);
     return () => clearInterval(timer);
   }, []);
-
-  const concentrationMessage =
-    concentration <= 30 ? "Low concentration. Your income is distributed across multiple sources." :
-    concentration <= 50 ? "Moderate concentration. One source carries meaningful weight in your structure." :
-    concentration <= 70 ? "Elevated concentration. If this source shifts, your income structure shifts with it." :
-    "Critical concentration. Most of your income depends on a single relationship.";
 
   return (
     <header ref={ref} style={{ backgroundColor: C.navy }}>
@@ -760,44 +752,6 @@ function HeroSection() {
             </p>
           </div>
 
-          {/* One-question hook — concentration slider */}
-          <div style={{
-            marginTop: m ? sp(6) : sp(8),
-            maxWidth: 480,
-            marginLeft: m ? "auto" : 0, marginRight: m ? "auto" : 0,
-            ...fadeIn(visible, 450),
-          }}>
-            <p style={{
-              fontSize: 15, fontWeight: 500, lineHeight: 1.5,
-              color: "rgba(244,241,234,0.55)", marginBottom: sp(2),
-              textAlign: m ? "center" : "left",
-            }}>
-              What percentage of your income comes from your single largest source?
-            </p>
-            <input
-              type="range" min="0" max="100" value={concentration}
-              onChange={e => setConcentration(Number(e.target.value))}
-              aria-label="Income concentration percentage"
-              style={{ width: "100%", accentColor: C.teal, cursor: "pointer" }}
-            />
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: sp(0.5) }}>
-              <span style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>0%</span>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.teal }}>{concentration}%</span>
-              <span style={{ fontSize: 13, color: "rgba(244,241,234,0.25)" }}>100%</span>
-            </div>
-            <p style={{
-              fontSize: 15, fontWeight: 400, lineHeight: 1.55,
-              color: "rgba(244,241,234,0.50)", marginTop: sp(2),
-              minHeight: 46,
-              textAlign: m ? "center" : "left",
-            }}>
-              {concentrationMessage}
-            </p>
-            <p style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)", marginTop: sp(1), textAlign: m ? "center" : "left" }}>
-              This is one of six dimensions we measure.
-            </p>
-          </div>
-
           {/* Industry dropdown */}
           <div style={{ marginTop: m ? sp(6) : sp(8), position: "relative", zIndex: 10 }}>
             <IndustryDropdown m={m} visible={visible} />
@@ -875,6 +829,61 @@ function WhyThisDidntExist() {
             Most independent professionals earning over $100K have never measured the structural stability of their income. The number is not the problem. The structure underneath it is.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* CONCENTRATION HOOK                                                  */
+/* ================================================================== */
+function ConcentrationHook() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  const [concentration, setConcentration] = useState(50);
+
+  const message =
+    concentration <= 30 ? "Low concentration. Your income is distributed across multiple sources." :
+    concentration <= 50 ? "Moderate concentration. One source carries meaningful weight in your structure." :
+    concentration <= 70 ? "Elevated concentration. If this source shifts, your income structure shifts with it." :
+    "Critical concentration. Most of your income depends on a single relationship.";
+
+  return (
+    <section ref={ref} aria-label="Concentration check" style={{
+      backgroundColor: C.sand,
+      paddingTop: m ? sp(8) : sp(10), paddingBottom: m ? sp(8) : sp(10),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
+        <p style={{
+          fontSize: m ? 17 : 19, fontWeight: 500, lineHeight: 1.5,
+          color: C.navy, marginBottom: sp(3),
+        }}>
+          What percentage of your income comes from your single largest source?
+        </p>
+        <input
+          type="range" min="0" max="100" value={concentration}
+          onChange={e => setConcentration(Number(e.target.value))}
+          aria-label="Income concentration percentage"
+          style={{ width: "100%", accentColor: C.teal, cursor: "pointer" }}
+        />
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: sp(0.5) }}>
+          <span style={{ fontSize: 13, color: C.light }}>0%</span>
+          <span style={{ fontSize: 18, fontWeight: 600, color: C.teal, fontFamily: mono }}>{concentration}%</span>
+          <span style={{ fontSize: 13, color: C.light }}>100%</span>
+        </div>
+        <p style={{
+          fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.55,
+          color: C.muted, marginTop: sp(2.5),
+          minHeight: 46,
+        }}>
+          {message}
+        </p>
+        <p style={{ fontSize: 13, fontWeight: 500, color: C.light, marginTop: sp(1) }}>
+          This is one of six dimensions we measure.
+        </p>
       </div>
     </section>
   );
@@ -972,26 +981,8 @@ function HowItWorksSection() {
         <div style={{ marginBottom: stepGap, ...fadeIn(visible, 200) }}>
           <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 2</p>
           <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Structural Assessment</h3>
-          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
-            Six structural dimensions are evaluated:
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? sp(2) : sp(2.5), maxWidth: 780, marginBottom: sp(4) }}>
-            {[
-              { dim: "Recurrence", sub: "income that continues without re-selling" },
-              { dim: "Concentration", sub: "reliance on a single source" },
-              { dim: "Source count", sub: "number of independent income streams" },
-              { dim: "Forward visibility", sub: "income secured ahead of time" },
-              { dim: "Consistency", sub: "variation in earnings over time" },
-              { dim: "Labor independence", sub: "income that continues without active work" },
-            ].map((d) => (
-              <div key={d.dim} style={{ paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
-                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, borderBottom: `1.5px dotted ${C.teal}`, paddingBottom: 1 }}>{d.dim}</span>
-                <span style={{ fontSize: 16, fontWeight: 400, color: "#2C3A4B" }}> — {d.sub}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, maxWidth: textMax }}>
-            Each dimension is scored using fixed definitions.<br />No interpretation. No subjective adjustment.
+          <p style={{ ...stepBody, maxWidth: textMax }}>
+            Six structural dimensions are evaluated against fixed definitions. No interpretation. No subjective adjustment.
           </p>
         </div>
 
@@ -2074,12 +2065,13 @@ export default function LandingPage() {
         <HeroSection />
         <HeroVideo />
         <WhyThisDidntExist />
+        <ConcentrationHook />
         <ChallengeTheModel />
+        <WhatPeopleDoInstead />
         <HowItWorksSection />
         <ScoreDetermination />
         <PullQuoteStrip />
         <SameIncomeDifferentStability />
-        <WhatPeopleDoInstead />
         <ProofSection />
         <PricingSection />
         <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
