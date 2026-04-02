@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
+import { C, sans, sp } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -49,16 +50,7 @@ function useInView(threshold = 0) {
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
-};
+const gradient = `linear-gradient(135deg, ${C.navy} 0%, ${C.purple} 50%, ${C.teal} 100%)`;
 
 /* ------------------------------------------------------------------ */
 /*  Section component                                                  */
@@ -80,7 +72,7 @@ function Section({
   return (
     <div
       style={{
-        background: "#FFFFFF",
+        background: C.white,
         borderRadius: 16,
         border: "1px solid rgba(14,26,43,0.06)",
         padding: mobile ? "28px 24px" : "36px 36px",
@@ -94,13 +86,13 @@ function Section({
         style={{
           fontSize: mobile ? 17 : 19,
           fontWeight: 700,
-          color: B.navy,
+          color: C.navy,
           letterSpacing: "-0.02em",
           marginBottom: 16,
           lineHeight: 1.3,
         }}
       >
-        {number && <span style={{ color: B.purple, marginRight: 8 }}>{number}</span>}
+        {number && <span style={{ color: C.purple, marginRight: 8 }}>{number}</span>}
         {title}
       </h2>
       {children}
@@ -114,7 +106,7 @@ function Section({
 
 function P({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
-    <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.75, marginBottom: 12, ...style }}>
+    <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.75, marginBottom: 12, ...style }}>
       {children}
     </p>
   );
@@ -128,13 +120,13 @@ function Bullet({ items }: { items: string[] }) {
           key={item}
           style={{
             fontSize: 15,
-            color: B.muted,
+            color: C.muted,
             lineHeight: 1.75,
             paddingLeft: 20,
             position: "relative",
           }}
         >
-          <span style={{ position: "absolute", left: 0, color: B.purple, fontSize: 11, lineHeight: "26px" }}>●</span>
+          <span style={{ position: "absolute", left: 0, color: C.purple, fontSize: 11, lineHeight: "26px" }}>●</span>
           {item}
         </li>
       ))}
@@ -144,7 +136,7 @@ function Bullet({ items }: { items: string[] }) {
 
 function SubHead({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ fontSize: 14, fontWeight: 700, color: B.navy, marginBottom: 10, marginTop: 16 }}>
+    <div style={{ fontSize: 14, fontWeight: 700, color: C.navy, marginBottom: 10, marginTop: 16 }}>
       {children}
     </div>
   );
@@ -163,7 +155,7 @@ export default function PrivacyPolicyPage() {
   const sectionRefs = Array.from({ length: 16 }, () => useInView());
 
   return (
-    <div style={{ background: B.sand }}>
+    <div style={{ background: C.sand, fontFamily: sans }}>
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
@@ -171,7 +163,7 @@ export default function PrivacyPolicyPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 72 : 100,
           paddingBottom: mobile ? 72 : 100,
         }}
@@ -215,7 +207,7 @@ export default function PrivacyPolicyPage() {
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: C.sandText, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {t.privacyPolicy.heroTag}
             </span>
           </div>
@@ -224,7 +216,7 @@ export default function PrivacyPolicyPage() {
             style={{
               fontSize: mobile ? 30 : 44,
               fontWeight: 700,
-              color: "#FFFFFF",
+              color: C.sandText,
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
               marginBottom: 20,
@@ -233,10 +225,10 @@ export default function PrivacyPolicyPage() {
             {t.privacyPolicy.heroTitle}
           </h1>
 
-          <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", lineHeight: 1.7, marginBottom: 8 }}>
+          <p style={{ fontSize: mobile ? 15 : 17, color: C.sandMuted, lineHeight: 1.7, marginBottom: 8 }}>
             {t.privacyPolicy.heroSubtitle}
           </p>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
+          <p style={{ fontSize: 14, color: C.sandLight }}>
             {t.privacyPolicy.heroModel}
           </p>
         </div>
@@ -261,7 +253,7 @@ export default function PrivacyPolicyPage() {
           <div ref={sectionRefs[0].ref}>
             <Section title={t.privacyPolicy.s0Title} mobile={mobile} visible={sectionRefs[0].visible}>
               <P>{t.privacyPolicy.s0EffectiveDate}</P>
-              <P style={{ fontWeight: 600, color: B.navy, marginBottom: 4 }}>{t.privacyPolicy.s0Operator}</P>
+              <P style={{ fontWeight: 600, color: C.navy, marginBottom: 4 }}>{t.privacyPolicy.s0Operator}</P>
               <P>{t.privacyPolicy.s0Address.split("\n").map((line: string, i: number) => (<span key={i}>{line}{i < 2 && <br />}</span>))}</P>
               <P>{t.privacyPolicy.s0Controller}</P>
               <P style={{ marginBottom: 0 }}>
@@ -269,13 +261,13 @@ export default function PrivacyPolicyPage() {
                 <Link
                   href="/privacy-request"
                   style={{
-                    color: B.purple,
+                    color: C.purple,
                     fontWeight: 600,
                     textDecoration: "none",
                     borderBottom: "1px solid rgba(75,63,174,0.30)",
                     transition: "border-color 180ms ease",
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.purple; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                 >
                   {t.privacyPolicy.s0LinkText}
@@ -519,7 +511,7 @@ export default function PrivacyPolicyPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 56 : 72,
           paddingBottom: mobile ? 56 : 72,
         }}
@@ -564,13 +556,13 @@ export default function PrivacyPolicyPage() {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: C.sandText, letterSpacing: "-0.02em", marginBottom: 8 }}>
             {t.privacyPolicy.closingBrand}
           </div>
-          <div style={{ fontSize: mobile ? 15 : 17, color: "rgba(255,255,255,0.60)", marginBottom: 24 }}>
+          <div style={{ fontSize: mobile ? 15 : 17, color: C.sandMuted, marginBottom: 24 }}>
             {t.privacyPolicy.closingSubtitle}
           </div>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
             {t.privacyPolicy.closingPowered}
           </p>
         </div>

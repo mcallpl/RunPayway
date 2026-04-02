@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
+import { C, sans, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -45,23 +46,11 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-};
+const gradient = "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -110,10 +99,11 @@ export default function ContactPage() {
     height: 48,
     padding: "0 16px",
     borderRadius: 10,
-    border: "1px solid rgba(14,26,43,0.12)",
-    background: B.sand,
+    border: `1px solid ${C.border}`,
+    background: C.sand,
     fontSize: 14,
-    color: B.navy,
+    fontFamily: sans,
+    color: C.navy,
     outline: "none",
     transition: "border-color 180ms ease",
     boxSizing: "border-box",
@@ -123,14 +113,14 @@ export default function ContactPage() {
     display: "block",
     fontSize: 13,
     fontWeight: 600,
-    color: B.navy,
+    color: C.navy,
     letterSpacing: "0.04em",
     textTransform: "uppercase",
     marginBottom: 8,
   };
 
   return (
-    <div style={{ background: "#FFFFFF" }}>
+    <div style={{ background: C.white, fontFamily: sans }}>
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
@@ -138,7 +128,7 @@ export default function ContactPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 72 : 100,
           paddingBottom: mobile ? 72 : 100,
         }}
@@ -178,12 +168,12 @@ export default function ContactPage() {
               gap: 8,
               padding: "6px 16px",
               borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: `1px solid ${C.sandBorder}`,
               background: "rgba(255,255,255,0.06)",
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {t.contact.heroTag}
             </span>
           </div>
@@ -192,7 +182,8 @@ export default function ContactPage() {
             style={{
               fontSize: mobile ? 32 : 48,
               fontWeight: 600,
-              color: "#FFFFFF",
+              fontFamily: sans,
+              color: C.white,
               letterSpacing: "-0.03em",
               lineHeight: 1.12,
               marginBottom: 24,
@@ -204,7 +195,7 @@ export default function ContactPage() {
           <p
             style={{
               fontSize: mobile ? 16 : 18,
-              color: "rgba(255,255,255,0.65)",
+              color: C.sandMuted,
               lineHeight: 1.65,
               maxWidth: 600,
               margin: "0 auto 16px",
@@ -213,11 +204,11 @@ export default function ContactPage() {
             {t.contact.heroDesc}
           </p>
 
-          <p style={{ fontSize: mobile ? 14 : 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 480, margin: "0 auto 8px" }}>
+          <p style={{ fontSize: mobile ? 14 : 16, color: C.sandLight, lineHeight: 1.65, maxWidth: 480, margin: "0 auto 8px" }}>
             {t.contact.heroNote}
           </p>
 
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
+          <p style={{ fontSize: 14, color: C.sandLight }}>
             {t.contact.heroResponse}
           </p>
         </div>
@@ -230,7 +221,7 @@ export default function ContactPage() {
         style={{
           paddingTop: mobile ? 56 : 80,
           paddingBottom: mobile ? 64 : 96,
-          background: B.sand,
+          background: C.sand,
         }}
       >
         <div
@@ -250,9 +241,9 @@ export default function ContactPage() {
             ref={formAnim.ref}
             style={{
               flex: 1.2,
-              background: "#FFFFFF",
+              background: C.white,
               borderRadius: 12,
-              border: "1px solid rgba(14,26,43,0.06)",
+              border: `1px solid ${C.border}`,
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
               opacity: formAnim.visible ? 1 : 0,
@@ -260,10 +251,10 @@ export default function ContactPage() {
               transition: "opacity 700ms ease, transform 700ms ease",
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
               {t.contact.formTag}
             </div>
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 28 }} />
+            <div style={{ height: 1, background: C.border, marginBottom: 28 }} />
 
             {/* Full Name */}
             <div style={{ marginBottom: 20 }}>
@@ -274,8 +265,8 @@ export default function ContactPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t.contact.fullNamePlaceholder}
                 style={inputStyle}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               />
             </div>
 
@@ -288,8 +279,8 @@ export default function ContactPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t.contact.emailPlaceholder}
                 style={inputStyle}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               />
             </div>
 
@@ -306,11 +297,11 @@ export default function ContactPage() {
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: `right 16px center`,
                   paddingRight: 44,
-                  color: subject ? B.navy : B.light,
+                  color: subject ? C.navy : C.light,
                   cursor: "pointer",
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               >
                 <option value="" disabled>{t.contact.subjectPlaceholder}</option>
                 <option value="general">{t.contact.subjectGeneral}</option>
@@ -339,8 +330,8 @@ export default function ContactPage() {
                   fontFamily: "inherit",
                   lineHeight: 1.6,
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               />
             </div>
 
@@ -350,7 +341,7 @@ export default function ContactPage() {
                 width: "100%", height: 52, borderRadius: 12,
                 background: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.20)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: B.teal, fontSize: 15, fontWeight: 600,
+                color: C.teal, fontSize: 15, fontWeight: 600,
               }}>
                 Message sent. We will be in touch.
               </div>
@@ -365,8 +356,8 @@ export default function ContactPage() {
                     width: "100%",
                     height: 52,
                     borderRadius: 12,
-                    background: sending ? "rgba(75,63,174,0.5)" : btnHovered ? "#3D33A0" : B.purple,
-                    color: "#FFFFFF",
+                    background: sending ? "rgba(75,63,174,0.5)" : btnHovered ? "#3D33A0" : C.purple,
+                    color: C.white,
                     fontSize: 16,
                     fontWeight: 600,
                     letterSpacing: "-0.01em",
@@ -385,10 +376,10 @@ export default function ContactPage() {
             )}
 
             {/* Security line */}
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
+            <div style={{ height: 1, background: C.border, margin: "24px 0 16px" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 14, color: B.light }}>{t.contact.secureForm}</span>
-              <span style={{ fontSize: 14, color: B.light }}>{t.contact.encryptedData}</span>
+              <span style={{ fontSize: 14, color: C.light }}>{t.contact.secureForm}</span>
+              <span style={{ fontSize: 14, color: C.light }}>{t.contact.encryptedData}</span>
             </div>
           </div>
 
@@ -408,23 +399,23 @@ export default function ContactPage() {
             {/* Response Expectations */}
             <div
               style={{
-                background: "#FFFFFF",
+                background: C.white,
                 borderRadius: 12,
-                border: "1px solid rgba(14,26,43,0.06)",
+                border: `1px solid ${C.border}`,
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.responseTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.responseP1}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.responseP2}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
                 {t.contact.responseP3}
               </p>
             </div>
@@ -432,17 +423,17 @@ export default function ContactPage() {
             {/* Alternative Resources */}
             <div
               style={{
-                background: "#FFFFFF",
+                background: C.white,
                 borderRadius: 12,
-                border: "1px solid rgba(14,26,43,0.06)",
+                border: `1px solid ${C.border}`,
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.resourcesTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 16 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 16 }}>
                 {t.contact.resourcesDesc}
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -460,22 +451,22 @@ export default function ContactPage() {
                       justifyContent: "space-between",
                       padding: "12px 16px",
                       borderRadius: 10,
-                      background: B.sand,
+                      background: C.sand,
                       fontSize: 14,
                       fontWeight: 600,
-                      color: B.navy,
+                      color: C.navy,
                       textDecoration: "none",
                       transition: "background 180ms ease",
                     }}
-                    onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.background = B.sandDk; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = B.sand; }}
+                    onMouseEnter={(e) => { if (canHover()) e.currentTarget.style.background = C.sand; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = C.sand; }}
                   >
                     {link.label}
-                    <span style={{ color: B.purple, fontSize: 14 }}>→</span>
+                    <span style={{ color: C.purple, fontSize: 14 }}>→</span>
                   </Link>
                 ))}
               </div>
-              <p style={{ fontSize: 14, color: B.light, lineHeight: 1.65, marginTop: 14 }}>
+              <p style={{ fontSize: 14, color: C.light, lineHeight: 1.65, marginTop: 14 }}>
                 {t.contact.resourcesNote}
               </p>
             </div>
@@ -483,20 +474,20 @@ export default function ContactPage() {
             {/* Security Notice */}
             <div
               style={{
-                background: "#FFFFFF",
+                background: C.white,
                 borderRadius: 12,
-                border: "1px solid rgba(14,26,43,0.06)",
+                border: `1px solid ${C.border}`,
                 padding: mobile ? "24px 24px" : "28px 28px",
                 boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
                 {t.contact.securityTag}
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 10 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 10 }}>
                 {t.contact.securityP1}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
                 {t.contact.securityP2}
               </p>
             </div>
@@ -511,7 +502,7 @@ export default function ContactPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 56 : 72,
           paddingBottom: mobile ? 56 : 72,
         }}
@@ -556,13 +547,13 @@ export default function ContactPage() {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, fontFamily: sans, color: C.white, letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
-          <div style={{ fontSize: mobile ? 16 : 18, color: "rgba(255,255,255,0.60)", lineHeight: 1.65, marginBottom: 24 }}>
+          <div style={{ fontSize: mobile ? 16 : 18, color: C.sandMuted, lineHeight: 1.65, marginBottom: 24 }}>
             {t.contact.closingSubtitle}
           </div>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: C.sandLight, letterSpacing: "0.02em" }}>
             {t.contact.poweredBy}
           </p>
         </div>

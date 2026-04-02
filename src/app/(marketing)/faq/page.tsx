@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import type { Translations } from "@/lib/i18n/types";
+import { C, sans, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -46,23 +47,11 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-};
+const gradient = "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  FAQ data                                                           */
@@ -127,19 +116,19 @@ function getFaqCategories(t: Translations): FaqCategory[] { return [
   {
     title: t.faqPage.cat7Title,
     items: [
-      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A1P3}</a></p></>) },
-      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A2P3}</a></p></>) },
+      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A1P3}</a></p></>) },
+      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A2P3}</a></p></>) },
       { q: t.faqPage.cat7Q3, a: (<><p>{t.faqPage.cat7A3P1}</p><p>{t.faqPage.cat7A3P2}</p></>) },
       { q: t.faqPage.cat7Q4, a: (<><p>{t.faqPage.cat7A4P1}</p><p>{t.faqPage.cat7A4P2}</p></>) },
-      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><a href="/#footer" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat7A5P3}</a></p></>) },
+      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><a href="/#footer" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A5P3}</a></p></>) },
     ],
   },
   {
     title: t.faqPage.cat8Title,
     items: [
-      { q: t.faqPage.cat8Q1, a: (<><p>{t.faqPage.cat8A1P1}</p><p>{t.faqPage.cat8A1P2}</p><p><Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat8A1P3}</Link></p></>) },
+      { q: t.faqPage.cat8Q1, a: (<><p>{t.faqPage.cat8A1P1}</p><p>{t.faqPage.cat8A1P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat8A1P3}</Link></p></>) },
       { q: t.faqPage.cat8Q2, a: (<><p>{t.faqPage.cat8A2P1}</p><p>{t.faqPage.cat8A2P2}</p><p>{t.faqPage.cat8A2P3}</p></>) },
-      { q: t.faqPage.cat8Q3, a: (<><p>{t.faqPage.cat8A3P1}</p><p>{t.faqPage.cat8A3P2}</p><p><Link href="/contact" style={{ color: "#4B3FAE", fontWeight: 500 }}>{t.faqPage.cat8A3P3}</Link></p></>) },
+      { q: t.faqPage.cat8Q3, a: (<><p>{t.faqPage.cat8A3P1}</p><p>{t.faqPage.cat8A3P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat8A3P3}</Link></p></>) },
     ],
   },
 ]; }
@@ -166,9 +155,9 @@ function AccordionItem({
   return (
     <div
       style={{
-        background: "#FFFFFF",
+        background: C.white,
         borderRadius: 12,
-        border: `1px solid ${isOpen ? "rgba(75,63,174,0.18)" : "rgba(14,26,43,0.06)"}`,
+        border: `1px solid ${isOpen ? "rgba(75,63,174,0.18)" : C.border}`,
         overflow: "hidden",
         transition: "border-color 220ms ease, box-shadow 220ms ease",
         boxShadow: isOpen ? "0 4px 16px rgba(75,63,174,0.06)" : "0 1px 4px rgba(14,26,43,0.03)",
@@ -195,7 +184,7 @@ function AccordionItem({
           style={{
             fontSize: mobile ? 16 : 18,
             fontWeight: 600,
-            color: B.navy,
+            color: C.navy,
             lineHeight: 1.4,
             paddingRight: 16,
           }}
@@ -215,7 +204,7 @@ function AccordionItem({
           }}
         >
           <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
-            <path d="M1 1L6 6L11 1" stroke={isOpen ? B.purple : B.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M1 1L6 6L11 1" stroke={isOpen ? C.purple : C.light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       </button>
@@ -226,7 +215,7 @@ function AccordionItem({
             padding: mobile ? "0 20px 20px" : "0 24px 24px",
           }}
         >
-          <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 16 }} />
+          <div style={{ height: 1, background: C.border, marginBottom: 16 }} />
           <div className="faq-answer">
             {children}
           </div>
@@ -258,7 +247,7 @@ function FaqCategorySection({
         style={{
           fontSize: 13,
           fontWeight: 600,
-          color: B.purple,
+          color: C.purple,
           letterSpacing: "0.08em",
           textTransform: "uppercase",
           marginBottom: 18,
@@ -314,12 +303,12 @@ export default function FaqPage() {
   };
 
   return (
-    <div style={{ background: B.sand }}>
+    <div style={{ background: C.sand, fontFamily: sans }}>
       {/* Scoped styles for FAQ answer content */}
       <style>{`
         .faq-answer p {
           font-size: 16px;
-          color: ${B.muted};
+          color: ${C.muted};
           line-height: 1.65;
           margin-bottom: 10px;
         }
@@ -333,7 +322,7 @@ export default function FaqPage() {
         }
         .faq-answer ul li {
           font-size: 16px;
-          color: ${B.muted};
+          color: ${C.muted};
           line-height: 1.65;
           padding-left: 20px;
           position: relative;
@@ -346,12 +335,12 @@ export default function FaqPage() {
           width: 6px;
           height: 6px;
           border-radius: 50%;
-          background: ${B.purple};
+          background: ${C.purple};
         }
         .faq-table {
           border-radius: 10px;
           overflow: hidden;
-          border: 1px solid ${B.sandDk};
+          border: 1px solid ${C.sand};
           margin-bottom: 12px;
         }
         .faq-table-row {
@@ -361,14 +350,14 @@ export default function FaqPage() {
           font-size: 14px;
         }
         .faq-table-row:nth-child(even) {
-          background: ${B.sand};
+          background: ${C.sand};
         }
         .faq-table-row:nth-child(odd):not(.faq-table-header) {
-          background: #FFFFFF;
+          background: ${C.white};
         }
         .faq-table-header {
-          background: ${B.navy} !important;
-          color: rgba(255,255,255,0.70);
+          background: ${C.navy} !important;
+          color: ${C.sandMuted};
           font-size: 13px;
           font-weight: 600;
           letter-spacing: 0.08em;
@@ -376,15 +365,15 @@ export default function FaqPage() {
         }
         .faq-table-row span:first-child {
           font-weight: 600;
-          color: ${B.navy};
+          color: ${C.navy};
         }
         .faq-table-header span:first-child,
         .faq-table-header span:last-child {
-          color: rgba(255,255,255,0.70);
+          color: ${C.sandMuted};
           font-weight: 600;
         }
         .faq-table-row:not(.faq-table-header) span:last-child {
-          color: ${B.muted};
+          color: ${C.muted};
           text-align: right;
         }
         .faq-table-header span:last-child {
@@ -399,7 +388,7 @@ export default function FaqPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 72 : 100,
           paddingBottom: mobile ? 72 : 100,
         }}
@@ -439,12 +428,12 @@ export default function FaqPage() {
               gap: 8,
               padding: "6px 16px",
               borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: `1px solid ${C.sandBorder}`,
               background: "rgba(255,255,255,0.06)",
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {t.faqPage.heroTag}
             </span>
           </div>
@@ -453,7 +442,8 @@ export default function FaqPage() {
             style={{
               fontSize: mobile ? 32 : 48,
               fontWeight: 600,
-              color: "#FFFFFF",
+              fontFamily: sans,
+              color: C.white,
               letterSpacing: "-0.03em",
               lineHeight: 1.12,
               marginBottom: 20,
@@ -465,7 +455,7 @@ export default function FaqPage() {
           <p
             style={{
               fontSize: mobile ? 16 : 18,
-              color: "rgba(255,255,255,0.65)",
+              color: C.sandMuted,
               lineHeight: 1.65,
               maxWidth: 600,
               margin: "0 auto",
@@ -509,7 +499,7 @@ export default function FaqPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 56 : 72,
           paddingBottom: mobile ? 56 : 72,
         }}
@@ -554,13 +544,13 @@ export default function FaqPage() {
             textAlign: "center",
           }}
         >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#FFFFFF", letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, fontFamily: sans, color: C.white, letterSpacing: "-0.02em", marginBottom: 8 }}>
             RunPayway™
           </div>
-          <div style={{ fontSize: mobile ? 16 : 18, color: "rgba(255,255,255,0.60)", lineHeight: 1.65, marginBottom: 24 }}>
+          <div style={{ fontSize: mobile ? 16 : 18, color: C.sandMuted, lineHeight: 1.65, marginBottom: 24 }}>
             {t.faqPage.closingSubtitle}
           </div>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.30)", letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: C.sandLight, letterSpacing: "0.02em" }}>
             {t.faqPage.poweredBy}
           </p>
         </div>
