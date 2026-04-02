@@ -55,7 +55,7 @@ function Hero() {
             A structured assessment.{!m && <br />} Not a guess.
           </h1>
           <p style={{ ...body(m), color: C.sandMuted, marginBottom: 16, maxWidth: 520 }}>
-            RunPayway scores how your income is built using fixed structural dimensions. The same answers always produce the same score. Here is exactly how the process works.
+            RunPayway&#8482; evaluates how your income is built across six fixed structural dimensions. The same inputs always produce the same score. Here is exactly how the process works.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 16, marginTop: 28 }}>
             {["No bank connection", "No credit pull", "No document upload"].map(t => (
@@ -77,13 +77,13 @@ function Journey() {
 
   const steps = [
     {
-      num: "01", title: "You answer six structural questions",
-      body: "Six questions. Each one measures a different dimension of your income: how much repeats, how concentrated it is, how many sources you have, how far ahead it\u2019s secured, how consistent it is month to month, and how much continues if you stop working.",
+      num: "01", title: "You complete the structural assessment",
+      body: "The model evaluates your income across six fixed dimensions \u2014 recurrence, concentration, diversification, forward visibility, consistency, and labor independence. Each dimension is scored independently using fixed definitions.",
       detail: "No dollar amounts. No bank connection. No document upload.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <div style={{ ...T.label, color: C.teal }}>Question 4 of 6</div>
+            <div style={{ ...T.label, color: C.teal }}>Dimension 4 of 6</div>
             <div style={{ fontSize: 11, fontFamily: mono, color: C.sandLight }}>Forward Revenue Visibility</div>
           </div>
           <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.sandText, marginBottom: 6, lineHeight: 1.35 }}>How many months of future income are currently secured under signed or enforceable agreements?</div>
@@ -452,7 +452,7 @@ function TwoLayers() {
           <div style={{ ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, border: `1px solid ${borderMd}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
             <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Layer 1 — Core Score</div>
             <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 12 }}>The number.</h3>
-            <p style={{ ...bodySm(m), color: C.muted, marginBottom: 16 }}>Generated from fixed structural questions only. Same answers, same score. No contextual input can alter it.</p>
+            <p style={{ ...bodySm(m), color: C.muted, marginBottom: 16 }}>Generated from fixed structural inputs only. Same inputs, same score. No contextual input can alter it.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
