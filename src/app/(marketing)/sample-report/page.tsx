@@ -56,7 +56,7 @@ function Hero() {
             See what the report looks like<br />before you buy.
           </h1>
           <p style={{ fontSize: m ? 16 : 20, color: C.sandMuted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
-            Five pages of structural diagnosis. An interactive simulator. Every number is yours.
+            Three pages of structural diagnosis. An interactive simulator. Every number is yours.
           </p>
         </div>
       </div>
@@ -77,13 +77,13 @@ function ReportPreview() {
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 42, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>48</div>
+            <div style={{ fontSize: 42, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</div>
             <div style={{ fontSize: 13, fontFamily: mono, color: C.sandLight, marginTop: 2 }}>/100</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.12)" }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.bandDeveloping }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: C.bandDeveloping }}>Developing Stability</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, marginTop: 8, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)" }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
+              <span style={{ fontSize: 12, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
             </div>
-            <div style={{ fontSize: 11, fontFamily: mono, color: C.sandLight, marginTop: 6 }}>6 points from Established</div>
+            <div style={{ fontSize: 11, fontFamily: mono, color: C.sandLight, marginTop: 6 }}>3 points to High Stability</div>
           </div>
           <div style={{ padding: "10px 12px", borderRadius: 6, borderLeft: `2px solid ${C.sandText}`, backgroundColor: "rgba(244,241,234,0.04)", marginBottom: 8 }}>
             <div style={{ fontSize: 12, color: C.sandMuted, lineHeight: 1.5 }}>Your project-based income has limited forward visibility. Only 33% is secured ahead of time.</div>
@@ -121,7 +121,7 @@ function ReportPreview() {
           </div>
           <div style={{ display: "flex", gap: 4 }}>
             <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
-              <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.sandText }}>48 to 26</div>
+              <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.sandText }}>72 to 44</div>
               <div style={{ fontSize: 9, color: C.sandLight }}>If biggest source leaves</div>
             </div>
             <div style={{ flex: 1, padding: "6px", borderRadius: 4, backgroundColor: "rgba(244,241,234,0.03)", textAlign: "center" }}>
@@ -139,9 +139,9 @@ function ReportPreview() {
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 8, textTransform: "uppercase" as const }}>Ranked by damage</div>
           {[
-            { rank: "#1", title: "Your largest client stops paying", score: "48 to 26", color: C.bandLimited },
-            { rank: "#2", title: "You cannot work for 90 days", score: "48 to 30", color: C.bandDeveloping },
-            { rank: "#3", title: "New work arrives later than expected", score: "48 to 40", color: "rgba(244,241,234,0.15)" },
+            { rank: "#1", title: "Your largest client stops paying", score: "72 to 44", color: C.bandLimited },
+            { rank: "#2", title: "You cannot work for 90 days", score: "72 to 52", color: C.bandEstablished },
+            { rank: "#3", title: "New work arrives later than expected", score: "72 to 61", color: C.bandEstablished },
           ].map((s, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderLeft: `2px solid ${s.color}`, paddingLeft: 10, marginBottom: 4 }}>
               <span style={{ fontSize: 12, fontWeight: 500, color: C.sandMuted }}>{s.title}</span>
@@ -154,28 +154,7 @@ function ReportPreview() {
           </div>
         </div>
       ),
-      desc: "Ranked disruption scenarios with exact score drops, how much your income can absorb, and the structural pattern to watch.",
-    },
-    {
-      num: "04", title: "Highest-Leverage Action Plan", color: C.purple,
-      screen: (
-        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.purple, marginBottom: 8, textTransform: "uppercase" as const }}>Highest-leverage change</div>
-          <div style={{ fontSize: 12, fontWeight: 500, color: C.sandMuted, lineHeight: 1.5, marginBottom: 8 }}>Convert your top client relationship into a monthly retainer for ongoing advisory services.</div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 10px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.08)", marginBottom: 10 }}>
-            <span style={{ fontSize: 11, color: C.sandLight }}>Projected impact</span>
-            <span style={{ fontSize: 14, fontWeight: 700, fontFamily: mono, color: C.teal }}>48 to 60 (+12)</span>
-          </div>
-          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, marginBottom: 4, textTransform: "uppercase" as const }}>30-day roadmap</div>
-          {["Audit current structure", "Design one recurring offer", "Secure first retainer", "Measure and plan next move"].map((step, i) => (
-            <div key={i} style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 3 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, fontFamily: mono, color: C.purple, minWidth: 14 }}>{i + 1}</span>
-              <span style={{ fontSize: 11, color: C.sandLight }}>{step}</span>
-            </div>
-          ))}
-        </div>
-      ),
-      desc: "Structural action plan, tradeoff analysis, 30-day execution roadmap, and retake timing.",
+      desc: "Ranked disruption scenarios with exact score drops, highest-leverage action plan, 30-day execution roadmap, and retake timing.",
     },
   ];
 
@@ -185,7 +164,7 @@ function ReportPreview() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Inside The Report</div>
           <h2 style={{ fontSize: m ? 32 : 48, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
-            Four pages. Every section written for you.
+            Three pages. Every section written for you.
           </h2>
         </div>
 
@@ -255,7 +234,7 @@ function SimulatorPreview() {
   const screenDefault = (
     <>
       <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
-        {[{ l: "CURRENT", v: "48", c: C.sandText }, { l: "SIMULATED", v: "62", c: C.teal }, { l: "IMPACT", v: "+14", c: C.teal }].map(col => (
+        {[{ l: "CURRENT", v: "72", c: C.sandText }, { l: "SIMULATED", v: "82", c: C.teal }, { l: "IMPACT", v: "+10", c: C.teal }].map(col => (
           <div key={col.l} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: m ? "10px 6px" : "12px 10px", textAlign: "center" }}>
             <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.sandLight, marginBottom: 3 }}>{col.l}</div>
             <div style={{ fontSize: m ? 22 : 28, fontWeight: 300, fontFamily: mono, color: col.c, lineHeight: 1 }}>{col.v}</div>

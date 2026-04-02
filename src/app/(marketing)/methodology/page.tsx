@@ -234,7 +234,7 @@ function Interactions() {
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ ...bodySm(m), fontFamily: sans, fontSize: m ? 15 : 17, color: C.muted, lineHeight: 1.65, marginBottom: 20 }}>
-              A score of <span style={{ fontFamily: mono }}>48</span> with high concentration and low forward visibility is structurally different from a <span style={{ fontFamily: mono }}>48</span> with moderate concentration and strong visibility. The model applies interaction penalties and bonuses that reflect how factors amplify or offset each other.
+              A score of <span style={{ fontFamily: mono }}>72</span> with high concentration and low forward visibility is structurally different from a <span style={{ fontFamily: mono }}>72</span> with moderate concentration and strong visibility. The model applies interaction penalties and bonuses that reflect how factors amplify or offset each other.
             </p>
             <div style={{ ...cardStyle, padding: "16px 20px" }}>
               <div style={{ ...T.label, fontSize: 13, color: C.purple, marginBottom: 10 }}>Example Interactions</div>

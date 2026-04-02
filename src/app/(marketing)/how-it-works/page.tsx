@@ -117,13 +117,13 @@ function Journey() {
       detail: "Free. Instant. No payment required.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
-          <div style={{ fontFamily: mono, fontSize: 48, fontWeight: 600, color: C.sandText, lineHeight: 1, marginBottom: 4 }}>48</div>
+          <div style={{ fontFamily: mono, fontSize: 48, fontWeight: 600, color: C.sandText, lineHeight: 1, marginBottom: 4 }}>72</div>
           <div style={{ fontFamily: mono, fontSize: 14, color: C.sandLight, marginBottom: 12 }}>out of 100</div>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 12 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.bandDeveloping }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: C.bandDeveloping }}>Developing Stability</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.15)", marginBottom: 12 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
           </div>
-          <div style={{ fontFamily: mono, fontSize: 13, color: C.sandLight, lineHeight: 1.5 }}>12 points to Established</div>
+          <div style={{ fontFamily: mono, fontSize: 13, color: C.sandLight, lineHeight: 1.5 }}>3 points to High Stability</div>
         </div>
       ),
     },
