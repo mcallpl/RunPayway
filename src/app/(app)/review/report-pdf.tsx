@@ -501,66 +501,62 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   doc.text("Take Action Now to Secure Your Future", ML, y);
   y += 16;
 
-  // Action steps — max 3
+  // Action steps — max 3, compact cards to prevent overflow
   const stepColors = ["#4B3FAE", "#1F6D7A", "#0E1A2B"];
   const actions = d.actionCategories.slice(0, 3);
   for (let i = 0; i < actions.length; i++) {
     const a = actions[i];
-    const h = 50;
-    check(y, h, `P3-step${i}`);
+    const h = 42;
+    if (!fits(y, h)) break;
     card(doc, ML, y, CW, h, stepColors[i]);
     label(doc, `STEP ${i + 1}`, ML + 10, y + 10, stepColors[i]);
-    sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(a.title, 70), ML + 10, y + 22);
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-    doc.text(truncate(a.how, 90), ML + 10, y + 34);
-    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1F6D7A");
-    doc.text(S(`Impact: ${a.scoreChange}`), ML + 10, y + 44);
-    y += h + 6;
+    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
+    doc.text(truncate(a.title, 65), ML + 10, y + 21);
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
+    doc.text(truncate(a.how, 85), ML + 10, y + 31);
+    sf(doc, "InterSB"); doc.setFontSize(8); doc.setTextColor("#1F6D7A");
+    doc.text(S(`Impact: ${a.scoreChange}`), ML + CW - 10, y + 10, { align: "right" });
+    y += h + 5;
   }
 
   // Combined lift
-  if (d.combinedLift) {
-    y += 4;
-    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
+  if (d.combinedLift && fits(y, 16)) {
+    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
     const cText = `Combined Impact: ${d.combinedLift.projectedScore} (+${d.combinedLift.lift} points)${d.combinedLift.bandShift ? ` - moves to ${d.combinedLift.bandShift}` : ""}`;
     doc.text(S(cText), ML, y);
-    y += 16;
+    y += 14;
   }
 
   // Divider
-  doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
-  doc.line(ML, y, ML + CW, y); y += 12;
+  if (fits(y, 10)) {
+    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+    doc.line(ML, y, ML + CW, y); y += 10;
+  }
 
   // Roadmap
-  label(doc, "YOUR PERSONALIZED ROADMAP", ML, y, "#4B3FAE");
-  y += 14;
-  sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
-  doc.text("Commit to Your Financial Future", ML, y);
-  y += 14;
+  if (fits(y, 30)) {
+    label(doc, "30-DAY ROADMAP", ML, y, "#4B3FAE");
+    y += 12;
 
-  for (const row of d.roadmap.slice(0, 4)) {
-    if (y + 22 > YL) break;
-    sf(doc, "InterB"); doc.setFontSize(7.5); doc.setTextColor("#4B3FAE");
-    doc.text(truncate(row.week, 12), ML, y);
-    sf(doc, "InterSB"); doc.setFontSize(9); doc.setTextColor("#0E1A2B");
-    doc.text(truncate(row.action, 50), ML + 60, y);
-    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-    doc.text(truncate(row.detail, 75), ML + 60, y + 10);
-    if (row.target) {
-      sf(doc, "InterSB"); doc.setFontSize(7.5); doc.setTextColor("#1F6D7A");
-      doc.text(S(`Goal: ${truncate(row.target, 60)}`), ML + 60, y + 19);
+    for (const row of d.roadmap.slice(0, 4)) {
+      if (!fits(y, 18)) break;
+      sf(doc, "InterB"); doc.setFontSize(7); doc.setTextColor("#4B3FAE");
+      doc.text(truncate(row.week, 12), ML, y);
+      sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
+      doc.text(truncate(row.action, 50), ML + 56, y);
+      sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#535D6B");
+      doc.text(truncate(row.detail, 75), ML + 56, y + 9);
+      y += 20;
     }
-    y += row.target ? 26 : 22;
   }
 
   // Avoid actions
-  if (d.avoidActions.length > 0 && y + 30 <= YL) {
-    y += 4;
+  if (d.avoidActions.length > 0 && fits(y, 24)) {
     label(doc, "WHAT TO AVOID", ML, y, "#9B2C2C");
     y += 10;
     for (const a of d.avoidActions.slice(0, 2)) {
-      sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
+      if (!fits(y, 10)) break;
+      sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
       doc.text(S(`- ${truncate(a, 90)}`), ML, y);
       y += 10;
     }
@@ -657,13 +653,31 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     y += 14;
   }
 
+  // ── ACCESS CODE — duplicated on back page for convenience ──
+  if (y + 60 <= YL) {
+    doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
+    doc.line(ML, y, ML + CW, y); y += 12;
+    label(doc, "COMMAND CENTER ACCESS", ML, y, "#0E1A2B");
+    y += 10;
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
+    doc.text("Use this code at runpayway.com/dashboard to access your Command Center.", ML, y);
+    y += 12;
+    card(doc, ML, y, CW, 28);
+    doc.setFont("Courier", "normal"); doc.setFontSize(6); doc.setTextColor("#0E1A2B");
+    const backCodeLines: string[] = doc.splitTextToSize(S(d.accessCode), CW - 20);
+    for (let i = 0; i < Math.min(backCodeLines.length, 2); i++) {
+      doc.text(backCodeLines[i], ML + 10, y + 10 + i * 8);
+    }
+    y += 32;
+  }
+
   // Fine print
   if (y + 20 <= YL) {
-    const fp = "RunPayway(TM) Command Center - a proprietary financial diagnostic tool developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
+    const fp = "RunPayway(TM) - a proprietary structural income diagnostic developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
-  footer(doc, "Stress Testing & Real-World Impact", 3);
+  footer(doc, "Stress Testing & Command Center Access", 3);
 }
 
 /* ================================================================== */
