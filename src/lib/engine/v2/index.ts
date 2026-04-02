@@ -211,7 +211,15 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     reason_codes.push(REASON_CODES["CNF-003"]);
   }
 
-  // ── 16. Explainability ────────────────────────────────
+  // ── 16. Benchmarking ───────────────────────────────────
+  const benchmarks = computeBenchmarks(
+    scores,
+    resolvedProfile,
+    indicators,
+  );
+  reason_codes.push(REASON_CODES["BNK-001"]);
+
+  // ── 17. Explainability ────────────────────────────────
   const explainability = generateExplainability(
     scores,
     bands,
@@ -226,7 +234,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
   );
   reason_codes.push(REASON_CODES["EXP-001"]);
 
-  // ── 17. Action Prioritization ─────────────────────────
+  // ── 18. Action Prioritization ─────────────────────────
   const actions = prioritizeActions(
     constraints,
     fragility,
@@ -236,20 +244,12 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
   );
   reason_codes.push(REASON_CODES["ACT-001"]);
 
-  // ── 18. Reassessment Triggers ─────────────────────────
+  // ── 19. Reassessment Triggers ─────────────────────────
   const reassessmentTriggers = computeReassessmentTriggers(
     normalized,
     quality,
   );
   reason_codes.push(REASON_CODES["RSA-001"]);
-
-  // ── 19. Benchmarking ──────────────────────────────────
-  const benchmarks = computeBenchmarks(
-    scores,
-    resolvedProfile,
-    indicators,
-  );
-  reason_codes.push(REASON_CODES["BNK-001"]);
 
   // ── 20. Comparative Reassessment ──────────────────────
   // (handled externally when prior assessment is provided)
