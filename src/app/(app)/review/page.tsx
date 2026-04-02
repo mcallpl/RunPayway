@@ -842,6 +842,10 @@ export default function ReviewPage() {
       ? "Less than 1 month"
       : `${record.income_continuity_months} month${record.income_continuity_months !== 1 ? "s" : ""}`;
 
+  const riskScenarioScore = Math.max(0, record.risk_scenario_score ?? score);
+  const riskScenarioDrop = record.risk_scenario_drop ?? 0;
+  const continuityText = record.income_continuity_months < 1 ? "Income stops almost immediately" : record.income_continuity_months < 3 ? "Limited runway before pressure" : "Some structural buffer in place";
+
   // ── Page navigation ──
 
   // ── Reassessment countdown ──
@@ -1145,12 +1149,25 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        {/* ── IN PLAIN ENGLISH — tight, 2 sentences each ── */}
+        {/* ── PRESSUREMAP — structural intelligence ── */}
+        {olSelectedScenarios && olSelectedScenarios.length > 0 && (
+          <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "18px 16px" : "20px 28px" }}>
+            <div style={{ ...T.overline, color: B.teal, marginBottom: 12 }}>PRESSUREMAP&#8482; INTELLIGENCE</div>
+            {olSelectedScenarios.slice(0, 3).map((sc, idx) => (
+              <div key={idx} style={{ marginBottom: idx < Math.min(olSelectedScenarios.length, 3) - 1 ? 12 : 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{sc.label}</div>
+                <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.5 }}>{sc.why_it_matters}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ── STRUCTURAL ASSESSMENT — tight, 2 sentences each ── */}
         <div style={{ ...reportCardStyle, marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IN PLAIN ENGLISH</div>
+          <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>STRUCTURAL ASSESSMENT</div>
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16 }}>
             <div style={{ flex: 1, padding: "16px 20px", borderRadius: 8, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.08)" }}>
-              <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>The Strength</div>
+              <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 8 }}>Structural Strength</div>
               <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
                 {tier === "high"
                   ? `Only ${record.active_income_level}% of your income requires daily effort. You have ${continuityDisplay} of runway if you stopped working entirely.`
@@ -1160,7 +1177,7 @@ export default function ReviewPage() {
               </p>
             </div>
             <div style={{ flex: 1, padding: "16px 20px", borderRadius: 8, backgroundColor: "rgba(197,48,48,0.03)", border: "1px solid rgba(197,48,48,0.06)" }}>
-              <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>The Risk</div>
+              <div style={{ ...T.sectionLabel, color: B.bandLimited, marginBottom: 8 }}>Primary Constraint</div>
               <p style={{ ...T.body, color: B.navy, margin: 0, lineHeight: 1.65 }}>
                 {tier === "high"
                   ? `${dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) + "." : "Specific structural gaps remain."} Addressing this pushes your score even higher.`
@@ -1242,50 +1259,18 @@ export default function ReviewPage() {
           </div>
         )}
 
-        <SectionDivider />
-
-        {/* ── COMMAND CENTER — diagnosis-to-action bridge ── */}
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>THIS REPORT IS YOUR DIAGNOSIS</div>
-          <p style={{ ...T.body, color: B.navy, margin: "0 0 12px", lineHeight: 1.65 }}>
-            It shows where your income is structurally vulnerable and identifies the highest-impact changes. But a diagnosis alone does not change your score.
-          </p>
-          <p style={{ ...T.small, color: B.navy, margin: "0 0 12px", lineHeight: 1.55, fontWeight: 500 }}>
-            Your Command Center is where the work happens:
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
-            {[
-              { bold: "PressureMap\u2122", text: " \u2014 AI-powered analysis of your income zones with peer benchmarks" },
-              { bold: "12-week roadmap", text: " with the exact sequence of actions" },
-              { bold: "Ready-to-use scripts", text: " tailored to your industry" },
-              { bold: "Real-time simulator", text: " to test changes before you commit" },
-              { bold: "Progress tracking", text: " that updates your estimated score as you act" },
-            ].map(item => (
-              <div key={item.bold} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0, marginTop: 7 }} />
-                <span style={{ ...T.small, color: B.navy, lineHeight: 1.5 }}><span style={{ fontWeight: 600 }}>{item.bold}</span>{item.text}</span>
+        {/* ── WHAT TO AVOID ── */}
+        {v2AvoidActions && (v2AvoidActions as string[]).length > 0 && (
+          <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "14px 16px" : "16px 24px" }}>
+            <div style={{ ...T.overline, color: B.bandLimited, marginBottom: 8 }}>WHAT TO AVOID</div>
+            {(v2AvoidActions as string[]).slice(0, 2).map((a: string, i: number) => (
+              <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < 1 ? 6 : 0 }}>
+                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.bandLimited, flexShrink: 0, marginTop: 7 }} />
+                <span style={{ ...T.small, color: B.muted, lineHeight: 1.5 }}>{a}</span>
               </div>
             ))}
           </div>
-          <div onClick={() => router.push("/dashboard")} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 8, border: `1px solid ${B.navy}`, color: B.navy, fontSize: 14, fontWeight: 600, cursor: "pointer", marginBottom: 12 }}>
-            Open Command Center &rarr;
-          </div>
-          <p style={{ ...T.small, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
-            Open at <span style={{ fontWeight: 600, color: B.navy }}>runpayway.com/dashboard</span> using the access code on your cover page.
-          </p>
-        </div>
-        <div style={{ padding: "10px 16px", borderRadius: 6, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}10` }}>
-          <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
-            The professionals who improve their scores are the ones who open their Command Center within 48 hours of reading this report.
-          </p>
-        </div>
-
-        {/* ── METHODOLOGY ── */}
-        <div style={{ paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
-          <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
-            Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. Not financial advice.
-          </p>
-        </div>
+        )}
 
         <PageFooter section="Stability Plan" page={2} />
     </>,
@@ -1317,15 +1302,46 @@ export default function ReviewPage() {
           </div>
         )}
 
-        {/* ── FRAGILITY ── */}
-        {v2Fragility && (
-          <div style={{ ...reportCardStyle, padding: "12px 18px", marginBottom: 16 }}>
-            <div style={{ ...T.overline, color: B.muted, marginBottom: 4 }}>STRUCTURAL FRAGILITY</div>
-            <div style={{ ...T.sectionLabel, color: (v2Fragility as { fragility_class: string }).fragility_class === "brittle" || (v2Fragility as { fragility_class: string }).fragility_class === "thin" ? C.bandLimited : B.navy }}>
-              {((v2Fragility as { fragility_class: string }).fragility_class || "").replace(/^\w/, (c: string) => c.toUpperCase())}
+        {/* ── FRAGILITY ASSESSMENT ── */}
+        {v2Fragility && (() => {
+          const frag = v2Fragility as { fragility_score: number; fragility_class: string; primary_failure_mode: string; secondary_failure_modes?: string[] };
+          const fragColor = frag.fragility_class === "brittle" || frag.fragility_class === "thin" ? C.bandLimited : frag.fragility_class === "uneven" ? C.bandDeveloping : B.teal;
+          const failureModeLabels: Record<string, string> = {
+            concentration_collapse: "Concentration collapse — one source departure destabilizes the structure",
+            labor_interruption: "Labor interruption — income stops when work stops",
+            visibility_gap: "Visibility gap — not enough income committed ahead of time",
+            durability_thinness: "Durability thinness — income agreements are short-term or easily canceled",
+          };
+          return (
+            <div style={{ ...reportCardStyle, padding: mobile ? "18px 16px" : "20px 24px", marginBottom: 16 }}>
+              <div style={{ ...T.overline, color: B.muted, marginBottom: 8 }}>STRUCTURAL FRAGILITY</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+                <span style={{ fontSize: 28, fontWeight: 300, color: fragColor, fontFamily: mono, lineHeight: 1 }}>{frag.fragility_score}</span>
+                <span style={{ fontSize: 13, color: B.muted, fontFamily: mono }}>/100</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: fragColor }}>{frag.fragility_class.charAt(0).toUpperCase() + frag.fragility_class.slice(1)}</span>
+              </div>
+              {frag.primary_failure_mode && (
+                <div style={{ marginTop: 4 }}>
+                  <div style={{ ...T.small, color: B.muted, lineHeight: 1.5 }}>{failureModeLabels[frag.primary_failure_mode] || frag.primary_failure_mode}</div>
+                </div>
+              )}
             </div>
+          );
+        })()}
+
+        {/* ── REAL-WORLD IMPACT ── */}
+        <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12, marginBottom: 16 }}>
+          <div style={{ flex: 1, ...reportCardStyle, padding: "14px 18px", borderLeft: `3px solid ${C.bandLimited}` }}>
+            <div style={{ ...T.overline, color: C.bandLimited, marginBottom: 6 }}>IF BIGGEST SOURCE LEAVES</div>
+            <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{score} &rarr; {riskScenarioScore}</div>
+            <div style={{ ...T.small, color: B.muted }}>Score drops by <span style={{ fontFamily: mono, fontWeight: 600 }}>{riskScenarioDrop}</span> points</div>
           </div>
-        )}
+          <div style={{ flex: 1, ...reportCardStyle, padding: "14px 18px", borderLeft: `3px solid ${C.bandDeveloping}` }}>
+            <div style={{ ...T.overline, color: C.bandDeveloping, marginBottom: 6 }}>IF YOU STOP WORKING</div>
+            <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{continuityDisplay}</div>
+            <div style={{ ...T.small, color: B.muted }}>{continuityText}</div>
+          </div>
+        </div>
 
         <SectionDivider />
 
