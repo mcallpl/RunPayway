@@ -439,15 +439,15 @@ function TwoLayers() {
           </div>
 
           {/* Layer 2 */}
-          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: B.navy, boxShadow: "0 4px 16px rgba(14,26,43,0.10)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 200ms, transform 500ms ease-out 200ms" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Layer 2 — Context Precision</div>
-            <h3 style={{ fontSize: m ? 20 : 22, fontWeight: 600, color: "#F4F1EA", marginBottom: 12, letterSpacing: "-0.02em" }}>The interpretation.</h3>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Uses your operating structure, income model, and industry to improve explanation quality, scenario relevance, and action planning. Does not change the score.</p>
+          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: C.navy, boxShadow: "0 4px 16px rgba(14,26,43,0.10)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 200ms, transform 500ms ease-out 200ms" }}>
+            <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Layer 2 — Context Precision</div>
+            <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: 12 }}>The interpretation.</h3>
+            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>Uses your operating structure, income model, and industry to improve explanation quality, scenario relevance, and action planning. Does not change the score.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {["Scenario selection", "Action priority ordering", "Language precision", "Category framing"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-                  <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <span style={{ ...T.meta, color: "rgba(244,241,234,0.60)" }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -467,14 +467,14 @@ function Cta() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
+    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: secPad(m), paddingBottom: secPad(m) }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 700, height: 700, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.15) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
         <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ fontSize: m ? 28 : 48, color: "#F4F1EA", fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.025em", marginBottom: 20 }}>
             See where your income stands.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: "rgba(250,249,247,0.55)", lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
             Your free score shows where you stand. The full report shows what to do about it.
           </p>
           <Link
@@ -482,16 +482,16 @@ function Cta() {
             onMouseEnter={() => canHover() && setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              ...ctaButtonLight,
               height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-              backgroundColor: "#F4F1EA", color: B.navy, fontSize: 16, fontWeight: 600,
-              textDecoration: "none", boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
+              backgroundColor: C.sand, color: C.navy,
+              boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)",
               transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease",
             }}
           >
             Start Your Assessment
           </Link>
-          <div style={{ marginTop: 20, fontSize: 14, color: "rgba(250,249,247,0.35)" }}>
+          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
             Free to start &#183; Under 2 minutes &#183; Private by default
           </div>
         </div>
