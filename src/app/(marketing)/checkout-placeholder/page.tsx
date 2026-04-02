@@ -2,16 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#EDE9E0",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-};
+import { C, mono, sans } from "@/lib/design-tokens";
 
 const PLANS: Record<string, { name: string; price: string; priceCents: number; assessments: number; period?: string }> = {
   single: {
@@ -53,13 +44,13 @@ function CheckoutContent() {
   };
 
   return (
-    <div className="max-w-[520px] mx-auto px-6 py-24">
+    <div className="max-w-[520px] mx-auto px-6 py-24" style={{ fontFamily: sans }}>
       {/* Header */}
       <div className="mb-12">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.14em] mb-3" style={{ color: B.light }}>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.14em] mb-3" style={{ color: C.light }}>
           Checkout
         </div>
-        <h1 className="text-2xl font-semibold" style={{ color: B.navy }}>
+        <h1 className="text-2xl font-semibold" style={{ color: C.navy }}>
           Confirm Your Assessment
         </h1>
       </div>
@@ -68,60 +59,60 @@ function CheckoutContent() {
       <div
         className="rounded-lg border p-8"
         style={{
-          borderColor: planKey === "monitoring" ? B.purple : B.sandDk,
+          borderColor: planKey === "monitoring" ? C.purple : C.softBorder,
           borderWidth: planKey === "monitoring" ? "2px" : "1px",
-          backgroundColor: "#ffffff",
+          backgroundColor: C.white,
         }}
       >
         <div className="space-y-6">
           {/* Plan */}
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light }}>
+            <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: C.light }}>
               Plan
             </div>
-            <div className="text-base font-semibold mt-1" style={{ color: B.navy }}>
+            <div className="text-base font-semibold mt-1" style={{ color: C.navy }}>
               {plan.name}
             </div>
           </div>
 
           {/* Price */}
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: B.light }}>
+            <div className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: C.light }}>
               Price
             </div>
-            <div className="text-[36px] font-semibold leading-none mt-1" style={{ color: B.navy }}>
+            <div className="text-[36px] font-semibold leading-none mt-1" style={{ color: C.navy, fontFamily: mono }}>
               {plan.price}
             </div>
           </div>
 
           {/* Details */}
           {planKey === "monitoring" && (
-            <div className="rounded-md px-4 py-3" style={{ backgroundColor: B.sand }}>
+            <div className="rounded-md px-4 py-3" style={{ backgroundColor: C.sand }}>
               <div className="space-y-1">
                 <div className="flex justify-between text-[13px]">
-                  <span style={{ color: B.muted }}>Assessments allowed</span>
-                  <span className="font-medium" style={{ color: B.navy }}>{plan.assessments}</span>
+                  <span style={{ color: C.muted }}>Assessments allowed</span>
+                  <span className="font-medium" style={{ color: C.navy, fontFamily: mono }}>{plan.assessments}</span>
                 </div>
                 <div className="flex justify-between text-[13px]">
-                  <span style={{ color: B.muted }}>Monitoring period</span>
-                  <span className="font-medium" style={{ color: B.navy }}>{plan.period}</span>
+                  <span style={{ color: C.muted }}>Monitoring period</span>
+                  <span className="font-medium" style={{ color: C.navy }}>{plan.period}</span>
                 </div>
               </div>
             </div>
           )}
 
           {planKey === "single" && (
-            <div className="rounded-md px-4 py-3" style={{ backgroundColor: B.sand }}>
+            <div className="rounded-md px-4 py-3" style={{ backgroundColor: C.sand }}>
               <div className="flex justify-between text-[13px]">
-                <span style={{ color: B.muted }}>Assessments allowed</span>
-                <span className="font-medium" style={{ color: B.navy }}>{plan.assessments}</span>
+                <span style={{ color: C.muted }}>Assessments allowed</span>
+                <span className="font-medium" style={{ color: C.navy, fontFamily: mono }}>{plan.assessments}</span>
               </div>
             </div>
           )}
 
           {/* Stripe placeholder notice */}
-          <div className="pt-4 border-t" style={{ borderColor: B.sandDk }}>
-            <p className="text-[11px] leading-relaxed" style={{ color: B.light }}>
+          <div className="pt-4 border-t" style={{ borderColor: C.softBorder }}>
+            <p className="text-[11px] leading-relaxed" style={{ color: C.light }}>
               In production, you will be redirected to Stripe Secure Checkout. This is a placeholder
               for development.
             </p>
@@ -131,13 +122,13 @@ function CheckoutContent() {
           <button
             onClick={handleContinue}
             className="w-full py-3 text-[13px] font-medium rounded transition-opacity hover:opacity-90"
-            style={{ backgroundColor: planKey === "monitoring" ? B.purple : B.navy, color: "#ffffff" }}
+            style={{ backgroundColor: planKey === "monitoring" ? C.purple : C.navy, color: C.white }}
           >
             Continue to Assessment
           </button>
 
           {/* Confidence statement */}
-          <p className="text-[10px] leading-relaxed text-center" style={{ color: B.light, marginTop: 16 }}>
+          <p className="text-[10px] leading-relaxed text-center" style={{ color: C.light, marginTop: 16 }}>
             Every assessment is backed by a deterministic scoring model. Identical inputs always produce identical results. Your score reflects your income structure exactly as reported.
           </p>
         </div>
@@ -151,7 +142,7 @@ export default function CheckoutPlaceholderPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="text-sm" style={{ color: B.light }}>Loading...</div>
+          <div className="text-sm" style={{ color: C.light }}>Loading...</div>
         </div>
       }
     >

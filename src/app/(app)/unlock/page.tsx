@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { C, sans } from "@/lib/design-tokens";
 
 export default function UnlockPage() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function UnlockPage() {
         alignItems: "center",
         justifyContent: "center",
         zIndex: 9999,
+        fontFamily: sans,
       }}
     >
       <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
@@ -55,17 +57,17 @@ export default function UnlockPage() {
         }}
       >
         {/* Spinner */}
-        <div style={{ width: 44, height: 44, borderRadius: "50%", border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#ffffff", margin: "0 auto 32px", animation: "rp-spin 0.8s linear infinite" }} />
+        <div style={{ width: 44, height: 44, borderRadius: "50%", border: `3px solid ${C.sandBorder}`, borderTopColor: C.white, margin: "0 auto 32px", animation: "rp-spin 0.8s linear infinite" }} />
 
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)", marginBottom: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandLight, marginBottom: 16 }}>
           UNLOCKING YOUR FULL REPORT
         </div>
 
-        <div style={{ fontSize: 24, fontWeight: 600, color: "#F4F1EA", marginBottom: 12 }}>
+        <div style={{ fontSize: 24, fontWeight: 600, fontFamily: sans, color: C.sandText, marginBottom: 12 }}>
           Income Stability Score&#8482;
         </div>
 
-        <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>
+        <div style={{ fontSize: 14, color: C.sandMuted, lineHeight: 1.6 }}>
           Building your full diagnostic report...
         </div>
 
@@ -76,7 +78,7 @@ export default function UnlockPage() {
               key={i}
               style={{
                 width: 6, height: 6, borderRadius: "50%",
-                backgroundColor: "#F4F1EA",
+                backgroundColor: C.sandText,
                 animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
               }}
             />

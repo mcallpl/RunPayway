@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { C, mono, sans } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -37,19 +38,7 @@ function useMobile(breakpoint = 768) {
 /*  Design tokens                                                      */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1A7A6D",
-  sand: "#F5F2EC",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
-  border: "rgba(14,26,43,0.08)",
-  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1A7A6D 100%)",
-  cream: "#F4F1EA",
-};
-
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+const gradient = "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  NotifyForm                                                         */
@@ -74,9 +63,9 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
   if (submitted) {
     return (
       <div style={{ textAlign: "center", padding: 32 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: B.teal, marginBottom: 8 }}>You are on the list.</div>
-        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", margin: 0 }}>
-          We will reach out to <strong style={{ color: "#F4F1EA" }}>{email}</strong> when it is ready.
+        <div style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginBottom: 8 }}>You are on the list.</div>
+        <p style={{ fontSize: 14, color: C.sandMuted, margin: 0 }}>
+          We will reach out to <strong style={{ color: C.sandText }}>{email}</strong> when it is ready.
         </p>
       </div>
     );
@@ -87,18 +76,18 @@ function NotifyForm({ mobile }: { mobile: boolean }) {
       <input
         type="email" required placeholder="Your email" value={email}
         onChange={(e) => setEmail(e.target.value)}
-        style={{ flex: 1, height: 48, padding: "0 16px", borderRadius: 8, border: "1px solid rgba(244,241,234,0.15)", background: "rgba(255,255,255,0.04)", color: "#F4F1EA", fontSize: 15, outline: "none", boxSizing: "border-box" }}
+        style={{ flex: 1, height: 48, padding: "0 16px", borderRadius: 8, border: `1px solid ${C.sandBorder}`, background: "rgba(255,255,255,0.04)", color: C.sandText, fontSize: 15, outline: "none", boxSizing: "border-box" }}
       />
       <select
         value={product} onChange={(e) => setProduct(e.target.value)}
-        style={{ height: 48, padding: "0 16px", borderRadius: 8, border: "1px solid rgba(244,241,234,0.15)", background: "rgba(255,255,255,0.04)", color: product ? "#F4F1EA" : "rgba(244,241,234,0.35)", fontSize: 14, outline: "none", appearance: "none", minWidth: mobile ? undefined : 200 }}
+        style={{ height: 48, padding: "0 16px", borderRadius: 8, border: `1px solid ${C.sandBorder}`, background: "rgba(255,255,255,0.04)", color: product ? C.sandText : C.sandLight, fontSize: 14, outline: "none", appearance: "none", minWidth: mobile ? undefined : 200 }}
       >
         <option value="">I am interested in...</option>
         <option value="Advisor License">Advisor / API License</option>
         <option value="Enterprise">Enterprise Integration</option>
         <option value="All">Everything</option>
       </select>
-      <button type="submit" style={{ height: 48, padding: "0 28px", borderRadius: 8, background: "linear-gradient(135deg, #F4F1EA 0%, #E8E5DD 100%)", color: B.navy, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", whiteSpace: "nowrap", letterSpacing: "-0.01em" }}>
+      <button type="submit" style={{ height: 48, padding: "0 28px", borderRadius: 8, background: `linear-gradient(135deg, ${C.sand} 0%, #E8E5DD 100%)`, color: C.navy, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", whiteSpace: "nowrap", letterSpacing: "-0.01em" }}>
         Notify Me
       </button>
     </form>
@@ -122,26 +111,24 @@ export default function ComingSoonPage() {
       name: "Advisor & API License",
       oneLiner: "Run assessments for your clients. At scale.",
       details: ["Unlimited client assessments", "White-label report generation", "API access for platform integration", "Dedicated onboarding"],
-      color: B.teal,
+      color: C.teal,
     },
     {
       label: "ENTERPRISE",
       name: "Platform Integration",
       oneLiner: "Embed the score directly into your product.",
       details: ["Full API with webhooks", "Multi-tenant architecture", "Custom scoring parameters", "SLA-backed uptime"],
-      color: B.navy,
+      color: C.navy,
     },
   ];
 
   return (
-    <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
-
+    <div style={{ fontFamily: sans }}>
       {/* ══ HERO — Full-screen dark, Apple keynote feel ══ */}
-      <section ref={hero.ref} style={{ position: "relative", background: B.navy, minHeight: mobile ? "85vh" : "90vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <section ref={hero.ref} style={{ position: "relative", background: C.navy, minHeight: mobile ? "85vh" : "90vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         {/* Atmospheric glows */}
         <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 500 : 1000, height: mobile ? 500 : 1000, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(26,122,109,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
 
         {/* Content */}
         <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: `0 ${pad}px`, textAlign: "center" }}>
@@ -151,27 +138,27 @@ export default function ComingSoonPage() {
             transition: "opacity 1s ease-out, transform 1s ease-out",
           }}>
             <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 32 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>What&#8217;s Next</span>
+              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandLight }}>What&#8217;s Next</span>
             </div>
 
-            <h1 style={{ fontSize: mobile ? 36 : 64, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", lineHeight: 1.06, letterSpacing: "-0.03em", marginBottom: 24 }}>
+            <h1 style={{ fontSize: mobile ? 36 : 64, fontFamily: sans, fontWeight: 600, color: C.sandText, lineHeight: 1.06, letterSpacing: "-0.03em", marginBottom: 24 }}>
               The score was<br />just the beginning.
             </h1>
 
-            <p style={{ fontSize: mobile ? 16 : 19, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 48px" }}>
+            <p style={{ fontSize: mobile ? 16 : 19, color: C.sandLight, lineHeight: 1.6, maxWidth: 480, margin: "0 auto 48px" }}>
               Advisor tools. Enterprise integration. We are building the infrastructure for income stability.
             </p>
 
             {/* Scroll indicator */}
             <div style={{ opacity: hero.visible ? 1 : 0, transition: "opacity 1.5s ease-out 800ms" }}>
-              <div style={{ width: 1, height: 48, background: "linear-gradient(180deg, rgba(244,241,234,0.20) 0%, transparent 100%)", margin: "0 auto" }} />
+              <div style={{ width: 1, height: 48, background: `linear-gradient(180deg, ${C.sandLight} 0%, transparent 100%)`, margin: "0 auto" }} />
             </div>
           </div>
         </div>
       </section>
 
       {/* ══ PRODUCTS — Minimal, one at a time ══ */}
-      <section ref={products.ref} style={{ background: B.sand, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
+      <section ref={products.ref} style={{ background: C.sand, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           {upcoming.map((p, i) => (
             <div
@@ -182,7 +169,7 @@ export default function ComingSoonPage() {
                 alignItems: "flex-start",
                 paddingTop: i === 0 ? 0 : mobile ? 48 : 64,
                 paddingBottom: i === upcoming.length - 1 ? 0 : mobile ? 48 : 64,
-                borderBottom: i < upcoming.length - 1 ? `1px solid ${B.border}` : "none",
+                borderBottom: i < upcoming.length - 1 ? `1px solid ${C.border}` : "none",
                 opacity: products.visible ? 1 : 0,
                 transform: products.visible ? "translateY(0)" : "translateY(20px)",
                 transition: `opacity 600ms ease-out ${200 + i * 150}ms, transform 600ms ease-out ${200 + i * 150}ms`,
@@ -191,8 +178,8 @@ export default function ComingSoonPage() {
               {/* Left: name + description */}
               <div style={{ flex: 3, marginBottom: mobile ? 24 : 0 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: p.color, marginBottom: 12 }}>{p.label}</div>
-                <h3 style={{ fontSize: mobile ? 24 : 30, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>{p.name}</h3>
-                <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.6, margin: 0 }}>{p.oneLiner}</p>
+                <h3 style={{ fontSize: mobile ? 24 : 30, fontFamily: sans, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>{p.name}</h3>
+                <p style={{ fontSize: 16, color: C.muted, lineHeight: 1.6, margin: 0 }}>{p.oneLiner}</p>
               </div>
 
               {/* Right: feature list */}
@@ -200,7 +187,7 @@ export default function ComingSoonPage() {
                 {p.details.map((d) => (
                   <div key={d} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
                     <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: p.color, flexShrink: 0, marginTop: 8 }} />
-                    <span style={{ fontSize: 14, color: B.muted, lineHeight: 1.55 }}>{d}</span>
+                    <span style={{ fontSize: 14, color: C.muted, lineHeight: 1.55 }}>{d}</span>
                   </div>
                 ))}
               </div>
@@ -210,23 +197,23 @@ export default function ComingSoonPage() {
       </section>
 
       {/* ══ LANGUAGE LAUNCH TIMELINE ══ */}
-      <section style={{ background: "#ffffff", paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
+      <section style={{ background: C.white, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 12 }}>Global Rollout</div>
-            <h2 style={{ fontSize: mobile ? 26 : 38, fontFamily: DISPLAY_FONT, fontWeight: 400, color: B.navy, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>Global Rollout</div>
+            <h2 style={{ fontSize: mobile ? 26 : 38, fontFamily: sans, fontWeight: 600, color: C.navy, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
               Language launch timeline
             </h2>
-            <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
+            <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
               The full assessment, report, and simulator — localized for each market.
             </p>
           </div>
 
           {[
-            { flag: "🇺🇸", language: "English", market: "United States", date: "Live now", color: B.teal, live: true },
-            { flag: "🇪🇸", language: "Español", market: "Spain & Latin America", date: "Q3 2026", color: B.purple, live: false },
-            { flag: "🇧🇷", language: "Português", market: "Brazil", date: "Q4 2026", color: B.purple, live: false },
-            { flag: "🇮🇳", language: "हिन्दी", market: "India", date: "Q4 2026", color: B.purple, live: false },
+            { flag: "\uD83C\uDDFA\uD83C\uDDF8", language: "English", market: "United States", date: "Live now", color: C.teal, live: true },
+            { flag: "\uD83C\uDDEA\uD83C\uDDF8", language: "Espa\u00f1ol", market: "Spain & Latin America", date: "Q3 2026", color: C.purple, live: false },
+            { flag: "\uD83C\uDDE7\uD83C\uDDF7", language: "Portugu\u00eas", market: "Brazil", date: "Q4 2026", color: C.purple, live: false },
+            { flag: "\uD83C\uDDEE\uD83C\uDDF3", language: "\u0939\u093F\u0928\u094D\u0926\u0940", market: "India", date: "Q4 2026", color: C.purple, live: false },
           ].map((lang, i) => (
             <div
               key={lang.language}
@@ -236,8 +223,8 @@ export default function ComingSoonPage() {
                 gap: mobile ? 16 : 24,
                 padding: mobile ? "20px 16px" : "24px 28px",
                 borderRadius: 12,
-                backgroundColor: lang.live ? "rgba(26,122,109,0.04)" : B.sand,
-                border: lang.live ? "1px solid rgba(26,122,109,0.15)" : `1px solid ${B.border}`,
+                backgroundColor: lang.live ? "rgba(31,109,122,0.04)" : C.sand,
+                border: lang.live ? "1px solid rgba(31,109,122,0.15)" : `1px solid ${C.border}`,
                 marginBottom: i < 3 ? 12 : 0,
               }}
             >
@@ -246,15 +233,15 @@ export default function ComingSoonPage() {
 
               {/* Language + market */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, lineHeight: 1.3 }}>{lang.language}</div>
-                <div style={{ fontSize: 13, color: B.muted, marginTop: 2 }}>{lang.market}</div>
+                <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy, lineHeight: 1.3 }}>{lang.language}</div>
+                <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{lang.market}</div>
               </div>
 
               {/* Date badge */}
               <div style={{
                 fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
-                color: lang.live ? B.teal : B.purple,
-                backgroundColor: lang.live ? "rgba(26,122,109,0.10)" : "rgba(75,63,174,0.08)",
+                color: lang.live ? C.teal : C.purple,
+                backgroundColor: lang.live ? "rgba(31,109,122,0.10)" : "rgba(75,63,174,0.08)",
                 borderRadius: 20, padding: "6px 14px", whiteSpace: "nowrap" as const, flexShrink: 0,
               }}>
                 {lang.date}
@@ -265,12 +252,12 @@ export default function ComingSoonPage() {
       </section>
 
       {/* ══ NOTIFY — Dark, singular, confident ══ */}
-      <section style={{ background: B.gradient, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
+      <section style={{ background: gradient, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
         <div ref={cta.ref} style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", opacity: cta.visible ? 1 : 0, transform: cta.visible ? "translateY(0)" : "translateY(20px)", transition: "opacity 700ms ease-out, transform 700ms ease-out" }}>
-          <h2 style={{ fontSize: mobile ? 28 : 42, fontFamily: DISPLAY_FONT, fontWeight: 400, color: "#F4F1EA", letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
+          <h2 style={{ fontSize: mobile ? 28 : 42, fontFamily: sans, fontWeight: 600, color: C.sandText, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
             Be first to know.
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, maxWidth: 420, margin: "0 auto 40px" }}>
+          <p style={{ fontSize: mobile ? 15 : 16, color: C.sandLight, lineHeight: 1.6, maxWidth: 420, margin: "0 auto 40px" }}>
             Leave your email. We will reach out when your product is ready. No spam. No newsletters. Just the launch.
           </p>
           <NotifyForm mobile={mobile} />
@@ -278,14 +265,14 @@ export default function ComingSoonPage() {
       </section>
 
       {/* ══ AVAILABLE NOW — Bridge to action ══ */}
-      <section style={{ background: B.sand, paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, paddingLeft: pad, paddingRight: pad, borderTop: `1px solid ${B.border}` }}>
+      <section style={{ background: C.sand, paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, paddingLeft: pad, paddingRight: pad, borderTop: `1px solid ${C.border}` }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: B.light, marginBottom: 16 }}>The Income Stability Score&#8482; is available right now.</p>
-          <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: B.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
+          <p style={{ fontSize: 14, color: C.light, marginBottom: 16 }}>The Income Stability Score&#8482; is available right now.</p>
+          <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: C.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
             Get your free score &#8594;
           </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }

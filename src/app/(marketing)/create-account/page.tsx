@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createMonitoringSessionServer, type MonitoringSession } from "@/lib/monitoring";
+import { C, mono, sans, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -46,23 +47,11 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
-};
+const gradient = "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -143,7 +132,7 @@ export default function CreateAccountPage() {
     : "";
 
   return (
-    <div style={{ background: "#FFFFFF" }}>
+    <div style={{ background: C.white, fontFamily: sans }}>
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
@@ -151,7 +140,7 @@ export default function CreateAccountPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 72 : 100,
           paddingBottom: mobile ? 72 : 100,
         }}
@@ -191,12 +180,12 @@ export default function CreateAccountPage() {
               gap: 8,
               padding: "6px 16px",
               borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: `1px solid ${C.sandBorder}`,
               background: "rgba(255,255,255,0.06)",
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               Stability Monitoring
             </span>
           </div>
@@ -205,7 +194,8 @@ export default function CreateAccountPage() {
             style={{
               fontSize: mobile ? 30 : 44,
               fontWeight: 700,
-              color: "#FFFFFF",
+              fontFamily: sans,
+              color: C.white,
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
               marginBottom: 20,
@@ -217,7 +207,7 @@ export default function CreateAccountPage() {
           <p
             style={{
               fontSize: mobile ? 15 : 18,
-              color: "rgba(255,255,255,0.65)",
+              color: C.sandMuted,
               lineHeight: 1.7,
               maxWidth: 520,
               margin: "0 auto 8px",
@@ -228,7 +218,7 @@ export default function CreateAccountPage() {
               : "Set up your Monitoring Portal to access your three Stability Monitoring assessments."}
           </p>
 
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
+          <p style={{ fontSize: 14, color: C.sandLight }}>
             Structural Stability Model RP-2.0
           </p>
         </div>
@@ -241,7 +231,7 @@ export default function CreateAccountPage() {
         style={{
           paddingTop: mobile ? 56 : 80,
           paddingBottom: mobile ? 56 : 80,
-          background: B.sand,
+          background: C.sand,
         }}
       >
         <div
@@ -261,9 +251,9 @@ export default function CreateAccountPage() {
             ref={formAnim.ref}
             style={{
               flex: 1,
-              background: "#FFFFFF",
+              background: C.white,
               borderRadius: 20,
-              border: "1px solid rgba(14,26,43,0.06)",
+              border: `1px solid ${C.border}`,
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
               opacity: formAnim.visible ? 1 : 0,
@@ -283,8 +273,8 @@ export default function CreateAccountPage() {
                 marginBottom: 20,
               }}
             >
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.purple }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: B.purple, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.purple }} />
+              <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: "0.04em", textTransform: "uppercase" }}>
                 Stability Monitoring Subscriber
               </span>
             </div>
@@ -296,7 +286,8 @@ export default function CreateAccountPage() {
                   style={{
                     fontSize: mobile ? 22 : 26,
                     fontWeight: 700,
-                    color: B.navy,
+                    fontFamily: sans,
+                    color: C.navy,
                     letterSpacing: "-0.02em",
                     marginBottom: 12,
                   }}
@@ -304,7 +295,7 @@ export default function CreateAccountPage() {
                   Activate Monitoring
                 </h2>
 
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 28 }}>
+                <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 28 }}>
                   Enter your email to activate your monitoring plan. You will receive an access code to use for your remaining assessments.
                 </p>
 
@@ -315,7 +306,7 @@ export default function CreateAccountPage() {
                       display: "block",
                       fontSize: 12,
                       fontWeight: 600,
-                      color: B.navy,
+                      color: C.navy,
                       letterSpacing: "0.04em",
                       textTransform: "uppercase",
                       marginBottom: 8,
@@ -333,16 +324,16 @@ export default function CreateAccountPage() {
                       height: 48,
                       padding: "0 16px",
                       borderRadius: 10,
-                      border: "1px solid rgba(14,26,43,0.12)",
-                      background: B.sand,
+                      border: `1px solid ${C.border}`,
+                      background: C.sand,
                       fontSize: 14,
-                      color: B.navy,
+                      color: C.navy,
                       outline: "none",
                       transition: "border-color 180ms ease",
                       boxSizing: "border-box",
                     }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
                     onKeyDown={(e) => { if (e.key === "Enter") handleActivate(); }}
                   />
                 </div>
@@ -360,8 +351,8 @@ export default function CreateAccountPage() {
                     width: "100%",
                     height: 52,
                     borderRadius: 12,
-                    background: activateBtnHovered ? "#3D33A0" : B.purple,
-                    color: "#FFFFFF",
+                    background: activateBtnHovered ? "#3D33A0" : C.purple,
+                    color: C.white,
                     fontSize: 15,
                     fontWeight: 600,
                     letterSpacing: "-0.01em",
@@ -377,18 +368,18 @@ export default function CreateAccountPage() {
 
                 {/* Sign in link */}
                 <div style={{ textAlign: "center", marginTop: 20 }}>
-                  <span style={{ fontSize: 13, color: B.muted }}>Already have an access code? </span>
+                  <span style={{ fontSize: 13, color: C.muted }}>Already have an access code? </span>
                   <Link
                     href="/sign-in"
                     style={{
                       fontSize: 13,
                       fontWeight: 600,
-                      color: B.purple,
+                      color: C.purple,
                       textDecoration: "none",
                       borderBottom: "1px solid rgba(75,63,174,0.30)",
                       transition: "border-color 180ms ease",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.purple; }}
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
                   >
                     Sign In
@@ -402,7 +393,8 @@ export default function CreateAccountPage() {
                   style={{
                     fontSize: mobile ? 22 : 26,
                     fontWeight: 700,
-                    color: B.navy,
+                    fontFamily: sans,
+                    color: C.navy,
                     letterSpacing: "-0.02em",
                     marginBottom: 12,
                   }}
@@ -410,7 +402,7 @@ export default function CreateAccountPage() {
                   Monitoring Activated
                 </h2>
 
-                <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 24 }}>
+                <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 24 }}>
                   Your Stability Monitoring plan is now active. Save the access code below — you will need it to access your remaining assessments.
                 </p>
 
@@ -425,16 +417,16 @@ export default function CreateAccountPage() {
                     marginBottom: 20,
                   }}
                 >
-                  <div style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
                     Your Access Code
                   </div>
                   <div
                     style={{
                       fontSize: mobile ? 28 : 36,
                       fontWeight: 700,
-                      color: B.navy,
+                      color: C.navy,
                       letterSpacing: "0.06em",
-                      fontFamily: "monospace",
+                      fontFamily: mono,
                       marginBottom: 16,
                     }}
                   >
@@ -447,8 +439,8 @@ export default function CreateAccountPage() {
                     style={{
                       padding: "8px 24px",
                       borderRadius: 8,
-                      background: copied ? B.teal : copyBtnHovered ? "#3D33A0" : B.purple,
-                      color: "#FFFFFF",
+                      background: copied ? C.teal : copyBtnHovered ? "#3D33A0" : C.purple,
+                      color: C.white,
                       fontSize: 13,
                       fontWeight: 600,
                       border: "none",
@@ -472,9 +464,9 @@ export default function CreateAccountPage() {
                     ["Expires", expiresDate],
                     ["Email", session.email],
                   ].map(([label, value]) => (
-                    <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderRadius: 8, background: B.sand }}>
-                      <span style={{ fontSize: 13, color: B.muted }}>{label}</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>{value}</span>
+                    <div key={label} style={{ display: "flex", justifyContent: "space-between", padding: "10px 14px", borderRadius: 8, background: C.sand }}>
+                      <span style={{ fontSize: 13, color: C.muted }}>{label}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: C.navy }}>{value}</span>
                     </div>
                   ))}
                 </div>
@@ -488,8 +480,8 @@ export default function CreateAccountPage() {
                     width: "100%",
                     height: 52,
                     borderRadius: 12,
-                    background: beginBtnHovered ? "#1a5c67" : B.teal,
-                    color: "#FFFFFF",
+                    background: beginBtnHovered ? "#1a5c67" : C.teal,
+                    color: C.white,
                     fontSize: 15,
                     fontWeight: 600,
                     letterSpacing: "-0.01em",
@@ -506,10 +498,10 @@ export default function CreateAccountPage() {
             )}
 
             {/* Security line */}
-            <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
+            <div style={{ height: 1, background: C.border, margin: "24px 0 16px" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: B.light }}>Access code authentication</span>
-              <span style={{ fontSize: 12, color: B.light }}>Local session management</span>
+              <span style={{ fontSize: 12, color: C.light }}>Access code authentication</span>
+              <span style={{ fontSize: 12, color: C.light }}>Local session management</span>
             </div>
           </div>
 
@@ -523,7 +515,7 @@ export default function CreateAccountPage() {
               transition: "opacity 700ms ease 140ms, transform 700ms ease 140ms",
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
               Your Monitoring Plan Includes
             </div>
 
@@ -540,7 +532,7 @@ export default function CreateAccountPage() {
                     display: "flex",
                     gap: 16,
                     padding: "18px 0",
-                    borderBottom: i < 3 ? "1px solid rgba(14,26,43,0.06)" : "none",
+                    borderBottom: i < 3 ? `1px solid ${C.border}` : "none",
                   }}
                 >
                   <div
@@ -555,11 +547,11 @@ export default function CreateAccountPage() {
                       flexShrink: 0,
                     }}
                   >
-                    <span style={{ fontSize: 14, fontWeight: 700, color: B.purple }}>{i + 1}</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, fontFamily: mono, color: C.purple }}>{i + 1}</span>
                   </div>
                   <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{title}</div>
-                    <div style={{ fontSize: 13, color: B.muted, lineHeight: 1.6 }}>{desc}</div>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{title}</div>
+                    <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.6 }}>{desc}</div>
                   </div>
                 </div>
               ))}
@@ -570,17 +562,17 @@ export default function CreateAccountPage() {
               style={{
                 padding: mobile ? "20px 20px" : "24px 24px",
                 borderRadius: 14,
-                background: "#FFFFFF",
-                border: "1px solid rgba(14,26,43,0.06)",
+                background: C.white,
+                border: `1px solid ${C.border}`,
               }}
             >
-              <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
                 Access Code Info
               </div>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, marginBottom: 8 }}>
                 Your access code is your key to the Monitoring Portal. Save it somewhere secure.
               </p>
-              <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.7 }}>
+              <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7 }}>
                 Single Assessment customers do not need an access code — reports are generated instantly after completing the diagnostic.
               </p>
             </div>
@@ -593,12 +585,12 @@ export default function CreateAccountPage() {
       {/* ============================================================ */}
       <div
         style={{
-          background: B.gradient,
+          background: gradient,
           padding: "16px 0",
           textAlign: "center",
         }}
       >
-        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", letterSpacing: "0.02em" }}>
+        <span style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
           Powered by Structural Stability Model RP-2.0
         </span>
       </div>

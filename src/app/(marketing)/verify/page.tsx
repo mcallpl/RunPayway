@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
+import { C, mono, sans, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
@@ -44,23 +45,11 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
-
 /* ------------------------------------------------------------------ */
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-};
+const gradient = "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -291,7 +280,7 @@ export default function VerifyPage() {
   }, [autoVerified]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div style={{ background: "#FFFFFF" }}>
+    <div style={{ background: C.white, fontFamily: sans }}>
       {/* ============================================================ */}
       {/*  Hero                                                        */}
       {/* ============================================================ */}
@@ -299,7 +288,7 @@ export default function VerifyPage() {
         style={{
           position: "relative",
           overflow: "hidden",
-          background: B.gradient,
+          background: gradient,
           paddingTop: mobile ? 80 : 100,
           paddingBottom: mobile ? 64 : 80,
         }}
@@ -339,12 +328,12 @@ export default function VerifyPage() {
               gap: 8,
               padding: "6px 16px",
               borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
+              border: `1px solid ${C.sandBorder}`,
               background: "rgba(255,255,255,0.06)",
               marginBottom: 28,
             }}
           >
-            <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.70)", letterSpacing: "0.06em", textTransform: "uppercase" }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: C.sandMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               {t.verifyPage.heroTag}
             </span>
           </div>
@@ -353,7 +342,8 @@ export default function VerifyPage() {
             style={{
               fontSize: mobile ? 30 : 44,
               fontWeight: 600,
-              color: "#FFFFFF",
+              fontFamily: sans,
+              color: C.white,
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
               marginBottom: 20,
@@ -365,7 +355,7 @@ export default function VerifyPage() {
           <p
             style={{
               fontSize: mobile ? 15 : 18,
-              color: "rgba(255,255,255,0.65)",
+              color: C.sandMuted,
               lineHeight: 1.65,
               maxWidth: 560,
               margin: "0 auto 8px",
@@ -374,7 +364,7 @@ export default function VerifyPage() {
             {t.verifyPage.heroSubtitle}
           </p>
 
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.40)" }}>
+          <p style={{ fontSize: 14, color: C.sandLight }}>
             {t.verifyPage.heroNote}
           </p>
         </div>
@@ -387,7 +377,7 @@ export default function VerifyPage() {
         style={{
           paddingTop: mobile ? 56 : 80,
           paddingBottom: mobile ? 64 : 96,
-          background: B.sand,
+          background: C.sand,
         }}
       >
         <div
@@ -405,9 +395,9 @@ export default function VerifyPage() {
           {/* Form card */}
           <div
             style={{
-              background: "#FFFFFF",
+              background: C.white,
               borderRadius: 12,
-              border: "1px solid rgba(14,26,43,0.06)",
+              border: `1px solid ${C.border}`,
               padding: mobile ? "32px 24px" : "40px 40px",
               boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
             }}
@@ -416,14 +406,15 @@ export default function VerifyPage() {
               style={{
                 fontSize: mobile ? 18 : 22,
                 fontWeight: 600,
-                color: B.navy,
+                fontFamily: sans,
+                color: C.navy,
                 letterSpacing: "-0.02em",
                 marginBottom: 8,
               }}
             >
               {t.verifyPage.formTitle}
             </h2>
-            <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65, marginBottom: 28 }}>
+            <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65, marginBottom: 28 }}>
               {t.verifyPage.formSubtitle}
             </p>
 
@@ -434,7 +425,7 @@ export default function VerifyPage() {
                   display: "block",
                   fontSize: 12,
                   fontWeight: 600,
-                  color: B.navy,
+                  color: C.navy,
                   letterSpacing: "0.04em",
                   textTransform: "uppercase",
                   marginBottom: 8,
@@ -452,17 +443,17 @@ export default function VerifyPage() {
                   height: 48,
                   padding: "0 16px",
                   borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
+                  border: `1px solid ${C.border}`,
+                  background: C.sand,
                   fontSize: 14,
-                  fontFamily: "monospace",
-                  color: B.navy,
+                  fontFamily: mono,
+                  color: C.navy,
                   outline: "none",
                   transition: "border-color 180ms ease",
                   boxSizing: "border-box",
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               />
             </div>
 
@@ -473,7 +464,7 @@ export default function VerifyPage() {
                   display: "block",
                   fontSize: 12,
                   fontWeight: 600,
-                  color: B.navy,
+                  color: C.navy,
                   letterSpacing: "0.04em",
                   textTransform: "uppercase",
                   marginBottom: 8,
@@ -491,17 +482,17 @@ export default function VerifyPage() {
                   height: 48,
                   padding: "0 16px",
                   borderRadius: 10,
-                  border: "1px solid rgba(14,26,43,0.12)",
-                  background: B.sand,
+                  border: `1px solid ${C.border}`,
+                  background: C.sand,
                   fontSize: 14,
-                  fontFamily: "monospace",
-                  color: B.navy,
+                  fontFamily: mono,
+                  color: C.navy,
                   outline: "none",
                   transition: "border-color 180ms ease",
                   boxSizing: "border-box",
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = C.border; }}
               />
             </div>
 
@@ -515,8 +506,8 @@ export default function VerifyPage() {
                 width: "100%",
                 height: 52,
                 borderRadius: 12,
-                background: !isValid || loading ? "rgba(14,26,43,0.12)" : btnHovered ? "#3D33A0" : B.purple,
-                color: !isValid || loading ? B.light : "#FFFFFF",
+                background: !isValid || loading ? C.border : btnHovered ? "#3D33A0" : C.purple,
+                color: !isValid || loading ? C.light : C.white,
                 fontSize: 15,
                 fontWeight: 600,
                 letterSpacing: "-0.01em",
@@ -553,11 +544,11 @@ export default function VerifyPage() {
             <div
               style={{
                 marginTop: 24,
-                background: "#FFFFFF",
+                background: C.white,
                 borderRadius: 12,
                 border: result.valid_record
                   ? "1px solid rgba(31,109,122,0.20)"
-                  : "1px solid rgba(14,26,43,0.08)",
+                  : `1px solid ${C.border}`,
                 padding: mobile ? "28px 24px" : "36px 36px",
                 boxShadow: "0 8px 32px rgba(14,26,43,0.06)",
               }}
@@ -576,14 +567,14 @@ export default function VerifyPage() {
                       marginBottom: 20,
                     }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal }} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.04em", textTransform: "uppercase" }}>
                       {t.verifyPage.verifiedBadge}
                     </span>
                   </div>
 
                   {/* Verification statement */}
-                  <p style={{ fontSize: 15, color: B.teal, fontWeight: 600, lineHeight: 1.6, marginBottom: 24 }}>
+                  <p style={{ fontSize: 15, color: C.teal, fontWeight: 600, lineHeight: 1.6, marginBottom: 24 }}>
                     {t.verifyPage.verificationStatement}
                   </p>
 
@@ -604,14 +595,14 @@ export default function VerifyPage() {
                           display: "flex",
                           flexDirection: mobile ? "column" : "row",
                           padding: "12px 0",
-                          borderBottom: "1px solid rgba(14,26,43,0.06)",
+                          borderBottom: `1px solid ${C.border}`,
                           gap: mobile ? 2 : 0,
                         }}
                       >
-                        <span style={{ fontSize: 13, color: B.light, width: mobile ? "auto" : 180, flexShrink: 0 }}>
+                        <span style={{ fontSize: 13, color: C.light, width: mobile ? "auto" : 180, flexShrink: 0 }}>
                           {label}
                         </span>
-                        <span style={{ fontSize: 13, fontFamily: "monospace", color: B.navy, fontWeight: 500, wordBreak: "break-all" }}>
+                        <span style={{ fontSize: 13, fontFamily: mono, color: C.navy, fontWeight: 500, wordBreak: "break-all" }}>
                           {value}
                         </span>
                       </div>
@@ -631,12 +622,12 @@ export default function VerifyPage() {
                       marginBottom: 16,
                     }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: B.light }} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: B.muted, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: C.light }} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: C.muted, letterSpacing: "0.04em", textTransform: "uppercase" }}>
                       {t.verifyPage.noMatchBadge}
                     </span>
                   </div>
-                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>
+                  <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>
                     {t.verifyPage.noMatchText}
                   </p>
                 </div>
@@ -650,11 +641,11 @@ export default function VerifyPage() {
               marginTop: 32,
               padding: mobile ? "24px 24px" : "28px 28px",
               borderRadius: 12,
-              background: "#FFFFFF",
-              border: "1px solid rgba(14,26,43,0.06)",
+              background: C.white,
+              border: `1px solid ${C.border}`,
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
               {t.verifyPage.howTitle}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -677,16 +668,16 @@ export default function VerifyPage() {
                       marginTop: 2,
                     }}
                   >
-                    <span style={{ fontSize: 11, fontWeight: 600, color: B.purple }}>{i + 1}</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, fontFamily: mono, color: C.purple }}>{i + 1}</span>
                   </div>
-                  <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.65 }}>{text}</p>
+                  <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.65 }}>{text}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Model reference */}
-          <p style={{ fontSize: 12, color: B.light, textAlign: "center", marginTop: 28, letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 12, color: C.light, textAlign: "center", marginTop: 28, letterSpacing: "0.02em" }}>
             {t.verifyPage.closingPowered}
           </p>
         </div>

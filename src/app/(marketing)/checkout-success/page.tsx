@@ -6,17 +6,7 @@ import { useRouter } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { createMonitoringSession, getSessionByEmail } from "@/lib/monitoring";
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  cream: "#F4F1EA",
-  light: "#9CA3AF",
-  gradient: "#F7F5F0",
-};
-
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
+import { C, mono, sans } from "@/lib/design-tokens";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
   monitoring: { title: "RunPayway\u2122 Stability Monitoring", price: "$149" },
@@ -25,28 +15,27 @@ const PLAN_INFO: Record<string, { title: string; price: string }> = {
 
 function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activeStep: number; completedSteps?: number[] }) {
   const steps = [
-    { num: "①", label: "Profile" },
-    { num: "②", label: "Assessment" },
-    { num: "③", label: "Results" },
+    { num: "\u2460", label: "Profile" },
+    { num: "\u2461", label: "Assessment" },
+    { num: "\u2462", label: "Results" },
   ];
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 0, marginBottom: 24 }}>
       {steps.map((s, i) => {
         const isActive = i + 1 === activeStep;
         const isCompleted = completedSteps.includes(i + 1);
-        const isFuture = !isActive && !isCompleted;
         return (
           <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
             <span style={{
               fontSize: 11,
               fontWeight: isActive ? 600 : 400,
-              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              color: isActive ? C.purple : isCompleted ? C.teal : C.light,
               letterSpacing: "0.01em",
             }}>
-              {isCompleted ? "✓" : s.num} {s.label}
+              {isCompleted ? "\u2713" : s.num} {s.label}
             </span>
             {i < steps.length - 1 && (
-              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>——</span>
+              <span style={{ margin: "0 10px", color: C.border, fontSize: 11 }}>\u2014\u2014</span>
             )}
           </span>
         );
@@ -173,15 +162,15 @@ function CheckoutSuccessContent() {
       style={{
         position: "fixed",
         inset: 0,
-        background: B.gradient,
+        background: C.sand,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         overflow: "auto",
+        fontFamily: sans,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
         @keyframes rp-spin { to { transform: rotate(360deg); } }
         @keyframes rp-pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
       `}</style>
@@ -207,16 +196,16 @@ function CheckoutSuccessContent() {
 
         {/* Checkmark */}
         <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(31,109,122,0.15)", border: "2px solid rgba(31,109,122,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 32px" }}>
-          <span style={{ fontSize: 24, color: B.teal }}>&#10003;</span>
+          <span style={{ fontSize: 24, color: C.teal }}>&#10003;</span>
         </div>
 
         {/* Overline */}
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
           Purchase Confirmed
         </div>
 
         {/* Headline */}
-        <h1 style={{ fontSize: 28, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.15, color: B.navy, marginBottom: 36 }}>
+        <h1 style={{ fontSize: 28, fontFamily: sans, fontWeight: 600, letterSpacing: "-0.02em", lineHeight: 1.15, color: C.navy, marginBottom: 36 }}>
           {isMonitoring
             ? "Your Stability Monitoring is active."
             : hasExistingRecord
@@ -234,21 +223,21 @@ function CheckoutSuccessContent() {
                 gap: 16,
                 alignItems: "flex-start",
                 padding: "16px 0",
-                borderBottom: "1px solid rgba(244,241,234,0.08)",
+                borderBottom: `1px solid ${C.border}`,
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(12px)",
                 transition: `opacity 0.5s ease-out ${300 + i * 150}ms, transform 0.5s ease-out ${300 + i * 150}ms`,
               }}
             >
-              <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: i === 0 ? "rgba(31,109,122,0.20)" : "rgba(244,241,234,0.06)", border: `1px solid ${i === 0 ? "rgba(31,109,122,0.30)" : "rgba(244,241,234,0.10)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: "50%", backgroundColor: i === 0 ? "rgba(31,109,122,0.20)" : C.border, border: `1px solid ${i === 0 ? "rgba(31,109,122,0.30)" : C.border}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {i === 0
-                  ? <span style={{ fontSize: 12, color: B.teal }}>&#10003;</span>
-                  : <span style={{ fontSize: 12, fontWeight: 700, color: B.navy }}>{step.num}</span>
+                  ? <span style={{ fontSize: 12, color: C.teal }}>&#10003;</span>
+                  : <span style={{ fontSize: 12, fontWeight: 700, fontFamily: mono, color: C.navy }}>{step.num}</span>
                 }
               </div>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{step.title}</div>
-                <div style={{ fontSize: 13, color: "rgba(14,26,43,0.45)", lineHeight: 1.5 }}>{step.desc}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{step.title}</div>
+                <div style={{ fontSize: 13, color: C.light, lineHeight: 1.5 }}>{step.desc}</div>
               </div>
             </div>
           ))}
@@ -267,8 +256,8 @@ function CheckoutSuccessContent() {
                   width: "100%",
                   height: 52,
                   borderRadius: 12,
-                  background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-                  color: B.navy,
+                  background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
+                  color: C.navy,
                   fontSize: 16,
                   fontWeight: 600,
                   textDecoration: "none",
@@ -292,15 +281,15 @@ function CheckoutSuccessContent() {
                   height: 44,
                   borderRadius: 10,
                   background: "transparent",
-                  color: "rgba(14,26,43,0.50)",
+                  color: C.muted,
                   fontSize: 14,
                   fontWeight: 500,
                   textDecoration: "none",
-                  border: "1px solid rgba(244,241,234,0.12)",
+                  border: `1px solid ${C.border}`,
                   transition: "color 200ms ease, border-color 200ms ease",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = "#F4F1EA"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.25)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = C.navy; e.currentTarget.style.borderColor = C.light; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = C.muted; e.currentTarget.style.borderColor = C.border; }}
               >
                 Retake Assessment
               </Link>
@@ -316,8 +305,8 @@ function CheckoutSuccessContent() {
                 maxWidth: 360,
                 height: 52,
                 borderRadius: 12,
-                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-                color: B.navy,
+                background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
+                color: C.navy,
                 fontSize: 16,
                 fontWeight: 600,
                 textDecoration: "none",
@@ -342,8 +331,8 @@ function CheckoutSuccessContent() {
                 maxWidth: 360,
                 height: 52,
                 borderRadius: 12,
-                background: "linear-gradient(135deg, #F4F1EA 0%, #EDECEA 100%)",
-                color: B.navy,
+                background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
+                color: C.navy,
                 fontSize: 16,
                 fontWeight: 600,
                 letterSpacing: "-0.01em",
@@ -358,8 +347,8 @@ function CheckoutSuccessContent() {
             >
               {/* Progress ring */}
               <svg width="20" height="20" viewBox="0 0 20 20" style={{ flexShrink: 0 }}>
-                <circle cx="10" cy="10" r="8" fill="none" stroke="rgba(14,26,43,0.10)" strokeWidth="2" />
-                <circle cx="10" cy="10" r="8" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"
+                <circle cx="10" cy="10" r="8" fill="none" stroke={C.border} strokeWidth="2" />
+                <circle cx="10" cy="10" r="8" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round"
                   strokeDasharray={`${(2 * Math.PI * 8)}`}
                   strokeDashoffset={`${(2 * Math.PI * 8) * (countdown / 5)}`}
                   style={{ transition: "stroke-dashoffset 1s linear", transform: "rotate(-90deg)", transformOrigin: "center" }}
@@ -371,14 +360,14 @@ function CheckoutSuccessContent() {
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
             {[0, 1, 2].map((i) => (
-              <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.cream, animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite` }} />
+              <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.sand, animation: `rp-pulse 1.4s ease-in-out ${i * 0.2}s infinite` }} />
             ))}
           </div>
         )}
 
         <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
           {["Under 2 minutes", "No bank connection", "Model RP-2.0"].map((badge) => (
-            <span key={badge} style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", letterSpacing: "0.02em" }}>{badge}</span>
+            <span key={badge} style={{ fontSize: 11, color: C.light, letterSpacing: "0.02em" }}>{badge}</span>
           ))}
         </div>
       </div>
@@ -397,7 +386,7 @@ export default function CheckoutSuccessPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: B.navy,
+            background: C.navy,
           }}
         >
           <div

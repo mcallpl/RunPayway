@@ -4,20 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
-
-/* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
-/* ------------------------------------------------------------------ */
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  border: "rgba(14,26,43,0.12)",
-};
+import { C, sans } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Question definitions                                               */
@@ -113,7 +100,7 @@ const labelStyle: React.CSSProperties = {
   display: "block",
   fontSize: 15,
   fontWeight: 600,
-  color: B.navy,
+  color: C.navy,
   marginBottom: 8,
   lineHeight: 1.4,
 };
@@ -171,25 +158,26 @@ export default function PrecisionPage() {
   return (
     <div style={{
       minHeight: "100vh",
-      backgroundColor: B.sand,
+      backgroundColor: C.sand,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       padding: "60px 24px 80px",
       opacity: visible ? 1 : 0,
       transition: "opacity 400ms ease",
+      fontFamily: sans,
     }}>
       <div style={{ maxWidth: 560, width: "100%" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <Image src={logoBlue} alt="RunPayway\u2122" width={140} height={16} style={{ height: "auto", marginBottom: 24 }} />
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+          <h1 style={{ fontSize: 28, fontWeight: 700, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
             Make your report more precise.
           </h1>
-          <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.6, marginBottom: 8, maxWidth: 440, margin: "0 auto 8px" }}>
+          <p style={{ fontSize: 16, color: C.muted, lineHeight: 1.6, marginBottom: 8, maxWidth: 440, margin: "0 auto 8px" }}>
             Add a few details about how your income works. These do not change your score — they tailor the diagnostic to your actual situation.
           </p>
-          <p style={{ fontSize: 14, color: B.light, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 14, color: C.light, lineHeight: 1.5 }}>
             No bank connection. No credit pull. No document upload. About 60 seconds.
           </p>
         </div>
@@ -213,9 +201,9 @@ export default function PrecisionPage() {
                         padding: "12px 16px",
                         fontSize: 14,
                         fontWeight: selected ? 600 : 400,
-                        color: selected ? B.navy : B.muted,
-                        backgroundColor: selected ? "rgba(75,63,174,0.06)" : "#FFFFFF",
-                        border: `1px solid ${selected ? B.purple : B.border}`,
+                        color: selected ? C.navy : C.muted,
+                        backgroundColor: selected ? "rgba(75,63,174,0.06)" : C.white,
+                        border: `1px solid ${selected ? C.purple : C.border}`,
                         borderRadius: 8,
                         cursor: "pointer",
                         transition: "all 150ms ease",
@@ -242,9 +230,9 @@ export default function PrecisionPage() {
               height: 52,
               borderRadius: 12,
               background: allAnswered
-                ? "linear-gradient(135deg, #4B3FAE 0%, #1F6D7A 100%)"
-                : "rgba(14,26,43,0.12)",
-              color: allAnswered ? "#FFFFFF" : B.light,
+                ? `linear-gradient(135deg, ${C.purple} 0%, ${C.teal} 100%)`
+                : C.border,
+              color: allAnswered ? C.white : C.light,
               fontSize: 16,
               fontWeight: 600,
               letterSpacing: "-0.01em",
@@ -256,7 +244,7 @@ export default function PrecisionPage() {
           >
             Continue to Full Report \u2192
           </button>
-          <p style={{ fontSize: 13, color: B.light, marginTop: 12 }}>
+          <p style={{ fontSize: 13, color: C.light, marginTop: 12 }}>
             Your report will be tailored to your answers. Same score. More precise diagnostic.
           </p>
         </div>
