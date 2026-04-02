@@ -328,11 +328,11 @@ export default function InitializationPage() {
   if (!authorized) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: 40, textAlign: "center" }}>
-        <h2 style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Access Required</h2>
-        <p style={{ fontSize: 14, color: C.muted, marginBottom: 24, maxWidth: 400 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, fontFamily: sans, color: C.navy, marginBottom: 12 }}>Access Required</h2>
+        <p style={{ fontSize: 14, fontFamily: sans, color: C.muted, marginBottom: 24, maxWidth: 400 }}>
           Your session could not be verified. Please start from the pricing page.
         </p>
-        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#fff", backgroundColor: C.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
+        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans, color: "#fff", backgroundColor: C.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
           View Plans
         </button>
       </div>
@@ -392,22 +392,22 @@ export default function InitializationPage() {
           minHeight: "80vh", justifyContent: "center", position: "relative",
         }}>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(14,26,43,0.35)", marginBottom: 28 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, fontFamily: sans, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.light, marginBottom: 28 }}>
               Prepared for {form.assessment_title}
             </div>
 
-            <h1 style={{ fontSize: 28, fontWeight: 500, color: "#0E1A2B", letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 500, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
               Your assessment is ready.
             </h1>
 
             <div style={{ width: 32, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: 20 }} />
 
-            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.45)", lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
+            <p style={{ fontSize: 15, fontFamily: sans, color: C.muted, lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
               A short structural diagnostic about how your income works. No financial data required.
             </p>
 
-            <p style={{ fontSize: 13, color: "rgba(14,26,43,0.20)", marginBottom: 40 }}>
-              Takes about 90 seconds
+            <p style={{ fontSize: 13, fontFamily: sans, color: C.light, marginBottom: 40 }}>
+              Takes about <span style={{ fontFamily: mono }}>90</span> seconds
             </p>
 
             <button
@@ -418,8 +418,8 @@ export default function InitializationPage() {
               }}
               style={{
                 height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-                background: "#0E1A2B",
-                color: "#F4F1EA", fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+                background: C.navy,
+                color: C.sandText, fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
                 border: "none", cursor: "pointer",
                 boxShadow: "none",
                 transition: "transform 200ms ease, box-shadow 200ms ease",
@@ -707,13 +707,13 @@ export default function InitializationPage() {
         </div>
         {/* Step header */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, fontFamily: sans, color: C.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
             Step {step} of 2
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <h1 style={{ fontSize: 26, fontWeight: 700, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
             {stepTitles[step]}
           </h1>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, maxWidth: 480 }}>
+          <p style={{ fontSize: 14, fontFamily: sans, color: C.muted, lineHeight: 1.6, maxWidth: 480 }}>
             {stepDescriptions[step]}
           </p>
         </div>

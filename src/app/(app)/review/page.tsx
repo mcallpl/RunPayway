@@ -1052,8 +1052,8 @@ export default function ReviewPage() {
                 strokeLinecap="round" />
             </svg>
             <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{record.final_score}</span>
-              <span style={{ fontSize: 12, fontWeight: 300, color: "rgba(14,26,43,0.25)" }}>/100</span>
+              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1, fontFamily: mono }}>{record.final_score}</span>
+              <span style={{ fontSize: 12, fontWeight: 300, color: "rgba(14,26,43,0.25)", fontFamily: mono }}>/100</span>
             </div>
           </div>
 
@@ -1062,7 +1062,7 @@ export default function ReviewPage() {
             <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
 
-          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}>{distanceToNext} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName} Stability</div>}
           {tier === "high" && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}>Highest stability band achieved</div>}
 
           <div style={{ width: mobile ? 60 : 80, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: mobile ? 16 : 24 }} />
@@ -1100,7 +1100,7 @@ export default function ReviewPage() {
           <div style={{ fontSize: 11, color: B.taupe, marginBottom: 16 }}>{issuedDate} &middot; Model RP-2.0</div>
 
           <div style={{ marginBottom: 8 }}>
-            <span style={{ ...T.score, color: B.navy }}>{animatedScore}</span>
+            <span style={{ ...T.score, color: B.navy, fontFamily: mono }}>{animatedScore}</span>
             <span style={{ fontSize: 17, fontWeight: 400, color: B.taupe }}>/100</span>
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>

@@ -115,7 +115,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
           style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s" }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: size * 0.28, fontWeight: 300, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
+        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
         <span style={{ fontSize: size * 0.08, fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
       </div>
     </div>
@@ -653,16 +653,16 @@ function DashboardContent() {
           {/* ── FIRST-VISIT WELCOME ── */}
           {showWelcome && !isDemo && (
             <div style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 16, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 32, animation: "fadeSlideIn 600ms ease-out", position: "relative" }}>
-              <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 17, color: "rgba(255,255,255,0.4)", background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
+              <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 17, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>WELCOME TO YOUR COMMAND CENTER</div>
-              <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: "#F4F1EA", lineHeight: 1.2, marginBottom: 16 }}>
-                {custName ? `${custName}, your` : "Your"} score is <span style={{ fontWeight: 600, color: B.white }}>{dScore}</span>.
+              <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, lineHeight: 1.2, marginBottom: 16 }}>
+                {custName ? `${custName}, your` : "Your"} score is <span style={{ fontWeight: 600, fontFamily: mono, color: B.white }}>{dScore}</span>.
                 {bm ? ` That puts you ahead of ${bm.peer_percentile}% of ${bm.cluster_label.toLowerCase()}.` : ""}
               </div>
-              <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
+              <p style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
                 {gap > 0 ? `You are ${gap} points from ${nextB} Stability. Your 12-week roadmap below shows exactly how to get there.` : "You have achieved the highest stability band. Your roadmap focuses on maintaining and strengthening this position."}
               </p>
-              <button onClick={() => setShowWelcome(false)} style={{ padding: "12px 28px", borderRadius: 8, backgroundColor: "rgba(255,255,255,0.10)", border: "1px solid rgba(255,255,255,0.15)", color: "#F4F1EA", fontSize: 15, fontWeight: 600, cursor: "pointer", minHeight: 48 }}>
+              <button onClick={() => setShowWelcome(false)} style={{ padding: "12px 28px", borderRadius: 8, backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`, color: C.sandText, fontSize: 15, fontWeight: 600, cursor: "pointer", minHeight: 48 }}>
                 Show my plan →
               </button>
             </div>
