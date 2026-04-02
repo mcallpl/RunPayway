@@ -6,29 +6,10 @@ import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/simulate";
-
-/* ================================================================== */
-/*  BRAND TOKENS — matches report + Command Center                     */
-/* ================================================================== */
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  bg: "#F8F6F6",
-  surface: "#FEFEFE",
-  stone: "rgba(14,26,43,0.06)",
-  taupe: "rgba(14,26,43,0.36)",
-  muted: "rgba(14,26,43,0.58)",
-  faint: "rgba(14,26,43,0.20)",
-  red: "#C53030",
-  bandLimited: "#9B2C2C",
-  bandDeveloping: "#92640A",
-  bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
-};
-
-const INTER = "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif";
-function bc(s: number): string { return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited; }
+import {
+  C, T, mono, sans, sp, maxW, padX, cardStyle, ctaButton,
+  bandColor as bandColorFn, bodySm, h2Style, h3Style,
+} from "@/lib/design-tokens";
 
 const STRIPE_FULL_REPORT = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 
@@ -44,7 +25,7 @@ export default function FreeScorePage() {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const scoreAnimated = useRef(false);
 
-  useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  useEffect(() => { const c = () => setMobile(window.innerWidth <= 768); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -78,7 +59,7 @@ export default function FreeScorePage() {
   const score = record.final_score as number;
   const band = record.stability_band as string;
   const name = (record.assessment_title as string) || "";
-  const bandColor = bc(score);
+  const bColor = bandColorFn(score);
   const tier = score >= 75 ? "high" : score >= 50 ? "established" : score >= 30 ? "developing" : "limited";
 
   const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : null;
@@ -126,101 +107,101 @@ export default function FreeScorePage() {
   })();
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: INTER }}>
-      <div style={{ maxWidth: 640, margin: "0 auto", padding: mobile ? "40px 20px 60px" : "64px 32px 80px" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: mobile ? `${sp(5)}px ${padX.mobile}px ${sp(7.5)}px` : `${sp(8)}px ${padX.desktop}px ${sp(10)}px` }}>
 
         {/* Logo */}
-        <div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}>
+        <div style={{ textAlign: "center", marginBottom: mobile ? sp(4) : sp(6) }}>
           <Image src={logoBlue} alt="RunPayway" width={mobile ? 120 : 140} height={16} style={{ height: "auto", opacity: 0.8 }} />
         </div>
 
         {/* ── EMAIL GATE — capture before revealing score ── */}
         {!emailSubmitted && (
-          <div style={{ padding: mobile ? "32px 24px" : "40px 40px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textAlign: "center", marginBottom: 32 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>YOUR SCORE IS READY</div>
-            <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Enter your email to see your results</div>
-            <p style={{ fontSize: 15, color: B.muted, margin: "0 0 24px" }}>We will send a copy of your score to this address. No spam.</p>
+          <div style={{ ...cardStyle, padding: mobile ? `${sp(4)}px ${sp(3)}px` : `${sp(5)}px ${sp(5)}px`, textAlign: "center", marginBottom: sp(4) }}>
+            <div style={{ ...T.label, fontSize: 11, color: C.light, marginBottom: sp(2) }}>YOUR SCORE IS READY</div>
+            <div style={{ ...h3Style(mobile), color: C.navy, marginBottom: sp(1) }}>Enter your email to see your results</div>
+            <p style={{ ...bodySm(mobile), color: C.muted, margin: `0 0 ${sp(3)}px` }}>We will send a copy of your score to this address. No spam.</p>
             <div style={{ display: "flex", gap: 8, maxWidth: 400, margin: "0 auto", flexDirection: mobile ? "column" : "row" }}>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
                 onKeyDown={(e) => { if (e.key === "Enter" && email.includes("@")) setEmailSubmitted(true); }}
-                style={{ flex: 1, padding: "13px 16px", fontSize: 15, border: `1px solid ${B.stone}`, borderRadius: 10, outline: "none", boxSizing: "border-box" as const, minHeight: 48 }} />
+                style={{ flex: 1, padding: "13px 16px", fontSize: 15, fontFamily: sans, border: `1px solid ${C.border}`, borderRadius: 10, outline: "none", boxSizing: "border-box" as const, minHeight: 48 }} />
               <button onClick={() => { if (email.includes("@")) setEmailSubmitted(true); }}
-                style={{ padding: "13px 24px", fontSize: 15, fontWeight: 600, color: "#F4F1EA", backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: email.includes("@") ? "pointer" : "not-allowed", opacity: email.includes("@") ? 1 : 0.5, minHeight: 48 }}>
+                style={{ ...ctaButton, height: 48, padding: "0 24px", fontSize: 15, borderRadius: 10, cursor: email.includes("@") ? "pointer" : "not-allowed", opacity: email.includes("@") ? 1 : 0.5 }}>
                 Reveal Score
               </button>
             </div>
-            <button onClick={() => setEmailSubmitted(true)} style={{ marginTop: 16, background: "none", border: "none", cursor: "pointer", fontSize: 13, color: B.taupe, textDecoration: "underline", textUnderlineOffset: 3 }}>
+            <button onClick={() => setEmailSubmitted(true)} style={{ marginTop: sp(2), background: "none", border: "none", cursor: "pointer", ...T.micro, color: C.light, textDecoration: "underline", textUnderlineOffset: 3 }}>
               Skip for now
             </button>
           </div>
         )}
 
         {/* ── SCORE CARD — matches report cover ── */}
-        {emailSubmitted && <><div style={{ padding: mobile ? "32px 24px" : "40px 40px", borderRadius: 16, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textAlign: "center", marginBottom: 32 }}>
+        {emailSubmitted && <><div style={{ ...cardStyle, padding: mobile ? `${sp(4)}px ${sp(3)}px` : `${sp(5)}px ${sp(5)}px`, textAlign: "center", marginBottom: sp(4) }}>
 
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>INCOME STABILITY SCORE&#8482;</div>
+          <div style={{ ...T.label, fontSize: 11, color: C.light, marginBottom: sp(2) }}>INCOME STABILITY SCORE&#8482;</div>
 
-          {name && <div style={{ fontSize: 17, fontWeight: 500, color: B.navy, marginBottom: 4 }}>{name}</div>}
-          <div style={{ fontSize: 12, color: B.taupe, marginBottom: 24 }}>Free Assessment &middot; Model RP-2.0</div>
+          {name && <div style={{ fontSize: 17, fontWeight: 500, color: C.navy, marginBottom: 4 }}>{name}</div>}
+          <div style={{ fontSize: 12, color: C.light, marginBottom: sp(3) }}>Free Assessment &middot; Model RP-2.0</div>
 
           {/* Score ring */}
-          <div style={{ position: "relative", width: mobile ? 140 : 170, height: mobile ? 140 : 170, margin: "0 auto 16px" }}>
+          <div style={{ position: "relative", width: mobile ? 140 : 170, height: mobile ? 140 : 170, margin: `0 auto ${sp(2)}px` }}>
             <svg width={mobile ? 140 : 170} height={mobile ? 140 : 170} style={{ transform: "rotate(-90deg)" }}>
-              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke={B.stone} strokeWidth={mobile ? 8 : 10} />
-              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke={bandColor} strokeWidth={mobile ? 8 : 10}
+              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke={C.border} strokeWidth={mobile ? 8 : 10} />
+              <circle cx={mobile ? 70 : 85} cy={mobile ? 70 : 85} r={mobile ? 58 : 70} fill="none" stroke={bColor} strokeWidth={mobile ? 8 : 10}
                 strokeDasharray={2 * Math.PI * (mobile ? 58 : 70)} strokeDashoffset={2 * Math.PI * (mobile ? 58 : 70) - (animatedScore / 100) * 2 * Math.PI * (mobile ? 58 : 70)}
                 strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.3s ease" }} />
             </svg>
             <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: mobile ? 40 : 48, fontWeight: 300, color: B.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{animatedScore}</span>
-              <span style={{ fontSize: 12, fontWeight: 300, color: B.taupe }}>/100</span>
+              <span style={{ fontFamily: mono, fontSize: mobile ? 40 : 48, fontWeight: 300, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1 }}>{animatedScore}</span>
+              <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 300, color: C.light }}>/100</span>
             </div>
           </div>
 
           {/* Band */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: bandColor }}>{band}</span>
+            <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bColor }} />
+            <span style={{ fontSize: 15, fontWeight: 600, color: bColor }}>{band}</span>
           </div>
 
-          <div style={{ fontSize: 15, color: B.taupe, marginBottom: 8 }}>{humanMessage}</div>
+          <div style={{ ...bodySm(mobile), color: C.light, marginBottom: 8 }}>{humanMessage}</div>
 
-          {nextBandName && <div style={{ fontSize: 13, color: B.teal, fontWeight: 600 }}>{gap} points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontFamily: mono, fontSize: 13, color: C.teal, fontWeight: 600 }}>{gap} points to {nextBandName} Stability</div>}
 
           {peerPercentile !== null && (
-            <div style={{ fontSize: 13, color: B.muted, marginTop: 10, paddingTop: 10, borderTop: `1px solid ${B.stone}` }}>
+            <div style={{ ...T.micro, color: C.muted, marginTop: 10, paddingTop: 10, borderTop: `1px solid ${C.border}` }}>
               {peerPercentile >= 50
-                ? `You're in the ${Math.round(peerPercentile)}th percentile for ${peerCluster}.`
-                : `${Math.round(100 - peerPercentile)}% of ${peerCluster} professionals score higher.`}
+                ? <span>You&#8217;re in the <span style={{ fontFamily: mono, fontWeight: 600 }}>{Math.round(peerPercentile)}th</span> percentile for {peerCluster}.</span>
+                : <span><span style={{ fontFamily: mono, fontWeight: 600 }}>{Math.round(100 - peerPercentile)}%</span> of {peerCluster} professionals score higher.</span>}
             </div>
           )}
         </div>
 
         {/* ── ROOT CONSTRAINT — matches report key takeaway ── */}
-        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.purple}`, marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>YOUR PRIMARY CONSTRAINT</div>
-          <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6, fontWeight: 500 }}>{insightText}</p>
-          <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
+        <div style={{ ...cardStyle, padding: mobile ? `${sp(2.5)}px ${sp(2.5)}px` : `${sp(3)}px ${sp(3.5)}px`, borderLeft: `3px solid ${C.purple}`, marginBottom: sp(3) }}>
+          <div style={{ ...T.label, fontSize: 11, color: C.purple, marginBottom: sp(1) }}>YOUR PRIMARY CONSTRAINT</div>
+          <p style={{ ...bodySm(mobile), color: C.navy, margin: `0 0 ${sp(1)}px`, fontWeight: 500 }}>{insightText}</p>
+          <p style={{ ...T.micro, color: C.light, margin: 0, lineHeight: 1.5 }}>
             This is the single biggest factor holding your score down. The full report breaks down why, how it connects to your other structural factors, and what to do about it.
           </p>
         </div>
 
         {/* ── BEST MOVE PREVIEW — teaser only, no exact numbers ── */}
         {bestMove && (
-          <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, borderLeft: `3px solid ${B.teal}`, marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>YOUR HIGHEST-IMPACT MOVE</div>
-            <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.6, fontWeight: 500 }}>
+          <div style={{ ...cardStyle, padding: mobile ? `${sp(2.5)}px ${sp(2.5)}px` : `${sp(3)}px ${sp(3.5)}px`, borderLeft: `3px solid ${C.teal}`, marginBottom: sp(3) }}>
+            <div style={{ ...T.label, fontSize: 11, color: C.teal, marginBottom: sp(1) }}>YOUR HIGHEST-IMPACT MOVE</div>
+            <p style={{ ...bodySm(mobile), color: C.navy, margin: `0 0 ${sp(1)}px`, fontWeight: 500 }}>
               We identified a single structural change that could meaningfully raise your score.
             </p>
-            <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.5 }}>
+            <p style={{ ...T.micro, color: C.light, margin: 0, lineHeight: 1.5 }}>
               The full report reveals exactly what it is, why it matters for your industry, and how to act on it — with two additional moves ranked by impact.
             </p>
           </div>
         )}
 
         {/* ── WHAT THE FULL REPORT TELLS YOU ── */}
-        <div style={{ padding: mobile ? "24px 20px" : "28px 28px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe, marginBottom: 16 }}>WHAT THE FULL REPORT TELLS YOU</div>
+        <div style={{ ...cardStyle, padding: mobile ? `${sp(3)}px ${sp(2.5)}px` : `${sp(3.5)}px ${sp(3.5)}px`, marginBottom: sp(4) }}>
+          <div style={{ ...T.label, fontSize: 11, color: C.light, marginBottom: sp(2) }}>WHAT THE FULL REPORT TELLS YOU</div>
           {[
             "Where your income is structurally exposed — and why",
             "The 3 highest-impact moves to raise your score, ranked",
@@ -230,28 +211,28 @@ export default function FreeScorePage() {
             "Scripts you can use in real conversations with clients",
           ].map((item) => (
             <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.purple, flexShrink: 0, marginTop: 7 }} />
-              <span style={{ fontSize: 14, color: B.navy, lineHeight: 1.55 }}>{item}</span>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0, marginTop: 7 }} />
+              <span style={{ ...T.meta, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
 
         {/* ── CTA — clean, confident, guarantee inside ── */}
-        <div style={{ padding: mobile ? "28px 24px" : "32px 36px", borderRadius: 16, backgroundColor: B.navy, textAlign: "center", marginBottom: 24 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 12 }}>FULL DIAGNOSTIC REPORT</div>
+        <div style={{ padding: mobile ? `${sp(3.5)}px ${sp(3)}px` : `${sp(4)}px ${sp(4.5)}px`, borderRadius: 12, backgroundColor: C.navy, textAlign: "center", marginBottom: sp(3) }}>
+          <div style={{ ...T.label, fontSize: 11, color: C.teal, marginBottom: sp(1.5) }}>FULL DIAGNOSTIC REPORT</div>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 6 }}>
-            <span style={{ fontSize: mobile ? 36 : 44, fontWeight: 300, color: "#F4F1EA" }}>$69</span>
-            <span style={{ fontSize: 14, color: "rgba(244,241,234,0.40)" }}>one-time</span>
+            <span style={{ fontFamily: mono, fontSize: mobile ? 36 : 44, fontWeight: 300, color: C.sandText }}>$69</span>
+            <span style={{ fontFamily: mono, ...T.meta, color: C.sandLight }}>one-time</span>
           </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", margin: "0 0 20px", lineHeight: 1.5 }}>
+          <p style={{ ...T.micro, color: C.sandLight, margin: `0 0 ${sp(2.5)}px`, lineHeight: 1.5 }}>
             Built from the answers you already gave. Instant delivery. No retake.
           </p>
           <a href={STRIPE_FULL_REPORT}
-            style={{ display: "block", width: "100%", maxWidth: 360, margin: "0 auto 20px", height: 52, borderRadius: 10, backgroundColor: B.purple, color: "#FFFFFF", fontSize: 15, fontWeight: 600, textDecoration: "none", lineHeight: "52px", textAlign: "center" }}>
+            style={{ display: "block", width: "100%", maxWidth: 360, margin: `0 auto ${sp(2.5)}px`, height: 52, borderRadius: 10, backgroundColor: C.purple, color: C.white, fontSize: 15, fontWeight: 600, textDecoration: "none", lineHeight: "52px", textAlign: "center" }}>
             Get Your Full Report →
           </a>
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 16, maxWidth: 360, margin: "0 auto" }}>
-            <p style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", margin: 0, lineHeight: 1.55 }}>
+          <div style={{ borderTop: `1px solid ${C.sandBorder}`, paddingTop: sp(2), maxWidth: 360, margin: "0 auto" }}>
+            <p style={{ fontSize: 12, color: C.sandLight, margin: 0, lineHeight: 1.55 }}>
               If the report doesn&#8217;t reveal at least one insight you didn&#8217;t already know — full refund, no questions.
             </p>
           </div>
@@ -260,8 +241,8 @@ export default function FreeScorePage() {
         </>}
 
         {/* ── Footer ── */}
-        <div style={{ textAlign: "center", paddingTop: 16, borderTop: `1px solid ${B.stone}` }}>
-          <p style={{ fontSize: 11, color: B.taupe, margin: 0 }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; Not financial advice.</p>
+        <div style={{ textAlign: "center", paddingTop: sp(2), borderTop: `1px solid ${C.border}` }}>
+          <p style={{ fontSize: 11, color: C.light, margin: 0 }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; Not financial advice.</p>
         </div>
       </div>
     </div>

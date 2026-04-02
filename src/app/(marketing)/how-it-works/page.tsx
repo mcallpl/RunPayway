@@ -4,12 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
+import { C, T, mono, sp, maxW, padX, secPad, px, h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButton, ctaButtonLight, navStyle, canHover } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
 /* ------------------------------------------------------------------ */
-
-const canHover = () => typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -33,28 +32,12 @@ function useMobile(bp = 768) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Tokens                                                             */
+/*  Local constants (not in shared tokens)                             */
 /* ------------------------------------------------------------------ */
 
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  bone: "#F7F6F3",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
-  border: "rgba(14,26,43,0.08)",
-  borderMd: "rgba(14,26,43,0.12)",
-  gradient: "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)",
-  bandLimited: "#9B2C2C",
-  bandDeveloping: "#92640A",
-  bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
-};
-
-const SY = { desktop: 120, mobile: 80 };
-const PAD = { desktop: 40, mobile: 20 };
+const gradient = "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)";
+const borderMd = "rgba(14,26,43,0.12)";
+const bone = "#F7F6F3";
 const MAX = 1200;
 
 /* ================================================================== */
@@ -64,20 +47,20 @@ function Hero() {
   const { ref, visible } = useInView();
   const m = useMobile();
   return (
-    <section ref={ref} style={{ background: B.gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
+    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
       <div style={{ position: "absolute", top: "20%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1 }}>
         <div style={{ maxWidth: 680, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 28 }}>How It Works</div>
-          <h1 style={{ fontSize: m ? 32 : 56, fontWeight: 600, color: "#F4F1EA", lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, wordBreak: "break-word" as const }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 28 }}>How It Works</div>
+          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, wordBreak: "break-word" as const }}>
             A structured assessment.{!m && <br />} Not a guess.
           </h1>
-          <p style={{ fontSize: m ? 16 : 20, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16, maxWidth: 520 }}>
+          <p style={{ ...body(m), color: C.sandMuted, marginBottom: 16, maxWidth: 520 }}>
             RunPayway scores how your income is built using fixed structural dimensions. The same answers always produce the same score. Here is exactly how the process works.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 16, marginTop: 28 }}>
             {["No bank connection", "No credit pull", "No document upload"].map(t => (
-              <span key={t} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em" }}>{t}</span>
+              <span key={t} style={{ ...T.micro, fontWeight: 500, color: C.sandLight, letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
@@ -100,10 +83,10 @@ function Journey() {
       detail: "No dollar amounts. No account access. Just structural patterns.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 12 }}>Structural Assessment</div>
-          <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: "#F4F1EA", marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 12 }}>Structural Assessment</div>
+          <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: C.sandText, marginBottom: 16, lineHeight: 1.35 }}>How many months of future income are currently secured under signed agreements?</div>
           {["Less than 1 month", "1\u20132 months", "3\u20135 months", "6\u201311 months", "12 or more months"].map((opt, i) => (
-            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(26,122,109,0.15)" : "rgba(244,241,234,0.04)", border: i === 2 ? `1px solid ${B.teal}` : "1px solid rgba(244,241,234,0.06)", fontSize: 14, color: i === 2 ? B.teal : "rgba(244,241,234,0.50)", fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
+            <div key={opt} style={{ padding: "10px 14px", marginBottom: 6, borderRadius: 8, backgroundColor: i === 2 ? "rgba(31,109,122,0.15)" : "rgba(244,241,234,0.04)", border: i === 2 ? `1px solid ${C.teal}` : "1px solid rgba(244,241,234,0.06)", fontSize: 14, color: i === 2 ? C.teal : "rgba(244,241,234,0.50)", fontWeight: i === 2 ? 600 : 400 }}>{opt}</div>
           ))}
         </div>
       ),
@@ -114,17 +97,17 @@ function Journey() {
       detail: "Fixed rules. Deterministic. No machine learning.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.30)", textTransform: "uppercase" as const, marginBottom: 16 }}>Calculating</div>
+          <div style={{ ...T.label, color: C.sandLight, marginBottom: 16 }}>Calculating</div>
           {["Evaluating structural factors", "Applying cross-factor interactions", "Computing stability classification", "Generating structural diagnosis"].map((step, i) => (
             <div key={step} style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
-              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? B.teal : "rgba(244,241,234,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 20, height: 20, borderRadius: "50%", backgroundColor: i < 3 ? C.teal : "rgba(244,241,234,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 {i < 3 && <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5L4 7L8 3" stroke="#F4F1EA" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>}
               </div>
               <span style={{ fontSize: 14, color: i < 3 ? "rgba(244,241,234,0.60)" : "rgba(244,241,234,0.25)", fontWeight: i === 3 ? 500 : 400 }}>{step}</span>
             </div>
           ))}
           <div style={{ height: 3, borderRadius: 2, backgroundColor: "rgba(244,241,234,0.06)", marginTop: 8 }}>
-            <div style={{ height: 3, borderRadius: 2, backgroundColor: B.teal, width: "75%" }} />
+            <div style={{ height: 3, borderRadius: 2, backgroundColor: C.teal, width: "75%" }} />
           </div>
         </div>
       ),
@@ -135,13 +118,13 @@ function Journey() {
       detail: "Free. Instant. No payment required.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px", textAlign: "center" }}>
-          <div style={{ fontSize: 48, fontWeight: 600, color: "#F4F1EA", lineHeight: 1, marginBottom: 4 }}>48</div>
-          <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
+          <div style={{ fontFamily: mono, fontSize: 48, fontWeight: 600, color: C.sandText, lineHeight: 1, marginBottom: 4 }}>48</div>
+          <div style={{ fontFamily: mono, fontSize: 14, color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>out of 100</div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(146,100,10,0.15)", marginBottom: 12 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.bandDeveloping }} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: B.bandDeveloping }}>Developing Stability</span>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.bandDeveloping }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.bandDeveloping }}>Developing Stability</span>
           </div>
-          <div style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", lineHeight: 1.5 }}>12 points to Established</div>
+          <div style={{ fontFamily: mono, fontSize: 13, color: "rgba(244,241,234,0.40)", lineHeight: 1.5 }}>12 points to Established</div>
         </div>
       ),
     },
@@ -152,13 +135,13 @@ function Journey() {
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {[
-            { num: "01", title: "Your Score", color: B.purple },
-            { num: "02", title: "Income Structure", color: B.teal },
-            { num: "03", title: "Disruption Analysis", color: B.bandLimited },
-            { num: "04", title: "Best Next Move", color: B.purple },
+            { num: "01", title: "Your Score", color: C.purple },
+            { num: "02", title: "Income Structure", color: C.teal },
+            { num: "03", title: "Disruption Analysis", color: C.bandLimited },
+            { num: "04", title: "Best Next Move", color: C.purple },
           ].map((p, i) => (
             <div key={p.num} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: i < 3 ? "1px solid rgba(244,241,234,0.06)" : "none" }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
+              <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: p.color, minWidth: 22 }}>{p.num}</span>
               <span style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.60)" }}>{p.title}</span>
             </div>
           ))}
@@ -168,14 +151,14 @@ function Journey() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: B.bone, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+    <section ref={ref} style={{ backgroundColor: bone, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: MAX, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: B.teal, marginBottom: 16 }}>The Process</div>
-          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, color: B.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+          <div style={{ ...T.label, color: C.teal, marginBottom: 16 }}>The Process</div>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.025em", marginBottom: 12 }}>
             Four steps. Every one transparent.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: B.muted, lineHeight: 1.65, maxWidth: 480, margin: "0 auto" }}>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 480, margin: "0 auto" }}>
             No black boxes. You see exactly what happens at each stage.
           </p>
         </div>
@@ -183,7 +166,7 @@ function Journey() {
         {/* Timeline */}
         <div style={{ maxWidth: 880, margin: "0 auto", position: "relative" }}>
           {/* Vertical line — desktop */}
-          {!m && <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, backgroundColor: B.borderMd, transform: "translateX(-0.5px)" }} />}
+          {!m && <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, backgroundColor: borderMd, transform: "translateX(-0.5px)" }} />}
 
           {steps.map((step, i) => {
             const isRight = !m && i % 2 === 1;
@@ -203,8 +186,8 @@ function Journey() {
                   <div style={{ paddingRight: 32, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     {!isRight && (
                       <>
-                        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>Step {step.num}</div>
-                        <h3 style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 10, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{step.title}</h3>
+                        <div style={{ ...T.label, color: C.teal, marginBottom: 8 }}>Step <span style={{ fontFamily: mono }}>{step.num}</span></div>
+                        <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>{step.title}</h3>
                         <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
                         <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                       </>
@@ -233,8 +216,8 @@ function Journey() {
                   <div style={{ paddingLeft: 32, display: "flex", flexDirection: "column", justifyContent: "center" }}>
                     {isRight && (
                       <>
-                        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>Step {step.num}</div>
-                        <h3 style={{ fontSize: 22, fontWeight: 600, color: B.navy, marginBottom: 10, letterSpacing: "-0.02em", lineHeight: 1.2 }}>{step.title}</h3>
+                        <div style={{ ...T.label, color: C.teal, marginBottom: 8 }}>Step <span style={{ fontFamily: mono }}>{step.num}</span></div>
+                        <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>{step.title}</h3>
                         <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
                         <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                       </>

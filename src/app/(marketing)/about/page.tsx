@@ -2,13 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import {
+  C, T, mono, sans, sp, maxW, padX, textMax,
+  secPad, px,
+  h1, h2Style, h3Style, body, bodySm,
+  cardStyle, ctaButton, ctaButtonLight, navStyle,
+  canHover,
+} from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Shared hooks                                                       */
 /* ------------------------------------------------------------------ */
-
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -47,103 +51,53 @@ function useMobile(breakpoint = 768) {
   return mobile;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
-/* ------------------------------------------------------------------ */
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  sandDk: "#F4F1EA",
-  muted: "rgba(14,26,43,0.58)",
-  light: "rgba(14,26,43,0.42)",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
-};
-
-const DISPLAY_FONT = "'DM Serif Display', Georgia, serif";
-
-const S = {
-  sectionY:     { desktop: 120, mobile: 80 },
-  sectionYsm:   { desktop: 100, mobile: 64 },
-  transitionY:  { desktop: 56, mobile: 40 },
-  disclaimerY:  { desktop: 48, mobile: 36 },
-  maxW:         1060,
-  padX:         { desktop: 48, mobile: 24 },
-  h1mb:         20,
-  h2mb:         20,
-  subtextMb:    44,
-  paraMb:       20,
-  labelMb:      14,
-  cardPad:      { desktop: 32, mobile: 24 },
-  cardRadius:   12,
-  panelRadius:  16,
-  gridGap:      20,
-  gridGapSm:    14,
-  ctaH:         52,
-  ctaHsm:       44,
-  ctaPadX:      28,
-  ctaRadius:    12,
-  lhHeading:    1.12,
-  lhBody:       1.65,
-  lhDense:      1.5,
-  lsHeading:    "-0.02em",
-  lsHero:       "-0.03em",
-  lsLabel:      "0.12em",
-};
-
 
 /* ================================================================== */
 /* HERO                                                                */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="About Hero"
       style={{
-        background: B.gradient,
+        background: `linear-gradient(135deg, ${C.navy} 0%, #1A1540 40%, ${C.purple} 70%, ${C.teal} 100%)`,
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? 100 : 160,
-        paddingBottom: mobile ? 72 : 100,
+        paddingTop: m ? 100 : 160,
+        paddingBottom: m ? 72 : 100,
       }}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');`}</style>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.18) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div
           style={{
             textAlign: "center",
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(20px)",
             transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
           }}
         >
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: S.lsLabel, textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)", marginBottom: 20 }}>
+          <div style={{ ...T.label, color: C.sandLight, marginBottom: 20 }}>
             PeopleStar Enterprises, Inc.
           </div>
           <h1
             style={{
-              fontSize: mobile ? 36 : 52,
-              color: "#F4F1EA",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHero,
-              lineHeight: S.lhHeading,
-              marginBottom: S.h1mb,
+              ...h1(m),
+              color: C.sandText,
+              fontFamily: sans,
+              marginBottom: 20,
             }}
           >
             About RunPayway&#8482;
           </h1>
           <p
-            style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
+            style={{ ...body(m), color: "rgba(244,241,234,0.70)", maxWidth: 620, marginLeft: "auto", marginRight: "auto" }}
           >
             RunPayway&#8482; produces the Income Stability Score&#8482; — a present-state diagnostic that measures how well your income holds up if conditions change. Fixed rules. No opinions. Just the math.
           </p>
@@ -159,38 +113,38 @@ function Hero() {
 /* ================================================================== */
 function WhatIsISS() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="What is the Income Stability Score&#8482;"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: C.sand,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, fontFamily: sans, marginBottom: 20 }}>
             The Income Stability Score&#8482;
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            The Income Stability Score&#8482; is a number between 0 and 100 that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
+            The Income Stability Score&#8482; is a number between <span style={{ fontFamily: mono }}>0</span> and <span style={{ fontFamily: mono }}>100</span> that measures the structural durability of your income. It answers a simple question: if conditions changed, how well would your income hold up?
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score&#8482; examines the architecture of how you earn. It looks at how many sources you have, how predictable they are, how much continues without active work, and how far forward your income is committed.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 0 }}>
             The result is a deterministic structural assessment — the same inputs always produce the same score, and every score maps to a fixed classification band under Model RP-2.0.
           </p>
         </div>
@@ -205,7 +159,7 @@ function WhatIsISS() {
 /* ================================================================== */
 function WhatModelMeasures() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   const dimensions = [
     { title: "Repeatable Income", desc: "How much of your income comes back without needing to be rebuilt each time." },
@@ -221,46 +175,46 @@ function WhatModelMeasures() {
       ref={ref}
       aria-label="What the Model Measures"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: C.white,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
             textAlign: "center",
-            marginBottom: S.subtextMb,
+            marginBottom: 44,
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(12px)",
             transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: 12 }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, fontFamily: sans, marginBottom: 12 }}>
             What the model measures
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
             The model evaluates income across independent structural dimensions. Each contributes to the final score.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr", gap: S.gridGap, maxWidth: 880, margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto" }}>
           {dimensions.map((d, i) => (
             <div
               key={d.title}
               style={{
-                backgroundColor: B.purple,
-                borderRadius: S.cardRadius,
-                padding: mobile ? S.cardPad.mobile : S.cardPad.desktop,
+                backgroundColor: C.purple,
+                borderRadius: 12,
+                padding: m ? 24 : 32,
                 border: "none",
                 opacity: visible ? 1 : 0,
                 transform: visible ? "translateY(0)" : "translateY(12px)",
                 transition: `opacity 0.5s ease-out ${i * 60}ms, transform 0.5s ease-out ${i * 60}ms`,
               }}
             >
-              <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: B.teal, marginBottom: 16 }} />
-              <h3 className="text-[20px] md:text-[24px]" style={{ fontWeight: 600, color: "#FFFFFF", lineHeight: 1.12, marginBottom: 10 }}>{d.title}</h3>
-              <p className="text-[14px]" style={{ color: "rgba(255,255,255,0.70)", lineHeight: 1.65, margin: 0 }}>{d.desc}</p>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: C.teal, marginBottom: 16 }} />
+              <h3 style={{ ...h3Style(m), fontWeight: 600, color: C.white, lineHeight: 1.12, marginBottom: 10 }}>{d.title}</h3>
+              <p style={{ ...T.meta, color: "rgba(255,255,255,0.70)", lineHeight: 1.65, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
         </div>
@@ -275,38 +229,38 @@ function WhatModelMeasures() {
 /* ================================================================== */
 function HowCalculated() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="How the Score is Calculated"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: C.sand,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, fontFamily: sans, marginBottom: 20 }}>
             How the score is calculated
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             Model RP-2.0 is entirely deterministic. There is no probabilistic modeling, no adaptive learning, and no human judgment in the scoring process. The same inputs always produce the same score.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
-            The model evaluates your income across fixed structural dimensions using versioned rules. Each dimension contributes to the final 0&#8211;100 score, which maps to one of four stability bands: Limited, Developing, Established, or High.
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
+            The model evaluates your income across fixed structural dimensions using versioned rules. Each dimension contributes to the final <span style={{ fontFamily: mono }}>0</span>&#8211;<span style={{ fontFamily: mono }}>100</span> score, which maps to one of four stability bands: Limited, Developing, Established, or High.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 0 }}>
             The result is a five-page diagnostic report that explains your score, translates what it means, shows your biggest risks, identifies the specific changes that would raise it, and gives you a clear action plan.
           </p>
         </div>
@@ -321,38 +275,38 @@ function HowCalculated() {
 /* ================================================================== */
 function ModelGovernance() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="Model Governance"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: C.white,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, fontFamily: sans, marginBottom: 20 }}>
             Model governance
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             Every version of the scoring model is locked and versioned. The current version is Model RP-2.0. If any rule, weight, threshold, or classification boundary changes, the model increments to a new version number.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             This means a score generated under Model RP-2.0 can always be compared to another score generated under Model RP-2.0. The rules are identical. If the rules ever change, it becomes a new model — and every assessment is stamped with the version that produced it.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 0 }}>
             Every assessment includes a SHA-256 hash that can be used to verify the report was produced by the stated model version and has not been modified after generation. This is how institutional trust works: not through promises, but through verifiable, versioned outputs.
           </p>
         </div>
@@ -367,44 +321,44 @@ function ModelGovernance() {
 /* ================================================================== */
 function Verification() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="Verification"
       style={{
-        background: B.navy,
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        background: C.navy,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: "#F4F1EA", fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, fontFamily: sans, marginBottom: 20 }}>
             Every score is verifiable
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.70)", lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.sandMuted, marginBottom: 20 }}>
             Every assessment includes a SHA-256 hash, a model version stamp, and a timestamp. These three elements prove the assessment was produced by Model RP-2.0 and has not been altered.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: "rgba(244,241,234,0.55)", lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p style={{ ...body(m), color: C.sandLight, marginBottom: 0 }}>
             Share your score with a lender, employer, or financial advisor. They don&#8217;t need to trust you or trust RunPayway&#8482; — they can verify it themselves.
           </p>
 
           {/* Verification badges */}
-          <div style={{ display: "flex", gap: mobile ? 12 : 20, marginTop: 36, flexWrap: "wrap", justifyContent: "center" }}>
+          <div style={{ display: "flex", gap: m ? 12 : 20, marginTop: 36, flexWrap: "wrap", justifyContent: "center" }}>
             {["SHA-256 Hash", "Model Version Stamp", "Immutable Timestamp", "QR Verification"].map((badge) => (
-              <div key={badge} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: B.teal }} />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
+              <div key={badge} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", border: `1px solid ${C.sandBorder}` }}>
+                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal }} />
+                <span style={{ ...T.micro, fontWeight: 600, color: "rgba(244,241,234,0.60)", letterSpacing: "0.02em" }}>{badge}</span>
               </div>
             ))}
           </div>
@@ -420,38 +374,38 @@ function Verification() {
 /* ================================================================== */
 function WhoBuiltIt() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="Who Built It"
       style={{
-        backgroundColor: "#ffffff",
-        paddingTop: mobile ? S.sectionY.mobile : S.sectionY.desktop,
-        paddingBottom: mobile ? S.sectionY.mobile : S.sectionY.desktop,
+        backgroundColor: C.white,
+        paddingTop: secPad(m),
+        paddingBottom: secPad(m),
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m) }}>
         <div
           style={{
-            maxWidth: 720,
+            maxWidth: textMax,
             margin: "0 auto",
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
           }}
         >
-          <h2 className="text-[32px] md:text-[48px]" style={{ color: B.navy, fontFamily: DISPLAY_FONT, fontWeight: 400, letterSpacing: S.lsHeading, lineHeight: S.lhHeading, marginBottom: S.h2mb }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, fontFamily: sans, marginBottom: 20 }}>
             Who built this
           </h2>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             RunPayway&#8482; is built and operated by PeopleStar Enterprises, Inc. The Income Stability Score&#8482; was developed to fill a gap in how income is evaluated: credit scores measure borrowing history, income verification confirms what you earned last month, but nothing measured the structural durability of how you earn.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: S.paraMb }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
             RunPayway&#8482; exists to give people a clear, verifiable way to understand and communicate the stability of their income. The score is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
           </p>
-          <p className="text-[16px] md:text-[18px]" style={{ color: B.muted, lineHeight: S.lhBody, marginBottom: 0 }}>
+          <p style={{ ...body(m), color: C.muted, marginBottom: 0 }}>
             The model is designed for anyone whose income does not fit neatly into a W-2 paycheck — business owners, self-employed professionals, consultants, contractors, and anyone with variable or multi-source income.
           </p>
         </div>
@@ -465,28 +419,28 @@ function WhoBuiltIt() {
 /* MODEL BADGE                                                         */
 /* ================================================================== */
 function ModelBadge() {
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       aria-label="Model Badge"
       style={{
-        backgroundColor: B.sand,
-        paddingTop: mobile ? 48 : 64,
-        paddingBottom: mobile ? 48 : 64,
+        backgroundColor: C.sand,
+        paddingTop: m ? 48 : 64,
+        paddingBottom: m ? 48 : 64,
       }}
     >
-      <div style={{ maxWidth: S.maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: mobile ? S.padX.mobile : S.padX.desktop, paddingRight: mobile ? S.padX.mobile : S.padX.desktop, textAlign: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 24, flexWrap: "wrap" }}>
+      <div style={{ maxWidth: maxW, marginLeft: "auto", marginRight: "auto", paddingLeft: px(m), paddingRight: px(m), textAlign: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: m ? 16 : 24, flexWrap: "wrap" }}>
           {[
             { label: "Model RP-2.0", sub: "Current version" },
             { label: "Deterministic", sub: "Fixed scoring rules" },
             { label: "19 Industries", sub: "Full sector coverage" },
             { label: "Fixed Dimensions", sub: "Structural analysis" },
           ].map((item) => (
-            <div key={item.label} style={{ textAlign: "center", minWidth: mobile ? 120 : 140 }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: B.navy, marginBottom: 4 }}>{item.label}</div>
-              <div style={{ fontSize: 13, color: B.light, letterSpacing: "0.02em" }}>{item.sub}</div>
+            <div key={item.label} style={{ textAlign: "center", minWidth: m ? 120 : 140 }}>
+              <div style={{ ...T.bodySm.desktop, fontWeight: 700, color: C.navy, marginBottom: 4 }}>{item.label}</div>
+              <div style={{ ...T.micro, color: C.light, letterSpacing: "0.02em" }}>{item.sub}</div>
             </div>
           ))}
         </div>
@@ -501,18 +455,18 @@ function ModelBadge() {
 /* ================================================================== */
 function CtaSection() {
   const { ref, visible } = useInView();
-  const mobile = useMobile();
+  const m = useMobile();
 
   return (
     <section
       ref={ref}
       aria-label="Call to Action"
       style={{
-        background: B.gradient,
+        background: `linear-gradient(135deg, ${C.navy} 0%, #1A1540 40%, ${C.purple} 70%, ${C.teal} 100%)`,
         position: "relative",
         overflow: "hidden",
-        paddingTop: mobile ? 72 : 96,
-        paddingBottom: mobile ? 72 : 96,
+        paddingTop: m ? 72 : 96,
+        paddingBottom: m ? 72 : 96,
       }}
     >
       <div
@@ -529,11 +483,11 @@ function CtaSection() {
       />
       <div
         style={{
-          maxWidth: S.maxW,
+          maxWidth: maxW,
           marginLeft: "auto",
           marginRight: "auto",
-          paddingLeft: mobile ? S.padX.mobile : S.padX.desktop,
-          paddingRight: mobile ? S.padX.mobile : S.padX.desktop,
+          paddingLeft: px(m),
+          paddingRight: px(m),
           position: "relative",
           zIndex: 1,
         }}
@@ -548,12 +502,9 @@ function CtaSection() {
         >
           <h2
             style={{
-              fontSize: mobile ? 32 : 48,
-              color: "#F4F1EA",
-              fontFamily: DISPLAY_FONT,
-              fontWeight: 400,
-              letterSpacing: S.lsHeading,
-              lineHeight: S.lhHeading,
+              ...h2Style(m),
+              color: C.sandText,
+              fontFamily: sans,
               marginBottom: 16,
             }}
           >
@@ -561,20 +512,19 @@ function CtaSection() {
           </h2>
           <p
             style={{
-              fontSize: 16,
+              ...bodySm(m),
               color: "rgba(244,241,234,0.60)",
-              lineHeight: 1.65,
               marginBottom: 12,
               maxWidth: 440,
               marginLeft: "auto",
               marginRight: "auto",
             }}
           >
-            Your free score shows where you stand. The full report shows what to do about it &#8212; $69.
+            Your free score shows where you stand. The full report shows what to do about it &#8212; <span style={{ fontFamily: mono }}>$69</span>.
           </p>
           <p
             style={{
-              fontSize: 14,
+              ...T.meta,
               color: "rgba(244,241,234,0.40)",
               lineHeight: 1.65,
               marginBottom: 28,
@@ -588,24 +538,17 @@ function CtaSection() {
           <Link
             href="/pricing"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 52,
-              paddingLeft: 32,
-              paddingRight: 32,
-              borderRadius: 12,
-              backgroundColor: "#F4F1EA",
-              color: B.navy,
-              fontSize: 16,
-              fontWeight: 600,
+              ...ctaButtonLight,
+              backgroundColor: C.sandText,
+              color: C.navy,
+              borderRadius: 8,
               letterSpacing: "-0.01em",
               textDecoration: "none",
             }}
           >
             Get My Free Score
           </Link>
-          <div style={{ marginTop: 16, fontSize: 14, color: "rgba(244,241,234,0.40)" }}>
+          <div style={{ marginTop: 16, ...T.meta, color: "rgba(244,241,234,0.40)" }}>
             Free to start &#183; No bank connection &#183; No credit pull
           </div>
         </div>
