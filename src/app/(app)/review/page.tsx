@@ -8,6 +8,7 @@ import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 import { generateTailoredCopy } from "@/lib/industry-tailoring";
 import { generateReportPDF, type ReportPDFData } from "./report-pdf";
+import { C, mono, sans, bandColor as bandColorFn } from "@/lib/design-tokens";
 
 // ============================================================
 // ERROR BOUNDARY
@@ -175,23 +176,23 @@ interface AssessmentRecord {
 }
 
 // ============================================================
-// BRAND — Premium Institutional Design (ink-light)
+// BRAND — derived from shared design tokens
 // ============================================================
 const B = {
-  navy: "#0E1A2B",
-  ink: "#1A2332",
-  sand: "#FFFFFF",
-  bone: "#FFFFFF",
-  white: "#FFFFFF",
-  stone: "rgba(14,26,43,0.08)",
-  taupe: "rgba(14,26,43,0.36)",
-  muted: "rgba(14,26,43,0.52)",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  bandLimited: "#9B2C2C",
-  bandDeveloping: "#92640A",
-  bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
+  navy: C.navy,
+  ink: C.navy,
+  sand: C.white,
+  bone: C.white,
+  white: C.white,
+  stone: C.border,
+  taupe: C.light,
+  muted: C.muted,
+  purple: C.purple,
+  teal: C.teal,
+  bandLimited: C.bandLimited,
+  bandDeveloping: C.bandDeveloping,
+  bandEstablished: C.bandEstablished,
+  bandHigh: C.bandHigh,
 };
 
 // ============================================================
@@ -213,11 +214,14 @@ const R = {
   cardPad: "20px 24px" as string,
 };
 
-// ── Card: white with thin border, no fill ──
-const cardStyle: React.CSSProperties = {
-  backgroundColor: "#FFFFFF",
-  border: "1px solid rgba(14,26,43,0.07)",
-  borderRadius: 8,
+// ── Card: derived from shared design tokens with report padding ──
+const reportCardStyle: React.CSSProperties = {
+  ...({
+    borderRadius: 12,
+    border: `1px solid ${C.softBorder}`,
+    backgroundColor: C.white,
+    boxShadow: "0 1px 3px rgba(14,26,43,0.04)",
+  }),
   padding: R.cardPad,
 };
 
@@ -315,7 +319,7 @@ function ReportPage({ children, noPad }: { record?: AssessmentRecord; children: 
       flexDirection: "column",
       overflow: "visible",
       position: "relative",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: sans,
     }}>
       {children}
     </div>
@@ -986,8 +990,8 @@ export default function ReviewPage() {
     }
   };
 
-  // ── Band color helper ──
-  const bandColor = tier === "high" ? B.bandHigh : tier === "established" ? B.bandEstablished : tier === "developing" ? B.bandDeveloping : B.bandLimited;
+  // ── Band color helper — uses shared design token ──
+  const bandColor = bandColorFn(score);
 
 
   // ── Formal date for cover page ──
@@ -1127,7 +1131,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── INCOME STRUCTURE — visual bar ── */}
-        <div style={{ ...cardStyle, marginBottom: 16, padding: mobile ? "18px 16px" : "20px 28px" }}>
+        <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "18px 16px" : "20px 28px" }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>YOUR INCOME STRUCTURE</div>
           <div style={{ display: "flex", height: 32, borderRadius: 6, overflow: "hidden", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
             {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: "rgba(197,48,48,0.15)", display: "flex", alignItems: "center", justifyContent: "center", borderRight: "2px solid #FFFFFF" }}>{record.active_income_level >= 12 && <span style={{ fontSize: 12, fontWeight: 600, color: B.bandLimited }}>{record.active_income_level}%</span>}</div>}
@@ -1142,7 +1146,7 @@ export default function ReviewPage() {
         </div>
 
         {/* ── IN PLAIN ENGLISH — tight, 2 sentences each ── */}
-        <div style={{ ...cardStyle, marginBottom: 16 }}>
+        <div style={{ ...reportCardStyle, marginBottom: 16 }}>
           <div style={{ ...T.overline, color: B.taupe, marginBottom: 12 }}>IN PLAIN ENGLISH</div>
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 16 }}>
             <div style={{ flex: 1, padding: "16px 20px", borderRadius: 8, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.08)" }}>
@@ -1210,7 +1214,7 @@ export default function ReviewPage() {
                   const goal = aiAction || concrete?.goal || scenario.label;
                   const action = concrete?.action || scenario.change_description || "";
                   return (
-                    <div key={scenario.scenario_id} style={{ ...cardStyle, padding: "12px 18px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                    <div key={scenario.scenario_id} style={{ ...reportCardStyle, padding: "12px 18px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                       <div style={{ flex: 1 }}>
                         <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 2 }}>STEP {idx + 1}</div>
                         <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{goal}</div>
@@ -1311,7 +1315,7 @@ export default function ReviewPage() {
           box-sizing: border-box;
           overflow: hidden;
           position: relative;
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+          font-family: ${sans};
           display: flex;
           flex-direction: column;
         }

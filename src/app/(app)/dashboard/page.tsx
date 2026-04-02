@@ -9,30 +9,29 @@ import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 import { getScriptsForSector } from "@/lib/action-scripts";
 import SuiteHeader from "@/components/SuiteHeader";
 import { SAMPLE_PROFILES, IS_SAMPLE } from "@/lib/sample-data";
+import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 
 /* ================================================================== */
-/*  BRAND TOKENS                                                       */
+/*  BRAND TOKENS  (mapped from shared design-tokens)                   */
 /* ================================================================== */
 const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  white: "#FFFFFF",
-  bg: "#FFFFFF",
-  surface: "#FEFEFE",
-  stone: "rgba(14,26,43,0.06)",
-  taupe: "rgba(14,26,43,0.36)",
-  muted: "rgba(14,26,43,0.58)",
-  faint: "rgba(14,26,43,0.20)",
-  red: "#C53030",
-  amber: "#B7791F",
-  bandLimited: "#9B2C2C",
-  bandDeveloping: "#92640A",
-  bandEstablished: "#2B5EA7",
-  bandHigh: "#1F6D7A",
+  navy: C.navy,
+  purple: C.purple,
+  teal: C.teal,
+  white: C.white,
+  bg: C.white,
+  surface: C.white,
+  stone: C.border,
+  taupe: C.light,
+  muted: C.muted,
+  faint: C.border,
+  red: C.bandLimited,
+  amber: C.bandDeveloping,
+  bandLimited: C.bandLimited,
+  bandDeveloping: C.bandDeveloping,
+  bandEstablished: C.bandEstablished,
+  bandHigh: C.bandHigh,
 };
-const INTER = "'Inter', system-ui, -apple-system, sans-serif";
-function bc(s: number): string { return s >= 75 ? B.bandHigh : s >= 50 ? B.bandEstablished : s >= 30 ? B.bandDeveloping : B.bandLimited; }
 function fmtIndustry(s: string): string { return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()); }
 
 /* Map raw dropdown values → lookup keys */
@@ -104,7 +103,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const circ = 2 * Math.PI * r;
   const pct = Math.min(100, Math.max(0, score));
   const offset = circ - (pct / 100) * circ;
-  const color = bc(score);
+  const color = bandColor(score);
   const bandLabel = score >= 75 ? "High" : score >= 50 ? "Established" : score >= 30 ? "Developing" : "Limited";
 
   return (
@@ -559,7 +558,7 @@ function DashboardContent() {
 
   const handleShare = async () => {
     const bl = dScore >= 75 ? "High Stability" : dScore >= 50 ? "Established Stability" : dScore >= 30 ? "Developing Stability" : "Limited Stability";
-    const url = await generateScoreImage(dScore, bl, custName, bc(dScore));
+    const url = await generateScoreImage(dScore, bl, custName, bandColor(dScore));
     setShareUrl(url);
     setTimeout(() => { if (shareRef.current) shareRef.current.click(); setShareUrl(null); }, 150);
   };
@@ -573,7 +572,7 @@ function DashboardContent() {
     return (
       <>
         <title>Command Center | RunPayway</title>
-        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 80, fontFamily: INTER }}>
+        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 80, fontFamily: sans }}>
           <div style={{
             backgroundColor: "#FFFFFF", borderRadius: 12,
             border: "1px solid #EAEAEA", padding: 56, textAlign: "center",
@@ -608,7 +607,7 @@ function DashboardContent() {
   return (
     <>
       <title>Command Center | RunPayway</title>
-      <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: INTER }}>
+      <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <style>{`
           @media(max-width:700px){
             .d-2col{flex-direction:column!important;}
@@ -853,7 +852,7 @@ function DashboardContent() {
                         <div><div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{sc.title}</div><div style={{ fontSize: 13, color: B.muted, marginTop: 2 }}>{sc.context}</div></div>
                         <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 13, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "11px 20px", cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 44 }}>{copiedScript === sc.id ? "Copied!" : "Copy Script"}</button>
                       </div>
-                      <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.7, whiteSpace: "pre-wrap" as const, margin: 0, padding: "20px 24px", backgroundColor: B.surface, borderRadius: 12, border: `1px solid ${B.stone}`, fontFamily: INTER }}>{sc.script}</pre>
+                      <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.7, whiteSpace: "pre-wrap" as const, margin: 0, padding: "20px 24px", backgroundColor: B.surface, borderRadius: 12, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
                     </div>
                   )}
                 </div>
@@ -918,7 +917,7 @@ function DashboardContent() {
                             <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{sc.title}</span>
                             <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 13, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>{copiedScript === sc.id ? "Copied!" : "Copy"}</button>
                           </div>
-                          <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: INTER }}>{sc.script}</pre>
+                          <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
                         </div>
                       )}
                     </div>
@@ -1012,7 +1011,7 @@ function DashboardContent() {
                     <div style={{ marginBottom: 16 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
                         <div style={{ flex: 1, height: 8, borderRadius: 4, backgroundColor: B.stone, position: "relative", overflow: "hidden" }}>
-                          <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: bc(dScore), width: `${dScore}%`, opacity: 0.3 }} />
+                          <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: bandColor(dScore), width: `${dScore}%`, opacity: 0.3 }} />
                           <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: sDelta >= 0 ? B.teal : B.red, width: `${sResult.overall_score}%`, transition: "width 400ms ease" }} />
                         </div>
                       </div>
@@ -1070,14 +1069,14 @@ function DashboardContent() {
                       <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
                         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
                         <div style={{ fontSize: 32, fontWeight: 300, color: B.navy }}>{dScore}</div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: bc(dScore), marginTop: 4 }}>{dBand}</div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(dScore), marginTop: 4 }}>{dBand}</div>
                       </div>
                       {savedScenarios.map((s, i) => (
                         <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
                           <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>×</button>
                           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
                           <div style={{ fontSize: 32, fontWeight: 300, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: bc(s.score), marginTop: 4 }}>{s.band}</div>
+                          <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(s.score), marginTop: 4 }}>{s.band}</div>
                           <div style={{ fontSize: 15, fontWeight: 600, color: s.lift >= 0 ? B.teal : B.red, marginTop: 8 }}>{s.lift > 0 ? "+" : ""}{s.lift}</div>
                           <div style={{ fontSize: 13, color: B.navy, marginTop: 4, fontWeight: 500 }}>{s.name}</div>
                         </div>

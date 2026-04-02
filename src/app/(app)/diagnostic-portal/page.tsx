@@ -6,20 +6,7 @@ import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
-
-/* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
-/* ------------------------------------------------------------------ */
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F7F6F3",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-};
+import { C, T, mono, sans, sp, padX, cardStyle, ctaButton, canHover, h2Style, body, bodySm } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -109,13 +96,15 @@ const labelStyle: React.CSSProperties = {
   display: "block",
   fontSize: 13,
   fontWeight: 600,
-  color: B.navy,
+  fontFamily: sans,
+  color: C.navy,
   marginBottom: 6,
 };
 
 const helperStyle: React.CSSProperties = {
   fontSize: 12,
-  color: B.light,
+  fontFamily: sans,
+  color: C.light,
   lineHeight: 1.5,
   marginBottom: 8,
 };
@@ -128,7 +117,8 @@ const inputBase: React.CSSProperties = {
   border: "1px solid rgba(14,26,43,0.12)",
   background: "#FFFFFF",
   fontSize: 14,
-  color: B.navy,
+  fontFamily: sans,
+  color: C.navy,
   outline: "none",
   boxSizing: "border-box",
   transition: "border-color 180ms ease",
@@ -158,7 +148,7 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
         gap: 14,
         padding: "14px 16px",
         borderRadius: 10,
-        border: `1px solid ${selected ? B.purple : "rgba(14,26,43,0.10)"}`,
+        border: `1px solid ${selected ? C.purple : "rgba(14,26,43,0.10)"}`,
         background: selected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
         cursor: "pointer",
         textAlign: "left",
@@ -168,14 +158,14 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
     >
       <div style={{
         width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
-        border: `2px solid ${selected ? B.purple : "rgba(14,26,43,0.20)"}`,
+        border: `2px solid ${selected ? C.purple : "rgba(14,26,43,0.20)"}`,
         display: "flex", alignItems: "center", justifyContent: "center",
       }}>
-        {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />}
+        {selected && <div style={{ width: 10, height: 10, borderRadius: "50%", background: C.purple }} />}
       </div>
       <div>
-        <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{label}</div>
-        <div style={{ fontSize: 12, color: B.light }}>{desc}</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{label}</div>
+        <div style={{ fontSize: 12, color: C.light }}>{desc}</div>
       </div>
     </button>
   );
@@ -338,11 +328,11 @@ export default function InitializationPage() {
   if (!authorized) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: 40, textAlign: "center" }}>
-        <h2 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 12 }}>Access Required</h2>
-        <p style={{ fontSize: 14, color: B.muted, marginBottom: 24, maxWidth: 400 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Access Required</h2>
+        <p style={{ fontSize: 14, color: C.muted, marginBottom: 24, maxWidth: 400 }}>
           Your session could not be verified. Please start from the pricing page.
         </p>
-        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#fff", backgroundColor: B.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
+        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, color: "#fff", backgroundColor: C.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
           View Plans
         </button>
       </div>
@@ -371,7 +361,7 @@ export default function InitializationPage() {
   };
 
   const focusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
-    e.currentTarget.style.borderColor = B.purple;
+    e.currentTarget.style.borderColor = C.purple;
   };
   const blurHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
     e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)";
@@ -506,7 +496,7 @@ export default function InitializationPage() {
               border: "1px solid rgba(14,26,43,0.08)",
               background: "rgba(14,26,43,0.03)",
             }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: B.purple, letterSpacing: "0.10em", textTransform: "uppercase" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.purple, letterSpacing: "0.10em", textTransform: "uppercase" }}>
                 Income Stability Score&#8482; &middot; Model RP-2.0
               </span>
             </div>
@@ -628,14 +618,14 @@ export default function InitializationPage() {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: B.sand,
+      background: C.sand,
       overflowY: "auto",
     }}>
       {/* Section transition overlay */}
       {transitioning && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
-          background: B.sand,
+          background: C.sand,
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
           animation: "portalCrossFade 800ms ease-in-out",
@@ -655,20 +645,20 @@ export default function InitializationPage() {
 
       {/* Top bar — institutional header */}
       <div style={{
-        background: B.navy, padding: "14px 24px",
+        background: C.navy, padding: "14px 24px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: B.teal }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(14,26,43,0.50)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
             Income Stability Diagnostic
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 11, color: "rgba(14,26,43,0.35)" }}>
+          <span style={{ fontSize: 11, color: C.sandLight }}>
             Assessing: {form.assessment_title || "—"}
           </span>
-          <span style={{ fontSize: 11, color: "rgba(14,26,43,0.20)" }}>Model RP-2.0</span>
+          <span style={{ fontSize: 11, color: C.sandLight }}>Model RP-2.0</span>
         </div>
       </div>
 
@@ -687,21 +677,21 @@ export default function InitializationPage() {
                 <div style={{
                   width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 11, fontWeight: 700,
-                  background: isComplete ? B.teal : isActive ? B.purple : "rgba(14,26,43,0.06)",
-                  color: isComplete || isActive ? "#FFFFFF" : B.light,
+                  fontSize: 11, fontWeight: 700, fontFamily: mono,
+                  background: isComplete ? C.teal : isActive ? C.purple : "rgba(14,26,43,0.06)",
+                  color: isComplete || isActive ? "#FFFFFF" : C.light,
                   transition: "all 300ms ease",
                 }}>
                   {isComplete ? "\u2713" : i + 1}
                 </div>
                 <span style={{
-                  fontSize: 12, fontWeight: isActive ? 600 : 400,
-                  color: isActive ? B.navy : isComplete ? B.teal : B.light,
+                  fontSize: 12, fontWeight: isActive ? 600 : 400, fontFamily: sans,
+                  color: isActive ? C.navy : isComplete ? C.teal : C.light,
                 }}>
                   {label}
                 </span>
                 {i < 2 && (
-                  <div style={{ flex: 1, height: 2, background: isComplete ? B.teal : "rgba(14,26,43,0.06)", borderRadius: 1, transition: "background 300ms ease" }} />
+                  <div style={{ flex: 1, height: 2, background: isComplete ? C.teal : "rgba(14,26,43,0.06)", borderRadius: 1, transition: "background 300ms ease" }} />
                 )}
               </div>
             );
@@ -717,13 +707,13 @@ export default function InitializationPage() {
         </div>
         {/* Step header */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: B.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: C.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
             Step {step} of 2
           </div>
-          <h1 style={{ fontSize: 26, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
             {stepTitles[step]}
           </h1>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6, maxWidth: 480 }}>
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, maxWidth: 480 }}>
             {stepDescriptions[step]}
           </p>
         </div>
@@ -738,7 +728,7 @@ export default function InitializationPage() {
               <select
                 value={form.industry_sector}
                 onChange={(e) => update("industry_sector", e.target.value)}
-                style={{ ...selectStyle, color: form.industry_sector ? B.navy : B.light }}
+                style={{ ...selectStyle, color: form.industry_sector ? C.navy : C.light }}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -756,7 +746,7 @@ export default function InitializationPage() {
               <select
                 value={form.operating_structure}
                 onChange={(e) => update("operating_structure", e.target.value)}
-                style={{ ...selectStyle, color: form.operating_structure ? B.navy : B.light }}
+                style={{ ...selectStyle, color: form.operating_structure ? C.navy : C.light }}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -774,7 +764,7 @@ export default function InitializationPage() {
               <select
                 value={form.primary_income_model}
                 onChange={(e) => update("primary_income_model", e.target.value)}
-                style={{ ...selectStyle, color: form.primary_income_model ? B.navy : B.light }}
+                style={{ ...selectStyle, color: form.primary_income_model ? C.navy : C.light }}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -792,7 +782,7 @@ export default function InitializationPage() {
               <select
                 value={form.years_in_structure}
                 onChange={(e) => update("years_in_structure", e.target.value)}
-                style={{ ...selectStyle, color: form.years_in_structure ? B.navy : B.light }}
+                style={{ ...selectStyle, color: form.years_in_structure ? C.navy : C.light }}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -810,7 +800,7 @@ export default function InitializationPage() {
           <button
             onClick={() => goToStep(step - 1)}
             style={{
-              height: 52, borderRadius: 12, background: "#FFFFFF", color: B.navy,
+              height: 52, borderRadius: 12, background: "#FFFFFF", color: C.navy,
               fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
               border: "1px solid rgba(14,26,43,0.12)", cursor: "pointer", padding: "0 24px",
               transition: "background 180ms ease",
@@ -825,8 +815,8 @@ export default function InitializationPage() {
               onClick={() => goToStep(step + 1)}
               style={{
                 flex: 1, height: 52, borderRadius: 12,
-                background: canContinueStep1 ? B.purple : "rgba(14,26,43,0.12)",
-                color: canContinueStep1 ? "#FFFFFF" : B.light,
+                background: canContinueStep1 ? C.purple : "rgba(14,26,43,0.12)",
+                color: canContinueStep1 ? "#FFFFFF" : C.light,
                 fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
                 cursor: canContinueStep1 ? "pointer" : "not-allowed",
                 boxShadow: canContinueStep1 ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
@@ -846,7 +836,7 @@ export default function InitializationPage() {
                 background: isValid
                   ? "linear-gradient(135deg, #4B3FAE 0%, #1F6D7A 100%)"
                   : "rgba(14,26,43,0.12)",
-                color: isValid ? "#FFFFFF" : B.light,
+                color: isValid ? "#FFFFFF" : C.light,
                 fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em", border: "none",
                 cursor: isValid ? "pointer" : "not-allowed",
                 boxShadow: isValid ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
@@ -861,7 +851,7 @@ export default function InitializationPage() {
 
         {/* Confidentiality notice */}
         <p style={{
-          fontSize: 11, color: B.light, textAlign: "center", marginTop: 24, lineHeight: 1.5,
+          fontSize: 11, color: C.light, textAlign: "center", marginTop: 24, lineHeight: 1.5,
         }}>
           All information is confidential and used only to generate your assessment. No financial data is collected.
         </p>

@@ -4,24 +4,10 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import { C, mono, sans } from "@/lib/design-tokens";
 // Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
 const loadV2Engine = () => import("@/lib/client-engine-v2");
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
-
-/* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
-/* ------------------------------------------------------------------ */
-
-const B = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F8F6F6",
-  sandDk: "#EDECEA",
-  muted: "#6B7280",
-  light: "#9CA3AF",
-  gradient: "linear-gradient(135deg, #0E1A2B 0%, #4B3FAE 50%, #1F6D7A 100%)",
-};
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -210,7 +196,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
             <span style={{
               fontSize: 11,
               fontWeight: isActive ? 600 : 400,
-              color: isActive ? "#4B3FAE" : isCompleted ? "#1F6D7A" : "rgba(14,26,43,0.25)",
+              color: isActive ? C.purple : isCompleted ? C.teal : "rgba(14,26,43,0.25)",
               letterSpacing: "0.01em",
             }}>
               {isCompleted ? "\u2713" : s.num} {s.label}
@@ -732,13 +718,13 @@ export default function DiagnosticPage() {
   /*  Score Reveal — the "aha" moment                                  */
   /* ================================================================ */
   if (showReveal) {
-    const revealColor = revealScore >= 75 ? "#1F6D7A" : revealScore >= 50 ? "#2B5EA7" : revealScore >= 30 ? "#92640A" : "#9B2C2C";
+    const revealColor = revealScore >= 75 ? C.bandHigh : revealScore >= 50 ? C.bandEstablished : revealScore >= 30 ? C.bandDeveloping : C.bandLimited;
     const nextBand = revealScore < 30 ? "Developing" : revealScore < 50 ? "Established" : revealScore < 75 ? "High" : null;
     const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
     const bandMessage = BAND_MESSAGES[revealBand] || "";
 
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <style>{`
           @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
         `}</style>
@@ -747,7 +733,7 @@ export default function DiagnosticPage() {
 
           {/* Score number — counts up with pulse on reveal */}
           <div style={{ marginBottom: 8, animation: revealPhase >= 1 ? "revealPulse 0.6s ease-out" : "none" }}>
-            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: "#0E1A2B", letterSpacing: "-0.05em", lineHeight: 1, fontFamily: "'Inter', system-ui, sans-serif" }}>0</span>
+            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: C.navy, letterSpacing: "-0.05em", lineHeight: 1, fontFamily: mono }}>0</span>
             <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(14,26,43,0.20)", marginLeft: 4 }}>/100</span>
           </div>
 
@@ -792,9 +778,9 @@ export default function DiagnosticPage() {
           <div style={{ opacity: revealPhase >= 3 ? 1 : 0, transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease" }}>
             <button
               onClick={() => router.push("/dashboard")}
-              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: "#0E1A2B", border: "none", color: "#F4F1EA", fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter', system-ui, sans-serif", transition: "background-color 200ms", boxShadow: "0 4px 20px rgba(14,26,43,0.15)" }}
+              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: C.navy, border: "none", color: C.sandText, fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: sans, transition: "background-color 200ms", boxShadow: "0 4px 20px rgba(14,26,43,0.15)" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#1a2540"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#0E1A2B"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = C.navy; }}
             >
               Enter Your Command Center →
             </button>
@@ -814,7 +800,7 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
         <style>{`
           @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }
         `}</style>
@@ -823,7 +809,7 @@ export default function DiagnosticPage() {
         <div style={{ maxWidth: 520, padding: "0 32px", textAlign: "center" }}>
           <div style={{ minHeight: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 500ms ease" }}>
-              <p style={{ fontSize: 22, fontWeight: 300, color: "#0E1A2B", lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
+              <p style={{ fontSize: 22, fontWeight: 300, color: C.navy, lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
                 &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
               </p>
               <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(75,63,174,0.45)" }}>
@@ -856,11 +842,11 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReview) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: "#F8F6F6", overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
+      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
       {showOverlay && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
-          background: "#FFFFFF",
+          background: C.white,
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
           animation: "diagFadeIn 300ms ease-out",
@@ -881,25 +867,25 @@ export default function DiagnosticPage() {
         </div>
       )}
       {/* Dark branded header */}
-      <div style={{ background: B.navy, padding: "20px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+      <div style={{ background: C.navy, padding: "20px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
           Income Stability Score&#8482; &middot; Model RP-2.0
         </div>
       </div>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
               Review Your Answers
             </div>
-            <span style={{ fontSize: 13, color: B.light, fontFeatureSettings: "'tnum'" }}>
+            <span style={{ fontSize: 13, color: C.light, fontFeatureSettings: "'tnum'" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
           </div>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
             Confirm before we generate your score
           </h2>
-          <p style={{ fontSize: 14, color: B.muted, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6 }}>
             Review each response. Tap any answer to change it.
           </p>
         </div>
@@ -919,7 +905,7 @@ export default function DiagnosticPage() {
                   padding: "18px 20px",
                   borderRadius: 12,
                   border: "1px solid rgba(14,26,43,0.06)",
-                  background: "#FFFFFF",
+                  background: C.white,
                   cursor: "pointer",
                   textAlign: "left",
                   width: "100%",
@@ -930,20 +916,20 @@ export default function DiagnosticPage() {
               >
                 <div style={{
                   width: 28, height: 28, borderRadius: "50%",
-                  background: "rgba(75,63,174,0.06)", color: B.purple,
+                  background: "rgba(75,63,174,0.06)", color: C.purple,
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: 13, fontWeight: 700, flexShrink: 0,
                 }}>{question.number}</div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 2 }}>
                     {question.title}
                   </div>
-                  <div style={{ fontSize: 13, color: B.muted }}>
+                  <div style={{ fontSize: 13, color: C.muted }}>
                     {selectedOption?.text || "Not answered"}
                   </div>
                 </div>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-                  <path d="M10.5 6.5L13 4L10 1L7.5 3.5M10.5 6.5L4.5 12.5H1V9.5L7.5 3.5M10.5 6.5L7.5 3.5" stroke={B.light} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10.5 6.5L13 4L10 1L7.5 3.5M10.5 6.5L4.5 12.5H1V9.5L7.5 3.5M10.5 6.5L7.5 3.5" stroke={C.light} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             );
@@ -953,7 +939,7 @@ export default function DiagnosticPage() {
         <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
           <button
             onClick={() => { setShowReview(false); setCurrentQuestion(5); }}
-            style={{ fontSize: 13, fontWeight: 500, color: B.muted, background: "none", border: "none", cursor: "pointer", padding: "8px 0" }}
+            style={{ fontSize: 13, fontWeight: 500, color: C.muted, background: "none", border: "none", cursor: "pointer", padding: "8px 0" }}
           >
             Back to questions
           </button>
@@ -963,8 +949,8 @@ export default function DiagnosticPage() {
             disabled={!allAnswered || submitting}
             style={{
               height: 48, paddingLeft: 28, paddingRight: 28, borderRadius: 12,
-              background: !allAnswered || submitting ? "rgba(14,26,43,0.08)" : B.purple,
-              color: !allAnswered || submitting ? B.light : "#FFFFFF",
+              background: !allAnswered || submitting ? "rgba(14,26,43,0.08)" : C.purple,
+              color: !allAnswered || submitting ? C.light : C.white,
               fontSize: 15, fontWeight: 600, border: "none",
               cursor: !allAnswered || submitting ? "not-allowed" : "pointer",
               boxShadow: allAnswered && !submitting ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
@@ -992,14 +978,14 @@ export default function DiagnosticPage() {
   return (
     <div ref={scrollRef} style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: "#F8F6F6",
+      background: C.sand,
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
     }}>
     {showOverlay && (
       <div style={{
         position: "fixed", inset: 0, zIndex: 10000,
-        background: "#FFFFFF",
+        background: C.white,
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         animation: "diagFadeIn 300ms ease-out",
@@ -1020,11 +1006,11 @@ export default function DiagnosticPage() {
       </div>
     )}
     {/* Dark branded header */}
-    <div style={{ background: B.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.45)" }}>
+    <div style={{ background: C.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
         Income Stability Score&#8482;
       </div>
-      <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.30)" }}>
+      <div style={{ fontSize: 13, fontWeight: 500, color: C.sandLight }}>
         Model RP-2.0
       </div>
     </div>
@@ -1045,19 +1031,19 @@ export default function DiagnosticPage() {
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
               Question {q.number} of 6
             </div>
-            <div style={{ fontSize: 13, color: B.light }}>
+            <div style={{ fontSize: 13, color: C.light }}>
               Based on your previous 12 months
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 13, color: B.light, fontFeatureSettings: "'tnum'" }}>
+            <span style={{ fontSize: 13, color: C.light, fontFeatureSettings: "'tnum'" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
             <span style={{ fontSize: 13, color: "rgba(14,26,43,0.10)" }}>|</span>
-            <span style={{ fontSize: 13, color: B.light }}></span>
+            <span style={{ fontSize: 13, color: C.light }}></span>
           </div>
         </div>
 
@@ -1075,7 +1061,7 @@ export default function DiagnosticPage() {
                 padding: 0,
                 cursor: answers[i] !== null ? "pointer" : "default",
                 background: answers[i] !== null
-                  ? B.purple
+                  ? C.purple
                   : i === currentQuestion
                     ? "rgba(75,63,174,0.35)"
                     : "rgba(14,26,43,0.08)",
@@ -1088,8 +1074,8 @@ export default function DiagnosticPage() {
         {/* Commitment escalation — halfway message */}
         {currentQuestion >= 3 && !allAnswered && (
           <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 5, height: 5, borderRadius: 99, background: B.teal }} />
-            <span style={{ fontSize: 13, fontWeight: 500, color: B.teal }}>
+            <div style={{ width: 5, height: 5, borderRadius: 99, background: C.teal }} />
+            <span style={{ fontSize: 13, fontWeight: 500, color: C.teal }}>
               {currentQuestion === 3 ? "Halfway there — your score is being calculated." : currentQuestion === 4 ? "Almost done — one factor remaining." : "All factors captured — ready to generate."}
             </span>
           </div>
@@ -1099,7 +1085,7 @@ export default function DiagnosticPage() {
       {/* Question card */}
       <div
         style={{
-          background: "#FFFFFF",
+          background: C.white,
           borderRadius: 16,
           border: "1px solid rgba(14,26,43,0.06)",
           padding: "32px 28px",
@@ -1112,26 +1098,26 @@ export default function DiagnosticPage() {
         }}
       >
         {/* Factor title */}
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: B.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
           {q.title}
         </h2>
 
         {/* Question prompt */}
-        <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.7, marginBottom: 8 }}>
+        <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 8 }}>
           {q.prompt}
         </p>
 
         {/* Examples */}
         {q.examples && (
           <div style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: B.light }}>Examples: </span>
-            <span style={{ fontSize: 13, color: B.light }}>{q.examples.join(", ")}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.light }}>Examples: </span>
+            <span style={{ fontSize: 13, color: C.light }}>{q.examples.join(", ")}</span>
           </div>
         )}
 
         {/* Note */}
         {q.note && (
-          <p style={{ fontSize: 13, color: B.light, fontStyle: "italic", marginBottom: 8 }}>
+          <p style={{ fontSize: 13, color: C.light, fontStyle: "italic", marginBottom: 8 }}>
             {q.note}
           </p>
         )}
@@ -1151,8 +1137,8 @@ export default function DiagnosticPage() {
                   gap: 16,
                   padding: "16px 20px",
                   borderRadius: 12,
-                  border: `1px solid ${isSelected ? B.purple : "rgba(14,26,43,0.08)"}`,
-                  background: isSelected ? "rgba(75,63,174,0.04)" : "#FFFFFF",
+                  border: `1px solid ${isSelected ? C.purple : "rgba(14,26,43,0.08)"}`,
+                  background: isSelected ? "rgba(75,63,174,0.04)" : C.white,
                   cursor: transitioning ? "default" : "pointer",
                   textAlign: "left",
                   transition: "border-color 160ms ease, background 160ms ease, transform 120ms ease",
@@ -1170,7 +1156,7 @@ export default function DiagnosticPage() {
                     width: 22,
                     height: 22,
                     borderRadius: "50%",
-                    border: `2px solid ${isSelected ? B.purple : "rgba(14,26,43,0.15)"}`,
+                    border: `2px solid ${isSelected ? C.purple : "rgba(14,26,43,0.15)"}`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -1179,19 +1165,19 @@ export default function DiagnosticPage() {
                   }}
                 >
                   {isSelected && (
-                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: B.purple }} />
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", background: C.purple }} />
                   )}
                 </div>
 
                 {/* Option text */}
-                <span style={{ fontSize: 15, fontWeight: isSelected ? 600 : 400, color: isSelected ? B.navy : B.muted, transition: "color 160ms ease" }}>
+                <span style={{ fontSize: 15, fontWeight: isSelected ? 600 : 400, color: isSelected ? C.navy : C.muted, transition: "color 160ms ease" }}>
                   {opt.text}
                 </span>
 
                 {/* Selected check */}
                 {isSelected && (
                   <svg style={{ marginLeft: "auto", flexShrink: 0 }} width="16" height="12" viewBox="0 0 16 12" fill="none">
-                    <path d="M1 6L5.5 10.5L15 1" stroke={B.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 6L5.5 10.5L15 1" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 )}
               </button>
@@ -1202,7 +1188,7 @@ export default function DiagnosticPage() {
         {/* Definition */}
         {q.definition && (
           <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.06)" }}>
-            <p style={{ fontSize: 13, color: B.light, lineHeight: 1.65 }}>
+            <p style={{ fontSize: 13, color: C.light, lineHeight: 1.65 }}>
               {q.definition}
             </p>
           </div>
@@ -1230,7 +1216,7 @@ export default function DiagnosticPage() {
           style={{
             fontSize: 13,
             fontWeight: 500,
-            color: B.muted,
+            color: C.muted,
             background: "none",
             border: "none",
             cursor: "pointer",
@@ -1251,8 +1237,8 @@ export default function DiagnosticPage() {
                 paddingLeft: 24,
                 paddingRight: 24,
                 borderRadius: 10,
-                background: selected === null ? "rgba(14,26,43,0.08)" : B.navy,
-                color: selected === null ? B.light : "#FFFFFF",
+                background: selected === null ? "rgba(14,26,43,0.08)" : C.navy,
+                color: selected === null ? C.light : C.white,
                 fontSize: 14,
                 fontWeight: 600,
                 border: "none",
@@ -1281,8 +1267,8 @@ export default function DiagnosticPage() {
                 paddingLeft: 28,
                 paddingRight: 28,
                 borderRadius: 12,
-                background: !allAnswered ? "rgba(14,26,43,0.08)" : B.purple,
-                color: !allAnswered ? B.light : "#FFFFFF",
+                background: !allAnswered ? "rgba(14,26,43,0.08)" : C.purple,
+                color: !allAnswered ? C.light : C.white,
                 fontSize: 15,
                 fontWeight: 600,
                 border: "none",
