@@ -127,7 +127,6 @@ export default function ComingSoonPage() {
       {/* ══ HERO — Full-screen dark, Apple keynote feel ══ */}
       <section ref={hero.ref} style={{ position: "relative", background: C.navy, minHeight: mobile ? "85vh" : "90vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         {/* Atmospheric glows */}
-        <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translate(-50%, -50%)", width: mobile ? 500 : 1000, height: mobile ? 500 : 1000, borderRadius: "50%", background: "radial-gradient(circle, rgba(75,63,174,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
 
         {/* Content */}

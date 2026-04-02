@@ -70,8 +70,7 @@ export default function BeginPage() {
           overflow: "auto",
         }}
       >
-        {/* Radial glow */}
-        <div style={{ position: "absolute", top: "30%", left: "50%", width: 800, height: 800, transform: "translate(-50%, -50%)", background: "radial-gradient(circle, rgba(75,63,174,0.20) 0%, transparent 70%)", pointerEvents: "none" }} />
+        {/* Radial glow removed */}
 
         <div
           style={{
