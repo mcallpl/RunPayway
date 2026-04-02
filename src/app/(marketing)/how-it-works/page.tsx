@@ -188,8 +188,8 @@ function Journey() {
                       <>
                         <div style={{ ...T.label, color: C.teal, marginBottom: 8 }}>Step <span style={{ fontFamily: mono }}>{step.num}</span></div>
                         <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>{step.title}</h3>
-                        <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
-                        <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                        <p style={{ ...bodySm(m), color: C.muted, marginBottom: 8 }}>{step.body}</p>
+                        <p style={{ ...T.meta, color: C.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                       </>
                     )}
                     {isRight && (
@@ -218,8 +218,8 @@ function Journey() {
                       <>
                         <div style={{ ...T.label, color: C.teal, marginBottom: 8 }}>Step <span style={{ fontFamily: mono }}>{step.num}</span></div>
                         <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>{step.title}</h3>
-                        <p style={{ fontSize: 16, color: B.muted, lineHeight: 1.65, marginBottom: 8 }}>{step.body}</p>
-                        <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                        <p style={{ ...bodySm(m), color: C.muted, marginBottom: 8 }}>{step.body}</p>
+                        <p style={{ ...T.meta, color: C.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                       </>
                     )}
                     {!isRight && (
@@ -249,7 +249,7 @@ function Journey() {
                       {step.screen}
                     </div>
                     <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, marginBottom: 6 }}>{step.body}</p>
-                    <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
+                    <p style={{ ...T.meta, color: C.teal, fontWeight: 500, margin: 0 }}>{step.detail}</p>
                   </>
                 )}
               </div>
