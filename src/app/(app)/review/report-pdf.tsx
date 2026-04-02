@@ -1,5 +1,5 @@
 /* ================================================================== */
-/*  report-pdf.tsx — Fixed 4-page print document (Cover + 3 pages)    */
+/*  report-pdf.tsx — Fixed 5-page print document (Cover + 4 pages)    */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
 /*  RunPayway(TM) Command Center · Income Stability Report · RP-2.0  */
 /* ================================================================== */
@@ -259,7 +259,7 @@ function footer(doc: jsPDF, section: string, page: number) {
   doc.line(ML, 740, ML + CW, 740);
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
   doc.text(S(`Confidential - ${section}`), ML, YF);
-  doc.text(`Page ${page} of 3`, CX, YF, { align: "center" });
+  doc.text(`Page ${page} of 4`, CX, YF, { align: "center" });
   doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
@@ -422,7 +422,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── FOOTER ──
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
-  doc.text("Model RP-2.0  -  3 Pages  -  Confidential", ML, YF);
+  doc.text("Model RP-2.0  -  4 Pages  -  Confidential", ML, YF);
   doc.text("support@runpayway.com", ML + CW, YF, { align: "right" });
 }
 
@@ -483,7 +483,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   doc.text("Income X-Ray  -  Scenario Lab  -  Action Plan  |  runpayway.com/dashboard", ML + 10, y + 36);
   y += 44;
 
-  footer(doc, "Key Findings", 1);
+  footer(doc, "Key Findings", 2);
 }
 
 /* ================================================================== */
@@ -562,7 +562,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     }
   }
 
-  footer(doc, "RunPayway(TM) Stability Plan", 2);
+  footer(doc, "RunPayway(TM) Stability Plan", 3);
 }
 
 /* ================================================================== */
@@ -677,7 +677,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
-  footer(doc, "Stress Testing & Command Center Access", 3);
+  footer(doc, "Stress Testing & Command Center Access", 4);
 }
 
 /* ================================================================== */
@@ -697,7 +697,7 @@ export async function generateReportPDF(data: ReportPDFData): Promise<Blob> {
 
   // HARD VERIFICATION
   const n = doc.getNumberOfPages();
-  if (n !== 4) throw new Error(`FATAL: PDF has ${n} pages, expected exactly 4`);
+  if (n !== 5) throw new Error(`FATAL: PDF has ${n} pages, expected exactly 5`);
 
   return doc.output("blob");
 }

@@ -165,16 +165,17 @@ function Process() {
     {
       num: "04",
       title: "Full diagnostic",
-      body: "The $69 report applies your operating structure, income model, and industry sector to produce a 3-page structural diagnosis. Includes PressureMap\u2122 intelligence, ranked risk scenarios, projected actions, and lifetime Command Center access.",
+      body: "The $69 report applies your operating structure, income model, and industry sector to produce a 4-page structural diagnosis. Includes PressureMap\u2122 intelligence, ranked risk scenarios, stress testing, projected actions, and lifetime Command Center access.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ fontSize: 10, fontFamily: mono, color: C.sandLight, marginBottom: 12, letterSpacing: "0.08em" }}>DIAGNOSTIC REPORT</div>
           {[
-            { num: "01", title: "Cover & Score", sub: "Score, band, constraint, stress test", color: C.purple },
-            { num: "02", title: "Key Findings", sub: "PressureMap\u2122, income structure, plain English interpretation", color: C.teal },
-            { num: "03", title: "What To Do Next", sub: "Actions ranked by impact, 30-day roadmap, Command Center", color: C.purple },
+            { num: "01", title: "Cover & Score", sub: "Score, band, constraint, access code", color: C.purple },
+            { num: "02", title: "Key Findings", sub: "PressureMap\u2122, income structure, plain English", color: C.teal },
+            { num: "03", title: "Stability Plan", sub: "Actions, roadmap, combined projection", color: C.purple },
+            { num: "04", title: "Stress Testing", sub: "Scenarios, fragility, Command Center access", color: C.teal },
           ].map((p, i) => (
-            <div key={p.num} style={{ display: "flex", gap: 8, padding: "8px 0", borderBottom: i < 2 ? `1px solid ${C.sandBorder}` : "none" }}>
+            <div key={p.num} style={{ display: "flex", gap: 8, padding: "8px 0", borderBottom: i < 3 ? `1px solid ${C.sandBorder}` : "none" }}>
               <span style={{ fontFamily: mono, fontSize: 11, fontWeight: 700, color: p.color, minWidth: 18, marginTop: 1 }}>{p.num}</span>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 600, color: C.sandText, marginBottom: 1 }}>{p.title}</div>

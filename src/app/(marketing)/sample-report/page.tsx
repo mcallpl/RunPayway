@@ -65,7 +65,7 @@ function Hero() {
             See exactly what the{!m && <br />} diagnostic report contains.
           </h1>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 500, margin: "0 auto" }}>
-            Three pages. Every section generated from your structural inputs. Here is the report for a score of <span style={{ fontFamily: mono, color: C.sandText }}>72</span>.
+            Four pages. Every section generated from your structural inputs. Here is the report for a score of <span style={{ fontFamily: mono, color: C.sandText }}>72</span>.
           </p>
         </div>
       </div>
@@ -173,7 +173,29 @@ function ReportPages() {
           </div>
         </div>
       ),
-      desc: "Highest-leverage actions ranked by projected score impact, combined improvement projection, 30-day execution roadmap, and Command Center access with PressureMap\u2122 and lifetime simulator.",
+      desc: "Highest-leverage actions ranked by projected score impact, combined improvement projection, 30-day execution roadmap, and what to avoid.",
+    },
+    {
+      num: "04", title: "Stress Testing", color: C.bandLimited,
+      screen: (
+        <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
+          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 8, textTransform: "uppercase" as const }}>Ranked by damage</div>
+          {[
+            { title: "Your largest client stops paying", score: "72 \u2192 44", color: C.bandLimited },
+            { title: "You cannot work for 90 days", score: "72 \u2192 52", color: C.bandEstablished },
+            { title: "Forward commitments delayed", score: "72 \u2192 61", color: C.bandEstablished },
+          ].map((s, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderLeft: `2px solid ${s.color}`, paddingLeft: 8, marginBottom: 3 }}>
+              <span style={{ fontSize: 11, fontWeight: 500, color: C.sandMuted }}>{s.title}</span>
+              <span style={{ fontSize: 11, fontWeight: 600, fontFamily: mono, color: C.sandLight, flexShrink: 0, marginLeft: 6 }}>{s.score}</span>
+            </div>
+          ))}
+          <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "6px 0" }} />
+          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 3, textTransform: "uppercase" as const }}>Command Center Access</div>
+          <div style={{ padding: "4px 8px", borderRadius: 4, backgroundColor: C.sandBorder, fontSize: 9, fontFamily: mono, color: C.sandMuted }}>Access code included on this page</div>
+        </div>
+      ),
+      desc: "Ranked disruption scenarios with exact score drops, fragility assessment, real-world impact projections, and your Command Center access code.",
     },
   ];
 
@@ -188,7 +210,7 @@ function ReportPages() {
             The report.
           </h2>
           <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
-            Three pages generated from your structural inputs. Every section is personalized to your operating context.
+            Four pages generated from your structural inputs. Every section is personalized to your operating context.
           </p>
         </div>
 

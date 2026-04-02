@@ -233,7 +233,7 @@ select, input[type="text"], input[type="email"] {
 }
 
 /* ============================================================
-   PRINT STYLES — Review page renders as 3-page PDF
+   PRINT STYLES — Review page renders as 4-page PDF
    ============================================================ */
 @media print {
   @page {

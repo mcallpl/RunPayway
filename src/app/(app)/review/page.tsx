@@ -298,7 +298,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
     <div className="report-page-footer" style={{ marginTop: "auto", paddingTop: 16, borderTop: "1px solid rgba(14,26,43,0.05)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
-        <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)", fontFamily: mono }}>Page {page} of 2</span>
+        <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)", fontFamily: mono }}>Page {page} of 3</span>
         <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)" }}>support@runpayway.com</span>
       </div>
     </div>
@@ -350,7 +350,7 @@ export default function ReviewPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [mobile, setMobile] = useState(false);
   const monitoringTracked = useRef(false);
-  const totalPages = 3; // cover + 2 pages
+  const totalPages = 4; // cover + 3 content pages
   const emailSent = useRef(false);
   const scoreAnimated = useRef(false);
   const pageContainerRef = useRef<HTMLDivElement>(null);
@@ -1023,7 +1023,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Key Findings", "What To Do Next"];
+  const pageNames = ["Cover", "Key Findings", "Stability Plan", "Stress Testing"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1287,7 +1287,80 @@ export default function ReviewPage() {
           </p>
         </div>
 
-        <PageFooter section="What To Do Next" page={2} />
+        <PageFooter section="Stability Plan" page={2} />
+    </>,
+
+    // Page 3: Stress Testing & Command Center Access
+    <>
+        <ReportHeader />
+        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Stress Testing</h1>
+        <p style={{ ...T.small, color: B.muted, marginBottom: 16, lineHeight: 1.5 }}>
+          How your score of <span style={{ fontFamily: mono }}>{score}</span> holds up under disruption.
+        </p>
+
+        {/* ── SCENARIOS ── */}
+        {v2Scenarios && v2Scenarios.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            {v2Scenarios.slice(0, 3).map((sc: { title: string; original_score: number; scenario_score: number; score_drop: number; narrative?: string; band_shift?: boolean; original_band?: string; scenario_band?: string }, idx: number) => {
+              const sBorders = [C.bandLimited, C.bandDeveloping, C.navy];
+              return (
+                <div key={idx} style={{ ...reportCardStyle, padding: "12px 18px", borderLeft: `3px solid ${sBorders[idx]}`, marginBottom: 8 }}>
+                  <div style={{ ...T.overline, color: sBorders[idx], marginBottom: 2 }}>SCENARIO {idx + 1}</div>
+                  <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 4 }}>{sc.title}</div>
+                  <div style={{ ...T.small, color: B.muted, marginBottom: 2 }}>
+                    Score drops by <span style={{ fontFamily: mono, fontWeight: 600 }}>{sc.score_drop}</span> points (<span style={{ fontFamily: mono }}>{sc.original_score} &rarr; {sc.scenario_score}</span>)
+                  </div>
+                  {sc.narrative && <p style={{ ...T.meta, color: B.teal, margin: "4px 0 0", lineHeight: 1.4 }}>{sc.narrative.length > 120 ? sc.narrative.substring(0, 120) + "..." : sc.narrative}</p>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ── FRAGILITY ── */}
+        {v2Fragility && (
+          <div style={{ ...reportCardStyle, padding: "12px 18px", marginBottom: 16 }}>
+            <div style={{ ...T.overline, color: B.muted, marginBottom: 4 }}>STRUCTURAL FRAGILITY</div>
+            <div style={{ ...T.sectionLabel, color: (v2Fragility as { fragility_class: string }).fragility_class === "brittle" || (v2Fragility as { fragility_class: string }).fragility_class === "thin" ? C.bandLimited : B.navy }}>
+              {((v2Fragility as { fragility_class: string }).fragility_class || "").replace(/^\w/, (c: string) => c.toUpperCase())}
+            </div>
+          </div>
+        )}
+
+        <SectionDivider />
+
+        {/* ── COMMAND CENTER ACCESS ── */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ ...T.overline, color: B.purple, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
+          <p style={{ ...T.small, color: B.navy, margin: "0 0 12px", lineHeight: 1.55 }}>
+            Open at <span style={{ fontWeight: 600 }}>runpayway.com/dashboard</span> using the access code on your cover page.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 12 }}>
+            {[
+              "PressureMap\u2122 structural intelligence",
+              "What-if simulator with lifetime access",
+              "12-week execution roadmap",
+              "Industry-specific benchmarks",
+            ].map(item => (
+              <div key={item} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
+                <span style={{ ...T.small, color: B.navy }}>{item}</span>
+              </div>
+            ))}
+          </div>
+          <div onClick={() => router.push("/dashboard")} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 8, border: `1px solid ${B.navy}`, color: B.navy, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            Open Command Center &rarr;
+          </div>
+        </div>
+
+        {/* ── METHODOLOGY ── */}
+        <div style={{ paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
+          <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
+            Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. Not financial advice.
+          </p>
+        </div>
+
+        <PageFooter section="Stress Testing" page={3} />
     </>,
 
   ];
