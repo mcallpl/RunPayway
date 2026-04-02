@@ -88,6 +88,7 @@ const C = {
 };
 
 const sp = (n: number) => n * 8;
+const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 
 /* Typography — Inter (locked system) */
 const T = {
@@ -668,6 +669,7 @@ function HeroSection() {
                         <span style={{ fontSize: 12, fontWeight: 500, color: C.muted }}>{dim.name}</span>
                         <span style={{
                           fontSize: 12, fontWeight: 600, color: C.purple, fontVariantNumeric: "tabular-nums",
+                          fontFamily: mono,
                           opacity: visible ? 1 : 0,
                           transition: `opacity 400ms ease-out ${800 + i * 150}ms`,
                         }}>{dim.value}</span>
@@ -689,6 +691,7 @@ function HeroSection() {
                 <div style={{ display: "flex", alignItems: "baseline", gap: sp(1.5), marginBottom: sp(1) }}>
                   <div style={{
                     fontSize: m ? 40 : 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums",
+                    fontFamily: mono,
                     opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
                   }} aria-label={`Score: ${animatedScore}`}>
                     {animatedScore}
@@ -835,9 +838,16 @@ function WhyThisDidntExist() {
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(4), ...fadeIn(visible) }}>
-          This is not a budgeting tool.<br />Not a credit score. Not a forecast.
-        </h2>
+        {/* Section marker */}
+        <div style={{ ...fadeIn(visible), marginBottom: sp(3) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
+        </div>
+
+        {/* Teal accent line */}
+        <div style={{ borderLeft: `2px solid ${C.teal}`, paddingLeft: m ? sp(3) : sp(4) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(4), ...fadeIn(visible) }}>
+            This is not a budgeting tool.<br />Not a credit score. Not a forecast.
+          </h2>
 
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), ...fadeIn(visible, 100) }}>
           Those measure what happened or guess what might. RunPayway&#8482; measures the structural integrity of how your income is built — right now.
@@ -854,10 +864,11 @@ function WhyThisDidntExist() {
         <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, lineHeight: 1.55, color: C.navy, marginBottom: sp(5), ...fadeIn(visible, 400) }}>
           We did.
         </p>
+        </div>{/* end accent line */}
 
         {/* Stability Gap data point */}
         <div style={{
-          borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(4),
+          borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(4), marginTop: sp(2),
           ...fadeIn(visible, 500),
         }}>
           <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, fontStyle: "italic" }}>
@@ -919,6 +930,9 @@ function HowItWorksSection() {
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
 
         {/* Header */}
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
+        </div>
         <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
           <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
             How It Works
@@ -1078,6 +1092,9 @@ function ScoreDetermination() {
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
 
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
+        </div>
         {/* Header */}
         <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3) }}>
@@ -1095,7 +1112,7 @@ function ScoreDetermination() {
           <div style={{ flex: 1, marginBottom: m ? sp(5) : 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
               <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Structure</span>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>60%</span>
+              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>60%</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income is built.</p>
             {[
@@ -1115,7 +1132,7 @@ function ScoreDetermination() {
           <div style={{ flex: 1 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
               <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Stability</span>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>40%</span>
+              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>40%</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income behaves under pressure.</p>
             {[
@@ -1150,7 +1167,7 @@ function ScoreDetermination() {
         {/* ── Standardized Output ── */}
         <div style={{ maxWidth: textMax, marginBottom: sp(6), paddingTop: sp(6), borderTop: `1px solid ${C.softBorder}`, ...fadeIn(visible, 400) }}>
           <div style={{ display: m ? "block" : "flex", alignItems: "baseline", gap: sp(2.5), marginBottom: sp(2) }}>
-            <span style={{ fontSize: 40, fontWeight: 600, color: C.purple, lineHeight: 1 }}>72</span>
+            <span style={{ fontSize: 40, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>72</span>
             <span style={{ fontSize: 18, fontWeight: 500, color: C.navy }}>Established Stability</span>
           </div>
           <p style={{ fontSize: 14, fontWeight: 400, color: C.muted, marginBottom: sp(3) }}>
@@ -1185,7 +1202,7 @@ function ScoreDetermination() {
           ].map(a => (
             <div key={a.archetype} style={{ display: "flex", justifyContent: "space-between", alignItems: m ? "flex-start" : "center", flexDirection: m ? "column" as const : "row" as const, gap: m ? 4 : 0, paddingTop: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
               <span style={{ fontSize: 16, fontWeight: 400, color: C.navy }}>{a.archetype}</span>
-              <span style={{ fontSize: 15, fontWeight: 500, color: C.purple, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{a.range}</span>
+              <span style={{ fontSize: 15, fontWeight: 500, color: C.purple, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap", fontFamily: mono }}>{a.range}</span>
             </div>
           ))}
           <p style={{ ...T.meta, color: C.muted, marginTop: sp(3), fontStyle: "italic" }}>
@@ -1217,6 +1234,33 @@ function ScoreDetermination() {
 
 
 /* ================================================================== */
+/* PULL QUOTE STRIP                                                    */
+/* ================================================================== */
+function PullQuoteStrip() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <div ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: m ? sp(8) : sp(12), paddingBottom: m ? sp(8) : sp(12),
+      paddingLeft: px(m), paddingRight: px(m),
+      textAlign: "center",
+    }}>
+      <p style={{
+        fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.25, letterSpacing: "-0.02em",
+        color: C.navy, maxWidth: 700, margin: "0 auto",
+        ...fadeIn(visible),
+      }}>
+        Two people earning the same amount<br />can have completely different structural stability.
+      </p>
+    </div>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 5 — SAME INCOME / DIFFERENT STABILITY                       */
 /* ================================================================== */
 function SameIncomeDifferentStability() {
@@ -1226,25 +1270,30 @@ function SameIncomeDifferentStability() {
 
   const listItem = (text: string) => (
     <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: 18 }}>
-      <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-      <span style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy }}>{text}</span>
+      <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "rgba(31,109,122,0.6)", flexShrink: 0, marginTop: 9 }} />
+      <span style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "rgba(244,241,234,0.75)" }}>{text}</span>
     </div>
   );
 
   return (
     <section ref={ref} aria-label="Same Income Different Stability" style={{
-      backgroundColor: C.sand,
+      backgroundColor: C.navy,
       paddingTop: m ? sp(10) : sp(19), paddingBottom: m ? sp(10) : sp(19),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
 
+        {/* Section marker */}
+        <div style={{ ...fadeIn(visible), marginBottom: sp(2) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: "rgba(244,241,234,0.20)", fontFamily: mono }}>05</span>
+        </div>
+
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: sp(7), ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(2.5) }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: "#F4F1EA", marginBottom: sp(2.5) }}>
             Same Income. Different Stability.
           </h2>
-          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.5, color: "#2C3A4B" }}>
+          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.5, color: "rgba(244,241,234,0.55)" }}>
             Same income does not mean equal stability.
           </p>
         </div>
@@ -1254,53 +1303,53 @@ function SameIncomeDifferentStability() {
 
           {/* Person A */}
           <div style={{
-            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
-            border: "1px solid rgba(14,26,43,0.08)",
+            backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, padding: m ? sp(4) : 44,
+            border: "1px solid rgba(255,255,255,0.08)",
             marginBottom: m ? sp(3) : 0,
           }}>
             <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
               Person A
             </p>
             <div style={{ marginBottom: sp(3.5) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$150,000</span>
-              <span style={{ fontSize: 18, fontWeight: 400, color: "#6A7280", marginLeft: sp(1) }}>/ year</span>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$150K</span>
+              <span style={{ fontSize: 18, fontWeight: 400, color: "rgba(244,241,234,0.35)", marginLeft: sp(1) }}>/ year</span>
             </div>
             {listItem("1 major client (80% of income)")}
             {listItem("No forward contracts")}
             {listItem("Income stops when work stops")}
 
-            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: `1px solid ${C.softBorder}` }}>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>31</span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: C.muted, marginLeft: sp(1.5) }}>Limited Stability</span>
+            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+              <span style={{ fontSize: 36, fontWeight: 600, color: "rgba(244,241,234,0.25)", lineHeight: 1, fontFamily: mono }}>31</span>
+              <span style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginLeft: sp(1.5) }}>Limited Stability</span>
             </div>
           </div>
 
           {/* Person B */}
           <div style={{
-            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
-            border: "1px solid rgba(14,26,43,0.08)",
+            backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, padding: m ? sp(4) : 44,
+            border: "1px solid rgba(255,255,255,0.08)",
           }}>
             <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
               Person B
             </p>
             <div style={{ marginBottom: sp(3.5) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1 }}>$150,000</span>
-              <span style={{ fontSize: 18, fontWeight: 400, color: "#6A7280", marginLeft: sp(1) }}>/ year</span>
+              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$150K</span>
+              <span style={{ fontSize: 18, fontWeight: 400, color: "rgba(244,241,234,0.35)", marginLeft: sp(1) }}>/ year</span>
             </div>
             {listItem("5 clients, none over 30%")}
             {listItem("40% recurring retainers")}
             {listItem("3 months of income secured ahead of time")}
 
-            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: `1px solid ${C.softBorder}` }}>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>74</span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: C.muted, marginLeft: sp(1.5) }}>Established Stability</span>
+            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>74</span>
+              <span style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.55)", marginLeft: sp(1.5) }}>Established Stability</span>
             </div>
           </div>
         </div>
 
         {/* Closing */}
         <p style={{
-          fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: C.navy,
+          fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: "#F4F1EA",
           textAlign: "center", marginTop: sp(7),
           ...fadeIn(visible, 350),
         }}>
@@ -1364,11 +1413,11 @@ function ProofSection() {
             }}>
               {/* Score change */}
               <div style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(3) }}>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1 }}>{t.before}</span>
+                <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1, fontFamily: mono }}>{t.before}</span>
                 <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
                   <path d="M2 6h16M14 2l4 4-4 4" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1 }}>{t.after}</span>
+                <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>{t.after}</span>
               </div>
 
               {/* Constraint */}
@@ -1417,7 +1466,7 @@ function WhatPeopleDoInstead() {
   return (
     <section ref={ref} aria-label="How people evaluate income stability today" style={{
       backgroundColor: C.white,
-      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingTop: m ? sp(8) : sp(12), paddingBottom: m ? sp(8) : sp(12),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
@@ -1697,69 +1746,74 @@ function FinalCta() {
 
   return (
     <section ref={ref} aria-label="Final Call to Action" style={{
-      backgroundColor: C.sand,
+      backgroundColor: C.navy,
       paddingTop: m ? sp(10) : sp(16), paddingBottom: m ? sp(10) : sp(16),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 700, margin: "0 auto" }}>
 
-        {/* Origin Story */}
-        <div style={{ marginBottom: m ? sp(8) : sp(10), ...fadeIn(visible) }}>
+        {/* Origin Story — with teal accent line */}
+        <div style={{
+          marginBottom: m ? sp(8) : sp(10),
+          borderLeft: `2px solid ${C.teal}`,
+          paddingLeft: m ? sp(3) : sp(4),
+          ...fadeIn(visible),
+        }}>
           <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Why We Built This</p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.65)", marginBottom: sp(3) }}>
             A consultant earning $200K lost 70% of her income in one quarter — not because she was bad at her job, but because two clients represented 85% of her revenue and both restructured the same month. No tool saw it coming because no tool was measuring it.
           </p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, lineHeight: 1.65, color: C.navy }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, lineHeight: 1.65, color: "#F4F1EA" }}>
             We built RunPayway&#8482; because the measurement should have existed long before the disruption did.
           </p>
         </div>
 
         {/* Confidence Block */}
         <div style={{
-          borderTop: `1px solid ${C.softBorder}`,
+          borderTop: "1px solid rgba(255,255,255,0.08)",
           paddingTop: m ? sp(8) : sp(10),
           textAlign: "center",
           ...fadeIn(visible, 200),
         }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(4) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.15, color: "#F4F1EA", marginBottom: sp(4) }}>
             Your income has a structure.{m ? " " : <br />}Now you can measure it.
           </h2>
 
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(2) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", marginBottom: sp(2) }}>
             We do not ask you to believe us. We ask you to run your inputs.
           </p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(5) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", marginBottom: sp(5) }}>
             The score either reflects your structure or it does not. You will know in under two minutes.
           </p>
 
           <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: 60, padding: "0 48px", borderRadius: 10,
-            backgroundColor: C.navy, color: C.white,
+            backgroundColor: C.white, color: C.navy,
             fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em",
             textDecoration: "none",
             transition: "background-color 200ms ease",
           }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
           >
             Start Free Assessment
           </Link>
 
-          <p style={{ ...T.meta, color: C.muted, marginTop: sp(2.5) }}>
+          <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5) }}>
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>
 
         {/* Enterprise Signal */}
         <div style={{
-          borderTop: `1px solid ${C.softBorder}`,
+          borderTop: "1px solid rgba(255,255,255,0.08)",
           marginTop: m ? sp(8) : sp(10),
           paddingTop: m ? sp(5) : sp(6),
           textAlign: "center",
           ...fadeIn(visible, 350),
         }}>
-          <p style={{ fontSize: m ? 15 : 16, fontWeight: 500, color: C.muted, marginBottom: sp(1.5) }}>
+          <p style={{ fontSize: m ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>
             Financial advisors, lenders, and workforce platforms are exploring RunPayway&#8482;&#8217;s structural scoring for their own workflows.
           </p>
           <Link href="/contact" style={{
@@ -1774,7 +1828,7 @@ function FinalCta() {
         </div>
 
         {/* Disclaimer */}
-        <p style={{ ...T.micro, color: C.light, textAlign: "center", maxWidth: 640, margin: `${sp(8)}px auto 0`, lineHeight: 1.6 }}>
+        <p style={{ ...T.micro, color: "rgba(244,241,234,0.25)", textAlign: "center", maxWidth: 640, margin: `${sp(8)}px auto 0`, lineHeight: 1.6 }}>
           The Income Stability Score&#8482; is a structural income assessment based on information provided by the user. It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
         </p>
       </div>
@@ -2023,6 +2077,7 @@ export default function LandingPage() {
         <ChallengeTheModel />
         <HowItWorksSection />
         <ScoreDetermination />
+        <PullQuoteStrip />
         <SameIncomeDifferentStability />
         <WhatPeopleDoInstead />
         <ProofSection />
