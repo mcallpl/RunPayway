@@ -256,6 +256,7 @@ export default function ContactPage() {
                 <option value="general">{t.contact.subjectGeneral}</option>
                 <option value="assessment">{t.contact.subjectAssessment}</option>
                 <option value="command_center">Command Center</option>
+                <option value="enterprise">Enterprise</option>
                 <option value="technical">{t.contact.subjectTechnical}</option>
                 <option value="partnership">{t.contact.subjectPartnership}</option>
                 <option value="other">{t.contact.subjectOther}</option>
