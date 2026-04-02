@@ -414,10 +414,9 @@ function ReportCovers() {
   const m = useMobile();
 
   const pages = [
-    { num: "01", title: "Your Score & Structural Diagnosis", desc: "Score, plain-English interpretation, biggest constraint, distance to next band, PressureMap intelligence.", color: C.purple },
-    { num: "02", title: "PressureMap & Income Structure", desc: "What pressures your structure, income breakdown, strongest and weakest factors, what\u2019s working and holding you back.", color: C.teal },
-    { num: "03", title: "Fragility & Pressure Test", desc: "Ranked disruption scenarios with exact score drops, absorbency summary, pattern to watch.", color: C.purple },
-    { num: "04", title: "Your Highest-Leverage Action Plan", desc: "Best changes ranked by impact, tradeoffs, 30-day roadmap, retake timing.", color: C.teal },
+    { num: "01", title: "Cover & Score", desc: "Your Income Stability Score, stability band, primary constraint, and distance to the next band.", color: C.purple },
+    { num: "02", title: "Key Findings", desc: "Plain-English interpretation, income structure breakdown, what\u2019s working, what\u2019s holding you back, and PressureMap intelligence.", color: C.teal },
+    { num: "03", title: "What To Do Next", desc: "Highest-leverage actions ranked by impact, projected score lift, 30-day roadmap, and Command Center access.", color: C.purple },
   ];
 
   return (
@@ -426,14 +425,14 @@ function ReportCovers() {
         <div style={{ textAlign: "center", marginBottom: m ? sp(4.5) : sp(6), opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>The Report</div>
           <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-            Five pages. Nothing withheld.
+            Three pages. Nothing withheld.
           </h2>
         </div>
 
         {pages.map((p, i) => (
           <div key={p.num} style={{
             display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0",
-            borderBottom: i < 4 ? `1px solid ${C.softBorder}` : "none",
+            borderBottom: i < 2 ? `1px solid ${C.softBorder}` : "none",
             opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
             transition: `opacity 500ms ease-out ${80 + i * 60}ms, transform 500ms ease-out ${80 + i * 60}ms`,
           }}>
