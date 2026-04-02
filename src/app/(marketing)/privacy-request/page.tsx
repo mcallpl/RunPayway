@@ -49,7 +49,7 @@ function useInView(threshold = 0) {
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const gradient = `linear-gradient(135deg, ${C.navy} 0%, ${C.purple} 50%, ${C.teal} 100%)`;
+const gradient = C.navy;
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */

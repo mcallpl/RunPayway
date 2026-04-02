@@ -35,7 +35,7 @@ function useMobile(bp = 768) {
 /*  Local constants (not in shared tokens)                             */
 /* ------------------------------------------------------------------ */
 
-const gradient = "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)";
+const gradient = C.navy;
 const borderMd = "rgba(14,26,43,0.12)";
 const bone = "#F7F6F3";
 const MAX = 1200;

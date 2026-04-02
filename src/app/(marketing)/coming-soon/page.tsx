@@ -38,7 +38,7 @@ function useMobile(breakpoint = 768) {
 /*  Design tokens                                                      */
 /* ------------------------------------------------------------------ */
 
-const gradient = "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)";
+const gradient = C.navy;
 
 /* ------------------------------------------------------------------ */
 /*  NotifyForm                                                         */

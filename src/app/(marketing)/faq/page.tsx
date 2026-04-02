@@ -51,7 +51,7 @@ function useInView(threshold = 0) {
 /*  Brand tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-const gradient = "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)";
+const gradient = C.navy;
 
 /* ------------------------------------------------------------------ */
 /*  FAQ data                                                           */

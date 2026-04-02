@@ -35,7 +35,7 @@ function useMobile(bp = 768) {
 /*  Tokens                                                             */
 /* ------------------------------------------------------------------ */
 
-const gradient = "linear-gradient(145deg, #0E1A2B 0%, #161430 35%, #3D2F9C 65%, #1F6D7A 100%)";
+const gradient = C.navy;
 const SY = { desktop: 120, mobile: 72 };
 const PAD = { desktop: 56, mobile: 24 };
 const MAX = 1100;

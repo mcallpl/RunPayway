@@ -39,7 +39,7 @@ function useMobile(bp = 768) {
 /* ------------------------------------------------------------------ */
 const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 const STRIPE_ANNUAL = "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
-const gradient = `linear-gradient(145deg, ${C.navy} 0%, #161430 35%, #3D2F9C 65%, ${C.teal} 100%)`;
+const gradient = C.navy;
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
