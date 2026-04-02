@@ -1170,13 +1170,13 @@ export default function ReviewPage() {
           </div>
         </div>
 
-        <PageFooter section="Key Findings &amp; Financial Landscape" page={1} />
+        <PageFooter section="Key Findings" page={1} />
     </>,
 
-    // Page 2: What To Do Next — brief summary + CTA to Command Center
+    // Page 2: Stability Plan — actions + roadmap + CTA to Command Center
     <>
         <ReportHeader />
-        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>What To Do Next</h1>
+        <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Stability Plan</h1>
         <p style={{ ...T.small, color: B.muted, marginBottom: 16, lineHeight: 1.5 }}>
           Based on your score of <span style={{ fontFamily: mono }}>{score}/100</span>, these are your highest-impact changes. Full action plan and scripts in your Command Center.
         </p>

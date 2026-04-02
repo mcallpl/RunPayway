@@ -436,7 +436,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
 
   // Page title
   sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
-  doc.text("Key Findings & Financial Landscape", ML, y);
+  doc.text("Key Findings", ML, y);
 
   y += 18;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
@@ -495,7 +495,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   let y = Y0;
 
   sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
-  doc.text("Your RunPayway(TM) Stability Plan", ML, y);
+  doc.text("Stability Plan", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
   doc.text("Take Action Now to Secure Your Future", ML, y);
@@ -574,7 +574,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   let y = Y0;
 
   sf(doc, "InterB"); doc.setFontSize(12.5); doc.setTextColor("#0E1A2B");
-  doc.text("Stress Testing + Real-World Impact", ML, y);
+  doc.text("Stress Testing", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
   doc.text("What happens when things go wrong - and how to prepare.", ML, y);

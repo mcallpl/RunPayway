@@ -142,7 +142,7 @@ function ReportPages() {
       desc: "Plain-English interpretation, key takeaway, income structure breakdown (active / semi-persistent / persistent), structural strengths and risks — all generated from your inputs.",
     },
     {
-      num: "03", title: "What To Do Next", color: C.purple,
+      num: "03", title: "Stability Plan", color: C.purple,
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {/* Action steps */}
