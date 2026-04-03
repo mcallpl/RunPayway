@@ -444,14 +444,6 @@ function HeroVideo() {
 /* ================================================================== */
 const HERO_INDUSTRIES = ["real estate agents", "consultants", "software contractors", "sales professionals", "business owners"];
 
-const HERO_DIMENSIONS = [
-  { name: "Recurrence", value: 65 },
-  { name: "Concentration", value: 40 },
-  { name: "Diversification", value: 70 },
-  { name: "Visibility", value: 55 },
-  { name: "Consistency", value: 80 },
-  { name: "Labor Indep.", value: 45 },
-];
 
 function HeroSection() {
   const { ref, visible } = useInView();
@@ -531,7 +523,7 @@ function HeroSection() {
               </p>
             </div>
 
-            {/* Right — Score decomposition card */}
+            {/* Right — Sample report card */}
             <div style={{
               flexShrink: 0,
               marginTop: m ? sp(6) : 0,
@@ -543,61 +535,68 @@ function HeroSection() {
                 maxWidth: m ? "100%" : 360,
                 margin: m ? "0 auto" : undefined,
               }}>
+                {/* Report header */}
                 <div style={{
-                  fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const,
-                  color: C.light, marginBottom: sp(3),
+                  fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+                  color: C.light, marginBottom: sp(1),
                 }}>
-                  Structural Measurement Preview
+                  Income Stability Report
+                </div>
+                <div style={{
+                  fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase" as const,
+                  color: C.teal, marginBottom: sp(3),
+                }}>
+                  Structural Assessment &#183; Confidential
                 </div>
 
-                {/* Dimension bars */}
-                <div style={{ marginBottom: sp(3) }}>
-                  {HERO_DIMENSIONS.map((dim, i) => (
-                    <div key={dim.name} style={{ marginBottom: sp(1.5) }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 12, fontWeight: 500, color: C.muted }}>{dim.name}</span>
-                        <span style={{
-                          fontSize: 12, fontWeight: 600, color: C.purple, fontVariantNumeric: "tabular-nums",
-                          fontFamily: mono,
-                          opacity: visible ? 1 : 0,
-                          transition: `opacity 400ms ease-out ${800 + i * 150}ms`,
-                        }}>{dim.value}</span>
-                      </div>
-                      <div style={{ height: 4, backgroundColor: C.border, borderRadius: 2, overflow: "hidden" }}>
-                        <div style={{
-                          height: "100%", backgroundColor: C.teal, borderRadius: 2,
-                          width: visible ? `${dim.value}%` : "0%",
-                          transition: `width 600ms ease-out ${200 + i * 150}ms`,
-                        }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: sp(2.5) }} />
-
-                {/* Score result */}
-                <div style={{ display: "flex", alignItems: "baseline", gap: sp(1.5), marginBottom: sp(1) }}>
+                {/* Score + band */}
+                <div style={{ textAlign: "center", marginBottom: sp(2) }}>
                   <div style={{
-                    fontSize: m ? 40 : 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums",
+                    fontSize: m ? 48 : 56, fontWeight: 300, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums",
                     fontFamily: mono,
                     opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
                   }} aria-label={`Score: ${animatedScore}`}>
                     {animatedScore}
                   </div>
                   <div style={{
-                    fontSize: 16, fontWeight: 500, color: C.navy,
-                    opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
-                  }}>
-                    Established Stability
-                  </div>
+                    fontFamily: mono, fontSize: 12, color: C.light, marginTop: 2,
+                    opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 50ms",
+                  }}>/ 100</div>
                 </div>
 
                 <div style={{
-                  ...T.meta, color: C.muted,
+                  display: "flex", justifyContent: "center", marginBottom: sp(2.5),
+                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
+                }}>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.08)" }}>
+                    <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#2B5EA7" }} />
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
+                  </div>
+                </div>
+
+                <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: sp(2) }} />
+
+                {/* Key finding */}
+                <div style={{
+                  padding: "8px 10px", borderRadius: 6, borderLeft: `2px solid ${C.purple}`,
+                  backgroundColor: "rgba(75,63,174,0.03)", marginBottom: sp(2),
                   opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms",
                 }}>
-                  Primary constraint: Income concentration
+                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.purple, marginBottom: 2, textTransform: "uppercase" as const }}>Key Takeaway</div>
+                  <div style={{ fontSize: 11, color: C.muted, lineHeight: 1.4 }}>Solid foundation — but income concentration is limiting the score. One client carries too much weight.</div>
+                </div>
+
+                {/* Report details */}
+                <div style={{ opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 300ms" }}>
+                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 4 }}>
+                    Primary constraint: <span style={{ fontWeight: 500, color: C.navy }}>Income concentration</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 4 }}>
+                    Distance to next band: <span style={{ fontFamily: mono, fontWeight: 500, color: C.teal }}>3 points</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: C.muted }}>
+                    Stress test: Largest source removed &#8594; <span style={{ fontWeight: 500, color: "#9B2C2C" }}>severe impact</span>
+                  </div>
                 </div>
               </div>
             </div>
