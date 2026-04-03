@@ -2,7 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { C, mono, sans } from "@/lib/design-tokens";
+import {
+  C, T, mono, sans, sp, maxW, secPad, px,
+  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
+} from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -16,262 +19,284 @@ function useInView(threshold = 0) {
     if (!el) return;
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
-    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return { ref, visible };
 }
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Design tokens                                                      */
-/* ------------------------------------------------------------------ */
+const fadeIn = (v: boolean, delay = 0) => ({
+  opacity: v ? 1 : 0,
+  transform: v ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+});
 
-const gradient = C.navy;
 
-/* ------------------------------------------------------------------ */
-/*  NotifyForm                                                         */
-/* ------------------------------------------------------------------ */
-
-function NotifyForm({ mobile }: { mobile: boolean }) {
-  const [email, setEmail] = useState("");
-  const [product, setProduct] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-    try {
-      const existing = JSON.parse(localStorage.getItem("rp_notify_signups") || "[]");
-      existing.push({ email, product, timestamp: new Date().toISOString() });
-      localStorage.setItem("rp_notify_signups", JSON.stringify(existing));
-    } catch { /* ignore */ }
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <div style={{ textAlign: "center", padding: 32 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginBottom: 8 }}>You are on the list.</div>
-        <p style={{ fontSize: 14, color: C.sandMuted, margin: 0 }}>
-          We will reach out to <strong style={{ color: C.sandText }}>{email}</strong> when it is ready.
-        </p>
-      </div>
-    );
-  }
+/* ================================================================== */
+/* HERO                                                                */
+/* ================================================================== */
+function Hero() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: mobile ? "column" : "row", gap: 12 }}>
-      <input
-        type="email" required placeholder="Your email" value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ flex: 1, height: 48, padding: "0 16px", borderRadius: 8, border: `1px solid ${C.sandBorder}`, background: "rgba(255,255,255,0.04)", color: C.sandText, fontSize: 15, outline: "none", boxSizing: "border-box" }}
-      />
-      <select
-        value={product} onChange={(e) => setProduct(e.target.value)}
-        style={{ height: 48, padding: "0 16px", borderRadius: 8, border: `1px solid ${C.sandBorder}`, background: "rgba(255,255,255,0.04)", color: product ? C.sandText : C.sandLight, fontSize: 14, outline: "none", appearance: "none", minWidth: mobile ? undefined : 200 }}
-      >
-        <option value="">I am interested in...</option>
-        <option value="Advisor License">Advisor / API License</option>
-        <option value="Enterprise">Enterprise Integration</option>
-        <option value="All">Everything</option>
-      </select>
-      <button type="submit" style={{ height: 48, padding: "0 28px", borderRadius: 8, background: `linear-gradient(135deg, ${C.sand} 0%, #E8E5DD 100%)`, color: C.navy, fontSize: 15, fontWeight: 600, border: "none", cursor: "pointer", whiteSpace: "nowrap", letterSpacing: "-0.01em" }}>
-        Notify Me
-      </button>
-    </form>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+            <span style={{ ...T.label, color: C.teal }}>New Releases</span>
+            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
+          </div>
+          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+            What we&#8217;ve shipped.{!m && <br />} What&#8217;s next.
+          </h1>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 520, margin: "0 auto" }}>
+            RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
 
-export default function ComingSoonPage() {
-  const hero = useInView();
-  const products = useInView();
-  const cta = useInView();
-  const mobile = useMobile();
-  const pad = mobile ? 28 : 56;
+/* ================================================================== */
+/* SHIPPED — What's live now                                           */
+/* ================================================================== */
+function Shipped() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
 
-  const upcoming = [
+  const releases = [
     {
-      label: "ADVISOR",
-      name: "Advisor & API License",
-      oneLiner: "Run assessments for your clients. At scale.",
-      details: ["Unlimited client assessments", "White-label report generation", "API access for platform integration", "Dedicated onboarding"],
-      color: C.teal,
+      version: "RP-1.0 \u2192 RP-2.0",
+      date: "Q1 2026",
+      title: "Model Migration — V1 Engine Retired",
+      status: "live",
+      items: [
+        "V1 scoring engine fully retired (\u22124,042 lines of legacy code)",
+        "All scoring now runs through a single V2 pipeline",
+        "V2-to-V1 adapter ensures backward compatibility for existing reports",
+        "29-assertion regression test suite validates determinism, edge cases, and cross-factor rules",
+        "One codebase, one scoring engine, one source of truth",
+      ],
     },
     {
-      label: "ENTERPRISE",
-      name: "Platform Integration",
-      oneLiner: "Embed the score directly into your product.",
-      details: ["Full API with webhooks", "Multi-tenant architecture", "Custom scoring parameters", "SLA-backed uptime"],
-      color: C.navy,
+      version: "RP-2.0",
+      date: "Q1 2026",
+      title: "Structural Stability Model RP-2.0",
+      status: "live",
+      items: [
+        "20-engine deterministic scoring pipeline",
+        "6 structural dimensions with cross-factor interaction rules",
+        "4-page diagnostic report with PressureMap\u2122 intelligence",
+        "Command Center with lifetime simulator access",
+        "19 industry-specific benchmarks and scenario presets",
+        "Outcome Layer (OL-1.0) with 12 income model families",
+        "SHA-256 integrity verification on every assessment",
+      ],
+    },
+    {
+      version: "OL-1.0",
+      date: "Q1 2026",
+      title: "Outcome Layer — Context Precision",
+      status: "live",
+      items: [
+        "Industry-specific scenario selection and action ordering",
+        "12 income model family profiles with tailored risk patterns",
+        "19 industry profiles with sector-specific stress scenarios",
+        "Explanation language precision by operating context",
+        "Benchmark framing by sector (peer percentile, top 20%)",
+      ],
+    },
+    {
+      version: "CC-1.0",
+      date: "Q1 2026",
+      title: "Command Center Launch",
+      status: "live",
+      items: [
+        "PressureMap\u2122 structural intelligence",
+        "What-if simulator with real-time score projection",
+        "12-week execution roadmap",
+        "Industry-specific benchmarks",
+        "Score sharing with QR verification",
+      ],
     },
   ];
 
   return (
-    <div style={{ fontFamily: sans }}>
-      {/* ══ HERO — Full-screen dark, Apple keynote feel ══ */}
-      <section ref={hero.ref} style={{ position: "relative", background: C.navy, minHeight: mobile ? "85vh" : "90vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        {/* Atmospheric glows */}
-        <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(31,109,122,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
-
-        {/* Content */}
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 720, margin: "0 auto", padding: `0 ${pad}px`, textAlign: "center" }}>
-          <div style={{
-            opacity: hero.visible ? 1 : 0,
-            transform: hero.visible ? "translateY(0)" : "translateY(30px)",
-            transition: "opacity 1s ease-out, transform 1s ease-out",
-          }}>
-            <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 32 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandLight }}>What&#8217;s Next</span>
-            </div>
-
-            <h1 style={{ fontSize: mobile ? 36 : 64, fontFamily: sans, fontWeight: 600, color: C.sandText, lineHeight: 1.06, letterSpacing: "-0.03em", marginBottom: 24 }}>
-              The score was<br />just the beginning.
-            </h1>
-
-            <p style={{ fontSize: mobile ? 16 : 19, color: C.sandLight, lineHeight: 1.6, maxWidth: 480, margin: "0 auto 48px" }}>
-              Advisor tools. Enterprise integration. We are building the infrastructure for income stability.
-            </p>
-
-            {/* Scroll indicator */}
-            <div style={{ opacity: hero.visible ? 1 : 0, transition: "opacity 1.5s ease-out 800ms" }}>
-              <div style={{ width: 1, height: 48, background: `linear-gradient(180deg, ${C.sandLight} 0%, transparent 100%)`, margin: "0 auto" }} />
-            </div>
-          </div>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
         </div>
-      </section>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            Shipped.
+          </h2>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 480 }}>
+            Everything currently live in production.
+          </p>
+        </div>
 
-      {/* ══ PRODUCTS — Minimal, one at a time ══ */}
-      <section ref={products.ref} style={{ background: C.sand, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          {upcoming.map((p, i) => (
-            <div
-              key={p.name}
-              style={{
-                display: mobile ? "block" : "flex",
-                gap: 48,
-                alignItems: "flex-start",
-                paddingTop: i === 0 ? 0 : mobile ? 48 : 64,
-                paddingBottom: i === upcoming.length - 1 ? 0 : mobile ? 48 : 64,
-                borderBottom: i < upcoming.length - 1 ? `1px solid ${C.border}` : "none",
-                opacity: products.visible ? 1 : 0,
-                transform: products.visible ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 600ms ease-out ${200 + i * 150}ms, transform 600ms ease-out ${200 + i * 150}ms`,
-              }}
-            >
-              {/* Left: name + description */}
-              <div style={{ flex: 3, marginBottom: mobile ? 24 : 0 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: p.color, marginBottom: 12 }}>{p.label}</div>
-                <h3 style={{ fontSize: mobile ? 24 : 30, fontFamily: sans, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>{p.name}</h3>
-                <p style={{ fontSize: 16, color: C.muted, lineHeight: 1.6, margin: 0 }}>{p.oneLiner}</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: m ? 16 : 20 }}>
+          {releases.map((r, i) => (
+            <div key={r.version} style={{
+              ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 12,
+              ...fadeIn(visible, 100 + i * 80),
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, flexWrap: "wrap" as const }}>
+                <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: C.purple }}>{r.version}</span>
+                <span style={{ fontSize: 12, color: C.light }}>{r.date}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, backgroundColor: "rgba(31,109,122,0.08)", padding: "3px 10px", borderRadius: 100 }}>Live</span>
               </div>
-
-              {/* Right: feature list */}
-              <div style={{ flex: 2 }}>
-                {p.details.map((d) => (
-                  <div key={d} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: p.color, flexShrink: 0, marginTop: 8 }} />
-                    <span style={{ fontSize: 14, color: C.muted, lineHeight: 1.55 }}>{d}</span>
+              <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 12 }}>{r.title}</h3>
+              <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 6 }}>
+                {r.items.map(item => (
+                  <div key={item} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                    <span style={{ fontSize: 14, color: C.muted, lineHeight: 1.5 }}>{item}</span>
                   </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ══ LANGUAGE LAUNCH TIMELINE ══ */}
-      <section style={{ background: C.white, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
-        <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: mobile ? 40 : 56 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>Global Rollout</div>
-            <h2 style={{ fontSize: mobile ? 26 : 38, fontFamily: sans, fontWeight: 600, color: C.navy, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}>
-              Language launch timeline
-            </h2>
-            <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
-              The full assessment, report, and simulator — localized for each market.
-            </p>
-          </div>
 
-          {[
-            { flag: "\uD83C\uDDFA\uD83C\uDDF8", language: "English", market: "United States", date: "Live now", color: C.teal, live: true },
-            { flag: "\uD83C\uDDEA\uD83C\uDDF8", language: "Espa\u00f1ol", market: "Spain & Latin America", date: "Q3 2026", color: C.purple, live: false },
-            { flag: "\uD83C\uDDE7\uD83C\uDDF7", language: "Portugu\u00eas", market: "Brazil", date: "Q4 2026", color: C.purple, live: false },
-            { flag: "\uD83C\uDDEE\uD83C\uDDF3", language: "\u0939\u093F\u0928\u094D\u0926\u0940", market: "India", date: "Q4 2026", color: C.purple, live: false },
-          ].map((lang, i) => (
-            <div
-              key={lang.language}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: mobile ? 16 : 24,
-                padding: mobile ? "20px 16px" : "24px 28px",
-                borderRadius: 12,
-                backgroundColor: lang.live ? "rgba(31,109,122,0.04)" : C.sand,
-                border: lang.live ? "1px solid rgba(31,109,122,0.15)" : `1px solid ${C.border}`,
-                marginBottom: i < 3 ? 12 : 0,
-              }}
-            >
-              {/* Flag */}
-              <span style={{ fontSize: mobile ? 28 : 36, lineHeight: 1, flexShrink: 0 }}>{lang.flag}</span>
+/* ================================================================== */
+/* ROADMAP — What's coming                                             */
+/* ================================================================== */
+function Roadmap() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
 
-              {/* Language + market */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy, lineHeight: 1.3 }}>{lang.language}</div>
-                <div style={{ fontSize: 13, color: C.muted, marginTop: 2 }}>{lang.market}</div>
+  const upcoming = [
+    {
+      timeline: "Q3 2026",
+      title: "Espa\u00f1ol Language Support",
+      desc: "Full assessment, report, and simulator localized for Spanish-speaking markets.",
+      status: "in development",
+    },
+    {
+      timeline: "Q3 2026",
+      title: "Longitudinal Tracking",
+      desc: "Score comparison between assessments. See how your structure has changed over time with factor-level deltas.",
+      status: "in development",
+    },
+    {
+      timeline: "Q4 2026",
+      title: "Portugu\u00eas & \u0939\u093F\u0928\u094D\u0926\u0940 Language Support",
+      desc: "Full localization for Brazil and India markets.",
+      status: "planned",
+    },
+    {
+      timeline: "2026",
+      title: "Enterprise API & Advisor License",
+      desc: "Programmatic access to the scoring engine for financial advisors, lenders, and workforce platforms. White-label reporting available.",
+      status: "planned",
+    },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            Roadmap.
+          </h2>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 480 }}>
+            What we&#8217;re building next. Timelines are targets, not promises.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {upcoming.map((item, i) => (
+            <div key={item.title} style={{
+              padding: m ? "20px 0" : "24px 0",
+              borderBottom: i < upcoming.length - 1 ? `1px solid ${C.softBorder}` : "none",
+              ...fadeIn(visible, 100 + i * 80),
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
+                <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.purple }}>{item.timeline}</span>
+                <span style={{
+                  fontSize: 11, fontWeight: 600,
+                  color: item.status === "in development" ? C.amber : C.light,
+                  backgroundColor: item.status === "in development" ? "rgba(196,154,108,0.10)" : C.sand,
+                  padding: "3px 10px", borderRadius: 100,
+                }}>
+                  {item.status === "in development" ? "In Development" : "Planned"}
+                </span>
               </div>
-
-              {/* Date badge */}
-              <div style={{
-                fontSize: 12, fontWeight: 700, letterSpacing: "0.04em",
-                color: lang.live ? C.teal : C.purple,
-                backgroundColor: lang.live ? "rgba(31,109,122,0.10)" : "rgba(75,63,174,0.08)",
-                borderRadius: 20, padding: "6px 14px", whiteSpace: "nowrap" as const, flexShrink: 0,
-              }}>
-                {lang.date}
-              </div>
+              <h3 style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</h3>
+              <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{item.desc}</p>
             </div>
           ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ══ NOTIFY — Dark, singular, confident ══ */}
-      <section style={{ background: gradient, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: pad, paddingRight: pad }}>
-        <div ref={cta.ref} style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", opacity: cta.visible ? 1 : 0, transform: cta.visible ? "translateY(0)" : "translateY(20px)", transition: "opacity 700ms ease-out, transform 700ms ease-out" }}>
-          <h2 style={{ fontSize: mobile ? 28 : 42, fontFamily: sans, fontWeight: 600, color: C.sandText, letterSpacing: "-0.025em", lineHeight: 1.08, marginBottom: 16 }}>
-            Be first to know.
+
+/* ================================================================== */
+/* CTA                                                                 */
+/* ================================================================== */
+function Cta() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
+            Your income has a structure.{!m && <br />} Now you can measure it.
           </h2>
-          <p style={{ fontSize: mobile ? 15 : 16, color: C.sandLight, lineHeight: 1.6, maxWidth: 420, margin: "0 auto 40px" }}>
-            Leave your email. We will reach out when your product is ready. No spam. No newsletters. Just the launch.
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
+            The free score shows where you stand. The full diagnostic shows what to do about it.
           </p>
-          <NotifyForm mobile={mobile} />
-        </div>
-      </section>
-
-      {/* ══ AVAILABLE NOW — Bridge to action ══ */}
-      <section style={{ background: C.sand, paddingTop: mobile ? 48 : 64, paddingBottom: mobile ? 48 : 64, paddingLeft: pad, paddingRight: pad, borderTop: `1px solid ${C.border}` }}>
-        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: 14, color: C.light, marginBottom: 16 }}>The Income Stability Score&#8482; is available right now.</p>
-          <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: C.purple, textDecoration: "underline", textUnderlineOffset: 4 }}>
-            Get your free score &#8594;
+          <Link href="/pricing" style={{
+            ...ctaButtonLight,
+            height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+            backgroundColor: C.white, color: C.navy,
+          }}>
+            Start Your Assessment
           </Link>
+          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
+            Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* EXPORT                                                              */
+/* ================================================================== */
+export default function NewReleasesPage() {
+  return (
+    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
+      <Hero />
+      <Shipped />
+      <Roadmap />
+      <Cta />
     </div>
   );
 }

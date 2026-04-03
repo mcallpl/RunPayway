@@ -761,6 +761,7 @@ export default function MarketingLayout({
                 {[
                   { href: "/about", label: t.nav.about },
                   { href: "/faq", label: t.nav.faq },
+                  { href: "/coming-soon", label: "New Releases" },
                   { href: "/contact", label: t.nav.contact },
                 ].map((link) => (
                   <Link
