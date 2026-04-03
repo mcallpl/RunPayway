@@ -760,6 +760,7 @@ export default function MarketingLayout({
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/about", label: t.nav.about },
+                  { href: "/faq", label: t.nav.faq },
                   { href: "/contact", label: t.nav.contact },
                 ].map((link) => (
                   <Link
