@@ -116,6 +116,19 @@ function Shipped() {
         "Score sharing with QR verification",
       ],
     },
+    {
+      version: "SM-1.0",
+      date: "Q2 2026",
+      title: "Stability Monitoring — Longitudinal Tracking",
+      status: "live",
+      items: [
+        "Score History Timeline — visual progression across assessments",
+        "Factor-level delta tracking between first and latest assessment",
+        "Benchmark evolution — peer percentile movement over time",
+        "Score delta summary with total change calculation",
+        "Email + PIN authentication for Monitoring Portal",
+      ],
+    },
   ];
 
   return (
@@ -174,12 +187,6 @@ function Roadmap() {
       timeline: "Q3 2026",
       title: "Espa\u00f1ol Language Support",
       desc: "Full assessment, report, and simulator localized for Spanish-speaking markets.",
-      status: "in development",
-    },
-    {
-      timeline: "Q3 2026",
-      title: "Longitudinal Tracking",
-      desc: "Score comparison between assessments. See how your structure has changed over time with factor-level deltas.",
       status: "in development",
     },
     {
