@@ -102,85 +102,41 @@ function WhatIsISS() {
 
 
 /* ================================================================== */
-/* 3. THE DIMENSIONS                                                   */
+/* 3. WHO IT'S FOR                                                     */
 /* ================================================================== */
-function Dimensions() {
+function WhoItsFor() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
-  const dims = [
-    { title: "Recurrence", desc: "Income that continues from existing agreements without new acquisition.", weight: "15", block: "Structure" },
-    { title: "Concentration", desc: "Reliance on any single source. Measures what percentage flows through the largest client.", weight: "10", block: "Structure" },
-    { title: "Diversification", desc: "Number of independent income streams each contributing meaningful revenue.", weight: "10", block: "Structure" },
-    { title: "Forward Visibility", desc: "Income secured ahead of time under signed or enforceable agreements.", weight: "15", block: "Structure" },
-    { title: "Earnings Consistency", desc: "Variation in monthly earnings over the prior 12 months.", weight: "10", block: "Stability" },
-    { title: "Labor Independence", desc: "Income that continues without active work through a 90-day interruption.", weight: "20", block: "Stability" },
+  const bullets = [
+    "Independent contractors and freelancers",
+    "Commission-based professionals",
+    "Small business owners",
+    "Consultants and advisors",
+    "Anyone with multiple income sources",
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
           <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
         </div>
-        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-            What the model measures.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
-            Six fixed dimensions. Structure block (<span style={{ fontFamily: mono }}>60%</span>) plus Stability block (<span style={{ fontFamily: mono }}>40%</span>).
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16 }}>
-          {dims.map((dim, i) => (
-            <div key={dim.title} style={{
-              ...cardStyle, padding: m ? "20px 18px" : "24px 24px", borderRadius: 12,
-              ...fadeIn(visible, 100 + i * 60),
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <span style={{ fontSize: m ? 17 : 18, fontWeight: 600, color: C.navy, borderBottom: `1.5px dotted ${C.teal}`, paddingBottom: 1 }}>{dim.title}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 11, color: C.light }}>{dim.block}</span>
-                  <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.purple }}>{dim.weight}pts</span>
-                </div>
-              </div>
-              <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{dim.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* 4. HOW IT WORKS                                                     */
-/* ================================================================== */
-function HowItWorks() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
-        </div>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            How the score is calculated.
+            Who it&#8217;s for.
           </h2>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            Model RP-2.0 is entirely deterministic. No probabilistic modeling, no adaptive learning, no human judgment in the scoring process. The same inputs always produce the same score.
+          <p style={{ ...body(m), color: C.muted, marginBottom: 28 }}>
+            Anyone whose income does not arrive in a fixed paycheck. Business owners, self-employed professionals, consultants, contractors, agents, and anyone with variable or multi-source income.
           </p>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            The model evaluates income across six fixed structural dimensions using versioned scoring definitions and cross-factor interaction rules. Each dimension contributes to the final <span style={{ fontFamily: mono }}>0</span>&ndash;<span style={{ fontFamily: mono }}>100</span> score, which maps to one of four stability bands: Limited, Developing, Established, or High.
-          </p>
-          <p style={{ ...body(m), color: C.muted }}>
-            The result is a 4-page diagnostic report that explains your score, translates what it means, identifies the specific changes that would raise it, stress-tests your structure under disruption scenarios, and provides Command Center access with a lifetime simulator.
-          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {bullets.map((b, i) => (
+              <div key={b} style={{ display: "flex", alignItems: "center", gap: 12, ...fadeIn(visible, 100 + i * 60) }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ ...body(m), color: C.muted, margin: 0 }}>{b}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -189,7 +145,7 @@ function HowItWorks() {
 
 
 /* ================================================================== */
-/* 5. GOVERNANCE                                                       */
+/* 4. GOVERNANCE                                                       */
 /* ================================================================== */
 function Governance() {
   const { ref, visible } = useInView();

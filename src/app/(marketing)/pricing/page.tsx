@@ -305,34 +305,70 @@ function OutcomeProof() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
+  const outcomes = [
+    {
+      before: 34, after: 61,
+      constraint: "80% client concentration",
+      action: "Restructured to 4 clients, none above 35%. Added 2 retainer agreements.",
+      name: "Sarah M.", role: "Real Estate Agent",
+    },
+    {
+      before: 28, after: 52,
+      constraint: "Zero recurring income",
+      action: "Converted 3 project clients to monthly retainers. Shifted 40% of revenue to recurring.",
+      name: "James R.", role: "Software Contractor",
+    },
+    {
+      before: 42, after: 67,
+      constraint: "No forward visibility",
+      action: "Secured 3-month contracts for top 2 clients. Extended engagement terms from monthly to quarterly.",
+      name: "Priya K.", role: "Management Consultant",
+    },
+  ];
+
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? sp(8) : sp(12), paddingBottom: m ? sp(8) : sp(12), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 640, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{
-          ...cardStyle, padding: m ? sp(4) : sp(5), borderRadius: 12,
-          display: "flex", flexDirection: m ? "column" : "row" as const, gap: m ? 16 : 24, alignItems: "center",
-        }}>
-          {/* Score change */}
-          <div style={{ display: "flex", alignItems: "center", gap: sp(1.5), flexShrink: 0 }}>
-            <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1, fontFamily: mono }}>34</span>
-            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
-              <path d="M2 6h16M14 2l4 4-4 4" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>61</span>
-          </div>
-          {/* Story */}
-          <div>
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginBottom: 4 }}>
-              Constraint: 80% client concentration
-            </p>
-            <p style={{ fontSize: 15, color: C.navy, lineHeight: 1.6, marginBottom: 8 }}>
-              Restructured to 4 clients, none above 35%. Added 2 retainer agreements.
-            </p>
-            <div>
-              <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Sarah M.</span>
-              <span style={{ ...T.micro, color: C.muted, marginLeft: 8 }}>Real Estate Agent</span>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2) }}>What changed after they measured</h2>
+          <p style={{ ...body(m), color: C.muted }}>
+            The score reveals the weakness. The action changes the outcome.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(3.5) }}>
+          {outcomes.map((t, i) => (
+            <div key={t.name} style={{
+              ...cardStyle,
+              padding: m ? sp(4) : sp(5),
+              ...fadeIn(visible, 150 + i * 100),
+            }}>
+              {/* Score change */}
+              <div style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(3) }}>
+                <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1, fontFamily: mono }}>{t.before}</span>
+                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
+                  <path d="M2 6h16M14 2l4 4-4 4" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>{t.after}</span>
+              </div>
+
+              {/* Constraint */}
+              <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginBottom: sp(2) }}>
+                Constraint: {t.constraint}
+              </p>
+
+              {/* Action taken */}
+              <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(3) }}>
+                {t.action}
+              </p>
+
+              {/* Attribution */}
+              <div style={{ paddingTop: sp(2.5), borderTop: `1px solid ${C.softBorder}` }}>
+                <div style={{ fontSize: 16, fontWeight: 500, color: C.navy, marginBottom: 2 }}>{t.name}</div>
+                <div style={{ ...T.micro, color: C.muted }}>{t.role}</div>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
