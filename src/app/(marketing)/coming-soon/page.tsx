@@ -264,12 +264,12 @@ function Cta() {
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
             The free score shows where you stand. The full diagnostic shows what to do about it.
           </p>
-          <Link href="/pricing" style={{
+          <Link href="/begin" style={{
             ...ctaButtonLight,
             height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
             backgroundColor: C.white, color: C.navy,
           }}>
-            Start Your Assessment
+            Start Your Free Assessment
           </Link>
           <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
             Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report

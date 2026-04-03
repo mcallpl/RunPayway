@@ -291,7 +291,7 @@ export default function MarketingLayout({
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
-    { href: "#footer", label: "More Links" },
+    { href: "/coming-soon", label: "New Releases" },
   ];
 
   useEffect(() => {
@@ -481,7 +481,7 @@ export default function MarketingLayout({
                 </Link>
                 <LanguageSelector mobile={false} />
                 <Link
-                  href="/pricing"
+                  href="/begin"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
                     height: 42,
@@ -653,7 +653,7 @@ export default function MarketingLayout({
             </nav>
             <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
               <Link
-                href="/pricing"
+                href="/begin"
                 onClick={() => setMenuOpen(false)}
                 className="cta-tick"
                 style={{

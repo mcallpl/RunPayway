@@ -363,7 +363,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
               </Link>
 
               <Link
-                href="/pricing"
+                href="/begin"
                 onClick={() => setSelected(null)}
                 style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
