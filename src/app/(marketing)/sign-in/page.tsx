@@ -4,7 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSessionByEmail, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
-import { C, mono, sans, canHover } from "@/lib/design-tokens";
+import {
+  C, T, mono, sans, sp, maxW, secPad, px,
+  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
+  canHover,
+} from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -30,14 +34,11 @@ function useMobile(bp = 768) {
   return m;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Tokens                                                             */
-/* ------------------------------------------------------------------ */
-
-const gradient = C.navy;
-const SY = { desktop: 120, mobile: 72 };
-const PAD = { desktop: 56, mobile: 24 };
-const MAX = 1100;
+const fadeIn = (v: boolean, delay = 0) => ({
+  opacity: v ? 1 : 0,
+  transform: v ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+});
 
 /* ================================================================== */
 /* PAGE                                                                */
@@ -81,21 +82,24 @@ export default function SignInPage() {
   };
 
   return (
-    <div style={{ fontFamily: sans }}>
+    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       {/* ══ HERO ══ */}
-      <section ref={heroAnim.ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
-        <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-          <div style={{ opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 28 }}>Monitoring Portal</div>
-            <h1 style={{ fontSize: m ? 36 : 56, fontFamily: sans, fontWeight: 600, color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
-              Your stability,<br />tracked over time.
+      <section ref={heroAnim.ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ ...fadeIn(heroAnim.visible) }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+              <span style={{ ...T.label, color: C.teal }}>Monitoring Portal</span>
+              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
+            </div>
+            <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+              Your stability,{!m && <br />} tracked over time.
             </h1>
-            <p style={{ fontSize: m ? 16 : 20, color: C.sandMuted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto 28px" }}>
+            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto 28px" }}>
               Sign in to access your RunPayway&#8482; Stability Monitoring dashboard, take assessments, and review your history.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
               {["Email sign-in", "No password required", "3 assessments included"].map(t => (
-                <span key={t} style={{ fontSize: 13, fontWeight: 500, color: C.sandLight }}>{t}</span>
+                <span key={t} style={{ ...T.micro, fontWeight: 500, color: C.sandLight }}>{t}</span>
               ))}
             </div>
           </div>
@@ -103,25 +107,25 @@ export default function SignInPage() {
       </section>
 
       {/* ══ SIGN-IN / DASHBOARD ══ */}
-      <section style={{ backgroundColor: C.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
-        <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", opacity: formAnim.visible ? 1 : 0, transform: formAnim.visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 700ms ease-out, transform 700ms ease-out" }}>
-          <div style={{ background: C.white, borderRadius: 16, border: `1px solid ${C.border}`, padding: m ? "36px 24px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
+      <section style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+        <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", ...fadeIn(formAnim.visible) }}>
+          <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "36px 24px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
 
             {!session ? (
               /* ─── Email login ─── */
               <>
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
-                  <h2 style={{ fontSize: m ? 28 : 36, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
+                  <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
                     Sign in to your portal
                   </h2>
-                  <p style={{ fontSize: m ? 15 : 16, color: C.muted, lineHeight: 1.6, maxWidth: 360, margin: "0 auto" }}>
+                  <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
                     Enter the email address you used at checkout.
                   </p>
                 </div>
 
                 <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: C.navy, letterSpacing: "0.06em", textTransform: "uppercase" as const, marginBottom: 10 }}>
+                  <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
                     Email Address
                   </label>
                   <input
@@ -129,32 +133,30 @@ export default function SignInPage() {
                     placeholder="you@example.com"
                     style={{
                       width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
-                      border: `1px solid ${C.border}`, background: C.sand, fontSize: 15, color: C.navy,
-                      outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box",
+                      border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
+                      outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
                     }}
                     onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = "none"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
                     onKeyDown={(e) => { if (e.key === "Enter") handleLookup(); }}
                   />
                 </div>
 
-                {error && <p style={{ fontSize: 13, color: "#DC2626", marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+                {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                 <button
-                  className="cta-tick"
                   onClick={handleLookup}
                   onMouseEnter={() => canHover() && setBtnHovered(true)}
                   onMouseLeave={() => setBtnHovered(false)}
                   style={{
                     width: "100%", height: 52, borderRadius: 10,
-                    background: gradient, color: C.white,
-                    fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
-                    boxShadow: btnHovered ? "0 12px 32px rgba(75,63,174,0.30)" : "0 8px 24px rgba(75,63,174,0.20)",
+                    background: C.navy, color: C.white,
+                    fontSize: 16, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
+                    boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
                     transition: "box-shadow 260ms ease, transform 260ms ease",
                     transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
                   }}
                 >
-                  <span className="tick tick-white" />
                   Access Monitoring Portal
                 </button>
 
@@ -165,22 +167,22 @@ export default function SignInPage() {
                   </Link>
                 </div>
 
-                <div style={{ height: 1, background: C.border, margin: "28px 0 20px" }} />
+                <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                 <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 13, color: C.light, margin: 0 }}>
+                  <p style={{ ...T.micro, color: C.light, margin: 0 }}>
                     Deterministic &#183; Email-based authentication &#183; No password required
                   </p>
                 </div>
               </>
             ) : (
-              /* ─── Command Center ─── */
+              /* ─── Dashboard ─── */
               <>
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Command Center</div>
-                  <h2 style={{ fontSize: m ? 28 : 36, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em", marginBottom: 12 }}>
+                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Command Center</div>
+                  <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
                     Welcome back.
                   </h2>
-                  <p style={{ fontSize: m ? 15 : 16, color: C.muted, lineHeight: 1.6 }}>
+                  <p style={{ ...bodySm(m), color: C.muted }}>
                     Your RunPayway&#8482; Stability Monitoring plan is active.
                   </p>
                 </div>
@@ -195,14 +197,14 @@ export default function SignInPage() {
                     <div key={row.label} style={{
                       display: "flex", justifyContent: "space-between", alignItems: "center",
                       padding: "16px 0",
-                      borderBottom: i < 2 ? `1px solid ${C.border}` : "none",
+                      borderBottom: i < 2 ? `1px solid ${C.softBorder}` : "none",
                     }}>
-                      <span style={{ fontSize: 14, color: C.muted }}>{row.label}</span>
+                      <span style={{ ...T.meta, color: C.muted }}>{row.label}</span>
                       <span style={{
                         fontSize: row.highlight ? 16 : 14,
                         fontWeight: row.highlight ? 700 : 600,
-                        fontFamily: row.highlight ? mono : undefined,
-                        color: row.highlight ? (allUsed ? "#DC2626" : C.teal) : C.navy,
+                        fontFamily: row.highlight ? mono : sans,
+                        color: row.highlight ? (allUsed ? C.bandLimited : C.teal) : C.navy,
                       }}>{row.value}</span>
                     </div>
                   ))}
@@ -211,14 +213,14 @@ export default function SignInPage() {
                 {/* Past assessments */}
                 {session.assessment_records.length > 0 && (
                   <div style={{ marginBottom: 28 }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 14 }}>
+                    <div style={{ ...T.label, fontSize: 13, color: C.purple, marginBottom: 14 }}>
                       Assessment History
                     </div>
                     {session.assessment_records.map((recordId, i) => (
                       <div key={recordId} style={{
                         display: "flex", justifyContent: "space-between", alignItems: "center",
                         padding: "12px 16px", borderRadius: 10,
-                        background: C.sand, border: `1px solid ${C.border}`,
+                        background: C.sand, border: `1px solid ${C.softBorder}`,
                         marginBottom: i < session.assessment_records.length - 1 ? 8 : 0,
                       }}>
                         <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Assessment {i + 1}</span>
@@ -231,50 +233,47 @@ export default function SignInPage() {
                 {/* CTA */}
                 {allUsed ? (
                   <>
-                    <div style={{ padding: "20px 24px", borderRadius: 12, background: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.10)", textAlign: "center", marginBottom: 16 }}>
+                    <div style={{ padding: "20px 24px", borderRadius: 12, background: "rgba(155,44,44,0.04)", border: `1px solid rgba(155,44,44,0.10)`, textAlign: "center", marginBottom: 16 }}>
                       <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>All 3 Assessments Completed</div>
-                      <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.55, margin: 0 }}>Purchase a new plan to continue tracking your income stability.</p>
+                      <p style={{ ...T.meta, color: C.muted, margin: 0, lineHeight: 1.55 }}>Purchase a new plan to continue tracking your income stability.</p>
                     </div>
-                    <Link className="cta-tick" href="/pricing" style={{
+                    <Link href="/pricing" style={{
                       display: "flex", alignItems: "center", justifyContent: "center",
                       width: "100%", height: 52, borderRadius: 10,
-                      background: gradient, color: C.white,
-                      fontSize: 16, fontWeight: 600, textDecoration: "none",
-                      boxShadow: "0 8px 24px rgba(75,63,174,0.20)",
+                      background: C.navy, color: C.white,
+                      fontSize: 16, fontWeight: 600, fontFamily: sans, textDecoration: "none",
+                      boxShadow: "0 8px 24px rgba(14,26,43,0.15)",
                     }}>
-                      <span className="tick tick-white" />
                       Renew Stability Monitoring
                     </Link>
                   </>
                 ) : (
                   <button
-                    className="cta-tick"
                     onClick={handleTakeAssessment}
                     onMouseEnter={() => canHover() && setNextBtnHovered(true)}
                     onMouseLeave={() => setNextBtnHovered(false)}
                     style={{
                       width: "100%", height: 52, borderRadius: 10,
-                      background: gradient, color: C.white,
-                      fontSize: 16, fontWeight: 600, border: "none", cursor: "pointer",
-                      boxShadow: nextBtnHovered ? "0 12px 32px rgba(75,63,174,0.30)" : "0 8px 24px rgba(75,63,174,0.20)",
+                      background: C.navy, color: C.white,
+                      fontSize: 16, fontWeight: 600, fontFamily: sans, border: "none", cursor: "pointer",
+                      boxShadow: nextBtnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
                       transition: "box-shadow 260ms ease, transform 260ms ease",
                       transform: nextBtnHovered ? "translateY(-2px)" : "translateY(0)",
                     }}
                   >
-                    <span className="tick tick-white" />
                     Take Next Assessment
                   </button>
                 )}
 
                 <div style={{ textAlign: "center", marginTop: 16 }}>
-                  <button onClick={() => { setSession(null); setEmail(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0 }}>
+                  <button onClick={() => { setSession(null); setEmail(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}>
                     Sign in with a different email
                   </button>
                 </div>
 
-                <div style={{ height: 1, background: C.border, margin: "28px 0 20px" }} />
+                <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                 <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 13, color: C.light, margin: 0 }}>
+                  <p style={{ ...T.micro, color: C.light, margin: 0 }}>
                     Deterministic &#183; Model RP-2.0 &#183; Same inputs, same score
                   </p>
                 </div>
@@ -285,12 +284,14 @@ export default function SignInPage() {
       </section>
 
       {/* ══ INFO CARDS ══ */}
-      <section style={{ backgroundColor: C.sand, paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop, paddingLeft: m ? PAD.mobile : PAD.desktop, paddingRight: m ? PAD.mobile : PAD.desktop }}>
+      <section style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div ref={infoAnim.ref} style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, opacity: infoAnim.visible ? 1 : 0, transform: infoAnim.visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Continuous Monitoring</div>
-            <h2 style={{ fontSize: m ? 32 : 48, fontFamily: sans, fontWeight: 600, color: C.navy, lineHeight: 1.12, letterSpacing: "-0.025em" }}>
-              Stability is not static.<br />Neither is the score.
+          <div style={{ marginBottom: sp(2), ...fadeIn(infoAnim.visible) }}>
+            <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
+          </div>
+          <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(infoAnim.visible) }}>
+            <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+              Stability is not static.{!m && <br />} Neither is the score.
             </h2>
           </div>
 
@@ -301,17 +302,15 @@ export default function SignInPage() {
               { num: "03", title: "Observe the trajectory", desc: "Income structures evolve. Three assessments over 12 months reveal what changed, what held, and what to act on next.", color: C.purple },
             ].map((card, i) => (
               <div key={card.num} style={{
-                background: C.white, borderRadius: 16, border: `1px solid ${C.border}`,
-                padding: m ? "28px 24px" : "32px 28px",
-                opacity: infoAnim.visible ? 1 : 0, transform: infoAnim.visible ? "translateY(0)" : "translateY(16px)",
-                transition: `opacity 500ms ease-out ${100 + i * 80}ms, transform 500ms ease-out ${100 + i * 80}ms`,
+                ...cardStyle, borderRadius: 14, padding: m ? "28px 24px" : "32px 28px",
+                ...fadeIn(infoAnim.visible, 100 + i * 80),
               }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: C.sand, border: `1px solid ${C.border}`, fontSize: 13, fontWeight: 700, fontFamily: mono, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: C.sand, border: `1px solid ${C.softBorder}`, fontSize: 13, fontWeight: 700, fontFamily: mono, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: card.color, opacity: 0.6 }} />
                   {card.num}
                 </div>
                 <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{card.title}</div>
-                <p style={{ fontSize: m ? 14 : 15, color: C.muted, lineHeight: 1.55, margin: 0 }}>{card.desc}</p>
+                <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{card.desc}</p>
               </div>
             ))}
           </div>
@@ -319,24 +318,35 @@ export default function SignInPage() {
       </section>
 
       {/* ══ CTA ══ */}
-      <section style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? SY.mobile : SY.desktop, paddingBottom: m ? SY.mobile : SY.desktop }}>
-        <div style={{ maxWidth: MAX, margin: "0 auto", padding: `0 ${m ? PAD.mobile : PAD.desktop}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-          <h2 style={{ fontSize: m ? 32 : 48, color: C.sandText, fontFamily: sans, fontWeight: 600, letterSpacing: "-0.025em", lineHeight: 1.12, marginBottom: 20 }}>
-            Not a subscriber yet?
-          </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: C.sandMuted, lineHeight: 1.65, maxWidth: 440, margin: "0 auto 40px" }}>
-            Start with your free Income Stability Score&#8482;. Upgrade to the full diagnostic or annual monitoring when you are ready.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
-            <Link href="/begin" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10, backgroundColor: C.sandText, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", boxShadow: "0 4px 16px rgba(0,0,0,0.15)" }}>
-              Get My Free Score
-            </Link>
-            <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10, backgroundColor: "transparent", color: C.sandText, fontSize: 16, fontWeight: 600, textDecoration: "none", border: `1px solid ${C.sandBorder}` }}>
-              View Pricing
-            </Link>
-          </div>
-          <div style={{ marginTop: 20, fontSize: 14, color: C.sandLight }}>
-            Free to start &#183; Under 2 minutes &#183; Private by default
+      <section style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ ...fadeIn(true) }}>
+            <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
+              Your income has a structure.{!m && <br />} Now you can measure it.
+            </h2>
+            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
+              The free score shows where you stand. The full diagnostic shows what to do about it.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
+              <Link href="/begin" style={{
+                ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10,
+                backgroundColor: C.white, color: C.navy,
+              }}>
+                Get My Free Score
+              </Link>
+              <Link href="/pricing" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10,
+                backgroundColor: "transparent", color: C.sandText,
+                fontSize: 16, fontWeight: 600, textDecoration: "none",
+                border: `1px solid ${C.sandBorder}`,
+              }}>
+                View Pricing
+              </Link>
+            </div>
+            <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
+              Under 2 minutes &#183; Instant result &#183; Private by default
+            </div>
           </div>
         </div>
       </section>
