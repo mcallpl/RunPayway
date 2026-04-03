@@ -821,6 +821,20 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showResumePrompt) {
     const answeredCount = savedAnswersCacheRef.current?.filter((a) => a !== null).length || 0;
+    // Show how long ago the session was saved
+    const savedAgo = (() => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return "";
+        const { savedAt } = JSON.parse(raw);
+        if (!savedAt) return "";
+        const mins = Math.floor((Date.now() - savedAt) / 60000);
+        if (mins < 1) return "just now";
+        if (mins === 1) return "1 minute ago";
+        if (mins < 60) return `${mins} minutes ago`;
+        return `${Math.floor(mins / 60)} hour${Math.floor(mins / 60) > 1 ? "s" : ""} ago`;
+      } catch { return ""; }
+    })();
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
@@ -840,7 +854,7 @@ export default function DiagnosticPage() {
             Welcome back
           </h2>
           <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
-            You have {answeredCount} of 6 questions answered from a recent session. Would you like to pick up where you left off?
+            You have {answeredCount} of 6 questions answered{savedAgo ? ` from ${savedAgo}` : " from a recent session"}. Would you like to pick up where you left off?
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <button
