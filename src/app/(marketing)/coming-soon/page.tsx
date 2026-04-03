@@ -259,10 +259,10 @@ function Cta() {
       <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Your income has a structure.{!m && <br />} Now you can measure it.
+            The platform is live.{!m && <br />} Your assessment is waiting.
           </h2>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            The free score shows where you stand. The full diagnostic shows what to do about it.
+            Start with the free score. The full diagnostic is there when you want it.
           </p>
           <Link href="/begin" style={{
             ...ctaButtonLight,

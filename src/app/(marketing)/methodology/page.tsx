@@ -450,10 +450,10 @@ function Cta() {
       <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Your income has a structure.{!m && <br />} Now you can measure it.
+            The methodology is transparent.{!m && <br />} Now test it yourself.
           </h2>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            The free score shows where you stand. The full diagnostic shows what to do about it.
+            Same inputs, same score. See where your income structure stands.
           </p>
           <Link href="/begin" style={{
             ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
