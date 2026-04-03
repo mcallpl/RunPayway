@@ -326,8 +326,7 @@ export default function AboutPage() {
     <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       <Hero />
       <WhatIsISS />
-      <Dimensions />
-      <HowItWorks />
+      <WhoItsFor />
       <Governance />
       <Verification />
       <Origin />
