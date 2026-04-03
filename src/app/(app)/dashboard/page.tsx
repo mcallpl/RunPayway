@@ -125,10 +125,10 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 /*  PHASE SEPARATOR — wrapper with branded edge mark + tinted bg       */
 /* ================================================================== */
-function PhaseSep({ label, color, tint, children, id }: { label: string; color: string; tint?: string; children?: React.ReactNode; id?: string }) {
+function PhaseSep({ label, color, tint, children, id, mobile }: { label: string; color: string; tint?: string; children?: React.ReactNode; id?: string; mobile?: boolean }) {
   return (
-    <div id={id} className="d-phase" style={{ margin: "0 -32px", padding: "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "48px 0 24px" }}>
+    <div id={id} className="d-phase" style={{ margin: mobile ? "0 -16px" : "0 -32px", padding: mobile ? "0 16px 24px" : "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: mobile ? "28px 0 16px" : "48px 0 24px" }}>
         <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
         <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
@@ -624,13 +624,13 @@ function DashboardContent() {
 
         {/* Access Code Entry — standalone at top */}
         <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "16px 16px 0" : "24px 32px 0" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 8 }}>PASTE ACCESS CODE</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, flexShrink: 0 }}>PASTE ACCESS CODE</div>
             <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste code from your report" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-              style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
+              style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minWidth: 0, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
               onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
               onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}30`; }} />
-            <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 44, transition: "background 150ms" }}
+            <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, flexShrink: 0, minHeight: 44, transition: "background 150ms" }}
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#142338"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}>Load</button>
           </div>
@@ -671,7 +671,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  ORIENT — "Where am I?"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis">
+          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
           {/* 1. SCORE + BENCHMARKING */}
           <section style={{ marginBottom: 24 }}>
@@ -845,37 +845,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DECIDE — "What should I do?"                           */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan">
-
-          {/* 3. #1 PRIORITY */}
-          {topMoves.length > 0 && (() => {
-            const mv = topMoves[0]; const sc = scriptFor(mv.id);
-            return (
-              <section style={{ marginBottom: 24 }}>
-                <div style={{ border: `1px solid ${B.stone}`, borderLeft: `4px solid ${B.purple}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden" }}>
-                  <div style={{ padding: mobile ? "24px 20px" : "28px 32px" }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>PRIMARY STRUCTURAL LEVER</div>
-                    <div style={{ fontSize: 22, fontWeight: 600, color: B.navy, lineHeight: 1.3, marginBottom: 8 }}>{mv.label}</div>
-                    <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px", lineHeight: 1.6 }}>{mv.description}</p>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
-                      <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: B.teal }}>+{mv.lift} pts</span>
-                      {mv.resBand !== dBand && <span style={{ fontSize: 13, fontWeight: 600, color: B.purple, backgroundColor: `${B.purple}08`, padding: "4px 12px", borderRadius: 20 }}>→ {mv.resBand}</span>}
-                      <span style={{ fontSize: 13, color: B.taupe, backgroundColor: B.stone, padding: "4px 12px", borderRadius: 20 }}>{mv.effort} effort · {mv.speed}</span>
-                    </div>
-                  </div>
-                  {sc && (
-                    <div style={{ padding: mobile ? "20px 20px" : "24px 32px", borderTop: `1px solid ${B.stone}`, backgroundColor: `${B.purple}02` }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                        <div><div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{sc.title}</div><div style={{ fontSize: 13, color: B.muted, marginTop: 2 }}>{sc.context}</div></div>
-                        <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 13, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "11px 20px", cursor: "pointer", whiteSpace: "nowrap" as const, minHeight: 44 }}>{copiedScript === sc.id ? "Copied!" : "Copy Script"}</button>
-                      </div>
-                      <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.7, whiteSpace: "pre-wrap" as const, margin: 0, padding: "20px 24px", backgroundColor: B.surface, borderRadius: 12, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
-                    </div>
-                  )}
-                </div>
-              </section>
-            );
-          })()}
+          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
 
           {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
@@ -949,7 +919,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  ACT — "Let me test it"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test">
+          <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
 
           {/* What-If Explorer — categorized, visual, recommended */}
           <section>
@@ -1119,7 +1089,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  MONITOR — "Am I progressing?"                          */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress">
+          <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
 
           {/* Change 4: Merged TRACK YOUR PROGRESS section */}
           <section style={{ marginBottom: 16, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
