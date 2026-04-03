@@ -113,14 +113,14 @@ function Process() {
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-            <div style={{ ...T.label, fontSize: 11, color: C.sandLight }}>Scoring Pipeline</div>
+            <div style={{ ...T.label, fontSize: 11, color: C.sandLight }}>Scoring Process</div>
             <div style={{ fontSize: 10, fontFamily: mono, color: C.teal }}>RP-2.0</div>
           </div>
           {[
-            { label: "Factor scoring", sub: "6 dimensions \u2192 7 factor scores", done: true },
-            { label: "Cross-factor interactions", sub: "8 penalty rules \u00b7 2 bonus rules", done: true },
+            { label: "Factor scoring", sub: "Six dimensions evaluated independently", done: true },
+            { label: "Cross-factor interactions", sub: "Penalty and bonus rules applied", done: true },
             { label: "Score composition", sub: "Structure (60%) + Stability (40%)", done: true },
-            { label: "Structural diagnosis", sub: "Constraints \u00b7 Fragility \u00b7 Sensitivity", done: false },
+            { label: "Structural diagnosis", sub: "Constraints, fragility, sensitivity", done: false },
           ].map((step, i) => (
             <div key={step.label} style={{ marginBottom: 10 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -268,7 +268,7 @@ function Dimensions() {
             The dimensions.
           </h2>
           <p style={{ ...body(m), color: C.muted }}>
-            Each dimension is scored independently using fixed lookup tables. The model then applies cross-factor interaction rules to capture how weaknesses compound.
+            Each dimension is scored independently using fixed, versioned definitions. The model then applies cross-factor interaction rules to capture how weaknesses compound.
           </p>
         </div>
 
@@ -393,7 +393,7 @@ function Specimen() {
             <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.sandText }}>{stabilityTotal}/40</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-            <span style={{ fontSize: 14, color: C.sandMuted }}>Cross-factor interaction (CF-B01)</span>
+            <span style={{ fontSize: 14, color: C.sandMuted }}>Cross-factor interaction bonus</span>
             <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.teal }}>+{interactionAdj}</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingTop: 16, borderTop: `1px solid ${C.sandBorder}` }}>
@@ -524,7 +524,7 @@ function Architecture() {
             <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: 10 }}>Outcome Layer</h3>
             <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>Applies operating structure, income model, and industry sector to improve explanation quality and action relevance. Does not change the score.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {["Industry scenario selection", "Action priority ordering", "Explanation language precision", "Benchmark framing", "12 income model families", "19 industry profiles"].map(item => (
+              {["Industry scenario selection", "Action priority ordering", "Explanation language precision", "Benchmark framing", "Income model family profiles", "19 industry profiles"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
                   <span style={{ ...T.meta, color: C.sandMuted }}>{item}</span>

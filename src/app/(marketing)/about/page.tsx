@@ -176,7 +176,7 @@ function HowItWorks() {
             Model RP-2.0 is entirely deterministic. No probabilistic modeling, no adaptive learning, no human judgment in the scoring process. The same inputs always produce the same score.
           </p>
           <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            The model evaluates income across six fixed structural dimensions using versioned lookup tables and cross-factor interaction rules. Each dimension contributes to the final <span style={{ fontFamily: mono }}>0</span>&ndash;<span style={{ fontFamily: mono }}>100</span> score, which maps to one of four stability bands: Limited, Developing, Established, or High.
+            The model evaluates income across six fixed structural dimensions using versioned scoring definitions and cross-factor interaction rules. Each dimension contributes to the final <span style={{ fontFamily: mono }}>0</span>&ndash;<span style={{ fontFamily: mono }}>100</span> score, which maps to one of four stability bands: Limited, Developing, Established, or High.
           </p>
           <p style={{ ...body(m), color: C.muted }}>
             The result is a 4-page diagnostic report that explains your score, translates what it means, identifies the specific changes that would raise it, stress-tests your structure under disruption scenarios, and provides Command Center access with a lifetime simulator.
@@ -314,7 +314,7 @@ function ModelBadge() {
             { label: "Model RP-2.0", sub: "Current version" },
             { label: "Deterministic", sub: "Fixed scoring rules" },
             { label: "19 Industries", sub: "Full sector coverage" },
-            { label: "20 Engines", sub: "Pure-function pipeline" },
+            { label: "Verifiable", sub: "Integrity on every record" },
           ].map((item) => (
             <div key={item.label} style={{ textAlign: "center", minWidth: m ? 100 : 140 }}>
               <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, fontFamily: mono, marginBottom: 4 }}>{item.label}</div>

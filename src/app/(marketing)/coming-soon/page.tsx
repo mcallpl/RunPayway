@@ -76,31 +76,18 @@ function Shipped() {
 
   const releases = [
     {
-      version: "RP-1.0 \u2192 RP-2.0",
-      date: "Q1 2026",
-      title: "Model Migration — V1 Engine Retired",
-      status: "live",
-      items: [
-        "V1 scoring engine fully retired (\u22124,042 lines of legacy code)",
-        "All scoring now runs through a single V2 pipeline",
-        "V2-to-V1 adapter ensures backward compatibility for existing reports",
-        "29-assertion regression test suite validates determinism, edge cases, and cross-factor rules",
-        "One codebase, one scoring engine, one source of truth",
-      ],
-    },
-    {
       version: "RP-2.0",
       date: "Q1 2026",
       title: "Structural Stability Model RP-2.0",
       status: "live",
       items: [
-        "20-engine deterministic scoring pipeline",
-        "6 structural dimensions with cross-factor interaction rules",
+        "Deterministic scoring with fixed, versioned rules",
+        "Six structural dimensions with cross-factor interaction rules",
         "4-page diagnostic report with PressureMap\u2122 intelligence",
         "Command Center with lifetime simulator access",
-        "19 industry-specific benchmarks and scenario presets",
-        "Outcome Layer (OL-1.0) with 12 income model families",
-        "SHA-256 integrity verification on every assessment",
+        "19 industry-specific benchmarks and stress scenarios",
+        "Integrity verification on every assessment record",
+        "Consolidated scoring architecture — one model, one source of truth",
       ],
     },
     {
@@ -110,10 +97,10 @@ function Shipped() {
       status: "live",
       items: [
         "Industry-specific scenario selection and action ordering",
-        "12 income model family profiles with tailored risk patterns",
+        "Income model family profiles with tailored risk patterns",
         "19 industry profiles with sector-specific stress scenarios",
         "Explanation language precision by operating context",
-        "Benchmark framing by sector (peer percentile, top 20%)",
+        "Peer benchmarking by sector (percentile, top 20% threshold)",
       ],
     },
     {
