@@ -214,9 +214,6 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
   return (
     <>
       <div style={{
-        marginTop: m ? sp(5) : sp(6),
-        paddingTop: m ? sp(4) : sp(5),
-        borderTop: "1px solid rgba(255,255,255,0.06)",
         position: "relative", zIndex: 10,
         ...fadeIn(visible, 500),
       }}>
@@ -243,7 +240,9 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
 
           {open && (
             <div role="listbox" style={{
-              position: "absolute", top: "calc(100% + 8px)", left: 0,
+              position: "absolute", top: "calc(100% + 8px)",
+              left: m ? "50%" : 0,
+              transform: m ? "translateX(-50%)" : undefined,
               minWidth: m ? "calc(100vw - 40px)" : 320, maxHeight: 400, overflowY: "auto",
               backgroundColor: "#0E1424",
               border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14,
@@ -612,7 +611,7 @@ function HeroSection() {
           paddingBottom: m ? sp(8) : sp(10),
           paddingLeft: px(m), paddingRight: px(m),
         }}>
-          {/* Trust strip — Open Model */}
+          {/* Trust strip */}
           <p style={{
             ...fadeIn(visible, 320),
             ...T.meta, letterSpacing: "0.02em",
@@ -622,6 +621,11 @@ function HeroSection() {
           }}>
             Deterministic &bull; Versioned &bull; Fixed rules &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
+
+          {/* Industry dropdown */}
+          <div style={{ marginBottom: m ? sp(5) : sp(6), position: "relative", zIndex: 10, textAlign: m ? "center" : "left" }}>
+            <IndustryDropdown m={m} visible={visible} />
+          </div>
 
           {/* CTA */}
           <div style={{ ...fadeIn(visible, 380), textAlign: m ? "center" : "left" }}>
@@ -646,11 +650,6 @@ function HeroSection() {
             <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5), letterSpacing: "0.02em" }}>
               Under 2 minutes &bull; Instant result &bull; Private by default
             </p>
-          </div>
-
-          {/* Industry dropdown */}
-          <div style={{ marginTop: m ? sp(6) : sp(8), position: "relative", zIndex: 10 }}>
-            <IndustryDropdown m={m} visible={visible} />
           </div>
 
           {/* Positioning statement */}
