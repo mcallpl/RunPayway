@@ -59,7 +59,7 @@ function Hero() {
             <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>Model RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
-            Deterministic structural{!m && <br />} measurement system.
+            The system behind{!m && <br />} your score.
           </h1>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 540, marginBottom: 0 }}>
             RunPayway&#8482; evaluates the structural integrity of how your income is built. The model is fixed, versioned, and deterministic. Identical inputs always produce identical outputs.

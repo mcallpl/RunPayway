@@ -390,7 +390,7 @@ export default function ContactPage() {
                 {[
                   { href: "/faq", label: t.nav.faq },
                   { href: "/methodology", label: t.nav.methodology },
-                  { href: "/dashboard", label: "Command Center" },
+                  { href: "/sample-report", label: "Sample Report" },
                 ].map((link) => (
                   <Link
                     key={link.label}
