@@ -94,7 +94,9 @@ export default function CreateAccountPage() {
         };
       }
     }
-    const newSession = await createMonitoringSessionServer(email, paymentToken, paymentPayload);
+    const generatedPin = String(Math.floor(1000 + Math.random() * 9000));
+    const newSession = await createMonitoringSessionServer(email, paymentToken, paymentPayload, generatedPin);
+    sessionStorage.setItem("rp_monitoring_pin", generatedPin);
     setSession(newSession);
   };
 

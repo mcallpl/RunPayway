@@ -6,6 +6,7 @@
 export interface MonitoringSession {
   access_code: string;
   email: string;
+  pin: string;
   plan: "annual_monitoring";
   assessments_total: 3;
   assessments_used: number;
@@ -47,7 +48,7 @@ export function generateAccessCode(): string {
 }
 
 /** Create a new monitoring session (localStorage only) */
-export function createMonitoringSession(email: string): MonitoringSession {
+export function createMonitoringSession(email: string, pin = "0000"): MonitoringSession {
   const now = new Date();
   const expires = new Date(now);
   expires.setFullYear(expires.getFullYear() + 1);
@@ -55,6 +56,7 @@ export function createMonitoringSession(email: string): MonitoringSession {
   const session: MonitoringSession = {
     access_code: generateAccessCode(),
     email,
+    pin,
     plan: "annual_monitoring",
     assessments_total: 3,
     assessments_used: 0,
@@ -118,6 +120,7 @@ export async function createMonitoringSessionServer(
   email: string,
   paymentToken?: string,
   paymentPayload?: Record<string, string>,
+  pin = "0000",
 ): Promise<MonitoringSession> {
   try {
     const body: Record<string, unknown> = { action: "create", email };
@@ -137,6 +140,7 @@ export async function createMonitoringSessionServer(
     const session: MonitoringSession = {
       access_code: data.access_code,
       email,
+      pin,
       plan: "annual_monitoring",
       assessments_total: 3,
       assessments_used: data.assessments_used ?? 0,
@@ -149,7 +153,28 @@ export async function createMonitoringSessionServer(
     writeSessions(sessions);
     return session;
   } catch {
-    return createMonitoringSession(email);
+    return createMonitoringSession(email, pin);
+  }
+}
+
+/** Send PIN to email via contact endpoint (forgot PIN flow) */
+export async function sendPinToEmail(email: string): Promise<boolean> {
+  const session = getSessionByEmail(email);
+  if (!session) return false;
+  try {
+    await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "PIN Recovery",
+        email: email.trim(),
+        subject: "pin_recovery",
+        message: `Your RunPayway Monitoring Portal PIN is: ${session.pin}\n\nIf you did not request this, please ignore this message.`,
+      }),
+    });
+    return true;
+  } catch {
+    return false;
   }
 }
 

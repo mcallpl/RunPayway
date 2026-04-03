@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSessionByEmail, isExpired, getRemaining, type MonitoringSession } from "@/lib/monitoring";
+import { getSessionByEmail, isExpired, getRemaining, sendPinToEmail, type MonitoringSession } from "@/lib/monitoring";
 import {
   C, T, mono, sans, sp, maxW, secPad, px,
   h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
@@ -48,10 +48,14 @@ export default function SignInPage() {
   const m = useMobile();
 
   const [email, setEmail] = useState("");
+  const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [btnHovered, setBtnHovered] = useState(false);
   const [nextBtnHovered, setNextBtnHovered] = useState(false);
   const [session, setSession] = useState<MonitoringSession | null>(null);
+  const [forgotMode, setForgotMode] = useState(false);
+  const [pinSent, setPinSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const heroAnim = useInView();
   const formAnim = useInView();
@@ -60,11 +64,27 @@ export default function SignInPage() {
   const handleLookup = () => {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes("@")) { setError("Please enter a valid email address."); return; }
+    if (!pin || pin.length !== 4) { setError("Please enter your 4-digit PIN."); return; }
     const found = getSessionByEmail(trimmed);
     if (!found) { setError("No active monitoring plan found for this email."); return; }
+    if (found.pin && found.pin !== pin) { setError("Incorrect PIN. Try again or use Forgot PIN below."); return; }
     if (isExpired(found)) { setError("This monitoring plan has expired. Purchase a new plan to continue."); return; }
     setError("");
     setSession(found);
+  };
+
+  const handleForgotPin = async () => {
+    const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@")) { setError("Enter your email address first."); return; }
+    setSending(true);
+    const sent = await sendPinToEmail(trimmed);
+    setSending(false);
+    if (sent) {
+      setPinSent(true);
+      setError("");
+    } else {
+      setError("No active monitoring plan found for this email.");
+    }
   };
 
   const remaining = session ? getRemaining(session.access_code) : 0;
@@ -124,55 +144,129 @@ export default function SignInPage() {
                   </p>
                 </div>
 
-                <div style={{ marginBottom: 24 }}>
-                  <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
-                    Email Address
-                  </label>
-                  <input
-                    type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    style={{
-                      width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
-                      border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
-                      outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
-                    onKeyDown={(e) => { if (e.key === "Enter") handleLookup(); }}
-                  />
-                </div>
+                {forgotMode ? (
+                  /* ─── Forgot PIN flow ─── */
+                  <>
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
+                        Email Address
+                      </label>
+                      <input
+                        type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        style={{
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
+                          border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
+                          outline: "none", boxSizing: "border-box" as const,
+                        }}
+                        onKeyDown={(e) => { if (e.key === "Enter") handleForgotPin(); }}
+                      />
+                    </div>
 
-                {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+                    {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
-                <button
-                  onClick={handleLookup}
-                  onMouseEnter={() => canHover() && setBtnHovered(true)}
-                  onMouseLeave={() => setBtnHovered(false)}
-                  style={{
-                    width: "100%", height: 52, borderRadius: 10,
-                    background: C.navy, color: C.white,
-                    fontSize: 16, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
-                    boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
-                    transition: "box-shadow 260ms ease, transform 260ms ease",
-                    transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
-                  }}
-                >
-                  Access Monitoring Portal
-                </button>
+                    {pinSent ? (
+                      <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
+                        <div style={{ fontSize: 15, fontWeight: 600, color: C.teal, marginBottom: 4 }}>PIN sent to your email.</div>
+                        <p style={{ ...T.meta, color: C.muted, margin: 0 }}>Check your inbox, then return here to sign in.</p>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleForgotPin}
+                        disabled={sending}
+                        style={{
+                          width: "100%", height: 52, borderRadius: 10,
+                          background: C.navy, color: C.white,
+                          fontSize: 16, fontWeight: 600, fontFamily: sans, border: "none", cursor: sending ? "wait" : "pointer",
+                          opacity: sending ? 0.6 : 1,
+                        }}
+                      >
+                        {sending ? "Sending..." : "Send My PIN"}
+                      </button>
+                    )}
 
-                <div style={{ textAlign: "center", marginTop: 24 }}>
-                  <span style={{ fontSize: 14, color: C.light }}>Don&apos;t have a plan? </span>
-                  <Link href="/pricing" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none" }}>
-                    View pricing &rarr;
-                  </Link>
-                </div>
+                    <div style={{ textAlign: "center", marginTop: 16 }}>
+                      <button onClick={() => { setForgotMode(false); setPinSent(false); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                        &larr; Back to sign in
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  /* ─── Normal sign-in flow ─── */
+                  <>
+                    <div style={{ marginBottom: 20 }}>
+                      <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
+                        Email Address
+                      </label>
+                      <input
+                        type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        style={{
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
+                          border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
+                          outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
+                        }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
+                      />
+                    </div>
 
-                <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
-                <div style={{ textAlign: "center" }}>
-                  <p style={{ ...T.micro, color: C.light, margin: 0 }}>
-                    Deterministic &#183; Email-based authentication &#183; No password required
-                  </p>
-                </div>
+                    <div style={{ marginBottom: 24 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                        <label style={{ ...T.label, fontSize: 12, color: C.navy }}>4-Digit PIN</label>
+                        <button onClick={() => { setForgotMode(true); setError(""); }} style={{ background: "none", border: "none", fontSize: 12, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                          Forgot PIN?
+                        </button>
+                      </div>
+                      <input
+                        type="text" inputMode="numeric" maxLength={4} value={pin}
+                        onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setPin(v); }}
+                        placeholder="&#8226;&#8226;&#8226;&#8226;"
+                        style={{
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
+                          border: `1px solid ${C.softBorder}`, background: C.sand,
+                          fontSize: 24, fontFamily: mono, color: C.navy, letterSpacing: "0.3em", textAlign: "center" as const,
+                          outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
+                        }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
+                        onKeyDown={(e) => { if (e.key === "Enter" && pin.length === 4) handleLookup(); }}
+                      />
+                    </div>
+
+                    {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+
+                    <button
+                      onClick={handleLookup}
+                      onMouseEnter={() => canHover() && setBtnHovered(true)}
+                      onMouseLeave={() => setBtnHovered(false)}
+                      style={{
+                        width: "100%", height: 52, borderRadius: 10,
+                        background: C.navy, color: C.white,
+                        fontSize: 16, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
+                        boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
+                        transition: "box-shadow 260ms ease, transform 260ms ease",
+                        transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
+                      }}
+                    >
+                      Access Monitoring Portal
+                    </button>
+
+                    <div style={{ textAlign: "center", marginTop: 24 }}>
+                      <span style={{ fontSize: 14, color: C.light }}>Don&apos;t have a plan? </span>
+                      <Link href="/pricing" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none" }}>
+                        View pricing &rarr;
+                      </Link>
+                    </div>
+
+                    <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
+                    <div style={{ textAlign: "center" }}>
+                      <p style={{ ...T.micro, color: C.light, margin: 0 }}>
+                        Deterministic &#183; Email + PIN authentication &#183; Encrypted
+                      </p>
+                    </div>
+                  </>
+                )}
               </>
             ) : (
               /* ─── Dashboard ─── */
@@ -266,7 +360,7 @@ export default function SignInPage() {
                 )}
 
                 <div style={{ textAlign: "center", marginTop: 16 }}>
-                  <button onClick={() => { setSession(null); setEmail(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                  <button onClick={() => { setSession(null); setEmail(""); setPin(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}>
                     Sign in with a different email
                   </button>
                 </div>

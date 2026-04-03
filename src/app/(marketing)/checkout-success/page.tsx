@@ -106,7 +106,9 @@ function CheckoutSuccessContent() {
         // Auto-create monitoring session for annual buyers so they can sign in by email
         if (plan === "monitoring" && customerEmail) {
           if (!getSessionByEmail(customerEmail)) {
-            createMonitoringSession(customerEmail);
+            const generatedPin = String(Math.floor(1000 + Math.random() * 9000));
+            createMonitoringSession(customerEmail, generatedPin);
+            sessionStorage.setItem("rp_monitoring_pin", generatedPin);
           }
         }
         setReady(true);
@@ -124,7 +126,9 @@ function CheckoutSuccessContent() {
         localStorage.setItem("rp_previous_plan", planKey);
         if (plan === "monitoring" && customerEmail) {
           if (!getSessionByEmail(customerEmail)) {
-            createMonitoringSession(customerEmail);
+            const generatedPin = String(Math.floor(1000 + Math.random() * 9000));
+            createMonitoringSession(customerEmail, generatedPin);
+            sessionStorage.setItem("rp_monitoring_pin", generatedPin);
           }
         }
         setReady(true);
@@ -295,6 +299,7 @@ function CheckoutSuccessContent() {
               </Link>
             </div>
           ) : isMonitoring ? (
+            <>
             <Link
               href="/sign-in"
               style={{
@@ -319,6 +324,14 @@ function CheckoutSuccessContent() {
             >
               Go to Monitoring Portal
             </Link>
+            {typeof window !== "undefined" && sessionStorage.getItem("rp_monitoring_pin") && (
+              <div style={{ marginTop: 20, padding: "16px 20px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.15)", textAlign: "center" }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 8 }}>Your Monitoring Portal PIN</div>
+                <div style={{ fontSize: 32, fontWeight: 600, fontFamily: "'SF Mono', 'Fira Code', monospace", color: C.navy, letterSpacing: "0.3em" }}>{sessionStorage.getItem("rp_monitoring_pin")}</div>
+                <p style={{ fontSize: 13, color: C.muted, marginTop: 8, marginBottom: 0, lineHeight: 1.5 }}>Save this PIN. You will need it to sign in at runpayway.com/sign-in.</p>
+              </div>
+            )}
+            </>
           ) : (
             <button
               onClick={() => router.push("/diagnostic-portal")}
