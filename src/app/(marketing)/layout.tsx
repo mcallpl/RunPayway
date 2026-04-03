@@ -8,6 +8,7 @@ import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
+import { C } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
 /*  Global animation styles (injected once)                             */
@@ -260,9 +261,24 @@ export default function MarketingLayout({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistDone, setWaitlistDone] = useState(false);
   const mobile = useMobile();
   const { t } = useLanguage();
   const moreDropdown = useAnimatedDropdown();
+
+  const submitWaitlist = async () => {
+    if (!waitlistEmail || !waitlistEmail.includes("@")) return;
+    try {
+      await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: "Enterprise Waitlist", email: waitlistEmail.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }),
+      });
+    } catch { /* silent */ }
+    setWaitlistEmail("");
+    setWaitlistDone(true);
+  };
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
@@ -791,49 +807,57 @@ export default function MarketingLayout({
                 <span style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4 }}>
                   {t.footer.forOrganizations}
                 </span>
-                <form
-                  onSubmit={(e) => { e.preventDefault(); }}
-                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                >
-                  <input
-                    type="email"
-                    placeholder={t.footer.workEmail}
-                    aria-label={t.footer.workEmail}
-                    style={{
-                      width: "100%",
-                      height: mobile ? 40 : 36,
-                      padding: "0 12px",
-                      borderRadius: 7,
-                      border: "1px solid rgba(14,26,43,0.10)",
-                      background: "#ffffff",
-                      fontSize: 13,
-                      color: "#0E1A2B",
-                      outline: "none",
-                      boxSizing: "border-box" as const,
-                      transition: "border-color 180ms ease",
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
-                  />
-                  <button
-                    type="submit"
-                    style={{
-                      height: mobile ? 40 : 36,
-                      borderRadius: 7,
-                      background: "#4B3FAE",
-                      color: "#ffffff",
-                      fontSize: 13,
-                      fontWeight: 600,
-                      border: "none",
-                      cursor: "pointer",
-                      transition: "background 180ms ease",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
+                {waitlistDone ? (
+                  <div style={{ padding: "8px 12px", borderRadius: 7, backgroundColor: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.20)" }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>You&#8217;re on the list.</span>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={(e) => { e.preventDefault(); submitWaitlist(); }}
+                    style={{ display: "flex", flexDirection: "column", gap: 8 }}
                   >
-                    {t.footer.joinWaitlist}
-                  </button>
-                </form>
+                    <input
+                      type="email"
+                      placeholder={t.footer.workEmail}
+                      aria-label={t.footer.workEmail}
+                      value={waitlistEmail}
+                      onChange={(e) => setWaitlistEmail(e.target.value)}
+                      style={{
+                        width: "100%",
+                        height: mobile ? 40 : 36,
+                        padding: "0 12px",
+                        borderRadius: 7,
+                        border: "1px solid rgba(14,26,43,0.10)",
+                        background: "#ffffff",
+                        fontSize: 13,
+                        color: "#0E1A2B",
+                        outline: "none",
+                        boxSizing: "border-box" as const,
+                        transition: "border-color 180ms ease",
+                      }}
+                      onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
+                      onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
+                    />
+                    <button
+                      type="submit"
+                      style={{
+                        height: mobile ? 40 : 36,
+                        borderRadius: 7,
+                        background: "#4B3FAE",
+                        color: "#ffffff",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        border: "none",
+                        cursor: "pointer",
+                        transition: "background 180ms ease",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
+                    >
+                      {t.footer.joinWaitlist}
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
 
