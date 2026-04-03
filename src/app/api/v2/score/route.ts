@@ -7,6 +7,7 @@ import { validateApiKey } from "@/lib/api-auth";
 import { verifyPaymentToken } from "@/lib/payment-token";
 import { auditLog, getClientIp } from "@/lib/audit-log";
 import { createStorageBackend } from "@/lib/engine";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 function isAuthorized(
   request: NextRequest,
@@ -29,6 +30,14 @@ function isAuthorized(
 }
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const clientIp = getClientIp(request);
+  const rl = checkRateLimit(`score:${clientIp}`, RATE_LIMITS.scoring.maxRequests, RATE_LIMITS.scoring.windowMs);
+  if (!rl.allowed) {
+    auditLog({ action: "rate_limit_exceeded", ip: clientIp, timestamp: new Date().toISOString(), metadata: { endpoint: "/api/v2/score" } });
+    return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
+  }
+
   const body = await request.json();
 
   if (!isAuthorized(request, body)) {

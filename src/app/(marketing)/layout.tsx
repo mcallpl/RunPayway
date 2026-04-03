@@ -788,6 +788,7 @@ export default function MarketingLayout({
                   { href: "/acceptable-use-policy", label: t.footer.acceptableUsePolicy },
                   { href: "/security-practices", label: t.footer.securityPractices },
                   { href: "/model-version-policy", label: t.footer.modelVersionPolicy },
+                  { href: "/data-processing-agreement", label: "Data Processing Agreement" },
                 ].map((link) => (
                   <Link
                     key={link.label}

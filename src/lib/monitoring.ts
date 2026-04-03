@@ -17,6 +17,23 @@ export interface MonitoringSession {
 
 const STORAGE_KEY = "rp_monitoring_sessions";
 
+/* ---- PIN hashing (Web Crypto API — browser safe) ---- */
+
+async function hashPin(pin: string): Promise<string> {
+  if (typeof window === "undefined") return pin;
+  const encoded = new TextEncoder().encode(pin + "rp-salt-2026");
+  const buffer = await crypto.subtle.digest("SHA-256", encoded);
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 16);
+}
+
+function hashPinSync(pin: string): string {
+  // Simple sync hash for non-async contexts — XOR-based, not cryptographic
+  // Used only as fallback; prefer hashPin() when async is available
+  let h = 0x9e3779b9;
+  for (let i = 0; i < pin.length; i++) { h = ((h << 5) - h + pin.charCodeAt(i)) | 0; }
+  return Math.abs(h).toString(16).padStart(8, "0");
+}
+
 /* ---- localStorage helpers (fallback) ---- */
 
 function readSessions(): MonitoringSession[] {
@@ -47,8 +64,8 @@ export function generateAccessCode(): string {
   return `RP-${block1}-${block2}`;
 }
 
-/** Create a new monitoring session (localStorage only) */
-export function createMonitoringSession(email: string, pin = "0000"): MonitoringSession {
+/** Create a new monitoring session (localStorage only) — PIN should be pre-hashed or will be hashed sync */
+export function createMonitoringSession(email: string, pin = "0000", pinAlreadyHashed = false): MonitoringSession {
   const now = new Date();
   const expires = new Date(now);
   expires.setFullYear(expires.getFullYear() + 1);
@@ -56,7 +73,7 @@ export function createMonitoringSession(email: string, pin = "0000"): Monitoring
   const session: MonitoringSession = {
     access_code: generateAccessCode(),
     email,
-    pin,
+    pin: pinAlreadyHashed ? pin : hashPinSync(pin),
     plan: "annual_monitoring",
     assessments_total: 3,
     assessments_used: 0,
@@ -157,19 +174,45 @@ export async function createMonitoringSessionServer(
   }
 }
 
-/** Send PIN to email via contact endpoint (forgot PIN flow) */
-export async function sendPinToEmail(email: string): Promise<boolean> {
+/** Verify a PIN against the stored hash */
+export async function verifyPin(email: string, pin: string): Promise<boolean> {
   const session = getSessionByEmail(email);
   if (!session) return false;
+  // Try async hash first
+  const hashed = await hashPin(pin);
+  if (session.pin === hashed) return true;
+  // Fallback: try sync hash (for sessions created before async hashing)
+  if (session.pin === hashPinSync(pin)) return true;
+  // Fallback: direct comparison (for sessions created before any hashing)
+  if (session.pin === pin) return true;
+  return false;
+}
+
+/** Reset PIN and send new one to email (forgot PIN flow) */
+export async function resetPinAndSend(email: string): Promise<boolean> {
+  const sessions = readSessions();
+  const normalized = email.trim().toLowerCase();
+  const idx = sessions.findIndex(s => s.email.toLowerCase() === normalized);
+  if (idx === -1) return false;
+
+  // Generate new random PIN
+  const newPin = String(Math.floor(1000 + Math.random() * 9000));
+  const hashed = await hashPin(newPin);
+
+  // Update stored session with hashed PIN
+  sessions[idx].pin = hashed;
+  writeSessions(sessions);
+
+  // Send new plaintext PIN to email
   try {
     await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: "PIN Recovery",
+        name: "PIN Reset",
         email: email.trim(),
-        subject: "pin_recovery",
-        message: `Your RunPayway Monitoring Portal PIN is: ${session.pin}\n\nIf you did not request this, please ignore this message.`,
+        subject: "pin_reset",
+        message: `Your new RunPayway Monitoring Portal PIN is: ${newPin}\n\nThis PIN has been reset. If you did not request this, please contact support.`,
       }),
     });
     return true;

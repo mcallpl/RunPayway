@@ -8,6 +8,7 @@ import { acquireFileLock, releaseFileLock } from "./file-lock";
 export interface MonitoringSession {
   access_code: string;
   email: string;
+  pin: string;
   plan: "annual_monitoring";
   assessments_total: 3;
   assessments_used: number;
@@ -65,6 +66,7 @@ export async function createSession(email: string): Promise<MonitoringSession> {
     const session: MonitoringSession = {
       access_code: generateAccessCode(),
       email,
+      pin: "",
       plan: "annual_monitoring",
       assessments_total: 3,
       assessments_used: 0,

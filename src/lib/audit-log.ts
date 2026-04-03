@@ -11,7 +11,13 @@ export interface AuditEvent {
     | "record_verified"
     | "record_superseded"
     | "privacy_request"
-    | "data_export";
+    | "data_export"
+    | "session_created"
+    | "session_sign_in"
+    | "session_sign_in_failed"
+    | "assessment_taken"
+    | "pin_reset_requested"
+    | "rate_limit_exceeded";
   record_id?: string;
   ip?: string;
   timestamp: string;

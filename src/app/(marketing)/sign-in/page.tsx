@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSessionByEmail, isExpired, getRemaining, sendPinToEmail, type MonitoringSession } from "@/lib/monitoring";
+import { getSessionByEmail, isExpired, getRemaining, verifyPin, resetPinAndSend, type MonitoringSession } from "@/lib/monitoring";
 import {
   C, T, mono, sans, sp, maxW, secPad, px,
   h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
@@ -61,13 +61,14 @@ export default function SignInPage() {
   const formAnim = useInView();
   const infoAnim = useInView();
 
-  const handleLookup = () => {
+  const handleLookup = async () => {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes("@")) { setError("Please enter a valid email address."); return; }
     if (!pin || pin.length !== 4) { setError("Please enter your 4-digit PIN."); return; }
     const found = getSessionByEmail(trimmed);
     if (!found) { setError("No active monitoring plan found for this email."); return; }
-    if (found.pin && found.pin !== pin) { setError("Incorrect PIN. Try again or use Forgot PIN below."); return; }
+    const pinValid = await verifyPin(trimmed, pin);
+    if (!pinValid) { setError("Incorrect PIN. Try again or use Forgot PIN below."); return; }
     if (isExpired(found)) { setError("This monitoring plan has expired. Purchase a new plan to continue."); return; }
     setError("");
     setSession(found);
@@ -77,7 +78,7 @@ export default function SignInPage() {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes("@")) { setError("Enter your email address first."); return; }
     setSending(true);
-    const sent = await sendPinToEmail(trimmed);
+    const sent = await resetPinAndSend(trimmed);
     setSending(false);
     if (sent) {
       setPinSent(true);
