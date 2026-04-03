@@ -26,7 +26,6 @@ function fetchWithTimeout(url: string, opts: RequestInit, timeoutMs = 15000): Pr
     new Promise<Response>((_, reject) => setTimeout(() => reject(new Error("Timeout")), timeoutMs)),
   ]);
 }
-// sessionStorage: survives refresh (connection loss safety), clears on tab close (fresh every time)
 
 interface Question {
   number: number;
@@ -156,25 +155,50 @@ const LOADING_QUOTES = [
 /*  Storage                                                            */
 /* ------------------------------------------------------------------ */
 
+const SESSION_TTL_MS = 15 * 60 * 1000; // 15 minutes — restore window for accidental exits
+
 function saveAnswersToStorage(answers: (string | null)[]) {
-  const data = JSON.stringify({ answers });
+  const data = JSON.stringify({ answers, savedAt: Date.now() });
   sessionStorage.setItem(STORAGE_KEY, data);
   localStorage.setItem(STORAGE_KEY, data);
 }
 
 function loadAnswersFromStorage(): (string | null)[] | null {
   try {
+    // Prefer sessionStorage (same tab)
     let raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) {
+      // Fall back to localStorage for crash/accidental-close recovery
       raw = localStorage.getItem(STORAGE_KEY);
       if (raw) sessionStorage.setItem(STORAGE_KEY, raw);
     }
     if (!raw) return null;
-    return JSON.parse(raw).answers;
+    const parsed = JSON.parse(raw);
+    // Expire stale sessions — only restore if within TTL
+    if (parsed.savedAt && Date.now() - parsed.savedAt > SESSION_TTL_MS) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return parsed.answers;
   } catch {
     return null;
   }
 }
+
+function clearAnswerStorage() {
+  sessionStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Viewport lock — prevents horizontal scroll on mobile              */
+/* ------------------------------------------------------------------ */
+
+const VIEWPORT_LOCK_CSS = `
+  html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100vw !important; }
+  *, *::before, *::after { box-sizing: border-box; }
+`;
 
 /* ------------------------------------------------------------------ */
 /*  Step breadcrumb                                                    */
@@ -202,7 +226,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
               {isCompleted ? "\u2713" : s.num} {s.label}
             </span>
             {i < steps.length - 1 && (
-              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>\u2014\u2014</span>
+              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>&mdash;&mdash;</span>
             )}
           </span>
         );
@@ -221,6 +245,19 @@ const BAND_MESSAGES: Record<string, string> = {
   "Developing Stability": "Room to build.",
   "Limited Stability": "A clear starting point.",
 };
+
+/* ------------------------------------------------------------------ */
+/*  Final card — what's included bullets                               */
+/* ------------------------------------------------------------------ */
+
+const INCLUDED_BULLETS = [
+  "Income Stability Score across 6 structural dimensions",
+  "Stability band classification and peer context",
+  "Constraint diagnosis — your weakest structural factor",
+  "PressureMap\u2122 — AI-generated industry risk analysis",
+  "Plain-English interpretation of your score",
+  "Personalized action plan with projected score lift",
+];
 
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
@@ -248,6 +285,25 @@ export default function DiagnosticPage() {
   const [revealScore, setRevealScore] = useState(0);
   const [revealBand, setRevealBand] = useState("");
   const [revealPhase, setRevealPhase] = useState(0); // 0=counting, 1=band, 2=peer, 3=cta
+
+  // Mobile detection
+  const [mobile, setMobile] = useState(false);
+  // Resume prompt — ask user before restoring old session
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const savedAnswersCacheRef = useRef<(string | null)[] | null>(null);
+  // Final card — shows after API work completes, before report
+  const [showFinalCard, setShowFinalCard] = useState(false);
+  const [finalCardPhase, setFinalCardPhase] = useState(0);
+  // Track API completion for loading screen
+  const apiDoneRef = useRef(false);
+
+  // Mobile breakpoint detection
+  useEffect(() => {
+    const check = () => setMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Lock user in — prevent back button and tab close
   useEffect(() => {
@@ -308,12 +364,11 @@ export default function DiagnosticPage() {
       router.push("/diagnostic-portal");
       return;
     }
+    // Check for saved answers — prompt user instead of silently restoring
     const saved = loadAnswersFromStorage();
-    if (saved && saved.length === 6) {
-      setAnswers(saved);
-      const firstUnanswered = saved.findIndex((a) => a === null);
-      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
-      else setCurrentQuestion(5);
+    if (saved && saved.length === 6 && saved.some((a) => a !== null)) {
+      savedAnswersCacheRef.current = saved;
+      setShowResumePrompt(true);
     }
     setTimeout(() => setEntered(true), 100);
   }, [router]);
@@ -376,6 +431,35 @@ export default function DiagnosticPage() {
     return () => clearInterval(interval);
   }, [showLoading]);
 
+  // Final card phase cascade
+  useEffect(() => {
+    if (!showFinalCard) return;
+    setFinalCardPhase(0);
+    const t1 = setTimeout(() => setFinalCardPhase(1), 300);
+    const t2 = setTimeout(() => setFinalCardPhase(2), 600);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [showFinalCard]);
+
+  // Resume prompt handlers
+  const handleResumeContinue = useCallback(() => {
+    const saved = savedAnswersCacheRef.current;
+    if (saved) {
+      setAnswers(saved);
+      const firstUnanswered = saved.findIndex((a) => a === null);
+      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
+      else setCurrentQuestion(5);
+    }
+    setShowResumePrompt(false);
+  }, []);
+
+  const handleResumeStartFresh = useCallback(() => {
+    clearAnswerStorage();
+    savedAnswersCacheRef.current = null;
+    setAnswers(Array(6).fill(null));
+    setCurrentQuestion(0);
+    setShowResumePrompt(false);
+  }, []);
+
   const q = QUESTIONS[currentQuestion];
   const selected = answers[currentQuestion];
   const allAnswered = answers.every((a) => a !== null);
@@ -434,6 +518,12 @@ export default function DiagnosticPage() {
     setSubmitting(true);
     setError(null);
 
+    // Show loading screen with quotes IMMEDIATELY
+    setAssessmentTitle(profile.assessment_title || "");
+    setShowLoading(true);
+    apiDoneRef.current = false;
+    const loadingStartTime = Date.now();
+
     try {
       let record;
       try {
@@ -472,7 +562,7 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // Generate PressureMap™ via Cloudflare Worker proxy (API key secured server-side)
+      // Generate PressureMap via Cloudflare Worker proxy (API key secured server-side)
       try {
         const adapted = record as Record<string, unknown>;
         const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
@@ -684,35 +774,204 @@ export default function DiagnosticPage() {
       });
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
-      sessionStorage.removeItem(STORAGE_KEY);
-      setAssessmentTitle(profile.assessment_title || "");
-      setShowLoading(true);
-      // Route based on plan type
+      clearAnswerStorage();
+
+      // API work is done — ensure minimum 5s of quote display, then show final card
+      apiDoneRef.current = true;
+      const elapsedMs = Date.now() - loadingStartTime;
+      const remainingMs = Math.max(0, 5000 - elapsedMs);
+
       const planKey = (() => {
         try {
           const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
           return ps.plan_key || "free";
         } catch { return "free"; }
       })();
-      setTimeout(async () => {
+
+      setTimeout(() => {
         setLoadingStep(PROCESSING_STEPS.length);
-        await new Promise(resolve => setTimeout(resolve, 800));
-        if (planKey === "free") { router.push("/free-score"); return; }
-        // Score reveal for paid customers
-        try {
-          const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
-          setRevealScore(rec.final_score || 0);
-          setRevealBand(rec.stability_band || "");
-        } catch { /* */ }
-        setShowLoading(false);
-        setShowReveal(true);
-      }, 5000);
+        setTimeout(() => {
+          if (planKey === "free") {
+            // Free users: show final card, then route to free-score
+            setShowLoading(false);
+            setShowFinalCard(true);
+            return;
+          }
+          // Paid users: show final card, then score reveal
+          try {
+            const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
+            setRevealScore(rec.final_score || 0);
+            setRevealBand(rec.stability_band || "");
+          } catch { /* */ }
+          setShowLoading(false);
+          setShowFinalCard(true);
+        }, 800);
+      }, remainingMs);
+
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
       setError(message);
       setSubmitting(false);
+      setShowLoading(false);
     }
   };
+
+  /* ================================================================ */
+  /*  Resume prompt — pick up where you left off                       */
+  /* ================================================================ */
+  if (showResumePrompt) {
+    const answeredCount = savedAnswersCacheRef.current?.filter((a) => a !== null).length || 0;
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: C.sand,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        overflowX: "hidden", width: "100%", maxWidth: "100vw",
+      }}>
+        <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
+        <div style={{ maxWidth: 420, padding: "0 24px", textAlign: "center" }}>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 8v4l3 3" stroke={C.purple} strokeWidth="2" strokeLinecap="round" />
+              <circle cx="12" cy="12" r="9" stroke={C.purple} strokeWidth="2" />
+            </svg>
+          </div>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
+            Welcome back
+          </h2>
+          <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
+            You have {answeredCount} of 6 questions answered from a recent session. Would you like to pick up where you left off?
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <button
+              onClick={handleResumeContinue}
+              style={{
+                height: 48, borderRadius: 12,
+                background: C.purple, color: C.white,
+                fontSize: 15, fontWeight: 600, border: "none",
+                cursor: "pointer", fontFamily: sans,
+                boxShadow: "0 4px 16px rgba(75,63,174,0.25)",
+              }}
+            >
+              Continue where I left off
+            </button>
+            <button
+              onClick={handleResumeStartFresh}
+              style={{
+                height: 44, borderRadius: 10,
+                background: "none", color: C.muted,
+                fontSize: 14, fontWeight: 500, border: "1px solid rgba(14,26,43,0.10)",
+                cursor: "pointer", fontFamily: sans,
+              }}
+            >
+              Start fresh
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  /* ================================================================ */
+  /*  Final card — what's included before report                       */
+  /* ================================================================ */
+  if (showFinalCard) {
+    const planKey = (() => {
+      try {
+        const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
+        return ps.plan_key || "free";
+      } catch { return "free"; }
+    })();
+
+    const handleFinalContinue = () => {
+      if (planKey === "free") {
+        router.push("/free-score");
+      } else {
+        setShowFinalCard(false);
+        setShowReveal(true);
+      }
+    };
+
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: C.sand,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        overflowX: "hidden", width: "100%", maxWidth: "100vw",
+      }}>
+        <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
+        <div style={{
+          maxWidth: 480, width: "100%", padding: mobile ? "0 20px" : "0 24px", textAlign: "left",
+          opacity: finalCardPhase >= 0 ? 1 : 0,
+          transform: finalCardPhase >= 0 ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 500ms ease, transform 500ms ease",
+        }}>
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: 28 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: C.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>
+              Assessment Complete
+            </div>
+            <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
+              Your report is ready
+            </h2>
+            {assessmentTitle && (
+              <p style={{ fontSize: 14, color: C.muted }}>{assessmentTitle}</p>
+            )}
+          </div>
+
+          {/* Included bullets */}
+          <div style={{
+            background: C.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)",
+            padding: mobile ? "20px 18px" : "24px 24px", marginBottom: 24,
+            opacity: finalCardPhase >= 1 ? 1 : 0,
+            transform: finalCardPhase >= 1 ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 400ms ease 200ms, transform 400ms ease 200ms",
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 14 }}>
+              Included in your report
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {INCLUDED_BULLETS.map((bullet, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
+                    <path d="M3 8L6.5 11.5L13 4.5" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span style={{ fontSize: 14, color: C.navy, lineHeight: 1.5 }}>{bullet}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div style={{
+            textAlign: "center",
+            opacity: finalCardPhase >= 2 ? 1 : 0,
+            transform: finalCardPhase >= 2 ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity 400ms ease 400ms, transform 400ms ease 400ms",
+          }}>
+            <button
+              onClick={handleFinalContinue}
+              style={{
+                width: "100%", height: 52, borderRadius: 12,
+                background: C.purple, color: C.white,
+                fontSize: 16, fontWeight: 600, border: "none",
+                cursor: "pointer", fontFamily: sans,
+                boxShadow: "0 6px 20px rgba(75,63,174,0.25)",
+                transition: "background 180ms ease",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#3d32a0"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = C.purple; }}
+            >
+              View Your Results &rarr;
+            </button>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.25)", marginTop: 12, letterSpacing: "0.04em" }}>
+              Deterministic scoring &middot; Model RP-2.0
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   /* ================================================================ */
   /*  Score Reveal — the "aha" moment                                  */
@@ -724,17 +983,19 @@ export default function DiagnosticPage() {
     const bandMessage = BAND_MESSAGES[revealBand] || "";
 
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <style>{`
-          @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        `}</style>
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999, background: C.sand,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        overflowX: "hidden", width: "100%", maxWidth: "100vw",
+      }}>
+        <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }` }} />
         <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
         <div style={{ textAlign: "center", maxWidth: 480, padding: "0 24px", position: "relative", zIndex: 1 }}>
 
           {/* Score number — counts up with pulse on reveal */}
           <div style={{ marginBottom: 8, animation: revealPhase >= 1 ? "revealPulse 0.6s ease-out" : "none" }}>
-            <span id="reveal-score-num" style={{ fontSize: 96, fontWeight: 200, color: C.navy, letterSpacing: "-0.05em", lineHeight: 1, fontFamily: mono }}>0</span>
-            <span style={{ fontSize: 28, fontWeight: 300, color: "rgba(14,26,43,0.20)", marginLeft: 4 }}>/100</span>
+            <span id="reveal-score-num" style={{ fontSize: mobile ? 72 : 96, fontWeight: 200, color: C.navy, letterSpacing: "-0.05em", lineHeight: 1, fontFamily: mono }}>0</span>
+            <span style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: "rgba(14,26,43,0.20)", marginLeft: 4 }}>/100</span>
           </div>
 
           {/* Band name — fades in */}
@@ -755,7 +1016,7 @@ export default function DiagnosticPage() {
           {/* Gap + message — fades in */}
           <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 8 }}>
             {nextBand && (
-              <p style={{ fontSize: 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
+              <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
                 {gap} points from {nextBand} Stability
               </p>
             )}
@@ -764,10 +1025,10 @@ export default function DiagnosticPage() {
             </p>
           </div>
 
-          {/* Purchase validation line — Change 5 */}
+          {/* Purchase validation line */}
           <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transition: "opacity 600ms ease", marginBottom: 8 }}>
             <p style={{ fontSize: 13, color: "rgba(14,26,43,0.30)", letterSpacing: "0.02em", margin: "0 0 8px" }}>
-              Analyzed across 6 structural dimensions. Scored by Model RP-2.0.
+              Analyzed across 6 structural dimensions. Deterministic scoring.
             </p>
           </div>
 
@@ -778,17 +1039,17 @@ export default function DiagnosticPage() {
           <div style={{ opacity: revealPhase >= 3 ? 1 : 0, transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease" }}>
             <button
               onClick={() => router.push("/dashboard")}
-              style={{ padding: "16px 40px", borderRadius: 12, backgroundColor: C.navy, border: "none", color: C.sandText, fontSize: 17, fontWeight: 600, cursor: "pointer", fontFamily: sans, transition: "background-color 200ms", boxShadow: "0 4px 20px rgba(14,26,43,0.15)" }}
+              style={{ padding: mobile ? "14px 32px" : "16px 40px", borderRadius: 12, backgroundColor: C.navy, border: "none", color: C.sandText, fontSize: mobile ? 15 : 17, fontWeight: 600, cursor: "pointer", fontFamily: sans, transition: "background-color 200ms", boxShadow: "0 4px 20px rgba(14,26,43,0.15)" }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#1a2540"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = C.navy; }}
             >
-              Enter Your Command Center →
+              Enter Your Command Center &rarr;
             </button>
           </div>
 
           {/* Model watermark */}
           <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em" }}>
-            RUNPAYWAY&#8482; MODEL RP-2.0
+            RUNPAYWAY&#8482;
           </div>
         </div>
       </div>
@@ -800,16 +1061,18 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showLoading) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <style>{`
-          @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }
-        `}</style>
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999, background: C.sand,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        overflowX: "hidden", width: "100%", maxWidth: "100vw",
+      }}>
+        <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }` }} />
 
         {/* Quote — the hero of this page */}
-        <div style={{ maxWidth: 520, padding: "0 32px", textAlign: "center" }}>
-          <div style={{ minHeight: 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ maxWidth: 520, padding: mobile ? "0 20px" : "0 32px", textAlign: "center", width: "100%" }}>
+          <div style={{ minHeight: mobile ? 120 : 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 500ms ease" }}>
-              <p style={{ fontSize: 22, fontWeight: 300, color: C.navy, lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
+              <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: C.navy, lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
                 &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
               </p>
               <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", color: "rgba(75,63,174,0.45)" }}>
@@ -842,7 +1105,13 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReview) {
     return (
-      <div style={{ position: "fixed", inset: 0, zIndex: 9999, background: C.sand, overflowY: "auto", opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out" }}>
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999, background: C.sand,
+        overflowY: "auto", overflowX: "hidden",
+        width: "100%", maxWidth: "100vw",
+        opacity: reviewExiting ? 0 : 1, transition: "opacity 400ms ease-out",
+      }}>
+      <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
       {showOverlay && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
@@ -850,6 +1119,7 @@ export default function DiagnosticPage() {
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
           animation: "diagFadeIn 300ms ease-out",
+          overflowX: "hidden",
         }}>
           <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
           <Image
@@ -867,12 +1137,12 @@ export default function DiagnosticPage() {
         </div>
       )}
       {/* Dark branded header */}
-      <div style={{ background: C.navy, padding: "20px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
+      <div style={{ background: C.navy, padding: mobile ? "14px 16px" : "16px 24px", textAlign: "center" }}>
+        <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
           Income Stability Score&#8482; &middot; Model RP-2.0
         </div>
       </div>
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "24px 16px 40px" : "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
@@ -882,7 +1152,7 @@ export default function DiagnosticPage() {
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
           </div>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
+          <h2 style={{ fontSize: mobile ? 18 : 22, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
             Confirm before we generate your score
           </h2>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6 }}>
@@ -901,8 +1171,8 @@ export default function DiagnosticPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 16,
-                  padding: "18px 20px",
+                  gap: mobile ? 12 : 16,
+                  padding: mobile ? "14px 14px" : "18px 20px",
                   borderRadius: 12,
                   border: "1px solid rgba(14,26,43,0.06)",
                   background: C.white,
@@ -920,11 +1190,11 @@ export default function DiagnosticPage() {
                   display: "flex", alignItems: "center", justifyContent: "center",
                   fontSize: 13, fontWeight: 700, flexShrink: 0,
                 }}>{question.number}</div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 2 }}>
                     {question.title}
                   </div>
-                  <div style={{ fontSize: 13, color: C.muted }}>
+                  <div style={{ fontSize: 13, color: C.muted, overflow: "hidden", textOverflow: "ellipsis" }}>
                     {selectedOption?.text || "Not answered"}
                   </div>
                 </div>
@@ -936,7 +1206,7 @@ export default function DiagnosticPage() {
           })}
         </div>
 
-        <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center", justifyContent: mobile ? "center" : "space-between", flexDirection: mobile ? "column-reverse" : "row" }}>
           <button
             onClick={() => { setShowReview(false); setCurrentQuestion(5); }}
             style={{ fontSize: 13, fontWeight: 500, color: C.muted, background: "none", border: "none", cursor: "pointer", padding: "8px 0" }}
@@ -955,6 +1225,7 @@ export default function DiagnosticPage() {
               cursor: !allAnswered || submitting ? "not-allowed" : "pointer",
               boxShadow: allAnswered && !submitting ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
               transition: "background 180ms ease",
+              width: mobile ? "100%" : "auto",
             }}
           >
             <span className="tick tick-white" />
@@ -980,14 +1251,19 @@ export default function DiagnosticPage() {
       position: "fixed", inset: 0, zIndex: 9999,
       background: C.sand,
       overflowY: "auto",
+      overflowX: "hidden",
+      width: "100%",
+      maxWidth: "100vw",
       WebkitOverflowScrolling: "touch",
     }}>
+    <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
     {showOverlay && (
       <div style={{
         position: "fixed", inset: 0, zIndex: 10000,
         background: C.white,
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
+        overflowX: "hidden",
         animation: "diagFadeIn 300ms ease-out",
       }}>
         <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
@@ -1006,15 +1282,12 @@ export default function DiagnosticPage() {
       </div>
     )}
     {/* Dark branded header */}
-    <div style={{ background: C.navy, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
+    <div style={{ background: C.navy, padding: mobile ? "14px 16px" : "16px 24px", textAlign: "center" }}>
+      <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
         Income Stability Score&#8482;
       </div>
-      <div style={{ fontSize: 13, fontWeight: 500, color: C.sandLight }}>
-        Model RP-2.0
-      </div>
     </div>
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "20px 16px 40px" : "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
       {/* Step breadcrumb */}
       <div style={{ marginBottom: 16, marginTop: 4 }}>
         <StepBreadcrumb activeStep={2} completedSteps={[1]} />
@@ -1028,7 +1301,7 @@ export default function DiagnosticPage() {
       )}
 
       {/* Top bar — factor label + progress */}
-      <div style={{ marginBottom: 28 }}>
+      <div style={{ marginBottom: mobile ? 20 : 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>
@@ -1042,8 +1315,6 @@ export default function DiagnosticPage() {
             <span style={{ fontSize: 13, color: C.light, fontFeatureSettings: "'tnum'" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
-            <span style={{ fontSize: 13, color: "rgba(14,26,43,0.10)" }}>|</span>
-            <span style={{ fontSize: 13, color: C.light }}></span>
           </div>
         </div>
 
@@ -1088,7 +1359,7 @@ export default function DiagnosticPage() {
           background: C.white,
           borderRadius: 16,
           border: "1px solid rgba(14,26,43,0.06)",
-          padding: "32px 28px",
+          padding: mobile ? "24px 18px" : "32px 28px",
           flex: 1,
           display: "flex",
           flexDirection: "column",
@@ -1098,12 +1369,12 @@ export default function DiagnosticPage() {
         }}
       >
         {/* Factor title */}
-        <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+        <h2 style={{ fontSize: mobile ? 18 : 20, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
           {q.title}
         </h2>
 
         {/* Question prompt */}
-        <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 8 }}>
+        <p style={{ fontSize: mobile ? 14 : 15, color: C.muted, lineHeight: 1.7, marginBottom: 8 }}>
           {q.prompt}
         </p>
 
@@ -1136,15 +1407,14 @@ export default function DiagnosticPage() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: 16,
-                  padding: "16px 20px",
+                  gap: mobile ? 12 : 16,
+                  padding: mobile ? "14px 14px" : "16px 20px",
                   borderRadius: 12,
                   border: `1px solid ${isSelected ? C.purple : "rgba(14,26,43,0.08)"}`,
                   background: isSelected ? "rgba(75,63,174,0.04)" : C.white,
                   cursor: transitioning ? "default" : "pointer",
                   textAlign: "left",
                   transition: "border-color 160ms ease, background 160ms ease, transform 120ms ease",
-                  transform: isSelected ? "scale(1)" : "scale(1)",
                   width: "100%",
                   pointerEvents: transitioning ? "none" : "auto",
                   touchAction: "manipulation",
@@ -1172,7 +1442,7 @@ export default function DiagnosticPage() {
                 </div>
 
                 {/* Option text */}
-                <span style={{ fontSize: 15, fontWeight: isSelected ? 600 : 400, color: isSelected ? C.navy : C.muted, transition: "color 160ms ease" }}>
+                <span style={{ fontSize: mobile ? 14 : 15, fontWeight: isSelected ? 600 : 400, color: isSelected ? C.navy : C.muted, transition: "color 160ms ease" }}>
                   {opt.text}
                 </span>
 
@@ -1236,8 +1506,8 @@ export default function DiagnosticPage() {
               disabled={selected === null}
               style={{
                 height: 44,
-                paddingLeft: 24,
-                paddingRight: 24,
+                paddingLeft: mobile ? 20 : 24,
+                paddingRight: mobile ? 20 : 24,
                 borderRadius: 10,
                 background: selected === null ? "rgba(14,26,43,0.08)" : C.navy,
                 color: selected === null ? C.light : C.white,
@@ -1266,8 +1536,8 @@ export default function DiagnosticPage() {
               disabled={!allAnswered}
               style={{
                 height: 48,
-                paddingLeft: 28,
-                paddingRight: 28,
+                paddingLeft: mobile ? 22 : 28,
+                paddingRight: mobile ? 22 : 28,
                 borderRadius: 12,
                 background: !allAnswered ? "rgba(14,26,43,0.08)" : C.purple,
                 color: !allAnswered ? C.light : C.white,
