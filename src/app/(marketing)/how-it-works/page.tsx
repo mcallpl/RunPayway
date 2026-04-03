@@ -56,7 +56,6 @@ function Hero() {
         <div style={{ maxWidth: 700, ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>How It Works</span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>Model RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
             The system behind{!m && <br />} your score.
@@ -86,17 +85,17 @@ function Process() {
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <div style={{ ...T.label, fontSize: 11, color: C.teal }}>Dimension 4 of 6</div>
-            <div style={{ fontSize: 10, fontFamily: mono, color: C.sandLight }}>Forward Revenue Visibility</div>
+            <div style={{ ...T.label, fontSize: 11, color: C.teal }}>Assessment</div>
+            <div style={{ fontSize: 10, fontFamily: mono, color: C.sandLight }}>6 dimensions</div>
           </div>
-          <div style={{ fontSize: m ? 14 : 15, fontWeight: 600, color: C.sandText, marginBottom: 5, lineHeight: 1.35 }}>How many months of future income are currently secured under signed or enforceable agreements?</div>
-          <div style={{ fontSize: 10, color: C.sandLight, marginBottom: 12, fontStyle: "italic" }}>Only include income that is already contractually committed.</div>
+          <div style={{ fontSize: m ? 14 : 15, fontWeight: 600, color: C.sandText, marginBottom: 5, lineHeight: 1.35 }}>Each question targets a specific structural dimension of your income.</div>
+          <div style={{ fontSize: 10, color: C.sandLight, marginBottom: 12, fontStyle: "italic" }}>Multiple-choice format. No financial documents required.</div>
           {[
-            { letter: "A", text: "Less than 1 month" },
-            { letter: "B", text: "1\u20132 months" },
-            { letter: "C", text: "3\u20135 months", selected: true },
-            { letter: "D", text: "6\u201311 months" },
-            { letter: "E", text: "12 or more months" },
+            { letter: "A", text: "Answer option A" },
+            { letter: "B", text: "Answer option B" },
+            { letter: "C", text: "Answer option C", selected: true },
+            { letter: "D", text: "Answer option D" },
+            { letter: "E", text: "Answer option E" },
           ].map((opt) => (
             <div key={opt.letter} style={{ display: "flex", gap: 8, alignItems: "center", padding: "8px 10px", marginBottom: 4, borderRadius: 6, backgroundColor: opt.selected ? "rgba(31,109,122,0.15)" : C.sandBorder, border: opt.selected ? `1px solid ${C.teal}` : `1px solid ${C.sandBorder}` }}>
               <span style={{ fontFamily: mono, fontSize: 11, fontWeight: 600, color: opt.selected ? C.teal : C.sandLight, minWidth: 12 }}>{opt.letter}</span>
@@ -109,18 +108,18 @@ function Process() {
     {
       num: "02",
       title: "Deterministic scoring",
-      body: "Model RP-2.0 computes factor scores across each dimension, applies cross-factor interaction rules that capture how weaknesses compound, and produces a single score from 0 to 100. Structure block (60%) plus Stability block (40%).",
+      body: "The model scores each dimension independently, evaluates how they interact, and produces a single score from 0 to 100. Same inputs always produce the same score.",
       screen: (
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
             <div style={{ ...T.label, fontSize: 11, color: C.sandLight }}>Scoring Process</div>
-            <div style={{ fontSize: 10, fontFamily: mono, color: C.teal }}>RP-2.0</div>
+            <div style={{ fontSize: 10, fontFamily: mono, color: C.teal }}>Deterministic</div>
           </div>
           {[
-            { label: "Factor scoring", sub: "Six dimensions evaluated independently", done: true },
-            { label: "Cross-factor interactions", sub: "Penalty and bonus rules applied", done: true },
-            { label: "Score composition", sub: "Structure (60%) + Stability (40%)", done: true },
-            { label: "Structural diagnosis", sub: "Constraints, fragility, sensitivity", done: false },
+            { label: "Dimension scoring", sub: "Each dimension evaluated independently", done: true },
+            { label: "Interaction analysis", sub: "Cross-dimension relationships assessed", done: true },
+            { label: "Score composition", sub: "Weighted combination into single score", done: true },
+            { label: "Structural diagnosis", sub: "Constraints and vulnerabilities identified", done: false },
           ].map((step, i) => (
             <div key={step.label} style={{ marginBottom: 10 }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -249,12 +248,12 @@ function Dimensions() {
   const m = useMobile();
 
   const dims = [
-    { title: "Recurrence", key: "income_persistence_pct", desc: "Income that continues from existing agreements without new acquisition. Measures how much of your revenue renews automatically.", weight: "15", block: "Structure" },
-    { title: "Concentration", key: "largest_source_pct", desc: "Reliance on any single source. Measures what percentage of total income flows through the largest client or channel.", weight: "10", block: "Structure" },
-    { title: "Diversification", key: "source_diversity_count", desc: "Number of independent income streams. Measures how many separate sources each contribute meaningful revenue.", weight: "10", block: "Structure" },
-    { title: "Forward Visibility", key: "forward_secured_pct", desc: "Income secured ahead of time. Measures how many months of future revenue are already contractually committed.", weight: "15", block: "Structure" },
-    { title: "Earnings Consistency", key: "income_variability_level", desc: "Variation in monthly earnings. Measures how predictable income is from month to month over the prior 12 months.", weight: "10", block: "Stability" },
-    { title: "Labor Independence", key: "labor_dependence_pct", desc: "Income that continues without active work. Measures what percentage would persist through a 90-day work interruption.", weight: "20", block: "Stability" },
+    { title: "Recurrence", desc: "Income that continues from existing agreements without new acquisition. Measures how much of your revenue renews automatically.", block: "Structure" },
+    { title: "Concentration", desc: "Reliance on any single source. Measures what percentage of total income flows through the largest client or channel.", block: "Structure" },
+    { title: "Diversification", desc: "Number of independent income streams. Measures how many separate sources each contribute meaningful revenue.", block: "Structure" },
+    { title: "Forward Visibility", desc: "Income secured ahead of time. Measures how many months of future revenue are already contractually committed.", block: "Structure" },
+    { title: "Earnings Consistency", desc: "Variation in monthly earnings. Measures how predictable income is from month to month.", block: "Stability" },
+    { title: "Labor Independence", desc: "Income that continues without active work. Measures what percentage would persist through a work interruption.", block: "Stability" },
   ];
 
   return (
@@ -268,26 +267,14 @@ function Dimensions() {
             The dimensions.
           </h2>
           <p style={{ ...body(m), color: C.muted }}>
-            Each dimension is scored independently using fixed, versioned definitions. The model then applies cross-factor interaction rules to capture how weaknesses compound.
+            Each dimension is scored independently using fixed, versioned definitions. The model then evaluates how dimensions interact before producing your final score.
           </p>
-        </div>
-
-        {/* 60/40 Framework header */}
-        <div style={{ display: "flex", gap: m ? 8 : 12, marginBottom: m ? 24 : 32, ...fadeIn(visible, 100) }}>
-          <div style={{ flex: 6, padding: "10px 16px", borderRadius: 8, backgroundColor: C.sand, textAlign: "center" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: C.navy }}>Structure</span>
-            <span style={{ fontFamily: mono, fontSize: 12, color: C.purple, marginLeft: 6 }}>60%</span>
-          </div>
-          <div style={{ flex: 4, padding: "10px 16px", borderRadius: 8, backgroundColor: C.sand, textAlign: "center" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: C.navy }}>Stability</span>
-            <span style={{ fontFamily: mono, fontSize: 12, color: C.purple, marginLeft: 6 }}>40%</span>
-          </div>
         </div>
 
         {/* Dimension grid */}
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16 }}>
           {dims.map((dim, i) => (
-            <div key={dim.key} style={{
+            <div key={dim.title} style={{
               padding: m ? "20px 18px" : "24px 24px",
               borderRadius: 12,
               border: `1px solid ${C.softBorder}`,
@@ -296,21 +283,17 @@ function Dimensions() {
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
                 <span style={{ fontSize: m ? 17 : 18, fontWeight: 600, color: C.navy, borderBottom: `1.5px dotted ${C.teal}`, paddingBottom: 1 }}>{dim.title}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 11, color: C.light }}>{dim.block}</span>
-                  <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.purple }}>{dim.weight}pts</span>
-                </div>
+                <span style={{ fontSize: 11, fontWeight: 500, color: C.light }}>{dim.block}</span>
               </div>
               <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{dim.desc}</p>
             </div>
           ))}
         </div>
 
-        {/* Continuity + Quality note */}
+        {/* Total note */}
         <div style={{ marginTop: 24, padding: "16px 20px", borderRadius: 10, backgroundColor: C.sand, ...fadeIn(visible, 500) }}>
-          <div style={{ fontSize: 14, fontWeight: 500, color: C.navy, marginBottom: 4 }}>Additional computed factors</div>
           <p style={{ ...T.meta, color: C.muted, margin: 0 }}>
-            <span style={{ fontWeight: 500 }}>Continuity months</span> — derived from persistence, forward visibility, labor independence, and concentration. <span style={{ fontWeight: 500 }}>Income quality</span> — scored from optional extended inputs (contract duration, cancellation risk, platform dependency). Total possible: <span style={{ fontFamily: mono }}>100</span> points.
+            These six dimensions, along with cross-dimension interactions, produce a single score from <span style={{ fontFamily: mono }}>0</span> to <span style={{ fontFamily: mono }}>100</span>.
           </p>
         </div>
       </div>
@@ -320,27 +303,19 @@ function Dimensions() {
 
 
 /* ================================================================== */
-/* 4. THE SPECIMEN — Score decomposition of 72                         */
+/* 4. WHAT YOUR SCORE TELLS YOU                                        */
 /* ================================================================== */
 function Specimen() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
-  const factors = [
-    { name: "Persistence", value: 11, max: 15, block: "structure" },
-    { name: "Diversification", value: 5, max: 10, block: "structure" },
-    { name: "Forward Security", value: 8, max: 15, block: "structure" },
-    { name: "Concentration", value: 6, max: 10, block: "structure" },
-    { name: "Quality", value: 5, max: 10, block: "structure" },
-    { name: "Labor Independence", value: 14, max: 20, block: "stability" },
-    { name: "Variability", value: 10, max: 10, block: "stability" },
-    { name: "Continuity", value: 6, max: 10, block: "stability" },
+  const outputs = [
+    { label: "Your score", desc: "A single number from 0 to 100 representing the structural integrity of your income." },
+    { label: "Stability band", desc: "Where your score falls across four classification bands, from Limited to High Stability." },
+    { label: "Primary constraint", desc: "The single biggest structural weakness holding your score back." },
+    { label: "Stress test", desc: "What happens to your score if your largest income source disappears." },
+    { label: "Distance to next band", desc: "How many points separate you from the next stability classification." },
   ];
-
-  const structureTotal = factors.filter(f => f.block === "structure").reduce((s, f) => s + f.value, 0);
-  const stabilityTotal = factors.filter(f => f.block === "stability").reduce((s, f) => s + f.value, 0);
-  const interactionAdj = +3;
-  const finalScore = structureTotal + stabilityTotal + interactionAdj;
 
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
@@ -350,65 +325,30 @@ function Specimen() {
         </div>
         <div style={{ marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 12 }}>
-            How a score of <span style={{ fontFamily: mono }}>72</span> is built.
+            What your score tells you.
           </h2>
           <p style={{ ...body(m), color: C.sandMuted, maxWidth: 520 }}>
-            Every score is the sum of factor scores, adjusted by cross-factor interaction rules. Here is the exact composition.
+            Every assessment produces these outputs instantly. The free result includes all five.
           </p>
         </div>
 
-        {/* Factor bars */}
-        <div style={{ marginBottom: 32, ...fadeIn(visible, 150) }}>
-          {factors.map((f, i) => {
-            const isFirst = i === 0;
-            const blockChange = i > 0 && factors[i - 1].block !== f.block;
-            return (
-              <div key={f.name}>
-                {(isFirst || blockChange) && (
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, marginTop: blockChange ? 20 : 0, paddingBottom: 6, borderBottom: `1px solid ${C.sandBorder}` }}>
-                    <span style={{ ...T.label, fontSize: 11, color: C.sandLight }}>{f.block === "structure" ? "Structure Block" : "Stability Block"}</span>
-                    <span style={{ fontFamily: mono, fontSize: 11, color: C.sandLight }}>{f.block === "structure" ? "60 pts max" : "40 pts max"}</span>
-                  </div>
-                )}
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: C.sandMuted, minWidth: m ? 100 : 140 }}>{f.name}</span>
-                  <div style={{ flex: 1, height: 6, backgroundColor: C.sandBorder, borderRadius: 3, overflow: "hidden" }}>
-                    <div style={{ height: "100%", backgroundColor: C.teal, borderRadius: 3, width: `${(f.value / f.max) * 100}%` }} />
-                  </div>
-                  <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 600, color: C.sandText, minWidth: 44, textAlign: "right" }}>{f.value}/{f.max}</span>
-                </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, ...fadeIn(visible, 150) }}>
+          {outputs.map((item, i) => (
+            <div key={item.label} style={{
+              display: "flex", gap: 16, alignItems: "flex-start",
+              padding: m ? "16px 16px" : "20px 24px",
+              borderRadius: 10,
+              backgroundColor: "rgba(255,255,255,0.04)",
+              border: `1px solid ${C.sandBorder}`,
+              ...fadeIn(visible, 150 + i * 60),
+            }}>
+              <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: C.teal, minWidth: 20, marginTop: 2 }}>{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 600, color: C.sandText, marginBottom: 4 }}>{item.label}</div>
+                <p style={{ ...bodySm(m), color: C.sandMuted, margin: 0 }}>{item.desc}</p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Totals */}
-        <div style={{ borderTop: `1px solid ${C.sandBorder}`, paddingTop: 20, ...fadeIn(visible, 300) }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontSize: 14, color: C.sandMuted }}>Structure subtotal</span>
-            <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.sandText }}>{structureTotal}/60</span>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontSize: 14, color: C.sandMuted }}>Stability subtotal</span>
-            <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.sandText }}>{stabilityTotal}/40</span>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-            <span style={{ fontSize: 14, color: C.sandMuted }}>Cross-factor interaction bonus</span>
-            <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.teal }}>+{interactionAdj}</span>
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingTop: 16, borderTop: `1px solid ${C.sandBorder}` }}>
-            <span style={{ fontSize: 16, fontWeight: 600, color: C.sandText }}>Income Stability Score&#8482;</span>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <span style={{ fontFamily: mono, fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1 }}>{finalScore}</span>
-              <span style={{ fontFamily: mono, fontSize: 14, color: C.sandLight }}>/100</span>
             </div>
-          </div>
-          <div style={{ textAlign: "right", marginTop: 6 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)" }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.bandEstablished }} />
-              <span style={{ fontSize: 12, fontWeight: 600, color: C.bandEstablished }}>Established Stability</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -501,12 +441,11 @@ function Architecture() {
           <div style={{ ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 12, ...fadeIn(visible, 100) }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
               <span style={{ ...T.label, fontSize: 11, color: C.teal }}>Layer 1</span>
-              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.light, padding: "2px 6px", borderRadius: 3, border: `1px solid ${C.softBorder}` }}>RP-2.0</span>
             </div>
             <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>Deterministic Core</h3>
             <p style={{ ...bodySm(m), color: C.muted, marginBottom: 16 }}>Produces the score from structural inputs only. Same inputs, same score. No contextual input can alter it.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Constraint hierarchy", "Fragility analysis", "Sensitivity testing"].map(item => (
+              {["Score (0\u2013100)", "Band classification", "Structural diagnosis", "Stress testing"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
                   <span style={{ ...T.meta, color: C.navy }}>{item}</span>
@@ -519,12 +458,11 @@ function Architecture() {
           <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 12, backgroundColor: C.navy, ...fadeIn(visible, 200) }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
               <span style={{ ...T.label, fontSize: 11, color: C.teal }}>Layer 2</span>
-              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "2px 6px", borderRadius: 3, border: `1px solid ${C.sandBorder}` }}>OL-1.0</span>
             </div>
             <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: 10 }}>Outcome Layer</h3>
-            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>Applies operating structure, income model, and industry sector to improve explanation quality and action relevance. Does not change the score.</p>
+            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>Applies your operating context to improve explanation quality and action relevance. Does not change the score.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {["Industry scenario selection", "Action priority ordering", "Explanation language precision", "Benchmark framing", "Income model family profiles", "19 industry profiles"].map(item => (
+              {["Industry-specific scenarios", "Prioritized actions", "Plain English explanations", "Contextual benchmarks"].map(item => (
                 <div key={item} style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
                   <span style={{ ...T.meta, color: C.sandMuted }}>{item}</span>
