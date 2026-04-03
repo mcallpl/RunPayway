@@ -155,7 +155,7 @@ function Governance() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>04</span>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
         </div>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
@@ -178,7 +178,7 @@ function Governance() {
 
 
 /* ================================================================== */
-/* 6. VERIFICATION                                                     */
+/* 5. VERIFICATION                                                     */
 /* ================================================================== */
 function Verification() {
   const { ref, visible } = useInView();
@@ -188,7 +188,7 @@ function Verification() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.sandLight, fontFamily: mono }}>05</span>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.sandLight, fontFamily: mono }}>04</span>
         </div>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
@@ -222,7 +222,7 @@ function Verification() {
 
 
 /* ================================================================== */
-/* 7. WHO BUILT IT                                                     */
+/* 6. WHO BUILT IT                                                     */
 /* ================================================================== */
 function Origin() {
   const { ref, visible } = useInView();
@@ -232,7 +232,7 @@ function Origin() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>06</span>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>05</span>
         </div>
         <div style={{ ...fadeIn(visible) }}>
           <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
@@ -257,7 +257,7 @@ function Origin() {
 
 
 /* ================================================================== */
-/* 8. MODEL BADGE                                                      */
+/* 7. MODEL BADGE                                                      */
 /* ================================================================== */
 function ModelBadge() {
   const m = useMobile();
@@ -285,7 +285,7 @@ function ModelBadge() {
 
 
 /* ================================================================== */
-/* 9. CTA                                                              */
+/* 8. CTA                                                              */
 /* ================================================================== */
 function Cta() {
   const { ref, visible } = useInView();
