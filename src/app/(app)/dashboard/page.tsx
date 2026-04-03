@@ -1150,17 +1150,123 @@ function DashboardContent() {
             </div>
           </section>
 
-          {/* Stress + timing cards (separate) */}
+          {/* ──── MONITORING FEATURES — Score History + Factor Deltas + Benchmark Evolution ──── */}
+          {assessments.length >= 2 && (
+            <section style={{ marginBottom: 16, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>STABILITY MONITORING</div>
+              <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
+              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed."}</p>
+
+              {/* Score timeline visual */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: mobile ? 12 : 24, marginBottom: 24, padding: "20px 0" }}>
+                {assessments.slice().reverse().map((a, i) => {
+                  const isLatest = i === assessments.slice().reverse().length - 1;
+                  const aColor = bandColor(a.final_score);
+                  const barH = Math.max(40, (a.final_score / 100) * 140);
+                  return (
+                    <div key={i} style={{ flex: 1, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 11, color: B.taupe, marginBottom: 6 }}>
+                        {new Date(a.assessment_date_utc || a.issued_timestamp_utc).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                      </div>
+                      <div style={{ height: barH, backgroundColor: isLatest ? aColor : `${aColor}40`, borderRadius: 6, margin: "0 auto", width: mobile ? "100%" : 56, display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 8, transition: "height 600ms ease" }}>
+                        <span style={{ fontFamily: mono, fontSize: isLatest ? 20 : 16, fontWeight: isLatest ? 700 : 400, color: isLatest ? "#FFF" : aColor }}>{a.final_score}</span>
+                      </div>
+                      <div style={{ fontSize: 10, color: isLatest ? aColor : B.taupe, fontWeight: isLatest ? 600 : 400, marginTop: 4 }}>
+                        {i === 0 ? "First" : isLatest ? "Latest" : `#${i + 1}`}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Score delta summary */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const totalDelta = latest.final_score - first.final_score;
+                return (
+                  <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" as const }}>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>FIRST SCORE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.taupe }}>{first.final_score}</div>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>LATEST SCORE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.navy }}>{latest.final_score}</div>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: totalDelta > 0 ? `${B.teal}06` : totalDelta < 0 ? "rgba(155,44,44,0.04)" : `${B.stone}`, border: `1px solid ${totalDelta > 0 ? `${B.teal}18` : totalDelta < 0 ? "rgba(155,44,44,0.10)" : B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe, marginBottom: 4 }}>TOTAL CHANGE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 600, color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe }}>{totalDelta > 0 ? "+" : ""}{totalDelta}</div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Factor-level deltas */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const fNi = first._v2?.normalized_inputs as Record<string, number> | undefined;
+                const lNi = latest._v2?.normalized_inputs as Record<string, number> | undefined;
+                if (!fNi || !lNi) return null;
+                const factors = [
+                  { key: "income_persistence_pct", label: "Recurrence" },
+                  { key: "largest_source_pct", label: "Concentration", invert: true },
+                  { key: "source_diversity_count", label: "Diversification" },
+                  { key: "forward_secured_pct", label: "Forward Visibility" },
+                  { key: "labor_dependence_pct", label: "Labor Independence", invert: true },
+                ];
+                return (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.navy, marginBottom: 12 }}>FACTOR-LEVEL CHANGES</div>
+                    {factors.map(f => {
+                      const fVal = (fNi[f.key] as number) ?? 0;
+                      const lVal = (lNi[f.key] as number) ?? 0;
+                      const rawDelta = lVal - fVal;
+                      const delta = f.invert ? -rawDelta : rawDelta;
+                      const direction = delta > 0 ? "improved" : delta < 0 ? "declined" : "unchanged";
+                      return (
+                        <div key={f.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
+                          <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{f.label}</span>
+                          <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: direction === "improved" ? B.teal : direction === "declined" ? B.red : B.taupe }}>
+                            {direction === "improved" ? "\u2191" : direction === "declined" ? "\u2193" : "\u2013"} {Math.abs(rawDelta) > 0 ? `${f.invert ? (rawDelta > 0 ? "\u2212" : "+") : (rawDelta > 0 ? "+" : "\u2212")}${Math.abs(Math.round(rawDelta))}` : "No change"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+
+              {/* Benchmark evolution */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const fBm = first._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                const lBm = latest._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                if (!fBm?.peer_percentile || !lBm?.peer_percentile) return null;
+                const pDelta = Math.round(lBm.peer_percentile - fBm.peer_percentile);
+                return (
+                  <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: pDelta > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${pDelta > 0 ? `${B.teal}15` : B.stone}` }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>PEER BENCHMARK EVOLUTION</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <span style={{ fontFamily: mono, fontSize: 18, color: B.taupe }}>{Math.round(fBm.peer_percentile)}th</span>
+                      <span style={{ color: B.taupe }}>→</span>
+                      <span style={{ fontFamily: mono, fontSize: 18, fontWeight: 600, color: B.navy }}>{Math.round(lBm.peer_percentile)}th</span>
+                      <span style={{ fontFamily: mono, fontSize: 15, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
+                    </div>
+                    <p style={{ fontSize: 13, color: B.muted, marginTop: 8, marginBottom: 0 }}>
+                      {pDelta > 0 ? "You are pulling ahead of your industry peers." : pDelta < 0 ? "Your relative position has declined." : "Your peer position is unchanged."}
+                    </p>
+                  </div>
+                );
+              })()}
+            </section>
+          )}
+
+          {/* Stress + timing cards */}
           <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
-              {assessments.length >= 2 && (() => { const diff = assessments[0].final_score - assessments[1].final_score; return (
-                <div style={{ padding: "20px 24px", border: `1px solid ${diff > 0 ? `${B.teal}18` : B.stone}`, borderRadius: 12, backgroundColor: B.surface, display: "flex", alignItems: "center", gap: 16 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe }}>HISTORY</div>
-                  <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: B.taupe }}>{assessments[1].final_score}</span><span style={{ color: B.taupe }}>→</span>
-                  <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: B.navy }}>{assessments[0].final_score}</span>
-                  <span style={{ fontSize: 17, fontWeight: 600, fontFamily: mono, color: diff > 0 ? B.teal : diff < 0 ? B.red : B.taupe }}>{diff > 0 ? "+" : ""}{diff}</span>
-                </div>
-              ); })()}
 
               <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>STRESS RESILIENCE</div>
