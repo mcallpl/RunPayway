@@ -291,7 +291,7 @@ export default function MarketingLayout({
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/contact", label: t.nav.contact },
-    { href: "#footer", label: t.nav.more },
+    { href: "#footer", label: "More Links" },
   ];
 
   useEffect(() => {
@@ -368,7 +368,7 @@ export default function MarketingLayout({
                     style={{
                       fontSize: 15,
                       fontWeight: 500,
-                      color: "rgba(14,26,43,0.65)",
+                      color: "rgba(14,26,43,0.70)",
                       transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                       paddingBottom: 2,
                     }}
@@ -714,7 +714,7 @@ export default function MarketingLayout({
                 style={{ height: "auto" }}
               />
             </Link>
-            <div style={{ fontSize: 13, color: "rgba(14,26,43,0.40)", marginTop: 6 }}>
+            <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 6 }}>
               {t.footer.incomeStabilityScore}
             </div>
           </div>
@@ -744,7 +744,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -767,7 +767,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -792,7 +792,7 @@ export default function MarketingLayout({
                   <Link
                     key={link.label}
                     href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -806,7 +806,7 @@ export default function MarketingLayout({
             <div>
               <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.enterprise}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <span style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4 }}>
+                <span style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4 }}>
                   {t.footer.forOrganizations}
                 </span>
                 {waitlistDone ? (
@@ -877,7 +877,7 @@ export default function MarketingLayout({
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", lineHeight: 1.4, transition: "color 160ms ease" }}
+                    style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
                   >
@@ -892,7 +892,7 @@ export default function MarketingLayout({
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
           {/* Language availability */}
-          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.40)", textAlign: "center", marginBottom: 12 }}>
+          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", textAlign: "center", marginBottom: 12 }}>
             Available in: English • <span style={{ opacity: 0.6 }}>Español (Q3 2026)</span> • <span style={{ opacity: 0.6 }}>Português (Q4 2026)</span> • <span style={{ opacity: 0.6 }}>हिन्दी (Q4 2026)</span>
           </div>
 

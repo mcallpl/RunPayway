@@ -963,7 +963,7 @@ export default function DiagnosticPage() {
         </div>
 
         {error && (
-          <div style={{ marginTop: 12, padding: "12px 16px", borderRadius: 10, background: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
+          <div role="alert" aria-live="polite" style={{ marginTop: 12, padding: "12px 16px", borderRadius: 10, background: "rgba(220,38,38,0.06)", border: "1px solid rgba(220,38,38,0.12)" }}>
             <p style={{ fontSize: 13, color: "#DC2626" }}>{error}</p>
           </div>
         )}
@@ -1123,12 +1123,14 @@ export default function DiagnosticPage() {
         )}
 
         {/* Options */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, flex: 1 }}>
+        <div role="radiogroup" aria-label={q.title} style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16, flex: 1 }}>
           {q.options.map((opt) => {
             const isSelected = selected === opt.letter;
             return (
               <button
                 key={opt.letter}
+                role="radio"
+                aria-checked={isSelected}
                 onClick={() => !transitioning && selectAnswer(opt.letter)}
                 disabled={transitioning}
                 style={{
@@ -1285,6 +1287,8 @@ export default function DiagnosticPage() {
 
       {error && (
         <div
+          role="alert"
+          aria-live="polite"
           style={{
             marginTop: 16,
             padding: "14px 20px",

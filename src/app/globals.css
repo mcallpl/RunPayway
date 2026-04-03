@@ -14,6 +14,20 @@
   box-sizing: border-box;
 }
 
+/* ============================================================
+   WCAG 2.1 AA — Focus Visible (2.4.7)
+   Global focus indicator for all interactive elements.
+   Uses :focus-visible to only show on keyboard navigation.
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid #4B3FAE !important;
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   color: var(--rp-navy);

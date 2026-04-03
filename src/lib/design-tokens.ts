@@ -13,8 +13,8 @@ export const C = {
   sand: "#F4F1EA",
   white: "#FFFFFF",
   amber: "#C49A6C",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
+  muted: "rgba(14,26,43,0.62)",
+  light: "rgba(14,26,43,0.46)",
   border: "rgba(14,26,43,0.08)",
   softBorder: "#EAEAEA",
 
@@ -26,8 +26,8 @@ export const C = {
 
   // Dark palette (for navy sections)
   sandText: "#F4F1EA",
-  sandMuted: "rgba(244,241,234,0.55)",
-  sandLight: "rgba(244,241,234,0.38)",
+  sandMuted: "rgba(244,241,234,0.65)",
+  sandLight: "rgba(244,241,234,0.50)",
   sandBorder: "rgba(255,255,255,0.08)",
 } as const;
 

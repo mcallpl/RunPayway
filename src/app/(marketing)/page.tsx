@@ -253,7 +253,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
               {INDUSTRIES.map(ind => (
                 <button
                   role="option"
-                  aria-selected={false}
+                  aria-selected={selected?.name === ind.name}
                   key={ind.name}
                   onClick={() => { setSelected(ind); setOpen(false); }}
                   style={{
@@ -754,13 +754,15 @@ function ConcentrationHook() {
       paddingLeft: px(m), paddingRight: px(m),
     }}>
       <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
-        <p style={{
+        <label htmlFor="concentration-slider" style={{
+          display: "block",
           fontSize: m ? 17 : 19, fontWeight: 500, lineHeight: 1.5,
           color: C.navy, marginBottom: sp(3),
         }}>
           What percentage of your income comes from your single largest source?
-        </p>
+        </label>
         <input
+          id="concentration-slider"
           type="range" min="0" max="100" value={concentration}
           onChange={e => setConcentration(Number(e.target.value))}
           aria-label="Income concentration percentage"
