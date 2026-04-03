@@ -708,7 +708,7 @@ export const en: Translations = {
     cat6Title: "Pricing and Plans",
     cat6Q1: "What is the difference between the free score and the full report?",
     cat6A1P1: "The free score gives you your number, stability band, peer percentile, and one key insight — at no cost.",
-    cat6A1P2: "The RunPayway\u2122 Diagnostic Report ($69) adds an interactive stability simulator, income runway estimate, risk scenarios, action plan with specific targets and ready-to-use scripts, tradeoff analysis, predictive warnings, and an advisor discussion guide. RunPayway\u2122 Stability Monitoring ($149/year) includes three full assessments over 12 months with portal access.",
+    cat6A1P2: "The RunPayway\u2122 Diagnostic Report ($69) adds a 4-page structural diagnostic with PressureMap\u2122 intelligence, ranked disruption scenarios, highest-leverage actions with projected score impact, a 30-day execution roadmap, and lifetime access to the Command Center with the stability simulator. RunPayway\u2122 Stability Monitoring ($149/year) includes three full assessments over 12 months with Score History Timeline, factor-level delta tracking, benchmark evolution, and Monitoring Portal access.",
     cat6Q2: "Do I need an account?",
     cat6A2P1: "RunPayway\u2122 Stability Monitoring subscribers sign in with their email to access the Monitoring Portal. No password or access code required.",
     cat6A2P2: "Both Income Stability Score\u2122 and RunPayway\u2122 Diagnostic Report users receive their results immediately after completing the assessment \u2014 no account needed.",

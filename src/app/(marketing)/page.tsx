@@ -1123,32 +1123,6 @@ function ScoreDetermination() {
 }
 
 
-/* ================================================================== */
-/* PULL QUOTE STRIP                                                    */
-/* ================================================================== */
-function PullQuoteStrip() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <div ref={ref} style={{
-      backgroundColor: C.sand,
-      paddingTop: m ? sp(8) : sp(12), paddingBottom: m ? sp(8) : sp(12),
-      paddingLeft: px(m), paddingRight: px(m),
-      textAlign: "center",
-    }}>
-      <p style={{
-        fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.25, letterSpacing: "-0.02em",
-        color: C.navy, maxWidth: 700, margin: "0 auto",
-        ...fadeIn(visible),
-      }}>
-        Two people earning the same amount<br />can have completely different structural stability.
-      </p>
-    </div>
-  );
-}
-
 
 /* ================================================================== */
 /* SECTION 5 — SAME INCOME / DIFFERENT STABILITY                       */
@@ -1334,72 +1308,6 @@ function ProofSection() {
 }
 
 
-/* ================================================================== */
-/* SECTION 7 — WHAT PEOPLE DO INSTEAD                                  */
-/* ================================================================== */
-function WhatPeopleDoInstead() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  const rows = [
-    { label: "Measures income structure", gut: "no", acct: "no", bank: "no", rp: "yes" },
-    { label: "Quantifies concentration risk", gut: "no", acct: "sometimes", bank: "no", rp: "yes" },
-    { label: "Tests disruption scenarios", gut: "no", acct: "no", bank: "no", rp: "yes" },
-    { label: "Repeatable and version-locked", gut: "no", acct: "no", bank: "no", rp: "yes" },
-    { label: "Available in under 2 minutes", gut: "yes", acct: "no", bank: "no", rp: "yes" },
-  ];
-
-  const cellPad = `${sp(2)}px ${sp(1.5)}px`;
-  const headStyle: React.CSSProperties = { textAlign: "center", padding: cellPad, borderBottom: `2px solid ${C.softBorder}`, fontSize: 13, fontWeight: 500, color: C.light, letterSpacing: "0.06em", textTransform: "uppercase" };
-
-  return (
-    <section ref={ref} aria-label="How people evaluate income stability today" style={{
-      backgroundColor: C.white,
-      paddingTop: m ? sp(8) : sp(12), paddingBottom: m ? sp(8) : sp(12),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2) }}>
-            What People Do Instead
-          </h2>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", maxWidth: 520, margin: "0 auto" }}>
-            The alternative to RunPayway&#8482; is not another tool. It is guessing.
-          </p>
-        </div>
-
-        <div style={{ overflowX: "auto", ...fadeIn(visible, 150) }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 560 }}>
-            <thead>
-              <tr>
-                <th style={{ ...headStyle, textAlign: "left" }}>&nbsp;</th>
-                <th style={headStyle}>Gut Feeling</th>
-                <th style={headStyle}>Accountant</th>
-                <th style={headStyle}>Bank</th>
-                <th style={{ ...headStyle, color: C.navy, fontWeight: 600 }}>RunPayway</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr key={i}>
-                  <td style={{ textAlign: "left", padding: cellPad, borderBottom: `1px solid ${C.softBorder}`, fontSize: 15, fontWeight: 400, color: C.navy }}>{row.label}</td>
-                  {[row.gut, row.acct, row.bank, row.rp].map((val, j) => (
-                    <td key={j} style={{ textAlign: "center", padding: cellPad, borderBottom: `1px solid ${C.softBorder}` }}>
-                      {val === "yes" ? <span style={{ color: C.teal, fontSize: 14, fontWeight: 600 }}>Yes</span> :
-                       val === "sometimes" ? <span style={{ color: C.muted, fontSize: 13, fontStyle: "italic" }}>Sometimes</span> :
-                       <span style={{ color: C.light, fontSize: 14 }}>&mdash;</span>}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================== */
@@ -1801,10 +1709,8 @@ export default function LandingPage() {
         <WhyThisDidntExist />
         <ConcentrationHook />
         <ChallengeTheModel />
-        <WhatPeopleDoInstead />
         <HowItWorksSection />
         <ScoreDetermination />
-        <PullQuoteStrip />
         <SameIncomeDifferentStability />
         <ProofSection />
         <PricingSection />
