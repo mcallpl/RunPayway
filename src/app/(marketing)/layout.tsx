@@ -245,7 +245,7 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
 }
 
 /* Runtime mobile detection — bypasses CSS entirely */
-function useMobile(breakpoint = 768) {
+function useMobile(breakpoint = 960) {
   const [mobile, setMobile] = useState(false);
   useEffect(() => {
     const check = () => setMobile(window.innerWidth <= breakpoint);
@@ -361,7 +361,7 @@ export default function MarketingLayout({
           {/* Desktop nav + CTA */}
           {!mobile && (
             <>
-              <nav style={{ display: "flex", gap: 28, alignItems: "center" }}>
+              <nav style={{ display: "flex", gap: 28, alignItems: "center", flexShrink: 0, whiteSpace: "nowrap" }}>
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.label}
@@ -463,7 +463,7 @@ export default function MarketingLayout({
                 </div>
               </nav>
 
-              <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28, flexShrink: 0 }}>
                 <Link
                   href="/sign-in"
                   className="header-nav-link"
