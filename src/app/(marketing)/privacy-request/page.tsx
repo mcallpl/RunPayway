@@ -525,7 +525,7 @@ export default function PrivacyRequestPage() {
       {/* ============================================================ */}
       <div style={{ background: gradient, padding: "16px 0", textAlign: "center" }}>
         <span style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
-          Powered by Structural Stability Model RP-2.0
+          Powered by RunPayway&#8482; Structural Stability Model
         </span>
       </div>
     </div>

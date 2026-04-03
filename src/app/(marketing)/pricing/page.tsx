@@ -59,7 +59,6 @@ function Hero() {
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>Pricing</span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
             Measure your income stability{!m && <br />} before something tests it.
@@ -413,7 +412,7 @@ function Trust() {
         <div style={{ textAlign: "center", marginTop: sp(4), ...fadeIn(visible, 500) }}>
           <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 12, border: `1px solid ${C.sandBorder}` }}>
             <p style={{ fontSize: 15, color: C.sandMuted, margin: 0, fontWeight: 500 }}>
-              Deterministic &#183; Fixed rules &#183; Versioned &#183; Model RP-2.0
+              Deterministic &#183; Fixed rules &#183; Versioned &#183; Same inputs, same score
             </p>
           </div>
         </div>
@@ -435,7 +434,7 @@ function Faq() {
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, distance to the next band, your primary structural constraint, and your peer percentile. No payment required." },
     { q: "What does the Diagnostic Report include?", a: "A 4-page structural diagnostic with PressureMap\u2122 intelligence, ranked risk scenarios, projected actions, tradeoff analysis, a 30-day roadmap, and lifetime access to the Command Center with the stability simulator." },
     { q: "What does Stability Monitoring include?", a: "Three full assessments within 12 months, each generating a complete 4-page diagnostic. Plus monitoring-exclusive features: Score History Timeline, factor-level delta tracking, benchmark evolution, and Monitoring Portal access with email + PIN sign-in." },
-    { q: "How is the score calculated?", a: "The scoring model evaluates six fixed structural dimensions using deterministic rules under Model RP-2.0. Same inputs always produce the same score." },
+    { q: "How is the score calculated?", a: "The scoring model evaluates six fixed structural dimensions using deterministic, versioned rules. Same inputs always produce the same score." },
     { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
     { q: "Is my information confidential?", a: "Yes. No bank credentials, no credit data, no financial account access. Your data is never sold. You can request deletion at any time." },
     { q: "How long does it take?", a: "Under two minutes. Your free score is delivered instantly. The full diagnostic generates immediately after purchase." },

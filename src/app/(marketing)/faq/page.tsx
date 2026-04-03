@@ -408,7 +408,6 @@ export default function FaqPage() {
             <span style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal }}>
               {t.faqPage.heroTag}
             </span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
 
           <h1

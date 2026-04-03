@@ -52,7 +52,6 @@ function Hero() {
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>New Releases</span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
             What we&#8217;ve shipped.{!m && <br />} What&#8217;s next.
@@ -76,31 +75,31 @@ function Shipped() {
 
   const releases = [
     {
-      version: "RP-2.0",
+      version: "v2",
       date: "Q1 2026",
-      title: "Structural Stability Model RP-2.0",
+      title: "Structural Stability Model",
       status: "live",
       items: [
         "Deterministic scoring with fixed, versioned rules",
-        "Six structural dimensions with cross-factor interaction rules",
+        "Six structural dimensions with cross-dimension interaction analysis",
         "4-page diagnostic report with PressureMap\u2122 intelligence",
         "Command Center with lifetime simulator access",
-        "19 industry-specific benchmarks and stress scenarios",
+        "Industry-specific benchmarks and stress scenarios",
         "Integrity verification on every assessment record",
         "Consolidated scoring architecture — one model, one source of truth",
       ],
     },
     {
-      version: "OL-1.0",
+      version: "v2",
       date: "Q1 2026",
       title: "Outcome Layer — Context Precision",
       status: "live",
       items: [
         "Industry-specific scenario selection and action ordering",
-        "Income model family profiles with tailored risk patterns",
-        "19 industry profiles with sector-specific stress scenarios",
+        "Tailored risk patterns by income model",
+        "Sector-specific stress scenarios",
         "Explanation language precision by operating context",
-        "Peer benchmarking by sector (percentile, top 20% threshold)",
+        "Peer benchmarking by sector",
       ],
     },
     {

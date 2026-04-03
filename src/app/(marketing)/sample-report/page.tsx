@@ -59,7 +59,6 @@ function Hero() {
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>Sample Report</span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
             See exactly what the{!m && <br />} diagnostic report contains.
@@ -96,7 +95,7 @@ function ReportPages() {
           </div>
           <div style={{ fontFamily: mono, fontSize: 10, color: C.teal, marginTop: 4 }}>3 points to High Stability</div>
           <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "10px auto", width: "60%" }} />
-          <div style={{ fontSize: 9, color: C.sandLight }}>Model RP-2.0 &middot; Confidential</div>
+          <div style={{ fontSize: 9, color: C.sandLight }}>Confidential</div>
         </div>
       ),
       desc: "Your Income Stability Score, stability band, distance to the next band, and a confidential access code for the Command Center.",
@@ -147,23 +146,23 @@ function ReportPages() {
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           {/* Action steps */}
           {[
-            { step: "1", action: "Reduce concentration below 50%", lift: "+5", color: C.purple },
-            { step: "2", action: "Secure 3 months forward visibility", lift: "+4", color: C.teal },
-            { step: "3", action: "Add one recurring revenue stream", lift: "+3", color: C.navy },
+            { step: "1", action: "Reduce concentration", priority: "High", color: C.purple },
+            { step: "2", action: "Extend forward visibility", priority: "High", color: C.teal },
+            { step: "3", action: "Add recurring revenue stream", priority: "Medium", color: C.navy },
           ].map((a, i) => (
             <div key={a.step} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "7px 0", borderBottom: i < 2 ? `1px solid ${C.sandBorder}` : "none" }}>
               <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                 <span style={{ fontFamily: mono, fontSize: 10, fontWeight: 700, color: a.color, minWidth: 12 }}>{a.step}</span>
                 <span style={{ fontSize: 12, fontWeight: 500, color: C.sandMuted }}>{a.action}</span>
               </div>
-              <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: C.teal }}>{a.lift}</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: C.teal }}>{a.priority}</span>
             </div>
           ))}
 
           {/* Combined impact */}
           <div style={{ marginTop: 8, padding: "6px 10px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 10, color: C.sandLight }}>Combined projected score</span>
-            <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: C.teal }}>72 &rarr; 82</span>
+            <span style={{ fontSize: 10, color: C.sandLight }}>Projected improvement</span>
+            <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.teal }}>Significant</span>
           </div>
 
           {/* Command Center CTA */}
@@ -173,7 +172,7 @@ function ReportPages() {
           </div>
         </div>
       ),
-      desc: "Highest-leverage actions ranked by projected score impact, combined improvement projection, 30-day execution roadmap, and what to avoid.",
+      desc: "Highest-leverage actions ranked by priority, combined improvement projection, 30-day execution roadmap, and what to avoid.",
     },
     {
       num: "04", title: "Stress Testing", color: C.bandLimited,
@@ -181,13 +180,13 @@ function ReportPages() {
         <div style={{ padding: m ? "16px 14px" : "20px 18px" }}>
           <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 8, textTransform: "uppercase" as const }}>Ranked by damage</div>
           {[
-            { title: "Your largest client stops paying", score: "72 \u2192 44", color: C.bandLimited },
-            { title: "You cannot work for 90 days", score: "72 \u2192 52", color: C.bandEstablished },
-            { title: "Forward commitments delayed", score: "72 \u2192 61", color: C.bandEstablished },
+            { title: "Your largest client stops paying", impact: "Severe", color: C.bandLimited },
+            { title: "You cannot work for 90 days", impact: "Moderate", color: C.bandEstablished },
+            { title: "Forward commitments delayed", impact: "Moderate", color: C.bandEstablished },
           ].map((s, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderLeft: `2px solid ${s.color}`, paddingLeft: 8, marginBottom: 3 }}>
               <span style={{ fontSize: 11, fontWeight: 500, color: C.sandMuted }}>{s.title}</span>
-              <span style={{ fontSize: 11, fontWeight: 600, fontFamily: mono, color: C.sandLight, flexShrink: 0, marginLeft: 6 }}>{s.score}</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: s.color, flexShrink: 0, marginLeft: 6 }}>{s.impact}</span>
             </div>
           ))}
           <div style={{ height: 1, backgroundColor: C.sandBorder, margin: "6px 0" }} />
@@ -195,7 +194,7 @@ function ReportPages() {
           <div style={{ padding: "4px 8px", borderRadius: 4, backgroundColor: C.sandBorder, fontSize: 9, fontFamily: mono, color: C.sandMuted }}>Access code included on this page</div>
         </div>
       ),
-      desc: "Ranked disruption scenarios with exact score drops, fragility assessment, real-world impact projections, and your Command Center access code.",
+      desc: "Ranked disruption scenarios with severity ratings, fragility assessment, real-world impact projections, and your Command Center access code.",
     },
   ];
 
@@ -283,9 +282,9 @@ function CommandCenter() {
 
           <div style={{ display: "flex", gap: 3, borderRadius: 8, overflow: "hidden", marginBottom: 14 }}>
             {[
-              { l: "CURRENT", v: "72", c: C.sandText },
-              { l: "SIMULATED", v: "82", c: C.teal },
-              { l: "IMPACT", v: "+10", c: C.teal },
+              { l: "CURRENT", v: "\u2014", c: C.sandText },
+              { l: "SIMULATED", v: "\u2014", c: C.teal },
+              { l: "IMPACT", v: "\u2014", c: C.teal },
             ].map(col => (
               <div key={col.l} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: m ? "10px 6px" : "12px 10px", textAlign: "center" }}>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: C.sandLight, marginBottom: 3 }}>{col.l}</div>
@@ -354,18 +353,18 @@ function WhatsIncluded() {
     {
       cat: "Risk Analysis",
       features: [
-        "Ranked disruption scenarios with exact score drops",
-        "Largest source removal impact (72 \u2192 44)",
-        "90-day work interruption projection",
+        "Ranked disruption scenarios with severity ratings",
+        "Largest source removal impact assessment",
+        "Work interruption projection",
         "Fragility class assessment",
-        "Cross-factor interaction effects",
+        "Cross-dimension interaction effects",
       ],
     },
     {
       cat: "Action Plan",
       features: [
-        "Actions ranked by projected score impact",
-        "Combined improvement projection (72 \u2192 82)",
+        "Actions ranked by projected impact",
+        "Combined improvement projection",
         "Structural tradeoff analysis per action",
         "30-day execution roadmap",
         "Reassessment triggers",

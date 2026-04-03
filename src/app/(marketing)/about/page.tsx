@@ -52,7 +52,6 @@ function Hero() {
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>About</span>
-            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
           <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
             A structural measurement{!m && <br />} system for income stability.
@@ -91,7 +90,7 @@ function WhatIsISS() {
             Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score&#8482; examines the architecture of how you earn — how many sources, how predictable, how much continues without active work, and how far forward it is committed.
           </p>
           <p style={{ ...body(m), color: C.muted }}>
-            The result is a deterministic structural assessment. The same inputs always produce the same score. Every score maps to a fixed classification band under Model RP-2.0.
+            The result is a deterministic structural assessment. The same inputs always produce the same score. Every score maps to a fixed classification band under a versioned, locked model.
           </p>
         </div>
       </div>
@@ -161,10 +160,10 @@ function Governance() {
             Model governance.
           </h2>
           <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            Every version of the scoring model is locked and versioned. The current version is Model RP-2.0. If any rule, weight, threshold, or classification boundary changes, the model increments to a new version number.
+            Every version of the scoring model is locked and versioned. If any rule, threshold, or classification boundary changes, the model increments to a new version number.
           </p>
           <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            A score generated under Model RP-2.0 can always be compared to another score generated under Model RP-2.0. The rules are identical. If the rules change, it becomes a new model — and every assessment is stamped with the version that produced it.
+            A score generated under the same model version can always be compared to another score from the same version. The rules are identical. If the rules change, it becomes a new model — and every assessment is stamped with the version that produced it.
           </p>
           <p style={{ ...body(m), color: C.muted }}>
             Every assessment includes SHA-256 hashes that verify the report was produced by the stated model version and has not been modified. This is how institutional trust works: not through promises, but through verifiable, versioned outputs.
@@ -194,7 +193,7 @@ function Verification() {
             Every score is verifiable.
           </h2>
           <p style={{ ...body(m), color: C.sandMuted, marginBottom: 20 }}>
-            Every assessment includes a SHA-256 hash, a model version stamp, and an immutable timestamp. These three elements prove the assessment was produced by Model RP-2.0 and has not been altered.
+            Every assessment includes a SHA-256 hash, a model version stamp, and an immutable timestamp. These three elements prove the assessment was produced by the stated model version and has not been altered.
           </p>
           <p style={{ ...body(m), color: C.sandLight, marginBottom: 32 }}>
             Share your score with a lender, employer, or financial advisor. They can verify it independently.
@@ -266,9 +265,9 @@ function ModelBadge() {
       <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 16 : 32, flexWrap: "wrap" as const }}>
           {[
-            { label: "Model RP-2.0", sub: "Current version" },
+            { label: "Versioned", sub: "Locked scoring model" },
             { label: "Deterministic", sub: "Fixed scoring rules" },
-            { label: "19 Industries", sub: "Full sector coverage" },
+            { label: "Multi-Industry", sub: "Full sector coverage" },
             { label: "Verifiable", sub: "Integrity on every record" },
           ].map((item) => (
             <div key={item.label} style={{ textAlign: "center", minWidth: m ? 100 : 140 }}>

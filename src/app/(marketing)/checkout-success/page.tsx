@@ -379,7 +379,7 @@ function CheckoutSuccessContent() {
         )}
 
         <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
-          {["Under 2 minutes", "No bank connection", "Model RP-2.0"].map((badge) => (
+          {["Under 2 minutes", "No bank connection", "Deterministic scoring"].map((badge) => (
             <span key={badge} style={{ fontSize: 11, color: C.light, letterSpacing: "0.02em" }}>{badge}</span>
           ))}
         </div>

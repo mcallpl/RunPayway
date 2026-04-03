@@ -221,7 +221,7 @@ export default function CreateAccountPage() {
           </p>
 
           <p style={{ fontSize: 14, color: C.sandLight }}>
-            Structural Stability Model RP-2.0
+            Structural Stability Model
           </p>
         </div>
       </section>
@@ -593,7 +593,7 @@ export default function CreateAccountPage() {
         }}
       >
         <span style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
-          Powered by Structural Stability Model RP-2.0
+          Powered by RunPayway&#8482; Structural Stability Model
         </span>
       </div>
     </div>

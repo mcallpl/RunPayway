@@ -110,7 +110,6 @@ export default function SignInPage() {
           <div style={{ ...fadeIn(heroAnim.visible) }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
               <span style={{ ...T.label, color: C.teal }}>Monitoring Portal</span>
-              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
             </div>
             <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
               Your stability,{!m && <br />} tracked over time.
@@ -369,7 +368,7 @@ export default function SignInPage() {
                 <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                 <div style={{ textAlign: "center" }}>
                   <p style={{ ...T.micro, color: C.light, margin: 0 }}>
-                    Deterministic &#183; Model RP-2.0 &#183; Same inputs, same score
+                    Deterministic &#183; Versioned &#183; Same inputs, same score
                   </p>
                 </div>
               </>

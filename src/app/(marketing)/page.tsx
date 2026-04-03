@@ -621,7 +621,7 @@ function HeroSection() {
             marginBottom: m ? sp(4) : sp(5),
             textAlign: m ? "center" : "left",
           }}>
-            Open Model RP-2.0 &bull; Every scoring rule published &bull; Fixed weights &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
+            Deterministic &bull; Versioned &bull; Fixed rules &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
 
           {/* CTA */}

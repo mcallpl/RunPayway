@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "RunPayway™ — Income Stability Score",
   description:
-    "Measure how stable your income structure actually is. Six questions. 90 seconds. Scored by Model RP-2.0. Built for consultants, contractors, freelancers, and business owners.",
+    "Measure how stable your income structure actually is. Six questions. 90 seconds. Deterministic scoring. Built for consultants, contractors, freelancers, and business owners.",
   openGraph: {
     title: "RunPayway™ — Income Stability Score",
     description: "The structural assessment that reveals income weakness before disruption makes it obvious.",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "RunPayway™ — Income Stability Score",
-    description: "Measure how stable your income structure actually is. Scored by Model RP-2.0.",
+    description: "Measure how stable your income structure actually is. Deterministic scoring.",
   },
 };
 

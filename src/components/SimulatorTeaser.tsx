@@ -34,7 +34,7 @@ export default function SimulatorTeaser({ variant = "default" }: { variant?: "de
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: isCompact ? 12 : 16 }}>
         <div>
           <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: B.teal }}>RunPayway&#8482; Stability Simulator</div>
-          <div style={{ fontSize: 7, color: "rgba(244,241,234,0.25)", letterSpacing: "0.06em", marginTop: 2 }}>MODEL RP-2.0</div>
+          <div style={{ fontSize: 7, color: "rgba(244,241,234,0.25)", letterSpacing: "0.06em", marginTop: 2 }}>DETERMINISTIC MODEL</div>
         </div>
         <div style={{ fontSize: 7, color: "rgba(244,241,234,0.20)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>LIVE PREVIEW</div>
       </div>
