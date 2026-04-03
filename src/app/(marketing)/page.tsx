@@ -1980,9 +1980,9 @@ function Footer() {
           <div>
             <div style={colHeadStyle}>Social</div>
             {[
-              { label: "LinkedIn", href: "https://linkedin.com" },
-              { label: "X", href: "https://x.com" },
-              { label: "Instagram", href: "https://instagram.com" },
+              { label: "LinkedIn", href: "https://www.linkedin.com/company/runpayway" },
+              { label: "X", href: "https://x.com/runpayway" },
+              { label: "Instagram", href: "https://www.instagram.com/runpayway" },
             ].map(l => (
               <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={linkStyle}
                 onMouseEnter={e => { e.currentTarget.style.color = C.navy; }}
