@@ -995,14 +995,13 @@ function ScoreDetermination() {
           </p>
         </div>
 
-        {/* ── 60/40 Framework ── */}
+        {/* ── Two Blocks ── */}
         <div style={{ display: m ? "block" : "flex", gap: sp(5), marginBottom: sp(6), ...fadeIn(visible, 150) }}>
 
-          {/* Structure — 60% */}
+          {/* Structure */}
           <div style={{ flex: 1, marginBottom: m ? sp(5) : 0 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
+            <div style={{ marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
               <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Structure</span>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>60%</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income is built.</p>
             {[
@@ -1018,11 +1017,10 @@ function ScoreDetermination() {
             ))}
           </div>
 
-          {/* Stability — 40% */}
+          {/* Stability */}
           <div style={{ flex: 1 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
+            <div style={{ marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
               <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Stability</span>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>40%</span>
             </div>
             <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income behaves under pressure.</p>
             {[
@@ -1038,19 +1036,10 @@ function ScoreDetermination() {
           </div>
         </div>
 
-        {/* ── Cross-Factor Rules ── */}
+        {/* ── Dimension Interactions ── */}
         <div style={{ maxWidth: textMax, marginBottom: sp(7), ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
-            Cross-Factor Rules
-          </p>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(2.5) }}>
-            Cross-factor rules account for how weaknesses compound.
-          </p>
-          <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: "#2C3A4B", marginBottom: sp(1) }}>
-            High concentration combined with low forward visibility increases structural risk.
-          </p>
-          <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: "#2C3A4B" }}>
-            Strong recurrence combined with low labor dependence increases structural stability.
+            Dimensions don&#8217;t exist in isolation. The model evaluates how they interact — compound weaknesses lower the score, reinforcing strengths raise it.
           </p>
         </div>
 
@@ -1067,7 +1056,7 @@ function ScoreDetermination() {
             Primary constraint: Income concentration
           </p>
           <p style={{ fontSize: 14, fontWeight: 400, color: C.muted }}>
-            Stress scenario: Largest source removed &rarr; projected 44
+            Stress scenario: Largest source removed &rarr; severe impact
           </p>
         </div>
 
