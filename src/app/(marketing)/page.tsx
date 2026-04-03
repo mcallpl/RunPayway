@@ -1840,6 +1840,7 @@ function FinalCta() {
 function Footer() {
   const m = useMobile();
   const [email, setEmail] = useState("");
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
 
   const colHeadStyle: React.CSSProperties = {
     ...T.label,
@@ -1922,44 +1923,57 @@ function Footer() {
             <p style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", marginBottom: sp(2), lineHeight: 1.5 }}>
               RunPayway&#8482; for Organizations
             </p>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input
-                type="email"
-                placeholder="Work email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                aria-label="Work email for enterprise waitlist"
-                style={{
-                  flex: 1, padding: "8px 12px", borderRadius: 6,
-                  border: `1px solid ${C.softBorder}`,
-                  backgroundColor: C.sand,
-                  color: C.navy, fontSize: 14,
-                  outline: "none", minHeight: 44,
-                }}
-              />
-              <button
-                onClick={async () => {
-                  if (!email || !email.includes("@")) return;
-                  try {
-                    await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ name: "Enterprise Waitlist", email: email.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }),
-                    });
-                  } catch { /* silent */ }
-                  setEmail("");
-                }}
-                style={{
-                  padding: "8px 16px", borderRadius: 6,
-                  backgroundColor: C.navy,
-                  border: "none",
-                  color: C.white, fontSize: 13, fontWeight: 600,
-                  cursor: "pointer", whiteSpace: "nowrap", minHeight: 44,
-                }}
-              >
-                Join the Waitlist
-              </button>
-            </div>
+            {waitlistSubmitted ? (
+              <div style={{ padding: "10px 14px", borderRadius: 6, backgroundColor: "rgba(31,109,122,0.08)", border: `1px solid rgba(31,109,122,0.20)` }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>You&#8217;re on the list. We&#8217;ll be in touch.</span>
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  type="email"
+                  placeholder="Work email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={async (e) => {
+                    if (e.key === "Enter" && email.includes("@")) {
+                      try { await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: "Enterprise Waitlist", email: email.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }) }); } catch { /* silent */ }
+                      setEmail(""); setWaitlistSubmitted(true);
+                    }
+                  }}
+                  aria-label="Work email for enterprise waitlist"
+                  style={{
+                    flex: 1, padding: "8px 12px", borderRadius: 6,
+                    border: `1px solid ${C.softBorder}`,
+                    backgroundColor: C.sand,
+                    color: C.navy, fontSize: 14,
+                    outline: "none", minHeight: 44,
+                  }}
+                />
+                <button
+                  onClick={async () => {
+                    if (!email || !email.includes("@")) return;
+                    try {
+                      await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name: "Enterprise Waitlist", email: email.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }),
+                      });
+                    } catch { /* silent */ }
+                    setEmail("");
+                    setWaitlistSubmitted(true);
+                  }}
+                  style={{
+                    padding: "8px 16px", borderRadius: 6,
+                    backgroundColor: C.navy,
+                    border: "none",
+                    color: C.white, fontSize: 13, fontWeight: 600,
+                    cursor: "pointer", whiteSpace: "nowrap", minHeight: 44,
+                  }}
+                >
+                  Join the Waitlist
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Social */}
