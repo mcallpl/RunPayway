@@ -688,35 +688,29 @@ function DashboardContent() {
                       </div>
                     </div>
                   )}
-                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 8, overflow: "hidden" }} className="d-metrics">
+                  <style>{`
+                    .metric-tip-wrap { position: relative; }
+                    .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
+                    .metric-tip-wrap:hover .metric-tip { opacity: 1; }
+                  `}</style>
+                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 8 }} className="d-metrics">
                     {[
                       { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long your income would continue if all active work stopped. Calculated from persistence, forward visibility, labor independence, and concentration." },
                       { label: "Top Source Risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "How many points your score drops if your single largest income source disappears. A drop greater than 15 points signals dangerous concentration." },
                       { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your income structure absorbs shocks. Assessed independently from your score — you can have a stable score but a brittle structure." },
                     ].map((m, i, arr) => (
-                      <div key={m.label} style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", position: "relative", cursor: "help" }}
-                        onMouseEnter={(e) => {
-                          const tip = e.currentTarget.querySelector("[data-tip]") as HTMLElement;
-                          if (tip) tip.style.opacity = "1";
-                        }}
-                        onMouseLeave={(e) => {
-                          const tip = e.currentTarget.querySelector("[data-tip]") as HTMLElement;
-                          if (tip) tip.style.opacity = "0";
-                        }}
-                      >
-                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
+                      <div key={m.label} className="metric-tip-wrap" style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "default" }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>
                           {m.label.toUpperCase()}
-                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ opacity: 0.4 }}><circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5"/><path d="M8 7v4M8 5.5v0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
                         </div>
                         <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
-                        <div data-tip style={{
-                          position: "absolute", bottom: "100%", left: "50%", transform: "translateX(-50%)",
+                        <div className="metric-tip" style={{
+                          position: "absolute", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
                           width: mobile ? 220 : 260, padding: "12px 14px", borderRadius: 10,
-                          backgroundColor: B.navy, color: C.sandMuted,
-                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans,
-                          boxShadow: "0 8px 24px rgba(14,26,43,0.25)",
-                          opacity: 0, transition: "opacity 200ms ease",
-                          pointerEvents: "none", zIndex: 50, marginBottom: 8,
+                          backgroundColor: B.navy,
+                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)",
+                          boxShadow: "0 8px 24px rgba(14,26,43,0.30)",
+                          zIndex: 50,
                         }}>
                           {m.tip}
                         </div>
