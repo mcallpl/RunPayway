@@ -3,10 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
-  C, T, mono, sans, sp, maxW, padX, textMax,
-  secPad, px,
-  h1, h2Style, h3Style, body, bodySm,
-  cardStyle, ctaButton, ctaButtonLight, navStyle,
+  C, T, mono, sans, sp, maxW, secPad, px,
+  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
   canHover,
 } from "@/lib/design-tokens";
 
@@ -34,44 +32,42 @@ function useMobile(bp = 768) {
   return m;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Local helpers                                                      */
-/* ------------------------------------------------------------------ */
-const gradient = C.navy;
-const labelStyle = { ...T.label, color: C.teal } as const;
+const fadeIn = (v: boolean, delay = 0) => ({
+  opacity: v ? 1 : 0,
+  transform: v ? "translateY(0)" : "translateY(16px)",
+  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
+});
+
 
 /* ================================================================== */
-/* 1. HERO                                                              */
+/* 1. HERO                                                             */
 /* ================================================================== */
 function Hero() {
   const { ref, visible } = useInView();
   const m = useMobile();
   return (
-    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120 }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 800ms ease-out, transform 800ms ease-out" }}>
-          <div style={{ display: "inline-block", padding: "5px 16px", borderRadius: 4, background: "rgba(75,63,174,0.15)", border: "1px solid rgba(75,63,174,0.25)", marginBottom: 24 }}>
-            <span style={{ ...T.micro, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.sandLight }}>Model RP-2.0 &#183; Methodology</span>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
+            <span style={{ ...T.label, color: C.teal }}>Methodology</span>
+            <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "3px 8px", borderRadius: 4, border: `1px solid ${C.sandBorder}` }}>RP-2.0</span>
           </div>
-          <h1 style={{ ...h1(m), fontFamily: sans, color: C.sandText, letterSpacing: "-0.03em", marginBottom: 24, maxWidth: textMax, margin: "0 auto 24px" }}>
-            Engineered for precision.<br />Built on fixed rules.
+          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+            Fixed rules. Deterministic scoring.{!m && <br />} Every result reproducible.
           </h1>
-          <p style={{ fontSize: m ? 16 : 20, fontFamily: sans, color: C.sandLight, lineHeight: 1.6, maxWidth: 540, margin: "0 auto 28px" }}>
-            The Income Stability Score&#8482; is a deterministic structural assessment. Every rule is fixed, every result is reproducible. Same inputs always produce the same score.
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 540, margin: "0 auto" }}>
+            The Income Stability Score&#8482; is a deterministic structural assessment. Same inputs always produce the same score. Every rule is versioned under Model RP-2.0.
           </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
-            {["Deterministic", "Fixed rules", "Versioned", "Reproducible"].map(t => (
-              <span key={t} style={{ ...T.micro, fontWeight: 500, fontFamily: sans, color: C.sandLight, letterSpacing: "0.02em" }}>{t}</span>
-            ))}
-          </div>
         </div>
       </div>
     </section>
   );
 }
 
+
 /* ================================================================== */
-/* 2. WHAT IT MEASURES — Split layout                                  */
+/* 2. PURPOSE                                                          */
 /* ================================================================== */
 function Purpose() {
   const { ref, visible } = useInView();
@@ -79,18 +75,20 @@ function Purpose() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ display: m ? "block" : "flex", gap: 64, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
+        </div>
+        <div style={{ display: m ? "block" : "flex", gap: 64, alignItems: "flex-start", ...fadeIn(visible) }}>
           <div style={{ flex: 1, marginBottom: m ? 28 : 0 }}>
-            <div style={{ ...labelStyle, marginBottom: 16 }}>What It Measures</div>
-            <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy, margin: 0 }}>
-              Not how much you earn.<br />How well it holds up.
+            <h2 style={{ ...h2Style(m), color: C.navy, margin: 0 }}>
+              Not how much you earn.{!m && <br />} How well it holds up.
             </h2>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ ...body(m), fontFamily: sans, color: C.muted, marginBottom: 16 }}>
+            <p style={{ ...body(m), color: C.muted, marginBottom: 16 }}>
               The Income Stability Score&#8482; quantifies structural resilience — the architecture of your income, not the amount. Two people earning the same number can have completely different stability profiles.
             </p>
-            <p style={{ ...body(m), fontFamily: sans, color: C.muted, margin: 0 }}>
+            <p style={{ ...body(m), color: C.muted, margin: 0 }}>
               The model evaluates recurrence, concentration, forward visibility, variability, labor dependence, and income quality — then applies cross-factor interaction rules that capture how weaknesses compound.
             </p>
           </div>
@@ -100,74 +98,63 @@ function Purpose() {
   );
 }
 
+
 /* ================================================================== */
-/* 3. STRUCTURAL DIMENSIONS — Detailed accordion                       */
+/* 3. DIMENSIONS                                                       */
 /* ================================================================== */
 function Dimensions() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   const dims = [
-    { title: "Repeatable Income", desc: "How much of your income comes back without needing to be rebuilt each time.", range: "0% (rebuild every month) to 100% (fully recurring)", color: C.teal },
-    { title: "Reliance on One Source", desc: "How much depends on your single largest client, channel, or source of work.", range: "90%+ from one source (critical) to under 30% (diversified)", color: C.purple },
-    { title: "Number of Income Sources", desc: "How many independent, meaningful sources support the income structure.", range: "1 source (total dependency) to 8+ (well-diversified)", color: C.teal },
-    { title: "Income Secured Ahead of Time", desc: "How much upcoming income is already committed before the month begins.", range: "Less than 1 month (no visibility) to 12+ months (strong protection)", color: C.purple },
-    { title: "Month-to-Month Stability", desc: "How consistent the income is from one month to the next.", range: "75%+ fluctuation (volatile) to under 10% (highly predictable)", color: C.amber },
-    { title: "Income That Continues Without Daily Work", desc: "How much income would keep coming in if active work stopped.", range: "0% continues (fully labor-dependent) to 76%+ (structurally independent)", color: C.navy },
+    { title: "Recurrence", desc: "Income that continues from existing agreements without new acquisition.", weight: "15", block: "Structure", color: C.teal },
+    { title: "Concentration", desc: "Reliance on any single source. Measures what percentage flows through the largest client.", weight: "10", block: "Structure", color: C.purple },
+    { title: "Diversification", desc: "Number of independent income streams each contributing meaningful revenue.", weight: "10", block: "Structure", color: C.teal },
+    { title: "Forward Visibility", desc: "Income secured ahead of time under signed or enforceable agreements.", weight: "15", block: "Structure", color: C.purple },
+    { title: "Earnings Consistency", desc: "Variation in monthly earnings over the prior 12 months.", weight: "10", block: "Stability", color: C.amber },
+    { title: "Labor Independence", desc: "Income that continues without active work through a 90-day interruption.", weight: "20", block: "Stability", color: C.navy },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ ...labelStyle, marginBottom: 16 }}>The Structural Dimensions</div>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy, marginBottom: 12 }}>
-            What each dimension measures — in exact terms.
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The dimensions.
           </h2>
-          <p style={{ ...body(m), fontFamily: sans, color: C.muted }}>
-            Each dimension is scored independently using fixed rules. The model then applies cross-factor interaction logic to capture how weaknesses compound.
+          <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
+            Six fixed dimensions. Structure block (<span style={{ fontFamily: mono }}>60%</span>) plus Stability block (<span style={{ fontFamily: mono }}>40%</span>). Each scored independently using fixed, versioned definitions.
           </p>
         </div>
 
-        {dims.map((dim, i) => {
-          const isOpen = openIdx === i;
-          return (
-            <div key={dim.title} style={{ borderBottom: `1px solid ${C.border}`, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)", transition: `opacity 500ms ease-out ${80 + i * 50}ms, transform 500ms ease-out ${80 + i * 50}ms` }}>
-              <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: m ? "20px 0" : "24px 0", border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: dim.color, flexShrink: 0 }} />
-                  <div>
-                    <div style={{ ...h3Style(m), fontFamily: sans, fontSize: m ? 17 : 20, color: C.navy }}>{dim.title}</div>
-                    <div style={{ ...bodySm(m), fontFamily: sans, fontSize: m ? 14 : 15, color: C.muted, marginTop: 2 }}>{dim.desc}</div>
-                  </div>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16 }}>
+          {dims.map((dim, i) => (
+            <div key={dim.title} style={{
+              ...cardStyle, padding: m ? "20px 18px" : "24px 24px", borderRadius: 12,
+              ...fadeIn(visible, 100 + i * 60),
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <span style={{ fontSize: m ? 17 : 18, fontWeight: 600, color: C.navy, borderBottom: `1.5px dotted ${C.teal}`, paddingBottom: 1 }}>{dim.title}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 11, color: C.light }}>{dim.block}</span>
+                  <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.purple }}>{dim.weight}pts</span>
                 </div>
-                <span style={{ fontSize: 18, color: C.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
-              </button>
-              {isOpen && (
-                <div style={{ paddingLeft: 24, paddingBottom: 24 }}>
-                  <div style={{ ...cardStyle, padding: "14px 16px" }}>
-                    <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 6 }}>Scoring Range</div>
-                    <div style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.navy }}>
-                      <span style={{ fontFamily: mono }}>{dim.range.replace(/^([^(]+)/, (match) => match)}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+              </div>
+              <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{dim.desc}</p>
             </div>
-          );
-        })}
-
-        <div style={{ textAlign: "center", marginTop: 28, ...T.meta, fontFamily: sans, color: C.light }}>
-          All dimensions are fixed and versioned under Model RP-2.0.
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
+
 /* ================================================================== */
-/* 4. SCORING FRAMEWORK — Two blocks visual                            */
+/* 4. SCORING FRAMEWORK                                                */
 /* ================================================================== */
 function ScoringFramework() {
   const { ref, visible } = useInView();
@@ -175,38 +162,60 @@ function ScoringFramework() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ ...labelStyle, marginBottom: 16 }}>The Mechanism</div>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy, marginBottom: 12 }}>
-            Two blocks. One score. Zero subjectivity.
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The scoring framework.
           </h2>
-          <p style={{ ...body(m), fontFamily: sans, color: C.muted, maxWidth: 540, margin: "0 auto" }}>
-            The scoring model evaluates your income across fixed structural dimensions, applies cross-factor interaction rules, and produces a single <span style={{ fontFamily: mono }}>0&#8211;100</span> score.
+          <p style={{ ...body(m), color: C.muted, maxWidth: 540 }}>
+            Two blocks compose the final score. Cross-factor interaction rules adjust for compound weaknesses and reinforcing strengths.
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 16 : 20 }}>
-          <div style={{ padding: m ? "28px 24px" : "36px 32px", borderRadius: 16, backgroundColor: C.navy, position: "relative", overflow: "hidden", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
+          <div style={{ padding: m ? "28px 24px" : "36px 32px", borderRadius: 14, backgroundColor: C.navy, position: "relative", overflow: "hidden", ...fadeIn(visible, 100) }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Structure Analysis</div>
-            <div style={{ ...h3Style(m), fontFamily: sans, color: C.sandText, marginBottom: 4 }}>Primary weight</div>
-            <p style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.sandLight, marginBottom: 20 }}>How your income is architecturally composed.</p>
-            {["Recurring revenue base", "Source diversification", "Forward visibility", "Concentration resilience"].map(f => (
-              <div key={f} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...T.meta, fontFamily: sans, color: C.sandMuted }}>{f}</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
+              <span style={{ ...T.label, fontSize: 13, color: C.teal }}>Structure Block</span>
+              <span style={{ fontFamily: mono, fontSize: 24, fontWeight: 600, color: C.purple }}>60%</span>
+            </div>
+            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>How your income is architecturally composed.</p>
+            {[
+              { name: "Recurrence", pts: "15" },
+              { name: "Diversification", pts: "10" },
+              { name: "Forward Visibility", pts: "15" },
+              { name: "Concentration Resilience", pts: "10" },
+              { name: "Quality Adjustment", pts: "10" },
+            ].map(f => (
+              <div key={f.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <span style={{ ...T.meta, color: C.sandMuted }}>{f.name}</span>
+                </div>
+                <span style={{ fontFamily: mono, fontSize: 12, color: C.sandLight }}>{f.pts}</span>
               </div>
             ))}
           </div>
-          <div style={{ padding: m ? "28px 24px" : "36px 32px", borderRadius: 16, backgroundColor: C.navy, position: "relative", overflow: "hidden", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 200ms, transform 500ms ease-out 200ms" }}>
+          <div style={{ padding: m ? "28px 24px" : "36px 32px", borderRadius: 14, backgroundColor: C.navy, position: "relative", overflow: "hidden", ...fadeIn(visible, 200) }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
-            <div style={{ ...T.label, fontSize: 13, color: C.purple, marginBottom: 16 }}>Stability Analysis</div>
-            <div style={{ ...h3Style(m), fontFamily: sans, color: C.sandText, marginBottom: 4 }}>Secondary weight</div>
-            <p style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.sandLight, marginBottom: 20 }}>How well the structure holds up under pressure.</p>
-            {["Labor independence", "Earnings stability", "Income continuity", "Quality adjustment"].map(f => (
-              <div key={f} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0 }} />
-                <span style={{ ...T.meta, fontFamily: sans, color: C.sandMuted }}>{f}</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 16 }}>
+              <span style={{ ...T.label, fontSize: 13, color: C.purple }}>Stability Block</span>
+              <span style={{ fontFamily: mono, fontSize: 24, fontWeight: 600, color: C.purple }}>40%</span>
+            </div>
+            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>How well the structure holds up under pressure.</p>
+            {[
+              { name: "Labor Independence", pts: "20" },
+              { name: "Earnings Consistency", pts: "10" },
+              { name: "Continuity", pts: "10" },
+            ].map(f => (
+              <div key={f.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0 }} />
+                  <span style={{ ...T.meta, color: C.sandMuted }}>{f.name}</span>
+                </div>
+                <span style={{ fontFamily: mono, fontSize: 12, color: C.sandLight }}>{f.pts}</span>
               </div>
             ))}
           </div>
@@ -216,8 +225,9 @@ function ScoringFramework() {
   );
 }
 
+
 /* ================================================================== */
-/* 5. CROSS-FACTOR INTERACTIONS — How weaknesses compound              */
+/* 5. CROSS-FACTOR INTERACTIONS                                        */
 /* ================================================================== */
 function Interactions() {
   const { ref, visible } = useInView();
@@ -225,33 +235,38 @@ function Interactions() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ display: m ? "block" : "flex", gap: 56, alignItems: "flex-start", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(14px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>04</span>
+        </div>
+        <div style={{ display: m ? "block" : "flex", gap: 56, alignItems: "flex-start", ...fadeIn(visible) }}>
           <div style={{ flex: 1, marginBottom: m ? 28 : 0 }}>
-            <div style={{ ...labelStyle, marginBottom: 16 }}>Cross-Factor Logic</div>
-            <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy, margin: 0 }}>
-              Weaknesses compound. The model captures that.
+            <h2 style={{ ...h2Style(m), color: C.navy, margin: 0 }}>
+              Weaknesses compound.{!m && <br />} The model captures that.
             </h2>
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ ...bodySm(m), fontFamily: sans, fontSize: m ? 15 : 17, color: C.muted, lineHeight: 1.65, marginBottom: 20 }}>
-              A score of <span style={{ fontFamily: mono }}>72</span> with high concentration and low forward visibility is structurally different from a <span style={{ fontFamily: mono }}>72</span> with moderate concentration and strong visibility. The model applies interaction penalties and bonuses that reflect how factors amplify or offset each other.
+            <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
+              A score of <span style={{ fontFamily: mono }}>72</span> with high concentration and low forward visibility is structurally different from a <span style={{ fontFamily: mono }}>72</span> with moderate concentration and strong visibility. The model applies penalty and bonus rules that reflect how factors amplify or offset each other.
             </p>
             <div style={{ ...cardStyle, padding: "16px 20px" }}>
               <div style={{ ...T.label, fontSize: 13, color: C.purple, marginBottom: 10 }}>Example Interactions</div>
               {[
-                { effect: "Penalty", desc: "High concentration + low visibility", pts: "\u22124" },
-                { effect: "Penalty", desc: "High labor dependence + low continuity", pts: "\u22123" },
-                { effect: "Bonus", desc: "Strong recurrence + high diversity", pts: "+2" },
+                { effect: "Penalty", desc: "High concentration + low visibility", pts: "\u22125" },
+                { effect: "Penalty", desc: "High labor dependence + low persistence", pts: "\u22125" },
+                { effect: "Bonus", desc: "Strong visibility + low concentration", pts: "+3" },
               ].map((item, i) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? `1px solid ${C.border}` : "none" }}>
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < 2 ? `1px solid ${C.softBorder}` : "none" }}>
                   <div>
-                    <span style={{ ...T.micro, fontWeight: 700, fontFamily: sans, color: item.effect === "Penalty" ? C.bandLimited : C.teal, marginRight: 8 }}>{item.effect}</span>
-                    <span style={{ ...T.meta, fontFamily: sans, color: C.muted }}>{item.desc}</span>
+                    <span style={{ ...T.micro, fontWeight: 700, color: item.effect === "Penalty" ? C.bandLimited : C.teal, marginRight: 8 }}>{item.effect}</span>
+                    <span style={{ ...T.meta, color: C.muted }}>{item.desc}</span>
                   </div>
                   <span style={{ fontSize: 15, fontWeight: 700, fontFamily: mono, color: item.effect === "Penalty" ? C.bandLimited : C.teal }}>{item.pts}</span>
                 </div>
               ))}
             </div>
+            <p style={{ ...T.meta, color: C.light, marginTop: 12, fontStyle: "italic" }}>
+              Net adjustment clamped to a fixed range. Penalties cannot reduce score below 50% of pre-interaction baseline.
+            </p>
           </div>
         </div>
       </div>
@@ -259,46 +274,56 @@ function Interactions() {
   );
 }
 
+
 /* ================================================================== */
-/* 6. CLASSIFICATION BANDS — Dark, layered cards                       */
+/* 6. CLASSIFICATION BANDS                                             */
 /* ================================================================== */
 function Bands() {
   const { ref, visible } = useInView();
   const m = useMobile();
 
   const bands = [
-    { range: "0\u201329", label: "Limited", color: C.bandLimited, consequence: "Your income depends almost entirely on active work. A major disruption puts immediate pressure on the structure." },
-    { range: "30\u201349", label: "Developing", color: C.bandDeveloping, consequence: "You can handle small disruptions, but a major source loss would put pressure on the structure quickly." },
-    { range: "50\u201374", label: "Established", color: C.bandEstablished, consequence: "Your income can absorb most common disruptions without dropping below a stable threshold." },
-    { range: "75\u2013100", label: "High", color: C.bandHigh, consequence: "Your income can absorb a lost client, a slow quarter, or a 90-day work pause without structural damage." },
+    { range: "0\u201329", label: "Limited Stability", color: C.bandLimited, desc: "High vulnerability to disruption. A single source change or work interruption could shift the entire structure." },
+    { range: "30\u201349", label: "Developing Stability", color: C.bandDeveloping, desc: "Building toward stability, but not structurally protected. A major source loss would put pressure on the structure within weeks." },
+    { range: "50\u201374", label: "Established Stability", color: C.bandEstablished, desc: "Solid structural foundation. Income can absorb most common disruptions without dropping below a stable threshold." },
+    { range: "75\u2013100", label: "High Stability", color: C.bandHigh, desc: "Structurally sound and resilient under pressure. Can absorb a lost client, a slow quarter, or a 90-day work pause." },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ ...labelStyle, marginBottom: 16 }}>Classification</div>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.sandText, marginBottom: 12 }}>
-            Four stability bands. Fixed thresholds.
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.sandLight, fontFamily: mono }}>05</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The classification.
           </h2>
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480 }}>
+            Each band defines what your income structure can absorb under disruption. Fixed thresholds.
+          </p>
         </div>
 
-        <div style={{ display: "flex", height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 32 }}>
-          {bands.map((b, i) => (
-            <div key={b.label} style={{ flex: i === 0 ? 3 : i === 1 ? 2 : 2.5, backgroundColor: b.color, transform: visible ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: `transform 600ms ease-out ${200 + i * 150}ms` }} />
+        <div style={{ display: "flex", height: 6, borderRadius: 3, overflow: "hidden", marginBottom: 32, ...fadeIn(visible, 100) }}>
+          {bands.map((b) => (
+            <div key={b.label} style={{ flex: 1, backgroundColor: b.color }} />
           ))}
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
           {bands.map((b, i) => (
-            <div key={b.label} style={{ padding: m ? "20px 18px" : "24px 24px", borderRadius: 14, backgroundColor: "rgba(244,241,234,0.04)", border: `1px solid ${C.sandBorder}`, position: "relative", overflow: "hidden", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: `opacity 500ms ease-out ${300 + i * 100}ms, transform 500ms ease-out ${300 + i * 100}ms` }}>
+            <div key={b.label} style={{
+              ...cardStyle, padding: m ? "20px 18px" : "24px 24px", borderRadius: 12,
+              backgroundColor: "rgba(244,241,234,0.04)", border: `1px solid ${C.sandBorder}`,
+              position: "relative", overflow: "hidden",
+              ...fadeIn(visible, 200 + i * 80),
+            }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: b.color }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: b.color }} />
-                <span style={{ fontSize: 15, fontWeight: 700, fontFamily: mono, color: b.color }}>{b.range}</span>
-                <span style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, fontWeight: 600, color: C.sandText }}>{b.label} Stability</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontFamily: mono, fontSize: 15, fontWeight: 700, color: b.color }}>{b.range}</span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: C.sandText }}>{b.label}</span>
               </div>
-              <p style={{ ...T.meta, fontFamily: sans, color: C.sandLight, lineHeight: 1.55, margin: 0 }}>{b.consequence}</p>
+              <p style={{ ...T.meta, color: C.sandMuted, lineHeight: 1.55, margin: 0 }}>{b.desc}</p>
             </div>
           ))}
         </div>
@@ -307,64 +332,70 @@ function Bands() {
   );
 }
 
+
 /* ================================================================== */
-/* 7. TWO-LAYER ARCHITECTURE                                           */
+/* 7. ARCHITECTURE                                                     */
 /* ================================================================== */
-function TwoLayers() {
+function Architecture() {
   const { ref, visible } = useInView();
   const m = useMobile();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ ...labelStyle, marginBottom: 16 }}>How the report is interpreted</div>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy, marginBottom: 12 }}>
-            Same score. Your context.
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>06</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
+            The architecture.
           </h2>
-          <p style={{ ...body(m), fontFamily: sans, color: C.muted, maxWidth: 540, margin: "0 auto" }}>
-            Your score is generated from fixed structural questions. The same answers always produce the same score.
+          <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
+            The score and the diagnostic report are built by separate layers. The boundary between them is fixed and auditable.
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 16 : 20 }}>
-          <div style={{ ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms" }}>
-            <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 12 }}>Layer 1 — Core Score</div>
-            <h3 style={{ ...h3Style(m), fontFamily: sans, color: C.navy, marginBottom: 12 }}>The number.</h3>
-            <p style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.muted, marginBottom: 16 }}>Generated from fixed structural questions only. No contextual input can alter it.</p>
-            <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ ...T.meta, fontFamily: sans, color: C.navy }}>Score (<span style={{ fontFamily: mono }}>0&#8211;100</span>)</span>
+          <div style={{ ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 12, ...fadeIn(visible, 100) }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <span style={{ ...T.label, fontSize: 11, color: C.teal }}>Layer 1</span>
+              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.light, padding: "2px 6px", borderRadius: 3, border: `1px solid ${C.softBorder}` }}>RP-2.0</span>
             </div>
-            {["Band classification", "Cross-factor interactions", "Sensitivity analysis"].map(item => (
+            <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 10 }}>Deterministic Core</h3>
+            <p style={{ ...bodySm(m), color: C.muted, marginBottom: 16 }}>Produces the score from structural inputs only. Same inputs, same score. No contextual input can alter it.</p>
+            {["Score (0\u2013100)", "Band classification", "Cross-factor interactions", "Constraint hierarchy", "Fragility analysis", "Sensitivity testing"].map(item => (
               <div key={item} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...T.meta, fontFamily: sans, color: C.navy }}>{item}</span>
+                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ ...T.meta, color: C.navy }}>{item}</span>
               </div>
             ))}
           </div>
-          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 14, backgroundColor: C.navy, boxShadow: "0 4px 16px rgba(14,26,43,0.10)", opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out 200ms, transform 500ms ease-out 200ms" }}>
-            <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 12 }}>Layer 2 — Context Precision</div>
-            <h3 style={{ ...h3Style(m), fontFamily: sans, color: C.sandText, marginBottom: 12 }}>The interpretation.</h3>
-            <p style={{ ...bodySm(m), fontFamily: sans, fontSize: 15, color: C.sandLight, marginBottom: 16 }}>Uses your operating structure, income model, and industry to improve explanation quality, scenario relevance, and action planning. Does not change the score.</p>
-            {["Scenario selection", "Action priority ordering", "Language precision", "Category framing"].map(item => (
+          <div style={{ padding: m ? "24px 20px" : "32px 28px", borderRadius: 12, backgroundColor: C.navy, ...fadeIn(visible, 200) }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <span style={{ ...T.label, fontSize: 11, color: C.teal }}>Layer 2</span>
+              <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 500, color: C.sandLight, padding: "2px 6px", borderRadius: 3, border: `1px solid ${C.sandBorder}` }}>OL-1.0</span>
+            </div>
+            <h3 style={{ ...h3Style(m), color: C.sandText, marginBottom: 10 }}>Outcome Layer</h3>
+            <p style={{ ...bodySm(m), color: C.sandMuted, marginBottom: 16 }}>Applies operating structure, income model, and industry sector to improve explanation quality and action relevance. Does not change the score.</p>
+            {["Industry scenario selection", "Action priority ordering", "Explanation language precision", "Benchmark framing", "Income model family profiles", "19 industry profiles"].map(item => (
               <div key={item} style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 6 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...T.meta, fontFamily: sans, color: C.sandMuted }}>{item}</span>
+                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ ...T.meta, color: C.sandMuted }}>{item}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <p style={{ ...bodySm(m), fontFamily: sans, color: C.muted, textAlign: "center", marginTop: 28, maxWidth: 540, margin: "28px auto 0" }}>
-          A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, different action plans, and different structural context. The separation between scoring and interpretation is fixed and auditable.
+        <p style={{ ...bodySm(m), color: C.muted, textAlign: "center", marginTop: 28, maxWidth: 540, margin: "28px auto 0" }}>
+          A real estate agent and a SaaS founder with identical inputs get the same score — but different scenarios, action plans, and structural context.
         </p>
       </div>
     </section>
   );
 }
 
+
 /* ================================================================== */
-/* 8. INTEGRITY — Trust signals                                        */
+/* 8. INTEGRITY                                                        */
 /* ================================================================== */
 function Integrity() {
   const { ref, visible } = useInView();
@@ -372,33 +403,33 @@ function Integrity() {
 
   const principles = [
     { title: "No bank connections", desc: "We never access financial accounts, credit data, or transaction history." },
-    { title: "No machine learning", desc: "Fixed, deterministic rules. No probabilistic scoring, no black-box logic." },
+    { title: "No machine learning", desc: "Fixed, deterministic rules. No probabilistic scoring, no adaptive logic." },
     { title: "No subjective judgment", desc: "The model applies the same rules to every assessment. No human override." },
-    { title: "Fully versioned", desc: "Every assessment records the model version used. Results are reproducible." },
-    { title: "No fake precision", desc: "If a comparison cannot be rigorously supported, we use category framing instead." },
-    { title: "Explainable", desc: "The system can explain what determines the score, what the contextual layer changes, and what it does not change." },
+    { title: "Fully versioned", desc: "Every assessment records the model version. Results are reproducible." },
+    { title: "No artificial precision", desc: "If a comparison cannot be rigorously supported, we use category framing." },
+    { title: "Explainable", desc: "The system explains what determines the score and what the contextual layer changes." },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <div style={{ ...labelStyle, marginBottom: 16 }}>Integrity</div>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.navy }}>
+        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
+          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>07</span>
+        </div>
+        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em" }}>
             What we will never do.
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 14 : 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16 }}>
           {principles.map((p, i) => (
             <div key={p.title} style={{
-              ...cardStyle, padding: m ? "20px 18px" : "24px 24px",
-              backgroundColor: C.sand,
-              opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
-              transition: `opacity 500ms ease-out ${80 + i * 50}ms, transform 500ms ease-out ${80 + i * 50}ms`,
+              ...cardStyle, padding: m ? "20px 18px" : "24px 24px", borderRadius: 12,
+              ...fadeIn(visible, 80 + i * 50),
             }}>
-              <div style={{ ...bodySm(m), fontFamily: sans, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{p.title}</div>
-              <p style={{ ...T.meta, fontFamily: sans, color: C.muted, lineHeight: 1.55, margin: 0 }}>{p.desc}</p>
+              <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{p.title}</div>
+              <p style={{ ...T.meta, color: C.muted, lineHeight: 1.55, margin: 0 }}>{p.desc}</p>
             </div>
           ))}
         </div>
@@ -407,28 +438,31 @@ function Integrity() {
   );
 }
 
+
 /* ================================================================== */
 /* 9. CTA                                                              */
 /* ================================================================== */
 function Cta() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const [hovered, setHovered] = useState(false);
   return (
-    <section ref={ref} style={{ background: gradient, position: "relative", overflow: "hidden", paddingTop: secPad(m), paddingBottom: secPad(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", padding: `0 ${px(m)}px`, position: "relative", zIndex: 1, textAlign: "center" }}>
-        <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(16px)", transition: "opacity 600ms ease-out, transform 600ms ease-out" }}>
-          <h2 style={{ ...h2Style(m), fontFamily: sans, color: C.sandText, marginBottom: 20 }}>
-            See where your income stands.
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ ...fadeIn(visible) }}>
+          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
+            Your income has a structure.{!m && <br />} Now you can measure it.
           </h2>
-          <p style={{ ...body(m), fontFamily: sans, color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            Your free score shows where you stand. The full report shows what to do about it.
+          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
+            The free score shows where you stand. The full diagnostic shows what to do about it.
           </p>
-          <Link href="/pricing" onMouseEnter={() => canHover() && setHovered(true)} onMouseLeave={() => setHovered(false)} style={{ ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10, fontFamily: sans, boxShadow: hovered ? "0 8px 28px rgba(0,0,0,0.25)" : "0 4px 16px rgba(0,0,0,0.15)", transform: hovered ? "translateY(-2px)" : "translateY(0)", transition: "box-shadow 260ms ease, transform 260ms ease" }}>
+          <Link href="/pricing" style={{
+            ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+            backgroundColor: C.white, color: C.navy,
+          }}>
             Start Your Assessment
           </Link>
-          <div style={{ marginTop: 20, ...T.meta, fontFamily: sans, color: C.sandLight }}>
-            Free to start &#183; Under 2 minutes &#183; Private by default
+          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
+            Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report
           </div>
         </div>
       </div>
@@ -436,19 +470,20 @@ function Cta() {
   );
 }
 
+
 /* ================================================================== */
 /* EXPORT                                                              */
 /* ================================================================== */
 export default function MethodologyPage() {
   return (
-    <div style={{ fontFamily: sans }}>
+    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       <Hero />
       <Purpose />
       <Dimensions />
       <ScoringFramework />
       <Interactions />
       <Bands />
-      <TwoLayers />
+      <Architecture />
       <Integrity />
       <Cta />
     </div>
