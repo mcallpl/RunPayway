@@ -304,7 +304,7 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
               aria-label="Close modal"
               style={{
                 position: "absolute", top: 16, right: 16,
-                width: 44, height: 44, borderRadius: 8,
+                width: 48, height: 48, borderRadius: 8,
                 border: `1px solid ${C.border}`, backgroundColor: "transparent",
                 color: C.muted, cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
@@ -415,7 +415,7 @@ function VideoModal() {
     <div role="dialog" aria-label="Video player" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "rgba(0,0,0,0.90)", display: "flex", alignItems: "center", justifyContent: "center", padding: m ? 16 : 40 }}
       onClick={() => setOpen(false)}>
       <div style={{ position: "relative", maxWidth: 960, width: "100%" }} onClick={e => e.stopPropagation()}>
-        <button onClick={() => setOpen(false)} aria-label="Close video" style={{ position: "absolute", top: -44, right: 0, width: 44, height: 44, borderRadius: 8, border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)", color: "rgba(255,255,255,0.70)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+        <button onClick={() => setOpen(false)} aria-label="Close video" style={{ position: "absolute", top: 16, right: 16, width: 48, height: 48, borderRadius: 8, border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)", color: "rgba(255,255,255,0.70)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, zIndex: 10 }}>
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
         </button>
         {videoSrc && (

@@ -454,7 +454,7 @@ function Faq() {
           const isOpen = openIdx === i;
           return (
             <div key={i} style={{ borderBottom: `1px solid ${C.softBorder}`, ...fadeIn(visible, 60 + i * 40) }}>
-              <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "18px 0" : "22px 0", border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
+              <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "18px 0" : "22px 0", minHeight: 48, border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
                 <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy }}>{faq.q}</span>
                 <span style={{ fontSize: 18, color: C.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
               </button>
