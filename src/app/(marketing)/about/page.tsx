@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   C, T, mono, sans, sp, maxW, secPad, px,
-  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
-  canHover,
+  h1, h2Style, body, ctaButtonLight,
 } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
