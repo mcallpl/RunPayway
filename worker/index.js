@@ -54,6 +54,11 @@ LENGTH DISCIPLINE:
 `;
 
 export default {
+  // ── Cron trigger: send follow-up emails ──
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(handleFollowUpCron(env));
+  },
+
   async fetch(request, env) {
     // CORS preflight
     if (request.method === "OPTIONS") {
@@ -289,8 +294,13 @@ async function handleSaveRecord(body, env, corsHeaders) {
     });
   }
 
+  // Auto-migrate: add columns if missing
+  try { await env.DB.prepare("ALTER TABLE records ADD COLUMN email TEXT DEFAULT ''").run(); } catch { /* column exists */ }
+  try { await env.DB.prepare("ALTER TABLE records ADD COLUMN top_action TEXT DEFAULT ''").run(); } catch { /* column exists */ }
+  try { await env.DB.prepare("ALTER TABLE records ADD COLUMN followup_sent INTEGER DEFAULT 0").run(); } catch { /* column exists */ }
+
   await env.DB.prepare(
-    `INSERT OR REPLACE INTO records (id, created_at, assessment_title, industry, operating_structure, income_model, score, band, record_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT OR REPLACE INTO records (id, created_at, assessment_title, industry, operating_structure, income_model, score, band, record_data, email, top_action) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(
     body.id,
     new Date().toISOString(),
@@ -301,6 +311,8 @@ async function handleSaveRecord(body, env, corsHeaders) {
     body.score || 0,
     body.band || "",
     typeof body.record_data === "string" ? body.record_data : JSON.stringify(body.record_data),
+    body.email || "",
+    body.top_action || "",
   ).run();
 
   return new Response(JSON.stringify({ success: true, id: body.id }), { headers: corsHeaders });
@@ -646,4 +658,153 @@ async function handleStats(env, corsHeaders) {
     by_income_model: byModel?.results || [],
     recent_assessments: recent?.results || [],
   }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// FOLLOW-UP EMAIL CRON
+// ══════════════════════════════════════════════════════════
+
+// followup_sent bitmask: 0=none, 1=day7, 2=day30, 4=day90
+
+async function handleFollowUpCron(env) {
+  if (!env.RESEND_API_KEY) return;
+  const fromEmail = env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>";
+
+  // Query records with email that haven't received all follow-ups
+  const rows = await env.DB.prepare(
+    `SELECT id, email, assessment_title, score, band, top_action, created_at, followup_sent
+     FROM records
+     WHERE email != '' AND email IS NOT NULL AND followup_sent < 7
+     ORDER BY created_at ASC LIMIT 50`
+  ).all();
+
+  if (!rows?.results?.length) return;
+
+  const now = Date.now();
+
+  for (const row of rows.results) {
+    const daysSince = Math.floor((now - new Date(row.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    const sent = row.followup_sent || 0;
+    const name = row.assessment_title || "there";
+
+    let email = null;
+
+    // Day 7 (send between day 6-14)
+    if (daysSince >= 6 && daysSince <= 14 && !(sent & 1)) {
+      email = {
+        flag: 1,
+        subject: `${name}, have you explored your Command Center yet?`,
+        html: followUpDay7(name, row.score, row.band, row.top_action),
+      };
+    }
+    // Day 30 (send between day 28-45)
+    else if (daysSince >= 28 && daysSince <= 45 && !(sent & 2)) {
+      email = {
+        flag: 2,
+        subject: `${daysSince} days since your assessment \u2014 here\u2019s what to focus on`,
+        html: followUpDay30(name, row.score, row.top_action, daysSince),
+      };
+    }
+    // Day 90 (send between day 85-120)
+    else if (daysSince >= 85 && daysSince <= 120 && !(sent & 4)) {
+      email = {
+        flag: 4,
+        subject: `${name}, it\u2019s time to see how much you\u2019ve improved`,
+        html: followUpDay90(name, daysSince),
+      };
+    }
+
+    if (!email) continue;
+
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: row.email,
+          subject: email.subject,
+          html: email.html,
+          tags: [{ name: "type", value: "follow-up" }, { name: "record_id", value: row.id.slice(0, 8) }],
+        }),
+      });
+      if (res.ok) {
+        await env.DB.prepare("UPDATE records SET followup_sent = ? WHERE id = ?").bind(sent | email.flag, row.id).run();
+      }
+    } catch { /* email send failed — will retry next cron */ }
+  }
+}
+
+function followUpDay7(name, score, band, topAction) {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<tr><td align="center" style="padding:0 16px;">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
+<tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
+<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">${name}, your Command Center is waiting.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">Your Income Stability Score is <strong style="color:#0E1A2B;">${score}/100</strong> (${band}). Your 12-week roadmap, PressureMap, and What-If Simulator are ready.</p>
+${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;background:rgba(75,63,174,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
+<div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4B3FAE;margin-bottom:6px;">YOUR #1 PRIORITY</div>
+<div style="font-size:15px;font-weight:600;color:#0E1A2B;">${topAction}</div></div>` : ""}
+<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
+<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open Your Command Center</a>
+</td></tr></table>
+</td></tr></table></td></tr>
+<tr><td style="padding:24px 40px;text-align:center;">
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+</td></tr>
+</table></td></tr></table></body></html>`;
+}
+
+function followUpDay30(name, score, topAction, daysSince) {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<tr><td align="center" style="padding:0 16px;">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
+<tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
+<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">${daysSince} days since your assessment.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#0E1A2B;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#0E1A2B;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
+<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
+<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open the Simulator</a>
+</td></tr></table>
+</td></tr></table></td></tr>
+<tr><td style="padding:24px 40px;text-align:center;">
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+</td></tr>
+</table></td></tr></table></body></html>`;
+}
+
+function followUpDay90(name, daysSince) {
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
+<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<tr><td align="center" style="padding:0 16px;">
+<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
+<tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
+<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">It has been ${daysSince} days.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">If you have made structural changes to your income \u2014 signed a retainer, added a client, built a recurring stream \u2014 your score may have improved. There is only one way to find out.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">A new assessment will show you exactly how much progress you have made and where to focus next.</p>
+<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#0E1A2B;border-radius:10px;">
+<a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Reassess Your Score</a>
+</td></tr></table>
+<div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-top:24px;">
+<p style="font-size:13px;color:rgba(14,26,43,0.55);line-height:1.6;margin:0;">Income structures shift over time. We recommend reassessing after 90 days or whenever you make a significant structural change. Your Command Center tracks progress across assessments automatically.</p>
+</div>
+</td></tr></table></td></tr>
+<tr><td style="padding:24px 40px;text-align:center;">
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+</td></tr>
+</table></td></tr></table></body></html>`;
 }

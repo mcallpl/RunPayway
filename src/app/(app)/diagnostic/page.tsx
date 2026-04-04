@@ -716,6 +716,7 @@ export default function DiagnosticPage() {
             score: recAdapted.final_score || 0,
             band: recAdapted.stability_band || "",
             record_data: JSON.stringify(record),
+            email: profile.recipient_email || "",
           }),
         });
       } catch { /* Cloud save failed — local storage still works */ }

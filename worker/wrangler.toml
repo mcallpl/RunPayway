@@ -9,3 +9,7 @@ ALLOWED_ORIGIN = "*"
 binding = "DB"
 database_name = "runpayway-records"
 database_id = "311e5994-7568-4461-b54f-447414737053"
+
+# Follow-up email cron — runs daily at 9am EST (14:00 UTC)
+[triggers]
+crons = ["0 14 * * *"]
