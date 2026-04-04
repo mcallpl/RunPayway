@@ -66,11 +66,11 @@ function HeroSection() {
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>How It Works</div>
-        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
           The system behind your score.
         </h1>
         <div style={{ maxWidth: 560, ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 12 }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 12 }}>
             RunPayway&#8482; measures how your income is structured — not how much you earn.
           </p>
           <p style={{ fontSize: 16, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
@@ -99,11 +99,11 @@ function SystemOverview() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>What the system measures.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 80) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>What the system measures.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 80) }}>
           Income is typically evaluated by amount.
         </p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 140) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 140) }}>
           RunPayway&#8482; evaluates how income is built — and how it holds under disruption.
         </p>
         <div style={{ padding: "20px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.teal}`, ...fadeIn(visible, 220) }}>
@@ -132,11 +132,12 @@ function TheProcess() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The process.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Each stage operates under fixed evaluation rules.</p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: m ? 40 : 64, ...fadeIn(visible, 100) }}>No interpretation layer exists within scoring.</p>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The process.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Each stage operates under fixed evaluation rules.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 40 : 64, ...fadeIn(visible, 100) }}>No interpretation layer exists within scoring.</p>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 28 : 40 }}>
           {steps.map((step, i) => (
@@ -154,7 +155,7 @@ function TheProcess() {
                   {step.notes.map((note, j) => (
                     <div key={j} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                      <span style={{ fontSize: 15, color: C.navy }}>{note}</span>
+                      <span style={{ fontSize: 14, color: C.navy }}>{note}</span>
                     </div>
                   ))}
                 </div>
@@ -192,8 +193,8 @@ function TheDimensions() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The dimensions.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Six structural dimensions are evaluated using fixed definitions.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The dimensions.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Six structural dimensions are evaluated using fixed definitions.</p>
         <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 100) }}>Each dimension contributes independently before interaction analysis produces the final score.</p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 160) }}>
           {dims.map((d, i) => (
@@ -201,7 +202,7 @@ function TheDimensions() {
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${d.color}25` }} />
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: d.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>{d.name}</span>
+                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{d.name}</span>
               </div>
               <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{d.desc}</p>
             </div>
@@ -232,10 +233,11 @@ function OutputSummary() {
     { label: "Distance to Next Band", desc: "Points required to reach the next classification.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>What your score produces.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: m ? 32 : 48, ...fadeIn(visible, 80) }}>Every assessment produces a standardized output.</p>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>What your score produces.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 32 : 48, ...fadeIn(visible, 80) }}>Every assessment produces a standardized output.</p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, ...fadeIn(visible, 140) }}>
           {outputs.map((o, i) => (
             <div key={i} style={{ padding: m ? "16px 18px" : "18px 24px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 16 }}>
@@ -272,8 +274,8 @@ function ClassificationPreview() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The classification.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 80) }}>Each band defines what your structure can absorb under disruption.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>The classification.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 80) }}>Each band defines what your structure can absorb under disruption.</p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 140) }}>
           {bands.map((b, i) => (
             <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
@@ -302,8 +304,8 @@ function ArchitectureOverview() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: contentW, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 16, ...fadeIn(visible) }}>The architecture.</h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>The system operates in two distinct layers.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 16, ...fadeIn(visible) }}>The architecture.</h2>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>The system operates in two distinct layers.</p>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.40)", lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 100) }}>The boundary between them is fixed and auditable.</p>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: m ? 24 : 36, ...fadeIn(visible, 160) }}>
@@ -314,11 +316,11 @@ function ArchitectureOverview() {
               </div>
               <span style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA" }}>Deterministic Core</span>
             </div>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Produces the score using structural inputs only.</p>
+            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Produces the score using structural inputs only.</p>
             {["Score", "Band", "Constraint", "Stress test"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, color: "rgba(244,241,234,0.70)" }}>{item}</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.70)" }}>{item}</span>
               </div>
             ))}
             <p style={{ fontSize: 14, fontWeight: 500, color: "#F4F1EA", margin: "16px 0 0" }}>No contextual input can alter the result.</p>
@@ -331,11 +333,11 @@ function ArchitectureOverview() {
               </div>
               <span style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA" }}>Outcome Layer</span>
             </div>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Enhances interpretation using context.</p>
+            <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Enhances interpretation using context.</p>
             {["Industry patterns", "Scenario framing", "Action prioritization"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, color: "rgba(244,241,234,0.70)" }}>{item}</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.70)" }}>{item}</span>
               </div>
             ))}
             <p style={{ fontSize: 14, fontWeight: 500, color: "#F4F1EA", margin: "16px 0 0" }}>Does not modify the score.</p>
@@ -364,14 +366,14 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 32 : 44, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
           You&#8217;ve seen how the system works.{m ? " " : <br />}Now apply it to your structure.
         </h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
           The assessment takes under 2 minutes. Every dimension scored. Every result reproducible.
         </p>
         <div style={{ ...fadeIn(visible, 180) }}>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.navy, color: C.white, fontSize: 17, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(14,26,43,0.10)" }}
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.navy, color: C.white, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(14,26,43,0.10)" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.10)"; }}>
             Start Your Free Assessment
