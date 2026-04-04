@@ -2,17 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  C, T, mono, sans, sp, maxW, padX, textMax,
-  secPad, px,
-  h1, h2Style, h3Style, body, bodySm,
-  cardStyle, ctaButton, ctaButtonLight,
-  canHover,
-} from "@/lib/design-tokens";
 
-/* ------------------------------------------------------------------ */
-/*  Hooks                                                              */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* UTILITIES                                                           */
+/* ================================================================== */
+
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -34,44 +28,131 @@ function useMobile(bp = 768) {
   return m;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Constants                                                          */
-/* ------------------------------------------------------------------ */
+function useReducedMotion() {
+  const [r, setR] = useState(false);
+  useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
+  return r;
+}
+
+function useFadeIn() {
+  const reduced = useReducedMotion();
+  return (visible: boolean, delay = 0): React.CSSProperties =>
+    reduced ? {} : {
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(8px)",
+      transition: `opacity 400ms ease-out ${delay}ms, transform 400ms ease-out ${delay}ms`,
+    };
+}
+
+/* ================================================================== */
+/* DESIGN SYSTEM (LOCKED)                                              */
+/* ================================================================== */
+
+const C = {
+  navy: "#0E1A2B",
+  purple: "#4B3FAE",
+  teal: "#1F6D7A",
+  sand: "#F4F1EA",
+  white: "#FFFFFF",
+  border: "#E5E7EB",
+};
+
+const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
+const muted = "rgba(14,26,43,0.55)";
+const light = "rgba(14,26,43,0.38)";
+
+const contentW = 1040;
+const secPad = (m: boolean) => m ? 48 : 96;
+const px = (m: boolean) => m ? 20 : 24;
+
 const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 const STRIPE_ANNUAL = "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
 
-const fadeIn = (v: boolean, delay = 0) => ({
-  opacity: v ? 1 : 0,
-  transform: v ? "translateY(0)" : "translateY(16px)",
-  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
-});
-
 
 /* ================================================================== */
-/* 1. HERO                                                             */
+/* SECTION 1 — HERO                                                    */
 /* ================================================================== */
-function Hero() {
+
+function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
+
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ ...T.label, color: C.teal }}>Pricing</span>
-          </div>
-          <h1 style={{ ...h1(m), color: C.sandText, marginBottom: 24, maxWidth: 680, margin: "0 auto 24px" }}>
-            Measure your income stability{!m && <br />} before something tests it.
-          </h1>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 500, margin: "0 auto 28px" }}>
-            Free score instantly. Full 4-page diagnostic for <span style={{ fontFamily: mono, color: C.sandText }}>$69</span>. Track your progress over 12 months for <span style={{ fontFamily: mono, color: C.sandText }}>$149</span>.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
-            {["No bank connection", "Full refund guarantee", "Instant results"].map(t => (
-              <span key={t} style={{ ...T.micro, fontWeight: 500, color: C.sandLight }}>{t}</span>
-            ))}
-          </div>
-        </div>
+    <header ref={ref} style={{
+      backgroundColor: C.navy,
+      paddingTop: m ? 80 : 120, paddingBottom: m ? 48 : 80,
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <h1 style={{
+          fontSize: m ? 36 : 48, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em",
+          color: C.sand, marginBottom: 20,
+          ...fadeIn(visible),
+        }}>
+          Your income will be tested.{m ? " " : <br />}This shows whether it holds.
+        </h1>
+
+        <p style={{
+          fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 16,
+          ...fadeIn(visible, 80),
+        }}>
+          Measure the structural integrity of your income before conditions force the answer.
+        </p>
+
+        <p style={{
+          fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.55, marginBottom: 32,
+          ...fadeIn(visible, 140),
+        }}>
+          Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
+        </p>
+
+        <p style={{
+          fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.02em",
+          ...fadeIn(visible, 200),
+        }}>
+          No bank connection &bull; Instant results &bull; Full refund guarantee
+        </p>
+      </div>
+    </header>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 2 — VALUE FRAME                                             */
+/* ================================================================== */
+
+function ValueFrame() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20,
+          ...fadeIn(visible),
+        }}>
+          The score shows where you stand.{m ? " " : <br />}The diagnostic shows what breaks — and what to fix.
+        </h2>
+        <p style={{
+          fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: 8,
+          ...fadeIn(visible, 80),
+        }}>
+          Without the diagnostic, you see the number.
+        </p>
+        <p style={{
+          fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.65,
+          ...fadeIn(visible, 140),
+        }}>
+          With it, you see the structure behind it.
+        </p>
       </div>
     </section>
   );
@@ -79,220 +160,166 @@ function Hero() {
 
 
 /* ================================================================== */
-/* 2. WHAT YOU GET — Report contents + visual preview                   */
+/* SECTION 3 — PRICING CARDS                                           */
 /* ================================================================== */
-function WhatYouGet() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
 
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
-        <div style={{ marginBottom: m ? sp(4) : sp(6), ...fadeIn(visible) }}>
-          <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>The Report</div>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-            Four pages. Nothing withheld.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 520 }}>
-            Every section generated from your structural inputs, interpreted using your industry, operating structure, and income model.
-          </p>
-        </div>
-
-        {/* Report pages */}
-        {[
-          { num: "01", title: "Cover & Score", desc: "Your Income Stability Score, stability band, primary constraint, and distance to the next band.", color: C.purple },
-          { num: "02", title: "Key Findings", desc: "PressureMap\u2122 intelligence, income structure breakdown, structural strengths and primary constraint — in plain English.", color: C.teal },
-          { num: "03", title: "Stability Plan", desc: "Highest-leverage actions ranked by projected impact, combined improvement projection, 30-day roadmap.", color: C.purple },
-          { num: "04", title: "Stress Testing", desc: "Ranked disruption scenarios with exact score drops, fragility assessment, and Command Center access code.", color: C.teal },
-        ].map((p, i) => (
-          <div key={p.num} style={{
-            display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0",
-            borderBottom: i < 3 ? `1px solid ${C.softBorder}` : "none",
-            ...fadeIn(visible, 80 + i * 60),
-          }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: C.white, border: `1px solid ${C.softBorder}`, fontSize: 13, fontFamily: mono, fontWeight: 700, color: p.color, position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: p.color, opacity: 0.6 }} />
-              {p.num}
-            </div>
-            <div>
-              <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, letterSpacing: m ? undefined : "-0.01em", marginBottom: 4 }}>{p.title}</div>
-              <p style={{ ...bodySm(m), fontSize: m ? 14 : 15, color: C.muted, margin: 0 }}>{p.desc}</p>
-            </div>
-          </div>
-        ))}
-
-        <div style={{ display: "flex", gap: 16, marginTop: sp(4), flexWrap: "wrap" as const, ...fadeIn(visible, 400) }}>
-          <Link href="/sample-report" style={{ fontSize: 15, fontWeight: 600, color: C.purple, textDecoration: "none" }}>
-            View sample report &rarr;
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* 3. PRICING CARDS                                                    */
-/* ================================================================== */
 function PricingCards() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const check = (text: string) => (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>
+      <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+      <span style={{ fontSize: 15, color: muted, lineHeight: 1.55 }}>{text}</span>
+    </div>
+  );
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(4) : sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-            Start free. Go deeper when you&#8217;re ready.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 520, margin: "0 auto" }}>
-            Your free score shows the problem. The diagnostic shows exactly what to fix.
-            <span style={{ color: C.teal, fontWeight: 600 }}> Under 2 minutes.</span>
-          </p>
-        </div>
+    <section ref={ref} style={{
+      backgroundColor: C.white,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{
+          display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr",
+          gap: 24, alignItems: "start",
+          ...fadeIn(visible),
+        }}>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20, alignItems: "start" }}>
-
-          {/* ── FREE ── */}
+          {/* FREE */}
           <div style={{
-            ...cardStyle, borderRadius: 16, overflow: "hidden", position: "relative" as const,
-            border: `1px solid rgba(14,26,43,0.08)`,
-            padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
-            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
+            backgroundColor: C.white, borderRadius: 12, padding: 24,
+            border: `1px solid ${C.border}`,
             display: "flex", flexDirection: "column" as const,
-            ...fadeIn(visible, 100),
+            marginBottom: m ? 16 : 0,
           }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `rgba(14,26,43,0.06)` }} />
-            <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: sp(2.5) }}>Income Stability Score&#8482;</div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
-              <span style={{ ...T.meta, color: C.muted }}>always free</span>
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+              Income Stability Score&#8482;
             </div>
-            <div style={{ height: 1, background: C.softBorder, margin: `${sp(3)}px 0` }} />
-            <div style={{ flex: 1, marginBottom: sp(3.5) }}>
-              {["Your score out of 100", "Your stability band", "Distance to next band", "Primary structural constraint", "Peer percentile for your industry"].map(f => (
-                <div key={f} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: C.muted }}>{f}</span>
-                </div>
-              ))}
+            <div style={{ marginBottom: 4 }}>
+              <span style={{ fontSize: 40, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
             </div>
+            <div style={{ fontSize: 13, color: light, marginBottom: 24 }}>always free</div>
+
+            <div style={{ marginBottom: 24, flex: 1 }}>
+              {check("Score (0\u2013100)")}
+              {check("Stability band classification")}
+              {check("Primary structural constraint")}
+              {check("Distance to next band")}
+              {check("Industry percentile benchmark")}
+            </div>
+
             <Link href="/begin" style={{
-              ...ctaButton, width: "100%", height: 52, borderRadius: 10, padding: 0,
-              background: C.white, color: C.navy, border: `1px solid ${C.navy}`,
-            }}>
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 48, borderRadius: 10,
+              backgroundColor: C.white, color: C.navy,
+              border: `1px solid ${C.navy}`,
+              fontSize: 15, fontWeight: 600, textDecoration: "none",
+              transition: "background-color 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#f5f4f1"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}
+            >
               Get My Free Score
             </Link>
-            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>Takes about <span style={{ fontFamily: mono }}>90</span> seconds</p>
+            <p style={{ fontSize: 13, color: light, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+              Takes about 90 seconds. No account required.
+            </p>
           </div>
 
-          {/* ── DIAGNOSTIC REPORT — $69 ── */}
+          {/* DIAGNOSTIC (PRIMARY) */}
           <div style={{
-            ...cardStyle, borderRadius: 16, position: "relative", overflow: "hidden",
-            padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
-            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
-            border: `1px solid rgba(75,63,174,0.18)`,
-            boxShadow: "0 8px 28px rgba(75,63,174,0.10)",
+            backgroundColor: C.white, borderRadius: 12, padding: 24,
+            border: `1px solid rgba(14,26,43,0.15)`,
             display: "flex", flexDirection: "column" as const,
-            ...fadeIn(visible, 180),
+            transform: m ? "none" : "scale(1.02)",
+            marginBottom: m ? 16 : 0,
           }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
-
-            <div>
-              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(75,63,174,0.10)", marginBottom: 16 }}>
-                <span style={{ ...T.label, fontSize: 13, color: C.purple }}>Recommended</span>
-              </div>
-              <div style={{ ...T.label, fontSize: 13, color: C.muted, marginBottom: 16 }}>RunPayway&#8482; Diagnostic Report</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
-                <span style={{ ...T.meta, color: C.muted }}>one-time</span>
-              </div>
+            <div style={{ position: "relative", overflow: "hidden", borderRadius: "12px 12px 0 0", margin: "-24px -24px 0", padding: "3px 24px 0" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
             </div>
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginTop: 20, marginBottom: 20 }}>
+              RunPayway&#8482; Diagnostic
+            </div>
+            <div style={{ marginBottom: 4 }}>
+              <span style={{ fontSize: 40, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
+            </div>
+            <div style={{ fontSize: 13, color: light, marginBottom: 20 }}>one-time</div>
 
-            <div style={{ height: 1, background: C.softBorder, margin: `${sp(3)}px 0` }} />
+            <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 20 }}>
+              See exactly why your score is what it is — and what changes it.
+            </p>
 
-            <div style={{ flex: 1, marginBottom: sp(3) }}>
-              {[
-                { text: "Everything in Free, plus:", bold: true },
-                { text: "4-page diagnostic interpreted from your structural inputs" },
-                { text: "PressureMap\u2122 structural intelligence for your industry" },
-                { text: "Ranked disruption scenarios with exact score drops" },
-                { text: "Highest-leverage actions with projected score impact" },
-                { text: "30-day execution roadmap" },
-                { text: "Command Center with lifetime simulator access" },
-              ].map((f, i) => (
-                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : C.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? C.navy : C.muted, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
-                </div>
-              ))}
+            <div style={{ marginBottom: 24, flex: 1 }}>
+              {check("Full structural breakdown across all six dimensions")}
+              {check("PressureMap\u2122 structural intelligence")}
+              {check("Ranked disruption scenarios with exact score drops")}
+              {check("Highest-impact actions with projected score movement")}
+              {check("30-day execution roadmap")}
+              {check("Command Center access")}
             </div>
 
             <a href={STRIPE} style={{
-              ...ctaButton, width: "100%", height: 52, borderRadius: 10, padding: 0,
-              background: C.navy, color: C.white,
-              boxShadow: "0 8px 24px rgba(14,26,43,0.15)",
-            }}>
-              Get Diagnostic Report &mdash; <span style={{ fontFamily: mono }}>$69</span>
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 52, borderRadius: 10,
+              backgroundColor: C.navy, color: C.white,
+              fontSize: 15, fontWeight: 600, textDecoration: "none",
+              transition: "background-color 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}
+            >
+              Unlock Full Diagnostic &mdash; $69
             </a>
-            <p style={{ ...T.meta, color: C.light, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+            <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
               If it doesn&#8217;t reveal something new, full refund.
             </p>
           </div>
 
-          {/* ── STABILITY MONITORING — $149/year ── */}
+          {/* MONITORING */}
           <div style={{
-            background: C.navy, borderRadius: 16, position: "relative", overflow: "hidden",
-            padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
-            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
-            border: `1px solid rgba(31,109,122,0.25)`,
-            boxShadow: "0 12px 40px rgba(14,26,43,0.20)",
+            backgroundColor: C.navy, borderRadius: 12, padding: 24,
             display: "flex", flexDirection: "column" as const,
-            ...fadeIn(visible, 260),
           }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-
-            <div>
-              <div style={{ display: "inline-block", padding: "4px 12px", borderRadius: 4, background: "rgba(31,109,122,0.15)", marginBottom: 16 }}>
-                <span style={{ ...T.label, fontSize: 13, color: C.teal }}>Best Value</span>
-              </div>
-              <div style={{ ...T.label, fontSize: 13, color: C.sandLight, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>$149</span>
-                <span style={{ ...T.meta, color: C.sandLight }}>/year</span>
-              </div>
-              <div style={{ ...T.meta, color: C.sandLight, marginTop: 4 }}>
-                <span style={{ fontFamily: mono }}>3</span> assessments &middot; save <span style={{ fontFamily: mono }}>$58</span>
-              </div>
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+              RunPayway&#8482; Monitoring
             </div>
+            <div style={{ marginBottom: 4 }}>
+              <span style={{ fontSize: 40, fontWeight: 600, fontFamily: mono, color: C.sand, lineHeight: 1 }}>$149</span>
+              <span style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", marginLeft: 6 }}>/year</span>
+            </div>
+            <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginBottom: 20 }}>Track how your structure evolves — not just your score.</div>
 
-            <div style={{ height: 1, background: C.sandBorder, margin: `${sp(3)}px 0` }} />
-
-            <div style={{ flex: 1, marginBottom: sp(3) }}>
+            <div style={{ marginBottom: 24, flex: 1 }}>
               {[
-                { text: "Everything in the Diagnostic, plus:", bold: true },
-                { text: "3 full assessments within 12 months" },
-                { text: "Score History Timeline — track your progression" },
-                { text: "Factor-level delta tracking between assessments" },
-                { text: "Benchmark evolution — peer percentile over time" },
-                { text: "Monitoring Portal with email + PIN sign-in" },
-              ].map((f, i) => (
-                <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: (f as { bold?: boolean }).bold ? "transparent" : C.teal, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 15, color: (f as { bold?: boolean }).bold ? C.sandText : C.sandMuted, fontWeight: (f as { bold?: boolean }).bold ? 600 : 400 }}>{f.text}</span>
+                "3 full assessments within 12 months",
+                "Score history timeline",
+                "Factor-level change tracking",
+                "Benchmark evolution over time",
+                "Monitoring portal access",
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>
+                  <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+                  <span style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", lineHeight: 1.55 }}>{item}</span>
                 </div>
               ))}
             </div>
 
             <a href={STRIPE_ANNUAL} style={{
-              ...ctaButton, width: "100%", height: 52, borderRadius: 10, padding: 0,
-              background: C.white, color: C.navy,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.20)",
-            }}>
-              Start Monitoring &mdash; <span style={{ fontFamily: mono }}>$149</span>
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 48, borderRadius: 10,
+              backgroundColor: C.white, color: C.navy,
+              fontSize: 15, fontWeight: 600, textDecoration: "none",
+              transition: "opacity 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = "0.9"; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+            >
+              Start Monitoring &mdash; $149
             </a>
-            <p style={{ ...T.meta, color: C.sandLight, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", textAlign: "center", marginTop: 10, marginBottom: 0 }}>
               Full Command Center access included.
             </p>
           </div>
@@ -304,76 +331,114 @@ function PricingCards() {
 
 
 /* ================================================================== */
-/* 4. OUTCOME PROOF — one testimonial from landing page                */
+/* SECTION 4 — WHY UPGRADE                                             */
 /* ================================================================== */
-function OutcomeProof() {
+
+function WhyUpgrade() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
 
-  const outcomes = [
-    {
-      before: 34, after: 61,
-      constraint: "80% client concentration",
-      action: "Restructured to 4 clients, none above 35%. Added 2 retainer agreements.",
-      name: "Sarah M.", role: "Real Estate Agent",
-    },
-    {
-      before: 28, after: 52,
-      constraint: "Zero recurring income",
-      action: "Converted 3 project clients to monthly retainers. Shifted 40% of revenue to recurring.",
-      name: "James R.", role: "Software Contractor",
-    },
-    {
-      before: 42, after: 67,
-      constraint: "No forward visibility",
-      action: "Secured 3-month contracts for top 2 clients. Extended engagement terms from monthly to quarterly.",
-      name: "Priya K.", role: "Management Consultant",
-    },
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20,
+          ...fadeIn(visible),
+        }}>
+          Why people upgrade
+        </h2>
+        <p style={{
+          fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: 20,
+          ...fadeIn(visible, 80),
+        }}>
+          The score shows where you stand.
+        </p>
+        <p style={{
+          fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: 8,
+          ...fadeIn(visible, 120),
+        }}>
+          The diagnostic shows:
+        </p>
+        <div style={{ marginBottom: 24, ...fadeIn(visible, 160) }}>
+          {["what is fragile", "what breaks first", "what to fix first"].map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{item}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 15, color: light, marginBottom: 4 }}>Without it, you&#8217;re guessing.</p>
+          <p style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>With it, you&#8217;re executing.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 5 — REPORT BREAKDOWN                                        */
+/* ================================================================== */
+
+function ReportBreakdown() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const pages = [
+    { num: "01", title: "Cover & Score", desc: "Your score, band, constraint, and distance to next level." },
+    { num: "02", title: "Key Findings", desc: "PressureMap\u2122, structure breakdown, strengths, constraint." },
+    { num: "03", title: "Stability Plan", desc: "Ranked actions, projected impact, 30-day roadmap." },
+    { num: "04", title: "Stress Testing", desc: "Disruption scenarios, score drops, fragility analysis." },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2) }}>What changed after they measured</h2>
-          <p style={{ ...body(m), color: C.muted }}>
-            The score reveals the weakness. The action changes the outcome.
-          </p>
-        </div>
+    <section ref={ref} style={{
+      backgroundColor: C.white,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 12,
+          ...fadeIn(visible),
+        }}>
+          Four pages. Nothing withheld.
+        </h2>
+        <p style={{
+          fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: m ? 32 : 48,
+          ...fadeIn(visible, 80),
+        }}>
+          Every section generated from your structural inputs and interpreted through your industry and income model.
+        </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(3.5) }}>
-          {outcomes.map((t, i) => (
-            <div key={t.name} style={{
-              ...cardStyle,
-              padding: m ? sp(4) : sp(5),
-              ...fadeIn(visible, 150 + i * 100),
+        <div style={{
+          display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr",
+          gap: 16,
+          ...fadeIn(visible, 140),
+        }}>
+          {pages.map((p, i) => (
+            <div key={i} style={{
+              padding: 24, borderRadius: 12,
+              border: `1px solid ${C.border}`,
             }}>
-              {/* Score change */}
-              <div style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(3) }}>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1, fontFamily: mono }}>{t.before}</span>
-                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
-                  <path d="M2 6h16M14 2l4 4-4 4" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>{t.after}</span>
-              </div>
-
-              {/* Constraint */}
-              <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginBottom: sp(2) }}>
-                Constraint: {t.constraint}
-              </p>
-
-              {/* Action taken */}
-              <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(3) }}>
-                {t.action}
-              </p>
-
-              {/* Attribution */}
-              <div style={{ paddingTop: sp(2.5), borderTop: `1px solid ${C.softBorder}` }}>
-                <div style={{ fontSize: 16, fontWeight: 500, color: C.navy, marginBottom: 2 }}>{t.name}</div>
-                <div style={{ ...T.micro, color: C.muted }}>{t.role}</div>
-              </div>
+              <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", color: C.teal, marginBottom: 10 }}>{p.num}</div>
+              <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{p.title}</div>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
             </div>
           ))}
+        </div>
+
+        <div style={{ marginTop: 24, ...fadeIn(visible, 200) }}>
+          <Link href="/sample-report" style={{ fontSize: 14, fontWeight: 500, color: C.teal, textDecoration: "none" }}>
+            View sample report &rarr;
+          </Link>
         </div>
       </div>
     </section>
@@ -382,45 +447,55 @@ function OutcomeProof() {
 
 
 /* ================================================================== */
-/* 5. TRUST                                                            */
+/* SECTION 6 — TRANSFORMATION PROOF                                    */
 /* ================================================================== */
-function Trust() {
+
+function TransformationProof() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const results = [
+    { before: 34, after: 61, constraint: "80% client concentration", action: "Restructured to multiple clients. Added retainers." },
+    { before: 28, after: 52, constraint: "Zero recurring income", action: "Converted project work into recurring revenue." },
+    { before: 42, after: 67, constraint: "No forward visibility", action: "Secured forward contracts and extended engagements." },
+  ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(7), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.sandText }}>
-            Built on trust. Not on promises.
-          </h2>
-        </div>
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          The score reveals the weakness.{m ? " " : <br />}The action changes the outcome.
+        </h2>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "repeat(4, 1fr)", gap: m ? 12 : 16 }}>
-          {[
-            { title: "No bank connection", desc: "We never access financial accounts." },
-            { title: "No credit pull", desc: "No impact on your credit." },
-            { title: "Private by default", desc: "Your data is never sold." },
-            { title: "Full refund", desc: "30 days, no questions asked." },
-          ].map((b, i) => (
-            <div key={b.title} style={{
-              padding: m ? "20px 16px" : "24px 20px", borderRadius: 14, textAlign: "center",
-              backgroundColor: "rgba(244,241,234,0.04)", border: `1px solid ${C.sandBorder}`,
-              ...fadeIn(visible, 100 + i * 80),
+        <div style={{
+          display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr",
+          gap: 16,
+          ...fadeIn(visible, 120),
+        }}>
+          {results.map((r, i) => (
+            <div key={i} style={{
+              padding: 24, borderRadius: 12,
+              backgroundColor: C.white, border: `1px solid ${C.border}`,
+              marginBottom: m ? 12 : 0,
             }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: C.sandText, marginBottom: 6 }}>{b.title}</div>
-              <div style={{ ...T.meta, color: C.sandLight }}>{b.desc}</div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 16 }}>
+                <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: light }}>{r.before}</span>
+                <span style={{ fontSize: 14, color: light }}>&rarr;</span>
+                <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: C.teal }}>{r.after}</span>
+              </div>
+              <div style={{ fontSize: 13, color: light, marginBottom: 8 }}>Constraint: {r.constraint}</div>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, margin: 0 }}>{r.action}</p>
             </div>
           ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: sp(4), ...fadeIn(visible, 500) }}>
-          <div style={{ display: "inline-block", padding: "14px 28px", borderRadius: 12, border: `1px solid ${C.sandBorder}` }}>
-            <p style={{ fontSize: 15, color: C.sandMuted, margin: 0, fontWeight: 500 }}>
-              Deterministic &#183; Fixed rules &#183; Versioned &#183; Same inputs, same score
-            </p>
-          </div>
         </div>
       </div>
     </section>
@@ -429,48 +504,113 @@ function Trust() {
 
 
 /* ================================================================== */
-/* 6. FAQ                                                              */
+/* SECTION 7 — TRUST BLOCK                                             */
 /* ================================================================== */
-function Faq() {
+
+function TrustBlock() {
   const { ref, visible } = useInView();
   const m = useMobile();
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const fadeIn = useFadeIn();
+
+  const items = [
+    { title: "No bank connection", desc: "We never access financial accounts." },
+    { title: "No credit pull", desc: "No impact on your credit." },
+    { title: "Private by default", desc: "Your data is never sold." },
+    { title: "Deterministic system", desc: "Same inputs \u2192 same score." },
+  ];
+
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.white,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          Designed as a measurement system — not a financial tool.
+        </h2>
+
+        <div style={{
+          display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr",
+          gap: 16,
+          ...fadeIn(visible, 100),
+        }}>
+          {items.map((item, i) => (
+            <div key={i} style={{ textAlign: "center", padding: m ? 16 : 24 }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</div>
+              <p style={{ fontSize: 13, color: muted, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 8 — FAQ                                                     */
+/* ================================================================== */
+
+function FaqSection() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const faqs = [
-    { q: "What do I get for free?", a: "Your score out of 100, your stability band, distance to the next band, your primary structural constraint, and your peer percentile. No payment required." },
-    { q: "What does the Diagnostic Report include?", a: "A 4-page structural diagnostic with PressureMap\u2122 intelligence, ranked risk scenarios, projected actions, tradeoff analysis, a 30-day roadmap, and lifetime access to the Command Center with the stability simulator." },
-    { q: "What does Stability Monitoring include?", a: "Three full assessments within 12 months, each generating a complete 4-page diagnostic. Plus monitoring-exclusive features: Score History Timeline, factor-level delta tracking, benchmark evolution, and Monitoring Portal access with email + PIN sign-in." },
-    { q: "How is the score calculated?", a: "The scoring model evaluates six fixed structural dimensions using deterministic, versioned rules. Same inputs always produce the same score." },
-    { q: "What is your refund policy?", a: "Full refund within 30 days \u2014 no questions asked. If the report doesn\u2019t reveal at least one insight you didn\u2019t already know, you get your money back." },
-    { q: "Is my information confidential?", a: "Yes. No bank credentials, no credit data, no financial account access. Your data is never sold. You can request deletion at any time." },
-    { q: "How long does it take?", a: "Under two minutes. Your free score is delivered instantly. The full diagnostic generates immediately after purchase." },
+    { q: "What do I get for free?", a: "Your score out of 100, your stability band, your primary structural constraint, distance to next band, and your industry percentile benchmark. No account required." },
+    { q: "What does the Diagnostic include?", a: "A full structural breakdown of your score across all six dimensions, PressureMap\u2122 analysis, ranked disruption scenarios, highest-impact actions with projected score movement, a 30-day execution roadmap, and Command Center access." },
+    { q: "What does Monitoring include?", a: "Three full assessments within 12 months, score history timeline, factor-level change tracking, benchmark evolution over time, and monitoring portal access. Full Command Center access included." },
+    { q: "How is the score calculated?", a: "The score is produced by a deterministic model that evaluates six structural dimensions of your income. The model is fixed, versioned, and produces identical output for identical inputs. No AI or subjective interpretation is involved in scoring." },
+    { q: "Is my information confidential?", a: "Yes. There is no bank connection, no credit pull, and no external data access. Your result is based entirely on the information you provide. Your data is never sold." },
+    { q: "What is the refund policy?", a: "If the diagnostic does not reveal at least one structural insight you did not already know, you receive a full refund. No conditions." },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: textMax, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(7), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy }}>
-            Frequently asked questions
-          </h2>
-        </div>
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 820, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          Frequently Asked Questions
+        </h2>
 
-        {faqs.map((faq, i) => {
-          const isOpen = openIdx === i;
-          return (
-            <div key={i} style={{ borderBottom: `1px solid ${C.softBorder}`, ...fadeIn(visible, 60 + i * 40) }}>
-              <button onClick={() => setOpenIdx(isOpen ? null : i)} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "18px 0" : "22px 0", minHeight: 48, border: "none", backgroundColor: "transparent", cursor: "pointer", textAlign: "left", gap: 16 }}>
-                <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy }}>{faq.q}</span>
-                <span style={{ fontSize: 18, color: C.light, flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>&#9662;</span>
-              </button>
-              {isOpen && (
-                <div style={{ paddingBottom: 20 }}>
-                  <p style={{ ...body(m), fontSize: m ? 15 : 16, color: C.muted, margin: 0 }}>{faq.a}</p>
+        <div style={{ ...fadeIn(visible, 80) }}>
+          {faqs.map((faq, i) => {
+            const isOpen = openFaq === i;
+            return (
+              <div key={i} style={{ borderTop: `1px solid ${C.border}` }}>
+                <button onClick={() => setOpenFaq(isOpen ? null : i)} aria-expanded={isOpen}
+                  style={{
+                    width: "100%", padding: "20px 0", minHeight: 48,
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                  }}>
+                  <span style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, paddingRight: 16, lineHeight: 1.4 }}>{faq.q}</span>
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }}>
+                    <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <div style={{ maxHeight: isOpen ? 400 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
+                  <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, margin: 0, paddingBottom: 20 }}>{faq.a}</p>
                 </div>
-              )}
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+          <div style={{ borderTop: `1px solid ${C.border}` }} />
+        </div>
       </div>
     </section>
   );
@@ -478,31 +618,58 @@ function Faq() {
 
 
 /* ================================================================== */
-/* 7. CTA                                                              */
+/* SECTION 9 — FINAL CTA                                               */
 /* ================================================================== */
-function Cta() {
+
+function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.sandText, marginBottom: 20 }}>
-            Your income has a structure.{!m && <br />} Now you can measure it.
-          </h2>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            Start with the free score. The diagnostic is there when you want the full picture.
-          </p>
+    <section ref={ref} style={{
+      backgroundColor: C.navy,
+      paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96,
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2,
+          color: C.sand, marginBottom: 16,
+          ...fadeIn(visible),
+        }}>
+          Your income already has a structure.{m ? " " : <br />}Now you can see it clearly.
+        </h2>
+        <p style={{
+          fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8,
+          ...fadeIn(visible, 60),
+        }}>
+          Start with the free score.
+        </p>
+        <p style={{
+          fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 32,
+          ...fadeIn(visible, 100),
+        }}>
+          Unlock the diagnostic when you&#8217;re ready to act.
+        </p>
+
+        <div style={{ ...fadeIn(visible, 160) }}>
           <Link href="/begin" style={{
-            ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 52, padding: "0 40px", borderRadius: 10,
             backgroundColor: C.white, color: C.navy,
-          }}>
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            transition: "background-color 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}
+          >
             Start Your Free Assessment
           </Link>
-          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
-            Under 2 minutes &#183; Instant result &#183; Private by default
-          </div>
+
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.38)", marginTop: 16 }}>
+            Under 2 minutes &bull; Instant result &bull; Private by default
+          </p>
         </div>
       </div>
     </section>
@@ -511,18 +678,23 @@ function Cta() {
 
 
 /* ================================================================== */
-/* EXPORT                                                              */
+/* PAGE EXPORT                                                         */
 /* ================================================================== */
+
 export default function PricingPage() {
   return (
-    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
-      <Hero />
-      <WhatYouGet />
-      <PricingCards />
-      <OutcomeProof />
-      <Trust />
-      <Faq />
-      <Cta />
+    <div className="overflow-x-hidden">
+      <main>
+        <HeroSection />
+        <ValueFrame />
+        <PricingCards />
+        <WhyUpgrade />
+        <ReportBreakdown />
+        <TransformationProof />
+        <TrustBlock />
+        <FaqSection />
+        <FinalCta />
+      </main>
     </div>
   );
 }
