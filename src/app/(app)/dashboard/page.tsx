@@ -311,26 +311,33 @@ function DashboardContent() {
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
+    if (!hydrated) return;
     if (typeof IntersectionObserver === "undefined") return;
     const ids = PHASE_NAV.map(p => p.id);
     const observer = new IntersectionObserver(
       (entries) => {
+        // Find the most visible section
+        let best: IntersectionObserverEntry | null = null;
         for (const entry of entries) {
-          if (entry.isIntersecting && entry.intersectionRatio > 0) {
-            setActivePhase(entry.target.id);
+          if (entry.isIntersecting) {
+            if (!best || entry.intersectionRatio > best.intersectionRatio) {
+              best = entry;
+            }
           }
         }
+        if (best) setActivePhase(best.target.id);
       },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+      { rootMargin: "-10% 0px -40% 0px", threshold: [0, 0.1, 0.25, 0.5] }
     );
+    // Wait a tick for DOM to settle after hydration
     const timeout = setTimeout(() => {
       for (const id of ids) {
         const el = document.getElementById(id);
         if (el) observer.observe(el);
       }
-    }, 100);
+    }, 200);
     return () => { clearTimeout(timeout); observer.disconnect(); };
-  }, []);
+  }, [hydrated]);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
