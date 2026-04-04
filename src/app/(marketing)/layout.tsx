@@ -721,14 +721,15 @@ export default function MarketingLayout({
             </div>
           </div>
 
-          {/* 5-column nav grid */}
+          {/* 3-column nav grid */}
           <nav
             aria-label="Footer navigation"
             style={{
               display: "grid",
-              gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)",
-              gap: mobile ? "36px 32px" : "0 48px",
-              justifyItems: "center",
+              gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
+              gap: mobile ? "36px 32px" : "0 64px",
+              maxWidth: 720,
+              margin: "0 auto",
               marginBottom: mobile ? 40 : 52,
             }}
           >
@@ -743,13 +744,10 @@ export default function MarketingLayout({
                   { href: "/methodology", label: t.nav.methodology },
                   { href: "/pricing", label: t.nav.pricing },
                 ].map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
+                  <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
-                  >
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>
                 ))}
@@ -766,22 +764,36 @@ export default function MarketingLayout({
                   { href: "/coming-soon", label: "New Releases" },
                   { href: "/contact", label: t.nav.contact },
                 ].map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
+                  <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
-                  >
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>
                 ))}
+                {/* Social */}
+                <div style={{ marginTop: 12 }}>
+                  <div style={{ display: "flex", gap: 16 }}>
+                    {[
+                      { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
+                      { href: "https://x.com/runpayway", label: "X" },
+                      { href: "https://instagram.com/runpayway", label: "Instagram" },
+                    ].map((link) => (
+                      <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", transition: "color 160ms ease" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Governance */}
+            {/* Legal */}
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.governance}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Legal</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/privacy-policy", label: t.footer.privacyPolicy },
@@ -792,100 +804,12 @@ export default function MarketingLayout({
                   { href: "/model-version-policy", label: t.footer.modelVersionPolicy },
                   { href: "/data-processing-agreement", label: "Data Processing Agreement" },
                 ].map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
+                  <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
-                  >
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Enterprise */}
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.enterprise}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <span style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4 }}>
-                  {t.footer.forOrganizations}
-                </span>
-                {waitlistDone ? (
-                  <div style={{ padding: "8px 12px", borderRadius: 7, backgroundColor: "rgba(31,109,122,0.08)", border: "1px solid rgba(31,109,122,0.20)" }}>
-                    <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>You&#8217;re on the list.</span>
-                  </div>
-                ) : (
-                  <form
-                    onSubmit={(e) => { e.preventDefault(); submitWaitlist(); }}
-                    style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                  >
-                    <input
-                      type="email"
-                      placeholder={t.footer.workEmail}
-                      aria-label={t.footer.workEmail}
-                      value={waitlistEmail}
-                      onChange={(e) => setWaitlistEmail(e.target.value)}
-                      style={{
-                        width: "100%",
-                        height: mobile ? 40 : 36,
-                        padding: "0 12px",
-                        borderRadius: 7,
-                        border: "1px solid rgba(14,26,43,0.10)",
-                        background: "#ffffff",
-                        fontSize: 13,
-                        color: "#0E1A2B",
-                        outline: "none",
-                        boxSizing: "border-box" as const,
-                        transition: "border-color 180ms ease",
-                      }}
-                      onFocus={(e) => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
-                      onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; }}
-                    />
-                    <button
-                      type="submit"
-                      style={{
-                        height: mobile ? 40 : 36,
-                        borderRadius: 7,
-                        background: "#4B3FAE",
-                        color: "#ffffff",
-                        fontSize: 13,
-                        fontWeight: 600,
-                        border: "none",
-                        cursor: "pointer",
-                        transition: "background 180ms ease",
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = "#3D33A0"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = "#4B3FAE"; }}
-                    >
-                      {t.footer.joinWaitlist}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-
-            {/* Social */}
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.social}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {[
-                  { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
-                  { href: "https://x.com/runpayway", label: "X" },
-                  { href: "https://instagram.com/runpayway", label: "Instagram" },
-                ].map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}
-                  >
-                    {link.label}
-                  </a>
                 ))}
               </div>
             </div>
@@ -894,13 +818,8 @@ export default function MarketingLayout({
           {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
-          {/* Language availability */}
-          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", textAlign: "center", marginBottom: 12 }}>
-            Available in: English • <span style={{ opacity: 0.6 }}>Español (Q3 2026)</span> • <span style={{ opacity: 0.6 }}>Português (Q4 2026)</span> • <span style={{ opacity: 0.6 }}>हिन्दी (Q4 2026)</span>
-          </div>
-
           {/* Legal strip */}
-          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.35)", lineHeight: 1.8, textAlign: "center" }}>
+          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.45)", lineHeight: 1.8, textAlign: "center" }}>
             {t.footer.legal}
           </div>
         </div>
