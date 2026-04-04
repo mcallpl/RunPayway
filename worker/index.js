@@ -354,90 +354,184 @@ async function handleSendEmail(body, env, corsHeaders) {
   const purple = "#4B3FAE";
   const teal = "#1F6D7A";
   const muted = "rgba(14,26,43,0.58)";
-  const light = "rgba(14,26,43,0.42)";
+  const light = "rgba(14,26,43,0.35)";
   const sand = "#F4F1EA";
   const name = body.name || "Assessment";
   const shortId = (body.record_id || "").slice(0, 8);
+  const industry = body.industry || "";
+  const structure = body.operating_structure || "";
+  const bandColor = (body.score || 0) >= 75 ? teal : (body.score || 0) >= 50 ? "#2B5EA7" : (body.score || 0) >= 30 ? "#92640A" : "#9B2C2C";
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background-color:#f7f6f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f6f3;">
-<tr><td align="center" style="padding:40px 16px;">
+<body style="margin:0;padding:0;background-color:${navy};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${navy};">
+
+<!-- Navy pre-header spacer -->
+<tr><td style="height:32px;">&nbsp;</td></tr>
+
+<tr><td align="center" style="padding:0 16px;">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-<tr><td style="background:linear-gradient(135deg,${navy} 0%,${purple} 50%,${teal} 100%);height:4px;border-radius:12px 12px 0 0;">&nbsp;</td></tr>
+<!-- Logo bar — navy background -->
+<tr><td style="padding:28px 40px 24px;text-align:left;">
+<img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
+</td></tr>
 
-<tr><td style="background-color:#ffffff;padding:40px 36px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
+<!-- Gradient accent line -->
+<tr><td style="padding:0 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:linear-gradient(90deg,${purple} 0%,${teal} 100%);height:2px;border-radius:1px;">&nbsp;</td></tr></table></td></tr>
 
+<!-- White content card -->
+<tr><td style="padding:0 12px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding-bottom:28px;border-bottom:1px solid ${sand};">
-<img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="160" height="19" style="display:inline-block;height:auto;"/>
-<span style="font-size:11px;color:${light};margin-left:8px;">Income Stability Assessment</span>
+<tr><td style="background-color:#ffffff;padding:44px 40px 40px;border-radius:12px;margin-top:20px;">
+
+<!-- Personal greeting -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td>
+<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">${name}, your assessment is complete.</p>
+<p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">
+Your income structure${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""} has been evaluated across six structural dimensions.
+</p>
 </td></tr>
 </table>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
-<tr><td>
-<p style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${muted};margin:0 0 10px;">INCOME STABILITY SCORE</p>
+<!-- Spacer -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+<tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
+</table>
+
+<!-- Score display -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="padding:28px 32px;background-color:#fafaf8;border-radius:10px;border:1px solid rgba(14,26,43,0.04);">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td style="vertical-align:top;">
+<p style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 14px;">INCOME STABILITY SCORE</p>
 <table role="presentation" cellpadding="0" cellspacing="0">
 <tr>
-<td style="font-size:52px;font-weight:700;color:${navy};line-height:1;padding-right:16px;">${body.score}</td>
-<td style="vertical-align:bottom;padding-bottom:6px;"><span style="font-size:16px;font-weight:600;color:${teal};">${body.band || ""}</span></td>
+<td style="font-size:56px;font-weight:200;color:${navy};line-height:1;letter-spacing:-0.04em;font-family:'Georgia',serif;">${body.score}</td>
+<td style="font-size:16px;font-weight:300;color:rgba(14,26,43,0.18);vertical-align:bottom;padding-bottom:10px;padding-left:4px;">/100</td>
 </tr>
 </table>
-${body.interpretation ? `<p style="font-size:13px;color:${muted};line-height:1.6;margin:12px 0 0;">${body.interpretation}</p>` : ""}
-</td></tr>
-</table>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
-<tr><td style="height:1px;background-color:${sand};">&nbsp;</td></tr>
-</table>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:12px;">
 <tr>
-<td width="50%" style="vertical-align:top;padding-right:12px;">
-<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Assessment</p>
-<p style="font-size:13px;font-weight:500;color:${navy};margin:0 0 16px;">${name}</p>
-<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Industry</p>
-<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.industry || ""}</p>
+<td style="width:8px;height:8px;border-radius:2px;background-color:${bandColor};">&nbsp;</td>
+<td style="padding-left:8px;font-size:13px;font-weight:600;color:${bandColor};letter-spacing:0.01em;">${body.band || ""}</td>
+</tr>
+</table>
 </td>
-<td width="50%" style="vertical-align:top;padding-left:12px;">
-<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Structure</p>
-<p style="font-size:13px;font-weight:500;color:${navy};margin:0 0 16px;">${body.operating_structure || ""}</p>
-<p style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 4px;">Primary Constraint</p>
-<p style="font-size:13px;font-weight:500;color:${navy};margin:0;">${body.constraint || "See your full report"}</p>
+<td width="120" style="vertical-align:top;text-align:right;">
+<table role="presentation" cellpadding="0" cellspacing="0" style="float:right;">
+<tr><td style="padding:6px 12px;border-radius:6px;border:1px solid rgba(14,26,43,0.08);">
+<p style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 2px;">MODEL</p>
+<p style="font-size:12px;font-weight:600;color:${navy};margin:0;">RP-2.0</p>
+</td></tr>
+</table>
 </td>
 </tr>
 </table>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
-<tr><td style="height:1px;background-color:${sand};">&nbsp;</td></tr>
-</table>
-
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="background-color:${sand};border-radius:8px;padding:20px 24px;">
-<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">Your full report is ready</p>
-<p style="font-size:12px;color:${muted};line-height:1.6;margin:0 0 16px;">
-Your 4-page diagnostic includes PressureMap intelligence, ranked risk scenarios, a personalized action plan, and lifetime access to the Stability Simulator.
-</p>
-<a href="https://peoplestar.com/RunPayway/" style="display:inline-block;padding:10px 24px;background-color:${navy};color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;border-radius:8px;">Go to RunPayway</a>
 </td></tr>
 </table>
 
+<!-- Industry context interpretation -->
+${body.interpretation ? `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
 <tr><td>
-<p style="font-size:10px;color:${light};margin:0;">Record ID: ${shortId}... | Model: RP-2.0 | Verify at peoplestar.com/RunPayway/verify</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">${body.interpretation}</p>
+</td></tr>
+</table>
+` : ""}
+
+<!-- Spacer -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+<tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
+</table>
+
+<!-- Assessment details — clean two-column -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="50%" style="vertical-align:top;padding-right:16px;">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Industry</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${industry || "\u2014"}</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Operating Structure</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">${structure || "\u2014"}</p>
+</td>
+<td width="50%" style="vertical-align:top;padding-left:16px;border-left:1px solid rgba(14,26,43,0.06);">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Primary Constraint</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${body.constraint || "\u2014"}</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Dimensions Analyzed</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">6</p>
+</td>
+</tr>
+</table>
+
+<!-- Spacer -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:32px 0 0;">
+<tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
+</table>
+
+<!-- Command Center CTA -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
+<tr><td style="text-align:center;">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 8px;">NEXT STEP</p>
+<p style="font-size:18px;font-weight:300;color:${navy};margin:0 0 8px;letter-spacing:-0.01em;">Your Command Center is ready.</p>
+<p style="font-size:13px;color:${muted};line-height:1.65;margin:0 0 24px;">
+View your full report, explore your structural breakdown by factor, and review your personalized action plan.
+</p>
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+<tr><td style="background-color:${purple};border-radius:10px;">
+<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Open Your Command Center</a>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+<!-- Reassessment guidance -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:36px;">
+<tr><td style="padding:20px 24px;border-radius:8px;border:1px solid rgba(14,26,43,0.06);background-color:#fafaf8;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="4" style="vertical-align:top;padding-right:16px;">
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:3px;height:36px;background-color:${teal};border-radius:2px;">&nbsp;</td></tr></table>
+</td>
+<td>
+<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">When to reassess</p>
+<p style="font-size:12px;color:${muted};line-height:1.65;margin:0;">
+We recommend a follow-up assessment after 90 days or after making a significant structural change to your income${industry ? ` \u2014 whether that is securing a new contract, diversifying your ${industry.toLowerCase()} revenue streams, or building recurring arrangements` : ""}. Your Command Center tracks your progress across assessments automatically.
+</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+
+<!-- Record reference -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+<tr><td>
+<p style="font-size:10px;color:rgba(14,26,43,0.22);margin:0;letter-spacing:0.02em;">Record ${shortId} \u00B7 Verified via peoplestar.com/RunPayway/verify</p>
 </td></tr>
 </table>
 
 </td></tr>
-
-<tr><td style="padding:24px 0;text-align:center;">
-<p style="font-size:11px;color:${light};margin:0 0 4px;">RunPayway - Income Stability Score - Model RP-2.0</p>
-<p style="font-size:10px;color:${light};margin:0;">Confidential - Prepared for ${name} - support@runpayway.com</p>
+</table>
 </td></tr>
+
+<!-- Footer — navy -->
+<tr><td style="padding:32px 52px 12px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="text-align:center;">
+<p style="font-size:11px;color:rgba(244,241,234,0.40);margin:0 0 6px;letter-spacing:0.04em;">RunPayway \u2014 Income Stability Score\u2122</p>
+<p style="font-size:10px;color:rgba(244,241,234,0.22);margin:0 0 12px;">Confidential \u2014 Prepared exclusively for ${name}</p>
+<a href="https://peoplestar.com/RunPayway/contact" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">CONTACT US</a>
+</td></tr>
+</table>
+</td></tr>
+
+<tr><td style="height:24px;">&nbsp;</td></tr>
 
 </table>
 </td></tr>
@@ -454,7 +548,7 @@ Your 4-page diagnostic includes PressureMap intelligence, ranked risk scenarios,
     body: JSON.stringify({
       from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
       to: body.to,
-      subject: `Your Income Stability Assessment - Score: ${body.score} (${body.band || "Assessment"})`,
+      subject: `${body.name || "Your"} Income Stability Assessment \u2014 ${body.band || "Results Ready"}`,
       html,
       tags: [
         { name: "type", value: "assessment-report" },
