@@ -244,9 +244,9 @@ function IndustrySignal() {
             { name: "Business Owners", line: "Revenue can grow while structure weakens underneath." },
             { name: "Commission Earners", line: "Income cycles. Exposure sits between them." },
           ].map((ind, i) => (
-            <div key={i} style={{ padding: m ? "12px 14px" : "14px 16px", borderRadius: 10, border: "1px solid rgba(244,241,234,0.08)", backgroundColor: "rgba(244,241,234,0.04)" }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 6 }}>{ind.name}</div>
-              <div style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", lineHeight: 1.5 }}>{ind.line}</div>
+            <div key={i} style={{ padding: m ? "14px 16px" : "16px 18px", borderRadius: 10, border: "1px solid rgba(244,241,234,0.10)", backgroundColor: "rgba(244,241,234,0.05)" }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.70)", marginBottom: 6 }}>{ind.name}</div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", lineHeight: 1.5 }}>{ind.line}</div>
             </div>
           ))}
         </div>
@@ -258,12 +258,12 @@ function IndustrySignal() {
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           {showAll && (
-            <div style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, minWidth: m ? "calc(100vw - 40px)" : 320, maxHeight: 400, overflowY: "auto", backgroundColor: "#0E1424", border: "1px solid rgba(255,255,255,0.10)", borderRadius: 12, padding: "8px 0", zIndex: 100, boxShadow: "0 16px 48px rgba(0,0,0,0.40)" }}>
+            <div style={{ position: "absolute", bottom: "calc(100% + 8px)", left: 0, minWidth: m ? "calc(100vw - 40px)" : 340, maxHeight: 420, overflowY: "auto", backgroundColor: "#0E1424", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "8px 0", zIndex: 9000, boxShadow: "0 -8px 48px rgba(0,0,0,0.50)" }}>
               {INDUSTRIES.map(ind => (
                 <button key={ind.name} onClick={() => { setSelectedIndustry(ind); setShowAll(false); }}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 20px", background: "none", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.70)", transition: "background 150ms, color 150ms", minHeight: 44 }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#F4F1EA"; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.70)"; }}>
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 20px", background: "none", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.80)", transition: "background 150ms, color 150ms", minHeight: 44 }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "#F4F1EA"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.80)"; }}>
                   {ind.name}
                 </button>
               ))}
