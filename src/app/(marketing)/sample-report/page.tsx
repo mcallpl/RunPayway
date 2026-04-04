@@ -69,7 +69,7 @@ function HeroSection() {
           See exactly what&#8217;s holding your income together — and what would break it first.
         </h1>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>
-          Four pages. Generated from your structure. No assumptions. No estimates.
+          Four pages. Generated from your structure. Not a template. The same inputs always produce the same result.
         </p>
         <p style={{ fontSize: 14, color: "rgba(244,241,234,0.35)", ...fadeIn(visible, 140) }}>
           Example report (Score: 72 — Established Stability)
@@ -81,38 +81,7 @@ function HeroSection() {
 
 
 /* ================================================================== */
-/* SECTION 2 — REPORT REALITY SIGNAL                                   */
-/* ================================================================== */
-
-function ReportRealitySignal() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
-          This is not a template.
-        </h2>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 80) }}>
-          Every report is generated from your inputs using a fixed model.
-        </p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 4, marginBottom: 16, ...fadeIn(visible, 120) }}>
-          <p style={{ fontSize: 16, color: muted, margin: 0 }}>No manual edits.</p>
-          <p style={{ fontSize: 16, color: muted, margin: 0 }}>No generic output.</p>
-        </div>
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, ...fadeIn(visible, 180) }}>
-          The same inputs always produce the same result.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 3 — EXAMPLE REPORT                                          */
+/* SECTION 2 — EXAMPLE REPORT                                          */
 /* ================================================================== */
 
 function ExampleReport() {
@@ -334,49 +303,7 @@ function WhyPeopleBuy() {
 
 
 /* ================================================================== */
-/* SECTION 6 — EVERYTHING INCLUDED                                     */
-/* ================================================================== */
-
-function EverythingIncluded() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  const groups = [
-    { title: "Diagnostic Output", items: ["Score with band classification", "Primary structural constraint", "Plain-English explanation", "Income composition breakdown"] },
-    { title: "Risk Analysis", items: ["Ranked disruption scenarios", "Largest source removal impact", "Work interruption projection", "Structural fragility assessment"] },
-    { title: "Action System", items: ["Ranked actions by score impact", "Combined improvement projection", "30-day execution roadmap", "Command Center access"] },
-  ];
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
-          Everything included
-        </h2>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
-          {groups.map((g, i) => (
-            <div key={i} style={{ marginBottom: m ? 24 : 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 16 }}>{g.title}</div>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
-                {g.items.map((item, j) => (
-                  <div key={j} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                    <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
-                    <span style={{ fontSize: 14, color: muted, lineHeight: 1.55 }}>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 7 — FINAL CTA                                               */
+/* SECTION 6 — FINAL CTA                                               */
 /* ================================================================== */
 
 function FinalCta() {
@@ -430,11 +357,9 @@ export default function SampleReportPage() {
     <div className="overflow-x-hidden">
       <main>
         <HeroSection />
-        <ReportRealitySignal />
         <ExampleReport />
         <CommandCenterSection />
         <WhyPeopleBuy />
-        <EverythingIncluded />
         <FinalCta />
       </main>
     </div>
