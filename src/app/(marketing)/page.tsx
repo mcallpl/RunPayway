@@ -581,7 +581,7 @@ function HeroSection() {
             marginBottom: m ? sp(4) : sp(5),
             textAlign: m ? "center" : "left",
           }}>
-            2,400+ professionals assessed &bull; Deterministic &bull; Versioned &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
+            Deterministic &bull; Version-locked &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
 
           {/* Industry dropdown */}

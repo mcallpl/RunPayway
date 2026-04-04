@@ -1107,7 +1107,7 @@ export default function DiagnosticPage() {
 
           {/* Social proof */}
           <div style={{ fontSize: 12, color: "rgba(14,26,43,0.20)", marginTop: 32 }}>
-            Join 2,400+ professionals who have assessed their income structure.
+            Deterministic scoring &middot; Version-locked &middot; Model RP-2.0
           </div>
         </div>
       </div>
