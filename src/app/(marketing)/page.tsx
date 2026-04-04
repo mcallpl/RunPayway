@@ -147,14 +147,6 @@ function HeroSection() {
   const [showLabel, setShowLabel] = useState(false);
   useEffect(() => { if (!visible) return; const t = setTimeout(() => setShowLabel(true), 1900); return () => clearTimeout(t); }, [visible]);
 
-  const dims = [
-    { label: "Recurrence", value: 65, color: C.teal },
-    { label: "Concentration", value: 40, color: "#C0392B" },
-    { label: "Diversification", value: 70, color: C.teal },
-    { label: "Visibility", value: 55, color: "#B58900" },
-    { label: "Consistency", value: 80, color: C.teal },
-    { label: "Independence", value: 45, color: "#B58900" },
-  ];
 
   return (
     <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden" }}>
@@ -191,51 +183,40 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — Instrument Card */}
+          {/* Right — Score Card */}
           <div style={{ flexShrink: 0, marginTop: m ? 48 : 0, ...fadeIn(visible, 400) }}>
-            <div style={{ backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 20, padding: 3, border: "1px solid rgba(244,241,234,0.06)" }}>
-              <div style={{ backgroundColor: C.white, borderRadius: 17, padding: m ? 28 : 36, maxWidth: m ? "100%" : 340, margin: m ? "0 auto" : undefined, position: "relative" }}>
-                {/* Header */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                  <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: light }}>Income Stability Score</div>
-                  <div style={{ fontSize: 9, fontWeight: 500, letterSpacing: "0.08em", color: C.teal, padding: "3px 8px", borderRadius: 4, backgroundColor: `${C.teal}08` }}>RP-2.0</div>
-                </div>
+            <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 36, maxWidth: m ? "100%" : 320, margin: m ? "0 auto" : undefined }}>
 
-                {/* Score Ring */}
-                <div style={{ position: "relative", width: m ? 140 : 160, height: m ? 140 : 160, margin: "0 auto 20px" }}>
-                  <ScoreRing score={animatedScore} size={m ? 140 : 160} stroke={10} color="#2B5EA7" />
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: m ? 40 : 48, fontWeight: 300, fontFamily: mono, color: C.navy, lineHeight: 1, letterSpacing: "-0.04em", opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out" }}>{animatedScore}</span>
-                    <span style={{ fontSize: 12, color: light, marginTop: 2, opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms" }}>/100</span>
-                  </div>
+              {/* Score Ring */}
+              <div style={{ position: "relative", width: m ? 130 : 150, height: m ? 130 : 150, margin: "0 auto 20px" }}>
+                <ScoreRing score={animatedScore} size={m ? 130 : 150} stroke={10} color="#2B5EA7" />
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: m ? 38 : 44, fontWeight: 300, fontFamily: mono, color: C.navy, lineHeight: 1, letterSpacing: "-0.04em", opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out" }}>{animatedScore}</span>
+                  <span style={{ fontSize: 12, color: light, marginTop: 2, opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms" }}>/100</span>
                 </div>
+              </div>
 
-                {/* Band */}
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 20, opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms" }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.06)", border: "1px solid rgba(43,94,167,0.10)" }}>
-                    <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7", letterSpacing: "0.02em" }}>Established Stability</span>
-                  </div>
+              {/* Band */}
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 24, opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.06)", border: "1px solid rgba(43,94,167,0.10)" }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7", letterSpacing: "0.02em" }}>Established Stability</span>
                 </div>
+              </div>
 
-                {/* Dimension bars */}
-                <div style={{ borderTop: `1px solid rgba(14,26,43,0.05)`, paddingTop: 16, opacity: showLabel ? 1 : 0, transition: "opacity 600ms ease-out 400ms" }}>
-                  {dims.map((d, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: i < dims.length - 1 ? 8 : 0 }}>
-                      <span style={{ fontSize: 10, fontWeight: 500, color: light, width: 72, flexShrink: 0, letterSpacing: "0.01em" }}>{d.label}</span>
-                      <div style={{ flex: 1, height: 4, borderRadius: 2, backgroundColor: "rgba(14,26,43,0.04)", overflow: "hidden" }}>
-                        <div style={{ height: "100%", borderRadius: 2, backgroundColor: d.color, width: `${d.value}%`, transition: "width 1s cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              {/* Constraint — the tension */}
+              <div style={{ borderLeft: "3px solid #C0392B", padding: "14px 16px", borderRadius: "0 8px 8px 0", backgroundColor: "rgba(192,57,43,0.03)", marginBottom: 16, opacity: showLabel ? 1 : 0, transition: "opacity 600ms ease-out 400ms" }}>
+                <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "#C0392B", marginBottom: 4, textTransform: "uppercase" as const }}>Primary Constraint</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: C.navy, lineHeight: 1.4 }}>Income concentration</div>
+              </div>
 
-                {/* Constraint indicator */}
-                <div style={{ marginTop: 16, padding: "8px 12px", borderRadius: 6, backgroundColor: "rgba(192,57,43,0.04)", border: "1px solid rgba(192,57,43,0.08)", opacity: showLabel ? 1 : 0, transition: "opacity 600ms ease-out 600ms" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <div style={{ width: 4, height: 4, borderRadius: 1, backgroundColor: "#C0392B" }} />
-                    <span style={{ fontSize: 10, fontWeight: 500, color: "#C0392B", letterSpacing: "0.02em" }}>Constraint: Income concentration</span>
-                  </div>
+              {/* Consequence — the conversion line */}
+              <div style={{ padding: "12px 16px", borderRadius: 8, backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid rgba(14,26,43,0.04)`, opacity: showLabel ? 1 : 0, transition: "opacity 600ms ease-out 600ms" }}>
+                <div style={{ fontSize: 11, color: light, marginBottom: 4 }}>If top source removed</div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                  <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: C.navy }}>72</span>
+                  <span style={{ fontSize: 12, color: light }}>&rarr;</span>
+                  <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: "#C0392B" }}>44</span>
                 </div>
               </div>
             </div>
