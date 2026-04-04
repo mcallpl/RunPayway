@@ -61,14 +61,14 @@ function Section({ number, title, children, mobile, visible }: { number?: string
 }
 
 function P({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return <p style={{ fontSize: 15, color: muted, lineHeight: 1.75, marginBottom: 12, ...style }}>{children}</p>;
+  return <p style={{ fontSize: 14, color: muted, lineHeight: 1.75, marginBottom: 12, ...style }}>{children}</p>;
 }
 
 function Bullet({ items }: { items: string[] }) {
   return (
     <ul style={{ padding: 0, margin: "0 0 12px", listStyle: "none" }}>
       {items.map((item) => (
-        <li key={item} style={{ fontSize: 15, color: muted, lineHeight: 1.75, paddingLeft: 20, position: "relative" }}>
+        <li key={item} style={{ fontSize: 14, color: muted, lineHeight: 1.75, paddingLeft: 20, position: "relative" }}>
           <span style={{ position: "absolute", left: 0, top: 10, width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal }} />
           {item}
         </li>
@@ -104,7 +104,7 @@ export default function PrivacyPolicyPage() {
           <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.privacyPolicy.heroTitle}
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
             {t.privacyPolicy.heroSubtitle}
           </p>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em" }}>
@@ -280,7 +280,7 @@ export default function PrivacyPolicyPage() {
           <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.privacyPolicy.closingBrand}
           </div>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             {t.privacyPolicy.closingSubtitle}
           </p>
           <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>

@@ -99,10 +99,10 @@ export default function ContactPage() {
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
             {t.contact.heroTag}
           </div>
-          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: mobile ? 32 : 48, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.contact.heroTitle}
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto 12px" }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto 12px" }}>
             {t.contact.heroDesc}
           </p>
           <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>

@@ -119,10 +119,10 @@ export default function DataProcessingAgreementPage() {
             <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal }}>Data Processing Agreement</span>
             <span style={{ fontSize: 10, fontWeight: 500, color: "rgba(244,241,234,0.40)", padding: "3px 8px", borderRadius: 4, border: "1px solid rgba(244,241,234,0.10)" }}>Enterprise</span>
           </div>
-          <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             Data Processing Agreement
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
             This agreement governs how RunPayway&#8482; processes Personal Data on behalf of enterprise customers under applicable data protection laws.
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function DataProcessingAgreementPage() {
                 {section.items.map((item, ii) => (
                   <div key={ii} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: ii < section.items.length - 1 ? 12 : 0 }}>
                     <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
-                    <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.75 }}>{item}</p>
+                    <p style={{ fontSize: 14, color: muted, margin: 0, lineHeight: 1.75 }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -173,7 +173,7 @@ export default function DataProcessingAgreementPage() {
           <div style={{ fontSize: m ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             RunPayway&#8482;
           </div>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             Structural income measurement system.
           </p>
           <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>

@@ -615,7 +615,7 @@ export default function MarketingLayout({
                   className="mobile-nav-item"
                   onClick={() => setMenuOpen(false)}
                   style={{
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: 600,
                     color: "#0E1A2B",
                     padding: "18px 0",
@@ -637,7 +637,7 @@ export default function MarketingLayout({
                 className="mobile-nav-item"
                 onClick={() => setMenuOpen(false)}
                 style={{
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: 600,
                   color: "#4B3FAE",
                   padding: "18px 0",

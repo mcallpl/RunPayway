@@ -67,13 +67,13 @@ function HeroSection() {
       <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: 500, height: 500, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}05 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>About RunPayway&#8482;</div>
-        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
           The standard for measuring income structure.
         </h1>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
           RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change.
         </p>
-        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
+        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
           Built for anyone whose income is not structurally guaranteed.
         </p>
       </div>
@@ -91,7 +91,7 @@ function OneLineDefinition() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 48 : 72, paddingBottom: m ? 48 : 72, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 48 : 72, paddingBottom: m ? 48 : 72, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
         <div style={{ padding: "28px 36px", borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.border}`, display: "inline-block", boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
           <p style={{ fontSize: m ? 18 : 24, fontWeight: 500, color: C.navy, lineHeight: 1.4, margin: 0 }}>
@@ -115,18 +115,18 @@ function WhatTheScoreMeasures() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>What the score measures</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>A number from 0 to 100 that evaluates the structural durability of your income.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>What the score measures</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>A number from 0 to 100 that evaluates the structural durability of your income.</p>
         <p style={{ fontSize: 18, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 28, ...fadeIn(visible, 100) }}>It answers one question: if conditions change, how well does your income hold up?</p>
 
         <div style={{ marginBottom: 28, ...fadeIn(visible, 140) }}>
-          <p style={{ fontSize: 15, color: light, lineHeight: 1.65, marginBottom: 8 }}>Unlike credit scores, which measure borrowing history, or income verification, which confirms past earnings,</p>
+          <p style={{ fontSize: 14, color: light, lineHeight: 1.65, marginBottom: 8 }}>Unlike credit scores, which measure borrowing history, or income verification, which confirms past earnings,</p>
           <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 20 }}>RunPayway&#8482; evaluates how income is built:</p>
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 10 }}>
             {["how many sources contribute", "how predictable it is", "how much continues without active work", "how far forward it is secured"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 10, backgroundColor: "#FAFAFA", border: `1px solid ${C.border}` }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, color: C.navy }}>{item}</span>
+                <span style={{ fontSize: 14, color: C.navy }}>{item}</span>
               </div>
             ))}
           </div>
@@ -154,13 +154,13 @@ function WhyThisExists() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible) }}>Why this exists</h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>Income verification confirms past earnings.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible) }}>Why this exists</h2>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>Income verification confirms past earnings.</p>
         <p style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.5, marginBottom: 28, ...fadeIn(visible, 160) }}>
           But nothing measured the structural durability of how income is built.
         </p>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 200) }}>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 200) }}>
           Income is not tested when it is stable. It is tested when conditions change. RunPayway&#8482; was created to measure how your structure responds — before that happens.
         </p>
         <div style={{ padding: "24px 28px", borderRadius: 14, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)", borderLeft: `3px solid ${C.teal}`, ...fadeIn(visible, 260) }}>
@@ -184,9 +184,9 @@ function ModelStructure() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>The model is fixed and versioned</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>Every version of the scoring model is locked.</p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 100) }}>If any rule, threshold, or classification changes, the model increments to a new version.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>The model is fixed and versioned</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>Every version of the scoring model is locked.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 100) }}>If any rule, threshold, or classification changes, the model increments to a new version.</p>
         <div style={{ padding: "24px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${C.border}`, marginBottom: 20, ...fadeIn(visible, 160) }}>
           <p style={{ fontSize: 16, color: muted, lineHeight: 1.6, marginBottom: 8 }}>Scores produced under the same version are directly comparable.</p>
           <p style={{ fontSize: 16, color: muted, lineHeight: 1.6, margin: 0 }}>If the rules change, it becomes a different model.</p>
@@ -215,10 +215,10 @@ function Verifiability() {
     { label: "QR verification", icon: "M4 4h4v4H4V4zm12 0h4v4h-4V4zM4 16h4v4H4v-4zm16 0v4h-4v-4h4zM14 4v4h-4V4h4zm-4 8h4v4h-4v-4zm8-4v4h-4V8h4z" },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Every score is verifiable</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 60) }}>Each assessment includes:</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Every score is verifiable</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 60) }}>Each assessment includes:</p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 12, marginBottom: 28, ...fadeIn(visible, 120) }}>
           {items.map((item, i) => (
             <div key={i} style={{ padding: "18px 16px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, textAlign: "center" }}>
@@ -232,7 +232,7 @@ function Verifiability() {
         <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 180) }}>
           These elements confirm the score was produced by the stated model and has not been altered.
         </p>
-        <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, ...fadeIn(visible, 240) }}>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, ...fadeIn(visible, 240) }}>
           This is how institutional trust is established — through verifiable outputs, not claims.
         </p>
       </div>
@@ -253,14 +253,14 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 32 : 44, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
           Now apply the system to your own structure.
         </h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
           The assessment takes under 2 minutes. Every result is generated from your inputs.
         </p>
         <div style={{ ...fadeIn(visible, 180) }}>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 17, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; e.currentTarget.style.boxShadow = "0 4px 24px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment

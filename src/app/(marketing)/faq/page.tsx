@@ -216,7 +216,7 @@ export default function FaqPage() {
           <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.faqPage.heroTitle}
           </h1>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
             {t.faqPage.heroSubtitle}
           </p>
         </div>

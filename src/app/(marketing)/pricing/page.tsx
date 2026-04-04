@@ -68,13 +68,13 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible) }}>
           Your income will be tested.{m ? " " : <br />}This shows whether it holds.
         </h1>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
           Measure the structural integrity of your income before conditions force the answer.
         </p>
-        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
           Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
         </p>
         <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
@@ -95,13 +95,14 @@ function ValueFrame() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 48 : 80, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 48 : 80, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: "0 auto 48px" }} />
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
           The score shows where you stand.{m ? " " : <br />}The diagnostic shows what breaks — and what to fix.
         </h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>Without the diagnostic, you see the number.</p>
-        <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.65, ...fadeIn(visible, 140) }}>With it, you see the structure behind it.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>Without the diagnostic, you see the number.</p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65, ...fadeIn(visible, 140) }}>With it, you see the structure behind it.</p>
       </div>
     </section>
   );
@@ -194,7 +195,7 @@ function PricingCards() {
             </div>
             <div style={{ marginBottom: 4 }}>
               <span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.sand, lineHeight: 1 }}>$149</span>
-              <span style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", marginLeft: 8 }}>/year</span>
+              <span style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", marginLeft: 8 }}>/year</span>
             </div>
             <div style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", marginBottom: 24 }}>Track how your structure evolves — not just your score.</div>
             <div style={{ marginBottom: 28, flex: 1, color: "rgba(244,241,234,0.60)" }}>
@@ -229,16 +230,17 @@ function WhyUpgrade() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why people upgrade</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows where you stand.</p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The diagnostic shows:</p>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why people upgrade</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows where you stand.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The diagnostic shows:</p>
         <div style={{ marginBottom: 28, ...fadeIn(visible, 160) }}>
           {["what is fragile", "what breaks first", "what to fix first"].map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
               <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy }}>{item}</span>
+              <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
@@ -269,8 +271,8 @@ function ReportBreakdown() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>Four pages. Nothing withheld.</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, maxWidth: 560, ...fadeIn(visible, 80) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>Four pages. Nothing withheld.</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, maxWidth: 560, ...fadeIn(visible, 80) }}>
           Every section generated from your structural inputs and interpreted through your industry and income model.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 16, ...fadeIn(visible, 140) }}>
@@ -282,7 +284,7 @@ function ReportBreakdown() {
                 </div>
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", color: C.teal }}>{p.num}</div>
-                  <div style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>{p.title}</div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{p.title}</div>
                 </div>
               </div>
               <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
@@ -328,10 +330,10 @@ function TransformationProof() {
     { before: 42, after: 67, constraint: "No forward visibility", action: "Secured forward contracts and extended engagements." },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>The score reveals the weakness.{m ? " " : <br />}The action changes the outcome.</h2>
+          <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>The score reveals the weakness.{m ? " " : <br />}The action changes the outcome.</h2>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, ...fadeIn(visible, 120) }}>
           {results.map((r, i) => (
@@ -375,7 +377,7 @@ function TrustBlock() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           Designed as a measurement system — not a financial tool.
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 100) }}>
@@ -413,9 +415,9 @@ function FaqSection() {
     { q: "What is the refund policy?", a: "If the diagnostic does not reveal at least one structural insight you did not already know, you receive a full refund. No conditions." },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>Frequently Asked Questions</h2>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>Frequently Asked Questions</h2>
         <div style={{ ...fadeIn(visible, 80) }}>
           {faqs.map((faq, i) => {
             const isOpen = openFaq === i;
@@ -430,7 +432,7 @@ function FaqSection() {
                   </svg>
                 </button>
                 <div style={{ maxHeight: isOpen ? 400 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
-                  <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, margin: 0, paddingBottom: 22 }}>{faq.a}</p>
+                  <p style={{ fontSize: 14, color: muted, lineHeight: 1.65, margin: 0, paddingBottom: 22 }}>{faq.a}</p>
                 </div>
               </div>
             );
@@ -455,13 +457,13 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 32 : 44, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
           Your income already has a structure.{m ? " " : <br />}Now you can see it clearly.
         </h2>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Start with the free score.</p>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 40, ...fadeIn(visible, 100) }}>Unlock the diagnostic when you&#8217;re ready to act.</p>
         <div style={{ ...fadeIn(visible, 180) }}>
-          <Link href="/begin" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 17, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
+          <Link href="/begin" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; e.currentTarget.style.boxShadow = "0 4px 24px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
