@@ -370,6 +370,8 @@ async function handleSendEmail(body, env, corsHeaders) {
   const sand = "#F4F1EA";
   const name = body.name || "Assessment";
   const shortId = (body.record_id || "").slice(0, 8);
+  const fullId = body.record_id || "";
+  const dashboardLink = fullId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(fullId)}` : "https://peoplestar.com/RunPayway/dashboard";
   const industry = body.industry || "";
   const structure = body.operating_structure || "";
   const bandColor = (body.score || 0) >= 75 ? teal : (body.score || 0) >= 50 ? "#2B5EA7" : (body.score || 0) >= 30 ? "#92640A" : "#9B2C2C";
@@ -496,7 +498,7 @@ View your full report, explore your structural breakdown by factor, and review y
 </p>
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
 <tr><td style="background-color:${purple};border-radius:10px;">
-<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Open Your Command Center</a>
+<a href="${dashboardLink}" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Open Your Command Center</a>
 </td></tr>
 </table>
 </td></tr>
@@ -694,7 +696,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 1,
         subject: `${name}, have you explored your Command Center yet?`,
-        html: followUpDay7(name, row.score, row.band, row.top_action),
+        html: followUpDay7(name, row.score, row.band, row.top_action, row.id),
       };
     }
     // Day 30 (send between day 28-45)
@@ -702,7 +704,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 2,
         subject: `${daysSince} days since your assessment \u2014 here\u2019s what to focus on`,
-        html: followUpDay30(name, row.score, row.top_action, daysSince),
+        html: followUpDay30(name, row.score, row.top_action, daysSince, row.id),
       };
     }
     // Day 90 (send between day 85-120)
@@ -710,7 +712,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 4,
         subject: `${name}, it\u2019s time to see how much you\u2019ve improved`,
-        html: followUpDay90(name, daysSince),
+        html: followUpDay90(name, daysSince, row.id),
       };
     }
 
@@ -735,7 +737,8 @@ async function handleFollowUpCron(env) {
   }
 }
 
-function followUpDay7(name, score, band, topAction) {
+function followUpDay7(name, score, band, topAction, recordId) {
+  const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
@@ -751,7 +754,7 @@ ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;backg
 <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4B3FAE;margin-bottom:6px;">YOUR #1 PRIORITY</div>
 <div style="font-size:15px;font-weight:600;color:#0E1A2B;">${topAction}</div></div>` : ""}
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
-<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open Your Command Center</a>
+<a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open Your Command Center</a>
 </td></tr></table>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
@@ -760,7 +763,8 @@ ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;backg
 </table></td></tr></table></body></html>`;
 }
 
-function followUpDay30(name, score, topAction, daysSince) {
+function followUpDay30(name, score, topAction, daysSince, recordId) {
+  const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
@@ -774,7 +778,7 @@ function followUpDay30(name, score, topAction, daysSince) {
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#0E1A2B;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#0E1A2B;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
-<a href="https://peoplestar.com/RunPayway/dashboard" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open the Simulator</a>
+<a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open the Simulator</a>
 </td></tr></table>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
@@ -783,7 +787,7 @@ function followUpDay30(name, score, topAction, daysSince) {
 </table></td></tr></table></body></html>`;
 }
 
-function followUpDay90(name, daysSince) {
+function followUpDay90(name, daysSince, _recordId) {
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>

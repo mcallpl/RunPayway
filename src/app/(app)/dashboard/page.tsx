@@ -380,6 +380,35 @@ function DashboardContent() {
   const searchParams = useSearchParams();
   useEffect(() => {
     // Check for ?code= in URL (bookmarkable unique link)
+    // Check for ?record= in URL (email link — loads from cloud)
+    const urlRecord = searchParams.get("record");
+    if (urlRecord) {
+      (async () => {
+        try {
+          const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/get-record", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: urlRecord }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.record_data) {
+              const parsed = typeof data.record_data === "string" ? JSON.parse(data.record_data) : data.record_data;
+              sessionStorage.setItem("rp_record", JSON.stringify(parsed));
+              localStorage.setItem("rp_record", JSON.stringify(parsed));
+              setRecord(parsed);
+              if (!localStorage.getItem("rp_cc_visited")) { setShowWelcome(true); }
+              localStorage.setItem("rp_cc_visited", "1");
+              setDataLoaded(true);
+              return;
+            }
+          }
+        } catch { /* cloud load failed, fall through */ }
+        setDataLoaded(true);
+      })();
+      return;
+    }
+
+    // Check for ?code= in URL (bookmarkable simulator link)
     const urlCode = searchParams.get("code");
     if (urlCode) {
       try {
