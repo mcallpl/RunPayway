@@ -19,12 +19,12 @@ const B = {
   purple: C.purple,
   teal: C.teal,
   white: C.white,
-  bg: C.white,
+  bg: "#FAFAFA",
   surface: C.white,
-  stone: C.border,
+  stone: "#E5E7EB",
   taupe: C.light,
   muted: C.muted,
-  faint: C.border,
+  faint: "#E5E7EB",
   red: C.bandLimited,
   amber: C.bandDeveloping,
   bandLimited: C.bandLimited,
@@ -127,11 +127,11 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 function PhaseSep({ label, color, tint, children, id, mobile }: { label: string; color: string; tint?: string; children?: React.ReactNode; id?: string; mobile?: boolean }) {
   return (
-    <div id={id} className="d-phase" style={{ margin: mobile ? "0 -16px" : "0 -32px", padding: mobile ? "0 16px 24px" : "0 32px 32px", backgroundColor: tint || "transparent", borderRadius: 2, overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: mobile ? "28px 0 16px" : "48px 0 24px" }}>
-        <div style={{ width: 5, height: 48, borderRadius: "3px 3px 0 0", backgroundColor: color, opacity: 0.40, flexShrink: 0 }} />
+    <div id={id} className="d-phase" style={{ margin: mobile ? "0 -16px" : "0 -32px", padding: mobile ? "0 16px 32px" : "0 32px 40px", backgroundColor: tint || "transparent", borderRadius: 4, overflow: "hidden" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, padding: mobile ? "36px 0 20px" : "56px 0 28px" }}>
+        <div style={{ width: 4, height: 40, borderRadius: 2, backgroundColor: color, opacity: 0.30, flexShrink: 0 }} />
         <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
-        <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}15 0%, transparent 100%)` }} />
+        <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}12 0%, transparent 100%)` }} />
       </div>
       {children}
     </div>
@@ -169,10 +169,10 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
               display: "flex",
               alignItems: "center",
               gap: 8,
-              background: isActive ? B.surface : "rgba(254,254,254,0.85)",
-              border: `1px solid ${isActive ? p.color + "40" : B.stone}`,
+              background: isActive ? B.surface : "rgba(255,255,255,0.92)",
+              border: `1px solid ${isActive ? p.color + "30" : "rgba(14,26,43,0.06)"}`,
               borderRadius: 20,
-              padding: mobile ? "5px 8px 5px 6px" : "6px 12px 6px 8px",
+              padding: mobile ? "5px 10px 5px 7px" : "6px 14px 6px 8px",
               cursor: "pointer",
               transition: "all 200ms",
               boxShadow: isActive ? `0 2px 8px ${p.color}18` : "0 1px 4px rgba(0,0,0,0.06)",
@@ -621,10 +621,11 @@ function DashboardContent() {
     return (
       <>
         <title>Command Center | RunPayway</title>
-        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 80, fontFamily: sans }}>
+        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 100, fontFamily: sans }}>
           <div style={{
-            backgroundColor: C.white, borderRadius: 12,
-            border: `1px solid ${C.softBorder}`, padding: 56, textAlign: "center",
+            backgroundColor: C.white, borderRadius: 16,
+            border: `1px solid #E5E7EB`, padding: 64, textAlign: "center",
+            boxShadow: "0 2px 8px rgba(14,26,43,0.03)",
           }}>
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.light, marginBottom: 32 }}>
               Command Center
@@ -672,7 +673,7 @@ function DashboardContent() {
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
         {/* Access Code Entry — standalone at top */}
-        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "16px 16px 0" : "24px 32px 0" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "16px 16px 0" : "28px 36px 0" }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 8 }}>PASTE ACCESS CODE</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste code from your report" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
@@ -689,7 +690,7 @@ function DashboardContent() {
         {/* Change 1: Sticky phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
-        <div style={{ maxWidth: 880, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "40px 32px 80px", overflow: "hidden" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "48px 36px 96px", overflow: "hidden" }}>
 
           {/* Personalized header */}
           {!isDemo && custName && (
@@ -701,7 +702,7 @@ function DashboardContent() {
 
           {/* ── FIRST-VISIT WELCOME ── */}
           {showWelcome && !isDemo && (
-            <div style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 16, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 32, animation: "fadeSlideIn 600ms ease-out", position: "relative" }}>
+            <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 36, animation: "fadeSlideIn 600ms ease-out", position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
               <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 17, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>WELCOME TO YOUR COMMAND CENTER</div>
               <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, lineHeight: 1.2, marginBottom: 16 }}>
@@ -729,7 +730,7 @@ function DashboardContent() {
 
           {/* 1. SCORE + BENCHMARKING */}
           <section style={{ marginBottom: 24 }}>
-            <div style={{ padding: mobile ? "28px 20px" : "32px 36px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
+            <div style={{ padding: mobile ? "32px 24px" : "40px 44px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: mobile ? 20 : 32 }} className="d-score-hero">
                 <ScoreRing score={dScore} size={mobile ? 130 : 160} />
                 <div style={{ flex: 1 }}>
@@ -747,7 +748,7 @@ function DashboardContent() {
                     .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
                     @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
                   `}</style>
-                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 8 }} className="d-metrics">
+                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "#FAFAFA" }} className="d-metrics">
                     {[
                       { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long your income would continue if all active work stopped. Calculated from persistence, forward visibility, labor independence, and concentration." },
                       { label: "Top Source Risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "How many points your score drops if your single largest income source disappears. A drop greater than 15 points signals dangerous concentration." },
@@ -785,7 +786,7 @@ function DashboardContent() {
           {/* ── VIEW REPORT + SHARE ACTIONS ── */}
           {!isDemo && (
             <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
-              <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms" }}
+              <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 24px", borderRadius: 14, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms, box-shadow 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.purple}30`; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -853,19 +854,19 @@ function DashboardContent() {
               {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "12px 0 0" }}>Secondary constraint: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "22px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 12 }}>
+            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 14 }}>
               {/* Labels above bar */}
               <div style={{ display: "flex", marginBottom: 6 }}>
                 {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
               </div>
-              <div style={{ display: "flex", height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 12 }}>
+              <div style={{ display: "flex", height: 10, borderRadius: 5, overflow: "hidden", marginBottom: 14 }}>
                 {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
               </div>
               <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>{indData.general}</p>
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "16px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderLeft: `3px solid ${z.color}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 8 }}>
+              <div key={z.id} style={{ padding: mobile ? "20px 18px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${z.color}`, borderRadius: 14, backgroundColor: B.surface, marginBottom: 10, boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
@@ -920,12 +921,12 @@ function DashboardContent() {
               </div>
 
               {/* Cumulative progress bar */}
-              <div style={{ padding: "12px 20px", border: `1px solid ${B.stone}`, borderRadius: 10, backgroundColor: B.surface, marginBottom: 16 }}>
+              <div style={{ padding: "16px 24px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 20 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                   <span style={{ fontSize: 13, color: B.taupe }}>Full plan impact</span>
                   <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift} (+{totalLift})</span>
                 </div>
-                <div style={{ height: 6, borderRadius: 3, backgroundColor: B.stone, overflow: "hidden" }}>
+                <div style={{ height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", overflow: "hidden" }}>
                   <div style={{ height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
@@ -934,7 +935,7 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div style={{ border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden" }}>
+              <div style={{ border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden", boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
                 {roadmap.map((step, i) => {
                   const sc = scriptFor(step.pid); const isExp = expandedScript === `rm-${i}`; const done = completedSteps.includes(i);
                   return (
@@ -997,7 +998,7 @@ function DashboardContent() {
           {/* What-If Explorer — categorized, visual, recommended */}
           <section>
             <button onClick={() => setWhatIfOpen(!whatIfOpen)}
-              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "20px 20px" : "22px 28px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "12px 12px 0 0" : 12, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms" }}>
+              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
               <div style={{ textAlign: "left" as const, flex: 1 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
                 <div style={{ fontSize: 15, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
@@ -1016,7 +1017,7 @@ function DashboardContent() {
               const stressPresets = SIMULATOR_PRESETS.filter(p => ["lose_top_client", "cant_work_90_days"].includes(p.id));
 
               return (
-              <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 12px 12px", backgroundColor: B.surface, padding: mobile ? "20px 16px" : "24px 28px" }}>
+              <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 14px 14px", backgroundColor: B.surface, padding: mobile ? "24px 20px" : "28px 32px" }}>
 
                 {/* GROWTH MOVES */}
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>GROWTH MOVES</div>
@@ -1028,7 +1029,7 @@ function DashboardContent() {
                     const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
-                        style={{ padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}40` : isTop ? `${B.teal}20` : B.stone}`, backgroundColor: isA ? `${B.purple}06` : isTop ? `${B.teal}03` : "transparent", minHeight: 48 }}>
+                        style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
@@ -1182,7 +1183,7 @@ function DashboardContent() {
 
                 {/* SCENARIO RESULT — visual bar + detail */}
                 {effectivePreset && aPO && (
-                  <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, marginBottom: 16 }}>
+                  <div style={{ padding: mobile ? "28px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, marginBottom: 16, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
                     <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 12 }}>{aPO.label}</div>
 
                     {/* Visual before/after bar */}
@@ -1283,8 +1284,8 @@ function DashboardContent() {
           <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
 
           {/* Change 4: Merged TRACK YOUR PROGRESS section */}
-          <section style={{ marginBottom: 16, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 8 }}>TRACK YOUR PROGRESS</div>
+          <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 10 }}>TRACK YOUR PROGRESS</div>
             <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Has anything changed?</div>
             <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px" }}>Toggle what you have done. Score updates instantly.</p>
 
@@ -1330,8 +1331,8 @@ function DashboardContent() {
 
           {/* ──── MONITORING FEATURES — Score History + Factor Deltas + Benchmark Evolution ──── */}
           {assessments.length >= 2 && (
-            <section style={{ marginBottom: 16, padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 8 }}>STABILITY MONITORING</div>
+            <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
               <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
               <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed."}</p>
 
@@ -1451,7 +1452,7 @@ function DashboardContent() {
                 { label: "Your biggest client stops paying", desc: "Your largest income source disappears \u2014 along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
                 { label: "You cannot work for 90 days", desc: "Illness, injury, or interruption stops active work \u2014 only passive and pre-committed income continues.", val: `\u2212${dScore - stNW.overall_score}`, drop: stNW.overall_score },
               ].map(row => (
-                <div key={row.label} style={{ flex: 1, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "#FAFAFA" }}>
+                <div key={row.label} style={{ flex: 1, padding: "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                     <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{row.label}</span>
                     <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
