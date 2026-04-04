@@ -695,7 +695,7 @@ function DashboardContent() {
           {/* Personalized header */}
           {!isDemo && custName && (
             <div style={{ marginBottom: 8 }}>
-              <span style={{ fontSize: 15, color: B.muted }}>{custName}&rsquo;s Command Center</span>
+              <span style={{ fontSize: 14, color: B.muted }}>{custName}&rsquo;s Command Center</span>
               {indLabel && <span style={{ fontSize: 13, color: B.taupe }}> &middot; {indLabel}</span>}
             </div>
           )}
@@ -703,16 +703,16 @@ function DashboardContent() {
           {/* ── FIRST-VISIT WELCOME ── */}
           {showWelcome && !isDemo && (
             <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 36, animation: "fadeSlideIn 600ms ease-out", position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
-              <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 17, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
+              <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 16, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>WELCOME TO YOUR COMMAND CENTER</div>
               <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, lineHeight: 1.2, marginBottom: 16 }}>
                 {custName ? `${custName}, your` : "Your"} score is <span style={{ fontWeight: 600, fontFamily: mono, color: B.white }}>{dScore}</span>.
                 {bm ? ` That puts you ahead of ${bm.peer_percentile}% of ${bm.cluster_label.toLowerCase()}.` : ""}
               </div>
-              <p style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
+              <p style={{ fontSize: 14, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
                 {gap > 0 ? `You are ${gap} points from ${nextB} Stability. Your 12-week roadmap below shows exactly how to get there.` : "You have achieved the highest stability band. Your roadmap focuses on maintaining and strengthening this position."}
               </p>
-              <button onClick={() => setShowWelcome(false)} style={{ padding: "12px 28px", borderRadius: 8, backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`, color: C.sandText, fontSize: 15, fontWeight: 600, cursor: "pointer", minHeight: 48 }}>
+              <button onClick={() => setShowWelcome(false)} style={{ padding: "12px 28px", borderRadius: 8, backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`, color: C.sandText, fontSize: 14, fontWeight: 600, cursor: "pointer", minHeight: 48 }}>
                 Show my plan →
               </button>
             </div>
@@ -724,7 +724,7 @@ function DashboardContent() {
           <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
           {/* Framing sentence */}
-          <p style={{ fontSize: 15, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 14, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
             Your score shows where you stand. This simulator shows what changes it — and what it takes to protect it.
           </p>
 
@@ -734,11 +734,11 @@ function DashboardContent() {
               <div style={{ display: "flex", alignItems: "center", gap: mobile ? 20 : 32 }} className="d-score-hero">
                 <ScoreRing score={dScore} size={mobile ? 130 : 160} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 15, color: B.muted, marginBottom: 8 }}>{gap > 0 ? `${gap} points to ${nextB}` : "Highest band achieved"}</div>
+                  <div style={{ fontSize: 14, color: B.muted, marginBottom: 8 }}>{gap > 0 ? `${gap} points to ${nextB}` : "Highest band achieved"}</div>
                   {bm && (
                     <div style={{ padding: "12px 16px", borderRadius: 8, backgroundColor: `${B.purple}05`, border: `1px solid ${B.purple}08`, marginBottom: 16 }}>
-                      <div style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>Top {100 - bm.peer_percentile}% of {bm.cluster_label}</div>
-                      <div style={{ fontSize: 15, color: dScore > bm.cluster_average_score ? B.teal : B.red, fontWeight: 600, marginTop: 4 }}>
+                      <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>Top {100 - bm.peer_percentile}% of {bm.cluster_label}</div>
+                      <div style={{ fontSize: 14, color: dScore > bm.cluster_average_score ? B.teal : B.red, fontWeight: 600, marginTop: 4 }}>
                         {dScore > bm.cluster_average_score ? `+${dScore - bm.cluster_average_score} above` : `${dScore - bm.cluster_average_score} below`} cluster avg ({bm.cluster_average_score})
                       </div>
                     </div>
@@ -794,11 +794,11 @@ function DashboardContent() {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                   </div>
                   <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>View Your Report</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>View Your Report</div>
                     <div style={{ fontSize: 12, color: B.taupe }}>Full diagnostic with key findings</div>
                   </div>
                 </div>
-                <span style={{ fontSize: 17, color: B.purple }}>→</span>
+                <span style={{ fontSize: 16, color: B.purple }}>→</span>
               </Link>
               <button onClick={handleShare} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.teal}30`; }}
@@ -807,7 +807,7 @@ function DashboardContent() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                 </div>
                 <div style={{ textAlign: "left" as const }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>Share Score</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Share Score</div>
                   <div style={{ fontSize: 12, color: B.taupe }}>Download as image</div>
                 </div>
               </button>
@@ -822,7 +822,7 @@ function DashboardContent() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                 </div>
                 <div style={{ textAlign: "left" as const }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>Share with Advisor</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Share with Advisor</div>
                   <div style={{ fontSize: 12, color: B.taupe }}>Email your score + findings</div>
                 </div>
               </button>
@@ -834,7 +834,7 @@ function DashboardContent() {
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
-                {indLabel && <p style={{ fontSize: 15, color: B.muted, margin: "4px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
+                {indLabel && <p style={{ fontSize: 14, color: B.muted, margin: "4px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
               </div>
               <div style={{ fontSize: 11, color: B.taupe, textAlign: "right" as const }}>
                 {assessedDate && <div>Analyzed {assessedDate}</div>}
@@ -847,8 +847,8 @@ function DashboardContent() {
               <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
                 If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
-              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
-              <p style={{ fontSize: 15, color: "#C0392B", margin: "0 0 4px", fontWeight: 500 }}>
+              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 14, color: "#C0392B", margin: "0 0 4px", fontWeight: 500 }}>
                 Projected impact: score drops from <span style={{ fontFamily: mono }}>{dScore}</span> to <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>.
               </p>
               {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "12px 0 0" }}>Secondary constraint: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
@@ -876,7 +876,7 @@ function DashboardContent() {
                       {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
                     </span>
                   </div>
-                  {z.lift > 0 && <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift} pts</span>}
+                  {z.lift > 0 && <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift} pts</span>}
                 </div>
                 <p style={{ fontSize: 14, color: B.navy, margin: "0 0 6px", lineHeight: 1.55 }}>{z.txt}</p>
                 {z.action && <div style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{z.action}</div>}
@@ -924,7 +924,7 @@ function DashboardContent() {
               <div style={{ padding: "16px 24px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 20 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                   <span style={{ fontSize: 13, color: B.taupe }}>Full plan impact</span>
-                  <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift} (+{totalLift})</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift} (+{totalLift})</span>
                 </div>
                 <div style={{ height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", overflow: "hidden" }}>
                   <div style={{ height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
@@ -943,16 +943,16 @@ function DashboardContent() {
                       <div style={{ padding: mobile ? "20px 16px" : "22px 28px", display: "flex", gap: 16, alignItems: "flex-start" }}>
                         <div style={{ flexShrink: 0, textAlign: "center" as const, minWidth: 48 }}>
                           <button onClick={() => toggleStep(i)} style={{ width: 36, height: 36, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? `${B.purple}30` : `${B.teal}20`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", margin: "0 auto 4px" }}>
-                            {done ? <span style={{ color: B.white, fontSize: 15, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 15, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
+                            {done ? <span style={{ color: B.white, fontSize: 14, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
                           </button>
                           <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe, lineHeight: 1.2 }}>{step.weeks}</div>
                         </div>
                         <div style={{ flex: 1 }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-                            <div style={{ fontSize: 17, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none" }}>{step.action}</div>
-                            <span style={{ fontSize: 17, fontWeight: 300, fontFamily: mono, color: B.teal, flexShrink: 0, marginLeft: 12 }}>+{step.lift}</span>
+                            <div style={{ fontSize: 16, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none" }}>{step.action}</div>
+                            <span style={{ fontSize: 16, fontWeight: 300, fontFamily: mono, color: B.teal, flexShrink: 0, marginLeft: 12 }}>+{step.lift}</span>
                           </div>
-                          <p style={{ fontSize: 15, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{step.desc}</p>
+                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{step.desc}</p>
                           {/* Zone connection + effort */}
                           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 8 }}>
                             {step.zone && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.purple}08`, color: B.purple }}>{step.zone}</span>}
@@ -966,10 +966,10 @@ function DashboardContent() {
                       {isExp && sc && (
                         <div style={{ padding: mobile ? "16px 16px 24px" : "16px 28px 24px", backgroundColor: `${B.purple}02` }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{sc.title}</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{sc.title}</span>
                             <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 13, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>{copiedScript === sc.id ? "Copied!" : "Copy"}</button>
                           </div>
-                          <pre style={{ fontSize: 15, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
+                          <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
                         </div>
                       )}
                     </div>
@@ -1001,15 +1001,15 @@ function DashboardContent() {
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
               <div style={{ textAlign: "left" as const, flex: 1 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
-                <div style={{ fontSize: 15, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
+                <div style={{ fontSize: 14, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
               </div>
               {!whatIfOpen && topMoves[0] && (
                 <div style={{ textAlign: "right" as const, flexShrink: 0, marginLeft: 16, marginRight: 8 }}>
-                  <div style={{ fontSize: 17, fontWeight: 300, fontFamily: mono, color: B.teal }}>+{topMoves[0].lift}</div>
+                  <div style={{ fontSize: 16, fontWeight: 300, fontFamily: mono, color: B.teal }}>+{topMoves[0].lift}</div>
                   <div style={{ fontSize: 11, color: B.taupe }}>best move</div>
                 </div>
               )}
-              <span style={{ fontSize: 17, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
+              <span style={{ fontSize: 16, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
             </button>
 
             {whatIfOpen && (() => {
@@ -1032,10 +1032,10 @@ function DashboardContent() {
                         style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
                             {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal }}>#1</span>}
                           </div>
-                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{lift}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{lift}</span>
                         </div>
                         <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55 }}>{pr.description}</p>
                         {why && <p style={{ fontSize: 12, color: B.teal, margin: "6px 0 0", fontWeight: 500 }}>{why}</p>}
@@ -1054,8 +1054,8 @@ function DashboardContent() {
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
                         style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                          <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.red }}>{lift}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red }}>{lift}</span>
                         </div>
                         <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55 }}>{pr.description}</p>
                       </button>
@@ -1107,7 +1107,7 @@ function DashboardContent() {
                         <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}04` }}>
                           <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>1 move gets you there</div>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                            <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{single.label}</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{single.label}</span>
                             <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {single.projected}</span>
                           </div>
                           <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>{single.description}</p>
@@ -1135,7 +1135,7 @@ function DashboardContent() {
                             <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < bestCombo!.moves.length - 1 ? `1px solid ${B.stone}` : "none" }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                                 <div style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: `${B.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{i + 1}</div>
-                                <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{m.label}</span>
+                                <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{m.label}</span>
                               </div>
                               <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{m.lift}</span>
                             </div>
@@ -1252,7 +1252,7 @@ function DashboardContent() {
                       </div>
                       {savedScenarios.map((s, i) => (
                         <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
-                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>&times;</button>
+                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 14, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>&times;</button>
                           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
                           <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
                           <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(s.score), marginTop: 4 }}>{s.band}</div>
@@ -1286,8 +1286,8 @@ function DashboardContent() {
           {/* Change 4: Merged TRACK YOUR PROGRESS section */}
           <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 10 }}>TRACK YOUR PROGRESS</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Has anything changed?</div>
-            <p style={{ fontSize: 15, color: B.muted, margin: "0 0 16px" }}>Toggle what you have done. Score updates instantly.</p>
+            <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Has anything changed?</div>
+            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 16px" }}>Toggle what you have done. Score updates instantly.</p>
 
             <div style={{ display: "flex", gap: 24, flexDirection: mobile ? "column" : "row" }} className="d-2col">
               <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1297,7 +1297,7 @@ function DashboardContent() {
                     <div style={{ width: 24, height: 24, borderRadius: 6, border: `2px solid ${quickToggles[a.id] ? B.teal : B.faint}`, backgroundColor: quickToggles[a.id] ? B.teal : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       {quickToggles[a.id] && <span style={{ color: "#FFF", fontSize: 13, fontWeight: 700 }}>&#10003;</span>}
                     </div>
-                    <span style={{ fontSize: 15, fontWeight: quickToggles[a.id] ? 600 : 400, color: quickToggles[a.id] ? B.navy : B.muted }}>{a.label}</span>
+                    <span style={{ fontSize: 14, fontWeight: quickToggles[a.id] ? 600 : 400, color: quickToggles[a.id] ? B.navy : B.muted }}>{a.label}</span>
                   </button>
                 ))}
               </div>
@@ -1307,7 +1307,7 @@ function DashboardContent() {
                     <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 16 }}>ESTIMATED</div>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
                       <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: B.taupe }}>{dScore}</span>
-                      <span style={{ fontSize: 17, color: B.taupe }}>→</span>
+                      <span style={{ fontSize: 16, color: B.taupe }}>→</span>
                       <span style={{ fontSize: 36, fontWeight: 300, fontFamily: mono, color: B.teal }}>{qResult.overall_score}</span>
                     </div>
                     <div style={{ fontSize: 22, fontWeight: 700, fontFamily: mono, color: B.teal }}>+{qLift}</div>
@@ -1323,7 +1323,7 @@ function DashboardContent() {
             {/* Readiness indicator + return message */}
             <div style={{ marginTop: 16, padding: "16px 20px", borderRadius: 10, backgroundColor: qCount >= 2 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${qCount >= 2 ? `${B.teal}12` : B.stone}` }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
-                <span style={{ fontSize: 15, fontWeight: 600, color: qCount >= 2 ? B.teal : B.muted }}>{qCount}/4 changes made{qCount >= 2 ? " — you may be ready to reassess" : ""}</span>
+                <span style={{ fontSize: 14, fontWeight: 600, color: qCount >= 2 ? B.teal : B.muted }}>{qCount}/4 changes made{qCount >= 2 ? " — you may be ready to reassess" : ""}</span>
               </div>
               {qCount < 2 && <p style={{ fontSize: 13, color: B.taupe, margin: "8px 0 0", lineHeight: 1.55, fontStyle: "italic" }}>{returnMsg}</p>}
             </div>
@@ -1333,7 +1333,7 @@ function DashboardContent() {
           {assessments.length >= 2 && (
             <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
-              <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
               <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed."}</p>
 
               {/* Score timeline visual */}
@@ -1432,7 +1432,7 @@ function DashboardContent() {
                       <span style={{ fontFamily: mono, fontSize: 18, color: B.taupe }}>{Math.round(fBm.peer_percentile)}th</span>
                       <span style={{ color: B.taupe }}>→</span>
                       <span style={{ fontFamily: mono, fontSize: 18, fontWeight: 600, color: B.navy }}>{Math.round(lBm.peer_percentile)}th</span>
-                      <span style={{ fontFamily: mono, fontSize: 15, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
+                      <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
                     </div>
                     <p style={{ fontSize: 13, color: B.muted, marginTop: 8, marginBottom: 0 }}>
                       {pDelta > 0 ? "You are pulling ahead of your industry peers." : pDelta < 0 ? "Your relative position has declined." : "Your peer position is unchanged."}
@@ -1446,7 +1446,7 @@ function DashboardContent() {
           {/* Stress tests — prominent */}
           <section style={{ marginBottom: 24 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 8 }}>STRESS TESTS</div>
-            <p style={{ fontSize: 15, color: B.muted, marginBottom: 16 }}>What your current structure can and cannot absorb.</p>
+            <p style={{ fontSize: 14, color: B.muted, marginBottom: 16 }}>What your current structure can and cannot absorb.</p>
             <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
               {[
                 { label: "Your biggest client stops paying", desc: "Your largest income source disappears \u2014 along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
@@ -1454,7 +1454,7 @@ function DashboardContent() {
               ].map(row => (
                 <div key={row.label} style={{ flex: 1, padding: "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                    <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{row.label}</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{row.label}</span>
                     <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
                   </div>
                   <p style={{ fontSize: 13, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{row.desc}</p>
@@ -1468,7 +1468,7 @@ function DashboardContent() {
           <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
             <div style={{ flex: 1, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
-              <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>
                 {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3\u20134. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
               </p>
             </div>

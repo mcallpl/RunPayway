@@ -855,7 +855,7 @@ export default function DiagnosticPage() {
           <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
             Welcome back
           </h2>
-          <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
             You have {answeredCount} of 6 questions answered{savedAgo ? ` from ${savedAgo}` : " from a recent session"}. Would you like to pick up where you left off?
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -1018,14 +1018,14 @@ export default function DiagnosticPage() {
           <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 8 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "8px 20px", borderRadius: 24, border: `1px solid ${revealColor}30`, backgroundColor: `${revealColor}08` }}>
               <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: revealColor }} />
-              <span style={{ fontSize: 17, fontWeight: 600, color: revealColor }}>{revealBand}</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: revealColor }}>{revealBand}</span>
             </div>
           </div>
 
           {/* Band-specific human message */}
           {bandMessage && (
             <div style={{ opacity: revealPhase >= 1 ? 1 : 0, transition: "opacity 600ms ease", marginBottom: 24 }}>
-              <p style={{ fontSize: 15, color: "rgba(14,26,43,0.40)", margin: 0 }}>{bandMessage}</p>
+              <p style={{ fontSize: 14, color: "rgba(14,26,43,0.40)", margin: 0 }}>{bandMessage}</p>
             </div>
           )}
 
@@ -1036,7 +1036,7 @@ export default function DiagnosticPage() {
                 {gap} points from {nextBand} Stability
               </p>
             )}
-            <p style={{ fontSize: 15, color: "rgba(14,26,43,0.35)", margin: 0 }}>
+            <p style={{ fontSize: 14, color: "rgba(14,26,43,0.35)", margin: 0 }}>
               Your full diagnosis and action plan are ready.
             </p>
           </div>

@@ -255,7 +255,7 @@ export default function FreeScorePage() {
           {/* Band */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bColor }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: bColor }}>{band}</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: bColor }}>{band}</span>
           </div>
 
           {nextBandName && (
@@ -295,7 +295,7 @@ export default function FreeScorePage() {
           <p style={{ fontSize: 16, color: C.navy, fontWeight: 500, lineHeight: 1.6, marginBottom: 8 }}>
             This is the strongest limiting factor affecting your score.
           </p>
-          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>
             {constraintExplanation}
           </p>
         </section>
@@ -322,7 +322,7 @@ export default function FreeScorePage() {
           <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 20 }}>
             If this changes, your structure shifts.
           </p>
-          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
             If your largest income source is removed:
           </p>
 
@@ -358,7 +358,7 @@ export default function FreeScorePage() {
             {improvements.map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
-                <span style={{ fontSize: 15, color: C.navy, lineHeight: 1.55 }}>{item}</span>
+                <span style={{ fontSize: 14, color: C.navy, lineHeight: 1.55 }}>{item}</span>
               </div>
             ))}
           </div>
@@ -374,7 +374,7 @@ export default function FreeScorePage() {
             <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: light, marginBottom: 12 }}>
               Industry Context
             </div>
-            <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, margin: 0 }}>
+            <p style={{ fontSize: 14, color: muted, lineHeight: 1.65, margin: 0 }}>
               {industryText}
             </p>
           </section>
@@ -395,7 +395,7 @@ export default function FreeScorePage() {
           <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.70)", lineHeight: 1.55, marginBottom: 8 }}>
             See exactly what would break your income — before it happens.
           </p>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 28 }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 28 }}>
             Most people discover their biggest structural risk after it hits. This shows it before.
           </p>
 
@@ -438,7 +438,7 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 8 }}>
             Where your structure gets improved.
           </div>
-          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
+          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
             Test changes. Measure impact. Improve your score.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10 }}>
