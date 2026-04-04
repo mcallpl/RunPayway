@@ -156,7 +156,8 @@ function PricingCards() {
 
           {/* ── FREE ── */}
           <div style={{
-            ...cardStyle, borderRadius: 16,
+            ...cardStyle, borderRadius: 16, overflow: "hidden",
+            border: `1px solid rgba(14,26,43,0.08)`,
             padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
             display: "flex", flexDirection: "column" as const,
             ...fadeIn(visible, 100),
@@ -186,10 +187,11 @@ function PricingCards() {
 
           {/* ── DIAGNOSTIC REPORT — $69 ── */}
           <div style={{
-            ...cardStyle, borderRadius: 16, position: "relative",
+            ...cardStyle, borderRadius: 16, position: "relative", overflow: "hidden",
             padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
-            border: `2px solid ${C.purple}`,
-            boxShadow: "0 8px 28px rgba(75,63,174,0.12)",
+            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
+            border: `1px solid rgba(75,63,174,0.18)`,
+            boxShadow: "0 8px 28px rgba(75,63,174,0.10)",
             display: "flex", flexDirection: "column" as const,
             ...fadeIn(visible, 180),
           }}>
@@ -239,8 +241,10 @@ function PricingCards() {
 
           {/* ── STABILITY MONITORING — $149/year ── */}
           <div style={{
-            background: C.navy, borderRadius: 16, position: "relative",
+            background: C.navy, borderRadius: 16, position: "relative", overflow: "hidden",
             padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
+            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
+            border: `1px solid rgba(31,109,122,0.25)`,
             boxShadow: "0 12px 40px rgba(14,26,43,0.20)",
             display: "flex", flexDirection: "column" as const,
             ...fadeIn(visible, 260),
