@@ -291,10 +291,10 @@ function IndustrySignal() {
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           {showAll && (
-            <div style={{ position: "absolute", bottom: "calc(100% + 8px)", left: 0, minWidth: m ? "calc(100vw - 40px)" : 340, maxHeight: 420, overflowY: "auto", backgroundColor: "#0A0F1A", border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14, padding: "8px 0", zIndex: 9000, boxShadow: "0 -12px 60px rgba(0,0,0,0.50)" }}>
+            <div style={{ position: "absolute", bottom: "calc(100% + 12px)", left: "50%", transform: "translateX(-50%)", width: m ? "calc(100vw - 40px)" : 360, maxWidth: 400, maxHeight: 420, overflowY: "auto", backgroundColor: "#0A0F1A", border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14, padding: "8px 0", zIndex: 9000, boxShadow: "0 -8px 48px rgba(0,0,0,0.50), 0 0 0 1px rgba(255,255,255,0.04)" }}>
               {INDUSTRIES.map(ind => (
                 <button key={ind.name} onClick={() => { setSelectedIndustry(ind); setShowAll(false); }}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "12px 22px", background: "none", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.75)", transition: "background 150ms, color 150ms", minHeight: 44 }}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "12px 24px", background: "none", border: "none", cursor: "pointer", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.75)", transition: "background 150ms, color 150ms", minHeight: 44 }}
                   onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#F4F1EA"; }}
                   onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.75)"; }}>
                   {ind.name}
