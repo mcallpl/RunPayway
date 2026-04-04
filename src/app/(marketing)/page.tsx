@@ -211,6 +211,16 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
     return () => document.removeEventListener("keydown", handler);
   }, [selected]);
 
+  /* Listen for featured industry card clicks */
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail) setSelected(detail);
+    };
+    window.addEventListener("rp-industry-select", handler);
+    return () => window.removeEventListener("rp-industry-select", handler);
+  }, []);
+
   return (
     <>
       <div style={{
@@ -387,54 +397,6 @@ function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
   );
 }
 
-
-/* ================================================================== */
-/* VIDEO COMPONENTS                                                    */
-/* ================================================================== */
-function VideoModal() {
-  const m = useMobile();
-  const [open, setOpen] = useState(false);
-  const [videoSrc, setVideoSrc] = useState("");
-
-  useEffect(() => {
-    const base = window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
-    setVideoSrc(`${base}/rp-video.mp4`);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [open]);
-
-  if (!open) return null;
-
-  return (
-    <div role="dialog" aria-label="Video player" aria-modal="true" style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "rgba(0,0,0,0.90)", display: "flex", alignItems: "center", justifyContent: "center", padding: m ? 16 : 40 }}
-      onClick={() => setOpen(false)}>
-      <div style={{ position: "relative", maxWidth: 960, width: "100%" }} onClick={e => e.stopPropagation()}>
-        <button onClick={() => setOpen(false)} aria-label="Close video" style={{ position: "absolute", top: 16, right: 16, width: 48, height: 48, borderRadius: 8, border: "1px solid rgba(255,255,255,0.20)", backgroundColor: "rgba(0,0,0,0.50)", color: "rgba(255,255,255,0.70)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, zIndex: 10 }}>
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
-        </button>
-        {videoSrc && (
-          <video autoPlay playsInline preload="auto" controls style={{ width: "100%", borderRadius: 12, display: "block" }}>
-            <source src={videoSrc} type="video/mp4" />
-          </video>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function VideoTrigger() {
-  const [open, setOpen] = useState(false);
-  return open ? <VideoModal /> : null;
-}
-
-function HeroVideo() {
-  return <VideoTrigger />;
-}
 
 
 
@@ -619,12 +581,46 @@ function HeroSection() {
             marginBottom: m ? sp(4) : sp(5),
             textAlign: m ? "center" : "left",
           }}>
-            Deterministic &bull; Versioned &bull; Fixed rules &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
+            2,400+ professionals assessed &bull; Deterministic &bull; Versioned &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
 
           {/* Industry dropdown */}
           <div style={{ marginBottom: m ? sp(5) : sp(6), position: "relative", zIndex: 10, textAlign: m ? "center" : "left" }}>
             <IndustryDropdown m={m} visible={visible} />
+          </div>
+
+          {/* Featured industry cards — surface hidden content */}
+          <div style={{
+            display: "flex", gap: 12, marginBottom: m ? sp(5) : sp(6),
+            overflowX: "auto", WebkitOverflowScrolling: "touch",
+            paddingBottom: 4, scrollbarWidth: "none" as const,
+            ...fadeIn(visible, 450),
+          }}>
+            <style>{`.industry-scroll::-webkit-scrollbar { display: none; }`}</style>
+            {INDUSTRIES.slice(0, 6).map(ind => (
+              <button
+                key={ind.name}
+                onClick={() => {
+                  const evt = new CustomEvent("rp-industry-select", { detail: ind });
+                  window.dispatchEvent(evt);
+                }}
+                style={{
+                  flexShrink: 0, width: m ? 220 : 240,
+                  padding: "16px 18px", borderRadius: 10,
+                  backgroundColor: "rgba(244,241,234,0.06)",
+                  border: "1px solid rgba(244,241,234,0.08)",
+                  cursor: "pointer", textAlign: "left",
+                  transition: "border-color 200ms, background 200ms",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.20)"; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.10)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.08)"; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.06)"; }}
+              >
+                <div style={{ fontSize: 13, fontWeight: 600, color: C.amber, marginBottom: 6 }}>{ind.name}</div>
+                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>
+                  {ind.headline}
+                </div>
+              </button>
+            ))}
           </div>
 
           {/* CTA */}
@@ -787,29 +783,8 @@ function ConcentrationHook() {
 }
 
 
-/* ================================================================== */
-/* CHALLENGE THE MODEL STRIP                                           */
-/* ================================================================== */
-function ChallengeTheModel() {
-  const m = useMobile();
-  return (
-    <div style={{
-      backgroundColor: C.navy,
-      paddingTop: m ? sp(5) : sp(6), paddingBottom: m ? sp(5) : sp(6),
-      paddingLeft: px(m), paddingRight: px(m),
-      textAlign: "center",
-    }}>
-      <p style={{
-        fontSize: m ? 15 : 17, fontWeight: 500, lineHeight: 1.6,
-        color: "rgba(244,241,234,0.70)",
-        maxWidth: 600, margin: "0 auto",
-      }}>
-        Run your inputs. Save your score. Run them again tomorrow.{m ? " " : <br />}
-        Same inputs, same score. That is not a feature — it is the architecture.
-      </p>
-    </div>
-  );
-}
+
+
 
 
 /* ================================================================== */
@@ -1298,6 +1273,79 @@ function ProofSection() {
 
 
 /* ================================================================== */
+/* COMMAND CENTER PREVIEW                                              */
+/* ================================================================== */
+function CommandCenterPreview() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const features = [
+    { icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0h6m0 0a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v6", label: "Score Breakdown", desc: "See exactly how each of the 6 structural dimensions contributes to your score." },
+    { icon: "M13 10V3L4 14h7v7l9-11h-7z", label: "What-If Simulator", desc: "Test changes before you commit. See the exact score impact of adding a client, locking a retainer, or building passive income." },
+    { icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2", label: "12-Week Roadmap", desc: "A step-by-step plan with industry-specific scripts, effort labels, and cumulative score projections." },
+    { icon: "M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5", label: "Goal Mode", desc: "Pick a target band and see the minimum moves needed to get there. Your income structure has a path \u2014 Goal Mode maps it." },
+  ];
+
+  return (
+    <section ref={ref} aria-label="Command Center Preview" style={{
+      backgroundColor: C.navy,
+      paddingTop: m ? sp(12) : sp(16), paddingBottom: m ? sp(12) : sp(16),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
+          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Your Command Center</p>
+          <h2 style={{ ...h2Style(m), color: "#F4F1EA", marginBottom: sp(3) }}>
+            Your score is the starting point.{m ? " " : <br />}The Command Center is where you act on it.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "rgba(244,241,234,0.55)", maxWidth: 560, margin: "0 auto" }}>
+            Every diagnostic report includes full access to a personalized Command Center built around your structural data.
+          </p>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: m ? "1fr" : "1fr 1fr",
+          gap: m ? 12 : 16,
+          maxWidth: 880, margin: "0 auto",
+          ...fadeIn(visible, 150),
+        }}>
+          {features.map((f, i) => (
+            <div key={i} style={{
+              padding: m ? "24px 20px" : "28px 28px",
+              borderRadius: 14,
+              backgroundColor: "rgba(244,241,234,0.04)",
+              border: "1px solid rgba(244,241,234,0.06)",
+              transition: "border-color 200ms",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={f.icon} />
+                  </svg>
+                </div>
+                <span style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA" }}>{f.label}</span>
+              </div>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, margin: 0 }}>
+                {f.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: m ? sp(5) : sp(6), ...fadeIn(visible, 300) }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em" }}>
+            Included with every diagnostic report &bull; No subscription required
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 8 — PRICING                                                 */
 /* ================================================================== */
 function PricingSection() {
@@ -1356,8 +1404,8 @@ function PricingSection() {
             </div>
 
             <Link href="/pricing" style={{
-              ...ctaButton, width: "100%", padding: "14px 0",
-              height: "auto", fontSize: 16,
+              ...ctaButton, width: "100%",
+              height: 52, padding: 0, fontSize: 16,
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
@@ -1408,21 +1456,62 @@ function PricingSection() {
             </div>
 
             <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
-              ...ctaButton, width: "100%", padding: "16px 0",
-              height: "auto", fontSize: 16,
+              ...ctaButton, width: "100%",
+              height: 52, padding: 0, fontSize: 16,
             }}
               onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
             >Get Full Diagnostic</a>
 
-            <p style={{ fontSize: 14, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>
-              Private by default. One-time analysis.
+            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>
+              If it doesn&#8217;t reveal something new, full refund.
             </p>
           </div>
         </div>
 
+        {/* Feature comparison matrix */}
+        <div style={{ maxWidth: 900, margin: `${sp(8)}px auto 0`, ...fadeIn(visible, 250) }}>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.navy, fontWeight: 600, fontSize: 14 }}>Feature</th>
+                  <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.teal, fontWeight: 600, fontSize: 14, minWidth: 100 }}>Free</th>
+                  <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.purple, fontWeight: 600, fontSize: 14, minWidth: 100 }}>Diagnostic</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: "Score out of 100", free: true, paid: true },
+                  { feature: "Stability band classification", free: true, paid: true },
+                  { feature: "Primary structural constraint", free: true, paid: true },
+                  { feature: "Distance to next band", free: true, paid: true },
+                  { feature: "Peer percentile for your industry", free: true, paid: true },
+                  { feature: "Full structural diagnosis", free: false, paid: true },
+                  { feature: "PressureMap\u2122 zone analysis", free: false, paid: true },
+                  { feature: "Ranked disruption scenarios", free: false, paid: true },
+                  { feature: "What-If Simulator + Goal Mode", free: false, paid: true },
+                  { feature: "12-week execution roadmap", free: false, paid: true },
+                  { feature: "Industry-specific action scripts", free: false, paid: true },
+                  { feature: "Command Center access", free: false, paid: true },
+                ].map((row, i) => (
+                  <tr key={i}>
+                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 14 }}>{row.feature}</td>
+                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center", fontSize: 15 }}>
+                      {row.free ? <span style={{ color: C.teal, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: C.light }}>—</span>}
+                    </td>
+                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center", fontSize: 15 }}>
+                      {row.paid ? <span style={{ color: C.purple, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: C.light }}>—</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* Trust line */}
-        <p style={{ fontSize: 15, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(6) }}>
+        <p style={{ fontSize: 15, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(5) }}>
           No account required. No preparation needed.
         </p>
       </div>
@@ -1509,7 +1598,7 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
           </p>
           <Link href="/contact" style={{
             ...ctaButton,
-            padding: "16px 40px", height: "auto",
+            height: 52, padding: "0 40px",
           }}
             onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
@@ -1692,14 +1781,13 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <main id="main-content">
         <HeroSection />
-        <HeroVideo />
         <WhyThisDidntExist />
         <ConcentrationHook />
-        <ChallengeTheModel />
         <HowItWorksSection />
         <ScoreDetermination />
         <SameIncomeDifferentStability />
         <ProofSection />
+        <CommandCenterPreview />
         <PricingSection />
         <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
         <FinalCta />
