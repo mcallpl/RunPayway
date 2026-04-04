@@ -388,8 +388,9 @@ function SystemDefinition() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: "0 auto 48px" }} />
         <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
           This is not a budgeting tool.{m ? " " : <br />}Not a credit score. Not a forecast.
         </h2>
@@ -559,8 +560,9 @@ function PricingSection() {
   );
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 4 }}>You can stop at the score.</p>
           <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.65 }}>Or you can see exactly what to change.</p>
@@ -621,6 +623,7 @@ function TransformationProof() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>They didn&#8217;t earn more.{m ? " " : <br />}They changed their structure.</h2>
           <p style={{ fontSize: 15, color: muted }}>Structural changes — not income increases — drove these results.</p>
