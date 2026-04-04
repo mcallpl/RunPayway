@@ -67,8 +67,8 @@ function useFadeIn() {
 
 const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -187,7 +187,7 @@ function HeroSection() {
                 onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.10)"; }}>
                 Get My Income Stability Score
               </Link>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.32)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
+              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
             </div>
           </div>
 
@@ -244,7 +244,7 @@ function HeroSection() {
 
         {/* Trust strip */}
         <div style={{ marginTop: m ? 48 : 72, paddingTop: m ? 28 : 36, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 500) }}>
-          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.25)", textAlign: m ? "center" : "left" }}>
+          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.45)", textAlign: m ? "center" : "left" }}>
             Model RP-2.0 &bull; Version-locked &bull; Deterministic output &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
         </div>
@@ -279,14 +279,14 @@ function IndustrySignal() {
           ].map((ind, i) => (
             <div key={i} style={{ padding: m ? "14px 16px" : "18px 20px", borderRadius: 12, border: "1px solid rgba(244,241,234,0.08)", backgroundColor: "rgba(244,241,234,0.03)" }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.65)", marginBottom: 6, letterSpacing: "0.01em" }}>{ind.name}</div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", lineHeight: 1.5 }}>{ind.line}</div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>{ind.line}</div>
             </div>
           ))}
         </div>
         <div ref={dropRef} style={{ position: "relative", display: "inline-block" }}>
-          <button onClick={() => setShowAll(!showAll)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", padding: "6px 0", fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.35)", transition: "color 200ms" }}
+          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", padding: "6px 0", fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.50)", transition: "color 200ms" }}
             onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.60)"; }}
-            onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.35)"; }}>
+            onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.50)"; }}>
             Explore all 19 industries
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
@@ -496,7 +496,7 @@ function ResultPreview() {
             </div>
           </div>
         </div>
-        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", textAlign: "center", marginTop: 28, letterSpacing: "0.03em", ...fadeIn(visible, 220) }}>The model does not change. Only the inputs change.</p>
+        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", textAlign: "center", marginTop: 28, letterSpacing: "0.03em", ...fadeIn(visible, 220) }}>The model does not change. Only the inputs change.</p>
       </div>
     </section>
   );
@@ -720,7 +720,7 @@ function FinalCta() {
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
         </div>
       </div>
     </section>

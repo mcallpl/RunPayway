@@ -13,8 +13,8 @@ export const C = {
   sand: "#F4F1EA",
   white: "#FFFFFF",
   amber: "#C49A6C",
-  muted: "rgba(14,26,43,0.62)",
-  light: "rgba(14,26,43,0.46)",
+  muted: "rgba(14,26,43,0.68)",
+  light: "rgba(14,26,43,0.52)",
   border: "rgba(14,26,43,0.08)",
   softBorder: "#EAEAEA",
 

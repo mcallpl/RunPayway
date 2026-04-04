@@ -32,8 +32,8 @@ function useInView(threshold = 0) {
 /* TOKENS                                                              */
 /* ================================================================== */
 
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const border = "#E5E7EB";
 
 /* ================================================================== */
@@ -176,7 +176,7 @@ export default function DataProcessingAgreementPage() {
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             Structural income measurement system.
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
             Model RP-2.0 &middot; Deterministic &middot; Version-controlled
           </p>
         </div>

@@ -35,8 +35,8 @@ function useInView(threshold = 0) {
 /* DESIGN TOKENS                                                       */
 /* ================================================================== */
 
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const border = "#E5E7EB";
 const contentW = 1040;
 
@@ -238,7 +238,7 @@ export default function FaqPage() {
           <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.faqPage.closingSubtitle}
           </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em", marginBottom: 28 }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", marginBottom: 28 }}>
             {t.faqPage.poweredBy}
           </p>
           <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 40px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(244,241,234,0.10)" }}
@@ -246,7 +246,7 @@ export default function FaqPage() {
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", marginTop: 14, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
         </div>
       </section>
     </div>

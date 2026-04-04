@@ -34,8 +34,8 @@ function useInView(threshold = 0) {
 /* TOKENS                                                              */
 /* ================================================================== */
 
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const border = "#E5E7EB";
 
 /* ================================================================== */
@@ -107,7 +107,7 @@ export default function PrivacyPolicyPage() {
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
             {t.privacyPolicy.heroSubtitle}
           </p>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em" }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em" }}>
             {t.privacyPolicy.heroModel}
           </p>
         </div>
@@ -283,7 +283,7 @@ export default function PrivacyPolicyPage() {
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             {t.privacyPolicy.closingSubtitle}
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
             {t.privacyPolicy.closingPowered}
           </p>
         </div>

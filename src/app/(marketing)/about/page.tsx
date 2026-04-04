@@ -46,8 +46,8 @@ function useFadeIn() {
 
 const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -73,7 +73,7 @@ function HeroSection() {
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
           RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change.
         </p>
-        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.35)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
+        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
           Built for anyone whose income is not structurally guaranteed.
         </p>
       </div>
@@ -265,7 +265,7 @@ function FinalCta() {
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; $69 for full report</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; $69 for full report</p>
         </div>
       </div>
     </section>

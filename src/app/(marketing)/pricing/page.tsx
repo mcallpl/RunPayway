@@ -46,8 +46,8 @@ function useFadeIn() {
 
 const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -74,10 +74,10 @@ function HeroSection() {
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
           Measure the structural integrity of your income before conditions force the answer.
         </p>
-        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.35)", lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
           Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
         </p>
-        <p style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
+        <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
           No bank connection &bull; Instant results &bull; Full refund guarantee
         </p>
       </div>
@@ -209,7 +209,7 @@ function PricingCards() {
               onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}>
               Start Monitoring &mdash; $149
             </a>
-            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", textAlign: "center", marginTop: 12, marginBottom: 0 }}>
               Full Command Center access included.
             </p>
           </div>
@@ -466,7 +466,7 @@ function FinalCta() {
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
         </div>
       </div>
     </section>

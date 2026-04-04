@@ -46,8 +46,8 @@ function useFadeIn() {
 
 const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -78,7 +78,7 @@ function HeroSection() {
           </p>
         </div>
         <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.25)" }}>
+          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.45)" }}>
             RunPayway&#8482; Structural Income Classification System &bull; Model RP-2.0 &bull; Deterministic &bull; Version-controlled &bull; Audit-reproducible
           </p>
         </div>

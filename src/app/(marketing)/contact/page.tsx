@@ -34,8 +34,8 @@ function useInView(threshold = 0) {
 /* TOKENS                                                              */
 /* ================================================================== */
 
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const border = "#E5E7EB";
 
 /* ================================================================== */
@@ -105,7 +105,7 @@ export default function ContactPage() {
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto 12px" }}>
             {t.contact.heroDesc}
           </p>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)" }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)" }}>
             {t.contact.heroResponse}
           </p>
         </div>
@@ -129,14 +129,14 @@ export default function ContactPage() {
             </div>
 
             <div style={{ marginBottom: 22 }}>
-              <label style={labelStyle}>{t.contact.fullName}</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={t.contact.fullNamePlaceholder} style={inputStyle}
+              <label style={labelStyle}>{t.contact.fullName} <span style={{ color: "#C0392B" }}>*</span></label>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder={t.contact.fullNamePlaceholder} required aria-required="true" style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor = C.purple; }} onBlur={e => { e.currentTarget.style.borderColor = border; }} />
             </div>
 
             <div style={{ marginBottom: 22 }}>
-              <label style={labelStyle}>{t.contact.emailAddress}</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.contact.emailPlaceholder} style={inputStyle}
+              <label style={labelStyle}>{t.contact.emailAddress} <span style={{ color: "#C0392B" }}>*</span></label>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t.contact.emailPlaceholder} required aria-required="true" style={inputStyle}
                 onFocus={e => { e.currentTarget.style.borderColor = C.purple; }} onBlur={e => { e.currentTarget.style.borderColor = border; }} />
             </div>
 
@@ -160,8 +160,8 @@ export default function ContactPage() {
             </div>
 
             <div style={{ marginBottom: 28 }}>
-              <label style={labelStyle}>{t.contact.message}</label>
-              <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t.contact.messagePlaceholder} rows={5}
+              <label style={labelStyle}>{t.contact.message} <span style={{ color: "#C0392B" }}>*</span></label>
+              <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder={t.contact.messagePlaceholder} required aria-required="true" rows={5}
                 style={{ ...inputStyle, height: "auto", padding: "14px 18px", resize: "vertical" as const, minHeight: 130, fontFamily: "inherit", lineHeight: 1.6 }}
                 onFocus={e => { e.currentTarget.style.borderColor = C.purple; }} onBlur={e => { e.currentTarget.style.borderColor = border; }} />
             </div>
@@ -185,7 +185,7 @@ export default function ContactPage() {
                   onMouseLeave={e => { if (canSubmit) { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.10)"; } }}>
                   {sending ? "Sending..." : t.contact.submit}
                 </button>
-                {sendError && <p style={{ fontSize: 13, color: "#C0392B", marginTop: 8, textAlign: "center" }}>{sendError}</p>}
+                {sendError && <p role="alert" aria-live="assertive" style={{ fontSize: 13, color: "#C0392B", marginTop: 8, textAlign: "center" }}>{sendError}</p>}
               </>
             )}
 
@@ -264,7 +264,7 @@ export default function ContactPage() {
           <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.contact.closingSubtitle}
           </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
             {t.contact.poweredBy}
           </p>
         </div>

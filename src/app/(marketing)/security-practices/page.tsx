@@ -34,7 +34,7 @@ function useInView(threshold = 0) {
 /* TOKENS                                                              */
 /* ================================================================== */
 
-const muted = "rgba(14,26,43,0.55)";
+const muted = "rgba(14,26,43,0.68)";
 const border = "#E5E7EB";
 
 /* ================================================================== */
@@ -104,10 +104,10 @@ export default function SecurityPracticesPage() {
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
             {t.securityPractices.heroSubtitle}
           </p>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em", marginBottom: 4 }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em", marginBottom: 4 }}>
             {t.securityPractices.heroModel}
           </p>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em" }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em" }}>
             {t.securityPractices.heroEffectiveDate}
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function SecurityPracticesPage() {
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             {t.securityPractices.closingSubtitle}
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
             {t.securityPractices.closingPowered}
           </p>
         </div>

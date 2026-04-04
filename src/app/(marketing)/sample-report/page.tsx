@@ -46,8 +46,8 @@ function useFadeIn() {
 
 const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.55)";
-const light = "rgba(14,26,43,0.38)";
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.52)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -85,7 +85,7 @@ function HeroSection() {
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 160) }}>
           Four pages. Generated from your structure. Not a template. The same inputs always produce the same result.
         </p>
-        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em", ...fadeIn(visible, 240) }}>
+        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em", ...fadeIn(visible, 240) }}>
           Example report &bull; Score: 72 &bull; Established Stability
         </p>
       </div>
@@ -125,19 +125,19 @@ function ExampleReport() {
             <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 36 : 56, textAlign: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: "50%", left: "50%", width: 400, height: 400, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
               <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.35)", marginBottom: 28 }}>Income Stability Score&#8482;</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(244,241,234,0.50)", marginBottom: 28 }}>Income Stability Score&#8482;</div>
                 <div style={{ position: "relative", width: m ? 140 : 170, height: m ? 140 : 170, margin: "0 auto 20px" }}>
                   <ScoreRing score={72} size={m ? 140 : 170} stroke={10} color="#2B5EA7" />
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                     <span style={{ fontSize: m ? 48 : 56, fontWeight: 300, fontFamily: mono, color: "#F4F1EA", lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
-                    <span style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 2 }}>/100</span>
+                    <span style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 2 }}>/100</span>
                   </div>
                 </div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 16px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", border: "1px solid rgba(43,94,167,0.15)", marginBottom: 16 }}>
                   <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
                   <span style={{ fontSize: 12, fontWeight: 600, color: "#2B5EA7", letterSpacing: "0.02em" }}>Established Stability</span>
                 </div>
-                <div style={{ fontSize: 14, color: "rgba(244,241,234,0.35)" }}>3 points to High Stability</div>
+                <div style={{ fontSize: 14, color: "rgba(244,241,234,0.50)" }}>3 points to High Stability</div>
               </div>
             </div>
             <p style={{ fontSize: 14, color: light, marginTop: 20, lineHeight: 1.6 }}>
@@ -319,7 +319,7 @@ function CommandCenterSection() {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.25)", textAlign: "center", marginTop: m ? 24 : 36, letterSpacing: "0.03em", ...fadeIn(visible, 220) }}>Lifetime access included</p>
+        <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", textAlign: "center", marginTop: m ? 24 : 36, letterSpacing: "0.03em", ...fadeIn(visible, 220) }}>Lifetime access included</p>
       </div>
     </section>
   );
@@ -384,7 +384,7 @@ function FinalCta() {
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; $69 for full report</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 16, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; $69 for full report</p>
         </div>
       </div>
     </section>
