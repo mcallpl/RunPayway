@@ -112,16 +112,16 @@ const helperStyle: React.CSSProperties = {
 const inputBase: React.CSSProperties = {
   width: "100%",
   height: 48,
-  padding: "0 16px",
-  borderRadius: 10,
-  border: "1px solid rgba(14,26,43,0.12)",
-  background: C.white,
+  padding: "0 18px",
+  borderRadius: 12,
+  border: "1px solid #E5E7EB",
+  background: "#FAFAFA",
   fontSize: 14,
   fontFamily: sans,
   color: C.navy,
   outline: "none",
   boxSizing: "border-box",
-  transition: "border-color 180ms ease",
+  transition: "border-color 200ms ease",
 };
 
 const selectStyle: React.CSSProperties = {
@@ -147,7 +147,7 @@ function RadioCard({ label, desc, selected, onClick }: { label: string; desc: st
         alignItems: "center",
         gap: 14,
         padding: "14px 16px",
-        borderRadius: 10,
+        borderRadius: 12,
         border: `1px solid ${selected ? C.purple : "rgba(14,26,43,0.10)"}`,
         background: selected ? "rgba(75,63,174,0.04)" : C.white,
         cursor: "pointer",
@@ -333,7 +333,7 @@ export default function InitializationPage() {
         <p style={{ fontSize: 14, fontFamily: sans, color: C.muted, marginBottom: 24, maxWidth: 400 }}>
           Your session could not be verified. Please start from the pricing page.
         </p>
-        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans, color: "#fff", backgroundColor: C.purple, border: "none", borderRadius: 10, cursor: "pointer" }}>
+        <button onClick={() => router.push("/pricing")} style={{ padding: "12px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans, color: "#fff", backgroundColor: C.purple, border: "none", borderRadius: 12, cursor: "pointer" }}>
           View Plans
         </button>
       </div>
@@ -378,7 +378,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: C.sand,
+        background: "#FAFAFA",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         textAlign: "center",
@@ -418,9 +418,9 @@ export default function InitializationPage() {
                 setTimeout(() => router.push("/diagnostic"), 1200);
               }}
               style={{
-                height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
+                height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 12,
                 background: C.navy,
-                color: C.sandText, fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
+                color: C.sandText, fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
                 border: "none", cursor: "pointer",
                 boxShadow: "none",
                 transition: "transform 200ms ease, box-shadow 200ms ease",
@@ -462,7 +462,7 @@ export default function InitializationPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999,
-        background: C.sand,
+        background: "#FAFAFA",
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}>
@@ -529,7 +529,7 @@ export default function InitializationPage() {
               onBlur={blurHandler}
               style={{
                 width: "100%", height: 56, padding: "0 20px",
-                borderRadius: 10, border: "1px solid rgba(14,26,43,0.12)",
+                borderRadius: 12, border: "1px solid rgba(14,26,43,0.12)",
                 background: C.white, color: C.navy,
                 fontSize: 17, fontWeight: 400, fontFamily: sans, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
@@ -551,7 +551,7 @@ export default function InitializationPage() {
               onBlur={blurHandler}
               style={{
                 width: "100%", height: 52, padding: "0 20px",
-                borderRadius: 10, border: "1px solid rgba(14,26,43,0.08)",
+                borderRadius: 12, border: "1px solid rgba(14,26,43,0.08)",
                 background: C.white, color: C.navy,
                 fontSize: 15, fontWeight: 400, fontFamily: sans, letterSpacing: "-0.01em",
                 outline: "none", boxSizing: "border-box",
@@ -568,10 +568,10 @@ export default function InitializationPage() {
             disabled={!canContinueStep0}
             onClick={() => goToStep(1)}
             style={{
-              width: "100%", height: 52, borderRadius: 10, border: "none",
+              width: "100%", height: 52, borderRadius: 12, border: "none",
               background: canContinueStep0 ? C.navy : "rgba(14,26,43,0.06)",
               color: canContinueStep0 ? C.sandText : C.light,
-              fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
+              fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
               cursor: canContinueStep0 ? "pointer" : "not-allowed",
               transition: "all 200ms ease",
             }}
@@ -619,14 +619,14 @@ export default function InitializationPage() {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 9999,
-      background: C.sand,
+      background: "#FAFAFA",
       overflowY: "auto",
     }}>
       {/* Section transition overlay */}
       {transitioning && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 10000,
-          background: C.sand,
+          background: "#FAFAFA",
           display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
           animation: "portalCrossFade 800ms ease-in-out",
@@ -802,7 +802,7 @@ export default function InitializationPage() {
             onClick={() => goToStep(step - 1)}
             style={{
               height: 52, borderRadius: 12, background: C.white, color: C.navy,
-              fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
+              fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
               border: "1px solid rgba(14,26,43,0.12)", cursor: "pointer", padding: "0 24px",
               transition: "background 180ms ease",
             }}
@@ -818,7 +818,7 @@ export default function InitializationPage() {
                 flex: 1, height: 52, borderRadius: 12,
                 background: canContinueStep1 ? C.purple : "rgba(14,26,43,0.12)",
                 color: canContinueStep1 ? C.white : C.light,
-                fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
+                fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
                 cursor: canContinueStep1 ? "pointer" : "not-allowed",
                 boxShadow: canContinueStep1 ? "0 6px 16px rgba(75,63,174,0.25)" : "none",
                 transition: "background 180ms ease, transform 180ms ease",
@@ -838,7 +838,7 @@ export default function InitializationPage() {
                   ? "linear-gradient(135deg, #4B3FAE 0%, #1F6D7A 100%)"
                   : "rgba(14,26,43,0.12)",
                 color: isValid ? C.white : C.light,
-                fontSize: 15, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
+                fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none",
                 cursor: isValid ? "pointer" : "not-allowed",
                 boxShadow: isValid ? "0 8px 24px rgba(75,63,174,0.30)" : "none",
                 transition: "all 300ms ease",

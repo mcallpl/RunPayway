@@ -129,9 +129,18 @@ export default function FreeScorePage() {
     } catch { router.push("/diagnostic-portal"); }
   }, [router]);
 
-  // Prevent accidental navigation — warn before leaving
+  // Prevent accidental navigation — warn before leaving (but not if user clicked a link)
+  const intentionalNav = useRef(false);
   useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!intentionalNav.current) e.preventDefault();
+    };
+    const markIntentional = () => { intentionalNav.current = true; };
+    // Any link/anchor click is intentional
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("a[href]")) markIntentional();
+    });
     window.addEventListener("beforeunload", onBeforeUnload);
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, []);

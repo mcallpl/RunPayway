@@ -239,7 +239,7 @@ const accentGradient = `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`;
 const T = {
   score: { fontSize: 48, fontWeight: 300, lineHeight: 1, letterSpacing: "-0.03em" },
   pageTitle: { fontSize: 24, fontWeight: 600, lineHeight: 1.15, color: B.navy, letterSpacing: "-0.02em" },
-  sectionTitle: { fontSize: 17, fontWeight: 600, lineHeight: 1.3, color: B.navy, letterSpacing: "-0.01em" },
+  sectionTitle: { fontSize: 16, fontWeight: 600, lineHeight: 1.3, color: B.navy, letterSpacing: "-0.01em" },
   classification: { fontSize: 14, fontWeight: 500, lineHeight: 1.3 },
   overline: { fontSize: 11, fontWeight: 600, lineHeight: 1.3, letterSpacing: "0.12em", textTransform: "uppercase" as const },
   sectionLabel: { fontSize: 14, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.01em" },
@@ -1083,7 +1083,7 @@ export default function ReviewPage() {
                 <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(14,26,43,0.30)", letterSpacing: "0.12em", textTransform: "uppercase" as const, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.35)", marginBottom: 8 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ border: "1px solid rgba(14,26,43,0.06)", borderRadius: 6, padding: "8px 14px", textAlign: "left" }}>
-                  <div style={{ fontFamily: mono, fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+                  <div style={{ fontFamily: mono, fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.68)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
                 </div>
               </div>
             );
@@ -1105,7 +1105,7 @@ export default function ReviewPage() {
 
           <div style={{ marginBottom: 8 }}>
             <span style={{ ...T.score, color: B.navy, fontFamily: mono }}>{animatedScore}</span>
-            <span style={{ fontSize: 17, fontWeight: 400, color: B.taupe, fontFamily: mono }}>/100</span>
+            <span style={{ fontSize: 16, fontWeight: 400, color: B.taupe, fontFamily: mono }}>/100</span>
           </div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />

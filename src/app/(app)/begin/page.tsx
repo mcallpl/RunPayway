@@ -70,7 +70,7 @@ export default function BeginPage() {
           overflow: "auto",
         }}
       >
-        {/* Radial glow removed */}
+        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
 
         <div
           style={{
@@ -95,7 +95,7 @@ export default function BeginPage() {
           />
 
           {/* Overline */}
-          <div style={{ fontSize: 13, fontFamily: sans, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontFamily: sans, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
             Income Stability Score&#8482;
           </div>
 

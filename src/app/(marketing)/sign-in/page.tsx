@@ -127,7 +127,7 @@ export default function SignInPage() {
       </section>
 
       {/* ══ SIGN-IN / DASHBOARD ══ */}
-      <section style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <section style={{ backgroundColor: "#FAFAFA", paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", ...fadeIn(formAnim.visible) }}>
           <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "36px 24px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
 
@@ -155,8 +155,8 @@ export default function SignInPage() {
                         type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
                         style={{
-                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
-                          border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
+                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA", fontSize: 14, fontFamily: sans, color: C.navy,
                           outline: "none", boxSizing: "border-box" as const,
                         }}
                         onKeyDown={(e) => { if (e.key === "Enter") handleForgotPin(); }}
@@ -166,8 +166,8 @@ export default function SignInPage() {
                     {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                     {pinSent ? (
-                      <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
-                        <div style={{ fontSize: 15, fontWeight: 600, color: C.teal, marginBottom: 4 }}>PIN sent to your email.</div>
+                      <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginBottom: 4 }}>PIN sent to your email.</div>
                         <p style={{ ...T.meta, color: C.muted, margin: 0 }}>Check your inbox, then return here to sign in.</p>
                       </div>
                     ) : (
@@ -175,7 +175,7 @@ export default function SignInPage() {
                         onClick={handleForgotPin}
                         disabled={sending}
                         style={{
-                          width: "100%", height: 52, borderRadius: 10,
+                          width: "100%", height: 52, borderRadius: 12,
                           background: C.navy, color: C.white,
                           fontSize: 16, fontWeight: 600, fontFamily: sans, border: "none", cursor: sending ? "wait" : "pointer",
                           opacity: sending ? 0.6 : 1,
@@ -202,8 +202,8 @@ export default function SignInPage() {
                         type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
                         style={{
-                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
-                          border: `1px solid ${C.softBorder}`, background: C.sand, fontSize: 15, fontFamily: sans, color: C.navy,
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
+                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA", fontSize: 14, fontFamily: sans, color: C.navy,
                           outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
                         }}
                         onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
@@ -223,8 +223,8 @@ export default function SignInPage() {
                         onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setPin(v); }}
                         placeholder="&#8226;&#8226;&#8226;&#8226;"
                         style={{
-                          width: "100%", height: 52, padding: "0 18px", borderRadius: 10,
-                          border: `1px solid ${C.softBorder}`, background: C.sand,
+                          width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
+                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA",
                           fontSize: 24, fontFamily: mono, color: C.navy, letterSpacing: "0.3em", textAlign: "center" as const,
                           outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
                         }}
@@ -241,7 +241,7 @@ export default function SignInPage() {
                       onMouseEnter={() => canHover() && setBtnHovered(true)}
                       onMouseLeave={() => setBtnHovered(false)}
                       style={{
-                        width: "100%", height: 52, borderRadius: 10,
+                        width: "100%", height: 52, borderRadius: 12,
                         background: C.navy, color: C.white,
                         fontSize: 16, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
                         boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
@@ -313,8 +313,8 @@ export default function SignInPage() {
                     {session.assessment_records.map((recordId, i) => (
                       <div key={recordId} style={{
                         display: "flex", justifyContent: "space-between", alignItems: "center",
-                        padding: "12px 16px", borderRadius: 10,
-                        background: C.sand, border: `1px solid ${C.softBorder}`,
+                        padding: "12px 16px", borderRadius: 12,
+                        background: "#FAFAFA", border: `1px solid ${C.softBorder}`,
                         marginBottom: i < session.assessment_records.length - 1 ? 8 : 0,
                       }}>
                         <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Assessment {i + 1}</span>
@@ -328,12 +328,12 @@ export default function SignInPage() {
                 {allUsed ? (
                   <>
                     <div style={{ padding: "20px 24px", borderRadius: 12, background: "rgba(155,44,44,0.04)", border: `1px solid rgba(155,44,44,0.10)`, textAlign: "center", marginBottom: 16 }}>
-                      <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>All 3 Assessments Completed</div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 6 }}>All 3 Assessments Completed</div>
                       <p style={{ ...T.meta, color: C.muted, margin: 0, lineHeight: 1.55 }}>Purchase a new plan to continue tracking your income stability.</p>
                     </div>
                     <Link href="/pricing" style={{
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      width: "100%", height: 52, borderRadius: 10,
+                      width: "100%", height: 52, borderRadius: 12,
                       background: C.navy, color: C.white,
                       fontSize: 16, fontWeight: 600, fontFamily: sans, textDecoration: "none",
                       boxShadow: "0 8px 24px rgba(14,26,43,0.15)",
@@ -347,7 +347,7 @@ export default function SignInPage() {
                     onMouseEnter={() => canHover() && setNextBtnHovered(true)}
                     onMouseLeave={() => setNextBtnHovered(false)}
                     style={{
-                      width: "100%", height: 52, borderRadius: 10,
+                      width: "100%", height: 52, borderRadius: 12,
                       background: C.navy, color: C.white,
                       fontSize: 16, fontWeight: 600, fontFamily: sans, border: "none", cursor: "pointer",
                       boxShadow: nextBtnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
@@ -399,7 +399,7 @@ export default function SignInPage() {
                 ...cardStyle, borderRadius: 14, padding: m ? "28px 24px" : "32px 28px",
                 ...fadeIn(infoAnim.visible, 100 + i * 80),
               }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: C.sand, border: `1px solid ${C.softBorder}`, fontSize: 13, fontWeight: 700, fontFamily: mono, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FAFAFA", border: `1px solid ${C.softBorder}`, fontSize: 13, fontWeight: 700, fontFamily: mono, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: card.color, opacity: 0.6 }} />
                   {card.num}
                 </div>
@@ -423,14 +423,14 @@ export default function SignInPage() {
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
               <Link href="/begin" style={{
-                ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10,
+                ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 12,
                 backgroundColor: C.white, color: C.navy,
               }}>
                 Get My Free Score
               </Link>
               <Link href="/pricing" style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 10,
+                height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 12,
                 backgroundColor: "transparent", color: C.sandText,
                 fontSize: 16, fontWeight: 600, textDecoration: "none",
                 border: `1px solid ${C.sandBorder}`,
