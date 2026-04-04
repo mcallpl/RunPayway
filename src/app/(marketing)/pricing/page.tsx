@@ -129,7 +129,7 @@ function PricingCards() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, alignItems: "start", ...fadeIn(visible) }}>
 
           {/* FREE */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.06)" }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               Income Stability Score&#8482;
@@ -156,7 +156,7 @@ function PricingCards() {
           </div>
 
           {/* DIAGNOSTIC (PRIMARY) */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)", transform: m ? "none" : "scale(1.02)" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)", transform: m ? "none" : "scale(1.02)" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Diagnostic
@@ -187,7 +187,7 @@ function PricingCards() {
           </div>
 
           {/* MONITORING */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 28 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 24 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Monitoring

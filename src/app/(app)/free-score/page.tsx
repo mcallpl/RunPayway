@@ -226,7 +226,7 @@ export default function FreeScorePage() {
   /* ================================================================ */
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: mobile ? "40px 20px 48px" : "64px 24px 80px" }}>
+      <div style={{ maxWidth: 680, margin: "0 auto", padding: mobile ? "32px 16px 48px" : "64px 24px 80px" }}>
 
         {/* ── SECTION 1: SCORE BLOCK ── */}
         <section style={{

@@ -198,6 +198,7 @@ function clearAnswerStorage() {
 const VIEWPORT_LOCK_CSS = `
   html, body { overflow-x: hidden !important; width: 100% !important; max-width: 100vw !important; }
   *, *::before, *::after { box-sizing: border-box; }
+  @supports (height: 100dvh) { .rp-fixed-full { height: 100dvh !important; } }
 `;
 
 /* ------------------------------------------------------------------ */

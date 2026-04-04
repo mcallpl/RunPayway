@@ -371,7 +371,7 @@ function DashboardContent() {
     return () => { clearTimeout(timeout); observer.disconnect(); };
   }, [hydrated]);
 
-  useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
   // Persist saved scenarios
   useEffect(() => { localStorage.setItem("rp_saved_scenarios", JSON.stringify(savedScenarios)); }, [savedScenarios]);
@@ -659,7 +659,7 @@ function DashboardContent() {
       <title>Command Center | RunPayway</title>
       <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <style>{`
-          @media(max-width:700px){
+          @media(max-width:640px){
             .d-2col{flex-direction:column!important;}
             .d-3col{grid-template-columns:1fr!important;}
             .d-metrics{flex-direction:column!important;}

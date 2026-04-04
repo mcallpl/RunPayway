@@ -328,8 +328,8 @@ export default function MarketingLayout({
           className="mx-auto flex items-center"
           style={{
             maxWidth: 1200,
-            height: mobile ? 64 : 72,
-            paddingLeft: mobile ? 20 : 40,
+            height: mobile ? 56 : 72,
+            paddingLeft: mobile ? 16 : 40,
             paddingRight: mobile ? 16 : 40,
           }}
         >
@@ -348,7 +348,7 @@ export default function MarketingLayout({
             <Image
               src={logoBlue}
               alt="RunPayway&#8482;"
-              width={mobile ? 160 : 180}
+              width={mobile ? 130 : 180}
               height={mobile ? 19 : 21}
               priority
               style={{ height: "auto" }}
@@ -592,7 +592,7 @@ export default function MarketingLayout({
             className="mobile-overlay"
             style={{
               position: "fixed",
-              top: 56,
+              top: mobile ? 56 : 72,
               left: 0,
               right: 0,
               bottom: 0,
