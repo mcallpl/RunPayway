@@ -530,75 +530,35 @@ function PricingSection() {
 }
 
 /* ================================================================== */
-/* SECTION 9 — FEATURE COMPARISON                                      */
-/* ================================================================== */
-
-function FeatureComparison() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  const rows = [
-    { feature: "Score (0\u2013100)", free: true, paid: true },
-    { feature: "Stability band", free: true, paid: true },
-    { feature: "Primary constraint", free: true, paid: true },
-    { feature: "Improvement direction", free: true, paid: true },
-    { feature: "Full structural breakdown", free: false, paid: true },
-    { feature: "PressureMap\u2122 analysis", free: false, paid: true },
-    { feature: "Ranked disruption scenarios", free: false, paid: true },
-    { feature: "What-If Simulator + Goal Mode", free: false, paid: true },
-    { feature: "12-week execution roadmap", free: false, paid: true },
-    { feature: "Industry-specific scripts", free: false, paid: true },
-    { feature: "Command Center access", free: false, paid: true },
-  ];
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 860, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, textAlign: "center", marginBottom: 12, ...fadeIn(visible) }}>What you see vs what you unlock</h2>
-        <p style={{ fontSize: 14, color: muted, textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible, 60) }}>Everything below is unlocked with the diagnostic.</p>
-        <div style={{ overflowX: "auto", ...fadeIn(visible, 120) }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead><tr>
-              <th style={{ textAlign: "left", padding: "12px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.navy, fontWeight: 600, fontSize: 14 }}>Feature</th>
-              <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.teal, fontWeight: 600, fontSize: 14, minWidth: 80 }}>Free</th>
-              <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.purple, fontWeight: 600, fontSize: 14, minWidth: 80 }}>Diagnostic</th>
-            </tr></thead>
-            <tbody>{rows.map((row, i) => (
-              <tr key={i}>
-                <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, color: muted, fontSize: 14 }}>{row.feature}</td>
-                <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center" }}>{row.free ? <span style={{ color: C.teal, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: light }}>&mdash;</span>}</td>
-                <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center" }}><span style={{ color: C.purple, fontWeight: 600 }}>&#10003;</span></td>
-              </tr>
-            ))}</tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================== */
-/* SECTION 10 — TRANSFORMATION PROOF                                   */
+/* SECTION 9 — TRANSFORMATION PROOF                                    */
 /* ================================================================== */
 
 function TransformationProof() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
+  const results = [
+    { before: 34, after: 61, constraint: "80% client concentration", action: "Restructured to multiple clients. Added retainers." },
+    { before: 28, after: 52, constraint: "Zero recurring income", action: "Converted project work into recurring revenue." },
+    { before: 42, after: 67, constraint: "No forward visibility", action: "Secured forward contracts and extended engagements." },
+  ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 12 }}>They didn&#8217;t earn more.{m ? " " : <br />}They changed their structure.</h2>
           <p style={{ fontSize: 14, color: muted }}>Structural changes — not income increases — drove these results.</p>
         </div>
-        <div style={{ display: "flex", gap: m ? 16 : 32, justifyContent: "center", flexWrap: "wrap" as const, marginBottom: m ? 32 : 48, ...fadeIn(visible, 120) }}>
-          {[{ before: 34, after: 61 }, { before: 28, after: 52 }, { before: 42, after: 67 }].map((r, i) => (
-            <div key={i} style={{ textAlign: "center", padding: m ? "24px 20px" : "28px 32px", borderRadius: 12, border: `1px solid ${C.border}`, minWidth: m ? 140 : 180 }}>
-              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8 }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: m ? 32 : 48, ...fadeIn(visible, 120) }}>
+          {results.map((r, i) => (
+            <div key={i} style={{ padding: m ? 20 : 24, borderRadius: 12, border: `1px solid ${C.border}`, backgroundColor: C.white, marginBottom: m ? 12 : 0 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 14 }}>
                 <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: light }}>{r.before}</span>
                 <span style={{ fontSize: 14, color: light }}>&rarr;</span>
                 <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: C.teal }}>{r.after}</span>
               </div>
+              <div style={{ fontSize: 13, color: light, marginBottom: 8 }}>Constraint: {r.constraint}</div>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, margin: 0 }}>{r.action}</p>
             </div>
           ))}
         </div>
@@ -709,7 +669,6 @@ export default function LandingPage() {
         <ResultPreview />
         <CommandCenter />
         <PricingSection />
-        <FeatureComparison />
         <TransformationProof />
         <TrustStrip />
         <FinalCta />
