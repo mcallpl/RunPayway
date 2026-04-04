@@ -2,15 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import logoBlue from "../../../public/runpayway-logo-blue.png";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
 /* ================================================================== */
-
-const canHover = () =>
-  typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -70,8 +65,20 @@ function useReducedMotion() {
   return prefersReduced;
 }
 
+function useFadeIn() {
+  const reduced = useReducedMotion();
+  return (visible: boolean, delay = 0): React.CSSProperties =>
+    reduced
+      ? {}
+      : {
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : "translateY(8px)",
+          transition: `opacity 400ms ease-out ${delay}ms, transform 400ms ease-out ${delay}ms`,
+        };
+}
+
 /* ================================================================== */
-/* DESIGN TOKENS — LOCKED                                              */
+/* DESIGN SYSTEM (LOCKED)                                              */
 /* ================================================================== */
 
 const C = {
@@ -80,331 +87,23 @@ const C = {
   teal: "#1F6D7A",
   sand: "#F4F1EA",
   white: "#FFFFFF",
-  muted: "rgba(14,26,43,0.55)",
-  light: "rgba(14,26,43,0.38)",
   border: "rgba(14,26,43,0.08)",
-  softBorder: "#EAEAEA",
-  amber: "#C49A6C",
 };
 
-const sp = (n: number) => n * 8;
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
+const muted = "rgba(14,26,43,0.55)";
+const light = "rgba(14,26,43,0.38)";
 
-/* Typography — Inter (locked system) */
-const T = {
-  h1:    { desktop: { fontSize: 60, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em" }, mobile: { fontSize: 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em" } },
-  h2:    { desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.18, letterSpacing: "-0.02em" }, mobile: { fontSize: 28, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em" } },
-  h3:    { desktop: { fontSize: 24, fontWeight: 500, lineHeight: 1.28 }, mobile: { fontSize: 20, fontWeight: 500, lineHeight: 1.3 } },
-  body:  { desktop: { fontSize: 18, fontWeight: 400, lineHeight: 1.65, letterSpacing: "-0.01em" }, mobile: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
-  bodySm:{ desktop: { fontSize: 16, fontWeight: 400, lineHeight: 1.6 }, mobile: { fontSize: 15, fontWeight: 400, lineHeight: 1.6 } },
-  meta:  { fontSize: 14, fontWeight: 400, lineHeight: 1.45 },
-  micro: { fontSize: 13, fontWeight: 400, lineHeight: 1.45 },
-  label: { fontSize: 14, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const },
-};
+const maxW = 1200;
+const contentW = 1040;
+const gutter = 24;
 
-const maxW = 1080;
-const padX = { desktop: 40, mobile: 20 };
-
-const h1 = (m: boolean) => m ? T.h1.mobile : T.h1.desktop;
-const h2Style = (m: boolean) => m ? T.h2.mobile : T.h2.desktop;
-const h3Style = (m: boolean) => m ? T.h3.mobile : T.h3.desktop;
-const body = (m: boolean) => m ? T.body.mobile : T.body.desktop;
-const bodySm = (m: boolean) => m ? T.bodySm.mobile : T.bodySm.desktop;
-const micro = () => T.micro;
-const px = (m: boolean) => m ? padX.mobile : padX.desktop;
-
-/* Spacing constants */
-const secPad = (m: boolean) => m ? sp(12) : sp(17.5); /* 96/140px */
-const heroTopPad = (m: boolean) => m ? sp(16) : sp(20); /* 128/160px */
-const textMax = 720;
-const heroTextMax = 600;
-
-const cardStyle = {
-  borderRadius: 12,
-  border: `1px solid ${C.softBorder}`,
-  backgroundColor: C.white,
-  boxShadow: "0 1px 3px rgba(14,26,43,0.04)",
-};
-
-const ctaButton = {
-  display: "inline-flex" as const,
-  alignItems: "center" as const,
-  justifyContent: "center" as const,
-  height: 56,
-  padding: "0 40px",
-  borderRadius: 8,
-  backgroundColor: C.navy,
-  color: C.white,
-  fontSize: 16,
-  fontWeight: 600,
-  textDecoration: "none" as const,
-  border: "none",
-  cursor: "pointer" as const,
-  transition: "background-color 200ms ease",
-};
-
-/* ================================================================== */
-/* ANIMATION — RESPECTS REDUCED MOTION                                 */
-/* ================================================================== */
-
-function useFadeIn() {
-  const reduced = useReducedMotion();
-  return (visible: boolean, delay = 0): React.CSSProperties =>
-    reduced
-      ? {}
-      : {
-          opacity: visible ? 1 : 0,
-          transform: visible ? "translateY(0)" : "translateY(12px)",
-          transition: `opacity 500ms ease-out ${delay}ms, transform 500ms ease-out ${delay}ms`,
-        };
-}
-
-
-/* ================================================================== */
-/* INDUSTRY DROPDOWN — 19 industries with modal cards                  */
-/* ================================================================== */
-
-const INDUSTRIES = [
-  { name: "Real Estate", headline: "Your income is earned in lumps. Your risk is carried in between.", problem: "A strong year can still rest on a narrow set of closings, a few delayed deals, and a pipeline that looks fuller than it is.\n\nWhen listings stall, buyers hesitate, or one transaction falls apart, earnings do not fade evenly. They drop in gaps.\n\nRunPayway\u2122 evaluates deal concentration, pipeline continuity, and how much of your structure depends on timing going right.", normalization: "This is a common weakness in transaction-based income.", cta: "Stress-test my income structure" },
-  { name: "Consulting / Professional Services", headline: "Your revenue may look diversified. Your continuity may not be.", problem: "Many firms and solo operators serve multiple clients, but most earnings still depend on active delivery, retained attention, and continued utilization.\n\nWhen a client leaves or workload softens, revenue rarely has a built-in floor. It resets around available work.\n\nRunPayway\u2122 evaluates client concentration, dependence on active labor, and how much of your structure continues when delivery slows.", normalization: "Many professional practices are productive without being structurally stable.", cta: "Measure my income stability" },
-  { name: "Sales / Brokerage", headline: "Your compensation moves in cycles. Your exposure sits between them.", problem: "A healthy quarter can hide how much depends on timing, a few large wins, or a pipeline that has not converted yet.\n\nWhen deal flow slips or closings move out, earnings do not taper. They compress.\n\nRunPayway\u2122 evaluates pipeline dependence, concentration by opportunity size, and how vulnerable your structure is to timing shifts.", normalization: "This pattern is common in commission-driven income.", cta: "Stress-test my income structure" },
-  { name: "Construction / Trades", headline: "Your revenue depends on work staying in motion.", problem: "Project-based income often looks solid while jobs are active, even when the next phase of work is not fully secured.\n\nWhen a start date moves, a bid is lost, or collections slow, the gap shows up immediately.\n\nRunPayway\u2122 evaluates project continuity, timing exposure, and how much of your structure depends on the next job arriving on schedule.", normalization: "Many trade businesses feel busy before they feel stable.", cta: "Measure my income stability" },
-  { name: "Media / Entertainment", headline: "Your earnings are often tied to opportunities, not continuity.", problem: "Projects, bookings, contracts, and appearances can create strong periods of income without creating a stable underlying structure.\n\nWhen one project ends or the next opportunity is delayed, there is usually no built-in carry.\n\nRunPayway\u2122 evaluates how much of your structure depends on episodic work and how much continues between engagements.", normalization: "High visibility and high stability are not the same thing.", cta: "Run my structural assessment" },
-  { name: "Legal Services", headline: "Your income may be active, concentrated, and slower to reveal its risk.", problem: "A practice can look healthy while a small number of matters, clients, or billable patterns are carrying most of the load.\n\nWhen case flow softens or a major matter concludes, the weakness is often felt after the fact.\n\nRunPayway\u2122 evaluates client concentration, forward visibility, and how dependent earnings are on ongoing active work.", normalization: "Many legal practices have momentum without much structural cushion.", cta: "Measure my income stability" },
-  { name: "Healthcare", headline: "Your earnings may be steady, but the structure can still be narrow.", problem: "Many healthcare professionals rely on one employer, one system, or one reimbursement environment, even when pay appears consistent.\n\nWhen compensation models shift, hours change, or the primary source is disrupted, flexibility can be limited.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how resilient your structure is when a stable system changes.", normalization: "Consistent pay is not the same as structural protection.", cta: "Measure my income stability" },
-  { name: "Insurance", headline: "Your structure may look balanced while one side quietly carries the risk.", problem: "New production creates immediate earnings. Renewals create continuity. The mix between them determines whether the structure is compounding or constantly restarting.\n\nWhen new business slows, future weakness begins early. When retention slips, recurring income erodes underneath you.\n\nRunPayway\u2122 evaluates the balance between production and persistence, and how exposed your structure is if either side weakens.", normalization: "This is a common fault line in hybrid commission models.", cta: "Stress-test my income structure" },
-  { name: "Retail / E-Commerce", headline: "Sales can stay active while stability weakens underneath them.", problem: "Revenue may depend on traffic, conversion, platform conditions, repeat demand, and margin discipline all holding at once.\n\nWhen demand softens or costs rise, the structure can tighten quickly even before revenue fully shows the damage.\n\nRunPayway\u2122 evaluates demand sensitivity, revenue continuity, and how exposed your structure is to external shifts you do not control.", normalization: "Many operators mistake movement for stability.", cta: "Run my structural assessment" },
-  { name: "Hospitality / Food Service", headline: "Your structure depends on volume showing up on time.", problem: "Revenue is often tied to traffic, seasonality, labor efficiency, and thin margins that leave little room for interruption.\n\nWhen customer flow drops or costs move against you, the pressure is immediate. The structure has very little space to absorb it.\n\nRunPayway\u2122 evaluates volume sensitivity, timing exposure, and how stable the business remains when demand is uneven.", normalization: "This is common in service businesses with narrow operating margin.", cta: "Measure my income stability" },
-  { name: "Education", headline: "Your income may be predictable, but still structurally limited.", problem: "Many education roles are tied to one institution, one pay model, and one fixed system with limited ability to expand or replace earnings quickly.\n\nWhen funding, staffing, or contract conditions change, the structure may offer little flexibility in response.\n\nRunPayway\u2122 evaluates concentration, continuity, and how adaptable your earnings structure is under change.", normalization: "Predictability and resilience are not identical.", cta: "Measure my income stability" },
-  { name: "Transportation / Logistics", headline: "Your earnings depend on flow staying uninterrupted.", problem: "Routes, contracts, shipment volume, and operational consistency often determine whether revenue holds or slips.\n\nWhen demand weakens, a contract changes, or volume drops, earnings can fall with little structural buffer.\n\nRunPayway\u2122 evaluates demand dependence, timing continuity, and how much of your structure relies on uninterrupted movement.", normalization: "Many operators discover the risk only when volume breaks.", cta: "Stress-test my income structure" },
-  { name: "Agriculture", headline: "Your structure is seasonal, variable, and exposed to forces outside your control.", problem: "Strong periods of production can mask how much depends on timing, yield, pricing, and conditions that do not move in your favor on command.\n\nWhen one cycle underperforms, the effect is not minor. It can reset the economics of the entire period.\n\nRunPayway\u2122 evaluates seasonal concentration, continuity across cycles, and how exposed your structure is when one variable moves against you.", normalization: "This is structural risk, not just seasonal uncertainty.", cta: "Run my structural assessment" },
-  { name: "Technology", headline: "High earnings can hide a narrow structure.", problem: "Many professionals in technology rely heavily on one employer, one equity story, one bonus framework, or one compensation system.\n\nWhen that source changes, a large share of earnings can shift all at once.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how much of your structure depends on one system continuing to perform.", normalization: "High compensation does not automatically create high stability.", cta: "Measure my income stability" },
-  { name: "Energy / Utilities", headline: "Your income may look stable because the system around it looks stable.", problem: "But many roles in this sector depend on regulatory conditions, capital cycles, infrastructure decisions, or market structures outside individual control.\n\nWhen those conditions shift, the structure changes first and the impact follows.\n\nRunPayway\u2122 evaluates external dependency, concentration, and how resilient your earnings structure is under system-level change.", normalization: "Stability in this sector is often conditional, not absolute.", cta: "Measure my income stability" },
-  { name: "Finance / Banking", headline: "A stable base can hide a variable structure.", problem: "Many compensation packages combine salary with bonus, production, deal flow, or performance-linked earnings that do not behave the same under pressure.\n\nWhen targets move, markets soften, or activity slows, a meaningful portion of pay can weaken faster than expected.\n\nRunPayway\u2122 evaluates fixed versus performance-dependent earnings and how much of your structure relies on continued output.", normalization: "Many compensation structures appear safer than they are.", cta: "Stress-test my income structure" },
-  { name: "Manufacturing", headline: "Your structure depends on output, demand, and timing staying aligned.", problem: "Revenue can look dependable while production schedules, supply conditions, and customer demand are carrying more of the risk than the numbers suggest.\n\nWhen output slows or demand shifts, earnings weaken while operating burden often stays behind.\n\nRunPayway\u2122 evaluates production dependence, demand sensitivity, and how exposed your structure is when alignment breaks.", normalization: "Many operations are efficient without being resilient.", cta: "Run my structural assessment" },
-  { name: "Nonprofit / Public Sector", headline: "Your income may be stable, but the structure is often constrained.", problem: "Funding cycles, budget decisions, grant allocations, and institutional limits can create predictable pay with limited control or flexibility.\n\nWhen funding priorities shift, the structure may have very little room to adapt quickly.\n\nRunPayway\u2122 evaluates concentration, institutional dependence, and how resilient your earnings structure is under budget or funding change.", normalization: "Stable does not always mean protected.", cta: "Measure my income stability" },
-  { name: "Other", headline: "Your structure may not fit a standard category. That does not reduce the risk.", problem: "Mixed earnings, irregular timing, and multiple income types can create a structure that looks diversified while hiding weak points underneath.\n\nWhen one source slips or timing breaks, the interaction between sources can create pressure faster than expected.\n\nRunPayway\u2122 evaluates how your specific mix behaves under stress and where the structure is most exposed.", normalization: "Non-standard income often carries risk that is harder to see, not less real.", cta: "Run my structural assessment" },
-];
-
-function IndustryDropdown({ m, visible }: { m: boolean; visible: boolean }) {
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<typeof INDUSTRIES[0] | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const fadeIn = useFadeIn();
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
-  /* Focus trap + ESC for modal */
-  useEffect(() => {
-    if (!selected) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelected(null);
-    };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [selected]);
-
-  /* Listen for featured industry card clicks */
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail) setSelected(detail);
-    };
-    window.addEventListener("rp-industry-select", handler);
-    return () => window.removeEventListener("rp-industry-select", handler);
-  }, []);
-
-  return (
-    <>
-      <div style={{
-        position: "relative", zIndex: 10,
-        ...fadeIn(visible, 500),
-      }}>
-        <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
-          <button
-            onClick={() => setOpen(!open)}
-            aria-expanded={open}
-            style={{
-              display: "flex", alignItems: "center", gap: 12,
-              background: open ? "rgba(196,154,108,0.12)" : "rgba(196,154,108,0.06)",
-              border: `1px solid rgba(196,154,108,${open ? "0.35" : "0.25"})`,
-              borderRadius: 12, padding: `${sp(1.5)}px ${sp(3)}px`,
-              cursor: "pointer", transition: "border-color 200ms ease, background 200ms ease",
-              minHeight: 44,
-            }}
-            onMouseEnter={e => { if (canHover()) { e.currentTarget.style.borderColor = "rgba(196,154,108,0.45)"; e.currentTarget.style.backgroundColor = "rgba(196,154,108,0.12)"; } }}
-            onMouseLeave={e => { if (!open) { e.currentTarget.style.borderColor = "rgba(196,154,108,0.25)"; e.currentTarget.style.backgroundColor = "rgba(196,154,108,0.06)"; } }}
-          >
-            <span style={{ fontSize: 15, fontWeight: 500, color: C.amber }}>Explore industry-specific risk patterns</span>
-            <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ marginLeft: 2, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }} aria-hidden="true">
-              <path d="M3 4.5L6 7.5L9 4.5" stroke={C.amber} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          {open && (
-            <div role="listbox" style={{
-              position: "absolute", top: "calc(100% + 8px)",
-              left: m ? "50%" : 0,
-              transform: m ? "translateX(-50%)" : undefined,
-              minWidth: m ? "calc(100vw - 40px)" : 320, maxHeight: 400, overflowY: "auto",
-              backgroundColor: "#0E1424",
-              border: "1px solid rgba(255,255,255,0.10)", borderRadius: 14,
-              padding: `${sp(1)}px 0`, zIndex: 100,
-              boxShadow: "0 16px 48px rgba(0,0,0,0.40)",
-            }}>
-              {INDUSTRIES.map(ind => (
-                <button
-                  role="option"
-                  aria-selected={selected?.name === ind.name}
-                  key={ind.name}
-                  onClick={() => { setSelected(ind); setOpen(false); }}
-                  style={{
-                    display: "block", width: "100%", textAlign: "left",
-                    padding: `${sp(1.25)}px ${sp(2.5)}px`,
-                    background: "none", border: "none", cursor: "pointer",
-                    fontSize: 18, fontWeight: 500, color: "rgba(244,241,234,0.75)",
-                    transition: "background 150ms ease, color 150ms ease",
-                    minHeight: 44,
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "#F4F1EA"; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.75)"; }}
-                >
-                  {ind.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Industry card modal */}
-      {selected && (
-        <div
-          role="dialog"
-          aria-labelledby="industry-modal-title"
-          aria-modal="true"
-          onClick={() => setSelected(null)}
-          style={{
-            position: "fixed", inset: 0, zIndex: 9999,
-            backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            padding: m ? 20 : 40,
-          }}
-        >
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{
-              position: "relative",
-              maxWidth: 520, width: "100%",
-              backgroundColor: C.white, borderRadius: 12,
-              padding: m ? `${sp(5)}px ${sp(3)}px ${sp(4)}px` : `${sp(6)}px ${sp(5)}px ${sp(5)}px`,
-              boxShadow: "0 24px 64px rgba(0,0,0,0.25), 0 0 0 1px rgba(14,26,43,0.06)",
-            }}
-          >
-            <button
-              onClick={() => setSelected(null)}
-              aria-label="Close modal"
-              style={{
-                position: "absolute", top: 16, right: 16,
-                width: 48, height: 48, borderRadius: 8,
-                border: `1px solid ${C.border}`, backgroundColor: "transparent",
-                color: C.muted, cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center", padding: 0,
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
-            </button>
-
-            <div style={{
-              ...T.label,
-              color: C.teal, marginBottom: sp(1.5),
-            }}>
-              {selected.name}
-            </div>
-
-            <h3 id="industry-modal-title" style={{
-              fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.4,
-              color: C.navy, marginBottom: sp(3),
-            }}>
-              {selected.headline}
-            </h3>
-
-            <div style={{ marginBottom: sp(4) }}>
-              {selected.problem.split("\n\n").map((para, i) => (
-                <p key={i} style={{
-                  ...body(m), color: C.muted,
-                  marginBottom: sp(2.5),
-                }}>
-                  {para}
-                </p>
-              ))}
-            </div>
-
-            {selected.normalization && (
-              <p style={{
-                ...micro(), color: "rgba(14,26,43,0.45)", marginBottom: sp(5),
-                fontStyle: "italic",
-              }}>
-                {selected.normalization}
-              </p>
-            )}
-
-            <div style={{
-              borderTop: `1px solid ${C.softBorder}`,
-              paddingTop: sp(3),
-              display: "flex", flexDirection: "column", gap: sp(2),
-            }}>
-              <Link
-                href="/pricing"
-                onClick={() => setSelected(null)}
-                style={{ ...ctaButton, width: "100%" }}
-                onMouseEnter={e => { if (canHover()) e.currentTarget.style.backgroundColor = "#0a1320"; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}
-              >
-                {selected.cta}
-              </Link>
-
-              <Link
-                href="/begin"
-                onClick={() => setSelected(null)}
-                style={{
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  height: 48, padding: "0 32px",
-                  borderRadius: 8,
-                  backgroundColor: "transparent", color: C.navy,
-                  border: `1px solid ${C.softBorder}`,
-                  fontSize: 16, fontWeight: 600, textDecoration: "none",
-                  transition: "border-color 180ms ease",
-                  minHeight: 44,
-                }}
-                onMouseEnter={e => { if (canHover()) e.currentTarget.style.borderColor = "rgba(14,26,43,0.25)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = C.softBorder; }}
-              >
-                Get my free score first
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-
-
+const secPad = (m: boolean) => m ? 48 : 96;
+const px = (m: boolean) => m ? 20 : gutter;
 
 /* ================================================================== */
 /* SECTION 1 — HERO                                                    */
 /* ================================================================== */
-const HERO_INDUSTRIES = ["real estate agents", "consultants", "software contractors", "sales professionals", "business owners"];
-
 
 function HeroSection() {
   const { ref, visible } = useInView();
@@ -412,254 +111,146 @@ function HeroSection() {
   const fadeIn = useFadeIn();
   const animatedScore = useAnimatedCounter(72, visible, 1500);
   const [showLabel, setShowLabel] = useState(false);
-  const [industryIdx, setIndustryIdx] = useState(0);
-  const [industryFade, setIndustryFade] = useState(true);
+
   useEffect(() => {
     if (!visible) return;
     const t = setTimeout(() => setShowLabel(true), 1600);
     return () => clearTimeout(t);
   }, [visible]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndustryFade(false);
-      setTimeout(() => {
-        setIndustryIdx(prev => (prev + 1) % HERO_INDUSTRIES.length);
-        setIndustryFade(true);
-      }, 300);
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <header ref={ref} style={{ backgroundColor: C.navy }}>
-      {/* ── TOP ZONE ── */}
-      <div>
+      <div style={{
+        maxWidth: contentW, margin: "0 auto",
+        paddingTop: m ? 80 : 120,
+        paddingBottom: m ? 48 : 80,
+        paddingLeft: px(m), paddingRight: px(m),
+      }}>
         <div style={{
-          maxWidth: maxW, margin: "0 auto",
-          paddingTop: m ? sp(16) : sp(20),
-          paddingBottom: m ? sp(8) : sp(10),
-          paddingLeft: px(m), paddingRight: px(m),
+          display: m ? "block" : "flex",
+          alignItems: "center", justifyContent: "space-between", gap: 64,
         }}>
-          <div style={{
-            display: m ? "block" : "flex",
-            alignItems: "center", justifyContent: "space-between", gap: sp(8),
-          }}>
-            {/* Left — headline + subhead */}
-            <div style={{ maxWidth: 560, textAlign: m ? "center" : "left" }}>
-              <div style={{
-                ...fadeIn(visible),
-                ...T.label,
-                color: C.teal, marginBottom: sp(2),
-              }}>
-                <span>Income Stability Score&#8482;</span>
-                <span style={{
-                  display: "block", marginTop: 4,
-                  fontSize: 12, fontWeight: 500, letterSpacing: "0.12em",
-                  color: "rgba(244,241,234,0.35)",
-                  opacity: industryFade ? 1 : 0,
-                  transition: "opacity 300ms ease",
-                  textTransform: "uppercase" as const,
-                }}>
-                  Built for {HERO_INDUSTRIES[industryIdx]}
-                </span>
-              </div>
-
-              <h1 style={{
-                ...fadeIn(visible, 120),
-                fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em",
-                color: "#F4F1EA",
-                marginBottom: m ? sp(3) : sp(4),
-              }}>
-                Know how stable your income is before something tests it.
-              </h1>
-
-              <p style={{
-                ...fadeIn(visible, 250),
-                fontSize: m ? 16 : 22, fontWeight: 400, lineHeight: 1.6,
-                color: "rgba(244,241,234,0.55)",
-                maxWidth: m ? undefined : 480,
-              }}>
-                RunPayway&#8482; measures the structure of your income — not the size of it — and shows how resilient that structure is when conditions change.
-              </p>
+          {/* Left — copy */}
+          <div style={{ maxWidth: 540, textAlign: m ? "center" : "left" }}>
+            <div style={{
+              fontSize: 12, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const,
+              color: C.teal, marginBottom: 16,
+              ...fadeIn(visible),
+            }}>
+              Income Stability Score&#8482;
             </div>
 
-            {/* Right — Sample report card */}
+            <h1 style={{
+              fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em",
+              color: C.sand,
+              marginBottom: m ? 24 : 32,
+              ...fadeIn(visible, 80),
+            }}>
+              Your income might be strong.{m ? " " : <br />}Your structure might not.
+            </h1>
+
+            <p style={{
+              fontSize: 16, fontWeight: 400, lineHeight: 1.65,
+              color: "rgba(244,241,234,0.55)",
+              maxWidth: m ? undefined : 460,
+              marginBottom: m ? 32 : 40,
+              ...fadeIn(visible, 160),
+            }}>
+              Most people never measure how stable their income actually is — until something breaks it.
+            </p>
+            <p style={{
+              fontSize: 16, fontWeight: 400, lineHeight: 1.65,
+              color: "rgba(244,241,234,0.55)",
+              maxWidth: m ? undefined : 460,
+              marginBottom: m ? 32 : 40,
+              ...fadeIn(visible, 200),
+            }}>
+              RunPayway&#8482; measures the structure of your income — not the size of it — and shows how it holds up under pressure.
+            </p>
+
+            <div style={{ ...fadeIn(visible, 280) }}>
+              <Link href="/pricing" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: 52, width: m ? "100%" : "auto",
+                padding: "0 40px", borderRadius: 10,
+                backgroundColor: C.white, color: C.navy,
+                fontSize: 16, fontWeight: 600,
+                textDecoration: "none",
+                transition: "background-color 200ms ease",
+              }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
+              >
+                Get My Income Stability Score
+              </Link>
+
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.38)", marginTop: 16, letterSpacing: "0.02em" }}>
+                Under 2 minutes &bull; Instant result &bull; Private by default
+              </p>
+            </div>
+          </div>
+
+          {/* Right — score card */}
+          <div style={{
+            flexShrink: 0,
+            marginTop: m ? 40 : 0,
+            ...fadeIn(visible, 350),
+          }}>
             <div style={{
-              flexShrink: 0,
-              marginTop: m ? sp(6) : 0,
-              ...fadeIn(visible, 400),
+              backgroundColor: C.white, borderRadius: 16, padding: m ? 32 : 40,
+              maxWidth: m ? "100%" : 320,
+              margin: m ? "0 auto" : undefined,
+              border: `1px solid rgba(14,26,43,0.06)`,
+              boxShadow: "0 1px 3px rgba(14,26,43,0.04)",
             }}>
               <div style={{
-                ...cardStyle,
-                padding: m ? sp(4) : sp(5),
-                maxWidth: m ? "100%" : 360,
-                margin: m ? "0 auto" : undefined,
+                fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const,
+                color: light, marginBottom: 24,
               }}>
-                {/* Report header */}
+                Income Stability Score
+              </div>
+
+              <div style={{ textAlign: "center", marginBottom: 16 }}>
                 <div style={{
-                  fontSize: 9, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const,
-                  color: C.light, marginBottom: sp(1),
+                  fontSize: 56, fontWeight: 300, color: C.purple, lineHeight: 1,
+                  fontFamily: mono, fontVariantNumeric: "tabular-nums",
+                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
                 }}>
-                  Income Stability Report
+                  {animatedScore}
                 </div>
                 <div style={{
-                  fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase" as const,
-                  color: C.teal, marginBottom: sp(3),
-                }}>
-                  Structural Assessment &#183; Confidential
-                </div>
+                  fontFamily: mono, fontSize: 14, color: light, marginTop: 4,
+                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 50ms",
+                }}>/ 100</div>
+              </div>
 
-                {/* Score + band */}
-                <div style={{ textAlign: "center", marginBottom: sp(2) }}>
-                  <div style={{
-                    fontSize: m ? 48 : 56, fontWeight: 300, color: C.purple, lineHeight: 1, fontVariantNumeric: "tabular-nums",
-                    fontFamily: mono,
-                    opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out",
-                  }} aria-label={`Score: ${animatedScore}`}>
-                    {animatedScore}
-                  </div>
-                  <div style={{
-                    fontFamily: mono, fontSize: 12, color: C.light, marginTop: 2,
-                    opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 50ms",
-                  }}>/ 100</div>
-                </div>
-
-                <div style={{
-                  display: "flex", justifyContent: "center", marginBottom: sp(2.5),
-                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
-                }}>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.08)" }}>
-                    <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#2B5EA7" }} />
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
-                  </div>
-                </div>
-
-                <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: sp(2) }} />
-
-                {/* Key finding */}
-                <div style={{
-                  padding: "8px 10px", borderRadius: 6, borderLeft: `2px solid ${C.purple}`,
-                  backgroundColor: "rgba(75,63,174,0.03)", marginBottom: sp(2),
-                  opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 200ms",
-                }}>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: C.purple, marginBottom: 2, textTransform: "uppercase" as const }}>Key Takeaway</div>
-                  <div style={{ fontSize: 11, color: C.muted, lineHeight: 1.4 }}>Solid foundation — but income concentration is limiting the score. One client carries too much weight.</div>
-                </div>
-
-                {/* Report details */}
-                <div style={{ opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 300ms" }}>
-                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 4 }}>
-                    Primary constraint: <span style={{ fontWeight: 500, color: C.navy }}>Income concentration</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: C.muted, marginBottom: 4 }}>
-                    Distance to next band: <span style={{ fontFamily: mono, fontWeight: 500, color: C.teal }}>3 points</span>
-                  </div>
-                  <div style={{ fontSize: 12, color: C.muted }}>
-                    Stress test: Largest source removed &#8594; <span style={{ fontWeight: 500, color: "#9B2C2C" }}>severe impact</span>
-                  </div>
+              <div style={{
+                display: "flex", justifyContent: "center", marginBottom: 16,
+                opacity: showLabel ? 1 : 0, transition: "opacity 500ms ease-out 100ms",
+              }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.08)" }}>
+                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#2B5EA7" }} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ── BOTTOM ZONE ── */}
-      <div>
+        {/* Trust strip */}
         <div style={{
-          maxWidth: maxW, margin: "0 auto",
-          paddingTop: m ? sp(6) : sp(8),
-          paddingBottom: m ? sp(8) : sp(10),
-          paddingLeft: px(m), paddingRight: px(m),
+          marginTop: m ? 40 : 56,
+          paddingTop: m ? 24 : 32,
+          borderTop: "1px solid rgba(244,241,234,0.08)",
+          ...fadeIn(visible, 400),
         }}>
-          {/* Trust strip */}
           <p style={{
-            ...fadeIn(visible, 320),
-            ...T.meta, letterSpacing: "0.02em",
-            color: "rgba(244,241,234,0.40)",
-            marginBottom: m ? sp(4) : sp(5),
+            fontSize: 13, letterSpacing: "0.02em",
+            color: "rgba(244,241,234,0.35)",
             textAlign: m ? "center" : "left",
           }}>
-            Deterministic &bull; Version-locked &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
+            Model RP-2.0 &bull; Version-locked &bull; Deterministic output &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
-
-          {/* Industry dropdown */}
-          <div style={{ marginBottom: m ? sp(5) : sp(6), position: "relative", zIndex: 10, textAlign: m ? "center" : "left" }}>
-            <IndustryDropdown m={m} visible={visible} />
-          </div>
-
-          {/* Featured industry cards — surface hidden content */}
-          <div style={{
-            display: "flex", gap: 12, marginBottom: m ? sp(5) : sp(6),
-            overflowX: "auto", WebkitOverflowScrolling: "touch",
-            paddingBottom: 4, scrollbarWidth: "none" as const,
-            ...fadeIn(visible, 450),
-          }}>
-            <style>{`.industry-scroll::-webkit-scrollbar { display: none; }`}</style>
-            {INDUSTRIES.slice(0, 6).map(ind => (
-              <button
-                key={ind.name}
-                onClick={() => {
-                  const evt = new CustomEvent("rp-industry-select", { detail: ind });
-                  window.dispatchEvent(evt);
-                }}
-                style={{
-                  flexShrink: 0, width: m ? 220 : 240,
-                  padding: "16px 18px", borderRadius: 10,
-                  backgroundColor: "rgba(244,241,234,0.06)",
-                  border: "1px solid rgba(244,241,234,0.08)",
-                  cursor: "pointer", textAlign: "left",
-                  transition: "border-color 200ms, background 200ms",
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.20)"; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.10)"; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(244,241,234,0.08)"; e.currentTarget.style.backgroundColor = "rgba(244,241,234,0.06)"; }}
-              >
-                <div style={{ fontSize: 13, fontWeight: 600, color: C.amber, marginBottom: 6 }}>{ind.name}</div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const, overflow: "hidden" }}>
-                  {ind.headline}
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <div style={{ ...fadeIn(visible, 380), textAlign: m ? "center" : "left" }}>
-            <Link
-              href="/pricing"
-              style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 60, width: m ? "100%" : "auto",
-                padding: "16px 40px",
-                borderRadius: 10,
-                backgroundColor: C.white, color: C.navy,
-                fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em",
-                textDecoration: "none",
-                transition: "background-color 200ms ease",
-              }}
-              onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
-            >
-              Get My Income Stability Score
-            </Link>
-
-            <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5), letterSpacing: "0.02em" }}>
-              Under 2 minutes &bull; Instant result &bull; Private by default
-            </p>
-          </div>
-
-          {/* Positioning statement */}
-          <div style={{ marginTop: m ? sp(5) : sp(6), borderTop: "1px solid rgba(244,241,234,0.08)", paddingTop: m ? sp(4) : sp(5) }}>
-            <p style={{
-              ...fadeIn(visible, 600),
-              fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6,
-              color: "rgba(244,241,234,0.45)",
-              maxWidth: 560,
-              textAlign: m ? "center" : "left",
-            }}>
-              Most financial tools measure outcomes. RunPayway&#8482; measures structure — before outcomes change.
-            </p>
-          </div>
         </div>
       </div>
     </header>
@@ -668,516 +259,122 @@ function HeroSection() {
 
 
 /* ================================================================== */
-/* SECTION 2 — WHY THIS DIDN'T EXIST                                   */
+/* SECTION 2 — WHAT THIS IS                                            */
 /* ================================================================== */
-function WhyThisDidntExist() {
+
+function WhatThisIs() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} aria-label="Why this exists" style={{
+    <section ref={ref} style={{
       backgroundColor: C.sand,
-      borderTop: "1px solid rgba(14,26,43,0.08)",
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        {/* Section marker */}
-        <div style={{ ...fadeIn(visible), marginBottom: sp(3) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
-        </div>
-
-        {/* Teal accent line */}
-        <div style={{ borderLeft: `2px solid ${C.teal}`, paddingLeft: m ? sp(3) : sp(4) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(4), ...fadeIn(visible) }}>
-            This is not a budgeting tool.<br />Not a credit score. Not a forecast.
-          </h2>
-
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), ...fadeIn(visible, 100) }}>
-          Those measure what happened or guess what might. RunPayway&#8482; measures the structural integrity of how your income is built — right now.
-        </p>
-
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, lineHeight: 1.65, color: C.navy, marginBottom: sp(3.5), ...fadeIn(visible, 200) }}>
-          Why didn&#8217;t this exist before?
-        </p>
-
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", marginBottom: sp(3.5), ...fadeIn(visible, 300) }}>
-          Credit scoring was built for lenders. Budgeting tools were built for spenders. Income stability — the structural question — fell between the cracks because nobody profits from measuring it. Banks don&#8217;t need it. Advisors don&#8217;t bill for it. So nobody built it.
-        </p>
-
-        <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, lineHeight: 1.55, color: C.navy, marginBottom: sp(5), ...fadeIn(visible, 400) }}>
-          We did.
-        </p>
-        </div>{/* end accent line */}
-
-        {/* Stability Gap data point */}
-        <div style={{
-          borderTop: `1px solid ${C.softBorder}`, paddingTop: sp(4), marginTop: sp(2),
-          ...fadeIn(visible, 500),
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em",
+          color: C.navy, marginBottom: 24,
+          ...fadeIn(visible),
         }}>
-          <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, fontStyle: "italic" }}>
-            Most independent professionals earning over $100K have never quantified how resilient their income actually is. The number is not the problem. The foundation underneath it is.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* CONCENTRATION HOOK                                                  */
-/* ================================================================== */
-function ConcentrationHook() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  const [concentration, setConcentration] = useState(50);
-
-  const message =
-    concentration <= 30 ? "Low concentration. Your income is distributed across multiple sources." :
-    concentration <= 50 ? "Moderate concentration. One source carries meaningful weight in your structure." :
-    concentration <= 70 ? "Elevated concentration. If this source shifts, your income structure shifts with it." :
-    "Critical concentration. Most of your income depends on a single relationship.";
-
-  return (
-    <section ref={ref} aria-label="Concentration check" style={{
-      backgroundColor: C.sand,
-      paddingTop: m ? sp(8) : sp(10), paddingBottom: m ? sp(8) : sp(10),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
-        <label htmlFor="concentration-slider" style={{
-          display: "block",
-          fontSize: m ? 17 : 19, fontWeight: 500, lineHeight: 1.5,
-          color: C.navy, marginBottom: sp(3),
-        }}>
-          What percentage of your income comes from your single largest source?
-        </label>
-        <input
-          id="concentration-slider"
-          type="range" min="0" max="100" value={concentration}
-          onChange={e => setConcentration(Number(e.target.value))}
-          aria-label="Income concentration percentage"
-          style={{ width: "100%", accentColor: C.teal, cursor: "pointer" }}
-        />
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: sp(0.5) }}>
-          <span style={{ fontSize: 13, color: C.light }}>0%</span>
-          <span style={{ fontSize: 18, fontWeight: 600, color: C.teal, fontFamily: mono }}>{concentration}%</span>
-          <span style={{ fontSize: 13, color: C.light }}>100%</span>
-        </div>
+          This is not a budgeting tool.{m ? " " : <br />}Not a credit score. Not a forecast.
+        </h2>
         <p style={{
-          fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.55,
-          color: C.muted, marginTop: sp(2.5),
-          minHeight: 46,
+          fontSize: 16, fontWeight: 400, lineHeight: 1.65,
+          color: muted, marginBottom: 16,
+          ...fadeIn(visible, 100),
         }}>
-          {message}
+          Those measure what happened — or guess what might.
         </p>
-        <p style={{ fontSize: 13, fontWeight: 500, color: C.light, marginTop: sp(1) }}>
-          This is one of six dimensions we measure.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-
-
-
-
-
-/* ================================================================== */
-/* SECTION 3 — HOW IT WORKS                                            */
-/* ================================================================== */
-function HowItWorksSection() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  const stepLabel = { fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light };
-  const stepTitle = { ...h3Style(m), color: C.navy };
-  const stepBody = { fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy };
-  const stepList = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" };
-  const stepClose = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted };
-  const stepGap = m ? sp(8) : sp(10);
-
-  return (
-    <section id="how-it-works" ref={ref} aria-label="How It Works" style={{
-      backgroundColor: C.sand,
-      paddingTop: secPad(m), paddingBottom: secPad(m),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-
-        {/* Header */}
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
-        </div>
-        <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
-          <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
-            How It Works
-          </p>
-          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3.5) }}>
-            A structured measurement system.<br />Not an estimate. Not a guess.
-          </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
-            Four inputs. Six scored dimensions. One standardized result.
-          </p>
-        </div>
-
-        {/* ── Step 1 ── */}
-        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 100) }}>
-          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 1</p>
-          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Operating Context</h3>
-          <p style={{ ...stepBody, marginBottom: sp(3), maxWidth: textMax }}>
-            You define how your income is structured.
-          </p>
-          <div style={{ marginBottom: sp(3) }}>
-            {["Employment classification", "Operating structure", "Income model", "Industry"].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(2) }}>
-                <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...stepList }}>{item}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{ ...stepClose, maxWidth: textMax }}>
-            This context does not change the scoring rules.<br />It ensures the result is interpreted within the correct operating environment.
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
-
-        {/* ── Step 2 ── */}
-        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 200) }}>
-          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 2</p>
-          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Structural Assessment</h3>
-          <p style={{ ...stepBody, maxWidth: textMax }}>
-            Six structural dimensions are evaluated against fixed definitions. No interpretation. No subjective adjustment.
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
-
-        {/* ── Step 3 ── */}
-        <div style={{ marginBottom: stepGap, ...fadeIn(visible, 300) }}>
-          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 3</p>
-          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Score Generation</h3>
-          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
-            The model produces one standardized output:
-          </p>
-          <div style={{ maxWidth: 400 }}>
-            {[
-              ["Limited Stability", "0\u201329"],
-              ["Developing Stability", "30\u201349"],
-              ["Established Stability", "50\u201374"],
-              ["High Stability", "75\u2013100"],
-            ].map(([band, range]) => (
-              <div key={band} style={{ display: "flex", justifyContent: "space-between", paddingTop: sp(1.5), paddingBottom: sp(1.5), borderBottom: `1px solid ${C.softBorder}` }}>
-                <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{band}</span>
-                <span style={{ fontSize: 16, fontWeight: 400, color: C.muted, fontVariantNumeric: "tabular-nums" }}>{range}</span>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginTop: sp(4) }}>
-            Deterministic. Version-locked.
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: 1, backgroundColor: C.softBorder, marginBottom: stepGap }} />
-
-        {/* ── Step 4 ── */}
-        <div style={{ ...fadeIn(visible, 400) }}>
-          <p style={{ ...stepLabel, marginBottom: sp(1.5) }}>Step 4</p>
-          <h3 style={{ ...stepTitle, marginBottom: sp(3) }}>Diagnostic Output</h3>
-          <p style={{ ...stepBody, marginBottom: sp(4), maxWidth: textMax }}>
-            Your score becomes a structured diagnostic:
-          </p>
-          <div style={{ maxWidth: textMax }}>
-            {[
-              "Primary structural constraint",
-              "Ranked risk scenarios by impact",
-              "Structural action priorities",
-              "Income composition breakdown",
-              "12-week execution roadmap",
-              "Command Center simulation",
-            ].map(item => (
-              <div key={item} style={{ paddingTop: sp(1.5), paddingBottom: sp(1.5), borderBottom: `1px solid ${C.softBorder}` }}>
-                <span style={{ ...stepList }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA — full How It Works page */}
-        <div style={{ marginTop: sp(6) }}>
-          <Link
-            href="/how-it-works"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: sp(1),
-              textDecoration: "none",
-              fontSize: 16, fontWeight: 700, color: C.navy,
-              transition: "opacity 200ms ease",
-            }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-          >
-            <span style={{ color: C.teal, fontSize: 20, fontWeight: 700, lineHeight: 1 }}>&rsaquo;</span>
-            How It Works
-          </Link>
-        </div>
-
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 4 — HOW THE SCORE IS DETERMINED (MERGED)                    */
-/* ================================================================== */
-function ScoreDetermination() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  const dimStyle = { fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" };
-  const dimName = { fontSize: 16, fontWeight: 500, color: C.navy };
-
-  return (
-    <section ref={ref} aria-label="How the Score Is Determined" style={{
-      backgroundColor: C.white,
-      paddingTop: secPad(m), paddingBottom: secPad(m),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
-        </div>
-        {/* Header */}
-        <div style={{ maxWidth: textMax, marginBottom: sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, lineHeight: 1.18, marginBottom: sp(3) }}>
-            How the Score Is Determined
-          </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
-            The model evaluates how your income is composed and how it holds up under pressure.
-          </p>
-        </div>
-
-        {/* ── Two Blocks ── */}
-        <div style={{ display: m ? "block" : "flex", gap: sp(5), marginBottom: sp(6), ...fadeIn(visible, 150) }}>
-
-          {/* Structure */}
-          <div style={{ flex: 1, marginBottom: m ? sp(5) : 0 }}>
-            <div style={{ marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
-              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Structure</span>
-            </div>
-            <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income is built.</p>
-            {[
-              { n: "Recurrence", d: "income that continues without re-selling" },
-              { n: "Diversification", d: "distribution across multiple sources" },
-              { n: "Visibility", d: "income secured ahead of time" },
-              { n: "Concentration balance", d: "reliance on any single source" },
-            ].map(item => (
-              <div key={item.n} style={{ marginBottom: sp(2) }}>
-                <span style={dimName}>{item.n}</span>
-                <span style={dimStyle}> — {item.d}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Stability */}
-          <div style={{ flex: 1 }}>
-            <div style={{ marginBottom: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
-              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.light }}>Stability</span>
-            </div>
-            <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.muted, marginBottom: sp(3) }}>Measures how income behaves under pressure.</p>
-            {[
-              { n: "Labor dependence", d: "reliance on active work" },
-              { n: "Earnings consistency", d: "variability over time" },
-              { n: "Continuity under disruption", d: "resilience when income changes" },
-            ].map(item => (
-              <div key={item.n} style={{ marginBottom: sp(2) }}>
-                <span style={dimName}>{item.n}</span>
-                <span style={dimStyle}> — {item.d}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Dimension Interactions ── */}
-        <div style={{ maxWidth: textMax, marginBottom: sp(7), ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(2.5) }}>
-            Dimensions don&#8217;t exist in isolation. The model evaluates how they interact — compound weaknesses lower the score, reinforcing strengths raise it.
-          </p>
-        </div>
-
-        {/* ── Standardized Output ── */}
-        <div style={{ maxWidth: textMax, marginBottom: sp(6), paddingTop: sp(6), borderTop: `1px solid ${C.softBorder}`, ...fadeIn(visible, 400) }}>
-          <div style={{ display: m ? "block" : "flex", alignItems: "baseline", gap: sp(2.5), marginBottom: sp(2) }}>
-            <span style={{ fontSize: 40, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>72</span>
-            <span style={{ fontSize: 18, fontWeight: 500, color: C.navy }}>Established Stability</span>
-          </div>
-          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted, marginBottom: sp(3) }}>
-            3 points to High Stability
-          </p>
-          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted, marginBottom: sp(1) }}>
-            Primary constraint: Income concentration
-          </p>
-          <p style={{ fontSize: 14, fontWeight: 400, color: C.muted }}>
-            Stress scenario: Largest source removed &rarr; severe impact
-          </p>
-        </div>
-
-        {/* ── Closing ── */}
         <p style={{
-          fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy,
-          maxWidth: textMax,
-          ...fadeIn(visible, 450),
+          fontSize: 16, fontWeight: 400, lineHeight: 1.65,
+          color: muted,
+          ...fadeIn(visible, 180),
         }}>
-          The model does not change.<br />Only the inputs change.
+          RunPayway&#8482; measures the structure of how your income is built — right now.
         </p>
-
-        {/* ── Benchmarking Archetypes ── */}
-        <div style={{ maxWidth: textMax, marginTop: sp(7), paddingTop: sp(6), borderTop: `1px solid ${C.softBorder}`, ...fadeIn(visible, 500) }}>
-          <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(3) }}>
-            Where common structures typically fall
-          </p>
-          {[
-            { archetype: "Solo freelancer, single client", range: "15 – 30", band: "Limited" },
-            { archetype: "Agency owner, 5 clients, monthly retainers", range: "55 – 70", band: "Established" },
-            { archetype: "SaaS founder with recurring revenue + consulting", range: "70 – 85", band: "High" },
-          ].map(a => (
-            <div key={a.archetype} style={{ display: "flex", justifyContent: "space-between", alignItems: m ? "flex-start" : "center", flexDirection: m ? "column" as const : "row" as const, gap: m ? 4 : 0, paddingTop: sp(2), paddingBottom: sp(2), borderBottom: `1px solid ${C.softBorder}` }}>
-              <span style={{ fontSize: 16, fontWeight: 400, color: C.navy }}>{a.archetype}</span>
-              <span style={{ fontSize: 15, fontWeight: 500, color: C.purple, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap", fontFamily: mono }}>{a.range}</span>
-            </div>
-          ))}
-          <p style={{ ...T.meta, color: C.muted, marginTop: sp(3), fontStyle: "italic" }}>
-            These are structural patterns, not predictions. Your score depends on your specific inputs.
-          </p>
-        </div>
-
-        {/* CTA — Methodology page */}
-        <div style={{ marginTop: sp(6), ...fadeIn(visible, 500) }}>
-          <Link
-            href="/methodology"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: sp(1),
-              textDecoration: "none",
-              fontSize: 16, fontWeight: 700, color: C.navy,
-              transition: "opacity 200ms ease",
-            }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-          >
-            <span style={{ color: C.teal, fontSize: 20, fontWeight: 700, lineHeight: 1 }}>&rsaquo;</span>
-            Methodology
-          </Link>
-        </div>
       </div>
     </section>
   );
 }
 
 
+/* ================================================================== */
+/* SECTION 3 — SAME INCOME PROOF                                       */
+/* ================================================================== */
 
-/* ================================================================== */
-/* SECTION 5 — SAME INCOME / DIFFERENT STABILITY                       */
-/* ================================================================== */
-function SameIncomeDifferentStability() {
+function SameIncomeProof() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const listItem = (text: string) => (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: 18 }}>
-      <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "rgba(31,109,122,0.6)", flexShrink: 0, marginTop: 9 }} />
-      <span style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "rgba(244,241,234,0.75)" }}>{text}</span>
-    </div>
-  );
-
   return (
-    <section ref={ref} aria-label="Same Income Different Stability" style={{
+    <section ref={ref} style={{
       backgroundColor: C.navy,
-      paddingTop: m ? sp(10) : sp(19), paddingBottom: m ? sp(10) : sp(19),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-
-        {/* Section marker */}
-        <div style={{ ...fadeIn(visible), marginBottom: sp(2) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: "rgba(244,241,234,0.20)", fontFamily: mono }}>05</span>
-        </div>
-
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: sp(7), ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.15, color: "#F4F1EA", marginBottom: sp(2.5) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.sand, marginBottom: 16 }}>
             Same Income. Different Stability.
           </h2>
-          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.5, color: "rgba(244,241,234,0.55)" }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65 }}>
             Same income does not mean equal stability.
           </p>
         </div>
 
-        {/* Panels */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(4), ...fadeIn(visible, 200) }}>
-
+        <div style={{
+          display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr",
+          gap: m ? 16 : 24, maxWidth: 860, margin: "0 auto",
+          ...fadeIn(visible, 150),
+        }}>
           {/* Person A */}
           <div style={{
-            backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, padding: m ? sp(4) : 44,
-            border: "1px solid rgba(255,255,255,0.08)",
-            marginBottom: m ? sp(3) : 0,
+            backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32,
+            marginBottom: m ? 16 : 0,
           }}>
-            <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
-              Person A
-            </p>
-            <div style={{ marginBottom: sp(3.5) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$150K</span>
-              <span style={{ fontSize: 18, fontWeight: 400, color: "rgba(244,241,234,0.35)", marginLeft: sp(1) }}>/ year</span>
+            <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 8 }}>$150K / year</div>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, marginBottom: 24 }}>
+              {["1 client = 80% of income", "No forward contracts", "Income stops if work stops"].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                  <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#9B2C2C", flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 15, color: muted, lineHeight: 1.5 }}>{item}</span>
+                </div>
+              ))}
             </div>
-            {listItem("1 major client (80% of income)")}
-            {listItem("No forward contracts")}
-            {listItem("Income stops when work stops")}
-
-            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-              <span style={{ fontSize: 36, fontWeight: 600, color: "rgba(244,241,234,0.25)", lineHeight: 1, fontFamily: mono }}>31</span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginLeft: sp(1.5) }}>Limited Stability</span>
+            <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 20 }}>
+              <span style={{ fontSize: 36, fontWeight: 300, fontFamily: mono, color: "#9B2C2C" }}>31</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: "#9B2C2C", marginLeft: 12 }}>Limited Stability</span>
             </div>
           </div>
 
           {/* Person B */}
           <div style={{
-            backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 12, padding: m ? sp(4) : 44,
-            border: "1px solid rgba(255,255,255,0.08)",
+            backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32,
           }}>
-            <p style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2.5) }}>
-              Person B
-            </p>
-            <div style={{ marginBottom: sp(3.5) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$150K</span>
-              <span style={{ fontSize: 18, fontWeight: 400, color: "rgba(244,241,234,0.35)", marginLeft: sp(1) }}>/ year</span>
+            <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 8 }}>$150K / year</div>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, marginBottom: 24 }}>
+              {["5 clients, none over 30%", "40% recurring revenue", "3 months secured forward"].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                  <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                  <span style={{ fontSize: 15, color: muted, lineHeight: 1.5 }}>{item}</span>
+                </div>
+              ))}
             </div>
-            {listItem("5 clients, none over 30%")}
-            {listItem("40% recurring retainers")}
-            {listItem("3 months of income secured ahead of time")}
-
-            <div style={{ marginTop: sp(3), paddingTop: sp(3), borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-              <span style={{ fontSize: 36, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>74</span>
-              <span style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.55)", marginLeft: sp(1.5) }}>Established Stability</span>
+            <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 20 }}>
+              <span style={{ fontSize: 36, fontWeight: 300, fontFamily: mono, color: C.teal }}>74</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginLeft: 12 }}>Established Stability</span>
             </div>
           </div>
         </div>
 
-        {/* Closing */}
         <p style={{
-          fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: "#F4F1EA",
-          textAlign: "center", marginTop: sp(7),
-          ...fadeIn(visible, 350),
+          fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.50)",
+          textAlign: "center", marginTop: m ? 24 : 36,
+          ...fadeIn(visible, 250),
         }}>
           Structure determines stability.
         </p>
@@ -1188,331 +385,211 @@ function SameIncomeDifferentStability() {
 
 
 /* ================================================================== */
-/* SECTION 6 — OUTCOME PROOF                                           */
+/* SECTION 4 — HOW IT WORKS                                            */
 /* ================================================================== */
-function ProofSection() {
+
+function HowItWorks() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const outcomes = [
-    {
-      before: 34, after: 61,
-      constraint: "80% client concentration",
-      action: "Restructured to 4 clients, none above 35%. Added 2 retainer agreements.",
-      name: "Sarah M.", role: "Real Estate Agent",
-    },
-    {
-      before: 28, after: 52,
-      constraint: "Zero recurring income",
-      action: "Converted 3 project clients to monthly retainers. Shifted 40% of revenue to recurring.",
-      name: "James R.", role: "Software Contractor",
-    },
-    {
-      before: 42, after: 67,
-      constraint: "No forward visibility",
-      action: "Secured 3-month contracts for top 2 clients. Extended engagement terms from monthly to quarterly.",
-      name: "Priya K.", role: "Management Consultant",
-    },
+  const bands = [
+    { label: "Limited", range: "0\u201329", color: "#9B2C2C" },
+    { label: "Developing", range: "30\u201349", color: "#92640A" },
+    { label: "Established", range: "50\u201374", color: "#2B5EA7" },
+    { label: "High", range: "75\u2013100", color: C.teal },
   ];
 
   return (
-    <section ref={ref} aria-label="Results" style={{
+    <section ref={ref} style={{
       backgroundColor: C.white,
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(5) : sp(6), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2) }}>What changed after they measured</h2>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B" }}>
-            The score reveals the weakness. The action changes the outcome.
-          </p>
-        </div>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 40 : 56,
+          ...fadeIn(visible),
+        }}>
+          How It Works
+        </h2>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: sp(3.5) }}>
-          {outcomes.map((t, i) => (
-            <div key={t.name} style={{
-              ...cardStyle,
-              padding: m ? sp(4) : sp(5),
-              ...fadeIn(visible, 150 + i * 100),
-            }}>
-              {/* Score change */}
-              <div style={{ display: "flex", alignItems: "center", gap: sp(1.5), marginBottom: sp(3) }}>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.light, lineHeight: 1, fontFamily: mono }}>{t.before}</span>
-                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
-                  <path d="M2 6h16M14 2l4 4-4 4" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span style={{ fontSize: 32, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>{t.after}</span>
-              </div>
-
-              {/* Constraint */}
-              <p style={{ fontSize: 14, fontWeight: 500, color: C.muted, marginBottom: sp(2) }}>
-                Constraint: {t.constraint}
-              </p>
-
-              {/* Action taken */}
-              <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy, marginBottom: sp(3) }}>
-                {t.action}
-              </p>
-
-              {/* Attribution */}
-              <div style={{ paddingTop: sp(2.5), borderTop: `1px solid ${C.softBorder}` }}>
-                <div style={{ fontSize: 16, fontWeight: 500, color: C.navy, marginBottom: 2 }}>{t.name}</div>
-                <div style={{ ...micro(), color: C.muted }}>{t.role}</div>
-              </div>
+        <div style={{
+          display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr",
+          gap: m ? 24 : 32, marginBottom: m ? 40 : 56,
+          ...fadeIn(visible, 100),
+        }}>
+          {[
+            { step: "01", title: "Define your income structure", body: "You describe how your income is organized \u2014 sources, contracts, dependencies." },
+            { step: "02", title: "The system evaluates 6 fixed dimensions", body: "Recurrence, concentration, diversification, forward visibility, consistency, and labor dependence." },
+            { step: "03", title: "You receive one standardized score", body: "A single number from 0\u2013100 with a stability band and your primary structural constraint." },
+          ].map((s, i) => (
+            <div key={i} style={{ marginBottom: m ? 0 : 0 }}>
+              <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.12em", color: C.teal, marginBottom: 12 }}>{s.step}</div>
+              <div style={{ fontSize: 20, fontWeight: 500, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>{s.title}</div>
+              <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, margin: 0 }}>{s.body}</p>
             </div>
           ))}
         </div>
+
+        {/* Bands */}
+        <div style={{
+          display: "flex", gap: m ? 8 : 12, justifyContent: "center", flexWrap: "wrap" as const,
+          marginBottom: 24,
+          ...fadeIn(visible, 200),
+        }}>
+          {bands.map(b => (
+            <div key={b.label} style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "8px 16px", borderRadius: 8,
+              border: `1px solid ${C.border}`,
+            }}>
+              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: b.color }} />
+              <span style={{ fontSize: 14, fontWeight: 500, color: C.navy }}>{b.label}</span>
+              <span style={{ fontSize: 13, color: light }}>{b.range}</span>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          fontSize: 14, color: light, textAlign: "center",
+          ...fadeIn(visible, 250),
+        }}>
+          Deterministic. Version-locked.
+        </p>
       </div>
     </section>
   );
 }
 
 
-
-
 /* ================================================================== */
-/* COMMAND CENTER PREVIEW                                              */
+/* SECTION 5 — SAMPLE RESULT                                           */
 /* ================================================================== */
-function CommandCenterPreview() {
+
+function SampleResult() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const features = [
-    { icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0h6m0 0a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v6", label: "Score Breakdown", desc: "See exactly how each of the 6 structural dimensions contributes to your score." },
-    { icon: "M13 10V3L4 14h7v7l9-11h-7z", label: "What-If Simulator", desc: "Test changes before you commit. See the exact score impact of adding a client, locking a retainer, or building passive income." },
-    { icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2", label: "12-Week Roadmap", desc: "A step-by-step plan with industry-specific scripts, effort labels, and cumulative score projections." },
-    { icon: "M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5", label: "Goal Mode", desc: "Pick a target band and see the minimum moves needed to get there. Your income structure has a path \u2014 Goal Mode maps it." },
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          Your score reveals what&#8217;s holding your income together — and what could break it.
+        </h2>
+
+        <div style={{
+          backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 36,
+          border: `1px solid ${C.border}`,
+          ...fadeIn(visible, 120),
+        }}>
+          {/* Score */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
+            <span style={{ fontSize: 48, fontWeight: 300, fontFamily: mono, color: C.purple, lineHeight: 1 }}>72</span>
+            <span style={{ fontSize: 14, color: light }}>/100</span>
+          </div>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.08)", marginBottom: 24 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#2B5EA7" }} />
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
+          </div>
+
+          <div style={{ height: 1, backgroundColor: C.border, marginBottom: 20 }} />
+
+          <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 8 }}>Primary constraint: <span style={{ color: C.navy }}>Income concentration</span></div>
+
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 20 }}>
+            Your structure is stable — but one source puts most of it at risk.
+          </p>
+
+          <div style={{
+            padding: "16px 20px", borderRadius: 10,
+            backgroundColor: "rgba(155,44,44,0.04)", border: "1px solid rgba(155,44,44,0.08)",
+          }}>
+            <div style={{ fontSize: 14, color: muted, marginBottom: 4 }}>If that source disappears:</div>
+            <div style={{ fontSize: 20, fontWeight: 500, fontFamily: mono, color: "#9B2C2C" }}>Projected score: 44</div>
+          </div>
+        </div>
+
+        <p style={{
+          fontSize: 14, color: light, textAlign: "center", marginTop: 24,
+          ...fadeIn(visible, 200),
+        }}>
+          The model does not change. Only the inputs change.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 6 — COMMAND CENTER                                          */
+/* ================================================================== */
+
+function CommandCenter() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const modules = [
+    { label: "Score Breakdown", desc: "See how each of the 6 structural dimensions contributes to your score." },
+    { label: "What-If Simulator", desc: "Test changes before you commit. See the exact score impact." },
+    { label: "12-Week Roadmap", desc: "Step-by-step plan with industry-specific guidance and cumulative projections." },
+    { label: "Goal Mode", desc: "Pick a target band. See the minimum moves to get there." },
   ];
 
   return (
-    <section ref={ref} aria-label="Command Center Preview" style={{
+    <section ref={ref} style={{
       backgroundColor: C.navy,
-      paddingTop: m ? sp(12) : sp(16), paddingBottom: m ? sp(12) : sp(16),
+      paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? sp(6) : sp(8), ...fadeIn(visible) }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Your Command Center</p>
-          <h2 style={{ ...h2Style(m), color: "#F4F1EA", marginBottom: sp(3) }}>
-            Your score is the starting point.{m ? " " : <br />}The Command Center is where you act on it.
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
+            Command Center
+          </div>
+          <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.sand, marginBottom: 16 }}>
+            This is where your income structure gets fixed.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "rgba(244,241,234,0.55)", maxWidth: 560, margin: "0 auto" }}>
-            Every diagnostic report includes full access to a personalized Command Center built around your structural data.
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65 }}>
+            Test changes. See impact. Improve your score.
           </p>
         </div>
 
         <div style={{
           display: "grid",
           gridTemplateColumns: m ? "1fr" : "1fr 1fr",
-          gap: m ? 12 : 16,
-          maxWidth: 880, margin: "0 auto",
+          gap: m ? 12 : 16, maxWidth: 860, margin: "0 auto",
           ...fadeIn(visible, 150),
         }}>
-          {features.map((f, i) => (
+          {modules.map((mod, i) => (
             <div key={i} style={{
-              padding: m ? "24px 20px" : "28px 28px",
-              borderRadius: 14,
+              padding: m ? 24 : 28, borderRadius: 16,
               backgroundColor: "rgba(244,241,234,0.04)",
               border: "1px solid rgba(244,241,234,0.06)",
-              transition: "border-color 200ms",
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={f.icon} />
-                  </svg>
-                </div>
-                <span style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA" }}>{f.label}</span>
-              </div>
-              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, margin: 0 }}>
-                {f.desc}
-              </p>
+              <div style={{ fontSize: 20, fontWeight: 500, color: C.sand, marginBottom: 10 }}>{mod.label}</div>
+              <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, margin: 0 }}>{mod.desc}</p>
             </div>
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: m ? sp(5) : sp(6), ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em" }}>
-            Included with every diagnostic report &bull; No subscription required
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 8 — PRICING                                                 */
-/* ================================================================== */
-function PricingSection() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  const checkItem = (text: string) => (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: sp(1.5), marginBottom: 16 }}>
-      <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 4 }} aria-hidden="true">&#x2713;</span>
-      <span style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.navy }}>{text}</span>
-    </div>
-  );
-
-  return (
-    <section ref={ref} aria-label="Pricing" style={{
-      backgroundColor: C.sand,
-      paddingTop: m ? sp(14) : sp(20), paddingBottom: m ? sp(14) : sp(20),
-      paddingLeft: px(m), paddingRight: px(m),
-    }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: sp(8), ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: sp(3) }}>
-            Start with the score.<br />Go deeper only if you need the diagnosis.
-          </h2>
-          <p style={{ fontSize: m ? 16 : 20, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", maxWidth: 620, margin: "0 auto" }}>
-            Your score is instant and free. The full diagnostic is available when you want to understand the reasoning behind it.
-          </p>
-        </div>
-
-        {/* Columns */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: sp(5), maxWidth: 900, margin: "0 auto", ...fadeIn(visible, 150) }}>
-
-          {/* ── Free ── */}
-          <div style={{
-            backgroundColor: "#F8F7F3", borderRadius: 12, padding: m ? sp(4) : 40,
-            border: "1px solid rgba(14,26,43,0.06)",
-            display: "flex", flexDirection: "column" as const,
-            marginBottom: m ? sp(3) : 0,
-          }}>
-            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
-              Income Stability Score&#8482;
-            </p>
-            <div style={{ marginBottom: sp(3) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$0</span>
-            </div>
-            <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>Always free. No credit card.</p>
-
-            <div style={{ marginBottom: sp(4), flex: 1 }}>
-              {checkItem("Your score out of 100")}
-              {checkItem("Your stability classification")}
-              {checkItem("Your primary structural constraint")}
-              {checkItem("Your highest-impact improvement")}
-            </div>
-
-            <Link href="/pricing" style={{
-              ...ctaButton, width: "100%",
-              height: 52, padding: 0, fontSize: 16,
-            }}
-              onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
-            >Start Free Assessment</Link>
-          </div>
-
-          {/* ── Paid ── */}
-          <div style={{
-            backgroundColor: C.white, borderRadius: 12, padding: m ? sp(4) : 44,
-            border: "1px solid rgba(14,26,43,0.12)",
-            boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
-            display: "flex", flexDirection: "column" as const,
-          }}>
-            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: sp(2) }}>
-              RunPayway&#8482; Diagnostic Report
-            </p>
-            <div style={{ marginBottom: sp(1) }}>
-              <span style={{ fontSize: 48, fontWeight: 600, color: C.purple, lineHeight: 1, fontFamily: mono }}>$69</span>
-            </div>
-            <p style={{ fontSize: 16, fontWeight: 400, color: "#6A7280", marginBottom: sp(3) }}>One-time. No subscription.</p>
-
-            {/* Primary driver */}
-            <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.55, color: C.navy, marginBottom: sp(3) }}>
-              See exactly why your income structure scores the way it does — and what would break it.
-            </p>
-
-            {/* Report outputs */}
-            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.light, marginBottom: sp(1.5) }}>
-              Diagnostic Report
-            </p>
-            <div style={{ marginBottom: sp(3) }}>
-              {checkItem("Your primary structural constraint")}
-              {checkItem("Where your income is most exposed")}
-              {checkItem("What happens if your largest source drops")}
-              {checkItem("The fastest way to improve your score")}
-              {checkItem("A clear, step-by-step path forward")}
-            </div>
-
-            {/* Command Center */}
-            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.light, marginBottom: sp(1.5) }}>
-              Command Center
-            </p>
-            <div style={{ marginBottom: sp(4), flex: 1 }}>
-              {checkItem("PressureMap\u2122 structural analysis")}
-              {checkItem("What-if simulator for testing changes")}
-              {checkItem("12-week execution roadmap")}
-              {checkItem("Industry-specific benchmarks")}
-            </div>
-
-            <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
-              ...ctaButton, width: "100%",
-              height: 52, padding: 0, fontSize: 16,
-            }}
-              onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
-            >Get Full Diagnostic</a>
-
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: sp(2), marginBottom: 0 }}>
-              If it doesn&#8217;t reveal something new, full refund.
-            </p>
-          </div>
-        </div>
-
-        {/* Feature comparison matrix */}
-        <div style={{ maxWidth: 900, margin: `${sp(8)}px auto 0`, ...fadeIn(visible, 250) }}>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
-              <thead>
-                <tr>
-                  <th style={{ textAlign: "left", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.navy, fontWeight: 600, fontSize: 14 }}>Feature</th>
-                  <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.teal, fontWeight: 600, fontSize: 14, minWidth: 100 }}>Free</th>
-                  <th style={{ textAlign: "center", padding: "12px 16px", borderBottom: `2px solid ${C.softBorder}`, color: C.purple, fontWeight: 600, fontSize: 14, minWidth: 100 }}>Diagnostic</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { feature: "Score out of 100", free: true, paid: true },
-                  { feature: "Stability band classification", free: true, paid: true },
-                  { feature: "Primary structural constraint", free: true, paid: true },
-                  { feature: "Distance to next band", free: true, paid: true },
-                  { feature: "Peer percentile for your industry", free: true, paid: true },
-                  { feature: "Full structural diagnosis", free: false, paid: true },
-                  { feature: "PressureMap\u2122 zone analysis", free: false, paid: true },
-                  { feature: "Ranked disruption scenarios", free: false, paid: true },
-                  { feature: "What-If Simulator + Goal Mode", free: false, paid: true },
-                  { feature: "12-week execution roadmap", free: false, paid: true },
-                  { feature: "Industry-specific action scripts", free: false, paid: true },
-                  { feature: "Command Center access", free: false, paid: true },
-                ].map((row, i) => (
-                  <tr key={i}>
-                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 14 }}>{row.feature}</td>
-                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center", fontSize: 15 }}>
-                      {row.free ? <span style={{ color: C.teal, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: C.light }}>—</span>}
-                    </td>
-                    <td style={{ padding: "10px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center", fontSize: 15 }}>
-                      {row.paid ? <span style={{ color: C.purple, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: C.light }}>—</span>}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Trust line */}
-        <p style={{ fontSize: 15, fontWeight: 400, color: "#6A7280", textAlign: "center", marginTop: sp(5) }}>
-          No account required. No preparation needed.
+        <p style={{
+          fontSize: 14, color: "rgba(244,241,234,0.30)", textAlign: "center", marginTop: m ? 24 : 36,
+          ...fadeIn(visible, 250),
+        }}>
+          Included with diagnostic
         </p>
       </div>
     </section>
@@ -1521,88 +598,120 @@ function PricingSection() {
 
 
 /* ================================================================== */
-/* SECTION 9 — FAQ                                                     */
+/* SECTION 7 — PRICING                                                 */
 /* ================================================================== */
-function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFaq: (v: number | null) => void }) {
+
+function PricingSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const faqs = [
-    { q: "How will the Income Stability Score impact my financial future?", a: "The Income Stability Score\u2122 measures how your income is structured and how that structure holds up under change. It gives you a clear, standardized view of where you stand \u2014 so you can make informed decisions about what to protect or adjust." },
-    { q: "Who is the Income Stability Score designed for?", a: "Anyone whose income does not arrive in a fixed paycheck. Freelancers, contractors, consultants, business owners, agents, and professionals with variable or blended income structures." },
-    { q: "What exactly do I get with the full diagnostic?", a: "A structured analysis of why you scored the way you did, where your income is most exposed, and what specific changes would improve your stability. It includes ranked risk scenarios, action priorities, and a 12-week execution roadmap." },
-    { q: "How is the Income Stability Score different from just tracking my revenue?", a: "Revenue tells you how much came in. The score tells you how reliably it keeps coming in \u2014 and what would happen if something changed. Two people earning the same amount can have very different structural stability." },
-    { q: "What is the PressureMap\u2122 and how does it help me?", a: "PressureMap\u2122 identifies the parts of your income structure most likely to weaken first under disruption. It shows where pressure concentrates so you can focus improvements on the areas that matter most." },
-    { q: "What is the Command Center and how do I use it?", a: "The Command Center is where your diagnostic becomes actionable. It includes a what-if simulator to test structural changes, a 12-week roadmap, and industry-specific benchmarks \u2014 all based on your score." },
-    { q: "How long does it take to get my results?", a: "The free score is delivered instantly \u2014 under two minutes. The full diagnostic report is available immediately after purchase." },
-    { q: "Is my information private?", a: "Yes. There is no bank connection, no credit pull, and no external data access. Your result is based entirely on the information you provide. Private by default." },
-  ];
+  const check = (text: string) => (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
+      <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+      <span style={{ fontSize: 15, color: muted, lineHeight: 1.55 }}>{text}</span>
+    </div>
+  );
 
   return (
-    <section ref={ref} aria-label="Frequently Asked Questions" style={{
+    <section ref={ref} style={{
       backgroundColor: C.white,
       paddingTop: secPad(m), paddingBottom: secPad(m),
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: m ? sp(4) : sp(5), ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: sp(2.5) }}>
-            Frequently Asked Questions
-          </h2>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", maxWidth: 560, margin: "0 auto" }}>
-            Most people don&#8217;t have all the answers right now. We&#8217;re here to give you clarity on your next step.
-          </p>
-        </div>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          Start with the score.{m ? " " : <br />}Go deeper only if you need the diagnosis.
+        </h2>
 
-        {/* Accordion */}
-        <div style={{ ...fadeIn(visible, 100), marginBottom: sp(6) }}>
-          {faqs.map((faq, i) => {
-            const isOpen = openFaq === i;
-            const panelId = `faq-panel-${i}`;
-            const btnId = `faq-btn-${i}`;
-            return (
-              <div key={i} style={{ borderTop: `1px solid ${C.softBorder}` }}>
-                <h3 style={{ margin: 0 }}>
-                  <button id={btnId} onClick={() => setOpenFaq(isOpen ? null : i)} aria-expanded={isOpen} aria-controls={panelId}
-                    style={{
-                      width: "100%", padding: `${sp(3)}px 0`, minHeight: 48,
-                      display: "flex", alignItems: "center", justifyContent: "space-between",
-                      background: "none", border: "none", cursor: "pointer", textAlign: "left",
-                      transition: "color 200ms ease",
-                    }}>
-                    <span style={{ fontSize: m ? 18 : 20, fontWeight: 500, color: C.navy, paddingRight: sp(2), lineHeight: 1.4 }}>{faq.q}</span>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 300ms ease", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }} aria-hidden="true">
-                      <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
-                      <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                </h3>
-                <div id={panelId} role="region" aria-labelledby={btnId} style={{
-                  maxHeight: isOpen ? 500 : 0, overflow: "hidden",
-                  transition: "max-height 300ms ease",
-                }}>
-                  <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "#2C3A4B", margin: 0, padding: `0 0 ${sp(3)}px` }}>{faq.a}</p>
-                </div>
-              </div>
-            );
-          })}
-          <div style={{ borderTop: `1px solid ${C.softBorder}` }} />
-        </div>
+        <div style={{
+          display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr",
+          gap: 24, maxWidth: 860, margin: "0 auto",
+          ...fadeIn(visible, 120),
+        }}>
+          {/* Free */}
+          <div style={{
+            backgroundColor: "#F8F7F3", borderRadius: 16, padding: m ? 24 : 32,
+            border: `1px solid ${C.border}`,
+            display: "flex", flexDirection: "column" as const,
+            marginBottom: m ? 16 : 0,
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+              Income Stability Score&#8482;
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
+            </div>
+            <div style={{ marginBottom: 32, flex: 1 }}>
+              {check("Score out of 100")}
+              {check("Stability band")}
+              {check("Primary constraint")}
+              {check("Highest-impact improvement")}
+            </div>
+            <Link href="/pricing" style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 52, borderRadius: 10,
+              backgroundColor: C.navy, color: C.white,
+              fontSize: 16, fontWeight: 600, textDecoration: "none",
+              transition: "background-color 200ms",
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+            >
+              Start Free Assessment
+            </Link>
+          </div>
 
-        {/* Bottom CTA */}
-        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: "#2C3A4B", marginBottom: sp(3) }}>
-            Still have questions? Get in touch for personalized guidance.
-          </p>
-          <Link href="/contact" style={{
-            ...ctaButton,
-            height: 52, padding: "0 40px",
-          }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#0a1320"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
-          >Contact Us</Link>
+          {/* Diagnostic (PRIMARY) */}
+          <div style={{
+            backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32,
+            border: `1px solid rgba(14,26,43,0.12)`,
+            boxShadow: "0 2px 8px rgba(14,26,43,0.06)",
+            display: "flex", flexDirection: "column" as const,
+            transform: m ? "none" : "scale(1.02)",
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 20 }}>
+              RunPayway&#8482; Diagnostic Report
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
+            </div>
+
+            <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 8 }}>
+              See exactly what would break your income — before it happens.
+            </p>
+            <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, marginBottom: 24 }}>
+              Most people discover their biggest risk after it hits. This shows it before.
+            </p>
+
+            <div style={{ marginBottom: 24, flex: 1 }}>
+              {check("Structural breakdown")}
+              {check("Risk scenarios")}
+              {check("Score drivers")}
+              {check("Improvement plan")}
+              {check("12-week roadmap")}
+            </div>
+
+            <a href={process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"} style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 52, borderRadius: 10,
+              backgroundColor: C.navy, color: C.white,
+              fontSize: 16, fontWeight: 600, textDecoration: "none",
+              transition: "background-color 200ms",
+            }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.navy; }}
+            >
+              Unlock Full Diagnostic
+            </a>
+            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+              If it doesn&#8217;t reveal something new, full refund.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -1611,128 +720,196 @@ function FaqSection({ openFaq, setOpenFaq }: { openFaq: number | null; setOpenFa
 
 
 /* ================================================================== */
-/* SECTION 10 — FINAL CTA (ORIGIN + CONFIDENCE + ENTERPRISE)           */
+/* SECTION 8 — FEATURE TABLE                                           */
 /* ================================================================== */
+
+function FeatureTable() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const rows = [
+    { feature: "Score out of 100", free: true, paid: true },
+    { feature: "Stability band", free: true, paid: true },
+    { feature: "Primary constraint", free: true, paid: true },
+    { feature: "Improvement direction", free: true, paid: true },
+    { feature: "Full structural breakdown", free: false, paid: true },
+    { feature: "PressureMap\u2122 zone analysis", free: false, paid: true },
+    { feature: "Ranked disruption scenarios", free: false, paid: true },
+    { feature: "What-If Simulator", free: false, paid: true },
+    { feature: "Goal Mode", free: false, paid: true },
+    { feature: "12-week execution roadmap", free: false, paid: true },
+    { feature: "Industry-specific scripts", free: false, paid: true },
+    { feature: "Command Center access", free: false, paid: true },
+  ];
+
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.sand,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          What you see vs what you unlock
+        </h2>
+
+        <div style={{ overflowX: "auto", ...fadeIn(visible, 100) }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: "left", padding: "14px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.navy, fontWeight: 600, fontSize: 14 }}>Feature</th>
+                <th style={{ textAlign: "center", padding: "14px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.teal, fontWeight: 600, fontSize: 14, minWidth: 80 }}>Free</th>
+                <th style={{ textAlign: "center", padding: "14px 16px", borderBottom: `2px solid rgba(14,26,43,0.10)`, color: C.purple, fontWeight: 600, fontSize: 14, minWidth: 80 }}>Diagnostic</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  <td style={{ padding: "12px 16px", borderBottom: `1px solid ${C.border}`, color: muted, fontSize: 15 }}>{row.feature}</td>
+                  <td style={{ padding: "12px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center" }}>
+                    {row.free ? <span style={{ color: C.teal, fontWeight: 600 }}>&#10003;</span> : <span style={{ color: light }}>&mdash;</span>}
+                  </td>
+                  <td style={{ padding: "12px 16px", borderBottom: `1px solid ${C.border}`, textAlign: "center" }}>
+                    <span style={{ color: C.purple, fontWeight: 600 }}>&#10003;</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 9 — TRANSFORMATION                                         */
+/* ================================================================== */
+
+function Transformation() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const results = [
+    { before: 34, after: 61 },
+    { before: 28, after: 52 },
+    { before: 42, after: 67 },
+  ];
+
+  return (
+    <section ref={ref} style={{
+      backgroundColor: C.white,
+      paddingTop: secPad(m), paddingBottom: secPad(m),
+      paddingLeft: px(m), paddingRight: px(m),
+    }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2, color: C.navy,
+          textAlign: "center", marginBottom: m ? 32 : 48,
+          ...fadeIn(visible),
+        }}>
+          They didn&#8217;t earn more.{m ? " " : <br />}They changed their structure.
+        </h2>
+
+        <div style={{
+          display: "flex", gap: m ? 16 : 32,
+          justifyContent: "center", flexWrap: "wrap" as const,
+          marginBottom: m ? 32 : 48,
+          ...fadeIn(visible, 120),
+        }}>
+          {results.map((r, i) => (
+            <div key={i} style={{
+              textAlign: "center", padding: m ? "24px 20px" : "28px 32px",
+              borderRadius: 16, border: `1px solid ${C.border}`,
+              backgroundColor: C.white, minWidth: m ? 140 : 180,
+            }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8 }}>
+                <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: light }}>{r.before}</span>
+                <span style={{ fontSize: 16, color: light }}>&rarr;</span>
+                <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: C.teal }}>{r.after}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 4 }}>
+            The score reveals the weakness.
+          </p>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65 }}>
+            The action changes the outcome.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 10 — FINAL CTA                                              */
+/* ================================================================== */
+
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} aria-label="Final Call to Action" style={{
+    <section ref={ref} style={{
       backgroundColor: C.navy,
-      paddingTop: m ? sp(10) : sp(16), paddingBottom: m ? sp(10) : sp(16),
+      paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96,
       paddingLeft: px(m), paddingRight: px(m),
     }}>
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-
-        {/* Origin Story — with teal accent line */}
-        <div style={{
-          marginBottom: m ? sp(8) : sp(10),
-          borderLeft: `2px solid ${C.teal}`,
-          paddingLeft: m ? sp(3) : sp(4),
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{
+          fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.2,
+          color: C.sand, marginBottom: 32,
           ...fadeIn(visible),
         }}>
-          <p style={{ ...T.label, color: C.teal, marginBottom: sp(2) }}>Why We Built This</p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.65)", marginBottom: sp(3) }}>
-            A consultant earning $200K lost 70% of her income in one quarter — not because she was bad at her job, but because two clients represented 85% of her revenue and both restructured the same month. No tool saw it coming because no tool was measuring it.
-          </p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, lineHeight: 1.65, color: "#F4F1EA" }}>
-            We built RunPayway&#8482; because the measurement should have existed long before the disruption did.
-          </p>
-        </div>
+          Your income has a structure.{m ? " " : <br />}Now you can measure it.
+        </h2>
 
-        {/* Confidence Block */}
-        <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          paddingTop: m ? sp(8) : sp(10),
-          textAlign: "center",
-          ...fadeIn(visible, 200),
-        }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.15, color: "#F4F1EA", marginBottom: sp(4) }}>
-            Your income has a structure.{m ? " " : <br />}Now you can measure it.
-          </h2>
-
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", marginBottom: sp(2) }}>
-            We do not ask you to believe us. We ask you to run your inputs.
-          </p>
-          <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", marginBottom: sp(5) }}>
-            The score either reflects your structure or it does not. You will know in under two minutes.
-          </p>
-
+        <div style={{ ...fadeIn(visible, 150) }}>
           <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 60, padding: "0 48px", borderRadius: 10,
+            height: 52, padding: "0 40px", borderRadius: 10,
             backgroundColor: C.white, color: C.navy,
-            fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em",
+            fontSize: 16, fontWeight: 600,
             textDecoration: "none",
-            transition: "background-color 200ms ease",
+            transition: "background-color 200ms",
           }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
           >
             Start Free Assessment
           </Link>
 
-          <p style={{ ...T.meta, color: "rgba(244,241,234,0.38)", marginTop: sp(2.5) }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.38)", marginTop: 16 }}>
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>
-
-        {/* Enterprise Signal */}
-        <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          marginTop: m ? sp(8) : sp(10),
-          paddingTop: m ? sp(5) : sp(6),
-          textAlign: "center",
-          ...fadeIn(visible, 350),
-        }}>
-          <p style={{ fontSize: m ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginBottom: sp(1.5) }}>
-            Financial advisors, lenders, and workforce platforms are exploring RunPayway&#8482;&#8217;s structural scoring for their own workflows.
-          </p>
-          <Link href="/contact" style={{
-            fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
-            transition: "opacity 200ms ease",
-          }}
-            onMouseEnter={(e) => { if (!canHover()) return; e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-          >
-            Enterprise inquiries &rarr;
-          </Link>
-        </div>
-
-        {/* Disclaimer */}
-        <p style={{ ...T.micro, color: "rgba(244,241,234,0.25)", textAlign: "center", maxWidth: 640, margin: `${sp(8)}px auto 0`, lineHeight: 1.6 }}>
-          The Income Stability Score&#8482; is a structural income assessment based on information provided by the user. It does not provide financial advice, investment advice, credit underwriting, or prediction of future outcomes.
-        </p>
       </div>
     </section>
   );
 }
 
 
-
 /* ================================================================== */
 /* STRUCTURED DATA                                                     */
 /* ================================================================== */
-const FAQ_SCHEMA = {
-  "@context": "https://schema.org", "@type": "FAQPage",
-  mainEntity: [
-    { "@type": "Question", name: "What is the Income Stability Score?", acceptedAnswer: { "@type": "Answer", text: "A standardized measure of how stable your income structure is under disruption. It evaluates six dimensions and returns a score out of 100 with a stability band." } },
-    { "@type": "Question", name: "Who is this built for?", acceptedAnswer: { "@type": "Answer", text: "Independent professionals, freelancers, consultants, contractors, and small business owners." } },
-    { "@type": "Question", name: "What does the full diagnostic include?", acceptedAnswer: { "@type": "Answer", text: "A full diagnostic report, PressureMap with zone analysis, Command Center with what-if simulator, industry-specific scripts, a 12-week roadmap, and peer benchmarking." } },
-    { "@type": "Question", name: "How is this different from revenue tracking?", acceptedAnswer: { "@type": "Answer", text: "Revenue measures how much you earn. This measures how stable that income is under disruption." } },
-    { "@type": "Question", name: "What is the PressureMap?", acceptedAnswer: { "@type": "Answer", text: "A structural analysis of your income zones — where pressure concentrates and how your structure compares to peers." } },
-    { "@type": "Question", name: "What is the Command Center?", acceptedAnswer: { "@type": "Answer", text: "A diagnostic tool with a what-if simulator, industry-specific scripts, a 12-week roadmap, and progress tracking." } },
-    { "@type": "Question", name: "How long does it take?", acceptedAnswer: { "@type": "Answer", text: "Under two minutes. Instant results." } },
-    { "@type": "Question", name: "Is my data private?", acceptedAnswer: { "@type": "Answer", text: "Yes. No bank connections. No credit pulls. Private by default." } },
-  ],
-};
 
 const PRODUCT_SCHEMA = {
   "@context": "https://schema.org", "@type": "Product",
   name: "RunPayway Income Stability Score",
-  description: "A structural assessment that measures how stable your income structure is — not how much you make.",
+  description: "A structural assessment that measures how stable your income structure is \u2014 not how much you make.",
   brand: { "@type": "Brand", name: "RunPayway" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score", description: "Score, band, primary constraint, and one recommended direction." },
@@ -1744,12 +921,10 @@ const PRODUCT_SCHEMA = {
 /* ================================================================== */
 /* PAGE EXPORT                                                         */
 /* ================================================================== */
-export default function LandingPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+export default function LandingPage() {
   return (
     <div className="overflow-x-hidden">
-      {/* Skip link */}
       <a
         href="#main-content"
         style={{
@@ -1777,19 +952,17 @@ export default function LandingPage() {
         Skip to main content
       </a>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <main id="main-content">
         <HeroSection />
-        <WhyThisDidntExist />
-        <ConcentrationHook />
-        <HowItWorksSection />
-        <ScoreDetermination />
-        <SameIncomeDifferentStability />
-        <ProofSection />
-        <CommandCenterPreview />
+        <WhatThisIs />
+        <SameIncomeProof />
+        <HowItWorks />
+        <SampleResult />
+        <CommandCenter />
         <PricingSection />
-        <FaqSection openFaq={openFaq} setOpenFaq={setOpenFaq} />
+        <FeatureTable />
+        <Transformation />
         <FinalCta />
       </main>
     </div>
