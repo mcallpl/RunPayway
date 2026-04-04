@@ -401,7 +401,6 @@ export default function AboutPage() {
         <WhoThisAppliesTo />
         <WhyThisMatters />
         <ModelStructure />
-        <Verifiability />
         <WhereItCanBeUsed />
         <WhyThisExists />
         <SystemPrinciples />
