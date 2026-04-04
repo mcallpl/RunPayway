@@ -412,7 +412,7 @@ export default function DiagnosticPage() {
         setQuoteIdx(prev => (prev + 1) % LOADING_QUOTES.length);
         setQuoteFade(true);
       }, 400);
-    }, 4000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [showLoading]);
 
