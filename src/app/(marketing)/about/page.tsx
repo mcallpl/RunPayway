@@ -2,14 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  C, T, mono, sans, sp, maxW, secPad, px,
-  h1, h2Style, body, ctaButtonLight,
-} from "@/lib/design-tokens";
 
-/* ------------------------------------------------------------------ */
-/*  Hooks                                                              */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* UTILITIES                                                           */
+/* ================================================================== */
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,67 +28,70 @@ function useMobile(bp = 768) {
   return m;
 }
 
-const fadeIn = (v: boolean, delay = 0) => ({
-  opacity: v ? 1 : 0,
-  transform: v ? "translateY(0)" : "translateY(16px)",
-  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
-});
-
-
-/* ================================================================== */
-/* 1. HERO                                                             */
-/* ================================================================== */
-function Hero() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ ...T.label, color: C.teal }}>About</span>
-          </div>
-          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
-            A structural measurement{!m && <br />} system for income stability.
-          </h1>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 560, margin: "0 auto" }}>
-            RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment that measures how well your income holds up when conditions change.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
+function useReducedMotion() {
+  const [r, setR] = useState(false);
+  useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
+  return r;
 }
 
+function useFadeIn() {
+  const reduced = useReducedMotion();
+  return (visible: boolean, delay = 0): React.CSSProperties =>
+    reduced ? {} : { opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)", transition: `opacity 400ms ease-out ${delay}ms, transform 400ms ease-out ${delay}ms` };
+}
 
 /* ================================================================== */
-/* 2. WHAT IS THE INCOME STABILITY SCORE                               */
+/* DESIGN SYSTEM (LOCKED)                                              */
 /* ================================================================== */
-function WhatIsISS() {
+
+const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const muted = "rgba(14,26,43,0.55)";
+const light = "rgba(14,26,43,0.38)";
+const contentW = 1040;
+const secPad = (m: boolean) => m ? 48 : 96;
+const px = (m: boolean) => m ? 20 : 24;
+
+
+/* ================================================================== */
+/* SECTION 1 — HERO                                                    */
+/* ================================================================== */
+
+function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
+  const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 80 : 120, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
+        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
+          About RunPayway&#8482;
         </div>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            The Income Stability Score&#8482;
-          </h2>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            A number between <span style={{ fontFamily: mono }}>0</span> and <span style={{ fontFamily: mono }}>100</span> that measures the structural durability of your income. It answers one question: if conditions changed, how well would your income hold up?
-          </p>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            Unlike credit scores, which measure borrowing history, or income verification, which confirms what you earned last month, the Income Stability Score&#8482; examines the architecture of how you earn — how many sources, how predictable, how much continues without active work, and how far forward it is committed.
-          </p>
-          <p style={{ ...body(m), color: C.muted }}>
-            The result is a deterministic structural assessment. The same inputs always produce the same score. Every score maps to a fixed classification band under a versioned, locked model.
-          </p>
-        </div>
+        <h1 style={{ fontSize: m ? 36 : 48, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible, 80) }}>
+          The standard for measuring income structure.
+        </h1>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, ...fadeIn(visible, 160) }}>
+          RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change.
+        </p>
+      </div>
+    </header>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 2 — ONE-LINE DEFINITION                                     */
+/* ================================================================== */
+
+function OneLineDefinition() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 40 : 64, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 500, color: C.navy, lineHeight: 1.5, margin: 0 }}>
+          The Income Stability Score&#8482; measures how your income structure performs under disruption.
+        </p>
       </div>
     </section>
   );
@@ -100,74 +99,46 @@ function WhatIsISS() {
 
 
 /* ================================================================== */
-/* 3. WHO IT'S FOR                                                     */
+/* SECTION 3 — WHAT THE SCORE MEASURES                                 */
 /* ================================================================== */
-function WhoItsFor() {
+
+function WhatTheScoreMeasures() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
-  const bullets = [
-    "Independent contractors and freelancers",
-    "Commission-based professionals",
-    "Small business owners",
-    "Consultants and advisors",
-    "Anyone with multiple income sources",
-  ];
-
+  const fadeIn = useFadeIn();
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
-        </div>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Who it&#8217;s for.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 28 }}>
-            Anyone whose income does not arrive in a fixed paycheck. Business owners, self-employed professionals, consultants, contractors, agents, and anyone with variable or multi-source income.
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          What the score measures
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>
+          A number from 0 to 100 that evaluates the structural durability of your income.
+        </p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 100) }}>
+          It answers one question: if conditions change, how well does your income hold up?
+        </p>
+
+        <div style={{ marginBottom: 24, ...fadeIn(visible, 140) }}>
+          <p style={{ fontSize: 15, color: light, lineHeight: 1.65, marginBottom: 8 }}>
+            Unlike credit scores, which measure borrowing history, or income verification, which confirms past earnings,
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {bullets.map((b, i) => (
-              <div key={b} style={{ display: "flex", alignItems: "center", gap: 12, ...fadeIn(visible, 100 + i * 60) }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ ...body(m), color: C.muted, margin: 0 }}>{b}</span>
+          <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: 16 }}>
+            RunPayway&#8482; evaluates how income is built:
+          </p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            {["how many sources contribute", "how predictable it is", "how much continues without active work", "how far forward it is secured"].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                <span style={{ fontSize: 15, color: C.navy }}>{item}</span>
               </div>
             ))}
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-
-/* ================================================================== */
-/* 4. GOVERNANCE                                                       */
-/* ================================================================== */
-function Governance() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>03</span>
-        </div>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Model governance.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            Every version of the scoring model is locked and versioned. If any rule, threshold, or classification boundary changes, the model increments to a new version number.
-          </p>
-          <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-            A score generated under the same model version can always be compared to another score from the same version. The rules are identical. If the rules change, it becomes a new model — and every assessment is stamped with the version that produced it.
-          </p>
-          <p style={{ ...body(m), color: C.muted }}>
-            Every assessment includes SHA-256 hashes that verify the report was produced by the stated model version and has not been modified. This is how institutional trust works: not through promises, but through verifiable, versioned outputs.
-          </p>
+        <div style={{ ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, marginBottom: 4 }}>The result is a deterministic structural assessment.</p>
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>The same inputs always produce the same score.</p>
         </div>
       </div>
     </section>
@@ -176,103 +147,33 @@ function Governance() {
 
 
 /* ================================================================== */
-/* 5. VERIFICATION                                                     */
+/* SECTION 4 — WHO THIS APPLIES TO                                     */
 /* ================================================================== */
-function Verification() {
+
+function WhoThisAppliesTo() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.sandLight, fontFamily: mono }}>04</span>
-        </div>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Every score is verifiable.
-          </h2>
-          <p style={{ ...body(m), color: C.sandMuted, marginBottom: 20 }}>
-            Every assessment includes a SHA-256 hash, a model version stamp, and an immutable timestamp. These three elements prove the assessment was produced by the stated model version and has not been altered.
-          </p>
-          <p style={{ ...body(m), color: C.sandLight, marginBottom: 32 }}>
-            Share your score with a lender, employer, or financial advisor. They can verify it independently.
-          </p>
-
-          <div style={{ display: "flex", gap: m ? 8 : 16, flexWrap: "wrap" as const, justifyContent: "center" }}>
-            {["SHA-256 Hash", "Model Version Stamp", "Immutable Timestamp", "QR Verification"].map((badge, i) => (
-              <div key={badge} style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "8px 16px", borderRadius: 100,
-                backgroundColor: "rgba(255,255,255,0.04)", border: `1px solid ${C.sandBorder}`,
-                ...fadeIn(visible, 200 + i * 60),
-              }}>
-                <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal }} />
-                <span style={{ ...T.micro, fontWeight: 600, color: C.sandMuted }}>{badge}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* 6. WHO BUILT IT                                                     */
-/* ================================================================== */
-function Origin() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-
+  const fadeIn = useFadeIn();
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>05</span>
-        </div>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Why this exists.
-          </h2>
-          <div style={{ borderLeft: `2px solid ${C.teal}`, paddingLeft: m ? sp(3) : sp(4) }}>
-            <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-              Credit scores measure borrowing history. Income verification confirms what you earned last month. But nothing measured the structural durability of how you earn — until now.
-            </p>
-            <p style={{ ...body(m), color: C.muted, marginBottom: 20 }}>
-              RunPayway&#8482; was built to give professionals a clear, verifiable way to understand the stability of their income. The score is private by default, requires no bank connection or credit pull, and belongs entirely to the individual who takes it.
-            </p>
-            <p style={{ ...body(m), color: C.muted }}>
-              The model is designed for anyone whose income does not fit neatly into a fixed paycheck — business owners, self-employed professionals, consultants, contractors, agents, and anyone with variable or multi-source income.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* 7. MODEL BADGE                                                      */
-/* ================================================================== */
-function ModelBadge() {
-  const m = useMobile();
-
-  return (
-    <section style={{ backgroundColor: C.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", gap: m ? 16 : 32, flexWrap: "wrap" as const }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          Who this applies to
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 60) }}>
+          Anyone whose income is not structurally guaranteed.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, ...fadeIn(visible, 120) }}>
           {[
-            { label: "Versioned", sub: "Locked scoring model" },
-            { label: "Deterministic", sub: "Fixed scoring rules" },
-            { label: "Multi-Industry", sub: "Full sector coverage" },
-            { label: "Verifiable", sub: "Integrity on every record" },
-          ].map((item) => (
-            <div key={item.label} style={{ textAlign: "center", minWidth: m ? 100 : 140 }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, fontFamily: mono, marginBottom: 4 }}>{item.label}</div>
-              <div style={{ ...T.micro, color: C.light }}>{item.sub}</div>
+            "Independent contractors and freelancers",
+            "Commission-based professionals",
+            "Small business owners",
+            "Consultants and advisors",
+            "Anyone with multiple income sources",
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ fontSize: 15, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
@@ -283,32 +184,136 @@ function ModelBadge() {
 
 
 /* ================================================================== */
-/* 8. CTA                                                              */
+/* SECTION 5 — WHY THIS MATTERS                                        */
 /* ================================================================== */
-function Cta() {
+
+function WhyThisMatters() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
+  const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            Now that you know who built it{!m && <br />} &#8212; see your score.
-          </h2>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            The free assessment takes under 2 minutes. No bank connection. No credit pull.
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          Why this matters
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 80) }}>
+          Income is not tested when it is stable.
+        </p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 120) }}>
+          It is tested when conditions change.
+        </p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, ...fadeIn(visible, 180) }}>
+          RunPayway&#8482; measures how your structure responds before that happens.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 6 — MODEL STRUCTURE                                         */
+/* ================================================================== */
+
+function ModelStructure() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          The model is fixed and versioned
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 60) }}>
+          Every version of the scoring model is locked.
+        </p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 100) }}>
+          If any rule, threshold, or classification changes, the model increments to a new version.
+        </p>
+        <div style={{ padding: "16px 20px", borderRadius: 8, border: `1px solid ${C.border}`, backgroundColor: C.white, marginBottom: 16, ...fadeIn(visible, 140) }}>
+          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, margin: "0 0 8px" }}>
+            Scores produced under the same version are directly comparable.
           </p>
-          <Link href="/begin" style={{
-            ...ctaButtonLight,
-            height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-            backgroundColor: C.white, color: C.navy,
-          }}>
-            Start Your Free Assessment
-          </Link>
-          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
-            Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report
-          </div>
+          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, margin: 0 }}>
+            If the rules change, it becomes a different model.
+          </p>
+        </div>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, ...fadeIn(visible, 180) }}>
+          Each assessment is stamped with the model version that produced it.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 7 — VERIFIABILITY                                           */
+/* ================================================================== */
+
+function Verifiability() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          Every score is verifiable
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 60) }}>
+          Each assessment includes:
+        </p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 24, ...fadeIn(visible, 100) }}>
+          {["SHA-256 hash", "Model version stamp", "Immutable timestamp", "QR verification"].map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+              <span style={{ fontSize: 15, color: C.navy }}>{item}</span>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 140) }}>
+          These elements confirm the score was produced by the stated model and has not been altered.
+        </p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, ...fadeIn(visible, 180) }}>
+          This is how institutional trust is established — through verifiable outputs, not claims.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 8 — WHERE IT CAN BE USED                                    */
+/* ================================================================== */
+
+function WhereItCanBeUsed() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          Where it can be used
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 60) }}>
+          The score can be shared and verified independently.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12, ...fadeIn(visible, 120) }}>
+          {[
+            "Lenders and underwriters",
+            "Employers and hiring managers",
+            "Financial advisors",
+            "Business partners",
+          ].map((item, i) => (
+            <div key={i} style={{ padding: "14px 18px", borderRadius: 8, border: `1px solid ${C.border}`, backgroundColor: C.white }}>
+              <span style={{ fontSize: 15, color: C.navy }}>{item}</span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -317,19 +322,137 @@ function Cta() {
 
 
 /* ================================================================== */
-/* EXPORT                                                              */
+/* SECTION 9 — WHY THIS EXISTS                                         */
 /* ================================================================== */
+
+function WhyThisExists() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+          Why this exists
+        </h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>
+          Credit scores measure borrowing history.
+        </p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 80) }}>
+          Income verification confirms past earnings.
+        </p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 120) }}>
+          But nothing measured the structural durability of how income is built.
+        </p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 160) }}>
+          RunPayway&#8482; was created to define that standard.
+        </p>
+        <div style={{ padding: "16px 20px", borderRadius: 8, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, marginBottom: 4 }}>
+            The score is private by default. No bank connection. No credit pull.
+          </p>
+          <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, margin: 0 }}>
+            It belongs entirely to the individual who takes it.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 10 — SYSTEM PRINCIPLES                                      */
+/* ================================================================== */
+
+function SystemPrinciples() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.navy, textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          System principles
+        </h2>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 100) }}>
+          {[
+            { title: "Versioned", desc: "Locked scoring model." },
+            { title: "Deterministic", desc: "Same inputs \u2192 same score." },
+            { title: "Multi-industry", desc: "Applies across income types." },
+            { title: "Verifiable", desc: "Every result can be confirmed." },
+          ].map((p, i) => (
+            <div key={i} style={{ textAlign: "center", padding: m ? 16 : 24 }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{p.title}</div>
+              <p style={{ fontSize: 13, color: muted, lineHeight: 1.55, margin: 0 }}>{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 11 — FINAL CTA                                              */
+/* ================================================================== */
+
+function FinalCta() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: m ? 28 : 32, fontWeight: 600, lineHeight: 1.2, color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
+          Now apply the system to your own structure.
+        </h2>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 32, ...fadeIn(visible, 80) }}>
+          The assessment takes under 2 minutes. Every result is generated from your inputs.
+        </p>
+        <div style={{ ...fadeIn(visible, 160) }}>
+          <Link href="/pricing" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 52, padding: "0 40px", borderRadius: 10,
+            backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            transition: "background-color 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
+            Start Your Free Assessment
+          </Link>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.38)", marginTop: 14 }}>
+            Under 2 minutes &bull; Instant result &bull; $69 for full report
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* PAGE EXPORT                                                         */
+/* ================================================================== */
+
 export default function AboutPage() {
   return (
-    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
-      <Hero />
-      <WhatIsISS />
-      <WhoItsFor />
-      <Governance />
-      <Verification />
-      <Origin />
-      <ModelBadge />
-      <Cta />
+    <div className="overflow-x-hidden">
+      <main>
+        <HeroSection />
+        <OneLineDefinition />
+        <WhatTheScoreMeasures />
+        <WhoThisAppliesTo />
+        <WhyThisMatters />
+        <ModelStructure />
+        <Verifiability />
+        <WhereItCanBeUsed />
+        <WhyThisExists />
+        <SystemPrinciples />
+        <FinalCta />
+      </main>
     </div>
   );
 }
