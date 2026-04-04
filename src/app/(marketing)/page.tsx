@@ -154,7 +154,7 @@ function HeroSection() {
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 800, height: 800, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}06 0%, transparent 70%)`, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 80 : 140, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 80 }}>
           {/* Left — copy */}
           <div style={{ maxWidth: 520, textAlign: m ? "center" : "left" }}>
@@ -218,7 +218,7 @@ function HeroSection() {
         </div>
 
         {/* Trust strip */}
-        <div style={{ marginTop: m ? 48 : 72, paddingTop: m ? 28 : 36, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 500) }}>
+        <div style={{ marginTop: m ? 36 : 48, paddingTop: m ? 20 : 28, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 500) }}>
           <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.45)", textAlign: m ? "center" : "left" }}>
             Model RP-2.0 &bull; Version-locked &bull; Deterministic output &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
@@ -243,10 +243,10 @@ function IndustrySignal() {
   useEffect(() => { if (!showAll) return; const h = (e: MouseEvent) => { if (dropRef.current && !dropRef.current.contains(e.target as Node)) setShowAll(false); }; document.addEventListener("mousedown", h); return () => document.removeEventListener("mousedown", h); }, [showAll]);
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 24 : 36, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto", ...fadeIn(visible) }}>
-        {/* Tension line — moved from hero */}
-        <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.65)", lineHeight: 1.6, textAlign: "center", marginBottom: m ? 28 : 40 }}>
+        {/* Tension line */}
+        <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.65)", lineHeight: 1.6, textAlign: "center", marginBottom: m ? 20 : 28 }}>
           Your income already has a structure. You just don&#8217;t see how exposed it is yet.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: m ? 10 : 14, marginBottom: m ? 16 : 20 }}>
