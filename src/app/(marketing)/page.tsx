@@ -283,8 +283,8 @@ function IndustrySignal() {
             </div>
           ))}
         </div>
-        <div ref={dropRef} style={{ position: "relative", display: "inline-block" }}>
-          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", cursor: "pointer", padding: "6px 0", fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.50)", transition: "color 200ms" }}
+        <div ref={dropRef} style={{ position: "relative", textAlign: "center" }}>
+          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.50)", transition: "color 200ms" }}
             onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.60)"; }}
             onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.50)"; }}>
             Explore all 19 industries
