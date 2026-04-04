@@ -156,12 +156,14 @@ function PricingCards() {
 
           {/* ── FREE ── */}
           <div style={{
-            ...cardStyle, borderRadius: 16, overflow: "hidden",
+            ...cardStyle, borderRadius: 16, overflow: "hidden", position: "relative" as const,
             border: `1px solid rgba(14,26,43,0.08)`,
             padding: m ? `${sp(4)}px ${sp(3)}px` : `${sp(4.5)}px ${sp(3.5)}px`,
+            paddingTop: m ? sp(4) + 3 : sp(4.5) + 3,
             display: "flex", flexDirection: "column" as const,
             ...fadeIn(visible, 100),
           }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `rgba(14,26,43,0.06)` }} />
             <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: sp(2.5) }}>Income Stability Score&#8482;</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
               <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
@@ -291,7 +293,7 @@ function PricingCards() {
               Start Monitoring &mdash; <span style={{ fontFamily: mono }}>$149</span>
             </a>
             <p style={{ ...T.meta, color: C.sandLight, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-              Includes Monitoring Portal with email + PIN access.
+              Full Command Center access included.
             </p>
           </div>
         </div>
