@@ -172,7 +172,7 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
               background: isActive ? B.surface : "rgba(254,254,254,0.85)",
               border: `1px solid ${isActive ? p.color + "40" : B.stone}`,
               borderRadius: 20,
-              padding: mobile ? "6px" : "6px 12px 6px 8px",
+              padding: mobile ? "5px 8px 5px 6px" : "6px 12px 6px 8px",
               cursor: "pointer",
               transition: "all 200ms",
               boxShadow: isActive ? `0 2px 8px ${p.color}18` : "0 1px 4px rgba(0,0,0,0.06)",
@@ -187,16 +187,14 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
               flexShrink: 0,
               transition: "background-color 200ms",
             }} />
-            {!mobile && (
-              <span style={{
-                fontSize: 11,
-                fontWeight: isActive ? 700 : 500,
-                color: isActive ? p.color : B.taupe,
-                letterSpacing: "0.04em",
-                whiteSpace: "nowrap" as const,
-                transition: "color 200ms",
-              }}>{p.label}</span>
-            )}
+            <span style={{
+              fontSize: mobile ? 9 : 11,
+              fontWeight: isActive ? 700 : 500,
+              color: isActive ? p.color : B.taupe,
+              letterSpacing: mobile ? "0.02em" : "0.04em",
+              whiteSpace: "nowrap" as const,
+              transition: "color 200ms",
+            }}>{p.label}</span>
           </button>
         );
       })}
@@ -297,7 +295,9 @@ function DashboardContent() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [quickToggles, setQuickToggles] = useState<Record<string, boolean>>({});
   const [activePreset, setActivePreset] = useState<string | null>(null);
-  const [savedScenarios, setSavedScenarios] = useState<{ name: string; score: number; band: string; lift: number }[]>([]);
+  const [savedScenarios, setSavedScenarios] = useState<{ name: string; score: number; band: string; lift: number }[]>(() => {
+    try { return JSON.parse(localStorage.getItem("rp_saved_scenarios") || "[]"); } catch { return []; }
+  });
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
   const [copiedScript, setCopiedScript] = useState<string | null>(null);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -305,7 +305,9 @@ function DashboardContent() {
   const shareRef = useRef<HTMLAnchorElement>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [activePhase, setActivePhase] = useState("phase-diagnosis");
-  const [whatIfOpen, setWhatIfOpen] = useState(false);
+  const [whatIfOpen, setWhatIfOpen] = useState(true);
+  const [goalTarget, setGoalTarget] = useState<number | null>(null);
+  const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -331,6 +333,9 @@ function DashboardContent() {
   }, []);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 700); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+
+  // Persist saved scenarios
+  useEffect(() => { localStorage.setItem("rp_saved_scenarios", JSON.stringify(savedScenarios)); }, [savedScenarios]);
 
   /* ── Load data from storage or URL ?code= parameter ── */
   const searchParams = useSearchParams();
@@ -691,7 +696,7 @@ function DashboardContent() {
                   <style>{`
                     .metric-tip-wrap { position: relative; }
                     .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
-                    .metric-tip-wrap:hover .metric-tip { opacity: 1; }
+                    @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
                   `}</style>
                   <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 8 }} className="d-metrics">
                     {[
@@ -699,7 +704,9 @@ function DashboardContent() {
                       { label: "Top Source Risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "How many points your score drops if your single largest income source disappears. A drop greater than 15 points signals dangerous concentration." },
                       { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your income structure absorbs shocks. Assessed independently from your score — you can have a stable score but a brittle structure." },
                     ].map((m, i, arr) => (
-                      <div key={m.label} className="metric-tip-wrap" style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "default" }}>
+                      <div key={m.label} className="metric-tip-wrap"
+                        onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
+                        style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent" }}>
                         <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>
                           {m.label.toUpperCase()}
                         </div>
@@ -711,6 +718,7 @@ function DashboardContent() {
                           fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)",
                           boxShadow: "0 8px 24px rgba(14,26,43,0.30)",
                           zIndex: 50,
+                          ...(tooltipOpen === m.label ? { opacity: 1, pointerEvents: "auto" as const } : {}),
                         }}>
                           {m.tip}
                         </div>
@@ -952,7 +960,7 @@ function DashboardContent() {
                     const res = simulateScore(pr.modify(base), qScore); const lift = res.overall_score - dScore;
                     const isA = effectivePreset === pr.id;
                     const isTop = topMoves[0]?.id === pr.id;
-                    const why = isTop ? `Recommended — addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
+                    const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
                         style={{ padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}40` : isTop ? `${B.teal}20` : B.stone}`, backgroundColor: isA ? `${B.purple}06` : isTop ? `${B.teal}03` : "transparent", minHeight: 48 }}>
@@ -961,10 +969,10 @@ function DashboardContent() {
                             <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
                             {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal }}>#1</span>}
                           </div>
-                          <span style={{ fontSize: 17, fontWeight: 700, fontFamily: mono, color: B.teal }}>+{lift}</span>
+                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{lift}</span>
                         </div>
-                        <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.45 }}>{pr.description}</p>
-                        {why && <p style={{ fontSize: 12, color: B.teal, margin: "4px 0 0", fontWeight: 500 }}>{why}</p>}
+                        <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55 }}>{pr.description}</p>
+                        {why && <p style={{ fontSize: 12, color: B.teal, margin: "6px 0 0", fontWeight: 500 }}>{why}</p>}
                       </button>
                     );
                   })}
@@ -981,18 +989,135 @@ function DashboardContent() {
                         style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
                           <span style={{ fontSize: 15, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                          <span style={{ fontSize: 17, fontWeight: 700, fontFamily: mono, color: B.red }}>{lift}</span>
+                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.red }}>{lift}</span>
                         </div>
-                        <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.45 }}>{pr.description}</p>
+                        <p style={{ fontSize: 13, color: B.taupe, margin: 0, lineHeight: 1.55 }}>{pr.description}</p>
                       </button>
                     );
                   })}
                 </div>
 
+                {/* GOAL MODE — reverse simulator */}
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 12 }}>GOAL MODE</div>
+                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
+                    Pick a target. We will show the minimum moves to get there.
+                  </p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 16 }}>
+                    {[
+                      { label: "Developing", target: 30, color: B.bandDeveloping },
+                      { label: "Established", target: 50, color: B.bandEstablished },
+                      { label: "High", target: 75, color: B.bandHigh },
+                    ].filter(g => g.target > dScore).map(g => (
+                      <button key={g.target} onClick={() => setGoalTarget(goalTarget === g.target ? null : g.target)}
+                        style={{
+                          padding: "10px 20px", borderRadius: 10, cursor: "pointer",
+                          border: `1px solid ${goalTarget === g.target ? g.color + "50" : B.stone}`,
+                          backgroundColor: goalTarget === g.target ? g.color + "08" : "transparent",
+                          transition: "all 200ms",
+                        }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: goalTarget === g.target ? g.color : B.muted }}>{g.label} ({g.target}+)</span>
+                      </button>
+                    ))}
+                    {dScore >= 75 && (
+                      <div style={{ padding: "10px 20px", borderRadius: 10, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}05` }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>You are already in the highest band.</span>
+                      </div>
+                    )}
+                  </div>
+                  {goalTarget && (() => {
+                    // Find minimum combination of moves to reach target
+                    const gMoves = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
+                    const ranked = gMoves.map(p => {
+                      const res = simulateScore(p.modify(base), qScore);
+                      return { ...p, projected: res.overall_score, lift: res.overall_score - dScore, band: res.band };
+                    }).filter(p => p.lift > 0).sort((a, b) => b.lift - a.lift);
+
+                    // Try single moves first
+                    const single = ranked.find(m => m.projected >= goalTarget);
+                    if (single) {
+                      return (
+                        <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}04` }}>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>1 move gets you there</div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                            <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{single.label}</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {single.projected}</span>
+                          </div>
+                          <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.55 }}>{single.description}</p>
+                        </div>
+                      );
+                    }
+
+                    // Try two-move combinations
+                    let bestCombo: { moves: typeof ranked; projected: number } | null = null;
+                    for (let i = 0; i < ranked.length; i++) {
+                      for (let j = i + 1; j < ranked.length; j++) {
+                        const combined = ranked[j].modify(ranked[i].modify(base));
+                        const res = simulateScore(combined, qScore);
+                        if (res.overall_score >= goalTarget && (!bestCombo || res.overall_score < bestCombo.projected)) {
+                          bestCombo = { moves: [ranked[i], ranked[j]], projected: res.overall_score };
+                        }
+                      }
+                    }
+
+                    if (bestCombo) {
+                      return (
+                        <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}04` }}>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 12 }}>2 moves get you there</div>
+                          {bestCombo.moves.map((m, i) => (
+                            <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < bestCombo!.moves.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                <div style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: `${B.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{i + 1}</div>
+                                <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{m.label}</span>
+                              </div>
+                              <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{m.lift}</span>
+                            </div>
+                          ))}
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${B.teal}15` }}>
+                            <span style={{ fontSize: 13, color: B.muted }}>Projected score</span>
+                            <span style={{ fontSize: 18, fontWeight: 300, fontFamily: mono, color: B.teal }}>{bestCombo.projected}</span>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    // Can't reach target — show closest
+                    const bestSingle = ranked[0];
+                    if (!bestSingle) return null;
+                    // Try all combinations for the best possible
+                    let bestPossible = bestSingle.projected;
+                    let bestMoveSet = [bestSingle];
+                    for (let i = 0; i < ranked.length; i++) {
+                      for (let j = i + 1; j < ranked.length; j++) {
+                        const combined = ranked[j].modify(ranked[i].modify(base));
+                        const res = simulateScore(combined, qScore);
+                        if (res.overall_score > bestPossible) {
+                          bestPossible = res.overall_score;
+                          bestMoveSet = [ranked[i], ranked[j]];
+                        }
+                      }
+                    }
+                    return (
+                      <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.amber}20`, backgroundColor: `${B.amber}04` }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: B.amber, marginBottom: 8 }}>Closest achievable: {bestPossible}/100</div>
+                        <p style={{ fontSize: 13, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
+                          The target of {goalTarget} requires more than structural changes alone. Your best path reaches {bestPossible}, which is {goalTarget - bestPossible} points short. A reassessment after implementing changes may close the remaining gap.
+                        </p>
+                        {bestMoveSet.map((m, i) => (
+                          <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < bestMoveSet.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                            <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{m.label}</span>
+                            <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{m.lift}</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+
                 {/* SCENARIO RESULT — visual bar + detail */}
                 {effectivePreset && aPO && (
                   <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, marginBottom: 16 }}>
-                    <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 12 }}>{aPO.label}</div>
+                    <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 12 }}>{aPO.label}</div>
 
                     {/* Visual before/after bar */}
                     <div style={{ marginBottom: 16 }}>
@@ -1004,8 +1129,8 @@ function DashboardContent() {
                       </div>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                         <span style={{ fontSize: 13, color: B.taupe }}>Current: <span style={{ fontWeight: 600, fontFamily: mono, color: B.navy }}>{dScore}</span></span>
-                        <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sResult.overall_score}</span>
-                        <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sDelta > 0 ? "+" : ""}{sDelta} pts</span>
+                        <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sResult.overall_score}</span>
+                        <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sDelta > 0 ? "+" : ""}{sDelta} pts</span>
                       </div>
                       {sResult.band !== dBand && <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginTop: 4 }}>Band shift: {dBand} → {sResult.band}</div>}
                     </div>
@@ -1024,8 +1149,8 @@ function DashboardContent() {
                         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>PROJECTED TRAJECTORY</div>
                         <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
                           <div style={{ flex: 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
-                            <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>NOW</div>
-                            <div style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
+                            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe }}>NOW</div>
+                            <div style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
                           </div>
                           {sTL.map(pt => {
                             const milestone = pt.delta > 0
@@ -1033,8 +1158,8 @@ function DashboardContent() {
                               : pt.month <= 3 ? "Immediate impact" : pt.month <= 6 ? "Full damage" : "New baseline";
                             return (
                               <div key={pt.month} style={{ flex: 1, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
-                                <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe }}>{pt.label.toUpperCase()}</div>
-                                <div style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: pt.delta >= 0 ? B.teal : B.red }}>{pt.score}</div>
+                                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe }}>{pt.label.toUpperCase()}</div>
+                                <div style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: pt.delta >= 0 ? B.teal : B.red }}>{pt.score}</div>
                                 <div style={{ fontSize: 12, color: B.muted, marginTop: 4 }}>{milestone}</div>
                               </div>
                             );
@@ -1054,17 +1179,17 @@ function DashboardContent() {
                     </div>
                     <div style={{ display: "flex", gap: 12 }} className="d-compare">
                       <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
-                        <div style={{ fontSize: 32, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
+                        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
+                        <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
                         <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(dScore), marginTop: 4 }}>{dBand}</div>
                       </div>
                       {savedScenarios.map((s, i) => (
                         <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
-                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>×</button>
-                          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
-                          <div style={{ fontSize: 32, fontWeight: 300, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
+                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 15, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>&times;</button>
+                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
+                          <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
                           <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(s.score), marginTop: 4 }}>{s.band}</div>
-                          <div style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red, marginTop: 8 }}>{s.lift > 0 ? "+" : ""}{s.lift}</div>
+                          <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red, marginTop: 8 }}>{s.lift > 0 ? "+" : ""}{s.lift}</div>
                           <div style={{ fontSize: 13, color: B.navy, marginTop: 4, fontWeight: 500 }}>{s.name}</div>
                         </div>
                       ))}
