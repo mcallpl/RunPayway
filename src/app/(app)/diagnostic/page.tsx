@@ -781,7 +781,7 @@ export default function DiagnosticPage() {
       // API work is done — ensure minimum 5s of quote display, then show final card
       apiDoneRef.current = true;
       const elapsedMs = Date.now() - loadingStartTime;
-      const remainingMs = Math.max(0, 5000 - elapsedMs);
+      const remainingMs = Math.max(0, 3000 - elapsedMs);
 
       const planKey = (() => {
         try {
@@ -794,20 +794,19 @@ export default function DiagnosticPage() {
         setLoadingStep(PROCESSING_STEPS.length);
         setTimeout(() => {
           if (planKey === "free") {
-            // Free users: show final card, then route to free-score
-            setShowLoading(false);
-            setShowFinalCard(true);
+            // Free users: go straight to free-score
+            router.push("/free-score");
             return;
           }
-          // Paid users: show final card, then score reveal
+          // Paid users: go straight to score reveal
           try {
             const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
             setRevealScore(rec.final_score || 0);
             setRevealBand(rec.stability_band || "");
           } catch { /* */ }
           setShowLoading(false);
-          setShowFinalCard(true);
-        }, 800);
+          setShowReveal(true);
+        }, 600);
       }, remainingMs);
 
     } catch (err: unknown) {
@@ -891,103 +890,6 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   /*  Final card — what's included before report                       */
   /* ================================================================ */
-  if (showFinalCard) {
-    const planKey = (() => {
-      try {
-        const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
-        return ps.plan_key || "free";
-      } catch { return "free"; }
-    })();
-
-    const handleFinalContinue = () => {
-      if (planKey === "free") {
-        router.push("/free-score");
-      } else {
-        setShowFinalCard(false);
-        setShowReveal(true);
-      }
-    };
-
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: C.sand,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        overflowX: "hidden", width: "100%", maxWidth: "100vw",
-      }}>
-        <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
-        <div style={{
-          maxWidth: 480, width: "100%", padding: mobile ? "0 20px" : "0 24px", textAlign: "left",
-          opacity: finalCardPhase >= 0 ? 1 : 0,
-          transform: finalCardPhase >= 0 ? "translateY(0)" : "translateY(16px)",
-          transition: "opacity 500ms ease, transform 500ms ease",
-        }}>
-          {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: 28 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: C.teal, textTransform: "uppercase" as const, marginBottom: 8 }}>
-              Assessment Complete
-            </div>
-            <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, letterSpacing: "-0.02em", marginBottom: 6 }}>
-              Your report is ready
-            </h2>
-            {assessmentTitle && (
-              <p style={{ fontSize: 14, color: C.muted }}>{assessmentTitle}</p>
-            )}
-          </div>
-
-          {/* Included bullets */}
-          <div style={{
-            background: C.white, borderRadius: 14, border: "1px solid rgba(14,26,43,0.06)",
-            padding: mobile ? "20px 18px" : "24px 24px", marginBottom: 24,
-            opacity: finalCardPhase >= 1 ? 1 : 0,
-            transform: finalCardPhase >= 1 ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 400ms ease 200ms, transform 400ms ease 200ms",
-          }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 14 }}>
-              Included in your report
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {INCLUDED_BULLETS.map((bullet, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
-                    <path d="M3 8L6.5 11.5L13 4.5" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <span style={{ fontSize: 14, color: C.navy, lineHeight: 1.5 }}>{bullet}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div style={{
-            textAlign: "center",
-            opacity: finalCardPhase >= 2 ? 1 : 0,
-            transform: finalCardPhase >= 2 ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity 400ms ease 400ms, transform 400ms ease 400ms",
-          }}>
-            <button
-              onClick={handleFinalContinue}
-              style={{
-                width: "100%", height: 52, borderRadius: 12,
-                background: C.purple, color: C.white,
-                fontSize: 16, fontWeight: 600, border: "none",
-                cursor: "pointer", fontFamily: sans,
-                boxShadow: "0 6px 20px rgba(75,63,174,0.25)",
-                transition: "background 180ms ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#3d32a0"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = C.purple; }}
-            >
-              View Your Results &rarr;
-            </button>
-            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.25)", marginTop: 12, letterSpacing: "0.04em" }}>
-              Deterministic scoring &middot; Model RP-2.0
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   /* ================================================================ */
   /*  Score Reveal — the "aha" moment                                  */
@@ -1099,7 +1001,7 @@ export default function DiagnosticPage() {
 
           {/* Thin progress bar */}
           <div style={{ width: 200, height: 2, borderRadius: 1, background: "rgba(14,26,43,0.06)", margin: "40px auto 24px", overflow: "hidden" }}>
-            <div style={{ height: "100%", borderRadius: 1, background: "rgba(75,63,174,0.30)", animation: "quoteLoadBar 6s ease-in-out forwards" }} />
+            <div style={{ height: "100%", borderRadius: 1, background: "rgba(75,63,174,0.30)", animation: "quoteLoadBar 4s ease-in-out forwards" }} />
           </div>
 
           {/* Subtle status */}
