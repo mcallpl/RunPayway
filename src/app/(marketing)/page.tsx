@@ -94,6 +94,63 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const muted = "rgba(14,26,43,0.55)";
 const light = "rgba(14,26,43,0.38)";
 
+/* ================================================================== */
+/* INDUSTRY DATA — 19 industries                                       */
+/* ================================================================== */
+
+const INDUSTRIES = [
+  { name: "Real Estate", headline: "Your income is earned in lumps. Your risk is carried in between.", problem: "A strong year can still rest on a narrow set of closings, a few delayed deals, and a pipeline that looks fuller than it is.\n\nWhen listings stall, buyers hesitate, or one transaction falls apart, earnings do not fade evenly. They drop in gaps.\n\nRunPayway\u2122 evaluates deal concentration, pipeline continuity, and how much of your structure depends on timing going right.", cta: "Stress-test my income structure" },
+  { name: "Consulting / Professional Services", headline: "Your revenue may look diversified. Your continuity may not be.", problem: "Many firms and solo operators serve multiple clients, but most earnings still depend on active delivery, retained attention, and continued utilization.\n\nWhen a client leaves or workload softens, revenue rarely has a built-in floor. It resets around available work.\n\nRunPayway\u2122 evaluates client concentration, dependence on active labor, and how much of your structure continues when delivery slows.", cta: "Measure my income stability" },
+  { name: "Sales / Brokerage", headline: "Your compensation moves in cycles. Your exposure sits between them.", problem: "A healthy quarter can hide how much depends on timing, a few large wins, or a pipeline that has not converted yet.\n\nWhen deal flow slips or closings move out, earnings do not taper. They compress.\n\nRunPayway\u2122 evaluates pipeline dependence, concentration by opportunity size, and how vulnerable your structure is to timing shifts.", cta: "Stress-test my income structure" },
+  { name: "Technology", headline: "High earnings can hide a narrow structure.", problem: "Many professionals in technology rely heavily on one employer, one equity story, one bonus framework, or one compensation system.\n\nWhen that source changes, a large share of earnings can shift all at once.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how much of your structure depends on one system continuing to perform.", cta: "Measure my income stability" },
+  { name: "Finance / Banking", headline: "A stable base can hide a variable structure.", problem: "Many compensation packages combine salary with bonus, production, deal flow, or performance-linked earnings that do not behave the same under pressure.\n\nWhen targets move, markets soften, or activity slows, a meaningful portion of pay can weaken faster than expected.\n\nRunPayway\u2122 evaluates fixed versus performance-dependent earnings and how much of your structure relies on continued output.", cta: "Stress-test my income structure" },
+  { name: "Healthcare", headline: "Your earnings may be steady, but the structure can still be narrow.", problem: "Many healthcare professionals rely on one employer, one system, or one reimbursement environment, even when pay appears consistent.\n\nWhen compensation models shift, hours change, or the primary source is disrupted, flexibility can be limited.\n\nRunPayway\u2122 evaluates source concentration, continuity, and how resilient your structure is when a stable system changes.", cta: "Measure my income stability" },
+  { name: "Insurance", headline: "Your structure may look balanced while one side quietly carries the risk.", problem: "New production creates immediate earnings. Renewals create continuity. The mix between them determines whether the structure is compounding or constantly restarting.\n\nWhen new business slows, future weakness begins early. When retention slips, recurring income erodes underneath you.\n\nRunPayway\u2122 evaluates the balance between production and persistence, and how exposed your structure is if either side weakens.", cta: "Stress-test my income structure" },
+  { name: "Legal Services", headline: "Your income may be active, concentrated, and slower to reveal its risk.", problem: "A practice can look healthy while a small number of matters, clients, or billable patterns are carrying most of the load.\n\nWhen case flow softens or a major matter concludes, the weakness is often felt after the fact.\n\nRunPayway\u2122 evaluates client concentration, forward visibility, and how dependent earnings are on ongoing active work.", cta: "Measure my income stability" },
+  { name: "Construction / Trades", headline: "Your revenue depends on work staying in motion.", problem: "Project-based income often looks solid while jobs are active, even when the next phase of work is not fully secured.\n\nWhen a start date moves, a bid is lost, or collections slow, the gap shows up immediately.\n\nRunPayway\u2122 evaluates project continuity, timing exposure, and how much of your structure depends on the next job arriving on schedule.", cta: "Measure my income stability" },
+  { name: "Media / Entertainment", headline: "Your earnings are often tied to opportunities, not continuity.", problem: "Projects, bookings, contracts, and appearances can create strong periods of income without creating a stable underlying structure.\n\nWhen one project ends or the next opportunity is delayed, there is usually no built-in carry.\n\nRunPayway\u2122 evaluates how much of your structure depends on episodic work and how much continues between engagements.", cta: "Run my structural assessment" },
+  { name: "Education", headline: "Your income may be predictable, but still structurally limited.", problem: "Many education roles are tied to one institution, one pay model, and one fixed system with limited ability to expand or replace earnings quickly.\n\nWhen funding, staffing, or contract conditions change, the structure may offer little flexibility in response.\n\nRunPayway\u2122 evaluates concentration, continuity, and how adaptable your earnings structure is under change.", cta: "Measure my income stability" },
+  { name: "Retail / E-Commerce", headline: "Sales can stay active while stability weakens underneath them.", problem: "Revenue may depend on traffic, conversion, platform conditions, repeat demand, and margin discipline all holding at once.\n\nWhen demand softens or costs rise, the structure can tighten quickly even before revenue fully shows the damage.\n\nRunPayway\u2122 evaluates demand sensitivity, revenue continuity, and how exposed your structure is to external shifts you do not control.", cta: "Run my structural assessment" },
+  { name: "Hospitality / Food Service", headline: "Your structure depends on volume showing up on time.", problem: "Revenue is often tied to traffic, seasonality, labor efficiency, and thin margins that leave little room for interruption.\n\nWhen customer flow drops or costs move against you, the pressure is immediate. The structure has very little space to absorb it.\n\nRunPayway\u2122 evaluates volume sensitivity, timing exposure, and how stable the business remains when demand is uneven.", cta: "Measure my income stability" },
+  { name: "Transportation / Logistics", headline: "Your earnings depend on flow staying uninterrupted.", problem: "Routes, contracts, shipment volume, and operational consistency often determine whether revenue holds or slips.\n\nWhen demand weakens, a contract changes, or volume drops, earnings can fall with little structural buffer.\n\nRunPayway\u2122 evaluates demand dependence, timing continuity, and how much of your structure relies on uninterrupted movement.", cta: "Stress-test my income structure" },
+  { name: "Agriculture", headline: "Your structure is seasonal, variable, and exposed to forces outside your control.", problem: "Strong periods of production can mask how much depends on timing, yield, pricing, and conditions that do not move in your favor on command.\n\nWhen one cycle underperforms, the effect is not minor. It can reset the economics of the entire period.\n\nRunPayway\u2122 evaluates seasonal concentration, continuity across cycles, and how exposed your structure is when one variable moves against you.", cta: "Run my structural assessment" },
+  { name: "Energy / Utilities", headline: "Your income may look stable because the system around it looks stable.", problem: "But many roles in this sector depend on regulatory conditions, capital cycles, infrastructure decisions, or market structures outside individual control.\n\nWhen those conditions shift, the structure changes first and the impact follows.\n\nRunPayway\u2122 evaluates external dependency, concentration, and how resilient your earnings structure is under system-level change.", cta: "Measure my income stability" },
+  { name: "Manufacturing", headline: "Your structure depends on output, demand, and timing staying aligned.", problem: "Revenue can look dependable while production schedules, supply conditions, and customer demand are carrying more of the risk than the numbers suggest.\n\nWhen output slows or demand shifts, earnings weaken while operating burden often stays behind.\n\nRunPayway\u2122 evaluates production dependence, demand sensitivity, and how exposed your structure is when alignment breaks.", cta: "Run my structural assessment" },
+  { name: "Nonprofit / Public Sector", headline: "Your income may be stable, but the structure is often constrained.", problem: "Funding cycles, budget decisions, grant allocations, and institutional limits can create predictable pay with limited control or flexibility.\n\nWhen funding priorities shift, the structure may have very little room to adapt quickly.\n\nRunPayway\u2122 evaluates concentration, institutional dependence, and how resilient your earnings structure is under budget or funding change.", cta: "Measure my income stability" },
+  { name: "Other", headline: "Your structure may not fit a standard category. That does not reduce the risk.", problem: "Mixed earnings, irregular timing, and multiple income types can create a structure that looks diversified while hiding weak points underneath.\n\nWhen one source slips or timing breaks, the interaction between sources can create pressure faster than expected.\n\nRunPayway\u2122 evaluates how your specific mix behaves under stress and where the structure is most exposed.", cta: "Run my structural assessment" },
+];
+
+function IndustryModal({ industry, onClose, m }: { industry: typeof INDUSTRIES[0]; onClose: () => void; m: boolean }) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <div role="dialog" aria-labelledby="ind-modal-title" aria-modal="true" onClick={onClose}
+      style={{ position: "fixed", inset: 0, zIndex: 9999, backgroundColor: "rgba(0,0,0,0.75)", backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: m ? 20 : 40 }}>
+      <div onClick={e => e.stopPropagation()} style={{ position: "relative", maxWidth: 520, width: "100%", backgroundColor: C.white, borderRadius: 12, padding: m ? "40px 24px 32px" : "48px 40px 40px" }}>
+        <button onClick={onClose} aria-label="Close" style={{ position: "absolute", top: 16, right: 16, width: 44, height: 44, borderRadius: 8, border: `1px solid ${C.border}`, backgroundColor: "transparent", color: muted, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><line x1="4" y1="4" x2="12" y2="12" /><line x1="12" y1="4" x2="4" y2="12" /></svg>
+        </button>
+        <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>{industry.name}</div>
+        <h3 id="ind-modal-title" style={{ fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.3, color: C.navy, marginBottom: 24 }}>{industry.headline}</h3>
+        {industry.problem.split("\n\n").map((para, i) => (
+          <p key={i} style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16 }}>{para}</p>
+        ))}
+        <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 24, marginTop: 24 }}>
+          <Link href="/pricing" onClick={onClose} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 10, backgroundColor: C.navy, color: C.white, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms" }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}>
+            {industry.cta}
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const maxW = 1200;
 const contentW = 1040;
 const gutter = 24;
@@ -111,6 +168,19 @@ function HeroSection() {
   const fadeIn = useFadeIn();
   const animatedScore = useAnimatedCounter(72, visible, 1500);
   const [showLabel, setShowLabel] = useState(false);
+  const [selectedIndustry, setSelectedIndustry] = useState<typeof INDUSTRIES[0] | null>(null);
+  const [showAllIndustries, setShowAllIndustries] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!showAllIndustries) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setShowAllIndustries(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showAllIndustries]);
 
   useEffect(() => {
     if (!visible) return;
@@ -248,13 +318,13 @@ function HeroSection() {
             display: "grid",
             gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr",
             gap: m ? 10 : 14,
-            marginBottom: m ? 24 : 32,
+            marginBottom: m ? 16 : 20,
           }}>
             {[
-              { name: "Real Estate", line: "Income comes in bursts. Risk sits between transactions." },
-              { name: "Consulting", line: "Revenue depends on utilization. Continuity depends on structure." },
-              { name: "Sales / Brokerage", line: "Compensation moves in cycles. Exposure sits between them." },
-              { name: "Freelance / Contract", line: "Every month starts at zero unless the structure says otherwise." },
+              { name: "Freelancers", line: "Every month starts at zero unless the structure says otherwise." },
+              { name: "Contractors", line: "Strong projects mask the gap between them." },
+              { name: "Business Owners", line: "Revenue can grow while the structure underneath weakens." },
+              { name: "Commission Earners", line: "Compensation moves in cycles. Exposure sits between them." },
             ].map((ind, i) => (
               <div key={i} style={{
                 padding: m ? "12px 14px" : "14px 16px",
@@ -268,6 +338,51 @@ function HeroSection() {
             ))}
           </div>
 
+          {/* Explore all industries — dropdown trigger */}
+          <div ref={dropdownRef} style={{ position: "relative", display: "inline-block", marginBottom: m ? 24 : 32 }}>
+            <button onClick={() => setShowAllIndustries(!showAllIndustries)} style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              background: "none", border: "none", cursor: "pointer", padding: 0,
+              fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.40)",
+              transition: "color 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.65)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.40)"; }}
+            >
+              Explore all 19 industries
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAllIndustries ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}>
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            {showAllIndustries && (
+              <div style={{
+                position: "absolute", top: "calc(100% + 8px)", left: 0,
+                minWidth: m ? "calc(100vw - 40px)" : 320, maxHeight: 400, overflowY: "auto",
+                backgroundColor: "#0E1424", border: "1px solid rgba(255,255,255,0.10)", borderRadius: 12,
+                padding: "8px 0", zIndex: 100,
+                boxShadow: "0 16px 48px rgba(0,0,0,0.40)",
+              }}>
+                {INDUSTRIES.map(ind => (
+                  <button key={ind.name}
+                    onClick={() => { setSelectedIndustry(ind); setShowAllIndustries(false); }}
+                    style={{
+                      display: "block", width: "100%", textAlign: "left",
+                      padding: "10px 20px", background: "none", border: "none", cursor: "pointer",
+                      fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.70)",
+                      transition: "background 150ms, color 150ms",
+                      minHeight: 44,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.06)"; e.currentTarget.style.color = "#F4F1EA"; }}
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(244,241,234,0.70)"; }}
+                  >
+                    {ind.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Trust strip */}
           <p style={{
             fontSize: 13, letterSpacing: "0.02em",
@@ -277,6 +392,9 @@ function HeroSection() {
             Model RP-2.0 &bull; Version-locked &bull; Deterministic output &bull; Same inputs &rarr; same score &bull; No bank connection &bull; No credit pull
           </p>
         </div>
+
+        {/* Industry modal */}
+        {selectedIndustry && <IndustryModal industry={selectedIndustry} onClose={() => setSelectedIndustry(null)} m={m} />}
       </div>
     </header>
   );
