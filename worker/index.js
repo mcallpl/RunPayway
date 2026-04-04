@@ -512,7 +512,7 @@ We recommend a follow-up assessment after 90 days or after making a significant 
 <!-- Record reference -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
 <tr><td>
-<p style="font-size:10px;color:rgba(14,26,43,0.22);margin:0;letter-spacing:0.02em;">Record ${shortId} \u00B7 Verified via peoplestar.com/RunPayway/verify</p>
+<p style="font-size:10px;color:rgba(14,26,43,0.22);margin:0;letter-spacing:0.02em;">Record ${shortId} \u00B7 Model RP-2.0</p>
 </td></tr>
 </table>
 
