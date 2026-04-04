@@ -70,8 +70,11 @@ function HeroSection() {
         <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
           The standard for measuring income structure.
         </h1>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
           RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change.
+        </p>
+        <p style={{ fontSize: 15, color: "rgba(244,241,234,0.35)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
+          Built for anyone whose income is not structurally guaranteed.
         </p>
       </div>
     </header>
@@ -140,50 +143,30 @@ function WhatTheScoreMeasures() {
 
 
 /* ================================================================== */
-/* SECTION 4 — WHO THIS APPLIES TO                                     */
+/* SECTION 4 — WHY THIS EXISTS                                         */
 /* ================================================================== */
 
-function WhoThisAppliesTo() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Who this applies to</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 60) }}>Anyone whose income is not structurally guaranteed.</p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, ...fadeIn(visible, 120) }}>
-          {["Independent contractors and freelancers", "Commission-based professionals", "Small business owners", "Consultants and advisors", "Anyone with multiple income sources"].map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 20px", borderRadius: 12, backgroundColor: C.white, border: `1px solid ${C.border}` }}>
-              <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ fontSize: 16, color: C.navy }}>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 5 — WHY THIS MATTERS                                        */
-/* ================================================================== */
-
-function WhyThisMatters() {
+function WhyThisExists() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible) }}>Why this matters</h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 80) }}>Income is not tested when it is stable.</p>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 120) }}>It is tested when conditions change.</p>
-        <p style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.5, ...fadeIn(visible, 200) }}>
-          RunPayway&#8482; measures how your structure responds before that happens.
+      <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible) }}>Why this exists</h2>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>Income verification confirms past earnings.</p>
+        <p style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.5, marginBottom: 28, ...fadeIn(visible, 160) }}>
+          But nothing measured the structural durability of how income is built.
         </p>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 200) }}>
+          Income is not tested when it is stable. It is tested when conditions change. RunPayway&#8482; was created to measure how your structure responds — before that happens.
+        </p>
+        <div style={{ padding: "24px 28px", borderRadius: 14, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)", borderLeft: `3px solid ${C.teal}`, ...fadeIn(visible, 260) }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 8 }}>The score is private by default. No bank connection. No credit pull.</p>
+          <p style={{ fontSize: 16, fontWeight: 500, color: "#F4F1EA", margin: 0 }}>It belongs entirely to the individual who takes it.</p>
+        </div>
       </div>
     </section>
   );
@@ -259,104 +242,7 @@ function Verifiability() {
 
 
 /* ================================================================== */
-/* SECTION 8 — WHERE IT CAN BE USED                                    */
-/* ================================================================== */
-
-function WhereItCanBeUsed() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Where it can be used</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 60) }}>The score can be shared and verified independently.</p>
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 14, ...fadeIn(visible, 120) }}>
-          {[
-            { title: "Lenders and underwriters", icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0H5m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4" },
-            { title: "Employers and hiring managers", icon: "M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" },
-            { title: "Financial advisors", icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" },
-            { title: "Business partners", icon: "M21 13.255A23.193 23.193 0 0 1 12 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2m4 6h.01M5 20h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z" },
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "18px 22px", borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA" }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${C.navy}06`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
-              </div>
-              <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{item.title}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 9 — WHY THIS EXISTS                                         */
-/* ================================================================== */
-
-function WhyThisExists() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why this exists</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 80) }}>Income verification confirms past earnings.</p>
-        <p style={{ fontSize: 18, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 28, ...fadeIn(visible, 140) }}>
-          But nothing measured the structural durability of how income is built.
-        </p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 180) }}>RunPayway&#8482; was created to define that standard.</p>
-        <div style={{ padding: "24px 28px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.teal}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)", ...fadeIn(visible, 240) }}>
-          <p style={{ fontSize: 16, color: muted, lineHeight: 1.6, marginBottom: 8 }}>The score is private by default. No bank connection. No credit pull.</p>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, margin: 0 }}>It belongs entirely to the individual who takes it.</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 10 — SYSTEM PRINCIPLES                                      */
-/* ================================================================== */
-
-function SystemPrinciples() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-  const principles = [
-    { title: "Versioned", desc: "Locked scoring model.", icon: "M7 21a4 4 0 0 1-4-4V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v12a4 4 0 0 1-4 4zm0 0h12a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 0 1 2.828 0l2.829 2.829a2 2 0 0 1 0 2.828l-8.486 8.485M7 17h.01" },
-    { title: "Deterministic", desc: "Same inputs \u2192 same score.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15" },
-    { title: "Multi-industry", desc: "Applies across income types.", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
-    { title: "Verifiable", desc: "Every result can be confirmed.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" },
-  ];
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>System principles</h2>
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 100) }}>
-          {principles.map((p, i) => (
-            <div key={i} style={{ textAlign: "center", padding: m ? 20 : 28, borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${C.border}` }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.navy}06`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={p.icon} /></svg>
-              </div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{p.title}</div>
-              <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, margin: 0 }}>{p.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================== */
-/* SECTION 11 — FINAL CTA                                              */
+/* SECTION 6 — FINAL CTA                                               */
 /* ================================================================== */
 
 function FinalCta() {
@@ -398,12 +284,8 @@ export default function AboutPage() {
         <HeroSection />
         <OneLineDefinition />
         <WhatTheScoreMeasures />
-        <WhoThisAppliesTo />
-        <WhyThisMatters />
-        <ModelStructure />
-        <WhereItCanBeUsed />
         <WhyThisExists />
-        <SystemPrinciples />
+        <ModelStructure />
         <FinalCta />
       </main>
     </div>
