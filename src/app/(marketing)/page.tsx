@@ -284,9 +284,9 @@ function IndustrySignal() {
           ))}
         </div>
         <div ref={dropRef} style={{ position: "relative", textAlign: "center" }}>
-          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontSize: 15, fontWeight: 500, color: "rgba(244,241,234,0.50)", transition: "color 200ms" }}
-            onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.60)"; }}
-            onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.50)"; }}>
+          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontSize: 15, fontWeight: 500, color: "rgba(31,109,122,0.70)", transition: "color 200ms" }}
+            onMouseEnter={e => { e.currentTarget.style.color = C.teal; }}
+            onMouseLeave={e => { e.currentTarget.style.color = "rgba(31,109,122,0.70)"; }}>
             Explore all 19 industries
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
