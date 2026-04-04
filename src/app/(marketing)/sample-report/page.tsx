@@ -79,10 +79,10 @@ function HeroSection() {
       <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: 500, height: 500, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}05 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Sample Report</div>
-        <h1 style={{ fontSize: m ? 34 : 52, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible, 80) }}>
           See exactly what&#8217;s holding your income together — and what would break it first.
         </h1>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 160) }}>
+        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 160) }}>
           Four pages. Generated from your structure. Not a template. The same inputs always produce the same result.
         </p>
         <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em", ...fadeIn(visible, 240) }}>
@@ -108,8 +108,8 @@ function ExampleReport() {
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>The Report</div>
-          <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>Four pages generated from your structural inputs.</h2>
-          <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, maxWidth: 560 }}>Each section reflects how your income is actually built.</p>
+          <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>Four pages generated from your structural inputs.</h2>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 560 }}>Each section reflects how your income is actually built.</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 40 : 56 }}>
@@ -120,7 +120,7 @@ function ExampleReport() {
               <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal }}>01</span>
               </div>
-              <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Cover & Score</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>Cover & Score</span>
             </div>
             <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 36 : 56, textAlign: "center", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: "50%", left: "50%", width: 400, height: 400, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
@@ -151,13 +151,13 @@ function ExampleReport() {
               <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal }}>02</span>
               </div>
-              <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Key Findings</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>Key Findings</span>
             </div>
             <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 28 : 36, border: `1px solid ${C.border}` }}>
               {/* Key Takeaway */}
               <div style={{ padding: "20px 24px", borderRadius: 12, borderLeft: `4px solid ${C.purple}`, backgroundColor: C.white, marginBottom: 28, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.10em", color: C.purple, marginBottom: 8, textTransform: "uppercase" as const }}>Key Takeaway</div>
-                <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>
+                <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>
                   Your structure is stable — but one client puts most of it at risk.
                 </p>
               </div>
@@ -206,10 +206,10 @@ function ExampleReport() {
               <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal }}>03</span>
               </div>
-              <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Stability Plan</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>Stability Plan</span>
             </div>
             <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 28 : 36, border: `1px solid ${C.border}` }}>
-              <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 24 }}>Ranked by impact. Ordered for execution.</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 24 }}>Ranked by impact. Ordered for execution.</div>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 24 }}>
                 {[
                   { action: "Reduce concentration", priority: "High", color: "#C0392B" },
@@ -221,7 +221,7 @@ function ExampleReport() {
                       <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${a.color}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         <span style={{ fontSize: 12, fontWeight: 700, color: a.color }}>{i + 1}</span>
                       </div>
-                      <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{a.action}</span>
+                      <span style={{ fontSize: 14, fontWeight: 500, color: C.navy }}>{a.action}</span>
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: a.color, padding: "3px 10px", borderRadius: 6, backgroundColor: `${a.color}08` }}>{a.priority}</span>
                   </div>
@@ -249,10 +249,10 @@ function ExampleReport() {
               <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal }}>04</span>
               </div>
-              <span style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Stress Testing</span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>Stress Testing</span>
             </div>
             <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 28 : 36, border: `1px solid ${C.border}` }}>
-              <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 24 }}>What breaks your structure — and how fast</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 24 }}>What breaks your structure — and how fast</div>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
                 {[
                   { scenario: "Your largest client stops paying", severity: "Severe", color: "#C0392B" },
@@ -262,7 +262,7 @@ function ExampleReport() {
                   <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 18px", borderRadius: 10, backgroundColor: C.white, border: `1px solid ${C.border}` }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: s.color, flexShrink: 0 }} />
-                      <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{s.scenario}</span>
+                      <span style={{ fontSize: 14, fontWeight: 500, color: C.navy }}>{s.scenario}</span>
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: s.color, padding: "3px 10px", borderRadius: 6, backgroundColor: `${s.color}08` }}>{s.severity}</span>
                   </div>
@@ -294,10 +294,10 @@ function CommandCenterSection() {
       <div style={{ maxWidth: contentW, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>Command Center</div>
-          <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 14 }}>
+          <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 14 }}>
             This is where your structure changes — not just your score.
           </h2>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65 }}>
+          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65 }}>
             Every tool runs on your actual structure — not estimates.
           </p>
         </div>
@@ -313,7 +313,7 @@ function CommandCenterSection() {
                 <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={mod.icon} /></svg>
                 </div>
-                <span style={{ fontSize: 17, fontWeight: 600, color: "#F4F1EA" }}>{mod.label}</span>
+                <span style={{ fontSize: 16, fontWeight: 600, color: "#F4F1EA" }}>{mod.label}</span>
               </div>
               <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", lineHeight: 1.6, margin: 0 }}>{mod.desc}</p>
             </div>
@@ -335,16 +335,17 @@ function WhyPeopleBuy() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 30 : 40, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why people buy the report</h2>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows the number.</p>
-        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The report shows:</p>
+        <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why people buy the report</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows the number.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The report shows:</p>
         <div style={{ marginBottom: 28, ...fadeIn(visible, 160) }}>
           {["what\u2019s fragile", "what breaks first", "what to fix first"].map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
               <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy }}>{item}</span>
+              <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
@@ -370,7 +371,7 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 32 : 44, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
           Your structure is already there.{m ? " " : <br />}This shows it clearly.
         </h2>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>
@@ -379,7 +380,7 @@ function FinalCta() {
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 100) }}>Start with the free score.</p>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 40, ...fadeIn(visible, 130) }}>Unlock the full diagnostic when you&#8217;re ready to act.</p>
         <div style={{ ...fadeIn(visible, 200) }}>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 17, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
+          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; e.currentTarget.style.boxShadow = "0 4px 24px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 16px rgba(244,241,234,0.10)"; }}>
             Start Your Free Assessment
