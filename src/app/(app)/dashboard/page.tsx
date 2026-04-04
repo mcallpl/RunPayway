@@ -203,6 +203,37 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
 }
 
 /* ================================================================== */
+/*  LOCKED OVERLAY — gating for free users                             */
+/* ================================================================== */
+const STRIPE_URL = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
+
+function LockedOverlay({ mobile }: { mobile: boolean }) {
+  return (
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 10,
+      backgroundColor: "rgba(255,255,255,0.60)",
+      backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)",
+      borderRadius: 16,
+      display: "flex", flexDirection: "column" as const,
+      alignItems: "center", justifyContent: "center",
+      padding: mobile ? 20 : 32,
+    }}>
+      <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Unlock full simulator access</div>
+      <a href={STRIPE_URL} style={{
+        display: "inline-flex", alignItems: "center", justifyContent: "center",
+        height: 44, padding: "0 24px", borderRadius: 10,
+        backgroundColor: B.navy, color: "#FFF",
+        fontSize: 14, fontWeight: 600, textDecoration: "none",
+        transition: "background 200ms",
+      }}
+        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}
+      >Unlock Diagnostic</a>
+    </div>
+  );
+}
+
+/* ================================================================== */
 /*  INDUSTRY DATA                                                      */
 /* ================================================================== */
 const IND: Record<string, { general: string; redAvg: number; greenAvg: number }> = {
@@ -308,6 +339,7 @@ function DashboardContent() {
   const [whatIfOpen, setWhatIfOpen] = useState(true);
   const [goalTarget, setGoalTarget] = useState<number | null>(null);
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
+  const [isPaid, setIsPaid] = useState(false);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -370,6 +402,11 @@ function DashboardContent() {
     try { const recs = JSON.parse(localStorage.getItem("rp_records") || "[]"); setAssessments(recs.sort((a: { assessment_date_utc: string; issued_timestamp_utc?: string }, b: { assessment_date_utc: string; issued_timestamp_utc?: string }) => new Date(b.assessment_date_utc || b.issued_timestamp_utc || "").getTime() - new Date(a.assessment_date_utc || a.issued_timestamp_utc || "").getTime())); } catch { /* */ }
     try { setCheckedItems(JSON.parse(localStorage.getItem("rp_reassess_checks") || "[]")); } catch { /* */ }
     try { setCompletedSteps(JSON.parse(localStorage.getItem("rp_roadmap_steps") || "[]")); } catch { /* */ }
+    // Detect paid status
+    try {
+      const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
+      if (ps.plan_key && ps.plan_key !== "free") setIsPaid(true);
+    } catch { /* */ }
     const hasVisited = localStorage.getItem("rp_cc_visited");
     const hasData = !!stored && stored !== "null";
     if (!hasVisited && hasData) { setShowWelcome(true); }
@@ -685,6 +722,11 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
+          {/* Framing sentence */}
+          <p style={{ fontSize: 15, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
+            Your score shows where you stand. This simulator shows what changes it — and what it takes to protect it.
+          </p>
+
           {/* 1. SCORE + BENCHMARKING */}
           <section style={{ marginBottom: 24 }}>
             <div style={{ padding: mobile ? "28px 20px" : "32px 36px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface }}>
@@ -799,13 +841,16 @@ function DashboardContent() {
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `3px solid #7A1F2B`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#7A1F2B", marginBottom: 8 }}>ROOT CONSTRAINT</div>
-              <p style={{ fontSize: 15, color: B.navy, margin: "0 0 8px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
-              <p style={{ fontSize: 13, color: B.red, margin: "0 0 4px", fontWeight: 500 }}>
-                Consequence: If your top source leaves, your score drops from {dScore} to {dScore - stLCDrop}{dScore - stLCDrop < 30 && dScore >= 30 ? " — crossing into Limited Stability." : "."}
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid #C0392B`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 12 }}>ROOT CONSTRAINT</div>
+              <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
+                If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
-              {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "8px 0 0", fontStyle: "italic" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
+              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 15, color: "#C0392B", margin: "0 0 4px", fontWeight: 500 }}>
+                Projected impact: score drops from <span style={{ fontFamily: mono }}>{dScore}</span> to <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>.
+              </p>
+              {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "12px 0 0" }}>Secondary constraint: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
             <div style={{ padding: mobile ? "20px 16px" : "22px 28px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 12 }}>
@@ -864,10 +909,14 @@ function DashboardContent() {
 
           {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
-            <section>
+            <section style={{ position: "relative" }}>
+              {!isPaid && !isDemo && <LockedOverlay mobile={mobile} />}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe }}>YOUR 12-WEEK ROADMAP</div>
                 {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>{completedSteps.length}/{roadmap.length} completed</span>}
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 16 }}>
+                The shortest path from {dScore} to {dScore + totalLift}.
               </div>
 
               {/* Cumulative progress bar */}
@@ -935,6 +984,15 @@ function DashboardContent() {
           {/*  ACT — "Let me test it"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
+
+          {/* Gating for free users on simulator */}
+          {!isPaid && !isDemo && (
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}03`, marginBottom: 16, textAlign: "center" as const }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Preview mode</div>
+              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 12px" }}>Full scenario modeling, saved paths, and Goal Mode available with the diagnostic.</p>
+              <a href={STRIPE_URL} style={{ fontSize: 13, fontWeight: 600, color: B.teal, textDecoration: "none" }}>Unlock full access &rarr;</a>
+            </div>
+          )}
 
           {/* What-If Explorer — categorized, visual, recommended */}
           <section>
@@ -1007,8 +1065,9 @@ function DashboardContent() {
                 {/* GOAL MODE — reverse simulator */}
                 <div style={{ marginBottom: 24 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 12 }}>GOAL MODE</div>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum structural moves required to cross a band.</div>
                   <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
-                    Pick a target. We will show the minimum moves to get there.
+                    Not guesses. Score-based path modeling.
                   </p>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 16 }}>
                     {[
@@ -1383,42 +1442,49 @@ function DashboardContent() {
             </section>
           )}
 
-          {/* Stress + timing cards */}
-          <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
-
-              <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>STRESS RESILIENCE</div>
-                {[{ label: "Top client leaves", val: `${dScore} → ${stLC.overall_score}` }, { label: "Can't work 90 days", val: `${dScore} → ${stNW.overall_score}` }].map(row => (
-                  <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: `1px solid ${B.stone}` }}>
-                    <span style={{ fontSize: 15, color: B.muted }}>{row.label}</span><span style={{ fontSize: 15, fontWeight: 500, fontFamily: mono, color: B.red }}>{row.val}</span>
+          {/* Stress tests — prominent */}
+          <section style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 8 }}>STRESS TESTS</div>
+            <p style={{ fontSize: 15, color: B.muted, marginBottom: 16 }}>What your current structure can and cannot absorb.</p>
+            <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+              {[
+                { label: "Your biggest client stops paying", desc: "Your largest income source disappears \u2014 along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
+                { label: "You cannot work for 90 days", desc: "Illness, injury, or interruption stops active work \u2014 only passive and pre-committed income continues.", val: `\u2212${dScore - stNW.overall_score}`, drop: stNW.overall_score },
+              ].map(row => (
+                <div key={row.label} style={{ flex: 1, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "#FAFAFA" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{row.label}</span>
+                    <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
                   </div>
-                ))}
-              </div>
+                  <p style={{ fontSize: 13, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{row.desc}</p>
+                  <span style={{ fontSize: 13, fontFamily: mono, color: B.taupe }}>{dScore} &rarr; {row.drop}</span>
+                </div>
+              ))}
             </div>
+          </section>
 
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 12 }}>
-              <div style={{ padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? B.red : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
-                <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.55 }}>
-                  {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3–4. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
-                </p>
-              </div>
-
-              {!isDemo && (
-                <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
-                  style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
-                  Download Assessment Data
-                </button>
-              )}
+          {/* Assessment timing */}
+          <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+            <div style={{ flex: 1, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
+              <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3\u20134. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
+              </p>
             </div>
+            {!isDemo && (
+              <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
+                style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
+                Download Assessment Data
+              </button>
+            )}
           </div>
 
           </PhaseSep>
 
           {/* FOOTER */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+            <p style={{ fontSize: 13, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+            <p style={{ fontSize: 11, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
           </div>
         </div>
       </div>
