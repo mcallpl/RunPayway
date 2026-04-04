@@ -492,8 +492,9 @@ function PricingSection() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 860, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Free */}
-          <div style={{ backgroundColor: C.white, borderRadius: 12, padding: 24, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>Income Stability Score&#8482;</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 12, padding: 24, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.08)" }} />
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>Income Stability Score&#8482;</div>
             <div style={{ marginBottom: 4 }}><span style={{ fontSize: 40, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span></div>
             <div style={{ fontSize: 13, color: light, marginBottom: 24 }}>always free</div>
             <div style={{ marginBottom: 24, flex: 1 }}>

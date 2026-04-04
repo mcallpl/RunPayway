@@ -194,8 +194,10 @@ function PricingCards() {
             border: `1px solid ${C.border}`,
             display: "flex", flexDirection: "column" as const,
             marginBottom: m ? 16 : 0,
+            position: "relative" as const, overflow: "hidden",
           }}>
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.08)" }} />
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>
               Income Stability Score&#8482;
             </div>
             <div style={{ marginBottom: 4 }}>
@@ -282,8 +284,10 @@ function PricingCards() {
           <div style={{
             backgroundColor: C.navy, borderRadius: 12, padding: 24,
             display: "flex", flexDirection: "column" as const,
+            position: "relative" as const, overflow: "hidden",
           }}>
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>
               RunPayway&#8482; Monitoring
             </div>
             <div style={{ marginBottom: 4 }}>
