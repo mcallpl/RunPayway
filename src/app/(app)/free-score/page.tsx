@@ -115,7 +115,12 @@ export default function FreeScorePage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const stored = sessionStorage.getItem("rp_record");
+    // Check sessionStorage first, fall back to localStorage
+    let stored = sessionStorage.getItem("rp_record");
+    if (!stored) {
+      stored = localStorage.getItem("rp_record");
+      if (stored) sessionStorage.setItem("rp_record", stored);
+    }
     if (!stored) { router.push("/diagnostic-portal"); return; }
     try {
       const parsed = JSON.parse(stored);
@@ -123,6 +128,13 @@ export default function FreeScorePage() {
       setRecord(parsed);
     } catch { router.push("/diagnostic-portal"); }
   }, [router]);
+
+  // Prevent accidental navigation — warn before leaving
+  useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
 
   useEffect(() => {
     if (!record || scoreAnimated.current) return;
@@ -439,32 +451,6 @@ export default function FreeScorePage() {
               </div>
             ))}
           </div>
-        </section>
-
-        {/* ── SECTION 10: FINAL CTA ── */}
-        <section style={{
-          backgroundColor: C.navy, borderRadius: 12,
-          padding: mobile ? "28px 24px" : "36px 32px",
-          textAlign: "center",
-        }}>
-          <div style={{ fontSize: mobile ? 18 : 22, fontWeight: 600, color: C.sand, marginBottom: 8, lineHeight: 1.3 }}>
-            Your income has a structure.{mobile ? " " : <br />}Now measure how it holds.
-          </div>
-          <a href={STRIPE} style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 48, padding: "0 32px", borderRadius: 10,
-            backgroundColor: C.white, color: C.navy,
-            fontSize: 15, fontWeight: 600, textDecoration: "none",
-            marginTop: 20, transition: "background-color 200ms",
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#E8E5DE"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.white; }}
-          >
-            Unlock Full Diagnostic
-          </a>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.38)", marginTop: 12, marginBottom: 0 }}>
-            One-time analysis &bull; No subscription required
-          </p>
         </section>
 
         {/* Footer */}
