@@ -3,21 +3,16 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
-import { C, sans, sp } from "@/lib/design-tokens";
+import { C, sans } from "@/lib/design-tokens";
 
-/* ------------------------------------------------------------------ */
-/*  Shared hooks                                                       */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* UTILITIES                                                           */
+/* ================================================================== */
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= breakpoint);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, [breakpoint]);
-  return mobile;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
 }
 
 function useInView(threshold = 0) {
@@ -27,99 +22,50 @@ function useInView(threshold = 0) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold },
-    );
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) { setVisible(true); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
   }, [threshold]);
   return { ref, visible };
 }
 
-/* ------------------------------------------------------------------ */
-/*  Brand tokens                                                       */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* TOKENS                                                              */
+/* ================================================================== */
 
-const gradient = C.navy;
+const muted = "rgba(14,26,43,0.55)";
+const border = "#E5E7EB";
 
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                            */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* CONTENT COMPONENTS                                                  */
+/* ================================================================== */
 
-function Section({
-  title,
-  children,
-  mobile,
-  visible,
-}: {
-  title: string;
-  children: React.ReactNode;
-  mobile: boolean;
-  visible: boolean;
-}) {
+function Section({ title, children, mobile, visible }: { title: string; children: React.ReactNode; mobile: boolean; visible: boolean }) {
   return (
-    <div
-      style={{
-        background: C.white,
-        borderRadius: 16,
-        border: "1px solid rgba(14,26,43,0.06)",
-        padding: mobile ? "28px 24px" : "36px 36px",
-        boxShadow: "0 2px 8px rgba(14,26,43,0.04)",
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(20px)",
-        transition: "opacity 600ms ease, transform 600ms ease",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: mobile ? 17 : 19,
-          fontWeight: 700,
-          color: C.navy,
-          letterSpacing: "-0.02em",
-          marginBottom: 16,
-          lineHeight: 1.3,
-        }}
-      >
-        {title}
-      </h2>
+    <div style={{
+      background: C.white, borderRadius: 16, border: `1px solid ${border}`,
+      padding: mobile ? "28px 24px" : "36px 40px",
+      boxShadow: "0 1px 4px rgba(14,26,43,0.03)",
+      opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)",
+      transition: "opacity 500ms ease-out, transform 500ms ease-out",
+    }}>
+      <h2 style={{ fontSize: mobile ? 18 : 20, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", marginBottom: 18, lineHeight: 1.3 }}>{title}</h2>
       {children}
     </div>
   );
 }
 
 function P({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  return (
-    <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.75, marginBottom: 12, ...style }}>
-      {children}
-    </p>
-  );
+  return <p style={{ fontSize: 15, color: muted, lineHeight: 1.75, marginBottom: 12, ...style }}>{children}</p>;
 }
 
 function Bullet({ items }: { items: string[] }) {
   return (
     <ul style={{ padding: 0, margin: "0 0 12px", listStyle: "none" }}>
       {items.map((item) => (
-        <li
-          key={item}
-          style={{
-            fontSize: 15,
-            color: C.muted,
-            lineHeight: 1.75,
-            paddingLeft: 20,
-            position: "relative",
-          }}
-        >
-          <span style={{ position: "absolute", left: 0, color: C.purple, fontSize: 11, lineHeight: "26px" }}>●</span>
+        <li key={item} style={{ fontSize: 15, color: muted, lineHeight: 1.75, paddingLeft: 20, position: "relative" }}>
+          <span style={{ position: "absolute", left: 0, top: 10, width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal }} />
           {item}
         </li>
       ))}
@@ -127,272 +73,75 @@ function Bullet({ items }: { items: string[] }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* PAGE                                                                */
+/* ================================================================== */
 
 export default function AccessibilityPage() {
   const mobile = useMobile();
   const { t } = useLanguage();
   const heroAnim = useInView();
-
-  const s1 = useInView();
-  const s2 = useInView();
-  const s3 = useInView();
-  const s4 = useInView();
-  const s5 = useInView();
-  const s6 = useInView();
-  const s7 = useInView();
+  const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
+  const s4 = useInView(); const s5 = useInView(); const s6 = useInView(); const s7 = useInView();
 
   return (
-    <div style={{ background: C.sand, fontFamily: sans }}>
-      {/* ============================================================ */}
-      {/*  Hero                                                        */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
+    <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
-        <div
-          ref={heroAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            textAlign: "center",
-            opacity: heroAnim.visible ? 1 : 0,
-            transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
-          }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 600, color: C.sandText, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {t.accessibilityPage.heroTag}
-            </span>
+      {/* HERO */}
+      <header style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: mobile ? 80 : 140, paddingBottom: mobile ? 56 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+        <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+          <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+            {t.accessibilityPage.heroTag}
           </div>
-
-          <h1
-            style={{
-              fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
-              color: C.sandText,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginBottom: 20,
-            }}
-          >
+          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.accessibilityPage.heroTitle}
           </h1>
-
-          <p style={{ fontSize: mobile ? 15 : 17, color: C.sandMuted, lineHeight: 1.7, marginBottom: 8 }}>
+          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
             {t.accessibilityPage.heroSubtitle}
           </p>
-          <p style={{ fontSize: 14, color: C.sandLight, marginBottom: 8 }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em", marginBottom: 4 }}>
             {t.accessibilityPage.heroModel}
           </p>
-          <p style={{ fontSize: 14, color: C.sandLight }}>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", letterSpacing: "0.03em" }}>
             {t.accessibilityPage.heroEffectiveDate}
           </p>
         </div>
-      </section>
+      </header>
 
-      {/* ============================================================ */}
-      {/*  Content                                                     */}
-      {/* ============================================================ */}
-      <section style={{ paddingTop: mobile ? 48 : 72, paddingBottom: mobile ? 64 : 96 }}>
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 780,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            display: "flex",
-            flexDirection: "column",
-            gap: mobile ? 20 : 24,
-          }}
-        >
-          {/* 1. Commitment */}
-          <div ref={s1.ref}>
-            <Section title={t.accessibilityPage.s1Title} mobile={mobile} visible={s1.visible}>
-              <P>{t.accessibilityPage.s1P1}</P>
-              <P>{t.accessibilityPage.s1P2}</P>
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s1P3}</P>
-            </Section>
-          </div>
+      {/* CONTENT */}
+      <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
+        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 16 : 20 }}>
 
-          {/* 2. Standards */}
-          <div ref={s2.ref}>
-            <Section title={t.accessibilityPage.s2Title} mobile={mobile} visible={s2.visible}>
-              <P>{t.accessibilityPage.s2P1}</P>
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s2P2}</P>
-            </Section>
-          </div>
+          <div ref={s1.ref}><Section title={t.accessibilityPage.s1Title} mobile={mobile} visible={s1.visible}><P>{t.accessibilityPage.s1P1}</P><P>{t.accessibilityPage.s1P2}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s1P3}</P></Section></div>
+          <div ref={s2.ref}><Section title={t.accessibilityPage.s2Title} mobile={mobile} visible={s2.visible}><P>{t.accessibilityPage.s2P1}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s2P2}</P></Section></div>
+          <div ref={s3.ref}><Section title={t.accessibilityPage.s3Title} mobile={mobile} visible={s3.visible}><P>{t.accessibilityPage.s3P1}</P><Bullet items={[t.accessibilityPage.s3Li1, t.accessibilityPage.s3Li2, t.accessibilityPage.s3Li3, t.accessibilityPage.s3Li4, t.accessibilityPage.s3Li5, t.accessibilityPage.s3Li6, t.accessibilityPage.s3Li7]} /><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s3P2}</P></Section></div>
+          <div ref={s4.ref}><Section title={t.accessibilityPage.s4Title} mobile={mobile} visible={s4.visible}><P>{t.accessibilityPage.s4P1}</P><Bullet items={[t.accessibilityPage.s4Li1, t.accessibilityPage.s4Li2, t.accessibilityPage.s4Li3, t.accessibilityPage.s4Li4, t.accessibilityPage.s4Li5]} /><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s4P2}</P></Section></div>
+          <div ref={s5.ref}><Section title={t.accessibilityPage.s5Title} mobile={mobile} visible={s5.visible}><P>{t.accessibilityPage.s5P1}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s5P2}</P></Section></div>
+          <div ref={s6.ref}><Section title={t.accessibilityPage.s6Title} mobile={mobile} visible={s6.visible}><P>{t.accessibilityPage.s6P1}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s6P2}</P></Section></div>
+          <div ref={s7.ref}><Section title={t.accessibilityPage.s7Title} mobile={mobile} visible={s7.visible}>
+            <P>
+              {t.accessibilityPage.s7Pre}
+              <Link href="/contact" style={{ color: C.purple, fontWeight: 600, textDecoration: "none", borderBottom: "1px solid rgba(75,63,174,0.30)" }}>{t.accessibilityPage.s7LinkText}</Link>
+              {t.accessibilityPage.s7Post}
+            </P>
+            <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s7P2}</P>
+          </Section></div>
 
-          {/* 3. Features */}
-          <div ref={s3.ref}>
-            <Section title={t.accessibilityPage.s3Title} mobile={mobile} visible={s3.visible}>
-              <P>{t.accessibilityPage.s3P1}</P>
-              <Bullet items={[
-                t.accessibilityPage.s3Li1,
-                t.accessibilityPage.s3Li2,
-                t.accessibilityPage.s3Li3,
-                t.accessibilityPage.s3Li4,
-                t.accessibilityPage.s3Li5,
-                t.accessibilityPage.s3Li6,
-                t.accessibilityPage.s3Li7,
-              ]} />
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s3P2}</P>
-            </Section>
-          </div>
-
-          {/* 4. Assessment Interface */}
-          <div ref={s4.ref}>
-            <Section title={t.accessibilityPage.s4Title} mobile={mobile} visible={s4.visible}>
-              <P>{t.accessibilityPage.s4P1}</P>
-              <Bullet items={[
-                t.accessibilityPage.s4Li1,
-                t.accessibilityPage.s4Li2,
-                t.accessibilityPage.s4Li3,
-                t.accessibilityPage.s4Li4,
-                t.accessibilityPage.s4Li5,
-              ]} />
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s4P2}</P>
-            </Section>
-          </div>
-
-          {/* 5. Ongoing Improvements */}
-          <div ref={s5.ref}>
-            <Section title={t.accessibilityPage.s5Title} mobile={mobile} visible={s5.visible}>
-              <P>{t.accessibilityPage.s5P1}</P>
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s5P2}</P>
-            </Section>
-          </div>
-
-          {/* 6. Compatibility */}
-          <div ref={s6.ref}>
-            <Section title={t.accessibilityPage.s6Title} mobile={mobile} visible={s6.visible}>
-              <P>{t.accessibilityPage.s6P1}</P>
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s6P2}</P>
-            </Section>
-          </div>
-
-          {/* 7. Requests */}
-          <div ref={s7.ref}>
-            <Section title={t.accessibilityPage.s7Title} mobile={mobile} visible={s7.visible}>
-              <P>
-                {t.accessibilityPage.s7Pre}
-                <Link
-                  href="/contact"
-                  style={{
-                    color: C.purple,
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    borderBottom: "1px solid rgba(75,63,174,0.30)",
-                    transition: "border-color 180ms ease",
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = C.purple; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(75,63,174,0.30)"; }}
-                >
-                  {t.accessibilityPage.s7LinkText}
-                </Link>
-                {t.accessibilityPage.s7Post}
-              </P>
-              <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s7P2}</P>
-            </Section>
-          </div>
         </div>
       </section>
 
-      {/* ============================================================ */}
-      {/*  Closing brand bar                                           */}
-      {/* ============================================================ */}
-      <section
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
-          paddingTop: mobile ? 56 : 72,
-          paddingBottom: mobile ? 56 : 72,
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        {[180, 320, 480].map((size, i) => (
-          <div
-            key={size}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: size,
-              height: size,
-              borderRadius: "50%",
-              transform: "translate(-50%, -50%)",
-              border: `1px solid rgba(255,255,255,${0.06 - i * 0.015})`,
-              pointerEvents: "none",
-            }}
-          />
-        ))}
-
-        <div
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 600,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
-            textAlign: "center",
-          }}
-        >
-          <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 700, color: C.sandText, letterSpacing: "-0.02em", marginBottom: 8 }}>
+      {/* FOOTER */}
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 56 : 80, paddingBottom: mobile ? 56 : 80, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", width: 400, height: 400, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.accessibilityPage.closingBrand}
           </div>
-          <div style={{ fontSize: mobile ? 15 : 17, color: C.sandMuted, marginBottom: 24 }}>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             {t.accessibilityPage.closingSubtitle}
-          </div>
-          <p style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>
             {t.accessibilityPage.closingPowered}
           </p>
         </div>
