@@ -164,16 +164,10 @@ function HeroSection() {
             <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible, 80) }}>
               Your income might be strong.{m ? " " : <br />}Your structure might not.
             </h1>
-            <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: m ? undefined : 440, marginBottom: 16, ...fadeIn(visible, 160) }}>
-              Most people never measure how stable their income actually is — until something breaks it.
-            </p>
-            <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.72)", lineHeight: 1.6, maxWidth: m ? undefined : 440, marginBottom: 16, ...fadeIn(visible, 220) }}>
-              Your income already has a structure.{m ? " " : <br />}You just don&#8217;t see how exposed it is yet.
-            </p>
-            <p style={{ fontSize: 16, color: "rgba(244,241,234,0.42)", lineHeight: 1.7, maxWidth: m ? undefined : 440, marginBottom: m ? 36 : 44, ...fadeIn(visible, 280) }}>
+            <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: m ? undefined : 440, marginBottom: m ? 36 : 44, ...fadeIn(visible, 160) }}>
               RunPayway&#8482; measures the structure of your income — not the size of it — and shows how it holds under pressure.
             </p>
-            <div style={{ ...fadeIn(visible, 340) }}>
+            <div style={{ ...fadeIn(visible, 240) }}>
               <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, width: m ? "100%" : "auto", padding: m ? "0 24px" : "0 44px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(244,241,234,0.10)" }}
                 onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.15)"; }}
                 onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.10)"; }}>
@@ -251,6 +245,10 @@ function IndustrySignal() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
       <div style={{ maxWidth: contentW, margin: "0 auto", ...fadeIn(visible) }}>
+        {/* Tension line — moved from hero */}
+        <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.65)", lineHeight: 1.6, textAlign: "center", marginBottom: m ? 28 : 40 }}>
+          Your income already has a structure. You just don&#8217;t see how exposed it is yet.
+        </p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: m ? 10 : 14, marginBottom: m ? 16 : 20 }}>
           {[
             { name: "Freelancers", line: "Every month resets unless structure prevents it." },
@@ -265,10 +263,10 @@ function IndustrySignal() {
           ))}
         </div>
         <div ref={dropRef} style={{ position: "relative", textAlign: "center" }}>
-          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Find your industry" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontSize: 15, fontWeight: 500, color: "rgba(31,109,122,0.70)", transition: "color 200ms" }}
+          <button onClick={() => setShowAll(!showAll)} aria-expanded={showAll} aria-label="Explore all 19 industries" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: "8px 0", fontSize: 15, fontWeight: 500, color: "rgba(31,109,122,0.70)", transition: "color 200ms" }}
             onMouseEnter={e => { e.currentTarget.style.color = C.teal; }}
             onMouseLeave={e => { e.currentTarget.style.color = "rgba(31,109,122,0.70)"; }}>
-            Find your industry
+            Explore all 19 industries
             <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms" }}><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
           {showAll && (
@@ -353,7 +351,7 @@ function SameIncomeProof() {
             </div>
           </div>
         </div>
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, textAlign: "center", marginTop: m ? 28 : 44, ...fadeIn(visible, 220) }}>Structure determines stability.</p>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, textAlign: "center", marginTop: m ? 28 : 44, ...fadeIn(visible, 220) }}>Same income. Different structural risk.</p>
       </div>
     </section>
   );
@@ -401,9 +399,9 @@ function HowItWorks() {
         <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 44 : 64, ...fadeIn(visible) }}>How it works</h2>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 40, marginBottom: m ? 40 : 56, ...fadeIn(visible, 100) }}>
           {[
-            { num: "01", title: "Define your income structure", desc: "Sources, contracts, dependencies." },
+            { num: "01", title: "Define your income structure", desc: "You describe how your income is organized. Sources, contracts, and dependencies." },
             { num: "02", title: "6 fixed structural dimensions", desc: "No interpretation. No variation." },
-            { num: "03", title: "Receive one standardized score", desc: "0\u2013100 with band classification." },
+            { num: "03", title: "Receive one standardized score", desc: "0\u2013100, band classification, and primary constraint." },
           ].map((s, i) => (
             <div key={i} style={{ marginBottom: m ? 28 : 0 }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
@@ -416,10 +414,10 @@ function HowItWorks() {
         </div>
         <div style={{ display: "flex", gap: m ? 8 : 12, justifyContent: "center", flexWrap: "wrap" as const, marginBottom: 20, ...fadeIn(visible, 200) }}>
           {[
-            { label: "Limited", range: "0\u201329", color: "#9B2C2C" },
-            { label: "Developing", range: "30\u201349", color: "#92640A" },
-            { label: "Established", range: "50\u201374", color: "#2B5EA7" },
-            { label: "High", range: "75\u2013100", color: C.teal },
+            { label: "Limited Stability", range: "0\u201329", color: "#9B2C2C" },
+            { label: "Developing Stability", range: "30\u201349", color: "#92640A" },
+            { label: "Established Stability", range: "50\u201374", color: "#2B5EA7" },
+            { label: "High Stability", range: "75\u2013100", color: C.teal },
           ].map(b => (
             <div key={b.label} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 8, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA" }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: b.color }} />
@@ -448,7 +446,7 @@ function ResultPreview() {
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
-          Your score shows where your structure holds.{m ? " " : <br />}And where it fails first.
+          Your score shows where your structure holds.{m ? " " : <br />}The diagnostic shows what weakens it.
         </h2>
         <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 40, border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.12)", ...fadeIn(visible, 120) }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 24 }}>
@@ -546,7 +544,7 @@ function PricingSection() {
         <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 4 }}>You can stop at the score.</p>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65 }}>Or you can see exactly what to change.</p>
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65 }}>Or you can see what breaks, what matters most, and what to change first.</p>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Free */}
@@ -556,7 +554,7 @@ function PricingSection() {
             <div style={{ marginBottom: 4 }}><span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span></div>
             <div style={{ fontSize: 13, color: light, marginBottom: 28 }}>always free</div>
             <div style={{ marginBottom: 28, flex: 1 }}>
-              {check("Score (0\u2013100)")}{check("Stability band")}{check("Primary constraint")}{check("Improvement direction")}
+              {check("Score (0\u2013100)")}{check("Stability band")}{check("Primary constraint")}{check("Highest-impact improvement")}
             </div>
             <Link href="/begin" style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, border: `1px solid ${C.navy}`, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#f5f4f1"; }}
@@ -598,7 +596,7 @@ function TransformationProof() {
   const fadeIn = useFadeIn();
   const results = [
     { before: 34, after: 61, constraint: "80% client concentration", action: "Restructured to multiple clients. Added retainers." },
-    { before: 28, after: 52, constraint: "Zero recurring income", action: "Converted project work into recurring revenue." },
+    { before: 28, after: 52, constraint: "No income recurrence", action: "Converted project work into recurring revenue." },
     { before: 42, after: 67, constraint: "No forward visibility", action: "Secured forward contracts and extended engagements." },
   ];
   return (
