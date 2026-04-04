@@ -237,13 +237,38 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Trust strip */}
+        {/* Industry signal cards */}
         <div style={{
           marginTop: m ? 40 : 56,
           paddingTop: m ? 24 : 32,
           borderTop: "1px solid rgba(244,241,234,0.08)",
           ...fadeIn(visible, 400),
         }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr",
+            gap: m ? 10 : 14,
+            marginBottom: m ? 24 : 32,
+          }}>
+            {[
+              { name: "Real Estate", line: "Income comes in bursts. Risk sits between transactions." },
+              { name: "Consulting", line: "Revenue depends on utilization. Continuity depends on structure." },
+              { name: "Sales / Brokerage", line: "Compensation moves in cycles. Exposure sits between them." },
+              { name: "Freelance / Contract", line: "Every month starts at zero unless the structure says otherwise." },
+            ].map((ind, i) => (
+              <div key={i} style={{
+                padding: m ? "12px 14px" : "14px 16px",
+                borderRadius: 10,
+                border: "1px solid rgba(244,241,234,0.08)",
+                backgroundColor: "rgba(244,241,234,0.04)",
+              }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 6 }}>{ind.name}</div>
+                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", lineHeight: 1.5 }}>{ind.line}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Trust strip */}
           <p style={{
             fontSize: 13, letterSpacing: "0.02em",
             color: "rgba(244,241,234,0.35)",
