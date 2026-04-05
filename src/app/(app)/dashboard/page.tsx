@@ -8,7 +8,7 @@ import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 import { getScriptsForSector } from "@/lib/action-scripts";
 import SuiteHeader from "@/components/SuiteHeader";
-import { SAMPLE_PROFILES, IS_SAMPLE } from "@/lib/sample-data";
+// Sample data removed — empty state teasers replace demo mode
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 
 /* ================================================================== */
@@ -262,35 +262,9 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
 }
 
 /* ================================================================== */
-/*  LOCKED OVERLAY — gating for free users                             */
+/*  STRIPE URL                                                         */
 /* ================================================================== */
 const STRIPE_URL = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
-
-function LockedOverlay({ mobile }: { mobile: boolean }) {
-  return (
-    <div style={{
-      position: "absolute", inset: 0, zIndex: 10,
-      backgroundColor: "rgba(255,255,255,0.60)",
-      backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)",
-      borderRadius: 16,
-      display: "flex", flexDirection: "column" as const,
-      alignItems: "center", justifyContent: "center",
-      padding: mobile ? 20 : 32,
-    }}>
-      <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Unlock full simulator access</div>
-      <a href={STRIPE_URL} style={{
-        display: "inline-flex", alignItems: "center", justifyContent: "center",
-        height: 44, padding: "0 24px", borderRadius: 10,
-        backgroundColor: B.navy, color: "#FFF",
-        fontSize: 14, fontWeight: 600, textDecoration: "none",
-        transition: "background 200ms",
-      }}
-        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}
-      >Unlock Diagnostic</a>
-    </div>
-  );
-}
 
 /* ================================================================== */
 /*  INDUSTRY DATA                                                      */
@@ -379,7 +353,6 @@ function DashboardContent() {
   const hydrated = dataLoaded && minTimeElapsed;
   const [assessments, setAssessments] = useState<{ record_id: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc?: string }[]>([]);
   const [mobile, setMobile] = useState(false);
-  const [demoProfile, setDemoProfile] = useState(1);
   const [accessCode, setAccessCode] = useState("");
   const [codeError, setCodeError] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -529,8 +502,8 @@ function DashboardContent() {
   };
 
   /* ── Derived ── */
-  const isDemo = IS_SAMPLE(record);
-  const r = isDemo ? SAMPLE_PROFILES[demoProfile].record : record!;
+  const hasRecord = !!record;
+  const r = record || ({} as Record<string, unknown>);
   const score = (r?.final_score as number) || 0;
   const band = (r?.stability_band as string) || "";
   const v2 = r?._v2 as Record<string, unknown> | undefined;
@@ -751,6 +724,222 @@ function DashboardContent() {
     );
   }
 
+  /* ================================================================ */
+  /*  EMPTY STATE — no record loaded                                   */
+  /* ================================================================ */
+  const TEASERS = [
+    {
+      phase: "Your Diagnosis",
+      color: B.purple,
+      tint: "rgba(75,63,174,0.02)",
+      sections: [
+        {
+          title: "Income Stability Score",
+          icon: "ring",
+          desc: "A single number that captures how structurally sound your income really is.",
+          hover: "Most people have never seen their income reduced to one honest number. This score strips away the narratives you tell yourself and shows what would actually survive if something changed. It is the starting point for every decision that follows.",
+        },
+        {
+          title: "PressureMap\u2122",
+          icon: "map",
+          desc: "See exactly where your income is vulnerable and where it is protected.",
+          hover: "Your income has three zones: income that stops if you stop, income that recurs but can be cancelled, and income that continues no matter what. Most people discover that the zone they assumed was safe is actually the most fragile. The PressureMap forces you to see the structure you have been avoiding.",
+        },
+        {
+          title: "Root Constraint",
+          icon: "target",
+          desc: "The single structural weakness that is suppressing your score the most.",
+          hover: "Every income structure has a bottleneck \u2014 one factor doing more damage than all the others combined. People spend months optimizing the wrong things. This identifies the exact lever that moves the needle, so you stop wasting effort on changes that feel productive but change nothing.",
+        },
+      ],
+    },
+    {
+      phase: "Your Plan",
+      color: B.navy,
+      tint: "rgba(14,26,43,0.015)",
+      sections: [
+        {
+          title: "12-Week Roadmap",
+          icon: "path",
+          desc: "A sequenced action plan built from your specific constraints, not generic advice.",
+          hover: "Generic financial advice tells you to diversify. This roadmap tells you which move to make first, why that sequence matters, and exactly how many points each step is worth. It is reverse-engineered from your score \u2014 the shortest path between where you are and where the math says you could be.",
+        },
+        {
+          title: "Industry Scripts",
+          icon: "script",
+          desc: "Word-for-word scripts tailored to your sector for each structural move.",
+          hover: "Knowing what to do is not the hard part. The hard part is knowing what to say. These scripts give you the exact language to propose a retainer, renegotiate a contract, or pitch a new arrangement \u2014 written for your industry, not a textbook.",
+        },
+      ],
+    },
+    {
+      phase: "Test Your Options",
+      color: B.teal,
+      tint: "rgba(31,109,122,0.02)",
+      sections: [
+        {
+          title: "What-If Explorer",
+          icon: "sim",
+          desc: "Model structural changes before you commit. See the exact score impact.",
+          hover: "Every major income decision is a gamble \u2014 until you can simulate it first. Add a client, convert to a retainer, build a passive stream. See exactly how each move changes your score, your band, and your trajectory. You stop guessing and start engineering.",
+        },
+        {
+          title: "Goal Mode",
+          icon: "goal",
+          desc: "Pick a target band. See the minimum moves required to reach it.",
+          hover: "Most people set financial goals without knowing whether the goal is even structurally possible. Goal Mode works backwards from the target \u2014 it finds the fewest structural changes needed to cross the threshold. Sometimes it is one move. Sometimes the math says you need two. Either way, you know before you start.",
+        },
+        {
+          title: "Stress Tests",
+          icon: "stress",
+          desc: "What happens if your top client leaves? What if you cannot work for 90 days?",
+          hover: "You do not discover how fragile your income is when things are going well. You discover it in a crisis. Stress tests simulate the two scenarios that break most independent earners \u2014 so you can see the damage before it happens and decide whether you can live with it.",
+        },
+      ],
+    },
+    {
+      phase: "Track Progress",
+      color: B.taupe,
+      tint: "rgba(14,26,43,0.01)",
+      sections: [
+        {
+          title: "Progress Tracking",
+          icon: "track",
+          desc: "Toggle structural changes you have made. Your projected score updates instantly.",
+          hover: "Change is invisible until you measure it. As you implement your roadmap, toggle each change and watch your projected score shift in real time. It turns abstract progress into a number you can feel \u2014 and it tells you exactly when you have done enough to warrant a reassessment.",
+        },
+      ],
+    },
+  ];
+
+  if (!hasRecord) {
+    return (
+      <>
+        <title>Command Center | RunPayway</title>
+        <style>{`
+          @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+          .cc-teaser-card { position: relative; }
+          .cc-teaser-card .cc-hover-reveal { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 300ms ease, max-height 400ms ease; }
+          .cc-teaser-card:hover .cc-hover-reveal, .cc-teaser-card:focus-within .cc-hover-reveal { opacity: 1; max-height: 200px; }
+          @media(max-width:640px){
+            .cc-teaser-card .cc-hover-reveal { opacity: 1; max-height: 200px; }
+          }
+        `}</style>
+        <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
+          <SuiteHeader current="dashboard" />
+
+          <div style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px" }}>
+
+            {/* Hero */}
+            <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, animation: "fadeSlideIn 600ms ease-out" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}>COMMAND CENTER</div>
+              <h1 style={{ fontSize: mobile ? 24 : 32, fontWeight: 300, color: B.navy, margin: "0 0 12px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
+                The control room for your income structure.
+              </h1>
+              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 28px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
+                Your full diagnostic, simulator, roadmap, and progress tracker — all in one place. Complete an assessment to unlock everything below.
+              </p>
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" as const }}>
+                <a href={STRIPE_URL} style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  height: 48, padding: "0 32px", borderRadius: 10,
+                  background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
+                  color: "#FFF", fontSize: 14, fontWeight: 600, textDecoration: "none",
+                  boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
+                  transition: "transform 150ms, box-shadow 150ms",
+                }}>Get Your Assessment</a>
+              </div>
+            </div>
+
+            {/* Access Code — compact */}
+            <div style={{ padding: mobile ? "20px 20px" : "20px 28px", borderRadius: 14, border: `1px solid ${B.stone}`, backgroundColor: B.surface, marginBottom: mobile ? 32 : 48, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 8 }}>ALREADY HAVE A REPORT?</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste your Access Code" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
+                  style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minWidth: 0, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}30`; }} />
+                <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, flexShrink: 0, minHeight: 44, transition: "background 150ms" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#142338"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}>Load</button>
+              </div>
+              {codeError && <div style={{ fontSize: 12, color: B.red, marginTop: 4 }}>{codeError}</div>}
+            </div>
+
+            {/* Phase teasers */}
+            {TEASERS.map((phase, pi) => (
+              <div key={pi} style={{ marginBottom: mobile ? 28 : 40 }}>
+                {/* Phase header */}
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+                  <div style={{ width: 4, height: 32, borderRadius: 2, backgroundColor: phase.color, opacity: 0.30 }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: phase.color, textTransform: "uppercase" as const }}>{phase.phase}</span>
+                  <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${phase.color}12 0%, transparent 100%)` }} />
+                </div>
+
+                {/* Section cards */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {phase.sections.map((sec, si) => (
+                    <div key={si} className="cc-teaser-card" tabIndex={0}
+                      style={{
+                        padding: mobile ? "20px 18px" : "24px 28px",
+                        borderRadius: 14,
+                        border: `1px solid ${B.stone}`,
+                        backgroundColor: B.surface,
+                        cursor: "default",
+                        transition: "border-color 200ms, box-shadow 200ms",
+                        boxShadow: "0 1px 3px rgba(14,26,43,0.02)",
+                      }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${phase.color}30`; (e.currentTarget as HTMLElement).style.boxShadow = `0 2px 12px ${phase.color}08`; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; (e.currentTarget as HTMLElement).style.boxShadow = "0 1px 3px rgba(14,26,43,0.02)"; }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 }}>
+                        <div style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{sec.title}</div>
+                        <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${phase.color}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginLeft: 12 }}>
+                          <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: `${phase.color}40` }} />
+                        </div>
+                      </div>
+                      <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{sec.desc}</p>
+                      {/* Hover reveal — psychological depth */}
+                      <div className="cc-hover-reveal">
+                        <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${phase.color}10` }}>
+                          <p style={{ fontSize: 13, color: B.navy, margin: 0, lineHeight: 1.65, fontStyle: "italic" }}>{sec.hover}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* Bottom CTA */}
+            <div style={{ textAlign: "center", padding: mobile ? "36px 20px" : "48px 40px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>READY?</div>
+              <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 300, color: C.sandText, margin: "0 0 12px", lineHeight: 1.3 }}>
+                Find out what your income would actually survive.
+              </h2>
+              <p style={{ fontSize: 14, color: C.sandMuted, margin: "0 0 24px", lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>
+                One assessment. Every section above populates with your real data. No samples. No hypotheticals. Just the structural truth.
+              </p>
+              <a href={STRIPE_URL} style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: 48, padding: "0 32px", borderRadius: 8,
+                backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`,
+                color: C.sandText, fontSize: 14, fontWeight: 600, textDecoration: "none",
+              }}>Get Your Assessment &rarr;</a>
+            </div>
+
+            {/* Footer */}
+            <div style={{ paddingTop: 32, textAlign: "center" }}>
+              <p style={{ fontSize: 13, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+              <p style={{ fontSize: 11, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
+            </div>
+          </div>
+        </div>
+        {mobile && <PhaseNav activePhase="" mobile={mobile} />}
+      </>
+    );
+  }
+
   return (
     <>
       <title>Command Center | RunPayway</title>
@@ -790,7 +979,7 @@ function DashboardContent() {
         <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px", overflow: "hidden" }}>
 
           {/* Personalized header */}
-          {!isDemo && custName && (
+          {custName && (
             <div style={{ marginBottom: 8 }}>
               <span style={{ fontSize: 14, color: B.muted }}>{custName}&rsquo;s Command Center</span>
               {indLabel && <span style={{ fontSize: 13, color: B.taupe }}> &middot; {indLabel}</span>}
@@ -798,7 +987,7 @@ function DashboardContent() {
           )}
 
           {/* ── FIRST-VISIT WELCOME ── */}
-          {showWelcome && !isDemo && (
+          {showWelcome && (
             <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 36, animation: "fadeSlideIn 600ms ease-out", position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
               <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 16, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>WELCOME TO YOUR COMMAND CENTER</div>
@@ -881,7 +1070,7 @@ function DashboardContent() {
           </section>
 
           {/* ── VIEW REPORT + SHARE ACTIONS ── */}
-          {!isDemo && (
+          {(
             <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
               <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 24px", borderRadius: 14, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms, box-shadow 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.purple}30`; }}
@@ -981,23 +1170,6 @@ function DashboardContent() {
             ))}
           </section>
 
-          {/* Change 3: Demo card moves AFTER score + PressureMap */}
-          {isDemo && (
-            <div style={{ padding: mobile ? "16px 16px" : "16px 24px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.purple}15`, marginTop: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, whiteSpace: "nowrap" as const }}>SAMPLE DATA</div>
-                <div style={{ display: "flex", gap: 4, flexWrap: "wrap" as const }}>
-                  {SAMPLE_PROFILES.map((p, i) => (
-                    <button key={p.id} onClick={() => { setDemoProfile(i); setActivePreset(null); setSavedScenarios([]); setQuickToggles({}); }}
-                      style={{ padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: demoProfile === i ? 600 : 400, color: demoProfile === i ? "#FFF" : B.navy, backgroundColor: demoProfile === i ? (p.id === "limited" ? B.red : p.id === "developing" ? B.amber : p.id === "established" ? B.bandEstablished : B.teal) : "transparent", border: `1.5px solid ${demoProfile === i ? "transparent" : B.stone}`, cursor: "pointer", transition: "all 200ms", minHeight: 32, lineHeight: 1 }}
-                    >{p.label}</button>
-                  ))}
-                </div>
-              </div>
-              {codeError && <div style={{ fontSize: 13, color: B.red, marginTop: 6 }}>{codeError}</div>}
-            </div>
-          )}
-
           </PhaseSep>
 
           {/* ════════════════════════════════════════════════════════ */}
@@ -1008,7 +1180,6 @@ function DashboardContent() {
           {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
             <section style={{ position: "relative" }}>
-              {!isPaid && !isDemo && <LockedOverlay mobile={mobile} />}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe }}>YOUR 12-WEEK ROADMAP</div>
                 {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>{completedSteps.length}/{roadmap.length} completed</span>}
@@ -1082,15 +1253,6 @@ function DashboardContent() {
           {/*  ACT — "Let me test it"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
-
-          {/* Gating for free users on simulator */}
-          {!isPaid && !isDemo && (
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}03`, marginBottom: 16, textAlign: "center" as const }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Preview mode</div>
-              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 12px" }}>Full scenario modeling, saved paths, and Goal Mode available with the diagnostic.</p>
-              <a href={STRIPE_URL} style={{ fontSize: 13, fontWeight: 600, color: B.teal, textDecoration: "none" }}>Unlock full access &rarr;</a>
-            </div>
-          )}
 
           {/* What-If Explorer — categorized, visual, recommended */}
           <section>
@@ -1569,12 +1731,10 @@ function DashboardContent() {
                 {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3\u20134. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
               </p>
             </div>
-            {!isDemo && (
-              <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
-                style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
-                Download Assessment Data
-              </button>
-            )}
+            <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
+              style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
+              Download Assessment Data
+            </button>
           </div>
 
           </PhaseSep>

@@ -771,23 +771,6 @@ export default function MarketingLayout({
                     {link.label}
                   </Link>
                 ))}
-                {/* Social */}
-                <div style={{ marginTop: 12 }}>
-                  <div style={{ display: "flex", gap: 16 }}>
-                    {[
-                      { href: "https://linkedin.com/company/runpayway", label: "LinkedIn" },
-                      { href: "https://x.com/runpayway", label: "X" },
-                      { href: "https://instagram.com/runpayway", label: "Instagram" },
-                    ].map((link) => (
-                      <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
-                        style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", transition: "color 160ms ease" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
 

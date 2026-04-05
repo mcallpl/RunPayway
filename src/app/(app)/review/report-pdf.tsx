@@ -88,7 +88,7 @@ export interface ReportPDFData {
 /* ================================================================== */
 
 import type { jsPDF } from "jspdf";
-import QRCode from "qrcode";
+// QR code removed for RP-2.0
 
 const W = 612;
 const ML = 48;
@@ -396,12 +396,10 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
   doc.text("Use this code at runpayway.com/simulator to access your Command Center tools.", ML, y);
   y += 14;
-  // QR code + access code side by side
-  const qrSize = 72;
-  const codeCardW = CW - qrSize - 16;
+  // Access code card — full width (no QR for RP-2.0)
   doc.setFont("Courier", "normal"); doc.setFontSize(6.5);
-  const codeLines: string[] = doc.splitTextToSize(S(d.accessCode), codeCardW - 20);
-  const codeH = Math.max(codeLines.length * 9 + 10, qrSize + 8);
+  const codeLines: string[] = doc.splitTextToSize(S(d.accessCode), CW - 20);
+  const codeH = codeLines.length * 9 + 10;
   card(doc, ML, y, CW, codeH);
 
   // Access code text
@@ -409,16 +407,6 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   for (let i = 0; i < codeLines.length; i++) {
     doc.text(codeLines[i], ML + 10, y + 8 + i * 9);
   }
-
-  // QR code — render to data URL and embed
-  try {
-    const base = typeof window !== "undefined" && window.location.pathname.startsWith("/RunPayway") ? "/RunPayway" : "";
-    const suiteUrl = `https://peoplestar.com${base}/dashboard?code=${encodeURIComponent(d.accessCode)}`;
-    const qrDataUrl = await QRCode.toDataURL(suiteUrl, { width: qrSize * 3, margin: 1, color: { dark: "#0E1A2B", light: "#F8F6F1" } });
-    doc.addImage(qrDataUrl, "PNG", ML + CW - qrSize - 4, y + 4, qrSize, qrSize);
-    sf(doc, "Inter"); doc.setFontSize(6.5); doc.setTextColor("#6B6155");
-    doc.text("Scan to open Command Center", ML + CW - qrSize / 2 - 4, y + qrSize + 12, { align: "center" });
-  } catch { /* QR generation failed — code text is still there */ }
 
   // ── FOOTER ──
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
