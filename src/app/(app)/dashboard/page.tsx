@@ -1153,18 +1153,49 @@ function DashboardContent() {
                 .replace(/\[new vertical\]/g, "an adjacent vertical")
                 .replace(/\[their (company|service|clients)\]/g, "their organization")
                 .replace(/\[your (service|expertise area)\]/g, "your area of focus");
+              const whoMap: Record<string, string> = {
+                convert_retainer: "Your largest or most active client — the one you'd most want on a recurring agreement",
+                add_client: "A prospect in an adjacent vertical, or a referral partner who serves your ideal clients",
+                build_passive: "Your existing audience or network — people who already trust your expertise",
+                lock_forward: "Your top 2-3 current clients — the ones most likely to commit to next quarter",
+              };
+              const whenMap: Record<string, string> = {
+                convert_retainer: "After completing a successful project, or before a contract renewal",
+                add_client: "When your pipeline has capacity — don't wait until you need it urgently",
+                build_passive: "When you have proven frameworks or content that others would pay for",
+                lock_forward: "60-90 days before current commitments expire, or at a quarterly review",
+              };
+              const objectionMap: Record<string, string> = {
+                convert_retainer: "\"We prefer project-based.\" → \"I understand. What if we kept the project scope but added a monthly advisory layer for the strategic questions that come up between projects?\"",
+                add_client: "\"We already have someone.\" → \"That makes sense. I'm not looking to replace — I'm exploring whether there's a gap I could fill in [specific area]. Would a quick conversation be worth it?\"",
+                build_passive: "\"Why would I pay for something I could figure out myself?\" → \"You absolutely could. This saves you the 40 hours I spent building and testing it. Most people value the shortcut.\"",
+                lock_forward: "\"We can't commit that far out.\" → \"I get it. What if we locked in the rate and scope, with a 30-day cancellation clause? You get certainty without the risk.\"",
+              };
+              const successMap: Record<string, string> = {
+                convert_retainer: "They ask about pricing, scope, or \"how would this work?\" — that's interest. Send the proposal within 24 hours.",
+                add_client: "They agree to a call or introduction. Any response that isn't \"no\" is forward motion.",
+                build_passive: "Someone asks \"where can I buy this?\" or shares it with their network.",
+                lock_forward: "They sign a commitment or say \"send me the terms.\" Written > verbal.",
+              };
+              const briefingMap: Record<string, string> = {
+                convert_retainer: `Right now, only ${base.income_persistence_pct}% of your income recurs automatically. The rest must be re-earned every month. Converting your largest client to a retainer would move persistence from ${base.income_persistence_pct}% to ~${Math.min(70, base.income_persistence_pct + 20)}% — and your score from ${dScore} to ${move.projected}.`,
+                add_client: `Your top source carries ${base.largest_source_pct}% of your income. If that relationship changes, your score drops from ${dScore} to ${dScore - stLCDrop}. Adding one meaningful source would reduce that exposure and lift your score by ${move.lift} points.`,
+                build_passive: `${base.labor_dependence_pct}% of your income requires your active daily work. If you can't work for 90 days, your score drops by ${stNWDrop} points. Building one passive stream creates a floor that protects you.`,
+                lock_forward: `Only ${base.forward_secured_pct}% of your income is committed forward. You're re-selling your time every month. Locking in next quarter's revenue would move visibility from ${base.forward_secured_pct}% to ~${Math.min(50, base.forward_secured_pct + 15)}%.`,
+              };
+              const openingLine = sc ? sc.script.split("\n").find(l => l.trim().length > 20 && !l.includes("[")) || "" : "";
+
               return {
                 id: move.id, lift: move.lift, projected: move.projected, band: move.resBand,
                 effort: move.effort, speed: move.speed,
                 title: sc?.title || move.label, context: sc?.context || move.description,
                 script: sc ? personalize(sc.script) : "",
-                dataPoints: [
-                  move.id === "convert_retainer" ? `${base.income_persistence_pct}% of your income currently recurs` : null,
-                  move.id === "add_client" ? `Your top source carries ${base.largest_source_pct}% of income` : null,
-                  move.id === "build_passive" ? `${base.labor_dependence_pct}% depends on your active work` : null,
-                  move.id === "lock_forward" ? `Only ${base.forward_secured_pct}% is secured forward` : null,
-                  `Current score: ${dScore} (${dBand})`, `Projected: ${move.projected} (+${move.lift})`,
-                ].filter(Boolean) as string[],
+                briefing: briefingMap[move.id] || "",
+                who: whoMap[move.id] || "",
+                when: whenMap[move.id] || "",
+                opening: openingLine.trim(),
+                objection: objectionMap[move.id] || "",
+                success: successMap[move.id] || "",
               };
             });
             if (playbookMoves.length === 0) return null;
@@ -1210,14 +1241,33 @@ function DashboardContent() {
                         </button>
                         {isExp && (
                           <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
-                            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginBottom: 16 }}>
-                              {play.dataPoints.map((dp, j) => (
-                                <span key={j} style={{ fontSize: 12, color: B.muted, padding: "4px 10px", borderRadius: 6, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>{dp}</span>
-                              ))}
-                              <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, padding: "4px 10px", borderRadius: 6, backgroundColor: `${B.teal}06` }}>{play.effort} effort &middot; {play.speed}</span>
+                            {/* Structural briefing — why this matters for YOU */}
+                            {play.briefing && (
+                              <div style={{ padding: "14px 16px", borderRadius: 10, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
+                                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 4 }}>WHY THIS MATTERS FOR YOUR STRUCTURE</div>
+                                <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{play.briefing}</p>
+                              </div>
+                            )}
+
+                            {/* Who / When / Effort */}
+                            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10, marginBottom: 16 }}>
+                              {play.who && (
+                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
+                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 3 }}>WHO TO TALK TO</div>
+                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.45 }}>{play.who}</div>
+                                </div>
+                              )}
+                              {play.when && (
+                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
+                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 3 }}>WHEN TO USE</div>
+                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.45 }}>{play.when}</div>
+                                </div>
+                              )}
                             </div>
+
+                            {/* The script */}
                             {play.script && (
-                              <div style={{ position: "relative" }}>
+                              <div style={{ position: "relative", marginBottom: 16 }}>
                                 <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
                                 <button onClick={() => copyPB(play.script, play.id)}
                                   style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
@@ -1225,6 +1275,22 @@ function DashboardContent() {
                                 </button>
                               </div>
                             )}
+
+                            {/* Objection handler + Success signal */}
+                            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10 }}>
+                              {play.objection && (
+                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
+                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.red, marginBottom: 3 }}>IF THEY PUSH BACK</div>
+                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.5 }}>{play.objection}</div>
+                                </div>
+                              )}
+                              {play.success && (
+                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
+                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 3 }}>SUCCESS SIGNAL</div>
+                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.5 }}>{play.success}</div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         )}
                       </div>
@@ -1239,69 +1305,80 @@ function DashboardContent() {
             );
           })()}
 
-          {/* 4. 12-WEEK ROADMAP — enriched */}
+          {/* 4. 12-WEEK ROADMAP — timeline with dynamic milestones */}
           {roadmap.length > 1 && (
-            <section className="cc-section" style={{ position: "relative" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe }}>YOUR 12-WEEK ROADMAP</div>
-                {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>{completedSteps.length}/{roadmap.length} completed</span>}
-              </div>
-              <div style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: 16 }}>
-                The shortest path from {dScore} to {dScore + totalLift}.
-              </div>
-
-              {/* Cumulative progress bar */}
-              <div style={{ padding: "16px 24px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 20 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                  <span style={{ fontSize: 13, color: B.taupe }}>Full plan impact</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift} (+{totalLift})</span>
+            <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
                 </div>
-                <div style={{ height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", borderRadius: 3, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple }}>12-WEEK ROADMAP</div>
+                  <div style={{ fontSize: 14, color: B.muted }}>Your execution timeline</div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-                  <span style={{ fontSize: 11, color: B.taupe }}>Current: {dScore}</span>
-                  <span style={{ fontSize: 11, color: B.teal }}>Projected: {dScore + totalLift}</span>
-                </div>
+                {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, marginLeft: "auto" }}>{completedSteps.length}/{roadmap.length} done</span>}
               </div>
 
-              <div style={{ border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, overflow: "hidden", boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              {/* Score trajectory */}
+              <div style={{ padding: mobile ? "16px 16px" : "20px 24px", borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 24 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>Score trajectory</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift}</span>
+                </div>
+                {/* Visual trajectory with milestone dots */}
+                <div style={{ position: "relative", height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", marginBottom: 12 }}>
+                  <div style={{ height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
+                  {/* Milestone dots */}
+                  {roadmap.map((step, i) => (
+                    <div key={i} style={{ position: "absolute", top: -3, left: `${Math.min(98, (step.cumulativeTo / 100) * 100)}%`, width: 14, height: 14, borderRadius: "50%", backgroundColor: completedSteps.includes(i) ? B.teal : B.surface, border: `2px solid ${completedSteps.includes(i) ? B.teal : B.purple}`, transform: "translateX(-50%)" }} />
+                  ))}
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Now: {dScore}</span>
+                  {roadmap.map((step, i) => (
+                    <span key={i} style={{ fontSize: 11, fontFamily: mono, color: completedSteps.includes(i) ? B.teal : B.taupe }}>{step.cumulativeTo}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Timeline steps */}
+              <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
+                {/* Vertical timeline line */}
+                <div style={{ position: "absolute", left: mobile ? 13 : 17, top: 0, bottom: 0, width: 2, backgroundColor: B.stone }} />
+
                 {roadmap.map((step, i) => {
-                  const sc = scriptFor(step.pid); const isExp = expandedScript === `rm-${i}`; const done = completedSteps.includes(i);
+                  const done = completedSteps.includes(i);
+                  const dynamicMilestone: Record<string, string> = {
+                    add_client: `Concentration drops from ${base.largest_source_pct}% to below ${Math.max(30, base.largest_source_pct - 15)}%`,
+                    convert_retainer: `Recurring income rises from ${base.income_persistence_pct}% to at least ${Math.min(70, base.income_persistence_pct + 20)}%`,
+                    build_passive: `Labor dependence drops from ${base.labor_dependence_pct}% to below ${Math.max(40, base.labor_dependence_pct - 20)}%`,
+                    lock_forward: `Forward visibility rises from ${base.forward_secured_pct}% to at least ${Math.min(50, base.forward_secured_pct + 15)}%`,
+                  };
                   return (
-                    <div key={i} style={{ borderBottom: i < roadmap.length - 1 ? `1px solid ${B.stone}` : "none", opacity: done ? 0.5 : 1, transition: "opacity 300ms" }}>
-                      <div style={{ padding: mobile ? "20px 16px" : "22px 28px", display: "flex", gap: 16, alignItems: "flex-start" }}>
-                        <div style={{ flexShrink: 0, textAlign: "center" as const, minWidth: 48 }}>
-                          <button onClick={() => toggleStep(i)} style={{ width: mobile ? 40 : 36, height: mobile ? 40 : 36, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? `${B.purple}30` : `${B.teal}20`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", margin: "0 auto 4px" }}>
-                            {done ? <span style={{ color: B.white, fontSize: 14, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
-                          </button>
-                          <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe, lineHeight: 1.2 }}>{step.weeks}</div>
+                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 24 : 0, opacity: done ? 0.5 : 1, transition: "opacity 300ms" }}>
+                      {/* Timeline dot */}
+                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: 2, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
+                      </button>
+
+                      <div style={{ padding: mobile ? "16px 14px" : "18px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}` }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                          <div>
+                            <span style={{ fontSize: 11, fontWeight: 600, color: B.taupe, letterSpacing: "0.04em" }}>{step.weeks.toUpperCase()}</span>
+                            <span style={{ fontSize: 11, color: B.taupe }}> &middot; {step.effortLabel}</span>
+                          </div>
+                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{step.lift}</span>
                         </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-                            <div style={{ fontSize: 16, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none" }}>{step.action}</div>
-                            <span style={{ fontSize: 16, fontWeight: 300, fontFamily: mono, color: B.teal, flexShrink: 0, marginLeft: 12 }}>+{step.lift}</span>
-                          </div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{step.desc}</p>
-                          {/* Zone connection + effort */}
-                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 8 }}>
-                            {step.zone && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.purple}08`, color: B.purple }}>{step.zone}</span>}
-                            <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: B.stone, color: B.taupe }}>{step.effortLabel}</span>
-                          </div>
-                          {/* Success criteria */}
-                          <p style={{ fontSize: 13, color: B.teal, margin: "0 0 8px", fontWeight: 500 }}>{step.target}</p>
-                          {sc && <button onClick={() => setExpandedScript(isExp ? null : `rm-${i}`)} style={{ fontSize: 14, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "10px 16px", cursor: "pointer", minHeight: 44 }}>{isExp ? "Hide script ▲" : "Script ▼"}</button>}
+                        <div style={{ fontSize: 16, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none", marginBottom: 6 }}>{step.action}</div>
+                        <p style={{ fontSize: 14, color: B.muted, margin: "0 0 10px", lineHeight: 1.55 }}>{step.desc}</p>
+
+                        {/* Dynamic milestone */}
+                        <div style={{ padding: "10px 12px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.teal}10` }}>
+                          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 3 }}>MILESTONE</div>
+                          <div style={{ fontSize: 13, color: B.navy }}>{dynamicMilestone[step.pid] || step.target}</div>
+                          <div style={{ fontSize: 12, color: B.taupe, marginTop: 4 }}>Score checkpoint: <span style={{ fontFamily: mono, fontWeight: 600, color: B.teal }}>{step.cumulativeTo}</span></div>
                         </div>
                       </div>
-                      {isExp && sc && (
-                        <div style={{ padding: mobile ? "16px 16px 24px" : "16px 28px 24px", backgroundColor: `${B.purple}02` }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{sc.title}</span>
-                            <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 14, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "10px 16px", cursor: "pointer", minHeight: 44 }}>{copiedScript === sc.id ? "Copied!" : "Copy"}</button>
-                          </div>
-                          <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
-                        </div>
-                      )}
                     </div>
                   );
                 })}
