@@ -579,20 +579,20 @@ function TheMissingLayer() {
         {/* Two-column: how RunPayway strengthens credit + advisory */}
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 300) }}>
 
-          {/* Credit column */}
+          {/* Before borrowing */}
           <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How this helps with credit decisions</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>Before you borrow</span>
             </div>
 
             {[
-              { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt — not after." },
-              { text: "Understand what a lender can't see", desc: "Tax returns show what you earned. Your stability score shows you whether that income is diversified, recurring, and locked in ahead." },
-              { text: "Time your applications", desc: "Don't apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
-              { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying — the thing credit scores ultimately reflect." },
+              { text: "Know if you can actually afford it", desc: "If one client leaving would make you miss payments, you need to see that clearly before taking on new debt." },
+              { text: "See what your tax return doesn't show you", desc: "Your earnings look fine on paper. But is that income diversified? Recurring? Locked in ahead? Now you'll know." },
+              { text: "Time it right", desc: "If your income is weak right now, strengthen it first. Apply when you're actually ready — not when you're hoping for the best." },
+              { text: "Build the habit of consistent payments", desc: "Stable income leads to consistent payments, which builds credit over time. It starts with knowing where you stand." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
@@ -600,24 +600,24 @@ function TheMissingLayer() {
               </div>
             ))}
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Know where you stand before you walk into any borrowing conversation.</p>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Be prepared before you take action — not surprised after.</p>
             </div>
           </div>
 
-          {/* Advisory column */}
+          {/* Before financial planning */}
           <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>What you can bring to your advisor</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>Before you plan</span>
             </div>
 
             {[
-              { text: "See what your advisor can't", desc: "If 80% of your income depends on you showing up every day, you need to know that — so you can raise it, or plan around it." },
-              { text: "Know how much buffer you actually need", desc: "A score of 31 suggests 6–12 months of reserves. A score of 75 might need 3. Now you know what to ask for." },
-              { text: "Understand your real risk tolerance", desc: "Risk tolerance isn't just psychological — it's structural. If your income is fragile, you'll want to know before choosing investments." },
-              { text: "Spot your own insurance gaps", desc: "If your income stops when you stop working, disability coverage matters more than you think. Your score makes that visible." },
+              { text: "Find your blind spots first", desc: "If 80% of your income depends on you showing up every day, any financial plan built without knowing that has a gap." },
+              { text: "Know how much reserve you actually need", desc: "A stability score of 31 means you probably need 6–12 months of buffer. A 75 might need 3. Now you know before you decide." },
+              { text: "Understand your real risk capacity", desc: "Your risk tolerance isn't just how you feel — it's how your income is built. Fragile income and aggressive investing don't mix." },
+              { text: "See if you're covered", desc: "If your income stops when you stop working, disability insurance isn't optional — it's critical. Your score makes that obvious." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
@@ -625,7 +625,7 @@ function TheMissingLayer() {
               </div>
             ))}
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Walk into your next advisory meeting knowing exactly where your income is strong and where it's exposed.</p>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Know yourself before you make the next big financial decision.</p>
             </div>
           </div>
         </div>
