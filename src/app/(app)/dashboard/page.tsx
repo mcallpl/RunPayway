@@ -374,6 +374,7 @@ function DashboardContent() {
   const [isPaid, setIsPaid] = useState(false);
   const [copiedPlaybook, setCopiedPlaybook] = useState<string | null>(null);
   const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
+  const [copiedRecord, setCopiedRecord] = useState(false);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -1911,7 +1912,6 @@ function DashboardContent() {
             const recordId = (r?.record_id as string) || "";
             const modelVer = (r?.model_version as string) || "RP-2.0";
             const shortId = recordId.length > 8 ? recordId.slice(0, 8) : recordId;
-            const [copiedRecord, setCopiedRecord] = useState(false);
             const copyId = () => { if (recordId) { navigator.clipboard.writeText(recordId); setCopiedRecord(true); setTimeout(() => setCopiedRecord(false), 2000); } };
             if (!recordId || recordId.startsWith("sim-")) return null;
             return (
