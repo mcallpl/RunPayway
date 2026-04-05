@@ -332,36 +332,19 @@ function IndustrySelector() {
         {/* Prompt when nothing selected */}
         {!selected && (
           <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
-            <p style={{ fontSize: 15, color: light, marginBottom: 4 }}>Select an industry above to see its average score and primary constraint.</p>
+            <p style={{ fontSize: 15, color: light, marginBottom: 4 }}>Select an industry above to see its primary structural risk.</p>
             <p style={{ fontSize: 14, color: light }}>Don&#8217;t see yours? The assessment works for <strong style={{ color: C.navy }}>any income structure</strong> — these are examples.</p>
           </div>
         )}
 
         {/* Reveal */}
         {selected && (
-          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)", animation: "fadeSlideIn 400ms ease-out" }}>
-            <div style={{ display: m ? "block" : "flex", gap: 32, alignItems: "center" }}>
-              {/* Score ring */}
-              <div style={{ flexShrink: 0, textAlign: "center", marginBottom: m ? 24 : 0 }}>
-                <div style={{ position: "relative", width: m ? 120 : 140, height: m ? 120 : 140, margin: "0 auto" }}>
-                  <div style={{ position: "absolute", inset: -16, borderRadius: "50%", background: `radial-gradient(circle, ${bandColor(animatedScore)}15 0%, transparent 60%)`, pointerEvents: "none" }} />
-                  <ScoreRing score={animatedScore} size={m ? 120 : 140} stroke={7} color={bandColor(animatedScore)} />
-                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: m ? 36 : 42, fontWeight: 300, fontFamily: mono, color: C.sand, lineHeight: 1 }}>{animatedScore}</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: bandColor(animatedScore), marginTop: 4 }}>{bandLabel(animatedScore)}</span>
-                  </div>
-                </div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", marginTop: 8 }}>{selected.name} average</div>
-              </div>
-              {/* Risk */}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "#E57373", marginBottom: 10 }}>PRIMARY CONSTRAINT: {selected.constraint.toUpperCase()}</div>
-                <p style={{ fontSize: 16, color: "rgba(244,241,234,0.70)", lineHeight: 1.65, margin: "0 0 20px" }}>{selected.risk}</p>
-                <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}>
-                  {selected.cta} &rarr;
-                </Link>
-              </div>
-            </div>
+          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "28px 36px", borderRadius: 16, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)", animation: "fadeSlideIn 400ms ease-out" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "#E57373", marginBottom: 10 }}>{selected.constraint.toUpperCase()}</div>
+            <p style={{ fontSize: m ? 16 : 17, color: "rgba(244,241,234,0.70)", lineHeight: 1.65, margin: "0 0 20px" }}>{selected.risk}</p>
+            <Link href="/pricing" style={{ fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}>
+              {selected.cta} &rarr;
+            </Link>
           </div>
         )}
       </div>
