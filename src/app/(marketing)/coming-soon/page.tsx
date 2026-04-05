@@ -2,14 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  C, T, mono, sans, sp, maxW, secPad, px,
-  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
-} from "@/lib/design-tokens";
 
-/* ------------------------------------------------------------------ */
-/*  Hooks                                                              */
-/* ------------------------------------------------------------------ */
+/* ================================================================== */
+/* UTILITIES                                                           */
+/* ================================================================== */
 
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,68 +28,84 @@ function useMobile(bp = 768) {
   return m;
 }
 
-const fadeIn = (v: boolean, delay = 0) => ({
-  opacity: v ? 1 : 0,
-  transform: v ? "translateY(0)" : "translateY(16px)",
-  transition: `opacity 600ms ease-out ${delay}ms, transform 600ms ease-out ${delay}ms`,
-});
+function useReducedMotion() {
+  const [r, setR] = useState(false);
+  useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
+  return r;
+}
+
+function useFadeIn() {
+  const reduced = useReducedMotion();
+  return (visible: boolean, delay = 0): React.CSSProperties =>
+    reduced ? {} : { opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(10px)", transition: `opacity 500ms ease-out ${delay}ms, transform 500ms ease-out ${delay}ms` };
+}
+
+/* ================================================================== */
+/* DESIGN SYSTEM                                                       */
+/* ================================================================== */
+
+const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
+const muted = "rgba(14,26,43,0.68)";
+const light = "rgba(14,26,43,0.62)";
+const contentW = 1040;
+const px = (m: boolean) => m ? 20 : 24;
 
 
 /* ================================================================== */
-/* HERO                                                                */
+/* SECTION 1 — HERO                                                    */
 /* ================================================================== */
-function Hero() {
+
+function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
+  const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
-            <span style={{ ...T.label, color: C.teal }}>New Releases</span>
-          </div>
-          <h1 style={{ ...h1(m), color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
-            What we&#8217;ve shipped.{!m && <br />} What&#8217;s next.
-          </h1>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 520, margin: "0 auto" }}>
-            RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
-          </p>
-        </div>
+    <header ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 40 : 64, paddingBottom: m ? 40 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>New Releases</div>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 60) }}>
+          What we&#8217;ve shipped.{m ? " " : <br />}What&#8217;s next.
+        </h1>
+        <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
+          RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
+        </p>
       </div>
-    </section>
+    </header>
   );
 }
 
 
 /* ================================================================== */
-/* SHIPPED — What's live now                                           */
+/* SECTION 2 — SHIPPED                                                 */
 /* ================================================================== */
+
 function Shipped() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
 
   const releases = [
     {
-      version: "v2",
+      version: "RP-2.0",
       date: "Q1 2026",
       title: "Structural Stability Model",
-      status: "live",
+      icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8",
+      color: C.teal,
       items: [
         "Deterministic scoring with fixed, versioned rules",
         "Six structural dimensions with cross-dimension interaction analysis",
         "4-page diagnostic report with PressureMap\u2122 intelligence",
-        "Command Center with lifetime simulator access",
-        "Industry-specific benchmarks and stress scenarios",
         "Integrity verification on every assessment record",
         "Consolidated scoring architecture — one model, one source of truth",
       ],
     },
     {
-      version: "v2",
+      version: "OL-1.0",
       date: "Q1 2026",
       title: "Outcome Layer — Context Precision",
-      status: "live",
+      icon: "M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z",
+      color: C.purple,
       items: [
         "Industry-specific scenario selection and action ordering",
         "Tailored risk patterns by income model",
@@ -106,62 +118,71 @@ function Shipped() {
       version: "CC-1.0",
       date: "Q1 2026",
       title: "Command Center Launch",
-      status: "live",
+      icon: "M13 10V3L4 14h7v7l9-11h-7z",
+      color: C.teal,
       items: [
         "PressureMap\u2122 structural intelligence",
         "What-if simulator with real-time score projection",
-        "12-week execution roadmap",
+        "12-week execution roadmap with industry scripts",
         "Industry-specific benchmarks",
-        "Score sharing with QR verification",
+        "Goal Mode — reverse path modeling to target band",
       ],
     },
     {
       version: "SM-1.0",
       date: "Q2 2026",
-      title: "Stability Monitoring — Longitudinal Tracking",
-      status: "live",
+      title: "Stability Monitoring",
+      icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6",
+      color: C.purple,
       items: [
         "Score History Timeline — visual progression across assessments",
-        "Factor-level delta tracking between first and latest assessment",
+        "Factor-level delta tracking between assessments",
         "Benchmark evolution — peer percentile movement over time",
-        "Score delta summary with total change calculation",
         "Email + PIN authentication for Monitoring Portal",
+        "3 assessments over 12 months",
       ],
     },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
-        </div>
-        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-            Shipped.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 480 }}>
-            Everything currently live in production.
-          </p>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Shipped.</h2>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>Everything currently live in production.</p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: m ? 16 : 20 }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20 }}>
           {releases.map((r, i) => (
-            <div key={r.version} style={{
-              ...cardStyle, padding: m ? "24px 20px" : "32px 28px", borderRadius: 12,
+            <div key={i} style={{
+              backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32,
+              boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)",
+              position: "relative" as const, overflow: "hidden",
               ...fadeIn(visible, 100 + i * 80),
             }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, flexWrap: "wrap" as const }}>
-                <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: C.purple }}>{r.version}</span>
-                <span style={{ fontSize: 12, color: C.light }}>{r.date}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, backgroundColor: "rgba(31,109,122,0.08)", padding: "3px 10px", borderRadius: 100 }}>Live</span>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${r.color}20` }} />
+
+              {/* Header */}
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${r.color}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={r.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={r.icon} /></svg>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+                    <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: r.color }}>{r.version}</span>
+                    <span style={{ fontSize: 12, color: light }}>{r.date}</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, backgroundColor: `${C.teal}08`, padding: "2px 8px", borderRadius: 100 }}>LIVE</span>
+                  </div>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginTop: 2, lineHeight: 1.3 }}>{r.title}</div>
+                </div>
               </div>
-              <h3 style={{ ...h3Style(m), color: C.navy, marginBottom: 12 }}>{r.title}</h3>
-              <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 6 }}>
-                {r.items.map(item => (
-                  <div key={item} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
-                    <span style={{ fontSize: 14, color: C.muted, lineHeight: 1.5 }}>{item}</span>
+
+              {/* Items */}
+              <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 8 }}>
+                {r.items.map((item, j) => (
+                  <div key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+                    <span style={{ fontSize: 14, color: muted, lineHeight: 1.55 }}>{item}</span>
                   </div>
                 ))}
               </div>
@@ -175,70 +196,80 @@ function Shipped() {
 
 
 /* ================================================================== */
-/* ROADMAP — What's coming                                             */
+/* SECTION 3 — ROADMAP                                                 */
 /* ================================================================== */
-function Roadmap() {
+
+function RoadmapSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const fadeIn = useFadeIn();
 
   const upcoming = [
     {
       timeline: "Q3 2026",
       title: "Espa\u00f1ol Language Support",
       desc: "Full assessment, report, and simulator localized for Spanish-speaking markets.",
-      status: "in development",
+      status: "development" as const,
+      icon: "M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 0 1 6.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129",
     },
     {
       timeline: "Q4 2026",
-      title: "Portugu\u00eas & \u0939\u093F\u0928\u094D\u0926\u0940 Language Support",
+      title: "Portugu\u00eas & \u0939\u093F\u0928\u094D\u0926\u0940 Support",
       desc: "Full localization for Brazil and India markets.",
-      status: "planned",
+      status: "planned" as const,
+      icon: "M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 0 1 6.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129",
     },
     {
       timeline: "2026",
       title: "Enterprise API & Advisor License",
       desc: "Programmatic access to the scoring engine for financial advisors, lenders, and workforce platforms. White-label reporting available.",
-      status: "planned",
+      status: "planned" as const,
+      icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
     },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto" }}>
-        <div style={{ marginBottom: sp(2), ...fadeIn(visible) }}>
-          <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>02</span>
-        </div>
-        <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-            Roadmap.
-          </h2>
-          <p style={{ ...body(m), color: C.muted, maxWidth: 480 }}>
-            What we&#8217;re building next. Timelines are targets, not promises.
-          </p>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Roadmap.</h2>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>What we&#8217;re building next. Timelines are targets, not promises.</p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {upcoming.map((item, i) => (
-            <div key={item.title} style={{
-              padding: m ? "20px 0" : "24px 0",
-              borderBottom: i < upcoming.length - 1 ? `1px solid ${C.softBorder}` : "none",
-              ...fadeIn(visible, 100 + i * 80),
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
-                <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: C.purple }}>{item.timeline}</span>
-                <span style={{
-                  fontSize: 11, fontWeight: 600,
-                  color: item.status === "in development" ? C.amber : C.light,
-                  backgroundColor: item.status === "in development" ? "rgba(196,154,108,0.10)" : C.sand,
-                  padding: "3px 10px", borderRadius: 100,
-                }}>
-                  {item.status === "in development" ? "In Development" : "Planned"}
-                </span>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20, maxWidth: 800, margin: "0 auto" }}>
+          {upcoming.map((item, i) => {
+            const isDev = item.status === "development";
+            return (
+              <div key={i} style={{
+                backgroundColor: "#FAFAFA", borderRadius: 14, padding: m ? 24 : 28,
+                boxShadow: "0 1px 2px rgba(14,26,43,0.03)",
+                position: "relative" as const, overflow: "hidden",
+                ...fadeIn(visible, 100 + i * 80),
+              }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: isDev ? `${C.purple}25` : "rgba(14,26,43,0.06)" }} />
+                <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: isDev ? `${C.purple}08` : "rgba(14,26,43,0.03)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDev ? C.purple : light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" as const }}>
+                      <span style={{ fontFamily: mono, fontSize: 12, fontWeight: 600, color: isDev ? C.purple : light }}>{item.timeline}</span>
+                      <span style={{
+                        fontSize: 10, fontWeight: 600, letterSpacing: "0.04em",
+                        color: isDev ? C.purple : light,
+                        backgroundColor: isDev ? `${C.purple}08` : "rgba(14,26,43,0.04)",
+                        padding: "2px 8px", borderRadius: 100,
+                      }}>
+                        {isDev ? "IN DEVELOPMENT" : "PLANNED"}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 6, lineHeight: 1.3 }}>{item.title}</div>
+                    <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
+                  </div>
+                </div>
               </div>
-              <h3 style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</h3>
-              <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{item.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -247,32 +278,41 @@ function Roadmap() {
 
 
 /* ================================================================== */
-/* CTA                                                                 */
+/* SECTION 4 — CTA                                                     */
 /* ================================================================== */
-function Cta() {
+
+function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
-
+  const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ ...fadeIn(visible) }}>
-          <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-            The platform is live.{!m && <br />} Your assessment is waiting.
-          </h2>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-            Start with the free score. The full diagnostic is there when you want it.
-          </p>
-          <Link href="/begin" style={{
-            ...ctaButtonLight,
-            height: m ? 48 : 56, paddingLeft: 36, paddingRight: 36, borderRadius: 10,
-            backgroundColor: C.white, color: C.navy,
-          }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "50%", left: "50%", width: m ? 300 : 500, height: m ? 300 : 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+      <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
+          The platform is live.{m ? " " : <br />}Your assessment is waiting.
+        </h2>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
+          Start with the free score. The full diagnostic is there when you want it.
+        </p>
+        <div style={{ ...fadeIn(visible, 120) }}>
+          <Link href="/pricing" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 56, padding: m ? "0 28px" : "0 44px", width: m ? "100%" : "auto", maxWidth: m ? 360 : "none",
+            borderRadius: 12,
+            background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
+            color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
+            border: "1px solid rgba(244,241,234,0.30)",
+            transition: "transform 200ms, box-shadow 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
             Start Your Free Assessment
           </Link>
-          <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
-            Under 2 minutes &#183; Instant result &#183; <span style={{ fontFamily: mono }}>$69</span> for the full report
-          </div>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
+            Under 2 minutes &bull; Instant result &bull; Private by default
+          </p>
         </div>
       </div>
     </section>
@@ -283,13 +323,16 @@ function Cta() {
 /* ================================================================== */
 /* EXPORT                                                              */
 /* ================================================================== */
+
 export default function NewReleasesPage() {
   return (
-    <div style={{ fontFamily: sans, overflowX: "hidden" }}>
-      <Hero />
-      <Shipped />
-      <Roadmap />
-      <Cta />
+    <div className="overflow-x-hidden">
+      <main>
+        <HeroSection />
+        <Shipped />
+        <RoadmapSection />
+        <FinalCta />
+      </main>
     </div>
   );
 }
