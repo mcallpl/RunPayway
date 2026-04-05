@@ -125,7 +125,7 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
   const isLight = variant === "light";
   return (
     <div>
-      <Link href="/pricing" style={{
+      <Link href="/begin" style={{
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         height: 56, width: m ? "100%" : "auto", padding: m ? "0 24px" : "0 44px",
         borderRadius: 12,
@@ -817,7 +817,7 @@ function StickyMobileCta() {
       backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
       borderTop: "1px solid rgba(255,255,255,0.06)",
     }}>
-      <Link href="/pricing" style={{
+      <Link href="/begin" style={{
         display: "flex", alignItems: "center", justifyContent: "center",
         height: 48, borderRadius: 10, backgroundColor: C.white, color: C.navy,
         fontSize: 15, fontWeight: 600, textDecoration: "none",

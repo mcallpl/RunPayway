@@ -121,9 +121,6 @@ function useAnimatedDropdown(delay = 120) {
 
 const LANGUAGES = [
   { code: "en" as LangCode, label: "English", flag: "🇺🇸" },
-  { code: "es" as LangCode, label: "Español — Q3 2026", flag: "🇪🇸", disabled: true },
-  { code: "pt" as LangCode, label: "Português — Q4 2026", flag: "🇧🇷", disabled: true },
-  { code: "hi" as LangCode, label: "हिन्दी — Q4 2026", flag: "🇮🇳", disabled: true },
 ];
 
 function LanguageSelector({ mobile }: { mobile: boolean }) {
@@ -284,16 +281,16 @@ export default function MarketingLayout({
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
-    { href: "/sample-report", label: t.nav.sampleReport },
-    { href: "/dashboard", label: "Command Center" },
     { href: "/pricing", label: t.nav.pricing },
+    { href: "/dashboard", label: "Dashboard" },
   ];
 
   const MORE_LINKS = [
+    { href: "/sample-report", label: t.nav.sampleReport },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
+    { href: "/sign-in", label: "Sign In" },
     { href: "/contact", label: t.nav.contact },
-    { href: "/coming-soon", label: "New Releases" },
   ];
 
   useEffect(() => {
@@ -471,23 +468,6 @@ export default function MarketingLayout({
               </nav>
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28, flexShrink: 0 }}>
-                <Link
-                  href="/sign-in"
-                  className="header-nav-link"
-                  style={{
-                    fontSize: 15,
-                    fontWeight: 500,
-                    color: "#1C1635",
-                    textDecoration: "none",
-                    transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-                    whiteSpace: "nowrap",
-                    paddingBottom: 2,
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1635"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = "#1C1635"; }}
-                >
-                  Sign In
-                </Link>
                 <LanguageSelector mobile={false} />
                 <Link
                   href="/begin"

@@ -51,7 +51,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
                 textTransform: "uppercase" as const,
                 color: C.purple,
               }}>
-                COMMAND CENTER
+                DASHBOARD
               </span>
             </>
           )}

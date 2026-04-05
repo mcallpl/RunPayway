@@ -715,7 +715,7 @@ function DashboardContent() {
   if (!hydrated) {
     return (
       <>
-        <title>Command Center | RunPayway™</title>
+        <title>Dashboard | RunPayway™</title>
         <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 100, fontFamily: sans }}>
           <div style={{
             backgroundColor: C.white, borderRadius: 16,
@@ -723,13 +723,13 @@ function DashboardContent() {
             boxShadow: "0 2px 8px rgba(14,26,43,0.03)",
           }}>
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.light, marginBottom: 32 }}>
-              Command Center
+              Dashboard
             </div>
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
               <div style={{ width: 64, height: 64, borderRadius: "50%", border: `3px solid ${C.softBorder}`, borderTopColor: C.teal, animation: "cc-spin 1s linear infinite" }} />
             </div>
             <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 8, lineHeight: 1.4 }}>
-              Loading Command Center
+              Loading Dashboard
             </div>
             <div style={{ fontSize: 14, fontWeight: 400, color: C.muted, lineHeight: 1.5 }}>
               Analyzing your income &bull; Model RP-2.0
@@ -846,7 +846,7 @@ function DashboardContent() {
   if (!hasRecord) {
     return (
       <>
-        <title>Command Center | RunPayway™</title>
+        <title>Dashboard | RunPayway™</title>
         <style>{`
           @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
           .cc-teaser-card { position: relative; }
@@ -965,7 +965,7 @@ function DashboardContent() {
 
   return (
     <>
-      <title>Command Center | RunPayway™</title>
+      <title>Dashboard | RunPayway™</title>
       <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <style>{`
           @media(max-width:640px){
@@ -1002,7 +1002,7 @@ function DashboardContent() {
             const stepsDone = completedSteps.length;
 
             const copyBriefing = () => {
-              const text = `RunPayway™ Weekly Briefing — ${custName || "Assessment"}\n\nScore: ${dScore}/100 (${dBand})\n${gap > 0 ? `${gap} points to ${nextB} Stability` : "Highest band achieved"}\n\nThis week: ${nextMove?.label || "Complete Step 1"}\nProjected impact: +${nextMove?.lift || 0} points → ${nextMove?.projected || dScore}\n\n${stepsDone}/${stepsTotal} steps completed · ${daysSince} days since assessment\n\n— RunPayway™ Command Center`;
+              const text = `RunPayway™ Weekly Briefing — ${custName || "Assessment"}\n\nScore: ${dScore}/100 (${dBand})\n${gap > 0 ? `${gap} points to ${nextB} Stability` : "Highest band achieved"}\n\nThis week: ${nextMove?.label || "Complete Step 1"}\nProjected impact: +${nextMove?.lift || 0} points → ${nextMove?.projected || dScore}\n\n${stepsDone}/${stepsTotal} steps completed · ${daysSince} days since assessment\n\n— RunPayway™ Dashboard`;
               navigator.clipboard.writeText(text);
             };
 
