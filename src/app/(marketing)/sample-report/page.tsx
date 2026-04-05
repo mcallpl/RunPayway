@@ -390,7 +390,7 @@ function WhatYouGetAndCta() {
               Start Your Free Assessment
             </Link>
             <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginTop: 14, letterSpacing: "0.02em" }}>
-              8 structural questions &bull; Under 2 minutes &bull; $69 for full diagnostic
+              Under 2 minutes &bull; Instant result &bull; $69 for full diagnostic
             </p>
           </div>
         </div>

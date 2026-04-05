@@ -143,7 +143,7 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
         Get My Income Stability Score
       </Link>
       <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.35)" : light, marginTop: 12, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
-        8 structural questions &bull; Under 2 minutes &bull; Score appears instantly
+        Under 2 minutes &bull; Instant result &bull; Private by default
       </p>
     </div>
   );
