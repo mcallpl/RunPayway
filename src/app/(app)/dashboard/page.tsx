@@ -119,13 +119,13 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
         pointerEvents: "none",
       }} />
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={B.stone} strokeWidth={stroke} opacity={0.5} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(244,241,234,0.10)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}30)` }} />
+          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}40)` }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
-        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
+        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
         <span style={{ fontSize: size * 0.08, fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
       </div>
     </div>
@@ -990,7 +990,7 @@ function DashboardContent() {
                   {custName && <div style={{ fontSize: 14, color: C.sandMuted, marginBottom: 4 }}>{custName}</div>}
                   <div style={{ fontSize: mobile ? 14 : 15, color: C.sandMuted, marginBottom: 12, lineHeight: 1.55 }}>
                     {gap > 0
-                      ? <>{dBand} Stability. <span style={{ color: C.sandText }}>{gap} points</span> to {nextB}.</>
+                      ? <>{dBand}. <span style={{ color: C.sandText }}>{gap} points</span> to {nextB}.</>
                       : <>Highest stability band achieved.</>
                     }
                     {bm && <> Top {100 - bm.peer_percentile}% of {bm.cluster_label.toLowerCase()}.</>}
