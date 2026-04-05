@@ -145,7 +145,7 @@ export default function SecurityPracticesPage() {
           <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.securityPractices.closingBrand}
           </div>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
+          <p style={{ fontSize: 14, color: light, lineHeight: 1.6, marginBottom: 16 }}>
             {t.securityPractices.closingSubtitle}
           </p>
           <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em" }}>

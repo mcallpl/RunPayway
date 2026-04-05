@@ -117,7 +117,7 @@ export default function DataProcessingAgreementPage() {
         <div ref={hero.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20 }}>
             <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal }}>Data Processing Agreement</span>
-            <span style={{ fontSize: 10, fontWeight: 500, color: "rgba(244,241,234,0.40)", padding: "3px 8px", borderRadius: 4, border: "1px solid rgba(244,241,234,0.10)" }}>Enterprise</span>
+            <span style={{ fontSize: 10, fontWeight: 500, color: light, padding: "3px 8px", borderRadius: 4, border: `1px solid rgba(14,26,43,0.10)` }}>Enterprise</span>
           </div>
           <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             Data Processing Agreement
@@ -173,7 +173,7 @@ export default function DataProcessingAgreementPage() {
           <div style={{ fontSize: m ? 24 : 32, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             RunPayway&#8482;
           </div>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
+          <p style={{ fontSize: 14, color: light, lineHeight: 1.6, marginBottom: 16 }}>
             Structural income measurement system.
           </p>
           <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em" }}>

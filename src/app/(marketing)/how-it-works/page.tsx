@@ -65,21 +65,21 @@ function HeroSection() {
     <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>How It Works</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>How It Works</div>
+        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
           The system behind your score.
         </h1>
-        <div style={{ maxWidth: 560, ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 12 }}>
+        <div style={{ maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 180) }}>
+          <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, marginBottom: 12 }}>
             RunPayway&#8482; measures how your income is structured — not how much you earn.
           </p>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
+          <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
             The model is fixed, versioned, and deterministic. Identical inputs always produce identical outputs.
           </p>
         </div>
-        <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.45)" }}>
-            RunPayway&#8482; Structural Income Classification System &bull; Model RP-2.0 &bull; Deterministic &bull; Version-controlled &bull; Audit-reproducible
+        <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: `1px solid rgba(14,26,43,0.06)`, ...fadeIn(visible, 300) }}>
+          <p style={{ fontSize: 14, letterSpacing: "0.03em", color: light }}>
+            Model RP-2.0 &bull; Deterministic &bull; Version-controlled &bull; Audit-reproducible
           </p>
         </div>
       </div>

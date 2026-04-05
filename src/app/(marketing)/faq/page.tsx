@@ -235,10 +235,10 @@ export default function FaqPage() {
       <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
+          <div style={{ fontSize: mobile ? 28 : 40, fontWeight: 500, color: C.sand, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>
             {t.faqPage.closingSubtitle}
           </div>
-          <p style={{ fontSize: 13, color: light, letterSpacing: "0.04em", marginBottom: 28 }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", marginBottom: 28 }}>
             {t.faqPage.poweredBy}
           </p>
           <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 40px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(244,241,234,0.10)" }}
