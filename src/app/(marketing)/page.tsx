@@ -195,26 +195,19 @@ function HeroSection() {
 
   return (
     <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden" }}>
-      {/* Ghosted data hint — faint score spectrum behind the hero */}
-      {!m && (
-        <div style={{ position: "absolute", top: "50%", right: "6%", transform: "translateY(-50%)", opacity: 0.035, pointerEvents: "none", display: "flex", flexDirection: "column", gap: 12, width: 180 }}>
-          {[
-            { w: "45%", c: C.teal }, { w: "72%", c: "#D4A843" }, { w: "33%", c: "#E57373" },
-            { w: "28%", c: "#E57373" }, { w: "55%", c: C.teal }, { w: "85%", c: "#E57373" },
-          ].map((b, i) => (
-            <div key={i} style={{ height: 6, borderRadius: 3, backgroundColor: b.c, width: b.w }} />
-          ))}
-        </div>
-      )}
+      <style>{`
+        @keyframes ringDraw { from { stroke-dashoffset: 745; } to { stroke-dashoffset: 538; } }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 36 : 56, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
-        <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 72 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 48, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+        <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 56 }}>
           {/* Left — headline */}
-          <div style={{ maxWidth: 540, textAlign: m ? "center" : "left", marginBottom: m ? 48 : 0 }}>
-            <h1 style={{ fontSize: m ? 38 : 60, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
+          <div style={{ maxWidth: 520, textAlign: m ? "center" : "left", marginBottom: m ? 40 : 0 }}>
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>
               Your income has a structure.{m ? " " : <br />}You&#8217;ve never seen it.
             </h1>
-            <p style={{ fontSize: m ? 17 : 19, color: muted, lineHeight: 1.7, marginBottom: 40, ...fadeIn(visible, 100) }}>
+            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 36, ...fadeIn(visible, 100) }}>
               RunPayway&#8482; measures how your income holds under pressure — not how much you make.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
@@ -222,34 +215,70 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — pulsing ring */}
-          <div style={{ flexShrink: 0, ...fadeIn(visible, 300) }}>
-            <div style={{ width: m ? 200 : 260, height: m ? 200 : 260, margin: m ? "0 auto" : undefined, position: "relative" }}>
-              <style>{`
-                @keyframes ringPulse { 0%, 100% { opacity: 0.20; transform: rotate(-90deg) scale(1); } 50% { opacity: 0.45; transform: rotate(-90deg) scale(1.02); } }
-                @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-              `}</style>
-              {/* Faint glow behind ring */}
-              <div style={{ position: "absolute", inset: -40, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-              <svg width={m ? 200 : 260} height={m ? 200 : 260} style={{ animation: "ringPulse 3s ease-in-out infinite" }}>
-                <circle cx={m ? 100 : 130} cy={m ? 100 : 130} r={m ? 88 : 118} fill="none" stroke={`${C.navy}15`} strokeWidth={8} strokeDasharray="12 8" strokeLinecap="round" />
-              </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: m ? 42 : 52, fontWeight: 300, fontFamily: mono, color: `${C.navy}10`, lineHeight: 1 }}>?</span>
-                <span style={{ fontSize: 12, color: light, marginTop: 8 }}>Your score</span>
+          {/* Right — score preview card */}
+          <div style={{ flexShrink: 0, width: m ? "100%" : 340, ...fadeIn(visible, 300) }}>
+            <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: m ? "28px 24px" : "32px 28px", position: "relative", overflow: "hidden" }}>
+              {/* Subtle glow */}
+              <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}12 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+              {/* Score ring + number */}
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20, position: "relative", zIndex: 1 }}>
+                <div style={{ position: "relative", width: 80, height: 80, flexShrink: 0 }}>
+                  <svg width={80} height={80} style={{ transform: "rotate(-90deg)" }}>
+                    <circle cx={40} cy={40} r={34} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6} />
+                    <circle cx={40} cy={40} r={34} fill="none" stroke="#2B5EA7" strokeWidth={6}
+                      strokeDasharray={2 * Math.PI * 34} strokeDashoffset={2 * Math.PI * 34 * (1 - 0.72)}
+                      strokeLinecap="round"
+                      style={{ animation: visible ? "ringDraw 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none", filter: "drop-shadow(0 0 4px rgba(43,94,167,0.30))" }} />
+                  </svg>
+                  <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.sand, lineHeight: 1 }}>72</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 6 }}>
+                    <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
+                    <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established</span>
+                  </div>
+                  <div style={{ fontSize: 13, color: "rgba(244,241,234,0.45)" }}>3 pts to High Stability</div>
+                </div>
+              </div>
+
+              {/* Mini metrics */}
+              <div style={{ display: "flex", gap: 0, borderRadius: 8, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 16, position: "relative", zIndex: 1 }}>
+                {[
+                  { label: "RUNWAY", value: "4.2 mo", color: C.teal },
+                  { label: "RISK", value: "\u221218", color: "#E57373" },
+                  { label: "FRAGILITY", value: "Uneven", color: "#D4A843" },
+                ].map((metric, i, arr) => (
+                  <div key={i} style={{ flex: 1, padding: "8px 0", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)" }}>
+                    <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 3 }}>{metric.label}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: metric.color }}>{metric.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Constraint hint */}
+              <div style={{ padding: "10px 12px", borderRadius: 8, borderLeft: `2px solid #E57373`, backgroundColor: "rgba(255,255,255,0.02)", position: "relative", zIndex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: "#E57373", marginBottom: 3 }}>ROOT CONSTRAINT</div>
+                <div style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.4 }}>Income concentration — one source carries most of the structure.</div>
+              </div>
+
+              {/* Example label */}
+              <div style={{ textAlign: "center", marginTop: 14, position: "relative", zIndex: 1 }}>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em" }}>Example output &bull; Model RP-2.0</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Credibility strip */}
-        <div style={{ marginTop: m ? 48 : 80, paddingTop: m ? 24 : 32, borderTop: `1px solid rgba(14,26,43,0.06)`, textAlign: "center", ...fadeIn(visible, 400) }}>
-          <p style={{ fontSize: 14, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
+        {/* Credibility strip — tighter, part of the hero */}
+        <div style={{ marginTop: m ? 32 : 44, textAlign: "center", ...fadeIn(visible, 400) }}>
+          <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
             Model RP-2.0 &bull; 6 structural dimensions &bull; Deterministic output &bull; No bank connection
           </p>
         </div>
       </div>
-
     </header>
   );
 }
