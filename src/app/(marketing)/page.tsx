@@ -752,24 +752,9 @@ function CommandCenterPreview() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div style={{ textAlign: "center", marginTop: m ? 48 : 72, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 18 : 22, fontWeight: 500, color: C.navy, marginBottom: 8 }}>All included with the $69 diagnostic.</p>
-          <p style={{ fontSize: 15, color: muted, marginBottom: 32 }}>Lifetime access. Updates every time you come back.</p>
-          <Link href="/pricing" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 56, padding: m ? "0 28px" : "0 44px",
-            borderRadius: 12,
-            background: `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
-            color: C.white, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
-            boxShadow: elevation.cta,
-            border: "1px solid rgba(255,255,255,0.08)",
-            transition: "transform 200ms, box-shadow 200ms",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = elevation.ctaHover; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = elevation.cta; }}>
-            See Pricing
-          </Link>
+        {/* Pricing note */}
+        <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: 15, color: light, margin: 0 }}>All included with the $69 diagnostic. Lifetime access.</p>
         </div>
       </div>
     </section>
