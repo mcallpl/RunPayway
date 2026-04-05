@@ -364,12 +364,14 @@ function HowRunPaywayIsUsed() {
       desc: "Evaluate and explain client stability using a structured, repeatable score.",
       color: C.purple,
       icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+      link: "/contact",
     },
     {
       title: "Organizations",
       desc: "Assess income risk at scale using a deterministic measurement.",
       color: C.navy,
       icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
+      link: "/contact",
     },
   ];
 
@@ -395,6 +397,11 @@ function HowRunPaywayIsUsed() {
               </div>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{uc.title}</div>
               <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{uc.desc}</p>
+              {(uc as { link?: string }).link && (
+                <Link href={(uc as { link: string }).link} style={{ fontSize: 14, fontWeight: 500, color: uc.color, textDecoration: "none", marginTop: 14, display: "inline-block" }}>
+                  Get in touch &rarr;
+                </Link>
+              )}
             </div>
           ))}
         </div>
