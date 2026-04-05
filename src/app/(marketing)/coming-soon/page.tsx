@@ -47,16 +47,16 @@ function Hero() {
   const m = useMobile();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
             <span style={{ ...T.label, color: C.teal }}>New Releases</span>
           </div>
-          <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+          <h1 style={{ ...h1(m), color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
             What we&#8217;ve shipped.{!m && <br />} What&#8217;s next.
           </h1>
-          <p style={{ ...body(m), color: C.sandMuted, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ ...body(m), color: C.muted, maxWidth: 520, margin: "0 auto" }}>
             RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
           </p>
         </div>

@@ -105,16 +105,16 @@ export default function SignInPage() {
   return (
     <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       {/* ══ HERO ══ */}
-      <section ref={heroAnim.ref} style={{ backgroundColor: C.navy, paddingTop: m ? 120 : 180, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m) }}>
+      <section ref={heroAnim.ref} style={{ backgroundColor: C.white, paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
           <div style={{ ...fadeIn(heroAnim.visible) }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
               <span style={{ ...T.label, color: C.teal }}>Monitoring Portal</span>
             </div>
-            <h1 style={{ ...h1(m), color: C.sandText, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
+            <h1 style={{ ...h1(m), color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
               Your stability,{!m && <br />} tracked over time.
             </h1>
-            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto 28px" }}>
+            <p style={{ ...body(m), color: C.muted, maxWidth: 480, margin: "0 auto 28px" }}>
               Sign in to access your RunPayway&#8482; Stability Monitoring dashboard, take assessments, and review your history.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>

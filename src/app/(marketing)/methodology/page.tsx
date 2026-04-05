@@ -70,15 +70,15 @@ function HeroSection() {
           Fixed rules. Deterministic scoring.{m ? " " : <br />}Every result reproducible.
         </h1>
         <div style={{ maxWidth: 560, ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 12 }}>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 12 }}>
             The Income Stability Score&#8482; is a deterministic structural assessment. The same inputs always produce the same score.
           </p>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
+          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>
             Every rule is versioned and auditable.
           </p>
         </div>
-        <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: "1px solid rgba(244,241,234,0.06)", ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: "rgba(244,241,234,0.45)" }}>
+        <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: `1px solid rgba(14,26,43,0.06)`, ...fadeIn(visible, 300) }}>
+          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: light }}>
             RunPayway&#8482; Structural Income Classification System &bull; Model RP-2.0 &bull; Deterministic &bull; Version-controlled &bull; Audit-reproducible
           </p>
         </div>
