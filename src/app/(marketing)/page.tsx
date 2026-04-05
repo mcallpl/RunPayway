@@ -344,6 +344,71 @@ function IndustrySelector() {
 
 
 /* ================================================================== */
+/* SECTION 2B — HOW RUNPAYWAY IS USED                                  */
+/* ================================================================== */
+
+function HowRunPaywayIsUsed() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const useCases = [
+    {
+      title: "Individuals",
+      desc: "Understand how their income is built, where it is exposed, and what to strengthen first.",
+      color: C.teal,
+      icon: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z",
+    },
+    {
+      title: "Advisors",
+      desc: "Evaluate and explain client stability using a structured, repeatable score.",
+      color: C.purple,
+      icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+    },
+    {
+      title: "Organizations",
+      desc: "Assess income risk at scale using a deterministic measurement.",
+      color: C.navy,
+      icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
+    },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 104, paddingBottom: m ? 56 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>HOW RUNPAYWAY IS USED</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
+            One system. Three use cases.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+            RunPayway™ measures income the same way every time. How it gets used depends on who is applying it.
+          </p>
+        </div>
+
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 120) }}>
+          {useCases.map((uc, i) => (
+            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden", marginBottom: m ? 12 : 0 }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${uc.color}30` }} />
+              <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${uc.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={uc.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={uc.icon} /></svg>
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{uc.title}</div>
+              <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{uc.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: m ? 32 : 48, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: 15, color: light }}>The model stays fixed. The use case changes.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 3 — SAME INCOME, DIFFERENT STABILITY + self-reflection      */
 /* ================================================================== */
 
@@ -861,6 +926,7 @@ export default function LandingPage() {
       <main id="main-content">
         <HeroSection />
         <IndustrySelector />
+        <HowRunPaywayIsUsed />
         <SameIncomeProof />
         <WhatStabilityUnlocks />
         <TheMissingLayer />
