@@ -21,7 +21,7 @@ const ANGLES: Record<string, { label: string; headline: string; body: string; ct
   pressuremap: {
     label: "YOUR INCOME IS EXPOSED",
     headline: "You Just Saw the Risks. Now Fix Them.",
-    body: "The red zones on your PressureMap are not hypothetical — they are the exact scenarios most likely to disrupt your income. Your personalized report gives you the specific actions to move each zone from red to green.",
+    body: "The red zones on your PressureMap™ are not hypothetical — they are the exact scenarios most likely to disrupt your income. Your personalized report gives you the specific actions to move each zone from red to green.",
     cta: "Get Your Personalized Report — From $69",
   },
   simulator: {

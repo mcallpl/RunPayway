@@ -252,7 +252,7 @@ const BAND_MESSAGES: Record<string, string> = {
 /* ------------------------------------------------------------------ */
 
 const INCLUDED_BULLETS = [
-  "Income Stability Score across 6 structural dimensions",
+  "Income Stability Score™ across 6 structural dimensions",
   "Stability band classification and peer context",
   "Constraint diagnosis — your weakest structural factor",
   "PressureMap\u2122 — AI-generated industry risk analysis",
@@ -1042,7 +1042,7 @@ export default function DiagnosticPage() {
           <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
           <Image
             src={logoBlue}
-            alt="RunPayway"
+            alt="RunPayway™"
             width={160}
             height={19}
             style={{ height: "auto", animation: "rp-pulse 1.5s ease-in-out infinite" }}
@@ -1187,7 +1187,7 @@ export default function DiagnosticPage() {
         <style>{`@keyframes diagFadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes rp-pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }`}</style>
         <Image
           src={logoBlue}
-          alt="RunPayway"
+          alt="RunPayway™"
           width={160}
           height={19}
           style={{ height: "auto", animation: "rp-pulse 1.5s ease-in-out infinite" }}

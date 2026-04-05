@@ -338,7 +338,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   doc.text("Your Path to Financial Resilience", ML, y);
   y += 16;
   sf(doc, "Inter"); doc.setFontSize(10.5); doc.setTextColor("#535D6B");
-  doc.text("Your Personalized Income Stability Score", ML, y);
+  doc.text("Your Personalized Income Stability Score™", ML, y);
 
   // ── THIN LINE ──
   y += 20;

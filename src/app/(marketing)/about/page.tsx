@@ -98,7 +98,7 @@ function WhatWhoWhy() {
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>WHAT WE DO</div>
             <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Measure the structural durability of income.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-              RunPayway evaluates six structural dimensions of how income is built — not how much you earn. The result is a score from 0 to 100 that reflects how your income holds under disruption.
+              RunPayway™ evaluates six structural dimensions of how income is built — not how much you earn. The result is a score from 0 to 100 that reflects how your income holds under disruption.
             </p>
           </div>
 

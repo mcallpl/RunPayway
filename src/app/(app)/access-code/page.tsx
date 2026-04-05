@@ -66,7 +66,7 @@ function AccessCodeContent() {
 
   return (
     <>
-      <title>Access Code | RunPayway</title>
+      <title>Access Code | RunPayway™</title>
       <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <SuiteHeader current="access-code" />
 
@@ -78,7 +78,7 @@ function AccessCodeContent() {
               Load your Command Center.
             </h1>
             <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.65 }}>
-              Paste the access code from your RunPayway report to open your full diagnostic, simulator, and roadmap.
+              Paste the access code from your RunPayway™ report to open your full diagnostic, simulator, and roadmap.
             </p>
           </div>
 
@@ -127,7 +127,7 @@ function AccessCodeContent() {
 
           <div style={{ textAlign: "center", marginTop: 32 }}>
             <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px", lineHeight: 1.6 }}>
-              Your access code is on page 1 and page 4 of your RunPayway report.
+              Your access code is on page 1 and page 4 of your RunPayway™ report.
             </p>
             <p style={{ fontSize: 13, color: `${B.taupe}80`, margin: 0 }}>
               Same code, same score. Deterministic by design.

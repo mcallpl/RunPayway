@@ -443,7 +443,7 @@ export default function InitializationPage() {
           <div style={{ paddingBottom: 40, paddingTop: 32 }}>
             <Image
               src={logoBlue}
-              alt="RunPayway"
+              alt="RunPayway™"
               width={100}
               height={12}
               style={{ height: "auto", opacity: 0.25 }}

@@ -90,7 +90,7 @@ function WhatMakesItDifferent() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>What makes this different from other assessments.</h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
-            Most financial tools measure what happened. RunPayway measures how your income is built — and whether that structure survives change.
+            Most financial tools measure what happened. RunPayway™ measures how your income is built — and whether that structure survives change.
           </p>
         </div>
 

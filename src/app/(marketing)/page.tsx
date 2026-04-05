@@ -467,7 +467,7 @@ function TheSystemAndCta() {
             Not a budget. Not a forecast.{m ? " " : <br />}A structural measurement.
           </h2>
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
-            RunPayway evaluates 6 fixed structural dimensions of your income. A deterministic model. Same inputs always produce the same score.
+            RunPayway™ evaluates 6 fixed structural dimensions of your income. A deterministic model. Same inputs always produce the same score.
           </p>
         </div>
 
@@ -594,12 +594,12 @@ function StickyMobileCta() {
 
 const PRODUCT_SCHEMA = {
   "@context": "https://schema.org", "@type": "Product",
-  name: "RunPayway Income Stability Score",
+  name: "RunPayway™ Income Stability Score™",
   description: "A structural assessment that measures how stable your income structure is \u2014 not how much you make.",
-  brand: { "@type": "Brand", name: "RunPayway" },
+  brand: { "@type": "Brand", name: "RunPayway™" },
   offers: [
-    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score", description: "Score, band, primary constraint, and one recommended direction." },
-    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway Diagnostic Report", description: "Full diagnostic with PressureMap, Command Center, scripts, and 12-week roadmap." },
+    { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score™", description: "Score, band, primary constraint, and one recommended direction." },
+    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway™ Diagnostic Report", description: "Full diagnostic with PressureMap™, Command Center, scripts, and 12-week roadmap." },
   ],
 };
 

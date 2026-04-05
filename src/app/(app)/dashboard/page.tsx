@@ -342,7 +342,7 @@ function generateScoreImage(score: number, bandLabel: string, name: string, colo
     ctx.fillStyle = C.sandLight; ctx.font = "600 11px Inter, system-ui, sans-serif";
     ctx.fillText("INCOME STABILITY SCORE", 260, 100);
     ctx.fillStyle = C.white; ctx.font = "600 22px Inter, system-ui, sans-serif";
-    ctx.fillText(name || "RunPayway Assessment", 260, 132);
+    ctx.fillText(name || "RunPayway™ Assessment", 260, 132);
     ctx.fillStyle = color; ctx.font = "600 16px Inter, system-ui, sans-serif";
     ctx.fillText(bandLabel, 260, 162);
     ctx.fillStyle = C.sandMuted; ctx.font = "400 13px Inter, system-ui, sans-serif";
@@ -714,7 +714,7 @@ function DashboardContent() {
   if (!hydrated) {
     return (
       <>
-        <title>Command Center | RunPayway</title>
+        <title>Command Center | RunPayway™</title>
         <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 100, fontFamily: sans }}>
           <div style={{
             backgroundColor: C.white, borderRadius: 16,
@@ -767,7 +767,7 @@ function DashboardContent() {
           title: "PressureMap\u2122",
           icon: "map",
           desc: "See exactly where your income is vulnerable and where it is protected.",
-          hover: "Your income has three zones: income that stops if you stop, income that recurs but can be cancelled, and income that continues no matter what. Most people discover that the zone they assumed was safe is actually the most fragile. The PressureMap forces you to see the structure you have been avoiding.",
+          hover: "Your income has three zones: income that stops if you stop, income that recurs but can be cancelled, and income that continues no matter what. Most people discover that the zone they assumed was safe is actually the most fragile. The PressureMap™ forces you to see the structure you have been avoiding.",
         },
         {
           title: "Root Constraint",
@@ -839,7 +839,7 @@ function DashboardContent() {
   if (!hasRecord) {
     return (
       <>
-        <title>Command Center | RunPayway</title>
+        <title>Command Center | RunPayway™</title>
         <style>{`
           @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
           .cc-teaser-card { position: relative; }
@@ -958,7 +958,7 @@ function DashboardContent() {
 
   return (
     <>
-      <title>Command Center | RunPayway</title>
+      <title>Command Center | RunPayway™</title>
       <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <style>{`
           @media(max-width:640px){
@@ -1045,7 +1045,7 @@ function DashboardContent() {
                 </button>
                 <button onClick={() => {
                   const subject = encodeURIComponent("My Income Stability Assessment");
-                  const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
+                  const body = encodeURIComponent(`I completed a RunPayway™ Income Stability Score™ assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
                   window.location.href = `mailto:?subject=${subject}&body=${body}`;
                 }} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
