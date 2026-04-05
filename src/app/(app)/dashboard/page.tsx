@@ -1389,35 +1389,57 @@ function DashboardContent() {
 
                 {roadmap.map((step, i) => {
                   const done = completedSteps.includes(i);
-                  const dynamicMilestone: Record<string, string> = {
-                    add_client: `Concentration drops from ${base.largest_source_pct}% to below ${Math.max(30, base.largest_source_pct - 15)}%`,
-                    convert_retainer: `Recurring income rises from ${base.income_persistence_pct}% to at least ${Math.min(70, base.income_persistence_pct + 20)}%`,
-                    build_passive: `Labor dependence drops from ${base.labor_dependence_pct}% to below ${Math.max(40, base.labor_dependence_pct - 20)}%`,
-                    lock_forward: `Forward visibility rises from ${base.forward_secured_pct}% to at least ${Math.min(50, base.forward_secured_pct + 15)}%`,
+                  const isFirst = i === 0 && !done;
+                  const plainMilestone: Record<string, string> = {
+                    add_client: "No single client carries more than half your income",
+                    convert_retainer: "At least some of your income repeats automatically each month",
+                    build_passive: "You have income that comes in whether you work that day or not",
+                    lock_forward: "Next quarter's revenue is already committed — not hoped for",
+                  };
+                  const timeEstimate: Record<string, string> = {
+                    add_client: "2–4 weeks",
+                    convert_retainer: "1–2 conversations",
+                    build_passive: "4–8 weeks to set up",
+                    lock_forward: "1–3 conversations",
+                  };
+                  const successSignal: Record<string, string> = {
+                    add_client: "You've signed a new client or agreement that generates real revenue",
+                    convert_retainer: "A client has agreed to a recurring arrangement — even a small one",
+                    build_passive: "Revenue came in that didn't require your active work that week",
+                    lock_forward: "You have a signed commitment for income beyond this month",
                   };
                   return (
                     <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 24 : 0, opacity: done ? 0.5 : 1, transition: "opacity 300ms" }}>
                       {/* Timeline dot */}
-                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: 2, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
-                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
+                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: 2, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
                       </button>
 
-                      <div style={{ padding: mobile ? "16px 14px" : "18px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}` }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                          <div>
-                            <span style={{ fontSize: 11, fontWeight: 600, color: B.taupe, letterSpacing: "0.04em" }}>{step.weeks.toUpperCase()}</span>
-                            <span style={{ fontSize: 11, color: B.taupe }}> &middot; {step.effortLabel}</span>
-                          </div>
-                          <span style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{step.lift}</span>
-                        </div>
-                        <div style={{ fontSize: 16, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none", marginBottom: 6 }}>{step.action}</div>
-                        <p style={{ fontSize: 14, color: B.muted, margin: "0 0 10px", lineHeight: 1.55 }}>{step.desc}</p>
+                      <div style={{ padding: mobile ? "18px 16px" : "22px 24px", borderRadius: 14, backgroundColor: isFirst ? `${B.purple}03` : "#FAFAFA", border: `1px solid ${isFirst ? `${B.purple}15` : B.stone}` }}>
+                        {/* Start here badge for first uncompleted step */}
+                        {isFirst && (
+                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>START HERE</div>
+                        )}
 
-                        {/* Dynamic milestone */}
-                        <div style={{ padding: "10px 12px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.teal}10` }}>
-                          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 3 }}>MILESTONE</div>
-                          <div style={{ fontSize: 13, color: B.navy }}>{dynamicMilestone[step.pid] || step.target}</div>
-                          <div style={{ fontSize: 12, color: B.taupe, marginTop: 4 }}>Score checkpoint: <span style={{ fontFamily: mono, fontWeight: 600, color: B.teal }}>{step.cumulativeTo}</span></div>
+                        <div style={{ fontSize: 17, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none", marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
+                        <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
+
+                        {/* Time + effort inline */}
+                        <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
+                          <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                          {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
+                          <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
+                        </div>
+
+                        {/* What done looks like + milestone */}
+                        <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
+                          <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
+                          {successSignal[step.pid] && (
+                            <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
+                              <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
+                            </p>
+                          )}
+                          <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
                         </div>
                       </div>
                     </div>
