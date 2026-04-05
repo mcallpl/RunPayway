@@ -141,6 +141,9 @@ const selectStyle: React.CSSProperties = {
 function RadioCard({ label, desc, selected, onClick }: { label: string; desc: string; selected: boolean; onClick: () => void }) {
   return (
     <button
+      role="radio"
+      aria-checked={selected}
+      aria-label={label}
       onClick={onClick}
       style={{
         display: "flex",
@@ -523,10 +526,12 @@ export default function InitializationPage() {
           <div style={{ position: "relative", marginBottom: 32 }}>
             <input
               type="text"
+              id="assessment-title"
               value={form.assessment_title}
               onChange={(e) => update("assessment_title", e.target.value)}
               placeholder="Your name or organization"
               autoFocus
+              aria-required="true"
               onFocus={focusHandler}
               onBlur={blurHandler}
               style={{
@@ -546,6 +551,7 @@ export default function InitializationPage() {
           <div style={{ position: "relative", marginBottom: 32 }}>
             <input
               type="email"
+              id="recipient-email"
               value={form.recipient_email}
               onChange={(e) => update("recipient_email", e.target.value)}
               placeholder="Email (optional - to receive your report)"
@@ -726,12 +732,14 @@ export default function InitializationPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             {/* Industry */}
             <div>
-              <label style={labelStyle}>Industry Sector</label>
+              <label htmlFor="industry-sector" style={labelStyle}>Industry Sector</label>
               <p style={helperStyle}>Which industry generates your primary income?</p>
               <select
+                id="industry-sector"
                 value={form.industry_sector}
                 onChange={(e) => update("industry_sector", e.target.value)}
                 style={{ ...selectStyle, color: form.industry_sector ? C.navy : C.light }}
+                aria-required="true"
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -744,12 +752,14 @@ export default function InitializationPage() {
 
             {/* Operating Structure */}
             <div>
-              <label style={labelStyle}>Operating Structure</label>
+              <label htmlFor="operating-structure" style={labelStyle}>Operating Structure</label>
               <p style={helperStyle}>How is your income legally structured?</p>
               <select
+                id="operating-structure"
                 value={form.operating_structure}
                 onChange={(e) => update("operating_structure", e.target.value)}
                 style={{ ...selectStyle, color: form.operating_structure ? C.navy : C.light }}
+                aria-required="true"
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -762,12 +772,14 @@ export default function InitializationPage() {
 
             {/* Primary Income Model */}
             <div>
-              <label style={labelStyle}>Primary Income Model</label>
+              <label htmlFor="income-model" style={labelStyle}>Primary Income Model</label>
               <p style={helperStyle}>How do you primarily earn income?</p>
               <select
+                id="income-model"
                 value={form.primary_income_model}
                 onChange={(e) => update("primary_income_model", e.target.value)}
                 style={{ ...selectStyle, color: form.primary_income_model ? C.navy : C.light }}
+                aria-required="true"
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
@@ -780,12 +792,14 @@ export default function InitializationPage() {
 
             {/* Years in Current Structure */}
             <div>
-              <label style={labelStyle}>Years in Current Structure</label>
+              <label htmlFor="years-in-structure" style={labelStyle}>Years in Current Structure</label>
               <p style={helperStyle}>How long have you been earning under this arrangement?</p>
               <select
+                id="years-in-structure"
                 value={form.years_in_structure}
                 onChange={(e) => update("years_in_structure", e.target.value)}
                 style={{ ...selectStyle, color: form.years_in_structure ? C.navy : C.light }}
+                aria-required="true"
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >

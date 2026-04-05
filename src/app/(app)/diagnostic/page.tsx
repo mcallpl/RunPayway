@@ -1320,6 +1320,7 @@ export default function DiagnosticPage() {
                 key={opt.letter}
                 role="radio"
                 aria-checked={isSelected}
+                aria-label={`${opt.letter}: ${opt.text}`}
                 onClick={() => !transitioning && selectAnswer(opt.letter)}
                 disabled={transitioning}
                 style={{

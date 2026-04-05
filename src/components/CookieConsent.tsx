@@ -36,6 +36,8 @@ export default function CookieConsent() {
 
   return (
     <div
+      role="dialog"
+      aria-label="Cookie consent"
       style={{
         position: "fixed",
         bottom: 0,
@@ -83,6 +85,7 @@ export default function CookieConsent() {
       >
         <button
           onClick={handleAccept}
+          aria-label="Accept cookies"
           style={{
             height: 40,
             paddingLeft: 24,
@@ -108,6 +111,8 @@ export default function CookieConsent() {
 
         <button
           onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          aria-label="Toggle cookie details"
           style={{
             height: 40,
             paddingLeft: 20,

@@ -393,6 +393,8 @@ export default function MarketingLayout({
                 >
                   <button
                     className="header-nav-link"
+                    aria-label="More navigation options"
+                    aria-expanded={moreDropdown.visible}
                     style={{
                       fontSize: 15,
                       fontWeight: 500,
@@ -577,6 +579,8 @@ export default function MarketingLayout({
         {mobile && menuOpen && (
           <div
             className="mobile-overlay"
+            role="dialog"
+            aria-label="Navigation menu"
             style={{
               position: "fixed",
               top: mobile ? 56 : 72,

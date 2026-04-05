@@ -107,7 +107,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const glowSize = size * 1.5;
 
   return (
-    <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
+    <div role="img" aria-label={`Income Stability Score: ${score} out of 100`} style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
@@ -1348,7 +1348,7 @@ function DashboardContent() {
                             {play.script && (
                               <div style={{ position: "relative", marginBottom: 16 }}>
                                 <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
-                                <button onClick={() => copyPB(play.script, play.id)}
+                                <button aria-label="Copy playbook script to clipboard" onClick={() => copyPB(play.script, play.id)}
                                   style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
                                   {copiedPlaybook === play.id ? "Copied!" : "Copy"}
                                 </button>
@@ -1425,7 +1425,7 @@ function DashboardContent() {
                   return (
                     <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
                       {/* Timeline dot */}
-                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                      <button role="checkbox" aria-checked={done} aria-label={`Mark step ${i + 1} as ${done ? 'incomplete' : 'complete'}`} onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
                         {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
                       </button>
 
@@ -1961,7 +1961,7 @@ function DashboardContent() {
                     </div>
                   )}
                 </div>
-                <button onClick={copyId} style={{ fontSize: 12, fontWeight: 600, color: copiedRecord ? B.teal : B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 6, padding: "6px 14px", cursor: "pointer", minHeight: 32, transition: "color 150ms" }}>
+                <button aria-label="Copy record ID to clipboard" onClick={copyId} style={{ fontSize: 12, fontWeight: 600, color: copiedRecord ? B.teal : B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 6, padding: "6px 14px", cursor: "pointer", minHeight: 32, transition: "color 150ms" }}>
                   {copiedRecord ? "Record ID copied" : "Copy Record ID"}
                 </button>
               </div>
