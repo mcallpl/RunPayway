@@ -375,6 +375,7 @@ function DashboardContent() {
   const [copiedPlaybook, setCopiedPlaybook] = useState<string | null>(null);
   const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
   const [copiedRecord, setCopiedRecord] = useState(false);
+  const [snapshotTip, setSnapshotTip] = useState<string | null>(null);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -1869,22 +1870,72 @@ function DashboardContent() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
-              {[
-                { label: "Recurrence", value: `${base.income_persistence_pct}% of your income recurs automatically`, dim: "income_persistence_pct" },
-                { label: "Concentration", value: `Your largest source carries ${base.largest_source_pct}% of income`, dim: "largest_source_pct" },
-                { label: "Diversification", value: `You have ${base.source_diversity_count} income source${base.source_diversity_count === 1 ? "" : "s"}`, dim: "source_diversity_count" },
-                { label: "Forward Visibility", value: `${base.forward_secured_pct}% of your income is secured forward`, dim: "forward_secured_pct" },
-                { label: "Variability", value: `Your income variability is ${base.income_variability_level}`, dim: "income_variability_level" },
-                { label: "Labor Dependence", value: `${base.labor_dependence_pct}% requires your active work`, dim: "labor_dependence_pct" },
-              ].map((item, i, arr) => (
-                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: i < arr.length - 1 ? `1px solid ${B.stone}` : "none" }}>
-                  <div>
-                    <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>{item.label.toUpperCase()}</div>
-                    <div style={{ fontSize: 15, color: B.navy }}>{item.value}</div>
+              {(() => {
+                const ind = indLabel.toLowerCase() || "your industry";
+                const tipsByIndustry: Record<string, Record<string, string>> = {
+                  default: {
+                    recurrence: `If you have signed any new recurring agreements, retainers, or subscriptions since your assessment, your recurrence has changed.`,
+                    concentration: `Have you added a meaningful new client or revenue source? Even one new source at 15%+ changes your concentration.`,
+                    diversification: `Count your current income sources. If the number is different from ${base.source_diversity_count}, this dimension has shifted.`,
+                    forward: `Do you have more or fewer signed commitments for next quarter than when you were assessed? Forward visibility moves fast.`,
+                    variability: `Has your month-to-month income become more or less predictable? A new retainer stabilizes this. Losing a client destabilizes it.`,
+                    labor: `Have you created any income that continues without your active daily work? Even a small passive stream changes this number.`,
+                  },
+                  consulting_professional_services: {
+                    recurrence: `Have you converted any project clients to monthly retainers since your assessment? Even one retainer changes this number significantly.`,
+                    concentration: `If you have landed a new client or lost your largest, your concentration has shifted. In consulting, one contract change can move this 20+ points.`,
+                    diversification: `Have you expanded into a new vertical or added a new client type? Consulting diversification often comes from adjacent markets.`,
+                    forward: `Do you have signed SOWs or retainer commitments for next quarter? In consulting, forward visibility often resets every 90 days.`,
+                    variability: `Has your billing become more consistent month-to-month? Converting to retainers is the fastest way to stabilize this in consulting.`,
+                    labor: `Have you packaged any of your methodology into a course, template, or licensed framework? That is how consulting professionals build labor independence.`,
+                  },
+                  real_estate: {
+                    recurrence: `Have you added any property management retainers or recurring advisory fees? In real estate, recurrence usually comes from management, not transactions.`,
+                    concentration: `Has your deal pipeline diversified, or are you still dependent on a small number of large transactions? One closing can change this dramatically.`,
+                    diversification: `Have you added commercial, rental, or referral income alongside residential transactions?`,
+                    forward: `Do you have more listings under contract or signed agreements than at your last assessment? In real estate, forward visibility is your pipeline.`,
+                    variability: `Has your income become more or less seasonal? Adding recurring management fees smooths the cycles between closings.`,
+                    labor: `Have you built any income streams that do not require you to personally show properties or negotiate deals?`,
+                  },
+                  technology: {
+                    recurrence: `Has your compensation structure changed? A new support contract, SaaS revenue, or recurring consulting engagement changes recurrence.`,
+                    concentration: `Are you still dependent on one employer or one major client for the majority of your income?`,
+                    diversification: `Have you added freelance work, a side product, or consulting alongside your primary role?`,
+                    forward: `Has your employment contract been extended, or have you secured any new multi-month commitments?`,
+                    variability: `Has your variable compensation (bonus, equity vesting, commission) become more or less predictable?`,
+                    labor: `Have you built any tools, products, or intellectual property that generates revenue without your daily involvement?`,
+                  },
+                };
+                const tips = tipsByIndustry[sectorKey] || tipsByIndustry.default;
+
+                return [
+                  { label: "Recurrence", value: `${base.income_persistence_pct}% of your income recurs automatically`, key: "recurrence", tip: tips.recurrence },
+                  { label: "Concentration", value: `Your largest source carries ${base.largest_source_pct}% of income`, key: "concentration", tip: tips.concentration },
+                  { label: "Diversification", value: `You have ${base.source_diversity_count} income source${base.source_diversity_count === 1 ? "" : "s"}`, key: "diversification", tip: tips.diversification },
+                  { label: "Forward Visibility", value: `${base.forward_secured_pct}% of your income is secured forward`, key: "forward", tip: tips.forward },
+                  { label: "Variability", value: `Your income variability is ${base.income_variability_level}`, key: "variability", tip: tips.variability },
+                  { label: "Labor Dependence", value: `${base.labor_dependence_pct}% requires your active work`, key: "labor", tip: tips.labor },
+                ].map((item, i, arr) => (
+                  <div key={i}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: snapshotTip === item.key ? "none" : (i < arr.length - 1 ? `1px solid ${B.stone}` : "none"), cursor: "pointer" }}
+                      onClick={() => setSnapshotTip(snapshotTip === item.key ? null : item.key)}>
+                      <div>
+                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>{item.label.toUpperCase()}</div>
+                        <div style={{ fontSize: 15, color: B.navy }}>{item.value}</div>
+                      </div>
+                      <span style={{ fontSize: 13, color: snapshotTip === item.key ? B.purple : B.taupe, fontStyle: "italic", flexShrink: 0, marginLeft: 16, transition: "color 150ms" }}>
+                        {snapshotTip === item.key ? "Close" : "Is this still true?"}
+                      </span>
+                    </div>
+                    {snapshotTip === item.key && (
+                      <div style={{ padding: mobile ? "12px 14px" : "14px 18px", marginBottom: 10, borderRadius: 10, backgroundColor: `${B.purple}04`, borderLeft: `3px solid ${B.purple}20`, animation: "fadeSlideIn 200ms ease-out" }}>
+                        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 4 }}>TIP FOR {ind.toUpperCase()}</div>
+                        <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{item.tip}</p>
+                      </div>
+                    )}
                   </div>
-                  <span style={{ fontSize: 13, color: B.taupe, fontStyle: "italic", flexShrink: 0, marginLeft: 16 }}>Is this still true?</span>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
 
             <div style={{ marginTop: 24, padding: mobile ? "18px 16px" : "20px 24px", borderRadius: 12, backgroundColor: "#FAFAFA", textAlign: "center" }}>
