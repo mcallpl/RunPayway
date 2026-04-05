@@ -420,7 +420,7 @@ function TheSystemAndCta() {
           {/* Left — 3 steps (context comes first) */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: m ? 24 : 0 }}>
             {[
-              { num: "01", title: "Describe your structure", desc: "Sources, contracts, concentration, and dependencies. 8 questions. Under 2 minutes." },
+              { num: "01", title: "Describe your structure", desc: "Sources, contracts, concentration, and dependencies. Under 2 minutes." },
               { num: "02", title: "6 fixed dimensions scored", desc: "Persistence, concentration, diversification, forward visibility, variability, labor dependence." },
               { num: "03", title: "One standardized result", desc: "Score 0\u2013100. Band classification. Primary constraint. Recommended direction." },
             ].map((s, i) => (
