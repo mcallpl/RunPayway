@@ -195,7 +195,7 @@ function FinalCta() {
           Now see how your income measures up.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Under 2 minutes. Every result generated from your inputs.
+          Every result generated from your answers. Free to start.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
           <Link href="/pricing" style={{
