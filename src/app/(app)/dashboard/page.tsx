@@ -486,12 +486,14 @@ function DashboardContent() {
     try { const recs = JSON.parse(localStorage.getItem("rp_records") || "[]"); setAssessments(recs.sort((a: { assessment_date_utc: string; issued_timestamp_utc?: string }, b: { assessment_date_utc: string; issued_timestamp_utc?: string }) => new Date(b.assessment_date_utc || b.issued_timestamp_utc || "").getTime() - new Date(a.assessment_date_utc || a.issued_timestamp_utc || "").getTime())); } catch { /* */ }
     try { setCheckedItems(JSON.parse(localStorage.getItem("rp_reassess_checks") || "[]")); } catch { /* */ }
     try { setCompletedSteps(JSON.parse(localStorage.getItem("rp_roadmap_steps") || "[]")); } catch { /* */ }
-    // Detect paid status — redirect free users away from Command Center
+    // Detect paid status — only redirect explicitly free users who have data
     try {
       const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
       if (ps.plan_key && ps.plan_key !== "free") {
         setIsPaid(true);
-      } else if (ps.plan_key === "free") {
+      } else if (ps.plan_key === "free" && stored) {
+        // Only redirect if they're free AND have assessment data
+        // (if no data, let them see the empty state with CTA to purchase)
         window.location.replace("/free-score");
         return;
       }
