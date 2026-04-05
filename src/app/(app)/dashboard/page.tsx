@@ -946,8 +946,8 @@ function DashboardContent() {
 
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
-              <p style={{ fontSize: 13, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
-              <p style={{ fontSize: 11, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
+              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
             </div>
           </div>
         </div>
@@ -979,16 +979,16 @@ function DashboardContent() {
         {/* Phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px", overflow: "hidden" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 16px 120px" : "48px 36px 96px", overflow: "hidden" }}>
 
           {/* ── SCORE HERO — the boardroom moment ── */}
           <div style={{ marginBottom: 32, animation: "fadeSlideIn 600ms ease-out" }}>
-            <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: mobile ? 24 : 40 }} className="d-score-hero">
-                <ScoreRing score={dScore} size={mobile ? 130 : 160} stroke={8} />
+            <div style={{ padding: mobile ? "28px 20px" : "44px 48px", borderRadius: mobile ? 16 : 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 40 }} className="d-score-hero">
+                <ScoreRing score={dScore} size={mobile ? 110 : 160} stroke={mobile ? 7 : 8} />
                 <div style={{ flex: 1 }}>
-                  {custName && <div style={{ fontSize: 13, color: C.sandMuted, marginBottom: 4 }}>{custName}</div>}
-                  <div style={{ fontSize: mobile ? 13 : 15, color: C.sandMuted, marginBottom: 12, lineHeight: 1.55 }}>
+                  {custName && <div style={{ fontSize: 14, color: C.sandMuted, marginBottom: 4 }}>{custName}</div>}
+                  <div style={{ fontSize: mobile ? 14 : 15, color: C.sandMuted, marginBottom: 12, lineHeight: 1.55 }}>
                     {gap > 0
                       ? <>{dBand} Stability. <span style={{ color: C.sandText }}>{gap} points</span> to {nextB}.</>
                       : <>Highest stability band achieved.</>
@@ -1031,13 +1031,13 @@ function DashboardContent() {
               </div>
               {/* Compact toolbar */}
               <div style={{ display: "flex", gap: 8, marginTop: 20, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
-                <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: C.sandText, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.12)`, backgroundColor: "rgba(255,255,255,0.04)", transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: C.sandText, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.12)`, backgroundColor: "rgba(255,255,255,0.04)", transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                   View Report
                 </Link>
-                <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
@@ -1047,7 +1047,7 @@ function DashboardContent() {
                   const subject = encodeURIComponent("My Income Stability Assessment");
                   const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
                   window.location.href = `mailto:?subject=${subject}&body=${body}`;
-                }} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                }} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -1100,7 +1100,7 @@ function DashboardContent() {
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "20px 18px" : "22px 24px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 8 }}>
+              <div key={z.id} style={{ padding: mobile ? "18px 16px" : "22px 24px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 8 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
@@ -1157,7 +1157,7 @@ function DashboardContent() {
                     <div key={i} style={{ borderBottom: i < roadmap.length - 1 ? `1px solid ${B.stone}` : "none", opacity: done ? 0.5 : 1, transition: "opacity 300ms" }}>
                       <div style={{ padding: mobile ? "20px 16px" : "22px 28px", display: "flex", gap: 16, alignItems: "flex-start" }}>
                         <div style={{ flexShrink: 0, textAlign: "center" as const, minWidth: 48 }}>
-                          <button onClick={() => toggleStep(i)} style={{ width: 36, height: 36, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? `${B.purple}30` : `${B.teal}20`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", margin: "0 auto 4px" }}>
+                          <button onClick={() => toggleStep(i)} style={{ width: mobile ? 40 : 36, height: mobile ? 40 : 36, borderRadius: "50%", backgroundColor: done ? B.teal : i === 0 ? `${B.purple}12` : `${B.teal}08`, border: `2px solid ${done ? B.teal : i === 0 ? `${B.purple}30` : `${B.teal}20`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", margin: "0 auto 4px" }}>
                             {done ? <span style={{ color: B.white, fontSize: 14, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 14, fontWeight: 700, color: i === 0 ? B.purple : B.teal }}>{i + 1}</span>}
                           </button>
                           <div style={{ fontSize: 11, fontWeight: 600, color: B.taupe, lineHeight: 1.2 }}>{step.weeks}</div>
@@ -1175,14 +1175,14 @@ function DashboardContent() {
                           </div>
                           {/* Success criteria */}
                           <p style={{ fontSize: 13, color: B.teal, margin: "0 0 8px", fontWeight: 500 }}>{step.target}</p>
-                          {sc && <button onClick={() => setExpandedScript(isExp ? null : `rm-${i}`)} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "6px 16px", cursor: "pointer", minHeight: 32 }}>{isExp ? "Hide script ▲" : "Script ▼"}</button>}
+                          {sc && <button onClick={() => setExpandedScript(isExp ? null : `rm-${i}`)} style={{ fontSize: 14, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "10px 16px", cursor: "pointer", minHeight: 44 }}>{isExp ? "Hide script ▲" : "Script ▼"}</button>}
                         </div>
                       </div>
                       {isExp && sc && (
                         <div style={{ padding: mobile ? "16px 16px 24px" : "16px 28px 24px", backgroundColor: `${B.purple}02` }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                             <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{sc.title}</span>
-                            <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 13, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>{copiedScript === sc.id ? "Copied!" : "Copy"}</button>
+                            <button onClick={() => copyScript(sc.script, sc.id)} style={{ fontSize: 14, fontWeight: 600, color: copiedScript === sc.id ? B.teal : B.purple, backgroundColor: copiedScript === sc.id ? `${B.teal}08` : `${B.purple}08`, border: "none", borderRadius: 8, padding: "10px 16px", cursor: "pointer", minHeight: 44 }}>{copiedScript === sc.id ? "Copied!" : "Copy"}</button>
                           </div>
                           <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: "16px 20px", backgroundColor: B.surface, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{sc.script}</pre>
                         </div>
@@ -1448,7 +1448,7 @@ function DashboardContent() {
                   <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>COMPARE PATHS</div>
-                      <button onClick={() => setSavedScenarios([])} style={{ fontSize: 13, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", minHeight: 32 }}>Clear</button>
+                      <button onClick={() => setSavedScenarios([])} style={{ fontSize: 14, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", minHeight: 44 }}>Clear</button>
                     </div>
                     <div style={{ display: "flex", gap: 12 }} className="d-compare">
                       <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
@@ -1458,7 +1458,7 @@ function DashboardContent() {
                       </div>
                       {savedScenarios.map((s, i) => (
                         <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
-                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 8, right: 10, fontSize: 14, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 32, minWidth: 32 }}>&times;</button>
+                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 4, right: 4, fontSize: 16, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
                           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
                           <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
                           <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(s.score), marginTop: 4 }}>{s.band}</div>
@@ -1672,14 +1672,14 @@ function DashboardContent() {
 
           {/* Assessment timing */}
           <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-            <div style={{ flex: 1, padding: "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
-              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+            <div style={{ flex: 1, padding: mobile ? "20px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
+              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
                 {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3\u20134. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
               </p>
             </div>
             <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
-              style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
+              style={{ fontSize: 14, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: mobile ? "12px 16px" : "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
               Download Assessment Data
             </button>
           </div>
@@ -1688,8 +1688,8 @@ function DashboardContent() {
 
           {/* FOOTER */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <p style={{ fontSize: 13, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
-            <p style={{ fontSize: 11, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
+            <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+            <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
           </div>
         </div>
       </div>

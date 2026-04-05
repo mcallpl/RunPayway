@@ -83,13 +83,13 @@ function AccessCodeContent() {
           </div>
 
           <div style={{
-            padding: mobile ? "28px 20px" : "36px 32px",
+            padding: mobile ? "24px 16px" : "36px 32px",
             borderRadius: 16,
             border: `1px solid ${B.stone}`,
             backgroundColor: B.surface,
             boxShadow: "0 2px 8px rgba(14,26,43,0.03)",
           }}>
-            <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, display: "block", marginBottom: 10 }}>
+            <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: B.taupe, display: "block", marginBottom: 10 }}>
               PASTE CODE
             </label>
             <textarea
@@ -98,7 +98,7 @@ function AccessCodeContent() {
               placeholder="Paste the full code from your report..."
               rows={4}
               style={{
-                width: "100%", padding: "14px 16px", fontSize: 13, fontFamily: mono,
+                width: "100%", padding: "14px 16px", fontSize: 14, fontFamily: mono,
                 border: `2px solid ${B.purple}20`, borderRadius: 12, outline: "none",
                 backgroundColor: B.white, resize: "vertical" as const,
                 boxSizing: "border-box" as const, lineHeight: 1.6,
@@ -107,12 +107,12 @@ function AccessCodeContent() {
               onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
               onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}20`; }}
             />
-            {error && <div style={{ fontSize: 13, color: B.red, marginTop: 8 }}>{error}</div>}
+            {error && <div style={{ fontSize: 14, color: B.red, marginTop: 8 }}>{error}</div>}
             <button
               onClick={handleSubmit}
               style={{
-                width: "100%", marginTop: 16, padding: "14px 24px",
-                fontSize: 15, fontWeight: 600, color: B.white,
+                width: "100%", marginTop: 16, padding: mobile ? "14px 16px" : "14px 24px",
+                fontSize: 16, fontWeight: 600, color: B.white,
                 background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
                 border: "none", borderRadius: 12, cursor: "pointer",
                 minHeight: 48, transition: "opacity 150ms",
@@ -125,10 +125,10 @@ function AccessCodeContent() {
           </div>
 
           <div style={{ textAlign: "center", marginTop: 32 }}>
-            <p style={{ fontSize: 13, color: B.taupe, margin: "0 0 4px", lineHeight: 1.6 }}>
+            <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px", lineHeight: 1.6 }}>
               Your access code is on page 1 and page 4 of your RunPayway report.
             </p>
-            <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>
+            <p style={{ fontSize: 13, color: `${B.taupe}80`, margin: 0 }}>
               Same code, same score. Deterministic by design.
             </p>
           </div>
