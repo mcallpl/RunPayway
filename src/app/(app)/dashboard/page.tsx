@@ -1849,6 +1849,55 @@ function DashboardContent() {
             </button>
           </div>
 
+          {/* ── YOUR STRUCTURE WHEN YOU WERE ASSESSED ── */}
+          <section className="cc-section" style={{ marginTop: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>YOUR STRUCTURE WHEN YOU WERE ASSESSED</div>
+                {assessedDate && <div style={{ fontSize: 13, color: B.taupe }}>{assessedDate}</div>}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+              {[
+                { label: "Recurrence", value: `${base.income_persistence_pct}% of your income recurs automatically`, dim: "income_persistence_pct" },
+                { label: "Concentration", value: `Your largest source carries ${base.largest_source_pct}% of income`, dim: "largest_source_pct" },
+                { label: "Diversification", value: `You have ${base.source_diversity_count} income source${base.source_diversity_count === 1 ? "" : "s"}`, dim: "source_diversity_count" },
+                { label: "Forward Visibility", value: `${base.forward_secured_pct}% of your income is secured forward`, dim: "forward_secured_pct" },
+                { label: "Variability", value: `Your income variability is ${base.income_variability_level}`, dim: "income_variability_level" },
+                { label: "Labor Dependence", value: `${base.labor_dependence_pct}% requires your active work`, dim: "labor_dependence_pct" },
+              ].map((item, i, arr) => (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: i < arr.length - 1 ? `1px solid ${B.stone}` : "none" }}>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>{item.label.toUpperCase()}</div>
+                    <div style={{ fontSize: 15, color: B.navy }}>{item.value}</div>
+                  </div>
+                  <span style={{ fontSize: 13, color: B.taupe, fontStyle: "italic", flexShrink: 0, marginLeft: 16 }}>Is this still true?</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: 24, padding: mobile ? "18px 16px" : "20px 24px", borderRadius: 12, backgroundColor: "#FAFAFA", textAlign: "center" }}>
+              <p style={{ fontSize: 15, color: B.navy, margin: "0 0 16px", lineHeight: 1.55 }}>
+                If your structure has changed, your score may not reflect where you are today.
+              </p>
+              <Link href="/pricing" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: 48, padding: "0 28px", borderRadius: 10,
+                backgroundColor: B.navy, color: B.white,
+                fontSize: 15, fontWeight: 600, textDecoration: "none",
+                transition: "background 150ms",
+              }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#2a2248"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = B.navy; }}>
+                Take a New Assessment &mdash; $69
+              </Link>
+            </div>
+          </section>
+
           </PhaseSep>
 
           {/* FOOTER */}
