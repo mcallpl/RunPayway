@@ -774,6 +774,12 @@ function DashboardContent() {
           desc: "The single area doing the most damage to your score.",
           hover: "Every income setup has a bottleneck — one area suppressing your score more than all the others combined. This identifies the exact lever that moves the needle, so you stop wasting effort on changes that feel productive but change nothing.",
         },
+        {
+          title: "What Could Go Wrong",
+          icon: "alert",
+          desc: "See how your score holds up if your top client leaves or you can't work for 90 days.",
+          hover: "Two real scenarios. Two honest numbers. Most people are surprised by how much their score drops under pressure they assumed was unlikely — until it happens.",
+        },
       ],
     },
     {
@@ -784,7 +790,7 @@ function DashboardContent() {
         {
           title: "Negotiation Playbook",
           icon: "script",
-          desc: "Word-for-word scripts built from your constraint, your industry, and your actual numbers.",
+          desc: "Word-for-word scripts built from your biggest risk, your industry, and your actual numbers.",
           hover: "Knowing what to do is not the hard part. The hard part is knowing what to say. Each script tells you who to talk to, when to use it, the exact words, how to handle pushback, and what a successful response looks like. Personalized with your actual numbers — not a template.",
         },
         {
@@ -1149,6 +1155,27 @@ function DashboardContent() {
                 {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
               </div>
             ))}
+          </section>
+
+          {/* Stress tests — what could go wrong */}
+          <section style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 8 }}>WHAT COULD GO WRONG</div>
+            <p style={{ fontSize: 14, color: B.muted, marginBottom: 16 }}>How your income holds up under real disruptions.</p>
+            <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+              {[
+                { label: "Your biggest client stops paying", desc: "Your largest income source disappears — along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
+                { label: "You cannot work for 90 days", desc: "Illness, injury, or interruption stops active work — only passive and pre-committed income continues.", val: `\u2212${dScore - stNW.overall_score}`, drop: stNW.overall_score },
+              ].map(row => (
+                <div key={row.label} style={{ flex: 1, padding: "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{row.label}</span>
+                    <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
+                  </div>
+                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.6 }}>{row.desc}</p>
+                  <span style={{ fontSize: 13, fontFamily: mono, color: B.taupe }}>{dScore} &rarr; {row.drop}</span>
+                </div>
+              ))}
+            </div>
           </section>
 
           </PhaseSep>
@@ -1826,27 +1853,6 @@ function DashboardContent() {
               })()}
             </section>
           )}
-
-          {/* Stress tests — prominent */}
-          <section style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 8 }}>STRESS TESTS</div>
-            <p style={{ fontSize: 14, color: B.muted, marginBottom: 16 }}>What your current structure can and cannot absorb.</p>
-            <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-              {[
-                { label: "Your biggest client stops paying", desc: "Your largest income source disappears \u2014 along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
-                { label: "You cannot work for 90 days", desc: "Illness, injury, or interruption stops active work \u2014 only passive and pre-committed income continues.", val: `\u2212${dScore - stNW.overall_score}`, drop: stNW.overall_score },
-              ].map(row => (
-                <div key={row.label} style={{ flex: 1, padding: "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{row.label}</span>
-                    <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
-                  </div>
-                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.6 }}>{row.desc}</p>
-                  <span style={{ fontSize: 13, fontFamily: mono, color: B.taupe }}>{dScore} &rarr; {row.drop}</span>
-                </div>
-              ))}
-            </div>
-          </section>
 
           {/* Assessment timing */}
           <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
