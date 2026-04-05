@@ -449,12 +449,12 @@ function WhatStabilityUnlocks() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHAT HIGH STABILITY UNLOCKS</div>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHEN YOU KNOW YOUR NUMBER</div>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            A good credit score gets you better rates.{m ? " " : <br />}A strong stability score gets you leverage.
+            Once you see how your income is built,{m ? " " : <br />}you start making different decisions.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
-            When your income is built to last, everything changes — not just how much you earn, but how much control you have.
+            The insight changes how you approach everything — not because anyone requires it, but because now you know.
           </p>
         </div>
 
@@ -472,7 +472,7 @@ function WhatStabilityUnlocks() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn't about earning more. It's about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
+          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn't about earning more. It's about <strong style={{ color: C.navy }}>knowing what you're working with</strong> before you make your next move.</p>
           <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: 52, padding: m ? "0 28px" : "0 40px",
@@ -506,20 +506,20 @@ function TheMissingLayer() {
   const layers = [
     {
       label: "FINANCIAL ADVISORY",
-      title: "Manages what you've saved",
-      desc: "Advisors build plans around your assets — but don't measure whether the income funding those assets is built to last.",
+      title: "Looks at what you've saved",
+      desc: "Financial planning focuses on your assets and goals — but doesn't ask whether the income funding them will still be there next year.",
       faded: true,
     },
     {
       label: "CREDIT SCORE",
-      title: "Measures what you've borrowed",
-      desc: "Lenders pull your credit to evaluate borrowing history — but have no way to measure how your income holds up under pressure.",
+      title: "Looks at what you've borrowed",
+      desc: "Credit decisions are based on your past payments — but don't account for whether your income can keep supporting them.",
       faded: true,
     },
     {
       label: "RUNPAYWAY&#8482;",
-      title: "Measures how your income is built",
-      desc: "Now you can see for yourself whether your income is stable, diversified, and built to last — and decide what to do with that insight.",
+      title: "Shows you how your income is built",
+      desc: "Before you make your next financial decision, see for yourself whether your income is stable, diversified, and built to last.",
       faded: false,
     },
   ];
@@ -529,12 +529,12 @@ function TheMissingLayer() {
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
 
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>THE MISSING LAYER</div>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>KNOW BEFORE YOU ACT</div>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            There's something no one{m ? " " : <br />}is measuring for you.
+            Before you borrow, invest, or plan —{m ? " " : <br />}know how your income is actually built.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Credit scores measure borrowing. Advisors manage savings. But nobody gives you a clear picture of how your income itself is built — until now.
+            Credit scores look at what you've borrowed. Advisors look at what you've saved. Neither shows you how your income holds up. RunPayway does.
           </p>
         </div>
 
@@ -572,7 +572,7 @@ function TheMissingLayer() {
         {/* Bridge statement */}
         <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
-            Credit scores look backward. RunPayway shows you what your income can actually <strong style={{ color: C.navy }}>withstand</strong> — so you can make better decisions going forward.
+            The best financial decisions start with knowing what your income can actually <strong style={{ color: C.navy }}>withstand</strong>. That's what RunPayway shows you — before you act.
           </p>
         </div>
 
@@ -799,10 +799,10 @@ function FinalCtaAndTrust() {
         </div>
 
         <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible, 100) }}>
-          Your income is already being tested.{m ? " " : <br />}Now you can see how it holds.
+          Be prepared before your next move.{m ? " " : <br />}Not surprised after.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 150) }}>
-          Start with the free score. Unlock the full diagnostic when you're ready to act.
+          Start with the free score. See where your income is strong and where it's exposed — in under 2 minutes.
         </p>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible, 200) }}>
           <CtaButton m={m} variant="light" />
